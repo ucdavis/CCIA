@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[po_health_cert] (
+    [app_id]                   INT            NOT NULL,
+    [lot_orig_cult]            BIT            NOT NULL,
+    [yr_micropropagated]       INT            NULL,
+    [micropropagated_by]       VARCHAR (100)  NULL,
+    [num_yrs_produced]         TINYINT        NULL,
+    [ph_location]              VARCHAR (50)   NULL,
+    [ph_leafroll]              TINYINT        NULL,
+    [ph_mosaic]                TINYINT        NULL,
+    [ph_other_varieties]       TINYINT        NULL,
+    [ph_sample_no]             INT            NULL,
+    [ph_plant_count]           INT            NULL,
+    [percent_pvy]              DECIMAL (7, 2) NULL,
+    [percent_pvx]              DECIMAL (7, 2) NULL,
+    [bact_ring_rot]            TINYINT        NOT NULL,
+    [golden_nematode]          TINYINT        NOT NULL,
+    [late_blight]              TINYINT        NOT NULL,
+    [root_knot_nematode]       TINYINT        NOT NULL,
+    [pot_rot_nematode]         TINYINT        NOT NULL,
+    [pot_wart]                 TINYINT        NOT NULL,
+    [powder_scab]              TINYINT        NOT NULL,
+    [pot_spindle_tuber_viroid] TINYINT        NOT NULL,
+    [corky_ring_spots]         TINYINT        NOT NULL,
+    [notes]                    VARCHAR (1000) NULL
+);
+
