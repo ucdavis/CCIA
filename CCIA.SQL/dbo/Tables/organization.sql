@@ -43,6 +43,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_organization_org_name]
     ON [dbo].[organization]([org_name] ASC)

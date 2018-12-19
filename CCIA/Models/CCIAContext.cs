@@ -1,10 +1,11 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CCIA.Models
 {
-    public partial class CCIAContext : DbContext
+    public partial class CCIAContext : IdentityDbContext<ApplicationUser>
     {
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
@@ -134,6 +135,7 @@ namespace CCIA.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<AbbrevAppType>(entity =>
             {
                 entity.HasKey(e => e.AppTypeId);
