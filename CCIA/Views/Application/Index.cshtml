@@ -1,0 +1,63 @@
+﻿@model IList<Applications>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Applications</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+        <th>AppId</th>
+        <th>Type</th>
+        <th>Cert Year</th>
+        <th>Grower</th>
+        <th>Field Name</th>
+        <th>Acres</th>
+        <th>County</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>
+        <th>Map</th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var app in Model)
+            {
+            <tr>
+                <td>@app.AppId</td>
+                <td>@app.AppType</td>
+                <td>@app.CertYear</td>
+                <td>@app.GrowerOrganization.OrgName</td>
+                <td>@app.FieldName</td>
+                <td>@app.AcresApplied</td>
+                <td>@app.County.CountyName</td>
+                <td>@app.Crop.Name</td>
+                @if (app.AppType == "PV" || app.SelectedVarietyId==null)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@app.Variety.Name</td>
+                }
+               @if (app.ClassProduced != null)
+        {
+            <td>@app.ClassProduced.ClassAbbrv</td>
+        }
+        else
+        {
+            <td>@app.ClassProducedId</td>
+        }
+
+        <td>@app.MapVe</td>
+        <td>@app.Status</td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

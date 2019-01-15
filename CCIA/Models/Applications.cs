@@ -17,13 +17,13 @@ namespace CCIA.Models
         public short? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         public string AppType { get; set; }
-        public int ApplicantId { get; set; }
+        //public int ApplicantId { get; set; }
         public int? UserAppDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-        public int GrowerId { get; set; }
+        //public int GrowerId { get; set; }
         public int? CropId { get; set; }
-        public int? SelectedVarietyId { get; set; }
+       
         public string EnteredVariety { get; set; }
         public int? ClassProducedId { get; set; }
         public int? ClassProducedAccession { get; set; }
@@ -61,7 +61,7 @@ namespace CCIA.Models
         public string Township { get; set; }
         public string Range { get; set; }
         public string Section { get; set; }
-        public short? FarmCounty { get; set; }
+        
         public DateTime? DatePlanted { get; set; }
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
@@ -83,12 +83,25 @@ namespace CCIA.Models
         public string PvgSource { get; set; }
         public string PvgSelectionId { get; set; }
         public string FieldHardiness { get; set; }
-        public string FieldElevation { get; set; }
+        public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
 
         public AbbrevClassProduced ClassProduced { get; set; }
         public Crops Crop { get; set; }
         public Applications TraceNavigation { get; set; }
         public ICollection<Applications> InverseTraceNavigation { get; set; }
+
+        public Organizations ApplicantOrganization { get; set; }
+        public int ApplicantId { get; set; }
+
+        public Organizations GrowerOrganization { get; set; }
+        public int? GrowerId { get; set; }
+
+        public County County { get; set; }
+        public short? FarmCounty { get; set; }
+
+        public VarFull  Variety { get; set; }
+        public int? SelectedVarietyId { get; set; }
+
     }
 }

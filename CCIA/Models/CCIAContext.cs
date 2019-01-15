@@ -31,6 +31,7 @@ namespace CCIA.Models
         public virtual DbSet<FieldInspect> FieldInspect { get; set; }
         public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
+        public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
         public virtual DbSet<Seedlab> Seedlab { get; set; }
@@ -49,6 +50,7 @@ namespace CCIA.Models
         public virtual DbSet<SxLabResults> SxLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
+        public virtual DbSet<VarFull> VarFull { get; set; }
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -129,14 +131,47 @@ namespace CCIA.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Server=Banana;Database=CCIA;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<AbbrevAppType>(entity =>
+
+            modelBuilder.Entity<VarFull>(entity =>
+            {
+                entity.ToTable("var_full");
+
+                entity.HasKey(v => v.Id);
+
+                entity.Property(v => v.Name).HasColumnName("var_name");
+
+                entity.Property(v => v.Type).HasColumnName("var_type");
+
+                entity.Property(v => v.CropId).HasColumnName("crop_id");
+
+                entity.Property(v => v.Category).HasColumnName("var_category");
+
+                entity.Property(v => v.Status).HasColumnName("var_status");
+
+                //entity.Property(v => v.Table).HasColumnName("tblname");
+
+                entity.Property(v => v.Certified).HasColumnName("ccia_certified");
+
+                //entity.Property(v => v.DateCertified).HasColumnName("date_certified");
+
+                entity.Property(v => v.RiceQa).HasColumnName("rice_qa");
+
+                entity.Property(v => v.RiceColor).HasColumnName("rice_qa_color");
+
+                entity.Property(v => v.ParendId).HasColumnName("parent_id");
+
+                entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
+
+
+            });
+                modelBuilder.Entity<AbbrevAppType>(entity =>
             {
                 entity.HasKey(e => e.AppTypeId);
 
@@ -565,18 +600,38 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.ClassProduced)
                     .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.ClassProducedId)
-                    .HasConstraintName("FK_Applications_abbrev_class_produced");
+                    .HasForeignKey(d => d.ClassProducedId);
 
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.Applications)
                     .HasForeignKey(d => d.CropId)
                     .HasConstraintName("FK_Applications_Crops");
 
+                entity.HasOne(d => d.GrowerOrganization)
+                    .WithMany(p => p.GrownApplications)
+                    .HasForeignKey(d => d.GrowerId);
+
+                entity.HasOne(d => d.ApplicantOrganization)
+                    .WithMany(p => p.AppliedApplications)
+                    .HasForeignKey(d => d.ApplicantId);
+
+
+
                 entity.HasOne(d => d.TraceNavigation)
                     .WithMany(p => p.InverseTraceNavigation)
                     .HasForeignKey(d => d.Trace)
                     .HasConstraintName("FK_Applications_Applications2");
+
+                entity.HasOne(d => d.County)
+                    .WithMany(p => p.Applications)
+                    .HasForeignKey(d => d.FarmCounty);
+
+                entity.HasOne(d => d.Variety)
+                    .WithMany(p => p.Applications)
+                    .HasForeignKey(d => d.SelectedVarietyId);
+                
+                
+
             });
 
             modelBuilder.Entity<BlendRequests>(entity =>
@@ -901,6 +956,19 @@ namespace CCIA.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Organizations>(entity =>
+            {
+                entity.HasKey(e => e.OrgId);
+
+                entity.ToTable("Organization");
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.Property(e => e.OrgName).HasColumnName("org_name");
+
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
+            });
+
             modelBuilder.Entity<Contacts>(entity =>
             {
                 entity.HasKey(e => e.ContactId);
@@ -1214,10 +1282,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AppDue).HasColumnName("app_due");
 
-                entity.Property(e => e.AuditCondSampleSize).HasColumnName("audit_cond_sample_size");
-
-                entity.Property(e => e.AuditLabSampleSize).HasColumnName("audit_lab_sample_size");
-
+                
                 entity.Property(e => e.CertifiedCrop)
                     .HasColumnName("certified_crop")
                     .HasDefaultValueSql("((0))");

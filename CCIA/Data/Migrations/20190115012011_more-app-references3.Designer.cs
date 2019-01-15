@@ -4,14 +4,16 @@ using CCIA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CCIA.Migrations
+namespace CCIA.Data.Migrations
 {
     [DbContext(typeof(CCIAContext))]
-    partial class CCIAContextModelSnapshot : ModelSnapshot
+    [Migration("20190115012011_more-app-references3")]
+    partial class moreappreferences3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3073,6 +3075,9 @@ namespace CCIA.Migrations
                     b.Property<int>("CropId")
                         .HasColumnName("crop_id");
 
+                    b.Property<DateTime>("DateCertified")
+                        .HasColumnName("date_certified");
+
                     b.Property<string>("Name")
                         .HasColumnName("var_name");
 
@@ -3087,6 +3092,9 @@ namespace CCIA.Migrations
 
                     b.Property<string>("Status")
                         .HasColumnName("var_status");
+
+                    b.Property<string>("Table")
+                        .HasColumnName("tblname");
 
                     b.Property<bool>("Turfgrass")
                         .HasColumnName("turfgrass");
@@ -3449,7 +3457,8 @@ namespace CCIA.Migrations
 
                     b.HasOne("CCIA.Models.AbbrevClassProduced", "ClassProduced")
                         .WithMany("Applications")
-                        .HasForeignKey("ClassProducedId");
+                        .HasForeignKey("ClassProducedId")
+                        .HasConstraintName("FK_Applications_abbrev_class_produced");
 
                     b.HasOne("CCIA.Models.Crops", "Crop")
                         .WithMany("Applications")

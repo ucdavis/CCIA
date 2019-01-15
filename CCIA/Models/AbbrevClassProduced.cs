@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -10,7 +11,7 @@ namespace CCIA.Models
             Applications = new HashSet<Applications>();
             PlantingStocks = new HashSet<PlantingStocks>();
         }
-
+        [Key]
         public int ClassProducedId { get; set; }
         public string ClassAbbrv { get; set; }
         public string ClassProducedTrans { get; set; }

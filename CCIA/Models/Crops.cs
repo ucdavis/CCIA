@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -41,8 +42,11 @@ namespace CCIA.Models
         public decimal? IsolationParentA { get; set; }
         public decimal? IsolationParentB { get; set; }
         public decimal? IsolationParentR { get; set; }
-        public short? AuditCondSampleSize { get; set; }
-        public short? AuditLabSampleSize { get; set; }
+
+        [StringLength(256)]
+        [Display(Name = "Name")]
+        public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
+
 
         public ICollection<Applications> Applications { get; set; }
         public ICollection<VarOfficial> VarOfficial { get; set; }

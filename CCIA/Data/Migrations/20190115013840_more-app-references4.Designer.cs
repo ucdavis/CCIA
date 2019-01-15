@@ -4,14 +4,16 @@ using CCIA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CCIA.Migrations
+namespace CCIA.Data.Migrations
 {
     [DbContext(typeof(CCIAContext))]
-    partial class CCIAContextModelSnapshot : ModelSnapshot
+    [Migration("20190115013840_more-app-references4")]
+    partial class moreappreferences4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
