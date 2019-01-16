@@ -34,6 +34,7 @@ namespace CCIA.Controllers
                 .Include(a => a.County)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
                 .ToListAsync();
             return View(model);
         }
