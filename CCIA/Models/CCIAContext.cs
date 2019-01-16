@@ -139,6 +139,22 @@ namespace CCIA.Models
         {
             base.OnModelCreating(modelBuilder);
 
+             modelBuilder.Entity<AppCertificates>(entity =>
+            {
+                entity.ToTable("app_certificates");
+
+                entity.HasKey(e => e.CertId);
+
+                entity.Property(e => e.CertId).HasColumnName("cert_id");
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.Name).HasColumnName("cert_name");
+
+                entity.Property(e => e.Link).HasColumnName("cert_link");
+
+            });
+
             modelBuilder.Entity<VarFull>(entity =>
             {
                 entity.ToTable("var_full");
@@ -630,7 +646,9 @@ namespace CCIA.Models
                     .WithMany(p => p.Applications)
                     .HasForeignKey(d => d.SelectedVarietyId);
                 
-                
+                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
+
+                entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
 
             });
 
