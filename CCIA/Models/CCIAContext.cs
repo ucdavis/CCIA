@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace CCIA.Models
 {
@@ -126,13 +128,26 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_transfer_changes'. Please see the warning messages.
 
+        //  public static readonly LoggerFactory DbCommandConsoleLoggerFactory
+        //     = new LoggerFactory (new [] {
+        //         new ConsoleLoggerProvider ((category, level) => category == DbLoggerCategory.Database.Command.Name &&
+        //             level == LogLevel.Debug, true)
+        //     });
+        
+
+    public static readonly LoggerFactory James = new LoggerFactory(new [] {
+        new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug, true)
+    });
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
             }
+            optionsBuilder.UseLoggerFactory(James).EnableSensitiveDataLogging();
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -649,6 +664,8 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
 
                 entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
+
+                entity.HasMany(d => d.PlantingStocks).WithOne(p => p.Applications).HasForeignKey(d => d.AppId);
 
             });
 
@@ -1828,10 +1845,14 @@ namespace CCIA.Models
                     .HasColumnName("winter_test")
                     .HasDefaultValueSql("((0))");
 
-                entity.HasOne(d => d.PsClassNavigation)
-                    .WithMany(p => p.PlantingStocks)
-                    .HasForeignKey(d => d.PsClass)
-                    .HasConstraintName("FK_planting_stocks_farm_field");
+                entity.Property(e => e.ThcPercent).HasColumnName("thc_percent");
+
+                entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
+
+                // entity.HasOne(d => d.PsClassNavigation)
+                //     .WithMany(p => p.PlantingStocks)
+                //     .HasForeignKey(d => d.PsClass)
+                //     .HasConstraintName("FK_planting_stocks_farm_field");
             });
 
             modelBuilder.Entity<Rates>(entity =>

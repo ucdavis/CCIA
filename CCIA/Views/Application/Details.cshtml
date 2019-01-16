@@ -108,5 +108,45 @@
                 }
             </tbody>
         </table>
+    </div>
+     <div class="row">
+        <hr />
+    </div>
+    <div class="row">
+        <label class="col-form-label">Planting Stock Info</label>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cert#</th>
+                    <th>Variety</th>
+                    <th>Pounds Planted</th>
+                    <th># Plants</th>
+                    <th>Class</th>
+                    <th>Tag Issued</th>
+                    <th>Grown</th>
+                    <th>Purchased From</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.PlantingStocks)
+                {
+                    <tr>
+                        <td>
+                            @row.PsCertNum
+                        </td>
+                        <td>@row.PsEnteredVariety</td>
+                        <td>@row.PoundsPlanted</td>
+                        <td>@row.PlantsPerAcre</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>@row.SeedPurchasedFrom</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <hr />
     </div>    
 </div>

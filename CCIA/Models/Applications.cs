@@ -111,5 +111,7 @@ namespace CCIA.Models
 
         public ICollection<AppCertificates> Certificates { get; set; }
 
+        public ICollection<PlantingStocks> PlantingStocks { get; set; }
+
     }
 }
