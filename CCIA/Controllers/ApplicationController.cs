@@ -56,7 +56,7 @@ namespace CCIA.Controllers
                 .ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
-                .Include(a => a.FieldHistories)
+                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .FirstOrDefaultAsync();
             return View(model);
         }

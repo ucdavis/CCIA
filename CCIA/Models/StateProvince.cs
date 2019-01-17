@@ -10,5 +10,9 @@ namespace CCIA.Models
         public short CountryId { get; set; }
         public string StateProvinceName { get; set; }
         public DateTime DateModified { get; set; }
+
+
+        public ICollection<PlantingStocks> GrownInPlantingStocks { get; set; }
+        public ICollection<PlantingStocks> TaggedInPlantingStocks { get; set; }
     }
 }

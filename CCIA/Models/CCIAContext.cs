@@ -154,6 +154,29 @@ namespace CCIA.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<FieldHistory>(entity =>
+            {
+               entity.ToTable("field_history");
+
+               entity.HasKey(e => e.Id);
+
+               entity.Property(e => e.Id).HasColumnName("history_id");
+
+               entity.Property(e => e.AppId).HasColumnName("app_id");
+
+               entity.Property(e => e.Year);
+
+               entity.Property(e => e.Crop);
+
+               entity.Property(e => e.Variety).HasColumnName("entered_variety");
+
+               entity.Property(e => e.AppNumber).HasColumnName("app_num");
+
+               entity.HasOne(d => d.FHCrops).WithMany(p => p.FieldHistories).HasForeignKey(d => d.Crop).HasPrincipalKey(p => p.CropId);
+               
+
+            });
+
              modelBuilder.Entity<AppCertificates>(entity =>
             {
                 entity.ToTable("app_certificates");
@@ -666,6 +689,8 @@ namespace CCIA.Models
                 entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
 
                 entity.HasMany(d => d.PlantingStocks).WithOne(p => p.Applications).HasForeignKey(d => d.AppId);
+
+                entity.HasMany(d => d.FieldHistories).WithOne(p => p.Application).HasForeignKey(d => d.AppId).HasForeignKey(p => p.AppId);
 
             });
 
@@ -1849,10 +1874,14 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
 
-                // entity.HasOne(d => d.PsClassNavigation)
-                //     .WithMany(p => p.PlantingStocks)
-                //     .HasForeignKey(d => d.PsClass)
-                //     .HasConstraintName("FK_planting_stocks_farm_field");
+                entity.HasOne(d => d.PsClassNavigation)
+                    .WithMany(p => p.PlantingStocks)
+                    .HasForeignKey(d => d.PsClass)
+                    .HasConstraintName("FK_planting_stocks_farm_field");
+
+                entity.HasOne(d => d.GrownStateProvince).WithMany(p => p.GrownInPlantingStocks).HasForeignKey(d => d.StateCountryGrown);
+                entity.HasOne(d => d.TaggedStateProvince).WithMany(p => p.TaggedInPlantingStocks).HasForeignKey(d => d.StateCountryTagIssued);
+                
             });
 
             modelBuilder.Entity<Rates>(entity =>

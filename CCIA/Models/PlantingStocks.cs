@@ -24,10 +24,15 @@ namespace CCIA.Models
         public int? UserCreator { get; set; }
 
         public string ThcPercent { get; set; }
-        public decimal PlantsPerAcre { get; set; }
+        public decimal? PlantsPerAcre { get; set; }
 
-        //public AbbrevClassProduced PsClassNavigation { get; set; }
+        public AbbrevClassProduced PsClassNavigation { get; set; }
 
        public Applications Applications { get; set; }
+
+       public StateProvince GrownStateProvince {get; set; }
+       public StateProvince TaggedStateProvince { get; set; }
+
+       
     }
 }

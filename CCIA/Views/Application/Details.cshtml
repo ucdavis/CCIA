@@ -1,5 +1,6 @@
 @model CCIA.Models.Applications
 
+
 <h2>Application Details</h2> 
 <div class="container">
     <div class="row">
@@ -137,9 +138,14 @@
                         <td>@row.PsEnteredVariety</td>
                         <td>@row.PoundsPlanted</td>
                         <td>@row.PlantsPerAcre</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>@row.PsClassNavigation.ClassProducedTrans</td>
+                        @if(@row.TaggedStateProvince == null)
+                        {
+                            <td>@row.StateCountryTagIssued</td>
+                        } else {
+                            <td>@row.TaggedStateProvince.StateProvinceName</td>
+                        }                        
+                        <td>@row.GrownStateProvince.StateProvinceName</td>
                         <td>@row.SeedPurchasedFrom</td>
                     </tr>
                 }
@@ -148,5 +154,29 @@
     </div>
     <div class="row">
         <hr />
-    </div>    
+    </div>  
+    <div class="row">
+        <label class="col-form-label">Field History</label>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Year</th>
+                <th>Crop</th>
+                <th>Variety</th>
+                <th>Application #</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in Model.FieldHistories)
+            {
+                <tr>
+                    <td>@row.Year</td>
+                    <td>@row.FHCrops.Name</td>
+                    <td>@row.Variety</td>
+                    <td>@row.AppNumber</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>  
 </div>

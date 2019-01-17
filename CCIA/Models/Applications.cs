@@ -113,5 +113,7 @@ namespace CCIA.Models
 
         public ICollection<PlantingStocks> PlantingStocks { get; set; }
 
+        public ICollection<FieldHistory>  FieldHistories { get; set; }
+
     }
 }
