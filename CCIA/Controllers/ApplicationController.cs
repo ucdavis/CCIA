@@ -52,10 +52,11 @@ namespace CCIA.Controllers
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)//.ThenInclude(p => p.PsClassNavigation)
-                //.Include(a => a.PlantingStocks).ThenInclude(p => p.GrownProvince)
-                //.Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedProvince)
-                //.Include(a => a.FieldHistories)
+                .Include(a => a.PlantingStocks)
+                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
+                .Include(a => a.FieldHistories)
                 .FirstOrDefaultAsync();
             return View(model);
         }
