@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace CCIA.Models
 {
@@ -126,18 +128,70 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_transfer_changes'. Please see the warning messages.
 
+        //  public static readonly LoggerFactory DbCommandConsoleLoggerFactory
+        //     = new LoggerFactory (new [] {
+        //         new ConsoleLoggerProvider ((category, level) => category == DbLoggerCategory.Database.Command.Name &&
+        //             level == LogLevel.Debug, true)
+        //     });
+        
+
+    public static readonly LoggerFactory James = new LoggerFactory(new [] {
+        new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug, true)
+    });
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
             }
+            optionsBuilder.UseLoggerFactory(James).EnableSensitiveDataLogging();
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<FieldHistory>(entity =>
+            {
+               entity.ToTable("field_history");
+
+               entity.HasKey(e => e.Id);
+
+               entity.Property(e => e.Id).HasColumnName("history_id");
+
+               entity.Property(e => e.AppId).HasColumnName("app_id");
+
+               entity.Property(e => e.Year);
+
+               entity.Property(e => e.Crop);
+
+               entity.Property(e => e.Variety).HasColumnName("entered_variety");
+
+               entity.Property(e => e.AppNumber).HasColumnName("app_num");
+
+               entity.HasOne(d => d.FHCrops).WithMany(p => p.FieldHistories).HasForeignKey(d => d.Crop).HasPrincipalKey(p => p.CropId);
+               
+
+            });
+
+             modelBuilder.Entity<AppCertificates>(entity =>
+            {
+                entity.ToTable("app_certificates");
+
+                entity.HasKey(e => e.CertId);
+
+                entity.Property(e => e.CertId).HasColumnName("cert_id");
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.Name).HasColumnName("cert_name");
+
+                entity.Property(e => e.Link).HasColumnName("cert_link");
+
+            });
 
             modelBuilder.Entity<VarFull>(entity =>
             {
@@ -630,7 +684,13 @@ namespace CCIA.Models
                     .WithMany(p => p.Applications)
                     .HasForeignKey(d => d.SelectedVarietyId);
                 
-                
+                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
+
+                entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
+
+                entity.HasMany(d => d.PlantingStocks).WithOne(p => p.Applications).HasForeignKey(d => d.AppId);
+
+                entity.HasMany(d => d.FieldHistories).WithOne(p => p.Application).HasForeignKey(d => d.AppId).HasForeignKey(p => p.AppId);
 
             });
 
@@ -1810,10 +1870,18 @@ namespace CCIA.Models
                     .HasColumnName("winter_test")
                     .HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.ThcPercent).HasColumnName("thc_percent");
+
+                entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
+
                 entity.HasOne(d => d.PsClassNavigation)
                     .WithMany(p => p.PlantingStocks)
                     .HasForeignKey(d => d.PsClass)
                     .HasConstraintName("FK_planting_stocks_farm_field");
+
+                entity.HasOne(d => d.GrownStateProvince).WithMany(p => p.GrownInPlantingStocks).HasForeignKey(d => d.StateCountryGrown);
+                entity.HasOne(d => d.TaggedStateProvince).WithMany(p => p.TaggedInPlantingStocks).HasForeignKey(d => d.StateCountryTagIssued);
+                
             });
 
             modelBuilder.Entity<Rates>(entity =>

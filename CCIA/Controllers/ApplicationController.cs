@@ -34,14 +34,31 @@ namespace CCIA.Controllers
                 .Include(a => a.County)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
                 .ToListAsync();
             return View(model);
         }
 
         // GET: Application/Details/5
-        public ActionResult Details(int id)
+         public async Task<IActionResult> Details(int id)
         {
-            return View();
+            // TODO restrict to logged in user.
+            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
+            var model = await _dbContext.Applications.Where(a => a.AppId == id && orgId.Contains(a.ApplicantId))
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.County)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.AppTypeTrans)
+                .Include(a => a.Certificates)
+                .Include(a => a.PlantingStocks)
+                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
+                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
+                .FirstOrDefaultAsync();
+            return View(model);
         }
 
         // GET: Application/Create

@@ -16,16 +16,16 @@ namespace CCIA.Models
         public short? CertYear { get; set; }
         public short? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
-        public string AppType { get; set; }
-        //public int ApplicantId { get; set; }
+        
+        
         public int? UserAppDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-        //public int GrowerId { get; set; }
+        
         public int? CropId { get; set; }
        
         public string EnteredVariety { get; set; }
-        public int? ClassProducedId { get; set; }
+        
         public int? ClassProducedAccession { get; set; }
         public DateTime? AppReceived { get; set; }
         public DateTime? AppPostmark { get; set; }
@@ -86,7 +86,7 @@ namespace CCIA.Models
         public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
 
-        public AbbrevClassProduced ClassProduced { get; set; }
+        
         public Crops Crop { get; set; }
         public Applications TraceNavigation { get; set; }
         public ICollection<Applications> InverseTraceNavigation { get; set; }
@@ -102,6 +102,18 @@ namespace CCIA.Models
 
         public VarFull  Variety { get; set; }
         public int? SelectedVarietyId { get; set; }
+
+        public AbbrevClassProduced ClassProduced { get; set; }
+        public int? ClassProducedId { get; set; }
+
+        public AbbrevAppType AppTypeTrans { get; set; }
+        public string AppType { get; set; }
+
+        public ICollection<AppCertificates> Certificates { get; set; }
+
+        public ICollection<PlantingStocks> PlantingStocks { get; set; }
+
+        public ICollection<FieldHistory>  FieldHistories { get; set; }
 
     }
 }

@@ -16,5 +16,7 @@ namespace CCIA.Models
         public string ProducedTitle { get; set; }
         public string VarietyTitle { get; set; }
         public bool? ShowType { get; set; }
+
+        public ICollection<Applications> Applications { get; set; }
     }
 }
