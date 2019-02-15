@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Helpers;
@@ -62,9 +61,10 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Create
-        public ActionResult Create()
+        public async Task<IActionResult> CreateSeedApplication()
         {
-            return View();
+            var model = await ApplicationViewModel.Create(_dbContext);
+            return View(model);
         }
 
         // POST: Application/Create
