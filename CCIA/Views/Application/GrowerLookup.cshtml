@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Grower Lookup";
+}
+
+<h2>Application to Produce Certified Seed: Grower Lookup</h2>
+
+<div class="form-group">  
+    <label for="account">Name or Account Number:</label>
+    <input type="text" class="form-control" id="account" placeholder="Enter your name or account number">
+</div>
+<button class="btn btn-primary" id="account-lookup-btn">Look Up</button>
+
+<h5><em id="res-warning" style="color: red"></em></h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Account #</th>
+            <th>Grower</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody id="organizations">
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        function getStateOrProvince(sp_code, data, populateTable) {
+            const antiforgery = $("input[name='__RequestVerificationToken']").val();
+            $.post({
+                url: "/Application/FindStateProvince",
+                data: {code: sp_code, StateProvince__RequestVerificationToken: antiforgery}
+            })
+            .success(state_province => {
+                populateTable(data, state_province);
+            })
+            .error(() => {
+                alert("An internal error occured...??");
+            });
+        }
+
+        function lookupOrgs() {
+            const antiforgery = $("input[name='__RequestVerificationToken']").val();
+            var val = document.getElementById("account").value;
+            var dataToPost = {lookupVal: val, Organizations__RequestVerificationToken: antiforgery};
+            $.post({
+                url: "/Application/Lookup",
+                data: dataToPost
+                })
+                .success(response => {
+                    if (response.length == 0){
+                        document.getElementById("res-warning").innerText = "No records matched your search.";
+                    }
+                    else {
+                        document.getElementById("res-warning").innerText = "";
+                    }
+                    // clear our table before populating it
+                    $("#organizations").empty();
+                    // Get state/province from code                    
+                    var row = "";
+                    jQuery.each(response, function(i, data) {
+                        let state_province = getStateOrProvince(data.address.stateProvinceId, data, populateOrgsTable);                               
+                    });
+                })
+                .error(() => {
+                    alert("An internal error occured...");
+                });
+        }
+
+        function populateOrgsTable(data, state_province) {
+            $("#organizations")
+                .append(`<tr>
+                        <td><a class="btn btn-primary" href='/Application/CreateSeedApplication/${data.orgId}'>Select</a>
+                        <td>${data.orgId}</td>
+                        <td>${data.orgName}</td>
+                        <td>${data.address.address1}</td>
+                        <td>${data.address.city}</td>
+                        <td>${state_province}</td>
+                        </tr>`);
+        }
+        
+        $('#account-lookup-btn').click(function(){
+            lookupOrgs();
+        });
+
+    </script>
+}

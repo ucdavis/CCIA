@@ -4,7 +4,29 @@
     ViewData["Title"] = "Application";
 }
 
-<h2>Application to Produce Certified Seed</h2>
+<h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
+
+<h4>Applicant Information:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Account #</th>
+            <th>Grower</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody id="organizations">
+        <tr>
+            <td>@Model.Organization.OrgId</td>
+            <td>@Model.Organization.OrgName</td>
+            <td>@Model.Organization.Address.Address1</td>
+            <td>@Model.Organization.Address.City</td>
+            <td>@Model.OrgState</td>
+        </tr>
+    </tbody>
+</table>
 
 <form action="Application/Create" method="post">
 
@@ -60,8 +82,8 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <label for="cert-lot-num">Certification and Lot#</label>
-            <input type="text" class="form-control" id="cert-lot-num" placeholder="Certification and Lot#">
+            <label for="cert-lot-num">Certification and Lot #</label>
+            <input type="text" class="form-control" id="cert-lot-num" placeholder="Certification and Lot #">
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted:</label>

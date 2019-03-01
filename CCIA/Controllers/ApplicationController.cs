@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Helpers;
@@ -60,11 +61,17 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        // GET: Application/Create
-        public async Task<IActionResult> CreateSeedApplication()
+        // GET: Application/CreateSeedApplication
+        public async Task<IActionResult> CreateSeedApplication(int id)
         {
-            var model = await ApplicationViewModel.Create(_dbContext);
+            var model = await ApplicationViewModel.Create(_dbContext, id);
             return View(model);
+        }
+
+        // GET: Application/CreateSeedApplication
+        public IActionResult GrowerLookup()
+        {
+            return View();
         }
 
         // POST: Application/Create
@@ -128,6 +135,46 @@ namespace CCIA.Controllers
             {
                 return View();
             }
+        }
+
+        // POST: Application/Lookup
+        [HttpPost]
+        public async Task<JsonResult> Lookup(String lookupVal)
+        {
+            var orgs = new List<Organizations>();
+            int id = 0;
+            // Parsing was successful (we have an ID instead of a name)
+            if (Int32.TryParse(lookupVal, out id)) {
+                 
+                orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
+                    .Select(o => new Organizations {
+                        OrgId = o.OrgId,
+                        OrgName = o.OrgName,
+                        Address = o.Address != null ? o.Address : new Address() 
+                    })
+                    .ToListAsync();
+            }
+            else {
+                 orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookupVal.ToLower()))
+                    .Select(o => new Organizations {
+                        OrgId = o.OrgId,
+                        OrgName = o.OrgName,
+                        Address = o.Address != null ? o.Address : new Address()       
+                    })
+                    .ToListAsync();
+            }
+            return Json(orgs);
+        }
+
+        // POST: Application/FindStateProvince
+        [HttpPost]
+        public async Task<JsonResult> FindStateProvince(int code)
+        {
+            // we could try constructing an object of key val pairs with the ids as the keys and states as the vals
+            ModelState.Clear();
+            var state_province = await _dbContext.StateProvince.Where(sp => sp.StateProvinceId == code)
+                .Select(sp => sp.StateProvinceCode).ToListAsync();
+            return Json(state_province);
         }
     }
 }

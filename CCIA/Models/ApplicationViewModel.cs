@@ -18,11 +18,26 @@ namespace CCIA.Models
 
         public List<County> Counties {get; set; }
 
-        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext) {
+        public Organizations Organization {get; set; }
+
+        public String OrgState {get; set; }
+
+        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId) {
             var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == 1).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var counties = await dbContext.County.ToListAsync();
+            var organization = await dbContext.Organizations.Where(o => o.OrgId == orgId)
+                .Select(o => new Organizations {
+                        OrgId = o.OrgId,
+                        OrgName = o.OrgName,
+                        Address = o.Address != null ? o.Address : new Address() 
+                    })
+                .FirstOrDefaultAsync();
+            var orgState = organization.Address.StateProvinceId == null ? "" : await dbContext.StateProvince
+                .Where(s => s.StateProvinceId == organization.Address.StateProvinceId)
+                .Select(s => s.StateProvinceName)
+                .FirstOrDefaultAsync();
 
             var model = new ApplicationViewModel 
             {
@@ -30,11 +45,12 @@ namespace CCIA.Models
                 ClassProduced = classToProduce,
                 Crops = crops,
                 StateProvince = stateProvince,
-                Counties = counties
+                Counties = counties,
+                Organization = organization,
+                OrgState = orgState
             };
 
             return model;
-
         }
     }
 }
