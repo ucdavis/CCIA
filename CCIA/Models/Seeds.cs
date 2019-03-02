@@ -17,27 +17,27 @@ namespace CCIA.Models
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
-        public short? CertYear { get; set; }
+        public int? CertYear { get; set; }
         
-        public Organizations ApplicantOrganization { get; set; }
+        // //public Organizations ApplicantOrganization { get; set; }
         public int? ApplicantId { get; set; }
 
-        public Organizations ConditionerOrganization { get; set; }
+        // //public Organizations ConditionerOrganization { get; set; }
         public int? ConditionerId { get; set; }
 
         public int? SampleFormVarietyId { get; set; }
         public int? OfficialVarietyId { get; set; }
-        public VarFull  Variety { get; set; }
+        //public VarFull  Variety { get; set; }
 
         public string LotNumber { get; set; }
         public decimal PoundsLot { get; set; }        
-        public AbbrevClassSeeds ClassProduced { get; set; }
+        //public AbbrevClassSeeds ClassProduced { get; set; }
         public int? Class { get; set; }
         public int? ClassAccession { get; set; }
         public string Status { get; set; }
         public int? CountyDrawn { get; set; }
-        public int? OriginState { get; set; }
-        public int? OriginCounty { get; set; }
+        public int? OriginState { get; set; }        
+        public int? OriginCountry { get; set; }
         public bool Bulk { get; set; }
         public bool OriginalRun { get; set; }
         public bool Remill { get; set; }
@@ -54,10 +54,10 @@ namespace CCIA.Models
         public bool InDirt { get; set; }
         public int? BlendNumber { get; set; }
         public DateTime? DateSampleReceived { get; set; }
-        public decimal CropFee { get; set; }
-        public decimal CertFee { get; set; }
-        public decimal ResearchFee { get; set; }
-        public decimal MinimumFee { get; set; }
+        public decimal? CropFee { get; set; }
+        public decimal? CertFee { get; set; }
+        public decimal? ResearchFee { get; set; }
+        public decimal? MinimumFee { get; set; }
         public bool BillTable { get; set; }
         public bool LotCertOk { get; set; }
         public int? UserEntered { get; set; }
@@ -70,7 +70,7 @@ namespace CCIA.Models
         public string EmployeeModified { get; set; }
         public bool NotFinallyCertified { get; set; }
         public bool ChargeFullFees { get; set; }
-        
+
 
 
 

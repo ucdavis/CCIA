@@ -1,0 +1,49 @@
+﻿@model IList<Seeds>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>SID</th>
+        <th>Program</th>
+        <th>Cert Year</th>
+        <th>Applicant</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>
+        <th>Lot#</th>
+        <th>Labs?</th>
+        <th>Lab Date</th>
+        <th></th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var app in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.AppId">Details</a></td>
+                <td>@app.Id</td>
+                <td>@app.CertProgram</td>
+                <td>@app.CertYear</td>
+                <td>@app.ApplicantId</td>
+                <td>crop</td>
+                <td>@app.OfficialVarietyId</td>
+                <td>@app.Class</td>
+                <td>@app.LotNumber</td>
+                <td>labs?</td>
+                <td>lab date</td>
+                <td></td>
+                <td>@app.Status</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

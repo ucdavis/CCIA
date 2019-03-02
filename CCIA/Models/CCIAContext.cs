@@ -42,6 +42,7 @@ namespace CCIA.Models
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
+        public virtual DbSet<Seeds> Seeds { get; set; }
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -80,7 +81,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.map_alfalfa_gefree_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_components_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.abbrev_tag_type'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.seeds'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.duplicateOrgs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
@@ -141,6 +142,65 @@ namespace CCIA.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Seeds>(entity =>
+            {
+               entity.ToTable("Seeds");
+
+               entity.HasKey(e => e.Id);
+               entity.Property(e => e.Id).HasColumnName("seeds_id");
+
+               entity.Property(e =>e.CertProgram).HasColumnName("cert_program");
+               entity.Property(e =>e.AppId).HasColumnName("app_id");
+               entity.Property(e =>e.SampleFormNumber).HasColumnName("sx_form_no");
+               entity.Property(e =>e.SampleFormDate).HasColumnName("sx_form_date");
+               entity.Property(e =>e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
+               entity.Property(e =>e.SampleFormRad).HasColumnName("sx_form_rad");
+               entity.Property(e =>e.CertYear).HasColumnName("cert_year");
+               entity.Property(e =>e.ApplicantId).HasColumnName("applicant_id");
+               entity.Property(e =>e.ConditionerId).HasColumnName("conditioner_id");
+               entity.Property(e =>e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
+               entity.Property(e =>e.OfficialVarietyId).HasColumnName("official_variety_id");
+               entity.Property(e =>e.LotNumber).HasColumnName("lot_num");
+               entity.Property(e =>e.PoundsLot).HasColumnName("lbs_lot");
+               entity.Property(e =>e.Class).HasColumnName("class");
+               entity.Property(e =>e.ClassAccession).HasColumnName("class_produced_accession");
+               entity.Property(e =>e.Status).HasColumnName("status");
+               entity.Property(e =>e.CountyDrawn).HasColumnName("county_drawn");
+               entity.Property(e =>e.OriginState).HasColumnName("origin_state");
+               entity.Property(e =>e.OriginCountry).HasColumnName("lot_country_origin");
+               entity.Property(e =>e.Bulk).HasColumnName("sx_bulk");
+               entity.Property(e =>e.OriginalRun).HasColumnName("original_run");
+               entity.Property(e =>e.Remill).HasColumnName("remill");
+               entity.Property(e =>e.Treated).HasColumnName("treated");
+               entity.Property(e =>e.OECDTestRequired).HasColumnName("oecd_test_req");
+               entity.Property(e =>e.Resampled).HasColumnName("resample");
+               entity.Property(e =>e.CCIAAuth).HasColumnName("ccia_auth");
+               entity.Property(e =>e.Remarks).HasColumnName("remarks");
+               entity.Property(e =>e.SampleDrawnBy).HasColumnName("sx_drawn_by");
+               entity.Property(e =>e.CertId).HasColumnName("cert_id");
+               entity.Property(e =>e.SampleId).HasColumnName("sample_id");
+               entity.Property(e =>e.OECDLot).HasColumnName("oecd_lot");
+               entity.Property(e =>e.Rush).HasColumnName("rush");
+               entity.Property(e =>e.InDirt).HasColumnName("in_dirt");
+               entity.Property(e =>e.BlendNumber).HasColumnName("blend_num");
+               entity.Property(e =>e.DateSampleReceived).HasColumnName("date_sample_recd");
+               entity.Property(e =>e.CropFee).HasColumnName("crop_fee");
+               entity.Property(e =>e.CertFee).HasColumnName("cert_fee");
+               entity.Property(e =>e.ResearchFee).HasColumnName("research_fee");
+               entity.Property(e =>e.MinimumFee).HasColumnName("min_fee");
+               entity.Property(e =>e.BillTable).HasColumnName("bill_tbl");
+               entity.Property(e =>e.LotCertOk).HasColumnName("lot_cert_cert_ok");
+               entity.Property(e =>e.UserEntered).HasColumnName("user_entered");
+               entity.Property(e =>e.Submitted).HasColumnName("submitted");
+               entity.Property(e =>e.Confirmed).HasColumnName("confirmed");
+               entity.Property(e =>e.ConfirmedAt).HasColumnName("date_confirmed");
+               entity.Property(e =>e.Docs).HasColumnName("docs");
+               entity.Property(e =>e.EmployeeModified).HasColumnName("emp_modified");
+               entity.Property(e =>e.NotFinallyCertified).HasColumnName("not_finally_certified");
+               entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");    
+
+            });
 
             modelBuilder.Entity<FieldHistory>(entity =>
             {
