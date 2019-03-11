@@ -77,18 +77,14 @@ namespace CCIA.Controllers
         // POST: Application/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(SeedPostModel seedApp)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid) {
+                // Add to db
+                
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return Json(ModelState.Values);
         }
 
         // GET: Application/Edit/5
