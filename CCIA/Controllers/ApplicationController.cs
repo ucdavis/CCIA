@@ -74,17 +74,39 @@ namespace CCIA.Controllers
             return View();
         }
 
-        // POST: Application/Create
+        // POST: Application/CreateSeedApplication
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(SeedPostModel seedApp)
+        public async Task<IActionResult> CreateSeedApplication(SeedPostModel seedApp)
         {
             if (ModelState.IsValid) {
-                // Add to db
+                // Create new db entry
+
+                var app = new Applications() {
+                    AcresApplied = seedApp.AcresApplied,
+                    ApplicantId = seedApp.GrowerId,
+                    AppOriginalCertYear = seedApp.CropYear,
+                    AppType = "SD",              
+                    CertNum = seedApp.CertLotNum,
+                    CertYear = seedApp.CropYear,
+                    ClassProducedId = seedApp.ClassProduced,
+                    CropId = seedApp.Crop,
+                    FarmCounty = seedApp.County,
+                    EnteredVariety = seedApp.Variety,
+                    FieldName = seedApp.NameOrNum,
+                    GrowerId = seedApp.GrowerId,
+                    MapVe = false,
+                    Status = "Pending supporting material",
+                    WarningFlag = false
+                };
                 
+                _dbContext.Add(app);
+                _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return Json(ModelState.Values);
+            var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId);
+            return View(model);
+            // return Json(ModelState.Values);
         }
 
         // GET: Application/Edit/5

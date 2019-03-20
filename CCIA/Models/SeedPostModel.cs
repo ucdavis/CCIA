@@ -11,10 +11,12 @@ namespace CCIA.Models
         }
 
     [Required]
-    public int AcresApplied { get; set; }
+    public int? AcresApplied { get; set; }
 
     public string AdditionalInfo { get; set; }
-    public int CertLotNum { get; set; }
+
+    [Required]
+    public int? CertLotNum { get; set; }
     public int? CertLotNum2 { get; set; }
 
     [Required]
@@ -23,19 +25,21 @@ namespace CCIA.Models
     public string ClassPlanted2 { get; set; }
 
     [Required]
-    public string ClassProduced { get; set; }
+    public int? ClassProduced { get; set; }
 
     [Required]
-    public string County { get; set; }
+    public short? County { get; set; }
 
     [Required]
-    public string Crop { get; set; }
+    public int? Crop { get; set; }
 
     [Required]
-    public int CropYear { get; set; }
+    public short? CropYear { get; set; }
 
     [Required]
-    public DateTime DatePlanted { get; set; }
+    public DateTime? DatePlanted { get; set; }
+
+    public int GrowerId { get; set; }
 
     public int? HistoryApplicationNum1 { get; set; }
     public int? HistoryApplicationNum2 { get; set; }
@@ -54,7 +58,7 @@ namespace CCIA.Models
     public string NameOrNum { get; set; }
 
     [Required]
-    public int PoundsPlanted { get; set; }
+    public int? PoundsPlanted { get; set; }
 
     public int? PoundsPlanted2 { get; set; }
     public string SeedFrom { get; set; }

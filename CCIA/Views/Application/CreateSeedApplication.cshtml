@@ -33,7 +33,7 @@
     </tbody>
 </table>
 
-<form action="/Application/Create" method="post" id="seedApplication">
+<form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -44,10 +44,11 @@
                 <ul class="dropdown-menu" id="crop-select">
                     @foreach (var crop in Model.Crops)
                     {
-                        <li><a href="#/">@crop.Crop</a></li>
+                        <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
                     }                   
                 </ul>
             </div>
+            @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -56,16 +57,18 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="cropYear">Crop Year
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" id="cropyear-select">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@DateTime.Now.Year</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@(DateTime.Now.Year+1)</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year>@DateTime.Now.Year</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year+1>@(DateTime.Now.Year+1)</a></li>
                 </ul>
             </div>
+            @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">  
             <div class="col-md-6">
                 <label for="variety">Variety</label>
                 <input type="text" class="form-control" id="variety" name="variety" placeholder="Variety">
+                @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -74,10 +77,11 @@
         <label>Class to be Produced:</label>
         <div class="form-check form-check-inline">
             @foreach (var item in Model.ClassProduced) {
-                <input class="form-check-input" type="radio" name="classProduced" id="inlineRadio1" value=@item.ClassProducedTrans>
+                <input class="form-check-input" type="radio" name="classProduced" id="inlineRadio1" value=@item.ClassProducedId>
                 <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
             }
         </div>
+        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
     </div>
 
     <section id="planting-stock">
@@ -86,10 +90,12 @@
             <div class="form-group col-md-6">
                 <label for="cert-lot-num">Certification and Lot #</label>
                 <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
+                @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
                 <label for="pounds-planted">Pounds Planted:</label>
                 <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted" placeholder="Pounds Planted">
+                @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -97,10 +103,11 @@
             <label>Class Planted:</label>
             <div class="form-check form-check-inline">
                 @foreach (var item in Model.ClassProduced) {
-                    <input class="form-check-input" type="radio" name="classPlanted" id="inlineRadio1" value=@item.ClassProducedTrans>
+                    <input class="form-check-input" type="radio" name="classPlanted" id="inlineRadio1" value=@item.ClassProducedId>
                     <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
                 }
             </div>
+            @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -111,7 +118,7 @@
                 <ul class="dropdown-menu" id="statecounty-issued-select">
                     @foreach (var state_country in Model.StateProvince)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@state_country.StateProvinceName</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
                     }
                 </ul>
             </div>
@@ -125,7 +132,7 @@
                 <ul class="dropdown-menu" id="statecounty-grown-select">
                     @foreach (var state_country in Model.StateProvince)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@state_country.StateProvinceName</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
                     }
                 </ul>
             </div>
@@ -170,7 +177,7 @@
                 <ul class="dropdown-menu" id="statecounty-issued-select">
                     @foreach (var state_country in Model.StateProvince)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@state_country.StateProvinceName</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
                     }
                 </ul>
             </div>
@@ -184,7 +191,7 @@
                 <ul class="dropdown-menu" id="statecounty-grown-select">
                     @foreach (var state_country in Model.StateProvince)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@state_country.StateProvinceName</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
                     }
                 </ul>
             </div>
@@ -197,10 +204,12 @@
             <div class="form-group col-md-6">
                 <label for="name-num">Name/No.:</label>
                 <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
+                @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
                 <label for="date-planted">Date Planted:</label>
                 <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="Date planted">
+                @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
@@ -211,14 +220,16 @@
                 <ul class="dropdown-menu" id="county-select">
                     @foreach (var county in Model.Counties)
                     {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@county.CountyName</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@county.CountyId>@county.CountyName</a></li>
                     }
                 </ul>
             </div>
+            @Html.ValidationMessage("County", "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
             <label for="acres-applied">Acres Applied:</label>
             <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
+            @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -237,7 +248,7 @@
                         @{int yearOffset = 7;}
                         @for (int i = 0; i < yearOffset; i++)
                         {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@(DateTime.Now.Year - i)</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
                         }
                     </ul>
                 </div>
@@ -251,7 +262,7 @@
                     <ul class="dropdown-menu">
                         @foreach (var crop in Model.Crops)
                         {
-                            <li><a href="#/">@crop.Crop</a></li>
+                            <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
                         }                   
                     </ul>
                 </div>
@@ -274,7 +285,7 @@
                     <ul class="dropdown-menu">
                         @for (int i = 0; i < yearOffset; i++)
                         {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@(DateTime.Now.Year - i)</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
                         }
                     </ul>
                 </div>
@@ -288,7 +299,7 @@
                     <ul class="dropdown-menu">
                         @foreach (var crop in Model.Crops)
                         {
-                            <li><a href="#/">@crop.Crop</a></li>
+                            <li><a href="#/" value=@crop.CropId>@crop.Crop>@crop.Crop</a></li>
                         }                   
                     </ul>
                 </div>
@@ -311,7 +322,7 @@
                     <ul class="dropdown-menu">
                         @for (int i = 0; i < yearOffset; i++)
                         {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/">@(DateTime.Now.Year - i)</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
                         }
                     </ul>
                 </div>
@@ -325,7 +336,7 @@
                     <ul class="dropdown-menu">
                         @foreach (var crop in Model.Crops)
                         {
-                            <li><a href="#/">@crop.Crop</a></li>
+                            <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
                         }                   
                     </ul>
                 </div>
@@ -339,9 +350,6 @@
                 <input type="text" class="form-control" id="app-num" name="historyApplicationNum3" placeholder="Application #">
             </div>
             <em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
-            <div id="errors">
-
-            </div>
         </div>
     </section>
 
@@ -355,68 +363,29 @@
             // Antiforgery token
             var ajax_af_form = $("#__AjaxAntiForgeryForm");
             const antiforgery = $("input[name='__RequestVerificationToken']", ajax_af_form).val();
-            var afInput = $("<input>")
-                        .attr("type", "hidden")
-                        .attr("name", '__RequestVerificationToken').val(antiforgery);
-            $("#seedApplication").append(afInput);
-            //e.preventDefault();
+            insertHiddenInput('__RequestVerificationToken', antiforgery);
             const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application"];
-            var reqdFields = {
-                            "crop": "Crop", 
-                            "cropYear": "Crop Year",
-                            "variety": "Variety",
-                            "classProduced":"Class Produced",
-                            "certLotNum": "Certification and Lot #",
-                            "classPlanted": "Class Planted",
-                            "poundsPlanted": "Pounds Planted",
-                            "nameOrNum": "Name/No.",
-                            "datePlanted": "Date Planted",
-                            "county": "County",
-                            "acresApplied": "Acres Applied"
-                            }
 
             var dataToPost = {};
+            var growerId = @Model.Organization.OrgId;
+            insertHiddenInput("growerId", growerId);
             /* Process form data and assign to object to send to controller */
             for (var i = 0; i < form.length; i++) {
                 var input = form[i];
                 let name = input.name;
-                //console.log(input);
                 let innerText = (input.innerText).trim();
                 // Value from dropdown list (and not default value)
                 if (input.type == "button" && !defaultButtonVals.includes(innerText)) {
-                    // add button value to form
-                    var inputInsert = $("<input>")
-                                .attr("type", "hidden")
-                                .attr("name", name).val(innerText);
-                    $("#seedApplication").append(inputInsert);
-                    // if this name is in our reqdFields object, then set its value in there to 1
+                    // console.log(input)
+                    // add button values to form
+                    insertHiddenInput(name, input.value);
                 }
-                else if (input.type=="radio" && input.checked==true) {
-                    var inputInsert = $("<input>")
-                                .attr("type", "hidden")
-                                .attr("name", name).val(input.value);
-                    $("#seedApplication").append(inputInsert);                    
-                }
-                if (name in reqdFields) {
-                    reqdFields[name] = 1;
-                }
+                /*else if (input.type=="radio" && input.checked==true) {
+                    insertHiddenInput(name, input.value);                   
+                }*/
             }
             return true;
         });
-
-        function requiredFieldsFilled(reqdFields) {
-            // for each key,val pair in reqd fields, if any of their values aren't 1, show some error message saying that field is required
-            const keys = Object.keys(reqdFields);
-            let errorDiv = document.getElementById("errors");
-            let ret = true;
-            for (let k of keys) {
-                if (reqdFields[k] != 1) {
-                    errorDiv.innerHTML += `<p style="color:red">The field ${reqdFields[k]} is required.</p>`;
-                    ret = false;
-                }
-            }
-            return ret;
-        }
 
         /* Fills dropdown button with selected value */
         $('.dropdown-menu').on('click', 'a', function(e) {
@@ -424,6 +393,16 @@
             var text = $(this).html();
             var htmlText = text + ' <span class="caret"></span>';
             $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+            // Set value of button to be value from li
+            // console.log($(this)[0].attributes.value.value);
+            $(this).closest('.dropdown').find('.dropdown-toggle').val($(this)[0].attributes.value.value);
         });
+
+        function insertHiddenInput(name, insertVal) {
+            var inputInsert = $("<input>")
+                .attr("type", "hidden")
+                .attr("name", name).val(insertVal);
+            $("#seedApplication").append(inputInsert); 
+        }
     </script>
 }
