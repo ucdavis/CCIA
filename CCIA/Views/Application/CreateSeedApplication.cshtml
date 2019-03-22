@@ -9,6 +9,20 @@
     @Html.AntiForgeryToken()
 }
 
+<style type="text/css">
+    section {
+        border-radius: .8em;
+        background: #f1f1f1;
+        padding: 2px 10px;
+        margin-bottom:10px;
+    }
+    
+    button {
+        border: 1px solid #ccc !important;
+        background: white;
+    }
+</style>
+
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
 <h4>Applicant Information:</h4>
@@ -180,7 +194,8 @@
             <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
         </div>
 
-        <h5>History:<i> - All Optional</i></h5>
+        <h5><strong>History:</strong><i> - All Optional</i></h5>
+        <em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
         <div class="row">
             <div class="col-lg-2 col-sm-2 col-xs-2">
                 @{
@@ -247,7 +262,6 @@
                 <label for="app-num">Application #:</label>
                 <input type="text" class="form-control" id="app-num" name="historyApplicationNum3" placeholder="Application #">
             </div>
-            <em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
         </div>
     </section>
 
