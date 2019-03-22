@@ -37,31 +37,17 @@
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
-            <label>Crop:</label>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="crop">Crop
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="crop-select">
-                    @foreach (var crop in Model.Crops)
-                    {
-                        <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
-                    }                   
-                </ul>
-            </div>
-            @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
+            @{ViewBag.name = "crop";}
+            @Html.Partial("CropDropdown")
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">
-            <label>Crop Year</label>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="cropYear">Crop Year
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="cropyear-select">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year>@DateTime.Now.Year</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year+1>@(DateTime.Now.Year+1)</a></li>
-                </ul>
-            </div>
-            @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
+            @{
+                ViewBag.name = "cropYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @Html.Partial("CropYearDropdown")
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">  
@@ -74,14 +60,11 @@
     </div>
 
     <div class="form-group">
-        <label>Class to be Produced:</label>
-        <div class="form-check form-check-inline">
-            @foreach (var item in Model.ClassProduced) {
-                <input class="form-check-input" type="radio" name="classProduced" id="inlineRadio1" value=@item.ClassProducedId>
-                <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
-            }
-        </div>
-        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+        @{
+            ViewBag.name = "classProduced";
+            ViewBag.label = "Class to be Produced";
+        }
+        @Html.Partial("ClassRadioButtons")
     </div>
 
     <section id="planting-stock">
@@ -100,42 +83,21 @@
         </div>
 
         <div class="form-group">
-            <label>Class Planted:</label>
-            <div class="form-check form-check-inline">
-                @foreach (var item in Model.ClassProduced) {
-                    <input class="form-check-input" type="radio" name="classPlanted" id="inlineRadio1" value=@item.ClassProducedId>
-                    <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
-                }
-            </div>
-            @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
+            @{
+                ViewBag.name = "classPlanted";
+                ViewBag.label = "Class Planted";
+            }
+            @Html.Partial("ClassRadioButtons")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock Tag was issued:</label><i> - Optional</i>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="stateCountyTagIssued">State/Country
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="statecounty-issued-select">
-                    @foreach (var state_country in Model.StateProvince)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
-                    }
-                </ul>
-            </div>
+            @{ViewBag.name = "stateCountryTagIssued";}
+            @Html.Partial("StateCountryDropdown")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock was Grown:</label><i> - Optional</i>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="stateCountyStockGrown">State/Country
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="statecounty-grown-select">
-                    @foreach (var state_country in Model.StateProvince)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
-                    }
-                </ul>
-            </div>
+            @{ViewBag.name = "stateCountryStockGrown";}
+            @Html.Partial("StateCountryDropdown")
         </div>
 
         <div class="form-group">
@@ -160,41 +122,21 @@
         </div>
 
         <div class="form-group">
-            <label>Class Planted:</label><i> - Optional</i>
-            <div class="form-check form-check-inline">
-                @foreach (var item in Model.ClassProduced) {
-                    <input class="form-check-input" type="radio" name="classPlanted2" id="inlineRadio1" value=@item.ClassProducedTrans>
-                    <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
-                }
-            </div>
+            @{
+                ViewBag.name = "classPlanted2";
+                ViewBag.label = "Class Planted";
+            }
+            @Html.Partial("ClassRadioButtons")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock Tag was issued:</label><i> - Optional</i>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="stateCountyTagIssued2">State/Country
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="statecounty-issued-select">
-                    @foreach (var state_country in Model.StateProvince)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
-                    }
-                </ul>
-            </div>
+            @{ViewBag.name = "stateCountryTagIssued2";}
+            @Html.Partial("StateCountryDropdown")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock was Grown:</label><i> - Optional</i>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="stateCountyStockGrown2">State/Country
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="statecounty-grown-select">
-                    @foreach (var state_country in Model.StateProvince)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
-                    }
-                </ul>
-            </div>
+            @{ViewBag.name = "stateCountryStockGrown2";}
+            @Html.Partial("StateCountryDropdown")
         </div>
     </section>
 
@@ -218,6 +160,7 @@
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu" id="county-select">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="County">County</a></li>
                     @foreach (var county in Model.Counties)
                     {
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@county.CountyId>@county.CountyName</a></li>
@@ -240,32 +183,17 @@
         <h5>History:<i> - All Optional</i></h5>
         <div class="row">
             <div class="col-lg-2 col-sm-2 col-xs-2">
-                <label>Year</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyYear1" data-toggle="dropdown">Crop Year
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @{int yearOffset = 7;}
-                        @for (int i = 0; i < yearOffset; i++)
-                        {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
-                        }
-                    </ul>
-                </div>
+                @{
+                    ViewBag.name = "historyCropYear1";
+                    ViewBag.startYearOffset = 0;
+                    ViewBag.endYearOffset = 6;
+                }
+                @Html.Partial("CropYearDropdown")
             </div>
             
             <div class="col-lg-4 col-sm-4 col-xs-4">
-                <label>Crop</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyCrop1" data-toggle="dropdown">Crop
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @foreach (var crop in Model.Crops)
-                        {
-                            <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
-                        }                   
-                    </ul>
-                </div>
+                @{ViewBag.name = "historyCrop1";}
+                @Html.Partial("CropDropdown")
             </div>
             <div class="form-group col-md-3">
                 <label for="crop-not-in-list">Variety or Crop not in list:</label>
@@ -278,31 +206,16 @@
         </div>
         <div class="row">
             <div class="col-lg-2 col-sm-2 col-xs-2">
-                <label>Year</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyYear2" data-toggle="dropdown">Crop Year
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @for (int i = 0; i < yearOffset; i++)
-                        {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
-                        }
-                    </ul>
-                </div>
+                @{
+                    ViewBag.name = "historyCropYear2";
+                    ViewBag.endYearOffset = 6;
+                }
+                @Html.Partial("CropYearDropdown")
             </div>
             
             <div class="col-lg-4 col-sm-4 col-xs-4">
-                <label>Crop</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyCrop2" data-toggle="dropdown">Crop
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @foreach (var crop in Model.Crops)
-                        {
-                            <li><a href="#/" value=@crop.CropId>@crop.Crop>@crop.Crop</a></li>
-                        }                   
-                    </ul>
-                </div>
+                @{ViewBag.name = "historyCrop2";}
+                @Html.Partial("CropDropdown")
             </div>
             <div class="form-group col-md-3">
                 <label for="crop-not-in-list">Variety or Crop not in list:</label>
@@ -315,31 +228,16 @@
         </div>
         <div class="row">
             <div class="col-lg-2 col-sm-2 col-xs-2">
-                <label>Year</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyYear3" data-toggle="dropdown">Crop Year
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @for (int i = 0; i < yearOffset; i++)
-                        {
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>@(DateTime.Now.Year - i)</a></li>
-                        }
-                    </ul>
-                </div>
+                @{
+                    ViewBag.name = "historyCropYear3";
+                    ViewBag.endYearOffset = 6;
+                }
+                @Html.Partial("CropYearDropdown")
             </div>
             
             <div class="col-lg-4 col-sm-4 col-xs-4">
-                <label>Crop</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" name="historyCrop3" data-toggle="dropdown">Crop
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        @foreach (var crop in Model.Crops)
-                        {
-                            <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
-                        }                   
-                    </ul>
-                </div>
+                @{ViewBag.name = "historyCrop3";}
+                @Html.Partial("CropDropdown")
             </div>
             <div class="form-group col-md-3">
                 <label for="crop-not-in-list">Variety or Crop not in list:</label>
@@ -364,7 +262,7 @@
             var ajax_af_form = $("#__AjaxAntiForgeryForm");
             const antiforgery = $("input[name='__RequestVerificationToken']", ajax_af_form).val();
             insertHiddenInput('__RequestVerificationToken', antiforgery);
-            const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application"];
+            const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application", "Select an option"];
 
             var dataToPost = {};
             var growerId = @Model.Organization.OrgId;
@@ -376,13 +274,9 @@
                 let innerText = (input.innerText).trim();
                 // Value from dropdown list (and not default value)
                 if (input.type == "button" && !defaultButtonVals.includes(innerText)) {
-                    // console.log(input)
                     // add button values to form
                     insertHiddenInput(name, input.value);
                 }
-                /*else if (input.type=="radio" && input.checked==true) {
-                    insertHiddenInput(name, input.value);                   
-                }*/
             }
             return true;
         });
@@ -394,7 +288,6 @@
             var htmlText = text + ' <span class="caret"></span>';
             $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
             // Set value of button to be value from li
-            // console.log($(this)[0].attributes.value.value);
             $(this).closest('.dropdown').find('.dropdown-toggle').val($(this)[0].attributes.value.value);
         });
 

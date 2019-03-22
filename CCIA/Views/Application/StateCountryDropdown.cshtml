@@ -1,0 +1,14 @@
+@model CCIA.Models.ApplicationViewModel
+
+<label>State/Country where Planting Stock Tag was issued:</label><i> - Optional</i>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>State/Country
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" id="statecountry-issued-select">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="State/Country">State/Country</a></li>
+        @foreach (var state_country in Model.StateProvince)
+        {
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
+        }
+    </ul>
+</div>

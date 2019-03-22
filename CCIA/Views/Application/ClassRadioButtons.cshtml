@@ -1,0 +1,8 @@
+<label>@ViewBag.label:</label>
+<div class="form-check form-check-inline">
+    @foreach (var item in Model.ClassProduced) {
+        <input class="form-check-input" type="radio" name=@ViewBag.name id="inlineRadio1" value=@item.ClassProducedId>
+        <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
+    }
+</div>
+@Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })

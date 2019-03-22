@@ -62,10 +62,10 @@ namespace CCIA.Models
 
     public int? PoundsPlanted2 { get; set; }
     public string SeedFrom { get; set; }
-    public string StateCountyStockGrown { get; set; }
-    public string StateCountyStockGrown2 { get; set; }
-    public string StateCountyTagIssued { get; set; }
-    public string StateCountyTagIssued2 { get; set; }
+    public string StateCountryStockGrown { get; set; }
+    public string StateCountryStockGrown2 { get; set; }
+    public string StateCountryTagIssued { get; set; }
+    public string StateCountryTagIssued2 { get; set; }
 
     [Required]
     public string Variety { get; set; }

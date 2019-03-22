@@ -1,0 +1,18 @@
+<label>Crop Year</label>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>Crop Year
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" id="cropyear-select">
+        <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year>@DateTime.Now.Year</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@DateTime.Now.Year+1>@(DateTime.Now.Year+1)</a></li> -->
+        @for (int i = 0; i <= @ViewBag.endYearOffset; i++)
+        {
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>
+                    @(DateTime.Now.Year + @ViewBag.startYearOffset - i)
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+@Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
