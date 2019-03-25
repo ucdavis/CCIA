@@ -16,10 +16,19 @@
         padding: 2px 10px;
         margin-bottom:10px;
     }
-    
+
     button {
         border: 1px solid #ccc !important;
         background: white;
+    }
+    .scrollable-menu {
+        height: auto;
+        max-height: 400px;
+        overflow-x: hidden;
+    }
+    
+    .required {
+        color: red;
     }
 </style>
 
@@ -66,7 +75,7 @@
         
         <div class="col-lg-4 col-sm-4 col-xs-4">  
             <div class="col-md-6">
-                <label for="variety">Variety</label>
+                <label for="variety">Variety<em class="required">*</em></label>
                 <input type="text" class="form-control" id="variety" name="variety" placeholder="Variety">
                 @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
             </div>
@@ -85,12 +94,12 @@
         <h4>Planting Stock:</h4>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="cert-lot-num">Certification and Lot #</label>
+                <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
                 <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
                 @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
-                <label for="pounds-planted">Pounds Planted:</label>
+                <label for="pounds-planted">Pounds Planted<em class="required">*</em></label>
                 <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted" placeholder="Pounds Planted">
                 @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
             </div>
@@ -115,22 +124,22 @@
         </div>
 
         <div class="form-group">
-            <label for="variety">Seed purchased/acquired from:</label><i> - Optional</i>
+            <label for="variety">Seed purchased/acquired from:</label>
             <input type="text" class="form-control" id="seed-purchased-from" name="seedFrom" placeholder="Seed purchased/acquired from">
         </div>
 
         <h5>Enter both parent lines for hybrid production</h5>
         <div class="form-group">
-            <label for="variety">Variety</label><i> - Optional</i>
+            <label for="variety">Variety</label>
             <input type="text" class="form-control" id="variety" name="variety2" placeholder="Variety">
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="cert-lot-num">Certification and Lot #</label><i> - Optional</i>
+                <label for="cert-lot-num">Certification and Lot #</label>
                 <input type="text" class="form-control" id="cert-lot-num" name="certLotNum2" placeholder="Certification and Lot #">
             </div>
             <div class="form-group col-md-6">
-                <label for="pounds-planted">Pounds Planted:</label><i> - Optional</i>
+                <label for="pounds-planted">Pounds Planted:</label>
                 <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted2" placeholder="Pounds Planted">
             </div>
         </div>
@@ -158,22 +167,27 @@
         <h4>Field Information:</h4>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="name-num">Name/No.:</label>
+                <label for="name-num">Name/No.:</label><em class="required">*</em>
                 <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
                 @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
-                <label for="date-planted">Date Planted:</label>
-                <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="Date planted">
+                <label for="date-planted">Date Planted:</label><em class="required">*</em>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="MM/DD/YYYY">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
                 @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            <label>County:</label>
+            <label>County:</label><em class="required">*</em>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
                 <span class="caret"></span></button>
-                <ul class="dropdown-menu" id="county-select">
+                <ul class="dropdown-menu scrollable-menu" id="county-select">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="County">County</a></li>
                     @foreach (var county in Model.Counties)
                     {
@@ -184,17 +198,17 @@
             @Html.ValidationMessage("County", "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            <label for="acres-applied">Acres Applied:</label>
+            <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
             <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
             @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
-            <label for="comments">Additional Information/Comments:</label><i> - Optional</i>
+            <label for="comments">Additional Information/Comments:</label>
             <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
         </div>
 
-        <h5><strong>History:</strong><i> - All Optional</i></h5>
+        <h5><strong>History:</strong></h5>
         <em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
         <div class="row">
             <div class="col-lg-2 col-sm-2 col-xs-2">
@@ -311,5 +325,16 @@
                 .attr("name", name).val(insertVal);
             $("#seedApplication").append(inputInsert); 
         }
+
+        var state_country_dropdowns = document.getElementsByClassName("state-country");
+        for (let i=0; i<state_country_dropdowns.length; i++) {
+            state_country_dropdowns[i].innerHTML = "@Model.OrgState" + ' <span class="caret"></span>';
+        }
+        
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'MM/DD/YYYY'
+            });
+        });
     </script>
 }
