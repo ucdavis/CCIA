@@ -68,7 +68,7 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        // GET: Application/CreateSeedApplication
+        // GET: Application/GrowerLookup
         public IActionResult GrowerLookup()
         {
             return View();
@@ -91,11 +91,13 @@ namespace CCIA.Controllers
                     CertYear = seedApp.CropYear,
                     ClassProducedId = seedApp.ClassProduced,
                     CropId = seedApp.Crop,
+                    DatePlanted = seedApp.DatePlanted,
                     FarmCounty = seedApp.County,
                     EnteredVariety = seedApp.Variety,
                     FieldName = seedApp.NameOrNum,
                     GrowerId = seedApp.GrowerId,
                     MapVe = false,
+                    SelectedVarietyId = seedApp.SelectedVarietyId,
                     Status = "Pending supporting material",
                     WarningFlag = false
                 };
@@ -188,11 +190,25 @@ namespace CCIA.Controllers
         [HttpPost]
         public async Task<JsonResult> FindStateProvince(int code)
         {
-            // we could try constructing an object of key val pairs with the ids as the keys and states as the vals
             ModelState.Clear();
             var state_province = await _dbContext.StateProvince.Where(sp => sp.StateProvinceId == code)
                 .Select(sp => sp.StateProvinceCode).ToListAsync();
             return Json(state_province);
+        }
+
+        // POST: Application/FindVariety
+        [HttpPost]
+        public async Task<JsonResult> FindVariety(string name) 
+        {
+            var varieties = await _dbContext.VarOfficial.Where(v => v.VarOffName.ToLower() == name.ToLower())
+                .Select(v => new VarOfficial {
+                    CropId = v.CropId,
+                    Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
+                    VarOffId = v.VarOffId,
+                    VarOffName = v.VarOffName
+                })
+                .ToListAsync();
+            return Json(varieties);
         }
     }
 }
