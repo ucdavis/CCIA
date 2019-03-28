@@ -1,7 +1,7 @@
 @model CCIA.Models.ApplicationViewModel
 
 @{
-    ViewData["Title"] = "Application";
+    ViewData["Title"] = "Seed Application";
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
@@ -10,50 +10,12 @@
 }
 
 <style type="text/css">
-    section {
-        border-radius: .8em;
-        background: #f1f1f1;
-        padding: 2px 10px;
-        margin-bottom:10px;
-    }
 
-    button {
-        border: 1px solid #ccc !important;
-        background: white;
-    }
-    .scrollable-menu {
-        height: auto;
-        max-height: 400px;
-        overflow-x: hidden;
-    }
-    
-    .required {
-        color: red;
-    }
 </style>
 
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Account #</th>
-            <th>Grower</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody id="organizations">
-        <tr>
-            <td>@Model.Organization.OrgId</td>
-            <td>@Model.Organization.OrgName</td>
-            <td>@Model.Organization.Address.Address1</td>
-            <td>@Model.Organization.Address.City</td>
-            <td>@Model.OrgState</td>
-        </tr>
-    </tbody>
-</table>
+@Html.Partial("GrowerInfoTable")
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
@@ -90,14 +52,13 @@
     </div>
 
     <div class="form-group">
-        @{
-            ViewBag.name = "classProduced";
-            ViewBag.label = "Class to be Produced";
-        }
+        @{ ViewBag.name = "classProduced"; }
+        <label>Class to be Produced</label>
         @Html.Partial("ClassRadioButtons")
+        @Html.ValidationMessage("@ViewBag.name", "", new { @class = "text-danger" })
     </div>
 
-    <section id="planting-stock">
+    <section id="planting-stock" class="form-section">
         <h4>Planting Stock:</h4>
         <div class="row">
             <div class="form-group col-md-6">
@@ -113,19 +74,20 @@
         </div>
 
         <div class="form-group">
-            @{
-                ViewBag.name = "classPlanted";
-                ViewBag.label = "Class Planted";
-            }
+            @{ ViewBag.name = "classPlanted"; }
+            <label>Class Planted</label><em class="required">*</em>
             @Html.Partial("ClassRadioButtons")
+            @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
+            <label>State/Country where Planting Stock Tag was issued</label>
             @{ViewBag.name = "stateCountryTagIssued";}
             @Html.Partial("StateCountryDropdown")
         </div>
 
         <div class="form-group">
+            <label>State/Country where Planting Stock was Grown</label>
             @{ViewBag.name = "stateCountryStockGrown";}
             @Html.Partial("StateCountryDropdown")
         </div>
@@ -154,23 +116,26 @@
         <div class="form-group">
             @{
                 ViewBag.name = "classPlanted2";
-                ViewBag.label = "Class Planted";
             }
+            <label>Class to be planted<em class="required">*</em></label>
             @Html.Partial("ClassRadioButtons")
+            @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
+            <label>State/Country where Planting Stock Tag was issued</label>
             @{ViewBag.name = "stateCountryTagIssued2";}
             @Html.Partial("StateCountryDropdown")
         </div>
 
         <div class="form-group">
+            <label>State/Country where Planting Stock was Grown</label>
             @{ViewBag.name = "stateCountryStockGrown2";}
             @Html.Partial("StateCountryDropdown")
         </div>
     </section>
 
-    <section id="field-info">
+    <section id="field-info" class="form-section">
         <h4>Field Information:</h4>
         <div class="row">
             <div class="form-group col-md-6">
@@ -215,75 +180,7 @@
             <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
         </div>
 
-        <h5><strong>History:</strong></h5>
-        <em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
-        <div class="row">
-            <div class="col-lg-2 col-sm-2 col-xs-2">
-                @{
-                    ViewBag.name = "historyCropYear1";
-                    ViewBag.startYearOffset = 0;
-                    ViewBag.endYearOffset = 6;
-                }
-                @Html.Partial("CropYearDropdown")
-            </div>
-            
-            <div class="col-lg-4 col-sm-4 col-xs-4">
-                @{ViewBag.name = "historyCrop1";}
-                @Html.Partial("CropDropdown")
-            </div>
-            <div class="form-group col-md-3">
-                <label for="crop-not-in-list">Variety or Crop not in list:</label>
-                <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop1" placeholder="Variety or Crop not in list">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="app-num">Application #:</label>
-                <input type="text" class="form-control" id="app-num" name="historyApplicationNum1" placeholder="Application #">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-2 col-xs-2">
-                @{
-                    ViewBag.name = "historyCropYear2";
-                    ViewBag.endYearOffset = 6;
-                }
-                @Html.Partial("CropYearDropdown")
-            </div>
-            
-            <div class="col-lg-4 col-sm-4 col-xs-4">
-                @{ViewBag.name = "historyCrop2";}
-                @Html.Partial("CropDropdown")
-            </div>
-            <div class="form-group col-md-3">
-                <label for="crop-not-in-list">Variety or Crop not in list:</label>
-                <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop2" placeholder="Variety or Crop not in list">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="app-num">Application #:</label>
-                <input type="text" class="form-control" id="app-num" name="historyApplicationNum2" placeholder="Application #">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-2 col-xs-2">
-                @{
-                    ViewBag.name = "historyCropYear3";
-                    ViewBag.endYearOffset = 6;
-                }
-                @Html.Partial("CropYearDropdown")
-            </div>
-            
-            <div class="col-lg-4 col-sm-4 col-xs-4">
-                @{ViewBag.name = "historyCrop3";}
-                @Html.Partial("CropDropdown")
-            </div>
-            <div class="form-group col-md-3">
-                <label for="crop-not-in-list">Variety or Crop not in list:</label>
-                <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop3" placeholder="Variety or Crop not in list">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="app-num">Application #:</label>
-                <input type="text" class="form-control" id="app-num" name="historyApplicationNum3" placeholder="Application #">
-            </div>
-        </div>
+        @Html.Partial("HistoryPartial")
     </section>
 
     <button type="submit" class="btn btn-primary">Continue with Application</button>
@@ -321,16 +218,6 @@
             return true;
         });
 
-        /* Fills dropdown button with selected value */
-        $('.dropdown-menu').on('click', 'a', function(e) {
-            e.preventDefault();
-            var text = $(this).html();
-            var htmlText = text + ' <span class="caret"></span>';
-            $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
-            // Set value of button to be value from li
-            $(this).closest('.dropdown').find('.dropdown-toggle').val($(this)[0].attributes.value.value);
-        });
-
         function insertHiddenInput(name, insertVal) {
             var inputInsert = $("<input>")
                 .attr("type", "hidden")
@@ -362,7 +249,6 @@
                     alert("There was an error processing the request");
                 }
             });
-            // If none is found, show some text saying something like "no existing variety found -- will create a new one with the name you typed"
         });
 
         function selectVariety(e) {

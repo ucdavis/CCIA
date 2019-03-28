@@ -62,16 +62,66 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/CreateSeedApplication
-        public async Task<IActionResult> CreateSeedApplication(int id)
+        public async Task<IActionResult> CreateSeedApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, id);
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreatePotatoApplication
+        public async Task<IActionResult> CreatePotatoApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateHeritageGrainApplication
+        public async Task<IActionResult> CreateHeritageGrainApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateGemplasmApplication
+        public async Task<IActionResult> CreateGemplasmApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateRiceApplication
+        public async Task<IActionResult> CreateRiceApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateTurfgrassApplication
+        public async Task<IActionResult> CreateTurfgrassApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateHempFromSeedApplication
+        public async Task<IActionResult> CreateHempFromSeedApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return View(model);
+        }
+
+        // GET: Application/CreateHempFromClonesApplication
+        public async Task<IActionResult> CreateHempFromClonesApplication(int orgId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             return View(model);
         }
 
         // GET: Application/GrowerLookup
-        public IActionResult GrowerLookup()
+        public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
-            return View();
+            var model = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == appTypeId).FirstOrDefaultAsync();
+            return View(model);
         }
 
         // POST: Application/CreateSeedApplication
@@ -106,7 +156,7 @@ namespace CCIA.Controllers
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
             }
-            var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId);
+            var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
             return View(model);
             // return Json(ModelState.Values);
         }
@@ -209,6 +259,29 @@ namespace CCIA.Controllers
                 })
                 .ToListAsync();
             return Json(varieties);
+        }
+
+        // POST: Application/FindCropVarieties
+        [HttpPost]
+        public async Task<JsonResult> FindCropVarieties(int cropId) 
+        {
+            var varieties = await _dbContext.VarOfficial.Where(v => v.CropId == cropId)
+                .Select(v => new VarOfficial {
+                    CropId = v.CropId,
+                    Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
+                    VarOffId = v.VarOffId,
+                    VarOffName = v.VarOffName
+                })
+                .ToListAsync();
+            return Json(varieties);
+        }
+
+        // GET: Application/NewApp
+        public async Task<IActionResult> NewApp()
+        {
+            var model = await _dbContext.AbbrevAppType
+                .ToListAsync();
+            return View(model);
         }
     }
 }

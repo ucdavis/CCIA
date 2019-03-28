@@ -22,10 +22,10 @@ namespace CCIA.Models
 
         public String OrgState {get; set; }
 
-        // public List<VarOfficial> Varieties { get; set; }
+        public List<VarOfficial> Varieties {get; set; }
 
-        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId) {
-            var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == 1).ToListAsync();
+        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType) {
+            var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var organization = await dbContext.Organizations.Where(o => o.OrgId == orgId)
@@ -42,6 +42,14 @@ namespace CCIA.Models
             var counties = await dbContext.County
                 .Where(c => c.StateProvinceId == organization.Address.StateProvinceId)
                 .ToListAsync();
+            var varieties = await dbContext.VarOfficial
+                .Select(v => new VarOfficial {
+                        VarOffId = v.VarOffId,
+                        VarOffName = v.VarOffName,
+                        CropId = v.CropId,
+                        Crop = v.Crop
+                    })
+                .ToListAsync();
 
             var model = new ApplicationViewModel 
             {
@@ -52,6 +60,7 @@ namespace CCIA.Models
                 Counties = counties,
                 Organization = organization,
                 OrgState = orgState,
+                Varieties = varieties
             };
 
             return model;

@@ -1,0 +1,69 @@
+<h5><strong>History:</strong></h5>
+<em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em>
+<div class="row">
+    <div class="col-lg-2 col-sm-2 col-xs-2">
+        @{
+            ViewBag.name = "historyCropYear1";
+            ViewBag.startYearOffset = 0;
+            ViewBag.endYearOffset = 6;
+        }
+        @Html.Partial("CropYearDropdown")
+    </div>
+    
+    <div class="col-lg-4 col-sm-4 col-xs-4">
+        @{ViewBag.name = "historyCrop1";}
+        @Html.Partial("CropDropdown")
+    </div>
+    <div class="form-group col-md-3">
+        <label for="crop-not-in-list">Variety or Crop not in list:</label>
+        <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop1" placeholder="Variety or Crop not in list">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="app-num">Application #:</label>
+        <input type="text" class="form-control" id="app-num" name="historyApplicationNum1" placeholder="Application #">
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-sm-2 col-xs-2">
+        @{
+            ViewBag.name = "historyCropYear2";
+            ViewBag.endYearOffset = 6;
+        }
+        @Html.Partial("CropYearDropdown")
+    </div>
+    
+    <div class="col-lg-4 col-sm-4 col-xs-4">
+        @{ViewBag.name = "historyCrop2";}
+        @Html.Partial("CropDropdown")
+    </div>
+    <div class="form-group col-md-3">
+        <label for="crop-not-in-list">Variety or Crop not in list:</label>
+        <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop2" placeholder="Variety or Crop not in list">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="app-num">Application #:</label>
+        <input type="text" class="form-control" id="app-num" name="historyApplicationNum2" placeholder="Application #">
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-sm-2 col-xs-2">
+        @{
+            ViewBag.name = "historyCropYear3";
+            ViewBag.endYearOffset = 6;
+        }
+        @Html.Partial("CropYearDropdown")
+    </div>
+    
+    <div class="col-lg-4 col-sm-4 col-xs-4">
+        @{ViewBag.name = "historyCrop3";}
+        @Html.Partial("CropDropdown")
+    </div>
+    <div class="form-group col-md-3">
+        <label for="crop-not-in-list">Variety or Crop not in list:</label>
+        <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop3" placeholder="Variety or Crop not in list">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="app-num">Application #:</label>
+        <input type="text" class="form-control" id="app-num" name="historyApplicationNum3" placeholder="Application #">
+    </div>
+</div>

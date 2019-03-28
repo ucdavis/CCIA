@@ -2,7 +2,7 @@
     ViewData["Title"] = "Grower Lookup";
 }
 
-<h2>Application to Produce Certified Seed: Grower Lookup</h2>
+<h2>Application to Produce Certified @Model.AppTypeTrans: Grower Lookup</h2>
 
 <div class="form-group">  
     <label for="account">Name or Account Number:</label>
@@ -46,6 +46,10 @@
         function lookupOrgs() {
             const antiforgery = $("input[name='__RequestVerificationToken']").val();
             var val = document.getElementById("account").value;
+            if (val === "") {
+                alert("This field cannot be empty");
+                return;
+            }
             var dataToPost = {lookupVal: val, Organizations__RequestVerificationToken: antiforgery};
             $.post({
                 url: "/Application/Lookup",
@@ -72,9 +76,41 @@
         }
 
         function populateOrgsTable(data, state_province) {
+            /* Get app type id from querystring */
+            const urlParams = new URLSearchParams(window.location.search);
+            const appTypeId = parseInt(urlParams.get('appTypeId'));
+            let actionType = "";
+            switch(appTypeId){
+                case 1:
+                    actionType="CreateSeedApplication";
+                    break;
+                case 2:
+                    actionType="CreatePotatoApplication";
+                    break;
+                case 3:
+                    actionType=`CreateHeritageGrainApplication`;
+                    break;
+                case 4:
+                    actionType=`CreateGemplasmApplication`;
+                    break;
+                case 5:
+                    actionType=`CreateRiceApplication`;
+                    break;
+                case 6:
+                    actionType=`CreateTurfgrassApplication`;
+                    break;
+                case 7:
+                    actionType=`CreateHempFromSeedApplication`;
+                    break;
+                case 8:
+                    actionType=`CreateHempFromClonesApplication`;
+                    break;
+                default:
+                    actionType=`CreateSeedApplication`;
+            }
             $("#organizations")
                 .append(`<tr>
-                        <td><a class="btn btn-primary" href='/Application/CreateSeedApplication/${data.orgId}'>Select</a>
+                        <td><a class="btn btn-primary" href='/Application/${actionType}/?orgId=${data.orgId}&appTypeId=${appTypeId}'>Select</a>
                         <td>${data.orgId}</td>
                         <td>${data.orgName}</td>
                         <td>${data.address.address1}</td>
