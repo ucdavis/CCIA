@@ -32,20 +32,21 @@
             @Html.Partial("CropYearDropdown")
         </div> 
 
-
-        <div class="col-lg-4 col-sm-4 col-xs-4">
-            <label>Variety:</label><em class="required">*</em>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="variety">Variety
-                <span class="caret"></span></button>
+        <!-- todo -->
+        <div class="col-lg-4 col-sm-4 col-xs-4">  
+            <label for="germplasmEntity">Germplasm Entity<em class="required">*</em></label>
+            <div class="dropdown" id="variety-dropdown">
+                <div class="input-group col">
+                    <input type="text" class="form-control" id="variety" name="variety" placeholder="Variety">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
+                    </span>
+                </div>
                 <ul class="dropdown-menu scrollable-menu" id="variety-select">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="Variety">Variety</a></li>
-                    @foreach (var v in Model.Varieties)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@v.VarOffId>@v.VarOffName</a></li>
-                    }
                 </ul>
             </div>
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="varietyId" placeholder="Variety ID">
         </div>
     </div>
 
