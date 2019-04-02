@@ -82,8 +82,8 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        // GET: Application/CreateGemplasmApplication
-        public async Task<IActionResult> CreateGemplasmApplication(int orgId, int appTypeId)
+        // GET: Application/CreateGermplasmApplication
+        public async Task<IActionResult> CreateGermplasmApplication(int orgId, int appTypeId)
         {
             var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             return View(model);
@@ -266,6 +266,23 @@ namespace CCIA.Controllers
         public async Task<JsonResult> FindCropVarieties(int cropId) 
         {
             var varieties = await _dbContext.VarOfficial.Where(v => v.CropId == cropId)
+                .Select(v => new VarOfficial {
+                    CropId = v.CropId,
+                    Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
+                    VarOffId = v.VarOffId,
+                    VarOffName = v.VarOffName
+                })
+                .ToListAsync();
+            return Json(varieties);
+        }
+
+        // POST: Application/FindGermplasmEntities
+        [HttpPost]
+        public async Task<JsonResult> FindGermplasmEntities(string name) 
+        {
+            var varieties = await _dbContext.VarOfficial
+                .Where(v => v.VarOffName.ToLower() == name.ToLower())
+                .Where(v => v.GermplasmEntity == true)
                 .Select(v => new VarOfficial {
                     CropId = v.CropId,
                     Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),

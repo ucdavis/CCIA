@@ -9,7 +9,7 @@
         <li><a href="#/" value="Select an option">Crop</a></li>
         @foreach (var crop in Model.Crops)
         {
-            <li><a href="#/" value=@crop.CropId>@crop.Crop</a></li>
+            <li><a href="#/" value=@crop.CropId>@crop.CropKind @crop.Crop</a></li>
         }                   
     </ul>
 </div>
