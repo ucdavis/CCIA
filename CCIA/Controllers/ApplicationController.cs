@@ -159,6 +159,7 @@ namespace CCIA.Controllers
 
                 // Planting stocks entries
                 var ps = new PlantingStocks() {
+                    AbbrevClassProducedClassProducedId = seedApp.ClassProduced,
                     AppId = app.AppId,
                     PsCertNum = seedApp.CertLotNum,
                     PsEnteredVariety = seedApp.Variety,
@@ -172,19 +173,30 @@ namespace CCIA.Controllers
 
                 _dbContext.Add(ps);
 
-                var ps2 = new PlantingStocks() {
-                    AppId = app.AppId,
-                    PsCertNum = seedApp.CertLotNum2,
-                    PsEnteredVariety = seedApp.Variety2,
-                    OfficialVarietyId = seedApp.VarietyId,
-                    PoundsPlanted = seedApp.PoundsPlanted2,
-                    PsClass = seedApp.ClassPlanted2,
-                    StateCountryTagIssued = seedApp.StateCountryTagIssued2,
-                    StateCountryGrown = seedApp.StateCountryStockGrown2,
-                    SeedPurchasedFrom = seedApp.SeedFrom,
-                };
+                // Create second plantingstocks entry if required fields aren't null.
+                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null && seedApp.ClassPlanted2 != null) {
+                    var ps2 = new PlantingStocks() {
+                        AppId = app.AppId,
+                        PsCertNum = seedApp.CertLotNum2,
+                        PsEnteredVariety = seedApp.Variety2,
+                        OfficialVarietyId = seedApp.VarietyId,
+                        PoundsPlanted = seedApp.PoundsPlanted2,
+                        PsClass = seedApp.ClassPlanted2,
+                        StateCountryTagIssued = seedApp.StateCountryTagIssued2,
+                        StateCountryGrown = seedApp.StateCountryStockGrown2,
+                        SeedPurchasedFrom = seedApp.SeedFrom,
+                    };
 
-                _dbContext.Add(ps2);
+                    _dbContext.Add(ps2);
+                }
+
+                // Field History
+                var fieldHistory1 = CreateFieldHistory1Record(app.AppId, seedApp);
+                var fieldHistory2 = CreateFieldHistory2Record(app.AppId, seedApp);
+                var fieldHistory3 = CreateFieldHistory3Record(app.AppId, seedApp);
+                _dbContext.Add(fieldHistory1);
+                _dbContext.Add(fieldHistory2);
+                _dbContext.Add(fieldHistory3);
 
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Details", new { id = app.AppId});
@@ -192,6 +204,40 @@ namespace CCIA.Controllers
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
             return View(model);
             // return Json(ModelState.Values);
+        }
+
+        // public Applications CreateApplicationRecord() {
+
+        // }
+
+        public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp) {
+            return new FieldHistory() {
+                AppId = appId,
+                Year = seedApp.HistoryYear1,
+                Crop = seedApp.HistoryCrop1,
+                Variety = seedApp.HistoryVarietyCrop1,
+                AppNumber = seedApp.HistoryApplicationNum1
+            };
+        }
+
+        public FieldHistory CreateFieldHistory2Record(int appId, SeedPostModel seedApp) {
+            return new FieldHistory() {
+                AppId = appId,
+                Year = seedApp.HistoryYear2,
+                Crop = seedApp.HistoryCrop2,
+                Variety = seedApp.HistoryVarietyCrop2,
+                AppNumber = seedApp.HistoryApplicationNum2
+            };
+        }
+
+        public FieldHistory CreateFieldHistory3Record(int appId, SeedPostModel seedApp) {
+            return new FieldHistory() {
+                AppId = appId,
+                Year = seedApp.HistoryYear3,
+                Crop = seedApp.HistoryCrop3,
+                Variety = seedApp.HistoryVarietyCrop3,
+                AppNumber = seedApp.HistoryApplicationNum3
+            };
         }
 
         // GET: Application/Edit/5
@@ -281,9 +327,11 @@ namespace CCIA.Controllers
 
         // POST: Application/FindVariety
         [HttpPost]
-        public async Task<JsonResult> FindVariety(string name) 
+        public async Task<JsonResult> FindVariety(string name, int cropId) 
         {
-            var varieties = await _dbContext.VarOfficial.Where(v => v.VarOffName.ToLower() == name.ToLower())
+            var varieties = await _dbContext.VarOfficial
+                .Where(v => v.VarOffName.ToLower() == name.ToLower())
+                .Where(v => v.CropId == cropId)
                 .Select(v => new VarOfficial {
                     CropId = v.CropId,
                     Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),

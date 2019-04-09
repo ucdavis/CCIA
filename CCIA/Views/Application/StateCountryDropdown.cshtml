@@ -1,7 +1,7 @@
 @model CCIA.Models.ApplicationViewModel
 
 <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle state-country" type="button" data-toggle="dropdown" name=@ViewBag.name>State/Country
+    <button class="btn btn-secondary dropdown-toggle state-country" type="button" data-toggle="dropdown" value="@Model.Organization.Address.StateProvinceId" name=@ViewBag.name>State/Country
     <span class="caret"></span></button>
     <ul class="dropdown-menu scrollable-menu" id="statecountry-issued-select">
         <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="State/Country">State/Country</a></li>

@@ -41,12 +41,12 @@ namespace CCIA.Models
 
     public int GrowerId { get; set; }
 
-    public int? HistoryApplicationNum1 { get; set; }
-    public int? HistoryApplicationNum2 { get; set; }
-    public int? HistoryApplicationNum3 { get; set; }
-    public string HistoryCrop1 { get; set; }
-    public string HistoryCrop2 { get; set; }
-    public string HistoryCrop3 { get; set; }
+    public string HistoryApplicationNum1 { get; set; }
+    public string HistoryApplicationNum2 { get; set; }
+    public string HistoryApplicationNum3 { get; set; }
+    public int HistoryCrop1 { get; set; }
+    public int HistoryCrop2 { get; set; }
+    public int HistoryCrop3 { get; set; }
     public string HistoryVarietyCrop1 { get; set; }
     public string HistoryVarietyCrop2 { get; set; }
     public string HistoryVarietyCrop3 { get; set; }
