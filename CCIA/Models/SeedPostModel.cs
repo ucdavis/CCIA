@@ -16,13 +16,13 @@ namespace CCIA.Models
     public string AdditionalInfo { get; set; }
 
     [Required]
-    public int? CertLotNum { get; set; }
-    public int? CertLotNum2 { get; set; }
+    public string CertLotNum { get; set; }
+    public string CertLotNum2 { get; set; }
 
     [Required]
-    public string ClassPlanted { get; set; }
+    public int? ClassPlanted { get; set; }
 
-    public string ClassPlanted2 { get; set; }
+    public int? ClassPlanted2 { get; set; }
 
     [Required]
     public int? ClassProduced { get; set; }
@@ -62,15 +62,16 @@ namespace CCIA.Models
 
     public int? PoundsPlanted2 { get; set; }
     public string SeedFrom { get; set; }
-    public int? SelectedVarietyId { get; set; }
-    public string StateCountryStockGrown { get; set; }
-    public string StateCountryStockGrown2 { get; set; }
-    public string StateCountryTagIssued { get; set; }
-    public string StateCountryTagIssued2 { get; set; }
+    public int? StateCountryStockGrown { get; set; }
+    public int? StateCountryStockGrown2 { get; set; }
+    public int? StateCountryTagIssued { get; set; }
+    public int? StateCountryTagIssued2 { get; set; }
 
     [Required]
     public string Variety { get; set; }
 
     public string Variety2 { get; set; }
+
+    public int? VarietyId { get; set; }
     }
 }

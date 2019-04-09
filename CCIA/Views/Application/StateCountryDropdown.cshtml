@@ -7,7 +7,7 @@
         <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="State/Country">State/Country</a></li>
         @foreach (var state_country in Model.StateProvince)
         {
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceName>@state_country.StateProvinceName</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceId>@state_country.StateProvinceName</a></li>
         }
     </ul>
 </div>

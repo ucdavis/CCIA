@@ -23,6 +23,7 @@
         <div class="col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "crop";}
             @Html.Partial("CropDropdown")
+            @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -32,6 +33,7 @@
                 ViewBag.endYearOffset = 1;
             }
             @Html.Partial("CropYearDropdown")
+            @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">  
@@ -47,15 +49,15 @@
                 </ul>
             </div>
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="varietyId" placeholder="Variety ID">
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="varietyId">
         </div>
     </div>
 
     <div class="form-group">
+        <label>Class to be Produced</label><em class="required">*</em>
         @{ ViewBag.name = "classProduced"; }
-        <label>Class to be Produced</label>
         @Html.Partial("ClassRadioButtons")
-        @Html.ValidationMessage("@ViewBag.name", "", new { @class = "text-danger" })
+        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
     </div>
 
     <section id="planting-stock" class="form-section">
@@ -117,9 +119,8 @@
             @{
                 ViewBag.name = "classPlanted2";
             }
-            <label>Class to be planted<em class="required">*</em></label>
+            <label>Class Planted</label>
             @Html.Partial("ClassRadioButtons")
-            @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
         </div>
 
         <div class="form-group">
@@ -141,7 +142,7 @@
             <div class="form-group col-md-6">
                 <label for="name-num">Name/No.:</label><em class="required">*</em>
                 <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
-                @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
+                @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
                 <label for="date-planted">Date Planted:</label><em class="required">*</em>
@@ -230,7 +231,6 @@
             let data = { name: document.getElementById("variety").value };
             let vs = document.getElementById("variety-select");
             vs.innerHTML = "";
-            // console.log(data);
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
                 type: "POST",
@@ -240,7 +240,8 @@
                     let dd = document.getElementById("variety-dropdown");
                     dd.className += " " + "open";               
                     res.forEach(function(el) {
-                        vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' tabindex='-1' href='#/' value="+el.varOffId+">"
+                        vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
+                                     + " tabindex='-1' href='#/' value="+el.varOffId+">"
                                      + el.varOffName + " " + "(" + el.crop.crop + ")"
                                      + "</a></li>";
                     })
@@ -253,13 +254,10 @@
 
         function selectVariety(e) {
             /* Collapse dropdown */
-            console.log(e.firstElementChild);
             let dd = document.getElementById("variety-dropdown");
             dd.className = "dropdown";
-            // Change value of input box to name of variety
-            document.getElementById("variety").value = e.firstElementChild.innerText;
-            // Change value of hidden input to be the variety ID
             document.getElementById("variety-id").value = e.firstElementChild.attributes.value.value;
+            document.getElementById("variety").value = e.firstElementChild.innerText
         }
 
         /* Click handler to collapse variety dropdown on click outside */

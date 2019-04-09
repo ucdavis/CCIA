@@ -27,20 +27,47 @@ namespace CCIA.Models
         public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType) {
             var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
+            switch(appType) {
+                // Seed
+                case 1:
+                    crops = await dbContext.Crops.ToListAsync();
+                    break;
+                // Potato
+                case 2:
+                    crops = await dbContext.Crops.Where(c => c.Crop == "Potato").ToListAsync();
+                    break;
+                // HQA
+                case 3:
+                    crops = await dbContext.Crops.Where(c => c.Heritage == true).ToListAsync();
+                    break;
+                // PVG
+                case 4:
+                    crops = await dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).ToListAsync();
+                    break;
+                // // RQA
+                // case 5:
+                //     break;
+                // // Turfgrass
+                // case 6:
+                //     break;
+                // // Hemp from seed
+                // case 7:
+                //     break;
+                // // Hemp from clones
+                // case 8:
+                //     break;
+            }
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var organization = await dbContext.Organizations.Where(o => o.OrgId == orgId)
-                .Select(o => new Organizations {
-                        OrgId = o.OrgId,
-                        OrgName = o.OrgName,
-                        Address = o.Address != null ? o.Address : new Address() 
-                    })
+                .Include(o => o.Address)
                 .FirstOrDefaultAsync();
             var orgState = organization.Address.StateProvinceId == null ? "" : await dbContext.StateProvince
                 .Where(s => s.StateProvinceId == organization.Address.StateProvinceId)
                 .Select(s => s.StateProvinceName)
                 .FirstOrDefaultAsync();
+            /* California's StateProvinceID is 102 -- All applications must come from CA */
             var counties = await dbContext.County
-                .Where(c => c.StateProvinceId == organization.Address.StateProvinceId)
+                .Where(c => c.StateProvinceId == 102)
                 .ToListAsync();
             var varieties = await dbContext.VarOfficial
                 .Select(v => new VarOfficial {

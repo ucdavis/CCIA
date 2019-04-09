@@ -132,29 +132,62 @@ namespace CCIA.Controllers
             if (ModelState.IsValid) {
                 // Create new db entry
 
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
+
                 var app = new Applications() {
                     AcresApplied = seedApp.AcresApplied,
-                    ApplicantId = seedApp.GrowerId,
+                    ApplicantId = contactId,
                     AppOriginalCertYear = seedApp.CropYear,
-                    AppType = "SD",              
-                    CertNum = seedApp.CertLotNum,
+                    AppReceived = DateTime.Now,
+                    AppType = "SD",   
                     CertYear = seedApp.CropYear,
                     ClassProducedId = seedApp.ClassProduced,
                     CropId = seedApp.Crop,
                     DatePlanted = seedApp.DatePlanted,
-                    FarmCounty = seedApp.County,
                     EnteredVariety = seedApp.Variety,
+                    FarmCounty = seedApp.County,
                     FieldName = seedApp.NameOrNum,
                     GrowerId = seedApp.GrowerId,
                     MapVe = false,
-                    SelectedVarietyId = seedApp.SelectedVarietyId,
+                    SelectedVarietyId = seedApp.VarietyId,
                     Status = "Pending supporting material",
                     WarningFlag = false
                 };
-                
                 _dbContext.Add(app);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
+                await _dbContext.SaveChangesAsync();
+
+                // Planting stocks entries
+                var ps = new PlantingStocks() {
+                    AppId = app.AppId,
+                    PsCertNum = seedApp.CertLotNum,
+                    PsEnteredVariety = seedApp.Variety,
+                    OfficialVarietyId = seedApp.VarietyId,
+                    PoundsPlanted = seedApp.PoundsPlanted,
+                    PsClass = seedApp.ClassPlanted,
+                    StateCountryTagIssued = seedApp.StateCountryTagIssued,
+                    StateCountryGrown = seedApp.StateCountryStockGrown,
+                    SeedPurchasedFrom = seedApp.SeedFrom,
+                };
+
+                _dbContext.Add(ps);
+
+                var ps2 = new PlantingStocks() {
+                    AppId = app.AppId,
+                    PsCertNum = seedApp.CertLotNum2,
+                    PsEnteredVariety = seedApp.Variety2,
+                    OfficialVarietyId = seedApp.VarietyId,
+                    PoundsPlanted = seedApp.PoundsPlanted2,
+                    PsClass = seedApp.ClassPlanted2,
+                    StateCountryTagIssued = seedApp.StateCountryTagIssued2,
+                    StateCountryGrown = seedApp.StateCountryStockGrown2,
+                    SeedPurchasedFrom = seedApp.SeedFrom,
+                };
+
+                _dbContext.Add(ps2);
+
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction("Details", new { id = app.AppId});
             }
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
             return View(model);
