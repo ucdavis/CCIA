@@ -50,9 +50,9 @@ namespace CCIA.Models
     public string HistoryVarietyCrop1 { get; set; }
     public string HistoryVarietyCrop2 { get; set; }
     public string HistoryVarietyCrop3 { get; set; }
-    public int HistoryYear1 { get; set; }
-    public int HistoryYear2 { get; set; }
-    public int HistoryYear3 { get; set; }
+    public int HistoryCropYear1 { get; set; }
+    public int HistoryCropYear2 { get; set; }
+    public int HistoryCropYear3 { get; set; }
 
     [Required]
     public string NameOrNum { get; set; }

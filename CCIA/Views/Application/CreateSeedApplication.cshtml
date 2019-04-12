@@ -228,10 +228,14 @@
 
         $('#variety-search').on('click', function(e) {
             e.preventDefault();
-            // console.log(document.getElementsByName("crop")[0].value);
+
+            // Display error if user tries to search for variety before selecting crop
+            let cropId = document.getElementsByName("crop")[0].value
+            if (cropId == "-1") { window.alert("Please select a crop before searching for a variety."); }
+
             let data = { 
                 name: document.getElementById("variety").value,
-                cropId: document.getElementsByName("crop")[0].value
+                cropId: cropId
             };
             let vs = document.getElementById("variety-select");
             vs.innerHTML = "";

@@ -137,10 +137,11 @@ namespace CCIA.Controllers
 
                 var app = new Applications() {
                     AcresApplied = seedApp.AcresApplied,
+                    ApplicantComments = seedApp.AdditionalInfo,
                     ApplicantId = contactId,
                     AppOriginalCertYear = seedApp.CropYear,
                     AppReceived = DateTime.Now,
-                    AppType = "SD",   
+                    AppType = "SD",
                     CertYear = seedApp.CropYear,
                     ClassProducedId = seedApp.ClassProduced,
                     CropId = seedApp.Crop,
@@ -213,7 +214,7 @@ namespace CCIA.Controllers
         public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp) {
             return new FieldHistory() {
                 AppId = appId,
-                Year = seedApp.HistoryYear1,
+                Year = seedApp.HistoryCropYear1,
                 Crop = seedApp.HistoryCrop1,
                 Variety = seedApp.HistoryVarietyCrop1,
                 AppNumber = seedApp.HistoryApplicationNum1
@@ -223,7 +224,7 @@ namespace CCIA.Controllers
         public FieldHistory CreateFieldHistory2Record(int appId, SeedPostModel seedApp) {
             return new FieldHistory() {
                 AppId = appId,
-                Year = seedApp.HistoryYear2,
+                Year = seedApp.HistoryCropYear2,
                 Crop = seedApp.HistoryCrop2,
                 Variety = seedApp.HistoryVarietyCrop2,
                 AppNumber = seedApp.HistoryApplicationNum2
@@ -233,7 +234,7 @@ namespace CCIA.Controllers
         public FieldHistory CreateFieldHistory3Record(int appId, SeedPostModel seedApp) {
             return new FieldHistory() {
                 AppId = appId,
-                Year = seedApp.HistoryYear3,
+                Year = seedApp.HistoryCropYear3,
                 Crop = seedApp.HistoryCrop3,
                 Variety = seedApp.HistoryVarietyCrop3,
                 AppNumber = seedApp.HistoryApplicationNum3
@@ -380,6 +381,10 @@ namespace CCIA.Controllers
             var model = await _dbContext.AbbrevAppType
                 .ToListAsync();
             return View(model);
+        }
+
+        public ActionResult GetPartial(string partialName){
+            return PartialView("~/Views/Application/"+partialName);
         }
     }
 }

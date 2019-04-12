@@ -3,10 +3,10 @@
 <label>Crop</label>
 @if(@ViewBag.name == "crop") { <em class="required">*</em> }
 <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>Crop
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" value="-1" name=@ViewBag.name>Crop
     <span class="caret"></span></button>
     <ul class="dropdown-menu scrollable-menu" id="crop-select">
-        <li><a href="#/" value="Select an option">Crop</a></li>
+        <li><a href="#/" value="-1">Crop</a></li>
         @foreach (var crop in Model.Crops)
         {
             <li><a href="#/" value=@crop.CropId>@crop.CropKind @crop.Crop</a></li>
