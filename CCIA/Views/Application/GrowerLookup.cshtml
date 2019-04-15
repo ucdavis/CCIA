@@ -39,7 +39,7 @@
                 populateTable(data, state_province);
             })
             .error(() => {
-                alert("An internal error occured...??");
+                alert("An internal error occured...");
             });
         }
 
@@ -50,12 +50,13 @@
                 alert("This field cannot be empty");
                 return;
             }
-            var dataToPost = {lookupVal: val, Organizations__RequestVerificationToken: antiforgery};
-            $.post({
+            var dataToPost = {lookupVal: val};
+            $.ajax({
+                type: "POST",
+                dataType: "json",
                 url: "/Application/Lookup",
-                data: dataToPost
-                })
-                .success(response => {
+                data: dataToPost,
+                success: (response) => {
                     if (response.length == 0){
                         document.getElementById("res-warning").innerText = "No records matched your search.";
                     }
@@ -69,9 +70,11 @@
                     jQuery.each(response, function(i, data) {
                         let state_province = getStateOrProvince(data.address.stateProvinceId, data, populateOrgsTable);                               
                     });
-                })
-                .error(() => {
+                },
+                error: (e) => {
+                    console.log(e);
                     alert("An internal error occured...");
+                }
                 });
         }
 
@@ -119,7 +122,8 @@
                         </tr>`);
         }
         
-        $('#account-lookup-btn').click(function(){
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
             lookupOrgs();
         });
 

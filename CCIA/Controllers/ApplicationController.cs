@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Controllers
 {
-    public class ApplicationController : Controller
+    public class ApplicationController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
@@ -200,9 +200,11 @@ namespace CCIA.Controllers
                 _dbContext.Add(fieldHistory3);
 
                 await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.AppId});
             }
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
+            Message = "You are missing certain required fields.";
             return View(model);
             // return Json(ModelState.Values);
         }
