@@ -31,7 +31,7 @@
 
         function getStateOrProvince(sp_code, data, populateTable) {
             const antiforgery = $("input[name='__RequestVerificationToken']").val();
-            $.post({
+            $.get({
                 url: "/Application/FindStateProvince",
                 data: {code: sp_code, StateProvince__RequestVerificationToken: antiforgery}
             })
@@ -52,7 +52,7 @@
             }
             var dataToPost = {lookupVal: val};
             $.ajax({
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 url: "/Application/Lookup",
                 data: dataToPost,

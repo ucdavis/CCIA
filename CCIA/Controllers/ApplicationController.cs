@@ -120,6 +120,7 @@ namespace CCIA.Controllers
         // GET: Application/GrowerLookup
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
+            // Check if grower is same as applicant
             var model = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == appTypeId).FirstOrDefaultAsync();
             return View(model);
         }
@@ -289,8 +290,8 @@ namespace CCIA.Controllers
             }
         }
 
-        // POST: Application/Lookup
-        [HttpPost]
+        // GET: Application/Lookup
+        [HttpGet]
         public async Task<JsonResult> Lookup(String lookupVal)
         {
             var orgs = new List<Organizations>();
@@ -318,8 +319,8 @@ namespace CCIA.Controllers
             return Json(orgs);
         }
 
-        // POST: Application/FindStateProvince
-        [HttpPost]
+        // GET: Application/FindStateProvince
+        [HttpGet]
         public async Task<JsonResult> FindStateProvince(int code)
         {
             ModelState.Clear();
@@ -328,8 +329,8 @@ namespace CCIA.Controllers
             return Json(state_province);
         }
 
-        // POST: Application/FindVariety
-        [HttpPost]
+        // GET: Application/FindVariety
+        [HttpGet]
         public async Task<JsonResult> FindVariety(string name, int cropId) 
         {
             var varieties = await _dbContext.VarOfficial
@@ -345,8 +346,8 @@ namespace CCIA.Controllers
             return Json(varieties);
         }
 
-        // POST: Application/FindCropVarieties
-        [HttpPost]
+        // GET: Application/FindCropVarieties
+        [HttpGet]
         public async Task<JsonResult> FindCropVarieties(int cropId) 
         {
             var varieties = await _dbContext.VarOfficial.Where(v => v.CropId == cropId)
@@ -360,8 +361,8 @@ namespace CCIA.Controllers
             return Json(varieties);
         }
 
-        // POST: Application/FindGermplasmEntities
-        [HttpPost]
+        // GET: Application/FindGermplasmEntities
+        [HttpGet]
         public async Task<JsonResult> FindGermplasmEntities(string name) 
         {
             var varieties = await _dbContext.VarOfficial
@@ -385,8 +386,11 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public ActionResult GetPartial(string partialName){
-            return PartialView("~/Views/Application/"+partialName);
+        public IActionResult GetPartial(string partialName, int orgId, int appTypeId)
+        {
+            // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            // string fullPartialPath = "~/Views/Application/" + partialName + ".cshtml";
+            return PartialView(partialName);
         }
     }
 }

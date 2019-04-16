@@ -110,7 +110,7 @@
             vs.innerHTML = "";
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "/Application/FindVariety",
                 data: data,
                 success: function(res) {
@@ -137,7 +137,11 @@
             document.getElementById("variety").value = e.firstElementChild.innerText
 
             /* Load the rest of the form */
-            $("#form-remainder".load("/Application/GetModule?partialName=SeedAppPartial"));
+            let orgId = @Model.Organization.OrgId;
+            let appTypeId = 1;
+            console.log(orgId);
+            console.log(appTypeId);
+            $("#form-remainder").load("/Application/GetPartial?partialName=TestView");
         }
 
         /* Click handler to collapse variety dropdown on click outside */
