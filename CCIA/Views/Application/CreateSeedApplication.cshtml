@@ -141,7 +141,7 @@
             let appTypeId = 1;
             console.log(orgId);
             console.log(appTypeId);
-            $("#form-remainder").load("/Application/GetPartial?partialName=TestView");
+            $("#form-remainder").load("/Application/GetPartial?partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId);
         }
 
         /* Click handler to collapse variety dropdown on click outside */

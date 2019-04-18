@@ -386,11 +386,11 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public IActionResult GetPartial(string partialName, int orgId, int appTypeId)
+        public async Task<IActionResult> GetPartial(string partialName, int orgId, int appTypeId)
         {
-            // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             // string fullPartialPath = "~/Views/Application/" + partialName + ".cshtml";
-            return PartialView(partialName);
+            return PartialView(partialName, model);
         }
     }
 }
