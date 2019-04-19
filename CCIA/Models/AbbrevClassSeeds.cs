@@ -6,10 +6,10 @@ namespace CCIA.Models
 {
     public partial class AbbrevClassSeeds
     {
-        public AbbrevClassSeeds()
-        {
-            Seeds = new HashSet<Seeds>();
-        }
+        // public AbbrevClassSeeds()
+        // {
+        //     Seeds = new HashSet<Seeds>();
+        // }
         [Key]
         public int Id { get; set; }
         public string Abbrv { get; set; }
@@ -17,7 +17,7 @@ namespace CCIA.Models
         public int? SortOrder { get; set; }
         //public int? AppType { get; set; }
 
-        public ICollection<Seeds> Seeds { get; set; }
+        //public ICollection<Seeds> Seeds { get; set; }
         
     }
 }

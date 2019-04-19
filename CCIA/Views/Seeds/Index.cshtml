@@ -26,22 +26,22 @@
         </thead>
         <tbody>
         
-            @foreach (var app in Model)
+            @foreach (var seeds in Model)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.AppId">Details</a></td>
-                <td>@app.Id</td>
-                <td>@app.CertProgram</td>
-                <td>@app.CertYear</td>
-                <td>@app.ApplicantId</td>
-                <td>crop</td>
-                <td>@app.OfficialVarietyId</td>
-                <td>@app.Class</td>
-                <td>@app.LotNumber</td>
+                <td><a asp-action="Details" asp-controller="Seeds" asp-route-id="@seeds.Id">Details</a></td>
+                <td>@seeds.Id</td>
+                <td>@seeds.CertProgram</td>
+                <td>@seeds.CertYear</td>
+                <td>@seeds.ApplicantOrganization.OrgName</td>
+                <td>@seeds.Variety.Crop.Name</td>
+                <td>@seeds.Variety.Name</td>
+                <td>@seeds.ClassProduced.Class</td>
+                <td>@seeds.LotNumber</td>
                 <td>labs?</td>
                 <td>lab date</td>
                 <td></td>
-                <td>@app.Status</td>
+                <td>@seeds.Status</td>
             </tr>
             }
         </tbody>

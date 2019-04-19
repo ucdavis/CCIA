@@ -30,6 +30,10 @@ namespace CCIA.Controllers
             }
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Seeds.Where(s => s.CertYear == certYear && orgId.Contains(s.ConditionerId))
+                .Include(a => a.ApplicantOrganization)
+                .Include(v => v.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(c => c.ClassProduced)
                 .ToListAsync();
             return View(model);
         }
@@ -39,20 +43,8 @@ namespace CCIA.Controllers
         {
             // TODO restrict to logged in user.
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
-            var model = await _dbContext.Applications.Where(a => a.AppId == id && orgId.Contains(a.ApplicantId))
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
-                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
-                .FirstOrDefaultAsync();
+            var model = await _dbContext.Seeds.Where(s => s.Id == id && orgId.Contains(s.ConditionerId))
+                .FirstOrDefaultAsync();           
             return View(model);
         }
 

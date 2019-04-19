@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -19,19 +20,23 @@ namespace CCIA.Models
         public int? SampleFormRad { get; set; }
         public int? CertYear { get; set; }
         
-        // //public Organizations ApplicantOrganization { get; set; }
+        public Organizations ApplicantOrganization { get; set; }
         public int? ApplicantId { get; set; }
 
-        // //public Organizations ConditionerOrganization { get; set; }
+        public Organizations ConditionerOrganization { get; set; }
         public int? ConditionerId { get; set; }
 
         public int? SampleFormVarietyId { get; set; }
+
+        public VarFull  Variety { get; set; }
         public int? OfficialVarietyId { get; set; }
         //public VarFull  Variety { get; set; }
 
         public string LotNumber { get; set; }
-        public decimal PoundsLot { get; set; }        
-        //public AbbrevClassSeeds ClassProduced { get; set; }
+        public decimal PoundsLot { get; set; } 
+               
+        [ForeignKey("Class")]
+        public AbbrevClassSeeds ClassProduced { get; set; }
         public int? Class { get; set; }
         public int? ClassAccession { get; set; }
         public string Status { get; set; }
@@ -70,6 +75,8 @@ namespace CCIA.Models
         public string EmployeeModified { get; set; }
         public bool NotFinallyCertified { get; set; }
         public bool ChargeFullFees { get; set; }
+
+       
 
 
 

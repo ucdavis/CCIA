@@ -44,6 +44,8 @@ namespace CCIA.Models
         public virtual DbSet<VarFull> VarFull { get; set; }
         public virtual DbSet<Seeds> Seeds { get; set; }
 
+        public virtual DbSet<AbbrevClassSeeds> AbbrevClassSeeds { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -95,7 +97,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_cert_history'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_health_cert'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.abbrev_class_seeds'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.seeds_apps'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.ccia_employees'. Please see the warning messages.
@@ -198,7 +200,23 @@ namespace CCIA.Models
                entity.Property(e =>e.Docs).HasColumnName("docs");
                entity.Property(e =>e.EmployeeModified).HasColumnName("emp_modified");
                entity.Property(e =>e.NotFinallyCertified).HasColumnName("not_finally_certified");
-               entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");    
+               entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");  
+
+               entity.HasOne(d => d.ApplicantOrganization)
+                    .WithMany(p => p.AppliedSeeds)
+                    .HasForeignKey(d => d.ApplicantId);
+
+                entity.HasOne(v => v.Variety)
+                    .WithMany(s => s.CertifiedSeeds)
+                    .HasForeignKey(s => s.OfficialVarietyId);
+
+                entity.HasOne(s => s.ConditionerOrganization)
+                    .WithMany(c => c.ConditionerSeed)
+                    .HasForeignKey(s => s.ConditionerId);
+                    
+                entity.HasOne(s => s.ClassProduced);
+                    //.WithMany(c => c.Seeds)
+                    //.HasForeignKey(s => s.Class);
 
             });
 
@@ -270,6 +288,10 @@ namespace CCIA.Models
                 entity.Property(v => v.ParendId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
+
+                entity.HasOne(v => v.Crop)
+                    .WithMany(c => c.VarietyCrops)
+                    .HasForeignKey(v => v.CropId);
 
 
             });
@@ -349,6 +371,29 @@ namespace CCIA.Models
                 entity.Property(e => e.ClassProducedTrans)
                     .HasColumnName("class_produced_trans")
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+            });
+
+            modelBuilder.Entity<AbbrevClassSeeds>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("abbrev_class_seeds");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("class_certified_id")
+                    .ValueGeneratedOnAdd();                
+
+                entity.Property(e => e.Abbrv)
+                    .HasColumnName("class_abbrv")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Class)
+                    .HasColumnName("class_certified_trans")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
