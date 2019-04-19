@@ -69,22 +69,12 @@
             var ajax_af_form = $("#__AjaxAntiForgeryForm");
             const antiforgery = $("input[name='__RequestVerificationToken']", ajax_af_form).val();
             insertHiddenInput('__RequestVerificationToken', antiforgery);
-            const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application", "Select an option"];
+            const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application", ""];
 
             var dataToPost = {};
             var growerId = @Model.Organization.OrgId;
 
             insertHiddenInput("growerId", growerId);
-            /* Process form data and assign to object to send to controller */
-            for (var i = 0; i < form.length; i++) {
-                var input = form[i];
-                let name = input.name;
-                let innerText = (input.innerText).trim();
-                // Value from dropdown list (and not default value)
-                if (input.type == "button" && !defaultButtonVals.includes(innerText)) {
-                    insertHiddenInput(name, input.value);
-                }
-            }
             return true;
         });
 
@@ -99,7 +89,8 @@
             e.preventDefault();
 
             // Display error if user tries to search for variety before selecting crop
-            let cropId = document.getElementsByName("crop")[0].value
+            let crop = document.getElementsByName("crop")[0];
+            let cropId = crop.options[crop.selectedIndex].value;
             if (cropId == "-1") { window.alert("Please select a crop before searching for a variety."); }
 
             let data = { 
@@ -115,7 +106,11 @@
                 data: data,
                 success: function(res) {
                     let dd = document.getElementById("variety-dropdown");
-                    dd.className += " " + "open";               
+                    if (res.length === 0) {
+                        dd.className = "dropdown";
+                    } else {
+                        dd.className += " " + "open";               
+                    }
                     res.forEach(function(el) {
                         vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
                                      + " tabindex='-1' href='#/' value="+el.varOffId+">"
@@ -139,9 +134,13 @@
             /* Load the rest of the form */
             let orgId = @Model.Organization.OrgId;
             let appTypeId = 1;
-            console.log(orgId);
-            console.log(appTypeId);
-            $("#form-remainder").load("/Application/GetPartial?partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId);
+            $("#form-remainder")
+                .load("/Application/GetPartial?partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, () => {
+                    /* Set functionality for date time picker */
+                    $('#datetimepicker1').datetimepicker({
+                        format: 'MM/DD/YYYY'
+                    });
+                });
         }
 
         /* Click handler to collapse variety dropdown on click outside */
@@ -152,10 +151,5 @@
             } 
         });
 
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'MM/DD/YYYY'
-            });
-        });
     </script>
 }

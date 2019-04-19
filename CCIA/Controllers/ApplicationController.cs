@@ -136,26 +136,7 @@ namespace CCIA.Controllers
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
-                var app = new Applications() {
-                    AcresApplied = seedApp.AcresApplied,
-                    ApplicantComments = seedApp.AdditionalInfo,
-                    ApplicantId = contactId,
-                    AppOriginalCertYear = seedApp.CropYear,
-                    AppReceived = DateTime.Now,
-                    AppType = "SD",
-                    CertYear = seedApp.CropYear,
-                    ClassProducedId = seedApp.ClassProduced,
-                    CropId = seedApp.Crop,
-                    DatePlanted = seedApp.DatePlanted,
-                    EnteredVariety = seedApp.Variety,
-                    FarmCounty = seedApp.County,
-                    FieldName = seedApp.NameOrNum,
-                    GrowerId = seedApp.GrowerId,
-                    MapVe = false,
-                    SelectedVarietyId = seedApp.VarietyId,
-                    Status = "Pending supporting material",
-                    WarningFlag = false
-                };
+                Applications app = CreateApplicationsRecord(seedApp, contactId, "SD");
                 _dbContext.Add(app);
                 await _dbContext.SaveChangesAsync();
 
@@ -205,14 +186,32 @@ namespace CCIA.Controllers
                 return RedirectToAction("Details", new { id = app.AppId});
             }
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
-            Message = "You are missing certain required fields.";
+            Message = "You are missing the following required fields: ";
             return View(model);
-            // return Json(ModelState.Values);
         }
 
-        // public Applications CreateApplicationRecord() {
-
-        // }
+        public Applications CreateApplicationsRecord(SeedPostModel seedApp, int contactId, string appType) {
+            return new Applications() {
+                AcresApplied = seedApp.AcresApplied,
+                ApplicantComments = seedApp.AdditionalInfo,
+                ApplicantId = contactId,
+                AppOriginalCertYear = seedApp.CropYear,
+                AppReceived = DateTime.Now,
+                AppType = appType,
+                CertYear = seedApp.CropYear,
+                ClassProducedId = seedApp.ClassProduced,
+                CropId = seedApp.Crop,
+                DatePlanted = seedApp.DatePlanted,
+                EnteredVariety = seedApp.Variety,
+                FarmCounty = seedApp.County,
+                FieldName = seedApp.NameOrNum,
+                GrowerId = seedApp.GrowerId,
+                MapVe = false,
+                SelectedVarietyId = seedApp.VarietyId,
+                Status = "Pending supporting material",
+                WarningFlag = false
+            };
+        }
 
         public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp) {
             return new FieldHistory() {

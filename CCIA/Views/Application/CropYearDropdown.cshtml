@@ -2,18 +2,13 @@
 @if(@ViewBag.name == "cropYear") {
     <em class="required">*</em>
 }
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>Crop Year
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu scrollable-menu" id="cropyear-select">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="Crop Year">Crop Year</a></li>
-        @for (int i = 0; i <= @ViewBag.endYearOffset; i++)
-        {
-            <li role="presentation">
-                <a role="menuitem" tabindex="-1" href="#/" value=@(DateTime.Now.Year - i)>
-                    @(DateTime.Now.Year + @ViewBag.startYearOffset - i)
-                </a>
-            </li>
-        }
-    </ul>
-</div>
+
+<select class="form-control" name=@ViewBag.name>
+    <option></option>
+    @for (int i = 0; i <= @ViewBag.endYearOffset; i++)
+    {
+        <option value=@(DateTime.Now.Year - i)>
+                @(DateTime.Now.Year + @ViewBag.startYearOffset - i)
+        </option>
+    }
+</select>

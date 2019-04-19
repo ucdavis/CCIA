@@ -1,13 +1,11 @@
 @model CCIA.Models.ApplicationViewModel
 
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle state-country" type="button" data-toggle="dropdown" value="@Model.Organization.Address.StateProvinceId" name=@ViewBag.name>State/Country
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu scrollable-menu" id="statecountry-issued-select">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="State/Country">State/Country</a></li>
-        @foreach (var state_country in Model.StateProvince)
-        {
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@state_country.StateProvinceId>@state_country.StateProvinceName</a></li>
-        }
-    </ul>
-</div>
+<select class="form-control" name=@ViewBag.name>
+    <option></option>
+    @foreach (var state_country in Model.StateProvince)
+    {
+        <option value=@state_country.StateProvinceId>
+                @state_country.StateProvinceName
+        </option>
+    }
+</select>

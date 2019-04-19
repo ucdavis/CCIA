@@ -1,7 +1,9 @@
 @model CCIA.Models.ApplicationViewModel
 
 <label>Crop</label>
-@if(@ViewBag.name == "crop") { <em class="required">*</em> }
+@if(@ViewBag.name == "crop") { 
+    <em class="required">*</em>
+}
 <div class="form-group">
     <select class="form-control" name=@ViewBag.name>
         <option></option>
@@ -9,18 +11,5 @@
         {
             <option value=@crop.CropId>@crop.CropKind @crop.Crop</option>
         }  
-        <option></option>
     </select>
 </div>
-
-<!-- <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" value="-1" name=@ViewBag.name>Crop
-    <span class="caret"></span></button>
-    <ul class="dropdown-menu scrollable-menu" id="crop-select">
-        <li><a href="#/" value="-1">Crop</a></li>
-        @foreach (var crop in Model.Crops)
-        {
-            <li><a href="#/" value=@crop.CropId>@crop.CropKind @crop.Crop</a></li>
-        }                   
-    </ul>
-</div> -->

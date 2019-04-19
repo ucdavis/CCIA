@@ -104,17 +104,15 @@
     </div>
     <div class="form-group">
         <label>County:</label><em class="required">*</em>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu scrollable-menu" id="county-select">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="County">County</a></li>
-                @foreach (var county in Model.Counties)
-                {
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@county.CountyId>@county.CountyName</a></li>
-                }
-            </ul>
-        </div>
+        <select class="form-control" name=county>
+            <option></option>
+            @foreach (var county in Model.Counties)
+            {
+                <option value=@county.CountyId>
+                    @county.CountyName
+                </option>
+            }
+        </select>
         @Html.ValidationMessage("County", "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
@@ -132,3 +130,6 @@
 </section>
 
 <button type="submit" class="btn btn-primary">Continue with Application</button>
+
+<script type="text/javascript">
+</script>
