@@ -25,7 +25,7 @@ namespace CCIA.Models
         public int ParendId { get; set; }
         public bool Turfgrass { get; set; }
 
-        public ICollection<Applications> Applications { get; set; }
+       
 
         
 

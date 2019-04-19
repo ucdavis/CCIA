@@ -15,7 +15,7 @@ namespace CCIA.Models
         public int AddressId { get; set; }
 
 
-        public ICollection<Applications> GrownApplications { get; set; }
+       
         public ICollection<Applications> AppliedApplications { get; set; }
 
     }

@@ -230,7 +230,7 @@ namespace CCIA.Models
 
                entity.Property(e => e.AppNumber).HasColumnName("app_num");
 
-               entity.HasOne(d => d.FHCrops).WithMany(p => p.FieldHistories).HasForeignKey(d => d.Crop).HasPrincipalKey(p => p.CropId);
+               entity.HasOne(d => d.FHCrops);
                
 
             });
@@ -735,18 +735,14 @@ namespace CCIA.Models
                     .HasColumnName("warning_flag")
                     .HasDefaultValueSql("((0))");
 
-                entity.HasOne(d => d.ClassProduced)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.ClassProducedId);
+                entity.HasOne(d => d.ClassProduced);
 
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.Applications)
                     .HasForeignKey(d => d.CropId)
                     .HasConstraintName("FK_Applications_Crops");
 
-                entity.HasOne(d => d.GrowerOrganization)
-                    .WithMany(p => p.GrownApplications)
-                    .HasForeignKey(d => d.GrowerId);
+                entity.HasOne(d => d.GrowerOrganization);
 
                 entity.HasOne(d => d.ApplicantOrganization)
                     .WithMany(p => p.AppliedApplications)
@@ -759,21 +755,17 @@ namespace CCIA.Models
                     .HasForeignKey(d => d.Trace)
                     .HasConstraintName("FK_Applications_Applications2");
 
-                entity.HasOne(d => d.County)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.FarmCounty);
+                entity.HasOne(d => d.County);
 
-                entity.HasOne(d => d.Variety)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.SelectedVarietyId);
+                entity.HasOne(d => d.Variety);
                 
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
 
-                entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
+                entity.HasMany(d => d.Certificates);
 
-                entity.HasMany(d => d.PlantingStocks).WithOne(p => p.Applications).HasForeignKey(d => d.AppId);
+                entity.HasMany(d => d.PlantingStocks);
 
-                entity.HasMany(d => d.FieldHistories).WithOne(p => p.Application).HasForeignKey(d => d.AppId).HasForeignKey(p => p.AppId);
+                entity.HasMany(d => d.FieldHistories);
 
             });
 
@@ -1962,8 +1954,8 @@ namespace CCIA.Models
                     .HasForeignKey(d => d.PsClass)
                     .HasConstraintName("FK_planting_stocks_farm_field");
 
-                entity.HasOne(d => d.GrownStateProvince).WithMany(p => p.GrownInPlantingStocks).HasForeignKey(d => d.StateCountryGrown);
-                entity.HasOne(d => d.TaggedStateProvince).WithMany(p => p.TaggedInPlantingStocks).HasForeignKey(d => d.StateCountryTagIssued);
+                entity.HasOne(d => d.GrownStateProvince);
+                entity.HasOne(d => d.TaggedStateProvince);
                 
             });
 
