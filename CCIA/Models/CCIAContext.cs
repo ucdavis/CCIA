@@ -210,6 +210,8 @@ namespace CCIA.Models
                     
                 entity.HasOne(s => s.ClassProduced);
 
+                entity.HasOne(s => s.LabResults);
+
             });
 
             modelBuilder.Entity<FieldHistory>(entity =>

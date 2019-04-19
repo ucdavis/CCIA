@@ -6,11 +6,7 @@ namespace CCIA.Models
 {
     public partial class Seeds
     {
-        // public Seeds()
-        // {
-        //     InverseTraceNavigation = new HashSet<Applications>();
-        // }
-
+       
         public int Id { get; set; }
         public string CertProgram { get; set; } 
         public int? AppId { get; set; }
@@ -79,16 +75,10 @@ namespace CCIA.Models
         public bool NotFinallyCertified { get; set; }
         public bool ChargeFullFees { get; set; }
 
-       
+        [ForeignKey("Id")]
+        public SxLabResults LabResults { get; set; }
 
-
-
-
-        
-
-        
-
-        //public ICollection<FieldHistory>  FieldHistories { get; set; }
+        public bool HasLabs => LabResults.PurityResults == null && LabResults.GermResults == null ? false : true;
 
     }
 }

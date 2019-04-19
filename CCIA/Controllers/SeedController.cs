@@ -34,6 +34,7 @@ namespace CCIA.Controllers
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(c => c.ClassProduced)
+                .Include(l => l.LabResults)
                 .ToListAsync();
             return View(model);
         }

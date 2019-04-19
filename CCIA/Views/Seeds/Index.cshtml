@@ -38,8 +38,11 @@
                 <td>@seeds.Variety.Name</td>
                 <td>@seeds.ClassProduced.Class</td>
                 <td>@seeds.LotNumber</td>
-                <td>labs?</td>
-                <td>lab date</td>
+                <td>@seeds.HasLabs</td>
+                <td>@if(seeds.LabResults.PrivateLabDate.HasValue){
+                    @seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                    }
+                    </td>
                 <td></td>
                 <td>@seeds.Status</td>
             </tr>
