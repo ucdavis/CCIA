@@ -24,7 +24,7 @@ namespace CCIA.Models
         public bool Turfgrass { get; set; }
 
         public ICollection<Applications> Applications { get; set; }
-        public ICollection<Seeds> CertifiedSeeds {get; set;}
+
         
 
     }

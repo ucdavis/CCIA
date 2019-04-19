@@ -20,21 +20,24 @@ namespace CCIA.Models
         public int? SampleFormRad { get; set; }
         public int? CertYear { get; set; }
         
+        [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int? ApplicantId { get; set; }
 
+        [ForeignKey("ConditionerId")]
         public Organizations ConditionerOrganization { get; set; }
         public int? ConditionerId { get; set; }
 
         public int? SampleFormVarietyId { get; set; }
 
+        [ForeignKey("OfficialVarietyId")]
         public VarFull  Variety { get; set; }
         public int? OfficialVarietyId { get; set; }
         //public VarFull  Variety { get; set; }
 
         public string LotNumber { get; set; }
         public decimal PoundsLot { get; set; } 
-               
+
         [ForeignKey("Class")]
         public AbbrevClassSeeds ClassProduced { get; set; }
         public int? Class { get; set; }

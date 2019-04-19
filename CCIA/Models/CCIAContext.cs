@@ -202,21 +202,13 @@ namespace CCIA.Models
                entity.Property(e =>e.NotFinallyCertified).HasColumnName("not_finally_certified");
                entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");  
 
-               entity.HasOne(d => d.ApplicantOrganization)
-                    .WithMany(p => p.AppliedSeeds)
-                    .HasForeignKey(d => d.ApplicantId);
+               entity.HasOne(d => d.ApplicantOrganization);
 
-                entity.HasOne(v => v.Variety)
-                    .WithMany(s => s.CertifiedSeeds)
-                    .HasForeignKey(s => s.OfficialVarietyId);
+                entity.HasOne(v => v.Variety);
 
-                entity.HasOne(s => s.ConditionerOrganization)
-                    .WithMany(c => c.ConditionerSeed)
-                    .HasForeignKey(s => s.ConditionerId);
+                entity.HasOne(s => s.ConditionerOrganization);
                     
                 entity.HasOne(s => s.ClassProduced);
-                    //.WithMany(c => c.Seeds)
-                    //.HasForeignKey(s => s.Class);
 
             });
 

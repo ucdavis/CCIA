@@ -17,8 +17,6 @@ namespace CCIA.Models
 
         public ICollection<Applications> GrownApplications { get; set; }
         public ICollection<Applications> AppliedApplications { get; set; }
-        public ICollection<Seeds> AppliedSeeds { get; set; }
-        public ICollection<Seeds> ConditionerSeed { get; set; }
 
     }
 }
