@@ -281,9 +281,7 @@ namespace CCIA.Models
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
 
-                entity.HasOne(v => v.Crop)
-                    .WithMany(c => c.VarietyCrops)
-                    .HasForeignKey(v => v.CropId);
+                entity.HasOne(v => v.Crop);
 
 
             });

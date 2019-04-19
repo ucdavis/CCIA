@@ -51,6 +51,5 @@ namespace CCIA.Models
         public ICollection<Applications> Applications { get; set; }
         public ICollection<VarOfficial> VarOfficial { get; set; }
         public ICollection<FieldHistory> FieldHistories {get; set; }
-        public ICollection<VarFull> VarietyCrops { get; set; }
     }
 }
