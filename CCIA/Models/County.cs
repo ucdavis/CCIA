@@ -14,6 +14,6 @@ namespace CCIA.Models
         public string Fips { get; set; }
         public int? AgCommOrg { get; set; }
 
-        public ICollection<Applications> Applications { get; set; }
+        
     }
 }

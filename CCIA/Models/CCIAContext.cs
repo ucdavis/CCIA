@@ -36,29 +36,20 @@ namespace CCIA.Models
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
-        public virtual DbSet<Seedlab> Seedlab { get; set; }
-        public virtual DbSet<SeedlabDodder> SeedlabDodder { get; set; }
-        public virtual DbSet<SeedlabGermination> SeedlabGermination { get; set; }
-        public virtual DbSet<SeedlabGerminationRead> SeedlabGerminationRead { get; set; }
-        public virtual DbSet<SeedlabGerminationReplicate> SeedlabGerminationReplicate { get; set; }
-        public virtual DbSet<SeedlabImpurity> SeedlabImpurity { get; set; }
-        public virtual DbSet<SeedlabList> SeedlabList { get; set; }
-        public virtual DbSet<SeedlabNoxiousWeed> SeedlabNoxiousWeed { get; set; }
-        public virtual DbSet<SeedlabNoxiousWeedList> SeedlabNoxiousWeedList { get; set; }
-        public virtual DbSet<SeedlabPurity> SeedlabPurity { get; set; }
-        public virtual DbSet<SeedlabPurityLists> SeedlabPurityLists { get; set; }
-        public virtual DbSet<SeedlabSeeds> SeedlabSeeds { get; set; }
+        
         public virtual DbSet<StateProvince> StateProvince { get; set; }
         public virtual DbSet<SxLabResults> SxLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
+        public virtual DbSet<Seeds> Seeds { get; set; }
+
+        public virtual DbSet<AbbrevClassSeeds> AbbrevClassSeeds { get; set; }
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucumber_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.seedlab_task'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucurbita_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.field_history'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.turfgrass_certificates'. Please see the warning messages.
@@ -92,7 +83,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.map_alfalfa_gefree_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_components_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.abbrev_tag_type'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.seeds'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.duplicateOrgs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
@@ -106,7 +97,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_cert_history'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_health_cert'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.abbrev_class_seeds'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.seeds_apps'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.ccia_employees'. Please see the warning messages.
@@ -154,6 +145,77 @@ namespace CCIA.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Seeds>(entity =>
+            {
+               entity.ToTable("Seeds");
+
+               entity.HasKey(e => e.Id);
+               entity.Property(e => e.Id).HasColumnName("seeds_id");
+
+               entity.Property(e =>e.CertProgram).HasColumnName("cert_program");
+               entity.Property(e =>e.AppId).HasColumnName("app_id");
+               entity.Property(e =>e.SampleFormNumber).HasColumnName("sx_form_no");
+               entity.Property(e =>e.SampleFormDate).HasColumnName("sx_form_date");
+               entity.Property(e =>e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
+               entity.Property(e =>e.SampleFormRad).HasColumnName("sx_form_rad");
+               entity.Property(e =>e.CertYear).HasColumnName("cert_year");
+               entity.Property(e =>e.ApplicantId).HasColumnName("applicant_id");
+               entity.Property(e =>e.ConditionerId).HasColumnName("conditioner_id");
+               entity.Property(e =>e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
+               entity.Property(e =>e.OfficialVarietyId).HasColumnName("official_variety_id");
+               entity.Property(e =>e.LotNumber).HasColumnName("lot_num");
+               entity.Property(e =>e.PoundsLot).HasColumnName("lbs_lot");
+               entity.Property(e =>e.Class).HasColumnName("class");
+               entity.Property(e =>e.ClassAccession).HasColumnName("class_produced_accession");
+               entity.Property(e =>e.Status).HasColumnName("status");
+               entity.Property(e =>e.CountyDrawn).HasColumnName("county_drawn");
+               entity.Property(e =>e.OriginState).HasColumnName("origin_state");
+               entity.Property(e =>e.OriginCountry).HasColumnName("lot_country_origin");
+               entity.Property(e =>e.Bulk).HasColumnName("sx_bulk");
+               entity.Property(e =>e.OriginalRun).HasColumnName("original_run");
+               entity.Property(e =>e.Remill).HasColumnName("remill");
+               entity.Property(e =>e.Treated).HasColumnName("treated");
+               entity.Property(e =>e.OECDTestRequired).HasColumnName("oecd_test_req");
+               entity.Property(e =>e.Resampled).HasColumnName("resample");
+               entity.Property(e =>e.CCIAAuth).HasColumnName("ccia_auth");
+               entity.Property(e =>e.Remarks).HasColumnName("remarks");
+               entity.Property(e =>e.SampleDrawnBy).HasColumnName("sx_drawn_by");
+               entity.Property(e =>e.CertId).HasColumnName("cert_id");
+               entity.Property(e =>e.SampleId).HasColumnName("sample_id");
+               entity.Property(e =>e.OECDLot).HasColumnName("oecd_lot");
+               entity.Property(e =>e.Rush).HasColumnName("rush");
+               entity.Property(e =>e.InDirt).HasColumnName("in_dirt");
+               entity.Property(e =>e.BlendNumber).HasColumnName("blend_num");
+               entity.Property(e =>e.DateSampleReceived).HasColumnName("date_sample_recd");
+               entity.Property(e =>e.CropFee).HasColumnName("crop_fee");
+               entity.Property(e =>e.CertFee).HasColumnName("cert_fee");
+               entity.Property(e =>e.ResearchFee).HasColumnName("research_fee");
+               entity.Property(e =>e.MinimumFee).HasColumnName("min_fee");
+               entity.Property(e =>e.BillTable).HasColumnName("bill_tbl");
+               entity.Property(e =>e.LotCertOk).HasColumnName("lot_cert_cert_ok");
+               entity.Property(e =>e.UserEntered).HasColumnName("user_entered");
+               entity.Property(e =>e.Submitted).HasColumnName("submitted");
+               entity.Property(e =>e.Confirmed).HasColumnName("confirmed");
+               entity.Property(e =>e.ConfirmedAt).HasColumnName("date_confirmed");
+               entity.Property(e =>e.Docs).HasColumnName("docs");
+               entity.Property(e =>e.EmployeeModified).HasColumnName("emp_modified");
+               entity.Property(e =>e.NotFinallyCertified).HasColumnName("not_finally_certified");
+               entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");  
+
+               entity.HasOne(d => d.ApplicantOrganization);
+
+                entity.HasOne(v => v.Variety);
+
+                entity.HasOne(s => s.ConditionerOrganization);
+                    
+                entity.HasOne(s => s.ClassProduced);
+
+                entity.HasOne(s => s.LabResults);
+
+                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
+
+            });
+
             modelBuilder.Entity<FieldHistory>(entity =>
             {
                entity.ToTable("field_history");
@@ -172,7 +234,7 @@ namespace CCIA.Models
 
                entity.Property(e => e.AppNumber).HasColumnName("app_num");
 
-               entity.HasOne(d => d.FHCrops).WithMany(p => p.FieldHistories).HasForeignKey(d => d.Crop).HasPrincipalKey(p => p.CropId);
+               entity.HasOne(d => d.FHCrops);
                
 
             });
@@ -222,6 +284,8 @@ namespace CCIA.Models
                 entity.Property(v => v.ParendId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
+
+                entity.HasOne(v => v.Crop);
 
 
             });
@@ -301,6 +365,29 @@ namespace CCIA.Models
                 entity.Property(e => e.ClassProducedTrans)
                     .HasColumnName("class_produced_trans")
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+            });
+
+            modelBuilder.Entity<AbbrevClassSeeds>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("abbrev_class_seeds");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("class_certified_id")
+                    .ValueGeneratedOnAdd();                
+
+                entity.Property(e => e.Abbrv)
+                    .HasColumnName("class_abbrv")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Class)
+                    .HasColumnName("class_certified_trans")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
@@ -652,18 +739,14 @@ namespace CCIA.Models
                     .HasColumnName("warning_flag")
                     .HasDefaultValueSql("((0))");
 
-                entity.HasOne(d => d.ClassProduced)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.ClassProducedId);
+                entity.HasOne(d => d.ClassProduced);
 
                 entity.HasOne(d => d.Crop)
                     .WithMany(p => p.Applications)
                     .HasForeignKey(d => d.CropId)
                     .HasConstraintName("FK_Applications_Crops");
 
-                entity.HasOne(d => d.GrowerOrganization)
-                    .WithMany(p => p.GrownApplications)
-                    .HasForeignKey(d => d.GrowerId);
+                entity.HasOne(d => d.GrowerOrganization);
 
                 entity.HasOne(d => d.ApplicantOrganization)
                     .WithMany(p => p.AppliedApplications)
@@ -676,21 +759,17 @@ namespace CCIA.Models
                     .HasForeignKey(d => d.Trace)
                     .HasConstraintName("FK_Applications_Applications2");
 
-                entity.HasOne(d => d.County)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.FarmCounty);
+                entity.HasOne(d => d.County);
 
-                entity.HasOne(d => d.Variety)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.SelectedVarietyId);
+                entity.HasOne(d => d.Variety);
                 
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
 
-                entity.HasMany(d => d.Certificates).WithOne(p => p.Application).HasForeignKey(d => d.AppId);
+                entity.HasMany(d => d.Certificates);
 
-                entity.HasMany(d => d.PlantingStocks).WithOne(p => p.Applications).HasForeignKey(d => d.AppId);
+                entity.HasMany(d => d.PlantingStocks);
 
-                entity.HasMany(d => d.FieldHistories).WithOne(p => p.Application).HasForeignKey(d => d.AppId).HasForeignKey(p => p.AppId);
+                entity.HasMany(d => d.FieldHistories);
 
             });
 
@@ -1879,8 +1958,8 @@ namespace CCIA.Models
                     .HasForeignKey(d => d.PsClass)
                     .HasConstraintName("FK_planting_stocks_farm_field");
 
-                entity.HasOne(d => d.GrownStateProvince).WithMany(p => p.GrownInPlantingStocks).HasForeignKey(d => d.StateCountryGrown);
-                entity.HasOne(d => d.TaggedStateProvince).WithMany(p => p.TaggedInPlantingStocks).HasForeignKey(d => d.StateCountryTagIssued);
+                entity.HasOne(d => d.GrownStateProvince);
+                entity.HasOne(d => d.TaggedStateProvince);
                 
             });
 
@@ -1924,688 +2003,6 @@ namespace CCIA.Models
                 entity.Property(e => e.Unit)
                     .HasColumnName("unit")
                     .HasMaxLength(25)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Seedlab>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab");
-
-                entity.Property(e => e.LabId).HasColumnName("lab_id");
-
-                entity.Property(e => e.AppEnteredBy)
-                    .IsRequired()
-                    .HasColumnName("app_entered_by")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.AppEnteredDate)
-                    .HasColumnName("app_entered_date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.AppUpdatedBy)
-                    .HasColumnName("app_updated_by")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.AppUpdatedDate)
-                    .HasColumnName("app_updated_date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.ClearlyMarkedForCert)
-                    .HasColumnName("clearly_marked_for_cert")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Condition)
-                    .HasColumnName("condition")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateDivided)
-                    .HasColumnName("date_divided")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DateReceived)
-                    .HasColumnName("date_received")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.DividedBy)
-                    .HasColumnName("divided_by")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.HasSampleForm)
-                    .HasColumnName("has_sample_form")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InsufficientSizeSample)
-                    .HasColumnName("insufficient_size_sample")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.LabYear).HasColumnName("lab_year");
-
-                entity.Property(e => e.RecordedBy)
-                    .IsRequired()
-                    .HasColumnName("recorded_by")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.SampleType)
-                    .HasColumnName("sample_type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
-
-                entity.Property(e => e.Weight).HasColumnName("weight");
-            });
-
-            modelBuilder.Entity<SeedlabDodder>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_dodder");
-
-                entity.Property(e => e.LabId)
-                    .HasColumnName("lab_id")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CompletedBy)
-                    .HasColumnName("completed_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateCompleted)
-                    .HasColumnName("date_completed")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.Dodder)
-                    .HasColumnName("dodder")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.WeightDodder)
-                    .HasColumnName("weight_dodder")
-                    .HasColumnType("numeric(7, 2)");
-
-                entity.Property(e => e.WeightWorkingSample)
-                    .HasColumnName("weight_working_sample")
-                    .HasColumnType("numeric(18, 4)");
-            });
-
-            modelBuilder.Entity<SeedlabGermination>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_germination");
-
-                entity.Property(e => e.LabId)
-                    .HasColumnName("lab_id")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CalcAbnormal).HasColumnName("calc_abnormal");
-
-                entity.Property(e => e.CalcDead).HasColumnName("calc_dead");
-
-                entity.Property(e => e.CalcDormant).HasColumnName("calc_dormant");
-
-                entity.Property(e => e.CalcGerm).HasColumnName("calc_germ");
-
-                entity.Property(e => e.CalcHard).HasColumnName("calc_hard");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DatePlanted)
-                    .HasColumnName("date_planted")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.InsufficientSizeGerm)
-                    .HasColumnName("insufficient_size_germ")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.NumSeedsPlanted).HasColumnName("num_seeds_planted");
-
-                entity.Property(e => e.PreChill)
-                    .HasColumnName("pre_chill")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.PreChillDays).HasColumnName("pre_chill_days");
-
-                entity.Property(e => e.Replicates).HasColumnName("replicates");
-
-                entity.Property(e => e.ReportGerm).HasColumnName("report_germ");
-
-                entity.Property(e => e.ReportHard).HasColumnName("report_hard");
-
-                entity.Property(e => e.StartedBy)
-                    .HasColumnName("started_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Substrate)
-                    .HasColumnName("substrate")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Temperature)
-                    .HasColumnName("temperature")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<SeedlabGerminationRead>(entity =>
-            {
-                entity.HasKey(e => e.ReadId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_germination_read");
-
-                entity.Property(e => e.ReadId).HasColumnName("read_id");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateRead)
-                    .HasColumnName("date_read")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.Final)
-                    .HasColumnName("final")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.LabId).HasColumnName("lab_id");
-
-                entity.Property(e => e.ReadBy)
-                    .HasColumnName("read_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<SeedlabGerminationReplicate>(entity =>
-            {
-                entity.HasKey(e => e.RepId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_germination_replicate");
-
-                entity.Property(e => e.RepId).HasColumnName("rep_id");
-
-                entity.Property(e => e.AbnormalSeed).HasColumnName("abnormal_seed");
-
-                entity.Property(e => e.DeadSeed).HasColumnName("dead_seed");
-
-                entity.Property(e => e.DormantFresh).HasColumnName("dormant_fresh");
-
-                entity.Property(e => e.GermCount).HasColumnName("germ_count");
-
-                entity.Property(e => e.HardCount).HasColumnName("hard_count");
-
-                entity.Property(e => e.ReadId).HasColumnName("read_id");
-
-                entity.Property(e => e.Remainder).HasColumnName("remainder");
-
-                entity.Property(e => e.RepNum).HasColumnName("rep_num");
-            });
-
-            modelBuilder.Entity<SeedlabImpurity>(entity =>
-            {
-                entity.HasKey(e => e.ImpurityListId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_impurity");
-
-                entity.Property(e => e.ImpurityListId).HasColumnName("impurity_list_id");
-
-                entity.Property(e => e.Fraction)
-                    .IsRequired()
-                    .HasColumnName("fraction")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ImpurityType)
-                    .IsRequired()
-                    .HasColumnName("impurity_type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LabId).HasColumnName("lab_id");
-
-                entity.Property(e => e.ListId).HasColumnName("list_id");
-
-                entity.Property(e => e.NumberFound).HasColumnName("number_found");
-
-                entity.Property(e => e.ReportRate).HasColumnName("report_rate");
-            });
-
-            modelBuilder.Entity<SeedlabList>(entity =>
-            {
-                entity.HasKey(e => e.ListId);
-
-                entity.ToTable("seedlab_list");
-
-                entity.HasIndex(e => new { e.Genus, e.Species, e.Subspecies, e.CommonName })
-                    .HasName("IX_seedlab_list")
-                    .IsUnique();
-
-                entity.Property(e => e.ListId).HasColumnName("list_id");
-
-                entity.Property(e => e.CommonName)
-                    .IsRequired()
-                    .HasColumnName("common_name")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Genus)
-                    .IsRequired()
-                    .HasColumnName("genus")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ListName)
-                    .IsRequired()
-                    .HasColumnName("list_name")
-                    .HasMaxLength(655)
-                    .IsUnicode(false)
-                    .HasComputedColumnSql("(((([genus]+isnull(' '+[species],''))+isnull(' '+[subspecies],''))+' | ')+[common_name])");
-
-                entity.Property(e => e.Noxious)
-                    .HasColumnName("noxious")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.NoxiousType)
-                    .HasColumnName("noxious_type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ScientificName)
-                    .IsRequired()
-                    .HasColumnName("scientific_name")
-                    .HasMaxLength(152)
-                    .IsUnicode(false)
-                    .HasComputedColumnSql("(([genus]+isnull(' '+[species],''))+isnull(' '+[subspecies],''))");
-
-                entity.Property(e => e.Species)
-                    .HasColumnName("species")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Subspecies)
-                    .HasColumnName("subspecies")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<SeedlabNoxiousWeed>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_noxious_weed");
-
-                entity.Property(e => e.LabId)
-                    .HasColumnName("lab_id")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CompletedBy)
-                    .HasColumnName("completed_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateCompleted)
-                    .HasColumnName("date_completed")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.DateDodder)
-                    .HasColumnName("date_dodder")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.DodderComments)
-                    .HasColumnName("dodder_comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DodderCompletedBy)
-                    .HasColumnName("dodder_completed_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DodderCount).HasColumnName("dodder_count");
-
-                entity.Property(e => e.DodderResult)
-                    .HasColumnName("dodder_result")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.InsufficientSizeDodder)
-                    .HasColumnName("insufficient_size_dodder")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InsufficientSizeNoxious)
-                    .HasColumnName("insufficient_size_noxious")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.RedriceComments)
-                    .HasColumnName("redrice_comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RedriceCompletedBy)
-                    .HasColumnName("redrice_completed_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RedriceCount).HasColumnName("redrice_count");
-
-                entity.Property(e => e.RedriceDate)
-                    .HasColumnName("redrice_date")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.RedriceInsufficientSize)
-                    .HasColumnName("redrice_insufficient_size")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.RedriceResult)
-                    .HasColumnName("redrice_result")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RedriceWeight).HasColumnName("redrice_weight");
-
-                entity.Property(e => e.WeightDodder).HasColumnName("weight_dodder");
-
-                entity.Property(e => e.WeightWorkingSample).HasColumnName("weight_working_sample");
-            });
-
-            modelBuilder.Entity<SeedlabNoxiousWeedList>(entity =>
-            {
-                entity.HasKey(e => e.NoxiousListId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_noxious_weed_list");
-
-                entity.Property(e => e.NoxiousListId).HasColumnName("noxious_list_id");
-
-                entity.Property(e => e.LabId).HasColumnName("lab_id");
-
-                entity.Property(e => e.ListId).HasColumnName("list_id");
-
-                entity.Property(e => e.NumberFound).HasColumnName("number_found");
-
-                entity.Property(e => e.ReportRate).HasColumnName("report_rate");
-            });
-
-            modelBuilder.Entity<SeedlabPurity>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_purity");
-
-                entity.Property(e => e.LabId)
-                    .HasColumnName("lab_id")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.BadlyDiscoloredGrams).HasColumnName("badly_discolored_grams");
-
-                entity.Property(e => e.BushelWeight).HasColumnName("bushel_weight");
-
-                entity.Property(e => e.CalcBadlyDiscolored)
-                    .HasColumnName("calc_badly_discolored")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcChewingInsectDamage)
-                    .HasColumnName("calc_chewing_insect_damage")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcForeignMaterial)
-                    .HasColumnName("calc_foreign_material")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcInert)
-                    .HasColumnName("calc_inert")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcOtherCrop)
-                    .HasColumnName("calc_other_crop")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcPurity)
-                    .HasColumnName("calc_purity")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcSplitsAndCracks)
-                    .HasColumnName("calc_splits_and_cracks")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.CalcWeed)
-                    .HasColumnName("calc_weed")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ChewingInsectDamageGrams).HasColumnName("chewing_insect_damage_grams");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CompletedBy)
-                    .HasColumnName("completed_by")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateCompleted)
-                    .HasColumnName("date_completed")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.ForeignMaterialGrams).HasColumnName("foreign_material_grams");
-
-                entity.Property(e => e.InertChaff)
-                    .HasColumnName("inert_chaff")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertDescription)
-                    .HasColumnName("inert_description")
-                    .HasMaxLength(5000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.InertDirt)
-                    .HasColumnName("inert_dirt")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertGrams)
-                    .HasColumnName("inert_grams")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertPlantFragments)
-                    .HasColumnName("inert_plant_fragments")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertSeedFragments)
-                    .HasColumnName("inert_seed_fragments")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertSoil)
-                    .HasColumnName("inert_soil")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertStems)
-                    .HasColumnName("inert_stems")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InertTreatmentColorant)
-                    .HasColumnName("inert_treatment_colorant")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.InsufficientSizePurity)
-                    .HasColumnName("insufficient_size_purity")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.OtherCropCount).HasColumnName("other_crop_count");
-
-                entity.Property(e => e.OtherCropGrams)
-                    .HasColumnName("other_crop_grams")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.OtherVarietyCount).HasColumnName("other_variety_count");
-
-                entity.Property(e => e.OtherVarietyGrams).HasColumnName("other_variety_grams");
-
-                entity.Property(e => e.PureSeedGrams)
-                    .HasColumnName("pure_seed_grams")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.ReportBadlyDiscolored)
-                    .HasColumnName("report_badly_discolored")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportChewingInsectDamage)
-                    .HasColumnName("report_chewing_insect_damage")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportForeignMaterial)
-                    .HasColumnName("report_foreign_material")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportInert)
-                    .HasColumnName("report_inert")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportOtherCrop)
-                    .HasColumnName("report_other_crop")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportOtherVariety)
-                    .HasColumnName("report_other_variety")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportPurity)
-                    .HasColumnName("report_purity")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportSplitsCracks)
-                    .HasColumnName("report_splits_cracks")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.ReportWeed)
-                    .HasColumnName("report_weed")
-                    .HasColumnType("decimal(5, 2)");
-
-                entity.Property(e => e.SplitsCracksGrams).HasColumnName("splits_cracks_grams");
-
-                entity.Property(e => e.WeedSeedCount).HasColumnName("weed_seed_count");
-
-                entity.Property(e => e.WeedSeedGrams)
-                    .HasColumnName("weed_seed_grams")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.WeightWorkingSample).HasColumnName("weight_working_sample");
-            });
-
-            modelBuilder.Entity<SeedlabPurityLists>(entity =>
-            {
-                entity.HasKey(e => e.PurityListId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_purity_lists");
-
-                entity.HasIndex(e => new { e.LabId, e.Type, e.ListId })
-                    .HasName("IX_seedlab_purity_lists")
-                    .IsUnique();
-
-                entity.Property(e => e.PurityListId).HasColumnName("purity_list_id");
-
-                entity.Property(e => e.Count).HasColumnName("count");
-
-                entity.Property(e => e.Grams).HasColumnName("grams");
-
-                entity.Property(e => e.LabId).HasColumnName("lab_id");
-
-                entity.Property(e => e.ListId).HasColumnName("list_id");
-
-                entity.Property(e => e.Type)
-                    .IsRequired()
-                    .HasColumnName("type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<SeedlabSeeds>(entity =>
-            {
-                entity.HasKey(e => e.LabId)
-                    .ForSqlServerIsClustered(false);
-
-                entity.ToTable("seedlab_seeds");
-
-                entity.Property(e => e.LabId)
-                    .HasColumnName("lab_id")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.CertNumber)
-                    .HasColumnName("cert_number")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CondId).HasColumnName("cond_id");
-
-                entity.Property(e => e.CondText)
-                    .HasColumnName("cond_text")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CropId).HasColumnName("crop_id");
-
-                entity.Property(e => e.LotNumber)
-                    .HasColumnName("lot_number")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LotSize)
-                    .HasColumnName("lot_size")
-                    .HasColumnType("numeric(16, 2)");
-
-                entity.Property(e => e.SeedLab)
-                    .HasColumnName("seed_lab")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.SubmittingLabNumber)
-                    .HasColumnName("submitting_lab_number")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Treated)
-                    .HasColumnName("treated")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.VarOffId).HasColumnName("var_off_id");
-
-                entity.Property(e => e.VarietyName)
-                    .HasColumnName("variety_name")
-                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 

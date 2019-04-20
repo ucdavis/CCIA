@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -28,9 +29,11 @@ namespace CCIA.Models
 
         public AbbrevClassProduced PsClassNavigation { get; set; }
 
-       public Applications Applications { get; set; }
-
+       
+       [ForeignKey("StateCountryGrown")]
        public StateProvince GrownStateProvince {get; set; }
+
+       [ForeignKey("StateCountryTagIssued")]
        public StateProvince TaggedStateProvince { get; set; }
 
        
