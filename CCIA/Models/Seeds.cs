@@ -1,21 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class Seeds
     {
-       
+
+         [Display(Name = "SID")] 
         public int Id { get; set; }
-        public string CertProgram { get; set; } 
+        [ForeignKey("CertProgram")]
+        public AbbrevAppType AppTypeTrans { get; set; }
+        public string CertProgram { get; set; }
         public int? AppId { get; set; }
         public int? SampleFormNumber { get; set; }
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
         public int? CertYear { get; set; }
-        
+
         [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int? ApplicantId { get; set; }
@@ -27,12 +31,12 @@ namespace CCIA.Models
         public int? SampleFormVarietyId { get; set; }
 
         [ForeignKey("OfficialVarietyId")]
-        public VarFull  Variety { get; set; }
+        public VarFull Variety { get; set; }
         public int? OfficialVarietyId { get; set; }
         //public VarFull  Variety { get; set; }
 
         public string LotNumber { get; set; }
-        public decimal PoundsLot { get; set; } 
+        public decimal PoundsLot { get; set; }
 
         [ForeignKey("Class")]
         public AbbrevClassSeeds ClassProduced { get; set; }
@@ -40,7 +44,7 @@ namespace CCIA.Models
         public int? ClassAccession { get; set; }
         public string Status { get; set; }
         public int? CountyDrawn { get; set; }
-        public int? OriginState { get; set; }        
+        public int? OriginState { get; set; }
         public int? OriginCountry { get; set; }
         public bool Bulk { get; set; }
         public bool OriginalRun { get; set; }
@@ -67,8 +71,8 @@ namespace CCIA.Models
         public int? UserEntered { get; set; }
         public bool Submitted { get; set; }
         public bool Confirmed { get; set; }
-        public DateTime? ConfirmedAt { get; set; }         
-        
+        public DateTime? ConfirmedAt { get; set; }
+
         public int? YearConfirmed => ConfirmedAt != null ? ConfirmedAt.Value.Year : 0;
         public bool Docs { get; set; }
         public string EmployeeModified { get; set; }
@@ -79,6 +83,38 @@ namespace CCIA.Models
         public SxLabResults LabResults { get; set; }
 
         public bool HasLabs => LabResults.PurityResults == null && LabResults.GermResults == null ? false : true;
+
+        // NO lot number included
+        public string CertNumber()
+        {
+            string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+            if (OriginState != 102 || AppId != null)
+            {
+                if (AppId != null)
+                {
+                    return SampleFormCertNumber;
+                }
+                if (OriginState != 102)
+                {
+                    return SampleFormCertNumber;
+                }
+                if (CertYear < 2007)
+                {
+                    return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
+                }
+                return $"{certYearAbbrev}CA-{SampleFormCertNumber}";
+            }
+            else
+            {
+                if(CertYear < 2007) {
+                    return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
+                }
+                return $"{certYearAbbrev}CA-{SampleFormRad}-{SampleFormCertNumber}";
+            }
+
+        }
+
+
 
     }
 }

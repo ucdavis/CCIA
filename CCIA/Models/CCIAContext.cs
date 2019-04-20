@@ -212,6 +212,8 @@ namespace CCIA.Models
 
                 entity.HasOne(s => s.LabResults);
 
+                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
+
             });
 
             modelBuilder.Entity<FieldHistory>(entity =>

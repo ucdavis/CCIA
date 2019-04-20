@@ -40,12 +40,19 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Details/5
-         public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Seeds.Where(s => s.Id == id && orgId.Contains(s.ConditionerId))
-                .FirstOrDefaultAsync();           
+             .Include(a => a.ApplicantOrganization)
+             .Include(c => c.ConditionerOrganization)
+                .Include(c => c.AppTypeTrans)
+                .Include(v => v.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(c => c.ClassProduced)
+                .Include(l => l.LabResults)
+                .FirstOrDefaultAsync();
             return View(model);
         }
 
