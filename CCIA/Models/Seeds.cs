@@ -114,6 +114,10 @@ namespace CCIA.Models
 
         }
 
+        public string FullCert() {
+            return $"{CertNumber()}-{LotNumber}";
+        }
+
 
 
     }
