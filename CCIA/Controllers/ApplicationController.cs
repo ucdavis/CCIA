@@ -186,7 +186,10 @@ namespace CCIA.Controllers
                 return RedirectToAction("Details", new { id = app.AppId});
             }
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
-            Message = "You are missing the following required fields: ";
+            model.RenderFormRemainder = true;
+            Message = "You are missing certain required fields.";
+            // Message = ConcatenateErrors(ModelState);
+
             return View(model);
         }
 
@@ -391,5 +394,15 @@ namespace CCIA.Controllers
             // string fullPartialPath = "~/Views/Application/" + partialName + ".cshtml";
             return PartialView(partialName, model);
         }
+
+        // private string ConcatenateErrors(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary ModelState)
+        // {
+        //     string res = "";
+        //     foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
+        //     {
+        //         res += (error.ToString() + "\n");
+        //     }
+        //     return res;
+        // }
     }
 }

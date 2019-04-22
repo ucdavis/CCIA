@@ -24,13 +24,15 @@ namespace CCIA.Models
 
         public List<VarOfficial> Varieties {get; set; }
 
+        public bool RenderFormRemainder {get; set; }
+
         public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType) {
             var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
             switch(appType) {
                 // Seed
                 case 1:
-                    crops = await dbContext.Crops.ToListAsync();
+                    crops = await dbContext.Crops.Where(c => c.CertifiedCrop == true).ToListAsync();
                     break;
                 // Potato
                 case 2:
@@ -87,6 +89,7 @@ namespace CCIA.Models
                 Counties = counties,
                 Organization = organization,
                 OrgState = orgState,
+                RenderFormRemainder = false,
                 Varieties = varieties
             };
 

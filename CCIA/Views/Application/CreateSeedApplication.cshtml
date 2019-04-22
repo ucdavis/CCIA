@@ -53,7 +53,12 @@
         </div>
     </div>
 
-    <div id="form-remainder"></div>
+    <div id="form-remainder">
+        @if (@Model.RenderFormRemainder)
+        {
+            @Html.Partial("SeedAppPartial");
+        }
+    </div>
 </form>
 
 @section Scripts {
@@ -90,11 +95,16 @@
 
             // Display error if user tries to search for variety before selecting crop
             let crop = document.getElementsByName("crop")[0];
+            let cropText = crop.options[crop.selectedIndex].text;
             let cropId = crop.options[crop.selectedIndex].value;
-            if (cropId == "-1") { window.alert("Please select a crop before searching for a variety."); }
+            let varietyName = document.getElementById("variety").value;
+            if (cropText == "") { 
+                window.alert("Please select a crop before searching for a variety."); 
+                return;
+            }
 
             let data = { 
-                name: document.getElementById("variety").value,
+                name: varietyName,
                 cropId: cropId
             };
             let vs = document.getElementById("variety-select");
@@ -107,7 +117,8 @@
                 success: function(res) {
                     let dd = document.getElementById("variety-dropdown");
                     if (res.length === 0) {
-                        dd.className = "dropdown";
+                        alert("No variety with name "+varietyName+" was found in our system. A new variety will be used.");
+                        loadFormRemainder();
                     } else {
                         dd.className += " " + "open";               
                     }
@@ -131,12 +142,18 @@
             document.getElementById("variety-id").value = e.firstElementChild.attributes.value.value;
             document.getElementById("variety").value = e.firstElementChild.innerText
 
-            /* Load the rest of the form */
+            loadFormRemainder();
+        }
+
+        /* Load the rest of the form after selecting (or entering) a variety*/
+        function loadFormRemainder() {
             let orgId = @Model.Organization.OrgId;
             let appTypeId = 1;
+            /* If something is inside form-remainder div, clear it out */
+            $("#form-remainder").empty();
             $("#form-remainder")
                 .load("/Application/GetPartial?partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, () => {
-                    /* Set functionality for date time picker */
+                    /* Set functionality for date time picker after loading form remainder*/
                     $('#datetimepicker1').datetimepicker({
                         format: 'MM/DD/YYYY'
                     });

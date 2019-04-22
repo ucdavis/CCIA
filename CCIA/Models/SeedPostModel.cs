@@ -38,6 +38,8 @@ namespace CCIA.Models
 
     [Required]
     public DateTime? DatePlanted { get; set; }
+    
+    public string EnteredVarietyName {get; set; }
 
     public int GrowerId { get; set; }
 
