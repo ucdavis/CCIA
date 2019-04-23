@@ -26,7 +26,7 @@ namespace CCIA.Models
 
         [ForeignKey("ConditionerId")]
         public Organizations ConditionerOrganization { get; set; }
-        public int? ConditionerId { get; set; }
+        public int ConditionerId { get; set; }
 
         public int? SampleFormVarietyId { get; set; }
 
@@ -82,7 +82,7 @@ namespace CCIA.Models
         [ForeignKey("Id")]
         public SxLabResults LabResults { get; set; }
 
-        public bool HasLabs => LabResults.PurityResults == null && LabResults.GermResults == null ? false : true;
+        public bool HasLabs => LabResults.PurityPercent == null && LabResults.GermPercent == null ? false : true;
 
         // NO lot number included
         public string CertNumber()

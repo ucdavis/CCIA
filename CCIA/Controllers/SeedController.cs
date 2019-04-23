@@ -7,6 +7,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CCIA.Models.SeedsViewModels;
 
 
 
@@ -28,8 +29,8 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
-            var model = await _dbContext.Seeds.Where(s => s.CertYear == certYear && orgId.Contains(s.ConditionerId))
+            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            var model = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
                 .Include(a => a.ApplicantOrganization)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
@@ -43,16 +44,8 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
-            var model = await _dbContext.Seeds.Where(s => s.Id == id && orgId.Contains(s.ConditionerId))
-             .Include(a => a.ApplicantOrganization)
-             .Include(c => c.ConditionerOrganization)
-                .Include(c => c.AppTypeTrans)
-                .Include(v => v.Variety)
-                .ThenInclude(v => v.Crop)
-                .Include(c => c.ClassProduced)
-                .Include(l => l.LabResults)
-                .FirstOrDefaultAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             return View(model);
         }
 

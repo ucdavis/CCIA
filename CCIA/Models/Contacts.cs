@@ -6,7 +6,7 @@ namespace CCIA.Models
     public partial class Contacts
     {
         public int ContactId { get; set; }
-        public int? OrgId { get; set; }
+        public int OrgId { get; set; }
         public string Title { get; set; }
         public string FormOfAddr { get; set; }
         public string FirstName { get; set; }
