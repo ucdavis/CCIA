@@ -25,7 +25,9 @@ namespace CCIA.Models.SeedsViewModels
                     .Include(c => c.ClassProduced)
                     .Include(l => l.LabResults)
                     .FirstOrDefaultAsync(),
-                labResults = await _dbContext.SxLabResults.Where(l => l.SeedsId == sid).FirstOrDefaultAsync()
+                labResults = await _dbContext.SxLabResults.Where(l => l.SeedsId == sid)                    
+                    .Include(r => r.LabOrganization)
+                    .FirstOrDefaultAsync(),
             };
 
             return viewModel;

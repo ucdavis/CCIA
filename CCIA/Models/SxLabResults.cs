@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -66,6 +67,9 @@ namespace CCIA.Models
         public string UpdateUser { get; set; }
         public DateTime? PrivateLabDate { get; set; }
         public string PrivateLabName { get; set; }
+
+        [ForeignKey("PrivateLabId")]
+        public Organizations LabOrganization { get; set; }
         public int? PrivateLabId { get; set; }
         public string PrivateLabNumber { get; set; }
         public bool? CciaConfirmed { get; set; }
@@ -84,5 +88,7 @@ namespace CCIA.Models
         [Display(Name = "Chewing Insect Damage")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? ChewingInsectDamagePercent { get; set; }
+
+
     }
 }

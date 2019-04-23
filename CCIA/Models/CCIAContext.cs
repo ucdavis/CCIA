@@ -2243,6 +2243,10 @@ namespace CCIA.Models
                 entity.Property(e => e.WeedSeedPercent)
                     .HasColumnName("weed_seed_percent")
                     .HasColumnType("numeric(8, 7)");
+                
+                entity.HasOne(d => d.LabOrganization);
+                 
+                
             });
 
             modelBuilder.Entity<VarFamily>(entity =>
