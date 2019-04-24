@@ -12,7 +12,7 @@ namespace CCIA.Models
         public string OrgName { get; set; }
         
         public Address Address { get; set; }
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
 
        
