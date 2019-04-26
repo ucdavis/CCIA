@@ -4,8 +4,12 @@
     <option></option>
     @foreach (var state_country in Model.StateProvince)
     {
-        <option value=@state_country.StateProvinceId>
-                @state_country.StateProvinceName
-        </option>
+        @if(state_country.StateProvinceName=="California")
+        {
+           <option value=@state_country.StateProvinceId selected="selected">@state_country.StateProvinceName</option>
+        }
+        else {
+            <option value=@state_country.StateProvinceId>@state_country.StateProvinceName</option>
+        }
     }
 </select>

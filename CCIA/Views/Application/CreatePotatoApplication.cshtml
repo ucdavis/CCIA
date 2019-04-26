@@ -34,26 +34,23 @@
 
         <div class="col-lg-4 col-sm-4 col-xs-4">
             <label>Variety:</label><em class="required">*</em>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="variety">Variety
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu scrollable-menu" id="variety-select">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="Variety">Variety</a></li>
-                    @foreach (var v in Model.Varieties)
+            <select name="variety" class="form-control">
+                @foreach (var v in Model.Varieties)
                     {
                         if (v.CropId == 137){
+                            <option value=@v.VarOffId>@v.VarOffName</option>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@v.VarOffId>@v.VarOffName</a></li>
                         }
                     }
-                </ul>
-            </div>
+            </select>
         </div>
     </div>
 
     <div class="form-group">
-        @{ViewBag.name = "classProduced";}
-        <label>Class Planted</label><em class="required">*</em>
+        <label>Class to be Produced</label><em class="required">*</em>
+        @{ ViewBag.name = "classProduced"; }
         @Html.Partial("ClassRadioButtons")
+        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
     </div>
 
     <div class="row">
@@ -140,19 +137,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label>County:</label><em class="required">*</em>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu scrollable-menu" id="county-select">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="County">County</a></li>
-                    @foreach (var county in Model.Counties)
-                    {
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@county.CountyId>@county.CountyName</a></li>
-                    }
-                </ul>
-            </div>
-            @Html.ValidationMessage("County", "", new { @class = "text-danger" })
+            @Html.Partial("CountyDropdownPartial")
         </div>
         <div class="form-group">
             <label for="acres-applied">Acres Applied:</label><em class="required">*</em>

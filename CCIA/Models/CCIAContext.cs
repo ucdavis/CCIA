@@ -279,6 +279,9 @@ namespace CCIA.Models
                     .HasColumnName("variety_title")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.GrowerSameAsApplicant)
+                    .HasColumnName("grower_same_as_applicant");
             });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>

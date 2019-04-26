@@ -75,6 +75,14 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        // POST: Application/CreatePotatoApplication
+        [HttpPost]
+        public async Task<IActionResult> CreatePotatoApplication(PotatoPostModel potatoApp)
+        {
+            // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            return Json(potatoApp);
+        }
+
         // GET: Application/CreateHeritageGrainApplication
         public async Task<IActionResult> CreateHeritageGrainApplication(int orgId, int appTypeId)
         {
@@ -120,9 +128,24 @@ namespace CCIA.Controllers
         // GET: Application/GrowerLookup
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
+            // Get contact ID -- will correspond to logged-in user
+            var contact = await _dbContext.ContactToOrg
+                                .Where(c => c.ContactId == 1)
+                                .FirstOrDefaultAsync();
+
             // Check if grower is same as applicant
-            var model = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == appTypeId).FirstOrDefaultAsync();
-            return View(model);
+            var abbrevAppType = await _dbContext.AbbrevAppType
+                            .Where(a => a.AppTypeId == appTypeId)
+                            .FirstOrDefaultAsync();
+            if (abbrevAppType.GrowerSameAsApplicant)
+            {
+                int orgId = Convert.ToInt32(contact.OrgId);
+                return RedirectToAction("CreatePotatoApplication", new { orgId = orgId, appTypeId = appTypeId });
+            }
+            else
+            {   
+                return View(abbrevAppType);
+            }
         }
 
         // POST: Application/CreateSeedApplication
@@ -157,7 +180,10 @@ namespace CCIA.Controllers
                 _dbContext.Add(ps);
 
                 // Create second plantingstocks entry if required fields aren't null.
-                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null && seedApp.ClassPlanted2 != null) {
+                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
+                    && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
+                    && seedApp.StateCountryTagIssued2 != null) 
+                {
                     var ps2 = new PlantingStocks() {
                         AppId = app.AppId,
                         PsCertNum = seedApp.CertLotNum2,
@@ -174,12 +200,21 @@ namespace CCIA.Controllers
                 }
 
                 // Field History
-                var fieldHistory1 = CreateFieldHistory1Record(app.AppId, seedApp);
-                var fieldHistory2 = CreateFieldHistory2Record(app.AppId, seedApp);
-                var fieldHistory3 = CreateFieldHistory3Record(app.AppId, seedApp);
-                _dbContext.Add(fieldHistory1);
-                _dbContext.Add(fieldHistory2);
-                _dbContext.Add(fieldHistory3);
+                if (seedApp.HistoryCropYear1 != null && seedApp.HistoryCrop1 != null)
+                {
+                    var fieldHistory1 = CreateFieldHistory1Record(app.AppId, seedApp);
+                    _dbContext.Add(fieldHistory1);
+                }
+                if (seedApp.HistoryCropYear2 != null && seedApp.HistoryCrop2 != null)
+                {
+                    var fieldHistory2 = CreateFieldHistory2Record(app.AppId, seedApp);
+                    _dbContext.Add(fieldHistory2);
+                }
+                if (seedApp.HistoryCropYear3 != null && seedApp.HistoryCrop3 != null)
+                {
+                    var fieldHistory3 = CreateFieldHistory3Record(app.AppId, seedApp);
+                    _dbContext.Add(fieldHistory3);
+                }
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
@@ -189,7 +224,7 @@ namespace CCIA.Controllers
             model.RenderFormRemainder = true;
             Message = "You are missing certain required fields.";
             // Message = ConcatenateErrors(ModelState);
-
+            // return Json(ModelState);
             return View(model);
         }
 
