@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
@@ -36,7 +37,7 @@ namespace CCIA.Models
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
-        
+
         public virtual DbSet<StateProvince> StateProvince { get; set; }
         public virtual DbSet<SxLabResults> SxLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
@@ -83,7 +84,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.map_alfalfa_gefree_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_components_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.abbrev_tag_type'. Please see the warning messages.
-        
+
         // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.duplicateOrgs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
@@ -97,7 +98,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_cert_history'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_health_cert'. Please see the warning messages.
-       
+
         // Unable to generate entity type for table 'dbo.seeds_apps'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.ccia_employees'. Please see the warning messages.
@@ -124,11 +125,22 @@ namespace CCIA.Models
         //         new ConsoleLoggerProvider ((category, level) => category == DbLoggerCategory.Database.Command.Name &&
         //             level == LogLevel.Debug, true)
         //     });
-        
 
-    public static readonly LoggerFactory James = new LoggerFactory(new [] {
-        new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug, true)
-    });
+
+    //     public static readonly LoggerFactory James = new LoggerFactory(new[] {
+    //     new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug, true)
+    // });
+
+        private ILoggerFactory GetLoggerFactory()
+        {
+            IServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(builder =>
+                   builder.AddConsole()
+                          .AddFilter(DbLoggerCategory.Database.Command.Name,
+                                     LogLevel.Information));
+            return serviceCollection.BuildServiceProvider()
+                    .GetService<ILoggerFactory>();
+        }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -137,8 +149,8 @@ namespace CCIA.Models
             {
                 optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
             }
-            optionsBuilder.UseLoggerFactory(James).EnableSensitiveDataLogging();
-            
+            optionsBuilder.UseLoggerFactory(GetLoggerFactory());
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -147,67 +159,67 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Seeds>(entity =>
             {
-               entity.ToTable("Seeds");
+                entity.ToTable("Seeds");
 
-               entity.HasKey(e => e.Id);
-               entity.Property(e => e.Id).HasColumnName("seeds_id");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("seeds_id");
 
-               entity.Property(e =>e.CertProgram).HasColumnName("cert_program");
-               entity.Property(e =>e.AppId).HasColumnName("app_id");
-               entity.Property(e =>e.SampleFormNumber).HasColumnName("sx_form_no");
-               entity.Property(e =>e.SampleFormDate).HasColumnName("sx_form_date");
-               entity.Property(e =>e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
-               entity.Property(e =>e.SampleFormRad).HasColumnName("sx_form_rad");
-               entity.Property(e =>e.CertYear).HasColumnName("cert_year");
-               entity.Property(e =>e.ApplicantId).HasColumnName("applicant_id");
-               entity.Property(e =>e.ConditionerId).HasColumnName("conditioner_id");
-               entity.Property(e =>e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
-               entity.Property(e =>e.OfficialVarietyId).HasColumnName("official_variety_id");
-               entity.Property(e =>e.LotNumber).HasColumnName("lot_num");
-               entity.Property(e =>e.PoundsLot).HasColumnName("lbs_lot");
-               entity.Property(e =>e.Class).HasColumnName("class");
-               entity.Property(e =>e.ClassAccession).HasColumnName("class_produced_accession");
-               entity.Property(e =>e.Status).HasColumnName("status");
-               entity.Property(e =>e.CountyDrawn).HasColumnName("county_drawn");
-               entity.Property(e =>e.OriginState).HasColumnName("origin_state");
-               entity.Property(e =>e.OriginCountry).HasColumnName("lot_country_origin");
-               entity.Property(e =>e.Bulk).HasColumnName("sx_bulk");
-               entity.Property(e =>e.OriginalRun).HasColumnName("original_run");
-               entity.Property(e =>e.Remill).HasColumnName("remill");
-               entity.Property(e =>e.Treated).HasColumnName("treated");
-               entity.Property(e =>e.OECDTestRequired).HasColumnName("oecd_test_req");
-               entity.Property(e =>e.Resampled).HasColumnName("resample");
-               entity.Property(e =>e.CCIAAuth).HasColumnName("ccia_auth");
-               entity.Property(e =>e.Remarks).HasColumnName("remarks");
-               entity.Property(e =>e.SampleDrawnBy).HasColumnName("sx_drawn_by");
-               entity.Property(e =>e.CertId).HasColumnName("cert_id");
-               entity.Property(e =>e.SampleId).HasColumnName("sample_id");
-               entity.Property(e =>e.OECDLot).HasColumnName("oecd_lot");
-               entity.Property(e =>e.Rush).HasColumnName("rush");
-               entity.Property(e =>e.InDirt).HasColumnName("in_dirt");
-               entity.Property(e =>e.BlendNumber).HasColumnName("blend_num");
-               entity.Property(e =>e.DateSampleReceived).HasColumnName("date_sample_recd");
-               entity.Property(e =>e.CropFee).HasColumnName("crop_fee");
-               entity.Property(e =>e.CertFee).HasColumnName("cert_fee");
-               entity.Property(e =>e.ResearchFee).HasColumnName("research_fee");
-               entity.Property(e =>e.MinimumFee).HasColumnName("min_fee");
-               entity.Property(e =>e.BillTable).HasColumnName("bill_tbl");
-               entity.Property(e =>e.LotCertOk).HasColumnName("lot_cert_cert_ok");
-               entity.Property(e =>e.UserEntered).HasColumnName("user_entered");
-               entity.Property(e =>e.Submitted).HasColumnName("submitted");
-               entity.Property(e =>e.Confirmed).HasColumnName("confirmed");
-               entity.Property(e =>e.ConfirmedAt).HasColumnName("date_confirmed");
-               entity.Property(e =>e.Docs).HasColumnName("docs");
-               entity.Property(e =>e.EmployeeModified).HasColumnName("emp_modified");
-               entity.Property(e =>e.NotFinallyCertified).HasColumnName("not_finally_certified");
-               entity.Property(e =>e.ChargeFullFees).HasColumnName("charge_full_fees");  
+                entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+                entity.Property(e => e.SampleFormNumber).HasColumnName("sx_form_no");
+                entity.Property(e => e.SampleFormDate).HasColumnName("sx_form_date");
+                entity.Property(e => e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
+                entity.Property(e => e.SampleFormRad).HasColumnName("sx_form_rad");
+                entity.Property(e => e.CertYear).HasColumnName("cert_year");
+                entity.Property(e => e.ApplicantId).HasColumnName("applicant_id");
+                entity.Property(e => e.ConditionerId).HasColumnName("conditioner_id");
+                entity.Property(e => e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
+                entity.Property(e => e.OfficialVarietyId).HasColumnName("official_variety_id");
+                entity.Property(e => e.LotNumber).HasColumnName("lot_num");
+                entity.Property(e => e.PoundsLot).HasColumnName("lbs_lot");
+                entity.Property(e => e.Class).HasColumnName("class");
+                entity.Property(e => e.ClassAccession).HasColumnName("class_produced_accession");
+                entity.Property(e => e.Status).HasColumnName("status");
+                entity.Property(e => e.CountyDrawn).HasColumnName("county_drawn");
+                entity.Property(e => e.OriginState).HasColumnName("origin_state");
+                entity.Property(e => e.OriginCountry).HasColumnName("lot_country_origin");
+                entity.Property(e => e.Bulk).HasColumnName("sx_bulk");
+                entity.Property(e => e.OriginalRun).HasColumnName("original_run");
+                entity.Property(e => e.Remill).HasColumnName("remill");
+                entity.Property(e => e.Treated).HasColumnName("treated");
+                entity.Property(e => e.OECDTestRequired).HasColumnName("oecd_test_req");
+                entity.Property(e => e.Resampled).HasColumnName("resample");
+                entity.Property(e => e.CCIAAuth).HasColumnName("ccia_auth");
+                entity.Property(e => e.Remarks).HasColumnName("remarks");
+                entity.Property(e => e.SampleDrawnBy).HasColumnName("sx_drawn_by");
+                entity.Property(e => e.CertId).HasColumnName("cert_id");
+                entity.Property(e => e.SampleId).HasColumnName("sample_id");
+                entity.Property(e => e.OECDLot).HasColumnName("oecd_lot");
+                entity.Property(e => e.Rush).HasColumnName("rush");
+                entity.Property(e => e.InDirt).HasColumnName("in_dirt");
+                entity.Property(e => e.BlendNumber).HasColumnName("blend_num");
+                entity.Property(e => e.DateSampleReceived).HasColumnName("date_sample_recd");
+                entity.Property(e => e.CropFee).HasColumnName("crop_fee");
+                entity.Property(e => e.CertFee).HasColumnName("cert_fee");
+                entity.Property(e => e.ResearchFee).HasColumnName("research_fee");
+                entity.Property(e => e.MinimumFee).HasColumnName("min_fee");
+                entity.Property(e => e.BillTable).HasColumnName("bill_tbl");
+                entity.Property(e => e.LotCertOk).HasColumnName("lot_cert_cert_ok");
+                entity.Property(e => e.UserEntered).HasColumnName("user_entered");
+                entity.Property(e => e.Submitted).HasColumnName("submitted");
+                entity.Property(e => e.Confirmed).HasColumnName("confirmed");
+                entity.Property(e => e.ConfirmedAt).HasColumnName("date_confirmed");
+                entity.Property(e => e.Docs).HasColumnName("docs");
+                entity.Property(e => e.EmployeeModified).HasColumnName("emp_modified");
+                entity.Property(e => e.NotFinallyCertified).HasColumnName("not_finally_certified");
+                entity.Property(e => e.ChargeFullFees).HasColumnName("charge_full_fees");
 
-               entity.HasOne(d => d.ApplicantOrganization);
+                entity.HasOne(d => d.ApplicantOrganization);
 
                 entity.HasOne(v => v.Variety);
 
                 entity.HasOne(s => s.ConditionerOrganization);
-                    
+
                 entity.HasOne(s => s.ClassProduced);
 
                 entity.HasOne(s => s.LabResults);
@@ -218,42 +230,42 @@ namespace CCIA.Models
 
             modelBuilder.Entity<FieldHistory>(entity =>
             {
-               entity.ToTable("field_history");
+                entity.ToTable("field_history");
 
-               entity.HasKey(e => e.Id);
+                entity.HasKey(e => e.Id);
 
-               entity.Property(e => e.Id).HasColumnName("history_id");
-
-               entity.Property(e => e.AppId).HasColumnName("app_id");
-
-               entity.Property(e => e.Year);
-
-               entity.Property(e => e.Crop);
-
-               entity.Property(e => e.Variety).HasColumnName("entered_variety");
-
-               entity.Property(e => e.AppNumber).HasColumnName("app_num");
-
-               entity.HasOne(d => d.FHCrops);
-               
-
-            });
-
-             modelBuilder.Entity<AppCertificates>(entity =>
-            {
-                entity.ToTable("app_certificates");
-
-                entity.HasKey(e => e.CertId);
-
-                entity.Property(e => e.CertId).HasColumnName("cert_id");
+                entity.Property(e => e.Id).HasColumnName("history_id");
 
                 entity.Property(e => e.AppId).HasColumnName("app_id");
 
-                entity.Property(e => e.Name).HasColumnName("cert_name");
+                entity.Property(e => e.Year);
 
-                entity.Property(e => e.Link).HasColumnName("cert_link");
+                entity.Property(e => e.Crop);
+
+                entity.Property(e => e.Variety).HasColumnName("entered_variety");
+
+                entity.Property(e => e.AppNumber).HasColumnName("app_num");
+
+                entity.HasOne(d => d.FHCrops);
+
 
             });
+
+            modelBuilder.Entity<AppCertificates>(entity =>
+           {
+               entity.ToTable("app_certificates");
+
+               entity.HasKey(e => e.CertId);
+
+               entity.Property(e => e.CertId).HasColumnName("cert_id");
+
+               entity.Property(e => e.AppId).HasColumnName("app_id");
+
+               entity.Property(e => e.Name).HasColumnName("cert_name");
+
+               entity.Property(e => e.Link).HasColumnName("cert_link");
+
+           });
 
             modelBuilder.Entity<VarFull>(entity =>
             {
@@ -289,61 +301,61 @@ namespace CCIA.Models
 
 
             });
-                modelBuilder.Entity<AbbrevAppType>(entity =>
-            {
-                entity.HasKey(e => e.AppTypeId);
+            modelBuilder.Entity<AbbrevAppType>(entity =>
+        {
+            entity.HasKey(e => e.AppTypeId);
 
-                entity.ToTable("abbrev_app_type");
+            entity.ToTable("abbrev_app_type");
 
-                entity.Property(e => e.AppTypeId).HasColumnName("app_type_id");
+            entity.Property(e => e.AppTypeId).HasColumnName("app_type_id");
 
-                entity.Property(e => e.Abbreviation)
-                    .HasColumnName("abbreviation")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            entity.Property(e => e.Abbreviation)
+                .HasColumnName("abbreviation")
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-                entity.Property(e => e.AppTypeTrans)
-                    .HasColumnName("app_type_trans")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+            entity.Property(e => e.AppTypeTrans)
+                .HasColumnName("app_type_trans")
+                .HasMaxLength(100)
+                .IsUnicode(false);
 
-                entity.Property(e => e.CertificateTitle)
-                    .HasColumnName("certificate_title")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+            entity.Property(e => e.CertificateTitle)
+                .HasColumnName("certificate_title")
+                .HasMaxLength(500)
+                .IsUnicode(false);
 
-                entity.Property(e => e.NumberTitle)
-                    .HasColumnName("number_title")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+            entity.Property(e => e.NumberTitle)
+                .HasColumnName("number_title")
+                .HasMaxLength(500)
+                .IsUnicode(false);
 
-                entity.Property(e => e.ProcessTitle)
-                    .HasColumnName("process_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            entity.Property(e => e.ProcessTitle)
+                .HasColumnName("process_title")
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-                entity.Property(e => e.ProducedTitle)
-                    .HasColumnName("produced_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            entity.Property(e => e.ProducedTitle)
+                .HasColumnName("produced_title")
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-                entity.Property(e => e.ShowType).HasColumnName("show_type");
+            entity.Property(e => e.ShowType).HasColumnName("show_type");
 
-                entity.Property(e => e.SirTitle)
-                    .HasColumnName("sir_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            entity.Property(e => e.SirTitle)
+                .HasColumnName("sir_title")
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-                entity.Property(e => e.SpeciesOrCrop)
-                    .HasColumnName("species_or_crop")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+            entity.Property(e => e.SpeciesOrCrop)
+                .HasColumnName("species_or_crop")
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-                entity.Property(e => e.VarietyTitle)
-                    .HasColumnName("variety_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
+            entity.Property(e => e.VarietyTitle)
+                .HasColumnName("variety_title")
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
             {
@@ -378,7 +390,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Id)
                     .HasColumnName("class_certified_id")
-                    .ValueGeneratedOnAdd();                
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Abbrv)
                     .HasColumnName("class_abbrv")
@@ -762,7 +774,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.County);
 
                 entity.HasOne(d => d.Variety);
-                
+
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
 
                 entity.HasMany(d => d.Certificates);
@@ -1421,7 +1433,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AppDue).HasColumnName("app_due");
 
-                
+
                 entity.Property(e => e.CertifiedCrop)
                     .HasColumnName("certified_crop")
                     .HasDefaultValueSql("((0))");
@@ -1960,7 +1972,7 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);
-                
+
             });
 
             modelBuilder.Entity<Rates>(entity =>
@@ -2243,10 +2255,10 @@ namespace CCIA.Models
                 entity.Property(e => e.WeedSeedPercent)
                     .HasColumnName("weed_seed_percent")
                     .HasColumnType("numeric(8, 7)");
-                
+
                 entity.HasOne(d => d.LabOrganization);
-                 
-                
+
+
             });
 
             modelBuilder.Entity<VarFamily>(entity =>
