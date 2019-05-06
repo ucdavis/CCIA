@@ -47,6 +47,8 @@ namespace CCIA.Models
 
         public virtual DbSet<AbbrevClassSeeds> AbbrevClassSeeds { get; set; }
 
+        public virtual DbSet<Tags> Tags { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -247,6 +249,59 @@ namespace CCIA.Models
                 entity.Property(e => e.AppNumber).HasColumnName("app_num");
 
                 entity.HasOne(d => d.FHCrops);
+
+
+            });
+
+            modelBuilder.Entity<Tags>(entity =>
+            {
+                entity.ToTable("tags");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("tag_id");
+
+                entity.Property(e => e.SeedsID).HasColumnName("seeds_id");
+
+                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+
+                entity.Property(e => e.PotatoAppId).HasColumnName("pot_app_id");
+
+                entity.Property(e => e.OECDId).HasColumnName("oecd_file_num");
+
+                entity.Property(e => e.TagClass).HasColumnName("tag_class");
+
+                entity.Property(e => e.DateRequested).HasColumnName("date_requested");
+
+                entity.Property(e => e.DateNeeded).HasColumnName("date_needed");
+
+                entity.Property(e => e.DateRun).HasColumnName("date_run");
+
+                entity.Property(e => e.LotWeightBagged).HasColumnName("lot_weight_bagged");
+
+                entity.Property(e => e.CoatingPercent).HasColumnName("coating_percent");
+
+                entity.Property(e => e.CountRequested).HasColumnName("count_requested");
+
+                entity.Property(e => e.CountUsed).HasColumnName("count_used");
+                
+                entity.Property(e => e.TagType).HasColumnName("tag_type");
+
+                entity.Property(e => e.ExtrasOverrun).HasColumnName("tags_extras_overrun");
+
+                entity.Property(e => e.Statement).HasColumnName("tag_statement");
+
+                entity.Property(e => e.BagSize).HasColumnName("bag_size");
+
+                entity.Property(e => e.WeightUnit).HasColumnName("weight_unit");
+
+                entity.Property(e => e.Comments).HasColumnName("comments");
+
+                entity.Property(e => e.Contact).HasColumnName("order_contact");
+
+                entity.Property(e => e.UserPrinted).HasColumnName("user_printed");
+
+                entity.Property(e => e.UserEntered).HasColumnName("user_entered");
 
 
             });

@@ -17,7 +17,7 @@ namespace CCIA.Models
         public DateTime? DateNeeded { get; set; }
         public DateTime? DateRun { get; set; }
         public decimal? LotWeightBagged { get; set; }
-        public decimal? CoatingPercent { get; set; }
+        public decimal? CoatingPercent { get; set; }        
         public string WeightUnit { get; set; }
         public int? CountRequested { get; set; }
         public int? ExtrasOverrun { get; set; }
@@ -37,7 +37,7 @@ namespace CCIA.Models
             }
         }
         [NotMapped]
-        public int MyProperty { 
+        public int LotWeightRequested { 
             get {
                 switch(WeightUnit) {
                     case "L":
