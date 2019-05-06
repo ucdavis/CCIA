@@ -4,16 +4,13 @@
     ViewData["Title"] = "Potato Application";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-}
-
 <h2>Application to Produce Certified Potato Seed: @Model.Organization.OrgName</h2>
 
 @Html.Partial("GrowerInfoTable")
 
-<form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
+<form action="/Application/CreatePotatoApplication" method="post" id="potatoApplication">
+
+    @Html.AntiForgeryToken()
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">

@@ -56,6 +56,8 @@ namespace CCIA.Models
     public int? HistoryCropYear2 { get; set; }
     public int? HistoryCropYear3 { get; set; }
 
+    public FieldHistory Test { get; set; }
+
     [Required]
     public string NameOrNum { get; set; }
 

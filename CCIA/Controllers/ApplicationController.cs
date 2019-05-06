@@ -40,7 +40,7 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Details/5
-         public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
@@ -55,7 +55,7 @@ namespace CCIA.Controllers
                 .Include(a => a.PlantingStocks)
                 .ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .FirstOrDefaultAsync();
             return View(model);
@@ -79,8 +79,89 @@ namespace CCIA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePotatoApplication(PotatoPostModel potatoApp)
         {
-            // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            // // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            // if (ModelState.IsValid)
+            // {
+            //     // Get contact id associated with growerid
+            //     var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == app.GrowerId).FirstOrDefaultAsync();
+
+            //     Applications app = CreateApplicationsRecord(potatoApp, contactId, "PO");
+            //     _dbContext.Add(app);
+            //     await _dbContext.SaveChangesAsync();
+
+            //     CreateFirstPlantingStocksRecord(app);
+
+            //     CreateFieldHistoryRecords(app);
+
+            //     await _dbContext.SaveChangesAsync();
+            //     Message = "Application successfully submitted!";
+            //     return RedirectToAction("Details", new { id = app.AppId });
+            // }
+            // var model = await ApplicationViewModel.Create(_dbContext, potatoApp.GrowerId, 1);
+            // model.RenderFormRemainder = true;
+            // Message = "You are missing certain required fields.";
+            // return View(model);
             return Json(potatoApp);
+        }
+
+        private void CreateFieldHistoryRecords(List<FieldHistory> fieldHistories)
+        {
+            
+
+            // Field History
+            if (app.HistoryCropYear1 != null && app.HistoryCrop1 != null)
+            {
+                var fieldHistory1 = CreateFieldHistory1Record(app.AppId, app);
+                _dbContext.Add(fieldHistory1);
+            }
+            if (app.HistoryCropYear2 != null && app.HistoryCrop2 != null)
+            {
+                var fieldHistory2 = CreateFieldHistory2Record(app.AppId, app);
+                _dbContext.Add(fieldHistory2);
+            }
+            if (app.HistoryCropYear3 != null && app.HistoryCrop3 != null)
+            {
+                var fieldHistory3 = CreateFieldHistory3Record(app.AppId, app);
+                _dbContext.Add(fieldHistory3);
+            }
+        }
+
+        private void CreateFirstPlantingStocksRecord(Applications app)
+        {
+            // Planting stocks entries
+            var ps = new PlantingStocks()
+            {
+                AbbrevClassProducedClassProducedId = app.ClassProducedId,
+                AppId = app.AppId,
+                PsCertNum = app.CertLotNum,
+                PsEnteredVariety = app.Variety,
+                OfficialVarietyId = app.VarietyId,
+                PoundsPlanted = app.PoundsPlanted,
+                PsClass = app.ClassPlanted,
+                StateCountryTagIssued = app.StateCountryTagIssued,
+                StateCountryGrown = app.StateCountryStockGrown,
+                SeedPurchasedFrom = app.SeedFrom,
+            };
+
+            _dbContext.Add(ps);
+        }
+
+        private void CreateSecondPlantingStocksRecord(Applications app)
+        {
+            var ps2 = new PlantingStocks()
+            {
+                AppId = app.AppId,
+                PsCertNum = app.CertLotNum2,
+                PsEnteredVariety = app.Variety2,
+                OfficialVarietyId = app.VarietyId,
+                PoundsPlanted = app.PoundsPlanted2,
+                PsClass = app.ClassPlanted2,
+                StateCountryTagIssued = app.StateCountryTagIssued2,
+                StateCountryGrown = app.StateCountryStockGrown2,
+                SeedPurchasedFrom = app.SeedFrom,
+            };
+
+            _dbContext.Add(ps2);
         }
 
         // GET: Application/CreateHeritageGrainApplication
@@ -143,17 +224,17 @@ namespace CCIA.Controllers
                 return RedirectToAction("CreatePotatoApplication", new { orgId = orgId, appTypeId = appTypeId });
             }
             else
-            {   
+            {
                 return View(abbrevAppType);
             }
         }
 
         // POST: Application/CreateSeedApplication
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateSeedApplication(SeedPostModel seedApp)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 // Create new db entry
 
                 // Get contact id associated with growerid
@@ -164,61 +245,21 @@ namespace CCIA.Controllers
                 await _dbContext.SaveChangesAsync();
 
                 // Planting stocks entries
-                var ps = new PlantingStocks() {
-                    AbbrevClassProducedClassProducedId = seedApp.ClassProduced,
-                    AppId = app.AppId,
-                    PsCertNum = seedApp.CertLotNum,
-                    PsEnteredVariety = seedApp.Variety,
-                    OfficialVarietyId = seedApp.VarietyId,
-                    PoundsPlanted = seedApp.PoundsPlanted,
-                    PsClass = seedApp.ClassPlanted,
-                    StateCountryTagIssued = seedApp.StateCountryTagIssued,
-                    StateCountryGrown = seedApp.StateCountryStockGrown,
-                    SeedPurchasedFrom = seedApp.SeedFrom,
-                };
-
-                _dbContext.Add(ps);
+                CreateFirstPlantingStocksRecord(app);
 
                 // Create second plantingstocks entry if required fields aren't null.
                 if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
                     && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
-                    && seedApp.StateCountryTagIssued2 != null) 
+                    && seedApp.StateCountryTagIssued2 != null)
                 {
-                    var ps2 = new PlantingStocks() {
-                        AppId = app.AppId,
-                        PsCertNum = seedApp.CertLotNum2,
-                        PsEnteredVariety = seedApp.Variety2,
-                        OfficialVarietyId = seedApp.VarietyId,
-                        PoundsPlanted = seedApp.PoundsPlanted2,
-                        PsClass = seedApp.ClassPlanted2,
-                        StateCountryTagIssued = seedApp.StateCountryTagIssued2,
-                        StateCountryGrown = seedApp.StateCountryStockGrown2,
-                        SeedPurchasedFrom = seedApp.SeedFrom,
-                    };
-
-                    _dbContext.Add(ps2);
+                    CreateSecondPlantingStocksRecord(app);
                 }
 
-                // Field History
-                if (seedApp.HistoryCropYear1 != null && seedApp.HistoryCrop1 != null)
-                {
-                    var fieldHistory1 = CreateFieldHistory1Record(app.AppId, seedApp);
-                    _dbContext.Add(fieldHistory1);
-                }
-                if (seedApp.HistoryCropYear2 != null && seedApp.HistoryCrop2 != null)
-                {
-                    var fieldHistory2 = CreateFieldHistory2Record(app.AppId, seedApp);
-                    _dbContext.Add(fieldHistory2);
-                }
-                if (seedApp.HistoryCropYear3 != null && seedApp.HistoryCrop3 != null)
-                {
-                    var fieldHistory3 = CreateFieldHistory3Record(app.AppId, seedApp);
-                    _dbContext.Add(fieldHistory3);
-                }
+                CreateFieldHistoryRecords(app);
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
-                return RedirectToAction("Details", new { id = app.AppId});
+                return RedirectToAction("Details", new { id = app.AppId });
             }
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
             model.RenderFormRemainder = true;
@@ -228,8 +269,10 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public Applications CreateApplicationsRecord(SeedPostModel seedApp, int contactId, string appType) {
-            return new Applications() {
+        public Applications CreateApplicationsRecord(SeedPostModel seedApp, int contactId, string appType)
+        {
+            return new Applications()
+            {
                 AcresApplied = seedApp.AcresApplied,
                 ApplicantComments = seedApp.AdditionalInfo,
                 ApplicantId = contactId,
@@ -251,8 +294,10 @@ namespace CCIA.Controllers
             };
         }
 
-        public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp) {
-            return new FieldHistory() {
+        public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp)
+        {
+            return new FieldHistory()
+            {
                 AppId = appId,
                 Year = seedApp.HistoryCropYear1,
                 Crop = seedApp.HistoryCrop1,
@@ -261,8 +306,10 @@ namespace CCIA.Controllers
             };
         }
 
-        public FieldHistory CreateFieldHistory2Record(int appId, SeedPostModel seedApp) {
-            return new FieldHistory() {
+        public FieldHistory CreateFieldHistory2Record(int appId, SeedPostModel seedApp)
+        {
+            return new FieldHistory()
+            {
                 AppId = appId,
                 Year = seedApp.HistoryCropYear2,
                 Crop = seedApp.HistoryCrop2,
@@ -271,8 +318,10 @@ namespace CCIA.Controllers
             };
         }
 
-        public FieldHistory CreateFieldHistory3Record(int appId, SeedPostModel seedApp) {
-            return new FieldHistory() {
+        public FieldHistory CreateFieldHistory3Record(int appId, SeedPostModel seedApp)
+        {
+            return new FieldHistory()
+            {
                 AppId = appId,
                 Year = seedApp.HistoryCropYear3,
                 Crop = seedApp.HistoryCrop3,
@@ -334,24 +383,28 @@ namespace CCIA.Controllers
             var orgs = new List<Organizations>();
             int id = 0;
             // Parsing was successful (we have an ID instead of a name)
-            if (Int32.TryParse(lookupVal, out id)) {
-                 
+            if (Int32.TryParse(lookupVal, out id))
+            {
+
                 orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
-                    .Select(o => new Organizations {
+                    .Select(o => new Organizations
+                    {
                         OrgId = o.OrgId,
                         OrgName = o.OrgName,
-                        Address = o.Address != null ? o.Address : new Address() 
+                        Address = o.Address != null ? o.Address : new Address()
                     })
                     .ToListAsync();
             }
-            else {
-                 orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookupVal.ToLower()))
-                    .Select(o => new Organizations {
-                        OrgId = o.OrgId,
-                        OrgName = o.OrgName,
-                        Address = o.Address != null ? o.Address : new Address()       
-                    })
-                    .ToListAsync();
+            else
+            {
+                orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookupVal.ToLower()))
+                   .Select(o => new Organizations
+                   {
+                       OrgId = o.OrgId,
+                       OrgName = o.OrgName,
+                       Address = o.Address != null ? o.Address : new Address()
+                   })
+                   .ToListAsync();
             }
             return Json(orgs);
         }
@@ -368,12 +421,13 @@ namespace CCIA.Controllers
 
         // GET: Application/FindVariety
         [HttpGet]
-        public async Task<JsonResult> FindVariety(string name, int cropId) 
+        public async Task<JsonResult> FindVariety(string name, int cropId)
         {
             var varieties = await _dbContext.VarOfficial
                 .Where(v => v.VarOffName.ToLower() == name.ToLower())
                 .Where(v => v.CropId == cropId)
-                .Select(v => new VarOfficial {
+                .Select(v => new VarOfficial
+                {
                     CropId = v.CropId,
                     Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
                     VarOffId = v.VarOffId,
@@ -385,10 +439,11 @@ namespace CCIA.Controllers
 
         // GET: Application/FindCropVarieties
         [HttpGet]
-        public async Task<JsonResult> FindCropVarieties(int cropId) 
+        public async Task<JsonResult> FindCropVarieties(int cropId)
         {
             var varieties = await _dbContext.VarOfficial.Where(v => v.CropId == cropId)
-                .Select(v => new VarOfficial {
+                .Select(v => new VarOfficial
+                {
                     CropId = v.CropId,
                     Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
                     VarOffId = v.VarOffId,
@@ -400,12 +455,13 @@ namespace CCIA.Controllers
 
         // GET: Application/FindGermplasmEntities
         [HttpGet]
-        public async Task<JsonResult> FindGermplasmEntities(string name) 
+        public async Task<JsonResult> FindGermplasmEntities(string name)
         {
             var varieties = await _dbContext.VarOfficial
                 .Where(v => v.VarOffName.ToLower() == name.ToLower())
                 .Where(v => v.GermplasmEntity == true)
-                .Select(v => new VarOfficial {
+                .Select(v => new VarOfficial
+                {
                     CropId = v.CropId,
                     Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
                     VarOffId = v.VarOffId,

@@ -4,20 +4,13 @@
     ViewData["Title"] = "Seed Application";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-}
-
-<style type="text/css">
-
-</style>
-
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
 @Html.Partial("GrowerInfoTable")
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
+
+    @Html.AntiForgeryToken()
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -70,13 +63,6 @@
 
         var form = document.getElementById("seedApplication")
         $('#seedApplication').submit (function(e) {
-            // Antiforgery token
-            var ajax_af_form = $("#__AjaxAntiForgeryForm");
-            const antiforgery = $("input[name='__RequestVerificationToken']", ajax_af_form).val();
-            insertHiddenInput('__RequestVerificationToken', antiforgery);
-            const defaultButtonVals = ["Crop", "Crop Year", "State/Country", "County", "Continue with Application", ""];
-
-            var dataToPost = {};
             var growerId = @Model.Organization.OrgId;
 
             insertHiddenInput("growerId", growerId);
