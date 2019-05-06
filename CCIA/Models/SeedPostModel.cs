@@ -41,6 +41,8 @@ namespace CCIA.Models
     
     public string EnteredVarietyName {get; set; }
 
+    public List<FieldHistory> FieldHistories{ get; set; }
+
     public int GrowerId { get; set; }
 
     public string HistoryApplicationNum1 { get; set; }
@@ -55,8 +57,6 @@ namespace CCIA.Models
     public int? HistoryCropYear1 { get; set; }
     public int? HistoryCropYear2 { get; set; }
     public int? HistoryCropYear3 { get; set; }
-
-    public FieldHistory Test { get; set; }
 
     [Required]
     public string NameOrNum { get; set; }

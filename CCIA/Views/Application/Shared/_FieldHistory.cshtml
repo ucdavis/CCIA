@@ -3,24 +3,24 @@
 <div class="row">
     <div class="col-lg-2 col-sm-2 col-xs-2">
         @{
-            ViewBag.name = "historyCropYear1";
+            ViewBag.name = "FieldHistories[0].Year";
             ViewBag.startYearOffset = 0;
             ViewBag.endYearOffset = 6;
         }
-        @Html.Partial("CropYearDropdown")
+        @Html.Partial("/CropYearDropdown")
     </div>
     
     <div class="col-lg-3 col-sm-3 col-xs-3">
-        @{ViewBag.name = "historyCrop1";}
-        @Html.Partial("CropDropdown")
+        @{ViewBag.name = "FieldHistories[0].Crop";}
+        @Html.Partial("/_CropDropdown")
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list:</label>
-        <input type="text" class="form-control" id="crop-not-in-list" name="historyVarietyCrop1" placeholder="Variety or Crop not in list">
+        <input type="text" class="form-control" id="crop-not-in-list" name="FieldHistories[0].Variety" placeholder="Variety or Crop not in list">
     </div>
     <div class="form-group co-md-3 col-sm-3 col-xs-3">
         <label for="app-num">Application #:</label>
-        <input type="text" class="form-control" id="app-num" name="historyApplicationNum1" placeholder="Application #">
+        <input type="text" class="form-control" id="app-num" name="FieldHistories[0].AppNumber" placeholder="Application #">
     </div>
 </div>
 <div class="row">
@@ -29,12 +29,12 @@
             ViewBag.name = "historyCropYear2";
             ViewBag.endYearOffset = 6;
         }
-        @Html.Partial("CropYearDropdown")
+        @Html.Partial("/CropYearDropdown")
     </div>
     
     <div class="col-lg-3 col-sm-3 col-xs-3">
         @{ViewBag.name = "historyCrop2";}
-        @Html.Partial("CropDropdown")
+        @Html.Partial("/_CropDropdown")
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list:</label>
@@ -51,12 +51,12 @@
             ViewBag.name = "historyCropYear3";
             ViewBag.endYearOffset = 6;
         }
-        @Html.Partial("CropYearDropdown")
+        @Html.Partial("/CropYearDropdown")
     </div>
     
     <div class="col-lg-3 col-sm-3 col-xs-3">
         @{ViewBag.name = "historyCrop3";}
-        @Html.Partial("CropDropdown")
+        @Html.Partial("/_CropDropdown")
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list:</label>
