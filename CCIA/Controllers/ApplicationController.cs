@@ -79,21 +79,21 @@ namespace CCIA.Controllers
 
                 Applications app = CreateApplicationsRecord(seedApp, contactId, "SD");
                 _dbContext.Add(app);
-                await _dbContext.SaveChangesAsync();
 
                 // Planting stocks
-                // CreateFirstPlantingStocksRecord(app);
+                CreateFirstPlantingStocksRecord(app.PlantingStocks.ElementAt(0), app);
 
                 // Create second plantingstocks entry if required fields aren't null.
-                // if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
-                //     && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
-                //     && seedApp.StateCountryTagIssued2 != null)
-                // {
-                //     CreateSecondPlantingStocksRecord(app);
-                // }
+                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
+                    && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
+                    && seedApp.StateCountryTagIssued2 != null)
+                {
+                    CreateSecondPlantingStocksRecord(app.PlantingStocks.ElementAt(1), app);
+                }
 
                 // Field history
-                CreateFieldHistoryRecords(seedApp.FieldHistories, app);
+                CreateFieldHistoryRecords(app.FieldHistories, app);
+                app.FieldHistories = seedApp.FieldHistories;
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
@@ -102,8 +102,6 @@ namespace CCIA.Controllers
             var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
             model.RenderFormRemainder = true;
             Message = "You are missing certain required fields.";
-            // Message = ConcatenateErrors(ModelState);
-            // return Json(ModelState);
             return View("Seed/CreateSeedApplication", model);
         }
 
@@ -143,7 +141,7 @@ namespace CCIA.Controllers
             return Json(potatoApp);
         }
 
-        private void CreateFieldHistoryRecords(List<FieldHistory> fieldHistories, Applications app)
+        private void CreateFieldHistoryRecords(ICollection<FieldHistory> fieldHistories, Applications app)
         {
             // Iterate through fieldhistories and make a new record for each
             foreach (var fh in fieldHistories)
@@ -157,42 +155,33 @@ namespace CCIA.Controllers
             }
         }
 
-        private void CreateFirstPlantingStocksRecord(PlantingStocks ps)
+        private void CreateFirstPlantingStocksRecord(PlantingStocks ps, Applications app)
         {
-            // Planting stocks entries
-            // var ps = new PlantingStocks()
-            // {
-            //     AbbrevClassProducedClassProducedId = app.ClassProducedId,
-            //     AppId = app.AppId,
-            //     PsCertNum = app.CertLotNum,
-            //     PsEnteredVariety = app.Variety,
-            //     OfficialVarietyId = app.VarietyId,
-            //     PoundsPlanted = app.PoundsPlanted,
-            //     PsClass = app.ClassPlanted,
-            //     StateCountryTagIssued = app.StateCountryTagIssued,
-            //     StateCountryGrown = app.StateCountryStockGrown,
-            //     SeedPurchasedFrom = app.SeedFrom,
-            // };
+            ps.PsEnteredVariety = app.EnteredVariety;
+            ps.AbbrevClassProducedClassProducedId = app.ClassProducedId;
+            ps.AppId = app.AppId;
+            ps.Applications = app;
 
-            // _dbContext.Add(ps);
+            _dbContext.Add(ps);
         }
 
-        private void CreateSecondPlantingStocksRecord(Applications app)
+        private void CreateSecondPlantingStocksRecord(PlantingStocks ps, Applications app)
         {
             // var ps2 = new PlantingStocks()
             // {
             //     AppId = app.AppId,
             //     PsCertNum = app.CertLotNum2,
-            //     PsEnteredVariety = app.Variety2,
             //     OfficialVarietyId = app.VarietyId,
-            //     PoundsPlanted = app.PoundsPlanted2,
             //     PsClass = app.ClassPlanted2,
             //     StateCountryTagIssued = app.StateCountryTagIssued2,
             //     StateCountryGrown = app.StateCountryStockGrown2,
-            //     SeedPurchasedFrom = app.SeedFrom,
             // };
+            ps.SeedPurchasedFrom = app.,
+            ps.AbbrevClassProducedClassProducedId = app.ClassProducedId;
+            ps.AppId = app.AppId;
+            ps.Applications = app;
 
-            // _dbContext.Add(ps2);
+            _dbContext.Add(ps);
         }
 
         // GET: Application/CreateHeritageGrainApplication
@@ -281,7 +270,10 @@ namespace CCIA.Controllers
                 MapVe = false,
                 SelectedVarietyId = seedApp.VarietyId,
                 Status = "Pending supporting material",
-                WarningFlag = false
+                WarningFlag = false,
+
+                FieldHistories = seedApp.FieldHistories,
+                PlantingStocks = new List<PlantingStocks> {seedApp.PlantingStock1, seedApp.PlantingStock2}
             };
         }
 

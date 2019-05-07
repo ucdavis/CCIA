@@ -41,13 +41,14 @@ namespace CCIA.Models
     
     public string EnteredVarietyName {get; set; }
 
-    public List<FieldHistory> FieldHistories{ get; set; }
+    public ICollection<FieldHistory> FieldHistories{ get; set; }
 
     public int GrowerId { get; set; }
 
     [Required]
     public string NameOrNum { get; set; }
 
+    [Required]
     public PlantingStocks PlantingStock1 { get; set; }
     public PlantingStocks PlantingStock2 { get; set; }
 

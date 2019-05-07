@@ -12,18 +12,18 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
-            <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
+            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStock1.PsCertNum" placeholder="Certification and Lot #">
             @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted<em class="required">*</em></label>
-            <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted" placeholder="Pounds Planted">
+            <input type="text" class="form-control" id="pounds-planted" name="PlantingStock1.PoundsPlanted" placeholder="Pounds Planted">
             @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @{ ViewBag.name = "classPlanted"; }
+        @{ ViewBag.name = "PlantingStock1.PsClass"; }
         <label>Class Planted</label><em class="required">*</em>
         @Html.Partial("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
@@ -31,34 +31,34 @@
 
     <div class="form-group">
         <label>State/Country where Planting Stock Tag was issued</label>
-        @{ViewBag.name = "stateCountryTagIssued";}
+        @{ViewBag.name = "PlantingStock1.StateCountryTagIssued";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock was Grown</label>
-        @{ViewBag.name = "stateCountryStockGrown";}
+        @{ViewBag.name = "PlantingStock1.StateCountryStockGrown";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
-        <label for="variety">Seed purchased/acquired from:</label>
-        <input type="text" class="form-control" id="seed-purchased-from" name="seedFrom" placeholder="Seed purchased/acquired from">
+        <label for="seed-purchased-from">Seed purchased/acquired from:</label>
+        <input type="text" class="form-control" id="seed-purchased-from" name="PlantingStock1.SeedPurchasedFrom" placeholder="Seed purchased/acquired from">
     </div>
 
     <h5>Enter both parent lines for hybrid production</h5>
     <div class="form-group">
         <label for="variety">Variety</label>
-        <input type="text" class="form-control" name="variety2" placeholder="Variety">
+        <input type="text" class="form-control" name="PlantingStock2.PsEnteredVariety" placeholder="Variety">
     </div>
     <div class="row">
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #</label>
-            <input type="text" class="form-control" id="cert-lot-num" name="certLotNum2" placeholder="Certification and Lot #">
+            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStock2.PsCertNum" placeholder="Certification and Lot #">
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted:</label>
-            <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted2" placeholder="Pounds Planted">
+            <input type="text" class="form-control" id="pounds-planted" name="PlantingStock2.PoundsPlanted" placeholder="Pounds Planted">
         </div>
     </div>
 
