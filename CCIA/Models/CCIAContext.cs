@@ -303,7 +303,55 @@ namespace CCIA.Models
 
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
 
+                entity.Property(e => e.DateEntered).HasColumnName("date_entered");
+
+                entity.Property(e => e.UserModified).HasColumnName("user_modified");
+
+                entity.Property(e => e.DateModified).HasColumnName("date_modified");
+
                 entity.Property(e => e.TaggingOrg).HasColumnName("tagging_org");
+
+                entity.Property(e => e.Bulk).HasColumnName("bulk_request");
+
+                entity.Property(e => e.Pretagging).HasColumnName("pretagging");
+
+                entity.Property(e => e.SeriesNumbered).HasColumnName("series_numbered");
+
+                entity.Property(e => e.AnalysisRequested).HasColumnName("analysis_request");
+
+                entity.Property(e => e.HowDeliver).HasColumnName("how_deliver");
+
+                entity.Property(e => e.TrackingNumber).HasColumnName("tracking_number");
+
+                entity.Property(e => e.Stage).HasColumnName("stage");
+
+                entity.Property(e => e.UserApproved).HasColumnName("user_apporved");
+
+                entity.Property(e => e.ApprovedDate).HasColumnName("approved_date");
+
+                entity.Property(e => e.PrintedDate).HasColumnName("printed_date");
+
+                entity.Property(e => e.Alias).HasColumnName("requested_alias");
+
+                entity.Property(e => e.OECD).HasColumnName("oecd_request");
+
+                entity.Property(e => e.PlantingStockNumber).HasColumnName("ps_number");
+
+                entity.Property(e => e.OECDTagType).HasColumnName("oecd_tag_type");
+
+                entity.Property(e => e.DateSealed).HasColumnName("date_sealed");
+
+                entity.Property(e => e.OECDCountry).HasColumnName("oecd_country");
+
+                entity.Property(e => e.AdminComments).HasColumnName("admin_comments");
+
+                entity.Property(e => e.SeriesRequest).HasColumnName("series_request");
+
+                entity.Property(e => e.BulkCropId).HasColumnName("bulk_crop_id");
+
+                entity.Property(e => e.BulkVarietyId).HasColumnName("bulk_var_off_id");
+
+                entity.HasOne(e => e.Seeds);
 
 
             });
