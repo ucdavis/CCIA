@@ -6,6 +6,8 @@
 
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
+<div id="error" style="color: red"></div>
+
 @Html.Partial("Shared/_GrowerInfoTable")
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
@@ -15,7 +17,7 @@
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "crop";}
-            @Html.Partial("/_CropDropdown")
+            @Html.Partial("Shared/_CropDropdown")
             @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
         </div>
         
@@ -25,7 +27,7 @@
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            @Html.Partial("/CropYearDropdown")
+            @Html.Partial("Shared/_CropYearDropdown")
             @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
         
@@ -49,7 +51,7 @@
     <div id="form-remainder">
         @if (@Model.RenderFormRemainder)
         {
-            @Html.Partial("/SeedAppPartial");
+            @Html.Partial("Seed/SeedAppPartial");
         }
     </div>
 </form>
@@ -138,11 +140,17 @@
             /* If something is inside form-remainder div, clear it out */
             $("#form-remainder").empty();
             $("#form-remainder")
-                .load("/Application/GetPartial?partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, () => {
-                    /* Set functionality for date time picker after loading form remainder*/
-                    $('#datetimepicker1').datetimepicker({
-                        format: 'MM/DD/YYYY'
-                    });
+                .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry but there was an error: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                        else {
+                            /* Set functionality for date time picker after successfully loading form remainder */
+                            $('#datetimepicker1').datetimepicker({
+                                format: 'MM/DD/YYYY'
+                            });
+                        }
                 });
         }
 

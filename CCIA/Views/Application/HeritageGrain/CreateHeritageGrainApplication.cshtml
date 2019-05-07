@@ -40,7 +40,7 @@
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            @Html.Partial("/CropYearDropdown")
+            @Html.Partial("Shared/_CropYearDropdown")
         </div> 
 
         <div class="col-lg-4 col-sm-4 col-xs-4">  
@@ -64,7 +64,7 @@
     <div class="form-group">
         @{ViewBag.name = "classProduced";}
         <label>Class to be Produced</label><em class="required">*</em>
-        @Html.Partial("/_ClassRadioButtons")
+        @Html.Partial("Shared/_ClassRadioButtons")
     </div>
 
     <!------------------- PLANTING STOCK ------------------------------------------------------------------------------------------------->
@@ -104,7 +104,7 @@
         <div class="form-group">
             @{ ViewBag.name = "classPlanted"; }
             <label>Class Planted</label><em class="required">*</em>
-            @Html.Partial("/_ClassRadioButtons")
+            @Html.Partial("Shared/_ClassRadioButtons")
         </div>
 
         <div class="form-group">
@@ -159,7 +159,7 @@
             <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
         </div>
 
-        @Html.Partial("/_FieldHistory")
+        @Html.Partial("Shared/_FieldHistory")
     </section>
 
     <button type="submit" class="btn btn-primary">Continue with Application</button>

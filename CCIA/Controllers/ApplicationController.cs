@@ -65,7 +65,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> CreateSeedApplication(int orgId, int appTypeId)
         {
             var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return PartialView("Seed/CreateSeedApplication", model);
+            return View("Seed/CreateSeedApplication", model);
         }
 
         // POST: Application/CreateSeedApplication
@@ -81,18 +81,19 @@ namespace CCIA.Controllers
                 _dbContext.Add(app);
                 await _dbContext.SaveChangesAsync();
 
-                // Planting stocks entries
-                CreateFirstPlantingStocksRecord(app);
+                // Planting stocks
+                // CreateFirstPlantingStocksRecord(app);
 
                 // Create second plantingstocks entry if required fields aren't null.
-                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
-                    && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
-                    && seedApp.StateCountryTagIssued2 != null)
-                {
-                    CreateSecondPlantingStocksRecord(app);
-                }
+                // if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
+                //     && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
+                //     && seedApp.StateCountryTagIssued2 != null)
+                // {
+                //     CreateSecondPlantingStocksRecord(app);
+                // }
 
-                // CreateFieldHistoryRecords(app);
+                // Field history
+                CreateFieldHistoryRecords(seedApp.FieldHistories, app);
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
@@ -103,7 +104,7 @@ namespace CCIA.Controllers
             Message = "You are missing certain required fields.";
             // Message = ConcatenateErrors(ModelState);
             // return Json(ModelState);
-            return PartialView("Seed/CreateSeedApplication", model);
+            return View("Seed/CreateSeedApplication", model);
         }
 
         // GET: Application/CreatePotatoApplication
@@ -142,29 +143,21 @@ namespace CCIA.Controllers
             return Json(potatoApp);
         }
 
-        private void CreateFieldHistoryRecords(List<FieldHistory> fieldHistories)
+        private void CreateFieldHistoryRecords(List<FieldHistory> fieldHistories, Applications app)
         {
             // Iterate through fieldhistories and make a new record for each
-
-            // Field History
-            // if (app.HistoryCropYear1 != null && app.HistoryCrop1 != null)
-            // {
-            //     var fieldHistory1 = CreateFieldHistory1Record(app.AppId, app);
-            //     _dbContext.Add(fieldHistory1);
-            // }
-            // if (app.HistoryCropYear2 != null && app.HistoryCrop2 != null)
-            // {
-            //     var fieldHistory2 = CreateFieldHistory2Record(app.AppId, app);
-            //     _dbContext.Add(fieldHistory2);
-            // }
-            // if (app.HistoryCropYear3 != null && app.HistoryCrop3 != null)
-            // {
-            //     var fieldHistory3 = CreateFieldHistory3Record(app.AppId, app);
-            //     _dbContext.Add(fieldHistory3);
-            // }
+            foreach (var fh in fieldHistories)
+            {
+                if (fh.Year != null && fh.Crop != null)
+                {
+                    fh.AppId = app.AppId;
+                    fh.Application = app;
+                    _dbContext.Add(fh);
+                }
+            }
         }
 
-        private void CreateFirstPlantingStocksRecord(Applications app)
+        private void CreateFirstPlantingStocksRecord(PlantingStocks ps)
         {
             // Planting stocks entries
             // var ps = new PlantingStocks()
@@ -289,42 +282,6 @@ namespace CCIA.Controllers
                 SelectedVarietyId = seedApp.VarietyId,
                 Status = "Pending supporting material",
                 WarningFlag = false
-            };
-        }
-
-        public FieldHistory CreateFieldHistory1Record(int appId, SeedPostModel seedApp)
-        {
-            return new FieldHistory()
-            {
-                AppId = appId,
-                Year = seedApp.HistoryCropYear1,
-                Crop = seedApp.HistoryCrop1,
-                Variety = seedApp.HistoryVarietyCrop1,
-                AppNumber = seedApp.HistoryApplicationNum1
-            };
-        }
-
-        public FieldHistory CreateFieldHistory2Record(int appId, SeedPostModel seedApp)
-        {
-            return new FieldHistory()
-            {
-                AppId = appId,
-                Year = seedApp.HistoryCropYear2,
-                Crop = seedApp.HistoryCrop2,
-                Variety = seedApp.HistoryVarietyCrop2,
-                AppNumber = seedApp.HistoryApplicationNum2
-            };
-        }
-
-        public FieldHistory CreateFieldHistory3Record(int appId, SeedPostModel seedApp)
-        {
-            return new FieldHistory()
-            {
-                AppId = appId,
-                Year = seedApp.HistoryCropYear3,
-                Crop = seedApp.HistoryCrop3,
-                Variety = seedApp.HistoryVarietyCrop3,
-                AppNumber = seedApp.HistoryApplicationNum3
             };
         }
 
@@ -477,21 +434,12 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetPartial(string partialName, int orgId, int appTypeId)
+        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId)
         {
             var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            // string fullPartialPath = "~/Views/Application/" + partialName + ".cshtml";
-            return PartialView(partialName, model);
+            string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
+            return PartialView(fullPartialPath, model);
         }
 
-        // private string ConcatenateErrors(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary ModelState)
-        // {
-        //     string res = "";
-        //     foreach (var error in ModelState.Values.SelectMany(modelState => modelState.Errors))
-        //     {
-        //         res += (error.ToString() + "\n");
-        //     }
-        //     return res;
-        // }
     }
 }

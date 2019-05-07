@@ -3,7 +3,7 @@
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">*</em>
     @{ ViewBag.name = "classProduced"; }
-    @Html.Partial("/_ClassRadioButtons")
+    @Html.Partial("Shared/_ClassRadioButtons")
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
 
@@ -25,20 +25,20 @@
     <div class="form-group">
         @{ ViewBag.name = "classPlanted"; }
         <label>Class Planted</label><em class="required">*</em>
-        @Html.Partial("/_ClassRadioButtons")
+        @Html.Partial("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock Tag was issued</label>
         @{ViewBag.name = "stateCountryTagIssued";}
-        @Html.Partial("/StateCountryDropdown")
+        @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock was Grown</label>
         @{ViewBag.name = "stateCountryStockGrown";}
-        @Html.Partial("/StateCountryDropdown")
+        @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
@@ -67,19 +67,19 @@
             ViewBag.name = "classPlanted2";
         }
         <label>Class Planted</label>
-        @Html.Partial("/_ClassRadioButtons")
+        @Html.Partial("Shared/_ClassRadioButtons")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock Tag was issued</label>
         @{ViewBag.name = "stateCountryTagIssued2";}
-        @Html.Partial("/StateCountryDropdown")
+        @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock was Grown</label>
         @{ViewBag.name = "stateCountryStockGrown2";}
-        @Html.Partial("/StateCountryDropdown")
+        @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 </section>
 
@@ -126,7 +126,7 @@
         <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
     </div>
 
-    @Html.Partial("/_FieldHistory")
+    @Html.Partial("Shared/_FieldHistory")
 </section>
 
 <button type="submit" class="btn btn-primary">Continue with Application</button>

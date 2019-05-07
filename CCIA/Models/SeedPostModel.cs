@@ -45,21 +45,11 @@ namespace CCIA.Models
 
     public int GrowerId { get; set; }
 
-    public string HistoryApplicationNum1 { get; set; }
-    public string HistoryApplicationNum2 { get; set; }
-    public string HistoryApplicationNum3 { get; set; }
-    public int? HistoryCrop1 { get; set; }
-    public int? HistoryCrop2 { get; set; }
-    public int? HistoryCrop3 { get; set; }
-    public string HistoryVarietyCrop1 { get; set; }
-    public string HistoryVarietyCrop2 { get; set; }
-    public string HistoryVarietyCrop3 { get; set; }
-    public int? HistoryCropYear1 { get; set; }
-    public int? HistoryCropYear2 { get; set; }
-    public int? HistoryCropYear3 { get; set; }
-
     [Required]
     public string NameOrNum { get; set; }
+
+    public PlantingStocks PlantingStock1 { get; set; }
+    public PlantingStocks PlantingStock2 { get; set; }
 
     [Required]
     public int? PoundsPlanted { get; set; }
