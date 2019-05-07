@@ -287,7 +287,7 @@ namespace CCIA.Models
                 
                 entity.Property(e => e.TagType).HasColumnName("tag_type");
 
-                entity.Property(e => e.ExtrasOverrun).HasColumnName("tags_extras_overrun");
+                entity.Property(e => e.ExtrasOverrun).HasColumnName("tag_extras_overrun");
 
                 entity.Property(e => e.Statement).HasColumnName("tag_statement");
 
@@ -302,6 +302,8 @@ namespace CCIA.Models
                 entity.Property(e => e.UserPrinted).HasColumnName("user_printed");
 
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
+
+                entity.Property(e => e.TaggingOrg).HasColumnName("tagging_org");
 
 
             });

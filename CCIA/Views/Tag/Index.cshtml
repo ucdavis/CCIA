@@ -1,0 +1,63 @@
+@model IList<Tags>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>Tag Id</th>
+        <th>Id</th>
+        <th>Id Type</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Cert#</th>
+        <th>Lot#</th>
+        <th>SID Class</th>
+        <th>Tag Class</th>
+        <th>#Requested</th>
+        <th>#</th>
+        <th>Bag Size</th>
+        <th>OECD Date Seald</th>
+        <th>OECD Cert</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Alias</th>
+        <th>Stage</th>
+        <th>Tracking</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var tag in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="tag" asp-route-id="@tag.Id">Details</a></td>
+                <td>@tag.Id</td>
+                <td>@tag.SeedsID</td>
+                <td>type</td>
+                <td>crop</td>
+                <td>variety</td>
+                <td>cert#</td>
+                <td>lot#</td>
+                <td>sid class</td>
+                <td>tag class</td>
+                <td>@tag.LotWeightRequested</td>
+                <td># requested</td>
+                <td>@tag.BagSizePounds</td>
+                <td>OECD date sealed</td>
+                <td>OECD cert</td>
+                <td>Tag type</td>
+                <td>@tag.DateRequested</td>
+                <td>alias</td>
+                <td>stage</td>
+                <td>tracking</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
