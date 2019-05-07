@@ -8,7 +8,7 @@ namespace CCIA.Models
     public partial class Seeds
     {
 
-         [Display(Name = "SID")] 
+        [Display(Name = "SID")] 
         public int Id { get; set; }
         [ForeignKey("CertProgram")]
         public AbbrevAppType AppTypeTrans { get; set; }

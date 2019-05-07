@@ -13,7 +13,7 @@ using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers
 {
-    public class SeedsController : Controller
+    public class SeedsController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
