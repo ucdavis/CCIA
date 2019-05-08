@@ -353,6 +353,8 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Seeds);
 
+                entity.HasOne(e => e.Blend);
+
 
             });
 
@@ -969,6 +971,8 @@ namespace CCIA.Models
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
 
                 entity.Property(e => e.Variety).HasColumnName("variety");
+
+                entity.HasOne(e => e.LotBlend);
             });
 
             modelBuilder.Entity<CertRad>(entity =>
@@ -2002,6 +2006,8 @@ namespace CCIA.Models
                 entity.Property(e => e.Weight)
                     .HasColumnName("weight")
                     .HasColumnType("numeric(16, 2)");
+
+                entity.HasOne(e => e.Seeds);
             });
 
             modelBuilder.Entity<PlantingStocks>(entity =>

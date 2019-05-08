@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -25,5 +27,8 @@ namespace CCIA.Models
         public bool? Approved { get; set; }
         public DateTime? ApproveDate { get; set; }
         public string ApprovedBy { get; set; }
+
+        [ForeignKey("BlendId")]
+        public LotBlends LotBlend { get; set; }
     }
 }

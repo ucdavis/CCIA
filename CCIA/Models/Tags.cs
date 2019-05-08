@@ -13,6 +13,8 @@ namespace CCIA.Models
         [ForeignKey("SeedsID")]
         public Seeds Seeds { get; set; }
         public int? BlendId { get; set; }
+        [ForeignKey("BlendId")]
+        public BlendRequests Blend { get; set; }        
         public int? PotatoAppId { get; set; }
 
         public string IdType { 
@@ -28,6 +30,26 @@ namespace CCIA.Models
                 } else {
                     return "";
                 }
+            } 
+        }
+
+        public string CropName { 
+            get{
+                if(SeedsID.HasValue) { 
+                    if(Seeds.OfficialVarietyId != null){
+                        return Seeds.Variety.Crop.Name;
+                    } else {
+                        return "";
+                    }                    
+                } else if(BlendId.HasValue){
+                    if(Blend != null && Blend.LotBlend != null && Blend.LotBlend.Seeds != null && Blend.LotBlend.Seeds.Variety != null && Blend.LotBlend.Seeds.Variety.Crop != null) {
+                        return Blend.LotBlend.Seeds.Variety.Crop.Name; 
+                    } else { return "";}
+                }
+                else {
+                    return "";
+                }
+
             } 
         }
 

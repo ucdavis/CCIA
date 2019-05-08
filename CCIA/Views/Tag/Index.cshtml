@@ -40,8 +40,12 @@
                 <td>@tag.Id</td>
                 <td>@tag.LinkId</td>
                 <td>@tag.IdType</td>
-                <td>crop</td>
-                <td>variety</td>
+                <td>@tag.CropName</td>               
+                <td>
+                    @if(tag.Blend != null && tag.Blend.LotBlend != null && tag.Blend.LotBlend.Seeds != null){
+                        @tag.Blend.LotBlend.Seeds.CertYear
+                    }                    
+                     variety</td>
                 <td>cert#</td>
                 <td>lot#</td>
                 <td>sid class</td>

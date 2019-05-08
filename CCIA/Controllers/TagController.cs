@@ -35,6 +35,11 @@ namespace CCIA.Controllers
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.Variety)                
                 .ThenInclude(v => v.Crop)
+                .Include(t => t.Blend) 
+                .ThenInclude(b => b.LotBlend) 
+                .ThenInclude(l => l.Seeds) 
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)             
                 .ToListAsync();            
             return View(model);
         }
