@@ -7,6 +7,7 @@ namespace CCIA.Models
 {
     public partial class BlendRequests
     {
+        [Key]
         public int BlendId { get; set; }
         public string BlendType { get; set; }
         public DateTime RequestStarted { get; set; }
@@ -29,6 +30,12 @@ namespace CCIA.Models
         public string ApprovedBy { get; set; }
 
         [ForeignKey("BlendId")]
-        public LotBlends LotBlend { get; set; }
+        public ICollection<LotBlends> LotBlends { get; set; }
+
+        [ForeignKey("BlendId")]
+        public ICollection<BlendInDirtComponents> InDirtBlends { get; set; }
+      
+
+
     }
 }

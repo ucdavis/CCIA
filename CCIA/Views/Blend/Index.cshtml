@@ -1,0 +1,49 @@
+@model IList<BlendRequests>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>BID</th>
+        <th>Type</th>       
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Requested</th>
+        <th>Status</th>
+        <th>Blend Cert#</th>       
+        </thead>
+        <tbody>
+        
+            @foreach (var blend in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.BlendId">Details</a></td>
+                <th>@blend.BlendId</th>
+                <th>@blend.BlendType</th>       
+                <th>
+                    @foreach (var item in blend.LotBlends)
+                    {
+                        @item.CompId  <br/>                      
+                    }
+                    Crop</th>
+                <th>
+                     @foreach (var item in blend.InDirtBlends)
+                    {
+                        @item.Id     <br/>                   
+                    }
+                    Variety</th>
+                <th>@blend.RequestStarted</th>
+                <th>@blend.Status</th>
+                <th>Blend Cert#</th>   
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

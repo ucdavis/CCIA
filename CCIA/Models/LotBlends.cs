@@ -14,5 +14,7 @@ namespace CCIA.Models
 
         [ForeignKey("Sid")]
         public Seeds Seeds { get; set; }
+
+        
     }
 }

@@ -13,11 +13,11 @@ using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers
 {
-    public class TagController : SuperController
+    public class BlendController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
-        public TagController(CCIAContext dbContext)
+        public BlendController(CCIAContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -30,17 +30,11 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.Variety)                
-                .ThenInclude(v => v.Crop)
-                .Include(t => t.Blend) 
-                // .ThenInclude(b => b.LotBlend) 
-                // .ThenInclude(l => l.Seeds) 
-                // .ThenInclude(s => s.Variety)
-                // .ThenInclude(v => v.Crop)             
-                .ToListAsync();            
+            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();           
+            var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.RequestStarted.Year == certYear)
+                .Include(b => b.LotBlends)
+                .Include(b => b.InDirtBlends)
+                .ToListAsync();
             return View(model);
         }
 
@@ -48,9 +42,10 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
-            return View(model);
+             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            // var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
+            // return View(model);
+            return View();
         }
 
         // GET: Application/Create

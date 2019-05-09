@@ -41,11 +41,12 @@ namespace CCIA.Models
                     } else {
                         return "";
                     }                    
-                } else if(BlendId.HasValue){
-                    if(Blend != null && Blend.LotBlend != null && Blend.LotBlend.Seeds != null && Blend.LotBlend.Seeds.Variety != null && Blend.LotBlend.Seeds.Variety.Crop != null) {
-                        return Blend.LotBlend.Seeds.Variety.Crop.Name; 
-                    } else { return "";}
-                }
+                } 
+                // else if(BlendId.HasValue){
+                //     if(Blend != null && Blend.LotBlend != null && Blend.LotBlend.Seeds != null && Blend.LotBlend.Seeds.Variety != null && Blend.LotBlend.Seeds.Variety.Crop != null) {
+                //         return Blend.LotBlend.Seeds.Variety.Crop.Name; 
+                //     } else { return "";}
+                // }
                 else {
                     return "";
                 }

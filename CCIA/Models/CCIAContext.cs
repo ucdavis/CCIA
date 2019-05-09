@@ -253,6 +253,45 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<BlendInDirtComponents>(entity => 
+            {
+                entity.ToTable("blend_indirt_components");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("comp_id");
+
+                entity.Property(e => e.BlendId).HasColumnName("bid");
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.Weight).HasColumnName("weight");
+
+                entity.Property(e => e.ApplicantId).HasColumnName("applicant_id");
+
+                entity.Property(e => e.CropId).HasColumnName("crop_id");
+
+                entity.Property(e => e.OfficialVarietyId).HasColumnName("official_variety_id");
+
+                entity.Property(e => e.CertYear).HasColumnName("cert_year");
+
+                entity.Property(e => e.CountryOfOrigin).HasColumnName("country_of_origin");
+
+                entity.Property(e => e.StateOfOrigin).HasColumnName("state_of_origin");
+
+                entity.Property(e => e.CertNumber).HasColumnName("cert_number");
+
+                entity.Property(e => e.LotNumber).HasColumnName("lot_number");
+
+                entity.Property(e => e.Class).HasColumnName("class");
+
+                entity.Property(e => e.LastEditBy).HasColumnName("last_edit_by");
+
+
+            });
+            
+
+
             modelBuilder.Entity<Tags>(entity =>
             {
                 entity.ToTable("tags");
@@ -972,7 +1011,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Variety).HasColumnName("variety");
 
-                entity.HasOne(e => e.LotBlend);
+                entity.HasMany(e => e.LotBlends);
+
+                entity.HasMany(e => e.InDirtBlends);
             });
 
             modelBuilder.Entity<CertRad>(entity =>
