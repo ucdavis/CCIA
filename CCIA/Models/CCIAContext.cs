@@ -997,11 +997,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
 
-                entity.Property(e => e.Variety).HasColumnName("variety");
+                entity.Property(e => e.VarietyId).HasColumnName("variety");
 
                 entity.HasMany(e => e.LotBlends);
 
                 entity.HasMany(e => e.InDirtBlends);
+
+                entity.HasOne(e => e.Variety);
             });
 
             modelBuilder.Entity<CertRad>(entity =>

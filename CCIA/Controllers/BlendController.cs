@@ -46,6 +46,7 @@ namespace CCIA.Controllers
                 .ThenInclude(i => i.Crop)
                 .Include(b => b.InDirtBlends)
                 .ThenInclude(i => i.Variety)
+                .Include(b => b.Variety)
                 .ToListAsync();
             return View(model);
         }

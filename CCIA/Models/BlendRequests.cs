@@ -19,7 +19,7 @@ namespace CCIA.Models
         public string Status { get; set; }
         public int? TagCountRequested { get; set; }
         public int? TagType { get; set; }
-        public int? Variety { get; set; }
+        public int? VarietyId { get; set; }
         public DateTime? DateNeeded { get; set; }
         public string HowDeliver { get; set; }
         public string DeliveryAddress { get; set; }
@@ -36,17 +36,25 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public ICollection<BlendInDirtComponents> InDirtBlends { get; set; }
 
+        [ForeignKey("VarietyId")]
+        public VarFull Variety { get; set; }
+
+
+        // Varietal blend needs to be added still
         public string Crop { 
             get
             {
-                if (LotBlends.Any() && LotBlends.First().Seeds.Variety.Crop != null)
+                if(BlendType == "Varietal" && Variety != null){
+                    return Variety.Crop.Name;
+                }
+                if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety.Crop != null)
                 {
                     return LotBlends.First().Seeds.Variety.Crop.Name;
                 }
-                if (InDirtBlends.Any() && InDirtBlends.First().Application.Crop != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Crop != null){                    
                     return InDirtBlends.First().Application.Crop.Name;
                 }
-                 if (InDirtBlends.Any() && InDirtBlends.First().Crop != null){                    
+                 if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Crop != null){                    
                     return InDirtBlends.First().Crop.Name;
                 }
                 return "unknown";
@@ -56,14 +64,17 @@ namespace CCIA.Models
         public string VarietyName { 
             get
             {
-                if (LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
+                if(BlendType == "Varietal" && Variety != null){
+                     return Variety.Name;
+                }
+                if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
                 {
                     return LotBlends.First().Seeds.Variety.Name;
                 }
-                if (InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null){                    
                     return InDirtBlends.First().Application.Variety.Name;
                 }
-                 if (InDirtBlends.Any() && InDirtBlends.First().Variety != null){                    
+                 if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Variety != null){                    
                     return InDirtBlends.First().Variety.Name;
                 }
                 return "unknown";
