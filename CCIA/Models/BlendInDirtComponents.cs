@@ -34,7 +34,14 @@ namespace CCIA.Models
 
         public string LastEditBy { get; set; }
 
-        
+        [ForeignKey("AppId")]
+        public Applications Application { get; set; }
+
+        [ForeignKey("CropId")]
+        public Crops Crop { get; set; }
+
+        [ForeignKey("OfficialVarietyId")]
+        public VarFull Variety { get; set; }
 
         
     }

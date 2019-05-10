@@ -184,7 +184,7 @@ namespace CCIA.Models
                 entity.Property(e => e.Status).HasColumnName("status");
                 entity.Property(e => e.CountyDrawn).HasColumnName("county_drawn");
                 entity.Property(e => e.OriginState).HasColumnName("origin_state");
-                entity.Property(e => e.OriginCountry).HasColumnName("lot_country_origin");
+                entity.Property(e => e.OriginCountry).HasColumnName("origin_country");
                 entity.Property(e => e.Bulk).HasColumnName("sx_bulk");
                 entity.Property(e => e.OriginalRun).HasColumnName("original_run");
                 entity.Property(e => e.Remill).HasColumnName("remill");
@@ -286,6 +286,12 @@ namespace CCIA.Models
                 entity.Property(e => e.Class).HasColumnName("class");
 
                 entity.Property(e => e.LastEditBy).HasColumnName("last_edit_by");
+
+                entity.HasOne(e => e.Application);
+
+                entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Crop);
 
 
             });
@@ -806,9 +812,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.MapsSubDt)
                     .HasColumnName("maps_sub_dt")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Meridian).HasColumnName("meridian");
+                    .HasColumnType("datetime");                
 
                 entity.Property(e => e.NotifyDate)
                     .HasColumnName("notify_date")
@@ -837,22 +841,13 @@ namespace CCIA.Models
                 entity.Property(e => e.PvgSource)
                     .HasColumnName("pvg_source")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Range)
-                    .HasColumnName("range")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false);               
 
                 entity.Property(e => e.Renewal)
                     .HasColumnName("renewal")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Section)
-                    .HasColumnName("section")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
+               
                 entity.Property(e => e.SelectedVarietyId).HasColumnName("selected_variety_id");
 
                 entity.Property(e => e.Status)
@@ -867,12 +862,7 @@ namespace CCIA.Models
                 entity.Property(e => e.TextField)
                     .HasColumnName("text_field")
                     .HasMaxLength(3000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Township)
-                    .HasColumnName("township")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false);               
 
                 entity.Property(e => e.Trace).HasColumnName("trace");
 
@@ -909,8 +899,6 @@ namespace CCIA.Models
                 entity.HasOne(d => d.ApplicantOrganization)
                     .WithMany(p => p.AppliedApplications)
                     .HasForeignKey(d => d.ApplicantId);
-
-
 
                 entity.HasOne(d => d.TraceNavigation)
                     .WithMany(p => p.InverseTraceNavigation)

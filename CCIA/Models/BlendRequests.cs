@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CCIA.Models
 {
@@ -34,6 +35,40 @@ namespace CCIA.Models
 
         [ForeignKey("BlendId")]
         public ICollection<BlendInDirtComponents> InDirtBlends { get; set; }
+
+        public string Crop { 
+            get
+            {
+                if (LotBlends.Any() && LotBlends.First().Seeds.Variety.Crop != null)
+                {
+                    return LotBlends.First().Seeds.Variety.Crop.Name;
+                }
+                if (InDirtBlends.Any() && InDirtBlends.First().Application.Crop != null){                    
+                    return InDirtBlends.First().Application.Crop.Name;
+                }
+                 if (InDirtBlends.Any() && InDirtBlends.First().Crop != null){                    
+                    return InDirtBlends.First().Crop.Name;
+                }
+                return "unknown";
+            }
+        }
+
+        public string VarietyName { 
+            get
+            {
+                if (LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
+                {
+                    return LotBlends.First().Seeds.Variety.Name;
+                }
+                if (InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null){                    
+                    return InDirtBlends.First().Application.Variety.Name;
+                }
+                 if (InDirtBlends.Any() && InDirtBlends.First().Variety != null){                    
+                    return InDirtBlends.First().Variety.Name;
+                }
+                return "unknown";
+            }
+        }
       
 
 
