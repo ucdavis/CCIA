@@ -39,47 +39,85 @@ namespace CCIA.Models
         [ForeignKey("VarietyId")]
         public VarFull Variety { get; set; }
 
-        
-        public string Crop { 
+
+        public string Crop
+        {
             get
             {
-                if(BlendType == "Varietal" && Variety != null){
+                if (BlendType == "Varietal" && Variety != null)
+                {
                     return Variety.Crop.Name;
                 }
                 if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety.Crop != null)
                 {
                     return LotBlends.First().Seeds.Variety.Crop.Name;
                 }
-                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Crop != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Crop != null)
+                {
                     return InDirtBlends.First().Application.Crop.Name;
                 }
-                 if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Crop != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Crop != null)
+                {
                     return InDirtBlends.First().Crop.Name;
                 }
                 return "unknown";
             }
         }
 
-        public string VarietyName { 
+        public string VarietyName
+        {
             get
             {
-                if(BlendType == "Varietal" && Variety != null){
-                     return Variety.Name;
+                if (BlendType == "Varietal" && Variety != null)
+                {
+                    return Variety.Name;
                 }
                 if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
                 {
                     return LotBlends.First().Seeds.Variety.Name;
                 }
-                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null)
+                {
                     return InDirtBlends.First().Application.Variety.Name;
                 }
-                 if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Variety != null){                    
+                if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Variety != null)
+                {
                     return InDirtBlends.First().Variety.Name;
                 }
                 return "unknown";
             }
         }
-      
+
+        public int CertYear { 
+            get 
+            {
+                if(RequestStarted.Date.Month ==10 || RequestStarted.Date.Month == 11 || RequestStarted.Date.Month == 12) 
+                {
+                    return RequestStarted.Date.Year + 1;
+                } else {
+                    return RequestStarted.Date.Year;
+                }
+            }
+        }
+
+        public string CertNumber
+        {
+            get
+            {                
+                var twoDigitYear = CertYear.ToString().Substring(CertYear.ToString().Length-2,2);
+                switch (BlendType)
+                {
+                    case "Lot":
+                        return $"CA-L{twoDigitYear}{BlendId}";
+                    case "Varietal":
+                        return $"CA-V{twoDigitYear}{BlendId}";
+                   case "In Dirt":
+                        return $"CA-D{twoDigitYear}{BlendId}";
+                }
+                return "";
+            }
+        }
+
 
 
     }

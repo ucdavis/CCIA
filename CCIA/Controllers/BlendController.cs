@@ -31,7 +31,7 @@ namespace CCIA.Controllers
                 certYear = CertYearFinder.CertYear;
             }
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();           
-            var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.RequestStarted.Year == certYear)
+            var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)

@@ -69,7 +69,7 @@ namespace CCIA.Models
                     return Seeds.CertNumber();
                 } 
                 if(BlendId.HasValue && Blend != null){
-                    return Blend.VarietyName;
+                    return Blend.CertNumber;
                 }
                 if(BulkVariety != null){
                     return "";
