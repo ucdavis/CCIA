@@ -39,8 +39,7 @@ namespace CCIA.Models
         [ForeignKey("VarietyId")]
         public VarFull Variety { get; set; }
 
-
-        // Varietal blend needs to be added still
+        
         public string Crop { 
             get
             {

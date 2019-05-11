@@ -32,21 +32,22 @@ namespace CCIA.Controllers
             }
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();           
             var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.RequestStarted.Year == certYear)
-                .Include(b => b.LotBlends)
+                .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
-                .Include(b => b.InDirtBlends)                
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
                 .ThenInclude(i => i.Application)
                 .ThenInclude(a => a.Variety)
-                .Include(b => b.InDirtBlends)
-                .ThenInclude(i => i.Application)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application) 
                 .ThenInclude(a => a.Crop)
-                .Include(b => b.InDirtBlends)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
                 .ThenInclude(i => i.Crop)
-                .Include(b => b.InDirtBlends)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
                 .ThenInclude(i => i.Variety)
-                .Include(b => b.Variety)
+                .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)
                 .ToListAsync();
             return View(model);
         }
