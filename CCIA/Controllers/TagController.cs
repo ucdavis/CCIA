@@ -36,10 +36,27 @@ namespace CCIA.Controllers
                 .ThenInclude(s => s.Variety)                
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.Blend) 
-                // .ThenInclude(b => b.LotBlend) 
-                // .ThenInclude(l => l.Seeds) 
-                // .ThenInclude(s => s.Variety)
-                // .ThenInclude(v => v.Crop)             
+                .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application) 
+                .ThenInclude(a => a.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
+                .ThenInclude(i => i.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)
                 .ToListAsync();            
             return View(model);
         }

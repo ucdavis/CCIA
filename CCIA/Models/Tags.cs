@@ -35,24 +35,50 @@ namespace CCIA.Models
 
         public string CropName { 
             get{
-                if(SeedsID.HasValue) { 
-                    if(Seeds.OfficialVarietyId != null){
-                        return Seeds.Variety.Crop.Name;
-                    } else {
-                        return "";
-                    }                    
+                if(SeedsID.HasValue && Seeds.Variety.Crop != null) {                    
+                    return Seeds.Variety.Crop.Name;
                 } 
-                // else if(BlendId.HasValue){
-                //     if(Blend != null && Blend.LotBlend != null && Blend.LotBlend.Seeds != null && Blend.LotBlend.Seeds.Variety != null && Blend.LotBlend.Seeds.Variety.Crop != null) {
-                //         return Blend.LotBlend.Seeds.Variety.Crop.Name; 
-                //     } else { return "";}
-                // }
-                else {
-                    return "";
+                if(BlendId.HasValue && Blend != null){
+                    return Blend.Crop;
                 }
-
+                if(BulkCrop != null){
+                    return BulkCrop.Name;
+                }               
+                return "Unknown";                
             } 
         }
+
+        public string VarietyName { 
+            get{
+                if(SeedsID.HasValue && Seeds.Variety != null) {                    
+                    return Seeds.Variety.Name;
+                } 
+                if(BlendId.HasValue && Blend != null){
+                    return Blend.VarietyName;
+                }
+                if(BulkVariety != null){
+                    return BulkVariety.Name;
+                }               
+                return "Unknown";                
+            } 
+        }
+
+        public string CertNumber { 
+            get{
+                if(SeedsID.HasValue && Seeds != null) {                    
+                    return Seeds.CertNumber();
+                } 
+                if(BlendId.HasValue && Blend != null){
+                    return Blend.VarietyName;
+                }
+                if(BulkVariety != null){
+                    return "";
+                }               
+                return "Unknown";                
+            } 
+        }
+        
+
 
         public int? LinkId { 
             get {
@@ -169,7 +195,13 @@ namespace CCIA.Models
 
         public int? BulkCropId { get; set; }
 
+        [ForeignKey("BulkCropId")]
+        public Crops BulkCrop { get; set; }
+
         public int? BulkVarietyId { get; set; }
+
+        [ForeignKey("BulkVarietyId")]
+        public VarFull BulkVariety { get; set; }
 
 
 

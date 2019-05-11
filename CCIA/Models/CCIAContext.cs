@@ -400,6 +400,10 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Blend);
 
+                entity.HasOne(e => e.BulkCrop);
+
+                entity.HasOne(e => e.BulkVariety);
+
 
             });
 
