@@ -77,6 +77,16 @@ namespace CCIA.Models
                 return "Unknown";                
             } 
         }
+
+         public string LotNumber { 
+            get{
+                if(SeedsID.HasValue && Seeds != null) {                    
+                    return Seeds.LotNumber;
+                }                           
+                return "";                
+            } 
+        }
+
         
 
 
