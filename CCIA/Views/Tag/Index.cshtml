@@ -52,7 +52,11 @@
                 <td>OECD date sealed</td>
                 <td>OECD cert</td>
                 <td>Tag type</td>
-                <td>@tag.DateRequested</td>
+                <td>
+                    @if(tag.DateRequested.HasValue){
+                    @tag.DateRequested.Value.ToShortDateString()
+                    }
+                </td>
                 <td>alias</td>
                 <td>stage</td>
                 <td>tracking</td>
