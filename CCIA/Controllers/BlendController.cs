@@ -13,15 +13,16 @@ using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers
 {
-    public class SeedsController : SuperController
+    public class BlendController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
-        public SeedsController(CCIAContext dbContext)
+        public BlendController(CCIAContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
@@ -29,13 +30,24 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
-                .Include(a => a.ApplicantOrganization)
-                .Include(v => v.Variety)
+            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();           
+            var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
+                .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
-                .Include(c => c.ClassProduced)
-                .Include(l => l.LabResults)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application) 
+                .ThenInclude(a => a.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
+                .ThenInclude(i => i.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)
                 .ToListAsync();
             return View(model);
         }
@@ -44,9 +56,10 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
-            return View(model);
+             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            // var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
+            // return View(model);
+            return View();
         }
 
         // GET: Application/Create

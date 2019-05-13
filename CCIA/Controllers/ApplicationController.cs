@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Controllers
 {
-    public class ApplicationController : Controller
+    public class ApplicationController : SuperController
     {
         private readonly CCIAContext _dbContext;
 

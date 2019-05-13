@@ -58,10 +58,7 @@ namespace CCIA.Models
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
         public string FieldName { get; set; }
-        public int? Meridian { get; set; }
-        public string Township { get; set; }
-        public string Range { get; set; }
-        public string Section { get; set; }
+       
         
         public DateTime? DatePlanted { get; set; }
         public decimal? AcresApplied { get; set; }
