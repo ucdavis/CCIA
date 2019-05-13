@@ -51,6 +51,8 @@ namespace CCIA.Models
 
         public virtual DbSet<AbbrevTagType>  AbbrevTagType { get; set; }
 
+        public virtual DbSet<OECD> OECD { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -251,6 +253,83 @@ namespace CCIA.Models
                 entity.Property(e => e.AppNumber).HasColumnName("app_num");
 
                 entity.HasOne(d => d.FHCrops);
+
+
+            });
+
+            modelBuilder.Entity<OECD>(entity => 
+            {
+                entity.ToTable("oecd");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("file_num");
+
+                entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+
+                entity.Property(e => e.VarietyId).HasColumnName("variety_id");
+
+                entity.Property(e => e.TagId).HasColumnName("tag_id_link");
+
+                entity.Property(e => e.Pounds).HasColumnName("lbs_oecd");
+
+                entity.Property(e => e.CertNumber).HasColumnName("cert_num");
+
+                entity.Property(e => e.OECDNumber).HasColumnName("oecd_num");
+
+                entity.Property(e => e.Class).HasColumnName("class");
+
+                entity.Property(e => e.CloseDate).HasColumnName("close_date");
+
+                entity.Property(e => e.ConditionerId).HasColumnName("conditioner_id");
+
+                entity.Property(e => e.Country).HasColumnName("country");
+
+                entity.Property(e => e.IssueDate).HasColumnName("issue_date");
+
+                entity.Property(e => e.LotNumber).HasColumnName("lot_num");
+
+                entity.Property(e => e.ShipperId).HasColumnName("shipper_id");
+
+                entity.Property(e => e.DateRequested).HasColumnName("date_requested");
+
+                entity.Property(e => e.TotalFee).HasColumnName("total_fee");
+
+                entity.Property(e => e.NotCertified).HasColumnName("not_cert");
+
+                entity.Property(e => e.DataEntryDate).HasColumnName("data_entry_date");
+
+                entity.Property(e => e.DataEntryUser).HasColumnName("data_entry_user");
+
+                entity.Property(e => e.UpdateDate).HasColumnName("update_date");
+
+                entity.Property(e => e.UpdateUser).HasColumnName("update_user");
+
+                entity.Property(e => e.DomesticOrigin).HasColumnName("domestic_origin");
+
+                entity.Property(e => e.Canceled).HasColumnName("canceled");
+
+                entity.Property(e => e.Comments).HasColumnName("comments");
+
+                entity.Property(e => e.AdminComments).HasColumnName("admin_comments");
+
+                entity.Property(e => e.DatePrinted).HasColumnName("date_printed");
+
+                entity.Property(e => e.ReferenceNumber).HasColumnName("ref_num");
+
+                entity.Property(e => e.USDAReported).HasColumnName("usda_reported");
+
+                entity.Property(e => e.USDAReportDate).HasColumnName("usda_report_date");
+
+                entity.Property(e => e.TagsRequested).HasColumnName("tags_requested");
+
+                entity.Property(e => e.CertificateFee).HasColumnName("certificate_fee");
+
+                entity.Property(e => e.OECDFee).HasColumnName("oecd_fee");
+
+                entity.Property(e => e.NotFinallyCertifiedFee).HasColumnName("nfc_fee");
+
+                entity.Property(e => e.ClientNotified).HasColumnName("client_notified");
 
 
             });
