@@ -44,22 +44,19 @@
                 <td>@tag.VarietyName</td>
                 <td>@tag.CertNumber</td>
                 <td>@tag.LotNumber</td>
-                <td>sid class</td>
-                <td>tag class</td>
+                <td>@tag.SIDClass</td>
+                <td>@tag.TaggedCass</td>
                 <td>@tag.LotWeightRequested</td>
-                <td># requested</td>
+                <td>@tag.CountRequested</td>
                 <td>@tag.BagSizePounds</td>
-                <td>OECD date sealed</td>
-                <td>OECD cert</td>
-                <td>Tag type</td>
-                <td>
-                    @if(tag.DateRequested.HasValue){
-                    @tag.DateRequested.Value.ToShortDateString()
-                    }
+                <td>@tag.DateSealed</td>
+                <td>Link to OECD Cert</td>
+                <td>@tag.AbbrevTagType.TagTypeTrans</td>
+                <td>@tag.DateRequested.Value.ToShortDateString()
                 </td>
-                <td>alias</td>
-                <td>stage</td>
-                <td>tracking</td>
+                <td>@tag.Alias</td>
+                <td>@tag.Stage</td>
+                <td><a href="@tag.TrackingLink" target="_blank">@tag.TrackingNumber</a></td>
             </tr>
             }
         </tbody>

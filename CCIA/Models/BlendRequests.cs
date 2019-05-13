@@ -88,13 +88,16 @@ namespace CCIA.Models
             }
         }
 
-        public int CertYear { 
-            get 
+        public int CertYear
+        {
+            get
             {
-                if(RequestStarted.Date.Month ==10 || RequestStarted.Date.Month == 11 || RequestStarted.Date.Month == 12) 
+                if (RequestStarted.Date.Month == 10 || RequestStarted.Date.Month == 11 || RequestStarted.Date.Month == 12)
                 {
                     return RequestStarted.Date.Year + 1;
-                } else {
+                }
+                else
+                {
                     return RequestStarted.Date.Year;
                 }
             }
@@ -103,15 +106,15 @@ namespace CCIA.Models
         public string CertNumber
         {
             get
-            {                
-                var twoDigitYear = CertYear.ToString().Substring(CertYear.ToString().Length-2,2);
+            {
+                var twoDigitYear = CertYear.ToString().Substring(CertYear.ToString().Length - 2, 2);
                 switch (BlendType)
                 {
                     case "Lot":
                         return $"CA-L{twoDigitYear}{BlendId}";
                     case "Varietal":
                         return $"CA-V{twoDigitYear}{BlendId}";
-                   case "In Dirt":
+                    case "In Dirt":
                         return $"CA-D{twoDigitYear}{BlendId}";
                 }
                 return "";

@@ -49,6 +49,8 @@ namespace CCIA.Models
 
         public virtual DbSet<Tags> Tags { get; set; }
 
+        public virtual DbSet<AbbrevTagType>  AbbrevTagType { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -253,6 +255,28 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<AbbrevTagType>(entity =>
+            {
+                entity.ToTable("abbrev_tag_type");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("tag_type_id");
+
+                entity.Property(e => e.TagTypeTrans).HasColumnName("tag_type_trans");
+
+                entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+
+                entity.Property(e => e.StandardTagForm).HasColumnName("standard_tag_form");
+
+                entity.Property(e => e.OECD).HasColumnName("oecd");
+
+                entity.Property(e => e.PotatoTag).HasColumnName("po_tag");
+
+
+
+            });
+
             modelBuilder.Entity<BlendInDirtComponents>(entity => 
             {
                 entity.ToTable("blend_indirt_components");
@@ -403,6 +427,10 @@ namespace CCIA.Models
                 entity.HasOne(e => e.BulkCrop);
 
                 entity.HasOne(e => e.BulkVariety);
+
+                entity.HasOne(e => e.TagAbbrevClass);
+
+                entity.HasOne(e => e.AbbrevTagType);
 
 
             });

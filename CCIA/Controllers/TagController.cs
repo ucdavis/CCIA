@@ -35,6 +35,8 @@ namespace CCIA.Controllers
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.Variety)                
                 .ThenInclude(v => v.Crop)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.ClassProduced)
                 .Include(t => t.Blend) 
                 .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
@@ -57,6 +59,8 @@ namespace CCIA.Controllers
                 .Include(t => t.Blend)
                 .ThenInclude(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
+                .Include(t => t.TagAbbrevClass)
+                .Include(t => t.AbbrevTagType)
                 .ToListAsync();            
             return View(model);
         }
