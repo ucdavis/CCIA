@@ -32,13 +32,13 @@
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
                 <td>@oecd.TagId</td>
-                <td>CropName</td>               
-                <td>VarietyName</td>
-                <td>@oecd.LotNumber</td>
-                <td>@oecd.CloseDate</td>
+                <td>@oecd.Seeds.Variety.Crop.Name</td>               
+                <td>@oecd.Seeds.Variety.Name</td>
+                <td>@oecd.LotReferenceNumber</td>
+                <td>@oecd.CloseDate.Value.ToShortDateString()</td>
                 <td>@oecd.Pounds</td>
-                <td>@oecd.Class</td>
-                <td>@oecd.Country</td>
+                <td>@oecd.Class.Class</td>
+                <td>@oecd.Country.Name</td>
                 <td></td>                
             </tr>
             }

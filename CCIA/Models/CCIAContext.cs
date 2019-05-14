@@ -53,6 +53,8 @@ namespace CCIA.Models
 
         public virtual DbSet<OECD> OECD { get; set; }
 
+        public virtual DbSet<AbbrevOECDClass> AbbrevOECDClass { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -96,7 +98,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tags_changes'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.abbrev_oecd_class'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.standards'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_beta_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_lists'. Please see the warning messages.
@@ -126,16 +128,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_transfer_changes'. Please see the warning messages.
 
-        //  public static readonly LoggerFactory DbCommandConsoleLoggerFactory
-        //     = new LoggerFactory (new [] {
-        //         new ConsoleLoggerProvider ((category, level) => category == DbLoggerCategory.Database.Command.Name &&
-        //             level == LogLevel.Debug, true)
-        //     });
-
-
-    //     public static readonly LoggerFactory James = new LoggerFactory(new[] {
-    //     new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug, true)
-    // });
+       
 
         private ILoggerFactory GetLoggerFactory()
         {
@@ -257,6 +250,20 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<AbbrevOECDClass>(entity => 
+            {
+                entity.ToTable("abbrev_oecd_class");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("oecd_class_id");
+
+                entity.Property(e => e.Class).HasColumnName("oecd_trans");
+
+                entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+
+            });
+
             modelBuilder.Entity<OECD>(entity => 
             {
                 entity.ToTable("oecd");
@@ -277,13 +284,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OECDNumber).HasColumnName("oecd_num");
 
-                entity.Property(e => e.Class).HasColumnName("class");
+                entity.Property(e => e.ClassId).HasColumnName("class");
 
                 entity.Property(e => e.CloseDate).HasColumnName("close_date");
 
                 entity.Property(e => e.ConditionerId).HasColumnName("conditioner_id");
 
-                entity.Property(e => e.Country).HasColumnName("country");
+                entity.Property(e => e.CountryId).HasColumnName("country");
 
                 entity.Property(e => e.IssueDate).HasColumnName("issue_date");
 
@@ -331,6 +338,12 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ClientNotified).HasColumnName("client_notified");
 
+                entity.HasOne(e => e.Seeds);
+
+                entity.HasOne(e => e.Class);
+
+                entity.HasOne(e => e.Country);
+
 
             });
 
@@ -355,6 +368,7 @@ namespace CCIA.Models
 
 
             });
+            
 
             modelBuilder.Entity<BlendInDirtComponents>(entity => 
             {
@@ -1602,36 +1616,27 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Countries>(entity =>
             {
-                entity.HasKey(e => e.CountryId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("countries");
 
-                entity.Property(e => e.CountryId).HasColumnName("country_id");
+                entity.Property(e => e.Id).HasColumnName("country_id");
 
-                entity.Property(e => e.CountryCode)
+                entity.Property(e => e.Code)
                     .IsRequired()
                     .HasColumnName("country_code")
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CountryName)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("country_name")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateModified)
-                    .HasColumnName("date_modified")
-                    .HasColumnType("datetime");
+                    .IsUnicode(false);                
 
                 entity.Property(e => e.OecdMember)
                     .HasColumnName("oecd_member")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.UserModified)
-                    .HasColumnName("user_modified")
-                    .HasMaxLength(9)
-                    .IsUnicode(false);
+                    .HasDefaultValueSql("((0))");                
             });
 
             modelBuilder.Entity<County>(entity =>

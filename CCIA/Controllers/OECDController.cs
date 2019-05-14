@@ -31,7 +31,12 @@ namespace CCIA.Controllers
                 certYear = CertYearFinder.CertYear;
             }
             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryYear == certYear)                
+            var model = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryYear == certYear)  
+                .Include(o => o.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(o => o.Class)
+                .Include(o => o.Country)              
                 .ToListAsync();            
             return View(model);
         }
