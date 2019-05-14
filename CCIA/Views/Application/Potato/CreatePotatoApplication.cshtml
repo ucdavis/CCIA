@@ -107,9 +107,9 @@
             <i> - If yes, documentation required</i>
             <div class="form-check form-check-inline">
                 <label class="form-check-label" for="pvxTested1">Yes</label>
-                <input class="form-check-input" type="radio" name="pvxTested" id="pvxTested1">
+                <input class="form-check-input" type="radio" name="pvxTested" id="pvxTested1" value="true">
                 <label class="form-check-label" for="winterTestCompleted2">No</label>
-                <input class="form-check-input" type="radio" name="pvxTested" id="pvxTested2">
+                <input class="form-check-input" type="radio" name="pvxTested" id="pvxTested2" value="false">
             </div>
         </div>
     </section>
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Partial("Shared/_CountyDropdownPartial")
+            @Html.Partial("Shared/_CountyDropdown")
         </div>
         <div class="form-group">
             <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
@@ -155,6 +155,14 @@
 
 @section Scripts {
     <script type="text/javascript">
+        $("#potatoApplication").submit(function(e) {
+            var growerId = @Model.Organization.OrgId;
+
+            insertHiddenInput("growerId", growerId, "#potatoApplication");
+            insertHiddenInput("Crop", 2, "#potatoApplication");
+            return true;
+        });
+
         $(function () {
             $('#datetimepicker1').datetimepicker({
                 format: 'MM/DD/YYYY'

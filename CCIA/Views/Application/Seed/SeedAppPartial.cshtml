@@ -2,7 +2,7 @@
 
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">*</em>
-    @{ ViewBag.name = "classProduced"; }
+    @{ ViewBag.name = "ClassProducedId"; }
     @Html.Partial("Shared/_ClassRadioButtons")
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
@@ -12,18 +12,18 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
-            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStock1.PsCertNum" placeholder="Certification and Lot #">
+            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
             @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted<em class="required">*</em></label>
-            <input type="text" class="form-control" id="pounds-planted" name="PlantingStock1.PoundsPlanted" placeholder="Pounds Planted">
+            <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[0].PoundsPlanted" placeholder="Pounds Planted">
             @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @{ ViewBag.name = "PlantingStock1.PsClass"; }
+        @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
         <label>Class Planted</label><em class="required">*</em>
         @Html.Partial("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
@@ -31,40 +31,40 @@
 
     <div class="form-group">
         <label>State/Country where Planting Stock Tag was issued</label>
-        @{ViewBag.name = "PlantingStock1.StateCountryTagIssued";}
+        @{ViewBag.name = "PlantingStocks[0].StateCountryTagIssued";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock was Grown</label>
-        @{ViewBag.name = "PlantingStock1.StateCountryStockGrown";}
+        @{ViewBag.name = "PlantingStocks[0].StateCountryStockGrown";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label for="seed-purchased-from">Seed purchased/acquired from:</label>
-        <input type="text" class="form-control" id="seed-purchased-from" name="PlantingStock1.SeedPurchasedFrom" placeholder="Seed purchased/acquired from">
+        <input type="text" class="form-control" id="seed-purchased-from" name="PlantingStocks[0].SeedPurchasedFrom" placeholder="Seed purchased/acquired from">
     </div>
 
     <h5>Enter both parent lines for hybrid production</h5>
     <div class="form-group">
         <label for="variety">Variety</label>
-        <input type="text" class="form-control" name="PlantingStock2.PsEnteredVariety" placeholder="Variety">
+        <input type="text" class="form-control" name="PlantingStocks[1].PsEnteredVariety" placeholder="Variety">
     </div>
     <div class="row">
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #</label>
-            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStock2.PsCertNum" placeholder="Certification and Lot #">
+            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[1].PsCertNum" placeholder="Certification and Lot #">
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted:</label>
-            <input type="text" class="form-control" id="pounds-planted" name="PlantingStock2.PoundsPlanted" placeholder="Pounds Planted">
+            <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[1].PoundsPlanted" placeholder="Pounds Planted">
         </div>
     </div>
 
     <div class="form-group">
         @{
-            ViewBag.name = "classPlanted2";
+            ViewBag.name = "PlantingStocks[1].PsClass";
         }
         <label>Class Planted</label>
         @Html.Partial("Shared/_ClassRadioButtons")
@@ -72,13 +72,13 @@
 
     <div class="form-group">
         <label>State/Country where Planting Stock Tag was issued</label>
-        @{ViewBag.name = "stateCountryTagIssued2";}
+        @{ViewBag.name = "PlantingStocks[1].StateCountryTagIssued";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 
     <div class="form-group">
         <label>State/Country where Planting Stock was Grown</label>
-        @{ViewBag.name = "stateCountryStockGrown2";}
+        @{ViewBag.name = "PlantingStocks[1].StateCountryGrown";}
         @Html.Partial("Shared/_StateCountryDropdown")
     </div>
 </section>
@@ -88,13 +88,13 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="name-num">Name/No.:</label><em class="required">*</em>
-            <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
+            <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
             @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted:</label><em class="required">*</em>
             <div class='input-group date' id='datetimepicker1'>
-                <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="MM/DD/YYYY">
+                <input type="text" class="form-control" id="date-planted" name="DatePlanted" placeholder="MM/DD/YYYY">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -104,7 +104,7 @@
     </div>
     <div class="form-group">
         <label>County:</label><em class="required">*</em>
-        <select class="form-control" name=county>
+        <select class="form-control" name=FarmCounty>
             <option></option>
             @foreach (var county in Model.Counties)
             {
@@ -117,13 +117,13 @@
     </div>
     <div class="form-group">
         <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
-        <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
+        <input type="text" class="form-control" id="acres-applied" name="AcresApplied" placeholder="Acres Applied">
         @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         <label for="comments">Additional Information/Comments:</label>
-        <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
+        <textarea class="form-control" id="comments" rows="5" name="ApplicantComments" placeholder="Additional Information/Comments"></textarea>
     </div>
 
     @Html.Partial("Shared/_FieldHistory")

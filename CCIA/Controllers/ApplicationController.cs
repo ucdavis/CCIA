@@ -12,6 +12,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Controllers
 {
+    enum AppTypes
+    {
+        SEED = 1,
+        POTATO,
+        GRAINQA,
+        GERMPLASM,
+        RICE,
+        TURFGRASS,
+        HEMP
+    }
     public class ApplicationController : SuperController
     {
         private readonly CCIAContext _dbContext;
@@ -70,36 +80,57 @@ namespace CCIA.Controllers
 
         // POST: Application/CreateSeedApplication
         [HttpPost]
-        public async Task<IActionResult> CreateSeedApplication(SeedPostModel seedApp)
+        public async Task<IActionResult> CreateSeedApplication(Applications seedApp)
         {
             if (ModelState.IsValid)
             {
+                // Remove invalid fieldhistories
+                List<FieldHistory> newFieldHistories = new List<FieldHistory>();
+                foreach (var fh in seedApp.FieldHistories)
+                {
+                    if (fh.Year != null && fh.Crop != null)
+                    {
+                        newFieldHistories.Add(fh);
+                    }
+                }
+                seedApp.FieldHistories = newFieldHistories;
+
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
-                Applications app = CreateApplicationsRecord(seedApp, contactId, "SD");
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreateAppRecord(seedApp, contactId, "SD");
                 _dbContext.Add(app);
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // Create class produced object
+                app.ClassProduced = new AbbrevClassProduced()
+                {
+                    ClassProducedId = (int)app.ClassProducedId
+                };
 
                 // Planting stocks
                 CreateFirstPlantingStocksRecord(app.PlantingStocks.ElementAt(0), app);
 
                 // Create second plantingstocks entry if required fields aren't null.
-                if (seedApp.CertLotNum2 != null && seedApp.PoundsPlanted2 != null
-                    && seedApp.ClassPlanted2 != null && seedApp.StateCountryStockGrown2 != null
-                    && seedApp.StateCountryTagIssued2 != null)
+                var ps2 = app.PlantingStocks.ElementAt(1);
+                if (ps2.PsCertNum != null && ps2.PoundsPlanted != null
+                    && ps2.PsClass != null && ps2.StateCountryGrown != null
+                    && ps2.StateCountryTagIssued != null)
                 {
                     CreateSecondPlantingStocksRecord(app.PlantingStocks.ElementAt(1), app);
                 }
 
                 // Field history
                 CreateFieldHistoryRecords(app.FieldHistories, app);
-                app.FieldHistories = seedApp.FieldHistories;
 
+                _dbContext.Add(app);
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.AppId });
             }
-            var model = await ApplicationViewModel.Create(_dbContext, seedApp.GrowerId, 1);
+            var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
             model.RenderFormRemainder = true;
             Message = "You are missing certain required fields.";
             return View("Seed/CreateSeedApplication", model);
@@ -109,40 +140,70 @@ namespace CCIA.Controllers
         public async Task<IActionResult> CreatePotatoApplication(int orgId, int appTypeId)
         {
             var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
+            return View("Potato/CreatePotatoApplication", model);
         }
 
         // POST: Application/CreatePotatoApplication
         [HttpPost]
         public async Task<IActionResult> CreatePotatoApplication(PotatoPostModel potatoApp)
         {
-            // // var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            // if (ModelState.IsValid)
-            // {
-            //     // Get contact id associated with growerid
-            //     var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == app.GrowerId).FirstOrDefaultAsync();
+            if (ModelState.IsValid)
+            {
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
-            //     Applications app = CreateApplicationsRecord(potatoApp, contactId, "PO");
-            //     _dbContext.Add(app);
-            //     await _dbContext.SaveChangesAsync();
+                Applications app = CreatePotatoAppRecord(potatoApp, contactId, "PO");
+                _dbContext.Add(app);
+                await _dbContext.SaveChangesAsync();
 
-            //     CreateFirstPlantingStocksRecord(app);
+                // CreateFirstPlantingStocksRecord(Potatoapp);
 
-            //     CreateFieldHistoryRecords(app);
+                // CreateFieldHistoryRecords(app);
 
-            //     await _dbContext.SaveChangesAsync();
-            //     Message = "Application successfully submitted!";
-            //     return RedirectToAction("Details", new { id = app.AppId });
-            // }
-            // var model = await ApplicationViewModel.Create(_dbContext, potatoApp.GrowerId, 1);
-            // model.RenderFormRemainder = true;
-            // Message = "You are missing certain required fields.";
-            // return View(model);
-            return Json(potatoApp);
+                await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = app.AppId });
+            }
+            var model = await ApplicationViewModel.Create(_dbContext, potatoApp.GrowerId, 1);
+            model.RenderFormRemainder = true;
+            Message = "You are missing certain required fields.";
+            return View("Potato/CreatePotatoApplication", model);
         }
 
+        public Applications CreatePotatoAppRecord(PotatoPostModel potatoApp, int contactId, string appType)
+        {
+            return new Applications()
+            {
+                AcresApplied = potatoApp.AcresApplied,
+                ApplicantComments = potatoApp.AdditionalInfo,
+                ApplicantId = contactId,
+                AppOriginalCertYear = potatoApp.CropYear,
+                AppReceived = DateTime.Now,
+                AppType = appType,
+                CertYear = potatoApp.CropYear,
+                ClassProducedId = potatoApp.ClassProduced,
+                CropId = potatoApp.Crop,
+                DatePlanted = potatoApp.DatePlanted,
+                EnteredVariety = potatoApp.Variety,
+                FarmCounty = potatoApp.County,
+                FieldName = potatoApp.NameOrNum,
+                GrowerId = potatoApp.GrowerId,
+                MapVe = false,
+                SelectedVarietyId = potatoApp.VarietyId,
+                Status = "Pending supporting material",
+                WarningFlag = false,
+
+                FieldHistories = potatoApp.FieldHistories,
+                // PlantingStocks = new List<PlantingStocks> {potatoApp.PlantingStock1, potatoApp.PlantingStock2}
+            };
+        }
+
+        /* Iterates through FieldHistories List to find valid entries,
+        Stages those to be committed to the FieldHistories table
+        Then sets our app's FieldHistories to be only the valid entries */
         private void CreateFieldHistoryRecords(ICollection<FieldHistory> fieldHistories, Applications app)
         {
+            ICollection<FieldHistory> newFieldHistories = new List<FieldHistory>();
             // Iterate through fieldhistories and make a new record for each
             foreach (var fh in fieldHistories)
             {
@@ -150,9 +211,11 @@ namespace CCIA.Controllers
                 {
                     fh.AppId = app.AppId;
                     fh.Application = app;
+                    newFieldHistories.Add(fh);
                     _dbContext.Add(fh);
                 }
             }
+            app.FieldHistories = newFieldHistories;
         }
 
         private void CreateFirstPlantingStocksRecord(PlantingStocks ps, Applications app)
@@ -169,14 +232,8 @@ namespace CCIA.Controllers
         {
             // var ps2 = new PlantingStocks()
             // {
-            //     AppId = app.AppId,
-            //     PsCertNum = app.CertLotNum2,
             //     OfficialVarietyId = app.VarietyId,
-            //     PsClass = app.ClassPlanted2,
-            //     StateCountryTagIssued = app.StateCountryTagIssued2,
-            //     StateCountryGrown = app.StateCountryStockGrown2,
             // };
-            ps.SeedPurchasedFrom = app.,
             ps.AbbrevClassProducedClassProducedId = app.ClassProducedId;
             ps.AppId = app.AppId;
             ps.Applications = app;
@@ -247,34 +304,6 @@ namespace CCIA.Controllers
             {
                 return View(abbrevAppType);
             }
-        }
-
-        public Applications CreateApplicationsRecord(SeedPostModel seedApp, int contactId, string appType)
-        {
-            return new Applications()
-            {
-                AcresApplied = seedApp.AcresApplied,
-                ApplicantComments = seedApp.AdditionalInfo,
-                ApplicantId = contactId,
-                AppOriginalCertYear = seedApp.CropYear,
-                AppReceived = DateTime.Now,
-                AppType = appType,
-                CertYear = seedApp.CropYear,
-                ClassProducedId = seedApp.ClassProduced,
-                CropId = seedApp.Crop,
-                DatePlanted = seedApp.DatePlanted,
-                EnteredVariety = seedApp.Variety,
-                FarmCounty = seedApp.County,
-                FieldName = seedApp.NameOrNum,
-                GrowerId = seedApp.GrowerId,
-                MapVe = false,
-                SelectedVarietyId = seedApp.VarietyId,
-                Status = "Pending supporting material",
-                WarningFlag = false,
-
-                FieldHistories = seedApp.FieldHistories,
-                PlantingStocks = new List<PlantingStocks> {seedApp.PlantingStock1, seedApp.PlantingStock2}
-            };
         }
 
         // GET: Application/Edit/5

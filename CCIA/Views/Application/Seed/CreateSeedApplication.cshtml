@@ -16,14 +16,14 @@
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
-            @{ViewBag.name = "crop";}
+            @{ViewBag.name = "CropId";}
             @Html.Partial("Shared/_CropDropdown")
             @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
         </div>
         
         <div class="col-lg-4 col-sm-4 col-xs-4">
             @{
-                ViewBag.name = "cropYear";
+                ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
@@ -35,7 +35,7 @@
             <label for="variety">Variety<em class="required">*</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
-                    <input type="text" class="form-control" id="variety" name="variety" placeholder="Variety">
+                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
                     </span>
@@ -44,7 +44,7 @@
                 </ul>
             </div>
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="varietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectVarietyId">
         </div>
     </div>
 
@@ -67,22 +67,15 @@
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.Organization.OrgId;
 
-            insertHiddenInput("growerId", growerId);
+            insertHiddenInput("growerId", growerId, "#seedApplication");
             return true;
         });
-
-        function insertHiddenInput(name, insertVal) {
-            var inputInsert = $("<input>")
-                .attr("type", "hidden")
-                .attr("name", name).val(insertVal);
-            $("#seedApplication").append(inputInsert); 
-        }
 
         $('#variety-search').on('click', function(e) {
             e.preventDefault();
 
             // Display error if user tries to search for variety before selecting crop
-            let crop = document.getElementsByName("crop")[0];
+            let crop = document.getElementsByName("CropId")[0];
             let cropText = crop.options[crop.selectedIndex].text;
             let cropId = crop.options[crop.selectedIndex].value;
             let varietyName = document.getElementById("variety").value;

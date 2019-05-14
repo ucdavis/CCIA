@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -63,6 +64,7 @@ namespace CCIA.Models
         public string Section { get; set; }
         
         public DateTime? DatePlanted { get; set; }
+        [Required]
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
         public bool? Charged { get; set; }

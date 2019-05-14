@@ -38,6 +38,8 @@ namespace CCIA.Models
     
     public string EnteredVarietyName {get; set; }
 
+    public ICollection<FieldHistory> FieldHistories{ get; set; }
+
     public int GrowerId { get; set; }
 
     public string HistoryApplicationNum1 { get; set; }
@@ -55,9 +57,6 @@ namespace CCIA.Models
 
     [Required]
     public string NameOrNum { get; set; }
-
-    [Required]
-    public int? PoundsPlanted { get; set; }
 
     public string SeedFrom { get; set; }
     [Required]
