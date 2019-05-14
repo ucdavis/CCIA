@@ -1,0 +1,47 @@
+@model IList<OECD>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>File#</th>
+        <th>SID</th>
+        <th>TagID</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Lot Ref#</th>
+        <th>Close Date</th>
+        <th>Lbs</th>
+        <th>Class</th>
+        <th>Country</th>
+        <th>Link</th>        
+        </thead>
+        <tbody>
+        
+            @foreach (var oecd in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="oecd" asp-route-id="@oecd.Id">Details</a></td>
+                <td>@oecd.Id</td>
+                <td>@oecd.SeedsId</td>
+                <td>@oecd.TagId</td>
+                <td>@oecd.Seeds.Variety.Crop.Name</td>               
+                <td>@oecd.Seeds.Variety.Name</td>
+                <td>@oecd.LotReferenceNumber</td>
+                <td>@oecd.CloseDate.Value.ToShortDateString()</td>
+                <td>@oecd.Pounds</td>
+                <td>@oecd.Class.Class</td>
+                <td>@oecd.Country.Name</td>
+                <td></td>                
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
