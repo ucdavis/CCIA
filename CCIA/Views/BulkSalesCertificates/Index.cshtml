@@ -1,0 +1,44 @@
+@model IList<BulkSalesCertificates>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>            
+        <th>Cert#</th>
+        <th>ID</th>
+        <th>Id Type</th>
+        <th>Purchaser</th>
+        <th>Weight</th>
+        <th>Class</th>
+        <th>Date</th>
+        <th>Share*</th>
+        <th>Shared With</th>
+        <th>View</th>        
+        </thead>
+        <tbody>
+        
+            @foreach (var bsc in Model)
+            {
+            <tr>
+                
+                <td>@bsc.Id</td>
+                <td></td>
+                <td></td>
+                <td>@bsc.PurchaserName</td>               
+                <td>@bsc.Pounds</td>
+                <td>@bsc.Class.Class</td>
+                <td>@bsc.Date</td>
+                <td></td>
+                <td></td>
+                <td><a asp-action="Details" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Details</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
