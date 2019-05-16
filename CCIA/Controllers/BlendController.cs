@@ -30,7 +30,7 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();           
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();           
             var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
@@ -56,7 +56,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-             var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             // var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             // return View(model);
             return View();
