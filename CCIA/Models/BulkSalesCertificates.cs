@@ -68,6 +68,25 @@ namespace CCIA.Models
 
         public bool NotificationSent { get; set; }
 
+         public int? LinkId
+        {
+            get
+            {
+                if (SeedsID.HasValue)
+                {
+                    return SeedsID;
+                }
+                else if (BlendId.HasValue)
+                {
+                    return BlendId;
+                }               
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         
         public string IdType
         {
@@ -132,6 +151,8 @@ namespace CCIA.Models
                 return "Unknown";
             }
         }
+
+        public ICollection<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
 
               
 

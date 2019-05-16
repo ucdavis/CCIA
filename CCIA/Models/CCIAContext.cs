@@ -59,6 +59,8 @@ namespace CCIA.Models
 
         public virtual DbSet<CCIAEmployees> CCIAEmployees { get; set; }
 
+        public virtual DbSet<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -81,7 +83,7 @@ namespace CCIA.Models
         
         // Unable to generate entity type for table 'dbo.tag_docs'. Please see the warning messages.
       
-        // Unable to generate entity type for table 'dbo.bulk_sales_certificate_shares'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.seed_transfers'. Please see the warning messages.
        
         // Unable to generate entity type for table 'dbo.random_seeds2015'. Please see the warning messages.
@@ -253,6 +255,22 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<BulkSalesCertificatesShares>(entity => 
+            {
+                entity.ToTable("bulk_sales_certificate_shares");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("bsc_share_id");
+
+                entity.Property(e => e.BulkSalesCertificatesId).HasColumnName("bsc_id");
+
+                entity.Property(e => e.ShareOrganizationId).HasColumnName("share_org_id");
+
+                entity.HasOne(e => e.ShareOrganization);
+
+            });
+
             modelBuilder.Entity<CCIAEmployees>(entity => 
             {
                 entity.ToTable("ccia_employees");
@@ -373,6 +391,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.ConditionerOrganization);
 
                 entity.HasOne(e => e.AdminEmployee);
+
+                entity.HasMany(e => e.BulkSalesCertificatesShares);
 
             });
 
@@ -1513,12 +1533,29 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Contacts>(entity =>
             {
-                entity.HasKey(e => e.ContactId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("contacts");
 
-                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+                entity.Property(e => e.Id).HasColumnName("contact_id");
 
+                 entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasColumnName("first_name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FormOfAddr)
+                    .HasColumnName("form_of_addr")
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                   
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
                     .HasDefaultValueSql("((0))");
@@ -1634,15 +1671,7 @@ namespace CCIA.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("first_name")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.FormOfAddr)
-                    .HasColumnName("form_of_addr")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
+               
 
                 entity.Property(e => e.HomePhone)
                     .HasColumnName("home_phone")
@@ -1681,7 +1710,7 @@ namespace CCIA.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                
 
                 entity.Property(e => e.PagerNo)
                     .HasColumnName("pager_no")
@@ -1701,10 +1730,7 @@ namespace CCIA.Models
                     .HasColumnName("sweet_corn_last_year_agreement")
                     .HasDefaultValueSql("((2000))");
 
-                entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                
 
                 entity.Property(e => e.UserAdding).HasColumnName("user_adding");
 

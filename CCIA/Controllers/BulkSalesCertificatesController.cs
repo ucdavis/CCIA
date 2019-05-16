@@ -30,7 +30,7 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             var model = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId && b.Date.Year == certYear)   
                 .Include(b => b.Seeds)
                 .Include(b => b.PurchaserState)                            
@@ -39,6 +39,7 @@ namespace CCIA.Controllers
                 .Include(b => b.CreatedByContact)
                 .Include(b => b.ConditionerOrganization)
                 .Include(b => b.AdminEmployee)
+                .Include(b => b.BulkSalesCertificatesShares)
                 .ToListAsync();            
             return View(model);
         }
