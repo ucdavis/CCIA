@@ -28,7 +28,7 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && orgId.Contains(a.ApplicantId))
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
@@ -43,7 +43,7 @@ namespace CCIA.Controllers
          public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Applications.Where(a => a.AppId == id && orgId.Contains(a.ApplicantId))
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)

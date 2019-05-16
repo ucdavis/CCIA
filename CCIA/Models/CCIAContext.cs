@@ -55,12 +55,18 @@ namespace CCIA.Models
 
         public virtual DbSet<AbbrevOECDClass> AbbrevOECDClass { get; set; }
 
+        public virtual DbSet<BulkSalesCertificates> BulkSalesCertificates { get; set; }
+
+        public virtual DbSet<CCIAEmployees> CCIAEmployees { get; set; }
+
+        public virtual DbSet<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucumber_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucurbita_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.field_history'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.turfgrass_certificates'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_brassica_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tag_series'. Please see the warning messages.
@@ -68,33 +74,32 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.map_objects'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_typelut'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.application_changes'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.oecd'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.map_sweetcorn_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app_listing'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.my_customers'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_crop_access'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.meridians'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.tag_docs'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.trs'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.bulk_sales_certificate_shares'. Please see the warning messages.
+      
+        
         // Unable to generate entity type for table 'dbo.seed_transfers'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.organization_deleted'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.random_seeds2015'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.organization'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.seeds_changes'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.tags'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.map_user_access'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.Sheet1$'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.bulk_sales_certificates'. Please see the warning messages.
+       
+       
         // Unable to generate entity type for table 'dbo.map_alfalfa_gefree_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_components_changes'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.abbrev_tag_type'. Please see the warning messages.
-
+      
         // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.duplicateOrgs'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tags_changes'. Please see the warning messages.
@@ -109,14 +114,14 @@ namespace CCIA.Models
 
         // Unable to generate entity type for table 'dbo.seeds_apps'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.ccia_employees'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.org_address'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_carrot_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.app_certificates'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.blend_indirt_components'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.map_onion_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_carrot_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.random_samples'. Please see the warning messages.
+      
         // Unable to generate entity type for table 'dbo.map_brassica_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.crop_assign'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.Jobs'. Please see the warning messages.
@@ -124,7 +129,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.bulk_sales_certificates_changes'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.notices'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.blend_components'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_transfer_changes'. Please see the warning messages.
 
@@ -247,6 +252,147 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.FHCrops);
 
+
+            });
+
+            modelBuilder.Entity<BulkSalesCertificatesShares>(entity => 
+            {
+                entity.ToTable("bulk_sales_certificate_shares");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("bsc_share_id");
+
+                entity.Property(e => e.BulkSalesCertificatesId).HasColumnName("bsc_id");
+
+                entity.Property(e => e.ShareOrganizationId).HasColumnName("share_org_id");
+
+                entity.HasOne(e => e.ShareOrganization);
+
+            });
+
+            modelBuilder.Entity<CCIAEmployees>(entity => 
+            {
+                entity.ToTable("ccia_employees");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("employee_id");
+
+                entity.Property(e => e.FirstName).HasColumnName("first_name");
+
+                entity.Property(e => e.LastName).HasColumnName("last_name");
+
+                entity.Property(e => e.UCDMaildID).HasColumnName("ucd_mailid");
+
+                entity.Property(e => e.CampusRoom).HasColumnName("campus_room");
+
+                entity.Property(e => e.CampusBuilding).HasColumnName("campus_bldg");
+
+                entity.Property(e => e.CampusPhone).HasColumnName("campus_phone");
+
+                entity.Property(e => e.CellPhone).HasColumnName("cell_phone");
+
+                entity.Property(e => e.KerberosId).HasColumnName("kerberos_id");
+
+                entity.Property(e => e.Current).HasColumnName("current");
+
+                entity.Property(e => e.CCIAAccess).HasColumnName("ccia_access");
+
+                entity.Property(e => e.CoreStaff).HasColumnName("core_staff");
+
+                entity.Property(e => e.FieldInspector).HasColumnName("field_inspect");
+
+                entity.Property(e => e.SeedLotInform).HasColumnName("seed_lot_inform");
+
+                entity.Property(e => e.EditVarieties).HasColumnName("edit_varieties");
+
+                entity.Property(e => e.BillingAccess).HasColumnName("billing_access");
+
+                entity.Property(e => e.SeedLab).HasColumnName("seed_lab");
+
+                entity.Property(e => e.SeasonalEmployee).HasColumnName("seasonal_employee");
+
+                entity.Property(e => e.NewTag).HasColumnName("new_tag");
+
+                entity.Property(e => e.TagPrint).HasColumnName("tag_print");
+
+                entity.Property(e => e.HeritageGrainQA).HasColumnName("heritage_grain_qa");
+
+                entity.Property(e => e.PrevarietyGermplasm).HasColumnName("prevariety_germplasm");
+
+                entity.Property(e => e.OECDInvoicePrinter).HasColumnName("oecd_invoice_printer");
+
+            });
+
+            modelBuilder.Entity<BulkSalesCertificates>(entity => 
+            {
+                entity.ToTable("bulk_sales_certificates");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.ConditionerOrganizationId).HasColumnName("cond_org");
+
+                entity.Property(e => e.Date).HasColumnName("date");
+
+                entity.Property(e => e.SeedsID).HasColumnName("sid");
+
+                entity.Property(e => e.BlendId).HasColumnName("bid");
+
+                entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+
+                entity.Property(e => e.PurchaserName).HasColumnName("purch_name");
+
+                entity.Property(e => e.PurchaserAddressLine1).HasColumnName("purch_address_line_1");
+
+                entity.Property(e => e.PurchaserAddressLine2).HasColumnName("purch_address_line_2");
+
+                entity.Property(e => e.PurchaserCity).HasColumnName("purch_city");
+
+                entity.Property(e => e.PurchaserStateId).HasColumnName("purch_state_id");
+
+                entity.Property(e => e.PurchaserCountryId).HasColumnName("purch_country");
+
+                entity.Property(e => e.PurchaserZip).HasColumnName("purch_zip");
+
+                entity.Property(e => e.PurchaserPhone).HasColumnName("purch_phone");
+
+                entity.Property(e => e.PurchaserEmail).HasColumnName("purch_email");
+
+                entity.Property(e => e.Pounds).HasColumnName("cert_lbs");
+
+                entity.Property(e => e.ClassId).HasColumnName("class");
+
+                entity.Property(e => e.CreatedById).HasColumnName("created_by");
+
+                entity.Property(e => e.CreatedOn).HasColumnName("created_on");
+
+                entity.Property(e => e.AdminUpdatedId).HasColumnName("admin_updated");
+
+                entity.Property(e => e.AdminUpdatedDate).HasColumnName("admin_update_date");
+
+                entity.Property(e => e.NotificationSent).HasColumnName("notification_sent");                
+
+
+                entity.HasOne(e => e.Seeds);
+
+                entity.HasOne(e => e.Blend);
+
+                entity.HasOne(e => e.PurchaserState);
+
+                entity.HasOne(e => e.PurchaserCountry);
+
+                entity.HasOne(e => e.Class);
+
+                entity.HasOne(e => e.CreatedByContact);
+
+                entity.HasOne(e => e.ConditionerOrganization);
+
+                entity.HasOne(e => e.AdminEmployee);
+
+                entity.HasMany(e => e.BulkSalesCertificatesShares);
 
             });
 
@@ -1387,12 +1533,29 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Contacts>(entity =>
             {
-                entity.HasKey(e => e.ContactId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("contacts");
 
-                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+                entity.Property(e => e.Id).HasColumnName("contact_id");
 
+                 entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasColumnName("first_name")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FormOfAddr)
+                    .HasColumnName("form_of_addr")
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                   
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
                     .HasDefaultValueSql("((0))");
@@ -1508,15 +1671,7 @@ namespace CCIA.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("first_name")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.FormOfAddr)
-                    .HasColumnName("form_of_addr")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
+               
 
                 entity.Property(e => e.HomePhone)
                     .HasColumnName("home_phone")
@@ -1555,7 +1710,7 @@ namespace CCIA.Models
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                
 
                 entity.Property(e => e.PagerNo)
                     .HasColumnName("pager_no")
@@ -1575,10 +1730,7 @@ namespace CCIA.Models
                     .HasColumnName("sweet_corn_last_year_agreement")
                     .HasDefaultValueSql("((2000))");
 
-                entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                
 
                 entity.Property(e => e.UserAdding).HasColumnName("user_adding");
 

@@ -30,7 +30,7 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             var model = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryYear == certYear)  
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.Variety)
@@ -45,7 +45,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             return View(model);
         }
