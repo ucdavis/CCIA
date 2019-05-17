@@ -1,0 +1,47 @@
+@model IList<Applications>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Turfgrass Certificates</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>  
+            <th></th>          
+        <th>AppId</th>
+        <th>Type</th>
+        <th>Cert Year</th>
+        <th>Grower</th>
+        <th>Field Name</th>
+        <th>Acres</th>
+        <th>County</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>        
+        <th># Certificates</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var app in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="TurfgrassCertificate" asp-route-id="@app.AppId">Details</a></td>
+                <td>@app.AppId</td>
+                <td>@app.AppType</td>
+                <td>@app.CertYear</td>
+                <td>@app.ApplicantOrganization.OrgName</td>               
+                <td>@app.FieldName</td>
+                <td>@app.AcresApplied</td>
+                <td>@app.County.CountyName</td>
+                <td>@app.Variety.Crop.Name</td>
+                <td>@app.Variety.Name</td>
+                <td>@app.ClassProduced.ClassProducedTrans</td>
+                <td>@app.TurfgrassCertificates.Count</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
