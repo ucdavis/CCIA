@@ -30,7 +30,7 @@
         </div> 
 
         <div class="col-lg-4 col-sm-4 col-xs-4">
-            <label>Variety:</label><em class="required">*</em>
+            <label>Variety:</label><em class="required">•</em>
             <select name="variety" class="form-control">
                 @foreach (var v in Model.Varieties)
                     {
@@ -44,7 +44,7 @@
     </div>
 
     <div class="form-group">
-        <label>Class to be Produced</label><em class="required">*</em>
+        <label>Class to be Produced</label><em class="required">•</em>
         @{ ViewBag.name = "classProduced"; }
         @Html.Partial("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
@@ -52,7 +52,7 @@
 
     <div class="row">
         <div class="form-group col-md-6">
-            <label for="cert-lot-num">Lot # for Certification Number<em class="required">*</em></label><i> - Do not enter year or account number</i>
+            <label for="cert-lot-num">Lot # for Certification Number<em class="required">•</em></label><i> - Do not enter year or account number</i>
             <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Lot # for Certification Number">
             @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
         </div>
@@ -62,7 +62,7 @@
         <h4>Planting Stock:</h4>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
+                <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
                 <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
                 @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
             </div>
@@ -70,29 +70,29 @@
 
         <div class="form-group">
             @{ ViewBag.name = "classPlanted"; }
-            <label>Class Planted</label><em class="required">*</em>
+            <label>Class Planted</label><em class="required">•</em>
             @Html.Partial("Shared/_ClassRadioButtons")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock Tag or breeder letter was issued</label><em class="required">*</em>
+            <label>State/Country where Planting Stock Tag or breeder letter was issued</label><em class="required">•</em>
             @{ViewBag.name = "stateCountryTagIssued";}
             @Html.Partial("Shared/_StateCountryDropdown")
         </div>
 
         <div class="form-group">
-            <label>State/Country where Planting Stock was grown</label><em class="required">*</em>
+            <label>State/Country where Planting Stock was grown</label><em class="required">•</em>
             @{ViewBag.name = "stateCountryStockGrown";}
             @Html.Partial("Shared/_StateCountryDropdown")
         </div>
 
         <div class="form-group">
-            <label for="farm-grown">Farm name where Planting Stock was grown</label><em class="required">*</em>
+            <label for="farm-grown">Farm name where Planting Stock was grown</label><em class="required">•</em>
             <input type="text" class="form-control" id="farm-grown" name="farmGrown" placeholder="Farm name where Planting Stock was grown">
         </div>
 
         <div class="form-group">
-            <label class="form-check-label" for="winterTest">Winter test results are required for recertification</label><em class="required">*</em>
+            <label class="form-check-label" for="winterTest">Winter test results are required for recertification</label><em class="required">•</em>
             <i> - If yes, documentation required</i>
             <div class="form-check form-check-inline">
                 <label class="form-check-label" for="winterTestCompleted1">Yes</label>
@@ -103,7 +103,7 @@
         </div>
 
         <div class="form-group">
-            <label class="form-check-label" for="pvxTested">For prenuclear and nuclear class planted, was this lot PVX tested?</label><em class="required">*</em>
+            <label class="form-check-label" for="pvxTested">For prenuclear and nuclear class planted, was this lot PVX tested?</label><em class="required">•</em>
             <i> - If yes, documentation required</i>
             <div class="form-check form-check-inline">
                 <label class="form-check-label" for="pvxTested1">Yes</label>
@@ -118,12 +118,12 @@
         <h4>Field Information:</h4>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="name-num">Name/No.:</label><em class="required">*</em>
+                <label for="name-num">Name/No.:</label><em class="required">•</em>
                 <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
                 @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
-                <label for="date-planted">Date Planted:</label><em class="required">*</em>
+                <label for="date-planted">Date Planted:</label><em class="required">•</em>
                 <div class='input-group date' id='datetimepicker1'>
                     <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="MM/DD/YYYY">
                     <span class="input-group-addon">
@@ -137,7 +137,7 @@
             @Html.Partial("Shared/_CountyDropdown")
         </div>
         <div class="form-group">
-            <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
+            <label for="acres-applied">Acres Applied:</label><em class="required">•</em>
             <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
             @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
         </div>

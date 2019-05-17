@@ -1,7 +1,7 @@
 @model CCIA.Models.ApplicationViewModel
 
 <div class="form-group">
-    <label>Class to be Produced</label><em class="required">*</em>
+    <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
     @Html.Partial("Shared/_ClassRadioButtons")
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
@@ -11,12 +11,12 @@
     <h4>Planting Stock:</h4>
     <div class="row">
         <div class="form-group col-md-6">
-            <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
+            <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
             <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
             @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
-            <label for="pounds-planted">Pounds Planted<em class="required">*</em></label>
+            <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
             <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[0].PoundsPlanted" placeholder="Pounds Planted">
             @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
         </div>
@@ -24,7 +24,7 @@
 
     <div class="form-group">
         @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
-        <label>Class Planted</label><em class="required">*</em>
+        <label>Class Planted</label><em class="required">•</em>
         @Html.Partial("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
     </div>
@@ -87,12 +87,12 @@
     <h4>Field Information:</h4>
     <div class="row">
         <div class="form-group col-md-6">
-            <label for="name-num">Name/No.:</label><em class="required">*</em>
+            <label for="name-num">Name/No.:</label><em class="required">•</em>
             <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
             @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
-            <label for="date-planted">Date Planted:</label><em class="required">*</em>
+            <label for="date-planted">Date Planted:</label><em class="required">•</em>
             <div class='input-group date' id='datetimepicker1'>
                 <input type="text" class="form-control" id="date-planted" name="DatePlanted" placeholder="MM/DD/YYYY">
                 <span class="input-group-addon">
@@ -103,7 +103,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label>County:</label><em class="required">*</em>
+        <label>County:</label><em class="required">•</em>
         <select class="form-control" name=FarmCounty>
             <option></option>
             @foreach (var county in Model.Counties)
@@ -116,7 +116,7 @@
         @Html.ValidationMessage("County", "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
+        <label for="acres-applied">Acres Applied:</label><em class="required">•</em>
         <input type="text" class="form-control" id="acres-applied" name="AcresApplied" placeholder="Acres Applied">
         @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
     </div>

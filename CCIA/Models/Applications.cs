@@ -26,6 +26,7 @@ namespace CCIA.Models
         
         public int? CropId { get; set; }
        
+        [Required]
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }

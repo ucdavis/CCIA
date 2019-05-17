@@ -17,7 +17,7 @@
 
     <div class="form-group row">
         <div class="col-lg-4 col-sm-4 col-xs-4">
-            <label>Crop</label><em class="required">*</em>
+            <label>Crop</label><em class="required">•</em>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>Crop
                 <span class="caret"></span></button>
@@ -44,7 +44,7 @@
         </div> 
 
         <div class="col-lg-4 col-sm-4 col-xs-4">  
-            <label for="germplasmEntity">Germplasm Entity<em class="required">*</em></label>
+            <label for="germplasmEntity">Germplasm Entity<em class="required">•</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <p id="variety-dropdown-message" class="required"></p>
                 <div class="input-group col">
@@ -63,7 +63,7 @@
 
     <div class="form-group">
         @{ViewBag.name = "classProduced";}
-        <label>Class to be Produced</label><em class="required">*</em>
+        <label>Class to be Produced</label><em class="required">•</em>
         @Html.Partial("Shared/_ClassRadioButtons")
     </div>
 
@@ -73,7 +73,7 @@
         <h4>Planting Stock:</h4>
         <div class="row">
             <div class="col-lg-4 col-sm-4 col-xs-4">  
-                <label for="germplasmEntity">Germplasm Entity<em class="required">*</em></label>
+                <label for="germplasmEntity">Germplasm Entity<em class="required">•</em></label>
                 <div class="dropdown" id="variety-dropdown">
                     <div class="input-group col">
                         <input type="text" class="form-control" id="variety" name="variety" placeholder="Germplasm Entity">
@@ -89,13 +89,13 @@
             </div>
 
             <div class="form-group col-lg-4 col-sm-4 col-xs-4">
-                <label for="cert-lot-num">Certification and Lot #<em class="required">*</em></label>
+                <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
                 <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
                 @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group col-lg-4 col-sm-4 col-xs-4">
-                <label for="pounds-planted">Pounds Planted<em class="required">*</em></label>
+                <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
                 <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted" placeholder="Pounds Planted">
                 @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
             </div>
@@ -103,7 +103,7 @@
 
         <div class="form-group">
             @{ ViewBag.name = "classPlanted"; }
-            <label>Class Planted</label><em class="required">*</em>
+            <label>Class Planted</label><em class="required">•</em>
             @Html.Partial("Shared/_ClassRadioButtons")
         </div>
 
@@ -118,12 +118,12 @@
         <h4>Field Information:</h4>
         <div class="row">
             <div class="form-group col-md-6">
-                <label for="name-num">Name/No.:</label><em class="required">*</em>
+                <label for="name-num">Name/No.:</label><em class="required">•</em>
                 <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
                 @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
             </div>
             <div class="form-group col-md-6">
-                <label for="date-planted">Date Planted:</label><em class="required">*</em>
+                <label for="date-planted">Date Planted:</label><em class="required">•</em>
                 <div class='input-group date' id='datetimepicker1'>
                     <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="MM/DD/YYYY">
                     <span class="input-group-addon">
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label>County:</label><em class="required">*</em>
+            <label>County:</label><em class="required">•</em>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
                 <span class="caret"></span></button>
@@ -149,7 +149,7 @@
             @Html.ValidationMessage("County", "", new { @class = "text-danger" })
         </div>
         <div class="form-group">
-            <label for="acres-applied">Acres Applied:</label><em class="required">*</em>
+            <label for="acres-applied">Acres Applied:</label><em class="required">•</em>
             <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
             @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
         </div>
