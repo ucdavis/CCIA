@@ -377,7 +377,9 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.CreatedByContact);
 
-                entity.HasOne(e => e.Class);
+                entity.HasOne(e => e.SeedClass);
+
+                entity.HasOne(e => e.AppClass);
 
                 entity.HasOne(e => e.DestinationOrganization);
 
