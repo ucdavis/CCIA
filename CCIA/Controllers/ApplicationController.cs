@@ -38,7 +38,7 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && orgId.Contains(a.ApplicantId))
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
@@ -53,7 +53,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.ContactId == 1).Select(c => c.OrgId).ToArrayAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
             var model = await _dbContext.Applications.Where(a => a.AppId == id && orgId.Contains(a.ApplicantId))
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
@@ -96,7 +96,7 @@ namespace CCIA.Controllers
                 seedApp.FieldHistories = newFieldHistories;
 
                 // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateAppRecord(seedApp, contactId, "SD");
@@ -150,7 +150,7 @@ namespace CCIA.Controllers
             if (ModelState.IsValid)
             {
                 // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.ContactId).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
                 Applications app = CreatePotatoAppRecord(potatoApp, contactId, "PO");
                 _dbContext.Add(app);

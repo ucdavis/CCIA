@@ -12,7 +12,6 @@ namespace CCIA.Models
         public DateTime DateModified { get; set; }
 
 
-        public ICollection<PlantingStocks> GrownInPlantingStocks { get; set; }
-        public ICollection<PlantingStocks> TaggedInPlantingStocks { get; set; }
+       
     }
 }

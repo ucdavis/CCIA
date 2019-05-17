@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -17,8 +18,8 @@ namespace CCIA.Models
         public string Variety { get; set; }
         public string AppNumber { get; set; }
 
-        public Applications Application { get; set; }
-        
+       
+        [ForeignKey("Crop")]
         public Crops FHCrops { get; set; }
 
     }

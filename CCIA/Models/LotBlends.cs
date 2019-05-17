@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -9,5 +11,10 @@ namespace CCIA.Models
         public int BlendId { get; set; }
         public int Sid { get; set; }
         public decimal Weight { get; set; }
+
+        [ForeignKey("Sid")]
+        public Seeds Seeds { get; set; }
+
+        
     }
 }

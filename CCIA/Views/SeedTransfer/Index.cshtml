@@ -1,0 +1,43 @@
+@model IList<SeedTransfers>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seed Transfers</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>Id</th>
+        <th>Transfer Id</th>
+        <th>Transfer Type</th>
+        <th>Date</th>
+        <th>Weight</th>
+        <th>Class</th>
+        <th>Purchaser</th>
+        <th>Ag Comm Approve</th>
+        <th>Ag Comm Date</th>        
+        </thead>
+        <tbody>
+        
+            @foreach (var transfer in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="SeedTransfer" asp-route-id="@transfer.Id">Details</a></td>
+                <td>@transfer.Id</td>
+                <td>@transfer.LinkId</td>
+                <td>@transfer.IdType</td>
+                <td>@transfer.CertificateDate</td>               
+                <td>@transfer.Pounds</td>
+                <td>@transfer.ClassId</td>
+                <td>@transfer.PurchaserName</td>
+                <td>@transfer.AgricultureCommissionerApprove</td>
+                <td>@transfer.AgricultureCommissionerDateRespond</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

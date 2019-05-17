@@ -1,0 +1,52 @@
+﻿@model IList<Seeds>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Seeds</h2>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>SID</th>
+        <th>Program</th>
+        <th>Cert Year</th>
+        <th>Applicant</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>
+        <th>Lot#</th>
+        <th>Labs?</th>
+        <th>Lab Date</th>
+        <th></th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var seeds in Model)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="Seeds" asp-route-id="@seeds.Id">Details</a></td>
+                <td>@seeds.Id</td>
+                <td>@seeds.CertProgram</td>
+                <td>@seeds.CertYear</td>
+                <td>@seeds.ApplicantOrganization.OrgName</td>
+                <td>@seeds.Variety.Crop.Name</td>
+                <td>@seeds.Variety.Name</td>
+                <td>@seeds.ClassProduced.Class</td>
+                <td>@seeds.LotNumber</td>
+                <td>@Html.CheckBoxFor(m => @seeds.HasLabs)</td>
+                <td>@if(seeds.LabResults.PrivateLabDate.HasValue){
+                    @seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                    }
+                    </td>
+                <td></td>
+                <td>@seeds.Status</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

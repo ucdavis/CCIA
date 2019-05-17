@@ -14,7 +14,7 @@ namespace CCIA.Models
         public string Name { get; set; }
         public string Link { get; set; }
         
-        public Applications Application { get; set; }
+        
 
     }
 }

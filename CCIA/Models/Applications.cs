@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -14,8 +15,8 @@ namespace CCIA.Models
         public int AppId { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
-        public short? CertYear { get; set; }
-        public short? AppOriginalCertYear { get; set; }
+        public int? CertYear { get; set; }
+        public int? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
         
@@ -58,10 +59,7 @@ namespace CCIA.Models
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
         public string FieldName { get; set; }
-        public int? Meridian { get; set; }
-        public string Township { get; set; }
-        public string Range { get; set; }
-        public string Section { get; set; }
+       
         
         public DateTime? DatePlanted { get; set; }
         [Required]
@@ -88,7 +86,7 @@ namespace CCIA.Models
         public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
 
-        
+       
         public Crops Crop { get; set; }
         public Applications TraceNavigation { get; set; }
         public ICollection<Applications> InverseTraceNavigation { get; set; }
@@ -96,25 +94,33 @@ namespace CCIA.Models
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
 
+        [ForeignKey("GrowerId")]
         public Organizations GrowerOrganization { get; set; }
         public int? GrowerId { get; set; }
 
+        [ForeignKey("FarmCounty")]
         public County County { get; set; }
-        public short? FarmCounty { get; set; }
+        public int? FarmCounty { get; set; }
 
+        [ForeignKey("SelectedVarietyId")]
         public VarFull  Variety { get; set; }
         public int? SelectedVarietyId { get; set; }
 
+        [ForeignKey("ClassProducedId")]
         public AbbrevClassProduced ClassProduced { get; set; }
         public int? ClassProducedId { get; set; }
 
+        [ForeignKey("AppType")]
         public AbbrevAppType AppTypeTrans { get; set; }
         public string AppType { get; set; }
 
+        [ForeignKey("AppId")]
         public ICollection<AppCertificates> Certificates { get; set; }
 
+        [ForeignKey("AppId")]
         public ICollection<PlantingStocks> PlantingStocks { get; set; }
 
+        [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }
 
     }
