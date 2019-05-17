@@ -18,6 +18,7 @@ namespace CCIA.Models
         public string Variety { get; set; }
         public string AppNumber { get; set; }
 
+        public Applications Application { get; set; }
        
         [ForeignKey("Crop")]
         public Crops FHCrops { get; set; }
