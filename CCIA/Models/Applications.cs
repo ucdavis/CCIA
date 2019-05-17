@@ -121,5 +121,8 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }
 
+        [ForeignKey("AppId")]
+        public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
+
     }
 }

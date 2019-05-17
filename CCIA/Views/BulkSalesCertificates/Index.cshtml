@@ -9,7 +9,8 @@
 
 <div class="col-lg-1">
     <table id="table" class="table">
-        <thead>            
+        <thead> 
+        <th></th>        
         <th>Cert#</th>
         <th>ID</th>
         <th>Id Type</th>
@@ -26,7 +27,7 @@
             @foreach (var bsc in Model)
             {
             <tr>
-                
+               <td><a asp-action="Details" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Details</a></td>
                 <td>@bsc.Id</td>
                 <td>@bsc.LinkId</td>
                 <td>@bsc.IdType</td>
