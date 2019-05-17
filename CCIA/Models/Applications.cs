@@ -14,8 +14,8 @@ namespace CCIA.Models
         public int AppId { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
-        public short? CertYear { get; set; }
-        public short? AppOriginalCertYear { get; set; }
+        public int? CertYear { get; set; }
+        public int? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
         
@@ -98,7 +98,7 @@ namespace CCIA.Models
 
         [ForeignKey("FarmCounty")]
         public County County { get; set; }
-        public short? FarmCounty { get; set; }
+        public int? FarmCounty { get; set; }
 
         [ForeignKey("SelectedVarietyId")]
         public VarFull  Variety { get; set; }

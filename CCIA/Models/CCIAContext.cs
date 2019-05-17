@@ -61,6 +61,8 @@ namespace CCIA.Models
 
         public virtual DbSet<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
 
+        public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -84,7 +86,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.tag_docs'. Please see the warning messages.
       
         
-        // Unable to generate entity type for table 'dbo.seed_transfers'. Please see the warning messages.
+       
        
         // Unable to generate entity type for table 'dbo.random_seeds2015'. Please see the warning messages.
         
@@ -252,6 +254,140 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.FHCrops);
 
+
+            });
+
+            modelBuilder.Entity<SeedTransfers>(entity => 
+            {
+                entity.ToTable("seed_transfers");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("stid");
+
+                entity.Property(e => e.Type).HasColumnName("transfer_type");
+
+                entity.Property(e => e.OriginatingOrganizationId).HasColumnName("originating_org");
+
+                entity.Property(e => e.OriginatingCountyId).HasColumnName("originating_county");
+
+                entity.Property(e => e.ApplicationId).HasColumnName("app_id");
+
+                entity.Property(e => e.SeedsID).HasColumnName("sid");
+
+                entity.Property(e => e.BlendId).HasColumnName("bid");
+
+                entity.Property(e => e.CertificateDate).HasColumnName("certificate_date");
+
+                entity.Property(e => e.CreatedById).HasColumnName("created_by");
+
+                entity.Property(e => e.CreatedOn).HasColumnName("created_on");
+
+                entity.Property(e => e.Pounds).HasColumnName("transfer_lbs");
+
+                entity.Property(e => e.ClassId).HasColumnName("transfer_class");
+
+                entity.Property(e => e.SeedstockLotNumbers).HasColumnName("seedstock_lot_numbers");
+
+                entity.Property(e => e.SubmittedForAnalysis).HasColumnName("submitted_for_analysis");
+
+                entity.Property(e => e.DestinationOrganizationId).HasColumnName("destination_org");
+
+                 entity.Property(e => e.PurchaserName).HasColumnName("purch_name");
+
+                entity.Property(e => e.PurchaserAddressLine1).HasColumnName("purch_address_line_1");
+
+                entity.Property(e => e.PurchaserAddressLine2).HasColumnName("purch_address_line_2");
+
+                entity.Property(e => e.PurchaserCity).HasColumnName("purch_city");
+
+                entity.Property(e => e.PurchaserCountyId).HasColumnName("purch_county");
+
+                entity.Property(e => e.PurchaserStateId).HasColumnName("purch_state_id");
+
+                entity.Property(e => e.PurchaserCountryId).HasColumnName("purch_country");
+
+                entity.Property(e => e.PurchaserZip).HasColumnName("purch_zip");
+
+                entity.Property(e => e.PurchaserPhone).HasColumnName("purch_phone");
+
+                entity.Property(e => e.PurchaserEmail).HasColumnName("purch_email");
+
+                entity.Property(e => e.StageInDirt).HasColumnName("stage_indirt");
+
+                entity.Property(e => e.StageFromField).HasColumnName("stage_from_field");
+
+                entity.Property(e => e.StageFromFieldNumberOfAcres).HasColumnName("stage_from_field_num_acres");
+
+                entity.Property(e => e.StageFromStorage).HasColumnName("stage_from_storage");
+
+                entity.Property(e => e.StageConditioned).HasColumnName("stage_conditioned");
+
+                entity.Property(e => e.StageNotFinallyCertified).HasColumnName("stage_nfc");
+
+                entity.Property(e => e.StageCertifiedSeed).HasColumnName("stage_certified_seed");
+
+                entity.Property(e => e.StageTreatment).HasColumnName("stage_treatment");
+
+                entity.Property(e => e.StageBagging).HasColumnName("stage_bagging");
+
+                entity.Property(e => e.StageTagging).HasColumnName("stage_tagging");
+
+                entity.Property(e => e.StageBlending).HasColumnName("stage_blending");
+
+                entity.Property(e => e.StageStorage).HasColumnName("stage_storage");
+
+                entity.Property(e => e.StageOther).HasColumnName("stage_other");
+
+                entity.Property(e => e.StageOtherValue).HasColumnName("stage_other_value");
+
+                entity.Property(e => e.TypeRetail).HasColumnName("type_retail");
+
+                entity.Property(e => e.TypeTote).HasColumnName("type_tote");
+
+                entity.Property(e => e.TypeBulk).HasColumnName("type_bulk");
+
+                entity.Property(e => e.NumberOfTrucks).HasColumnName("number_of_trucks");
+
+                entity.Property(e => e.AgricultureCommissionerAccurate).HasColumnName("ag_comm_accurate");
+
+                entity.Property(e => e.AgricultureCommissionerInaccurate).HasColumnName("ag_comm_inaccurate");
+
+                entity.Property(e => e.AgricultureCommissionerApprove).HasColumnName("ag_comm_approve");
+
+                entity.Property(e => e.AgricultureCommissionerDateRespond).HasColumnName("ag_comm_date_respond");
+
+                entity.Property(e => e.AgricultureCommissionerContactRespondId).HasColumnName("contact_respond");
+
+                entity.Property(e => e.AdminUpdatedId).HasColumnName("employee_update_id");
+
+                entity.Property(e => e.AdminUpdatedDate).HasColumnName("employee_update_date");
+
+                entity.Property(e => e.AdminUpdated).HasColumnName("update_by_admin");
+
+                entity.HasOne(e => e.OriginatingOrganization);
+
+                entity.HasOne(e => e.OriginatingCounty);
+
+                entity.HasOne(e => e.Seeds);
+
+                entity.HasOne(e => e.Blend);
+
+                entity.HasOne(e => e.Application);
+
+                entity.HasOne(e => e.CreatedByContact);
+
+                entity.HasOne(e => e.Class);
+
+                entity.HasOne(e => e.DestinationOrganization);
+
+                entity.HasOne(e => e.PurchaserState);
+
+                entity.HasOne(e => e.PurchaserCounty);
+
+                entity.HasOne(e => e.AgricultureCommissionerContactRespond);
+
+                entity.HasOne(e => e.AdminEmployee);
 
             });
 

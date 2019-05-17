@@ -5,10 +5,10 @@ namespace CCIA.Models
 {
     public partial class County
     {
-        public short CountyId { get; set; }
+        public int CountyId { get; set; }
         public string CountyName { get; set; }
         public string District { get; set; }
-        public short StateProvinceId { get; set; }
+        public int StateProvinceId { get; set; }
         public DateTime? DateModified { get; set; }
         public string UserModified { get; set; }
         public string Fips { get; set; }
