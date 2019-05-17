@@ -1,0 +1,13 @@
+{
+  "name": "ccia-mvc",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "debug": "ASPNETCORE_ENVIRONMENT=Development dotnet watch run"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0"
+  }
+}
