@@ -31,7 +31,11 @@ namespace CCIA.Controllers
                 certYear = CertYearFinder.CertYear;
             }
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.SeedTransfers.Where(s => s.OriginatingCountyId == orgId && s.CertificateDate.Year == certYear)                
+            var model = await _dbContext.SeedTransfers.Where(s => s.OriginatingOrganizationId == orgId && s.CertificateDate.Year == certYear)  
+                .Include(st => st.Seeds)              
+                .ThenInclude(s => s.ClassProduced)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.ClassProduced)
                 .ToListAsync();            
             return View(model);
         }
