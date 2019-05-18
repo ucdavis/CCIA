@@ -31,8 +31,10 @@ namespace CCIA.Models.IndexViewModels
                 .ToListAsync(),
                certYears =  await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => new SelectListItem() {
                    Text = a.CertYear.ToString(),
-                   Value = a.CertYear.ToString()
-               }).Distinct().ToListAsync()                
+                   Value = a.CertYear.ToString(),
+                   Selected = a.CertYear == certYear ? true : false
+               }).Distinct().ToListAsync(),
+               CertYear = certYear                
             };
 
             return viewModel;

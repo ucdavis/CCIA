@@ -12,7 +12,7 @@
         </div>
         <div class="panel-body">
             Display Apps for Year:
-            <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, "Text", "Text"))"></select>
+            <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, "Value", "Text", Model.CertYear))"></select>
         </div>
     </div>
 </form>
