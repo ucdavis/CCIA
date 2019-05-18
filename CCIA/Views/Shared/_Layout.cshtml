@@ -26,15 +26,79 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CCIA</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">CCIA Members Web App</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a href="https://ccia.ucdavis.edu/">CCIA Home</a></li>                    
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
+            </div>
+            <div class="navbar-header">
+               
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a asp-controller="Applications" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Field Applications<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Seed</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Potatoes</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Heritage Grain QA</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Pre-Variety Germplasm</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Rice QA</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Hemp</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">FIR Summary</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Renewals</a></li>                            
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-controller="Seeds" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Seeds<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">Seeds Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New Certified Seed Lot</a></li>
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New QA/PVG Lot</a></li>                                                       
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-controller="Tag" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Tags Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Request New Tag</a></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Bulk Tag Request</a></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">OECD-Gray Tag/Not Finally Certified</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="OECD" asp-action="Index">OECD</a></li>
+                    <li class="dropdown">
+                        <a asp-controller="Blend" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blends<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">Blends Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Lot Blend</a></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Varietal Blend</a></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New In Dirt Blend</a></li>
+                        </ul>
+                    </li>
+                     <li class="dropdown">
+                        <a asp-controller="BulkSalesCertificates" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Bulk Sales Certificates</a></li>
+                            <li><a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="SeedTransfer" asp-action="Index">New Seed Transfer Certificates</a></li>
+                            <li><a class="dropdown-item" asp-controller="SeedTransfer" asp-action="Index">Completed Seed Transfer Certificates</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">My Customers</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a></li>
+                </ul>               
             </div>
         </div>
     </nav>
