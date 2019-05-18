@@ -14,7 +14,7 @@ namespace CCIA.Models
         public int AppId { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
-        public int? CertYear { get; set; }
+        public int CertYear { get; set; }
         public int? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         

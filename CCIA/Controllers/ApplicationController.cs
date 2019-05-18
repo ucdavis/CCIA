@@ -7,6 +7,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CCIA.Models.IndexViewModels;
 
 
 
@@ -28,14 +29,8 @@ namespace CCIA.Controllers
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
-            var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && orgId.Contains(a.ApplicantId))
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .ToListAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
+            var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYear);            
             return View(model);
         }
 

@@ -1,11 +1,21 @@
-﻿@model IList<Applications>
+﻿@model CCIA.Models.IndexViewModels.ApplicationIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Applications</h2>
+<form asp-action="Index" method="get">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Applications</h2>
+        </div>
+        <div class="panel-body">
+            Display Apps for Year:
+            
+        </div>
+    </div>
+</form>
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -26,7 +36,7 @@
         </thead>
         <tbody>
         
-            @foreach (var app in Model)
+            @foreach (var app in Model.applications)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.AppId">Details</a></td>
