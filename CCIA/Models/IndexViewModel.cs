@@ -96,4 +96,50 @@ namespace CCIA.Models.IndexViewModels
             return viewModel;
         }
     }
+
+    public class OECDIndexViewModel : IndexViewModel
+    {
+        public List<OECD> oecd { get; set; }
+
+        public static async Task<OECDIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        {
+            var viewModel = new OECDIndexViewModel
+            {
+                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryYear == certYear)  
+                .Include(o => o.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(o => o.Class)
+                .Include(o => o.Country)              
+                .ToListAsync(),
+                certYears =  await _dbContext.OECD.Where(a => a.ConditionerId == orgId).Select(a => a.DataEntryYear).Distinct().ToListAsync(),
+               CertYear = certYear 
+            };
+            
+            return viewModel;
+        }
+    }
+
+    public class SeedsIndexViewModel : IndexViewModel
+    {
+        public List<Seeds> seeds { get; set; }
+
+        public static async Task<SeedsIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        {
+            var viewModel = new SeedsIndexViewModel
+            {
+                seeds = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
+                .Include(a => a.ApplicantOrganization)
+                .Include(v => v.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(c => c.ClassProduced)
+                .Include(l => l.LabResults)
+                .ToListAsync(),
+                certYears =  await _dbContext.Seeds.Where(a => a.ConditionerId == orgId).Select(a => a.CertYear.Value).Distinct().ToListAsync(),
+               CertYear = certYear 
+            };
+            
+            return viewModel;
+        }
+    }
 }
