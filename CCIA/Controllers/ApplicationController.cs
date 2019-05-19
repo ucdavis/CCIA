@@ -24,12 +24,12 @@ namespace CCIA.Controllers
 
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
-        {
+        {           
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync(); 
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
+                certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();;
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
             var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYear);            
             return View(model);
         }

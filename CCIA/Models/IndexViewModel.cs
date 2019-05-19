@@ -7,18 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Models.IndexViewModels
-{
-    public class SelectListItemComparer : EqualityComparer<SelectListItem>
-    {
-        public override bool Equals(SelectListItem x, SelectListItem y)
-        {
-            return x.Value.Equals(y.Value);
-        }
-        public override int GetHashCode(SelectListItem obj)
-        {
-            return obj.Value.GetHashCode();
-        }
-    }
+{    
     public class IndexViewModel
     {
         public List<int>  certYears { get; set; }  
@@ -75,6 +64,32 @@ namespace CCIA.Models.IndexViewModels
                 .ThenInclude(v => v.Crop)
                 .ToListAsync(),
                 certYears =  await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).Select(a => a.CertYear).Distinct().ToListAsync(),
+               CertYear = certYear 
+            };
+            
+            return viewModel;
+        }
+    }
+
+    public class BulkSalesCertificatesIndexViewModel : IndexViewModel
+    {
+        public List<BulkSalesCertificates> bulkSalesCertificates { get; set; }
+
+        public static async Task<BulkSalesCertificatesIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        {
+            var viewModel = new BulkSalesCertificatesIndexViewModel
+            {
+                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId && b.Date.Year == certYear)   
+                .Include(b => b.Seeds)
+                .Include(b => b.PurchaserState)                            
+                .Include(b => b.PurchaserCountry)
+                .Include(b => b.Class)
+                .Include(b => b.CreatedByContact)
+                .Include(b => b.ConditionerOrganization)
+                .Include(b => b.AdminEmployee)
+                .Include(b => b.BulkSalesCertificatesShares)
+                .ToListAsync(),
+                certYears =  await _dbContext.BulkSalesCertificates.Where(a => a.ConditionerOrganizationId == orgId).Select(a => a.Date.Year).Distinct().ToListAsync(),
                CertYear = certYear 
             };
             
