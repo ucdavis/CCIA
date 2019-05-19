@@ -8,9 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Models.IndexViewModels
 {
+    public class SelectListItemComparer : EqualityComparer<SelectListItem>
+    {
+        public override bool Equals(SelectListItem x, SelectListItem y)
+        {
+            return x.Value.Equals(y.Value);
+        }
+        public override int GetHashCode(SelectListItem obj)
+        {
+            return obj.Value.GetHashCode();
+        }
+    }
     public class IndexViewModel
     {
-        public List<SelectListItem>  certYears { get; set; }  
+        public List<int>  certYears { get; set; }  
         public int CertYear { get; set; }      
     }
 
@@ -29,14 +40,44 @@ namespace CCIA.Models.IndexViewModels
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .ToListAsync(),
-               certYears =  await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => new SelectListItem() {
-                   Text = a.CertYear.ToString(),
-                   Value = a.CertYear.ToString(),
-                   Selected = a.CertYear == certYear ? true : false
-               }).Distinct().ToListAsync(),
+               certYears =  await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).Distinct().ToListAsync(),
                CertYear = certYear                
             };
 
+            return viewModel;
+        }
+    }
+
+    public class BlendIndexViewModel : IndexViewModel
+    {
+        public List<BlendRequests> blends { get; set; }
+
+        public static async Task<BlendIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        {
+            var viewModel = new BlendIndexViewModel
+            {
+                blends = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
+                .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application) 
+                .ThenInclude(a => a.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
+                .ThenInclude(i => i.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)
+                .ToListAsync(),
+                certYears =  await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).Select(a => a.CertYear).Distinct().ToListAsync(),
+               CertYear = certYear 
+            };
+            
             return viewModel;
         }
     }

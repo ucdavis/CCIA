@@ -1,11 +1,26 @@
-@model IList<BlendRequests>
+@model CCIA.Models.IndexViewModels.BlendIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Blends</h2>
+<form method="get" class="form-inline">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Blends</h2>
+        </div>
+        <div class="panel-body">            
+            <div class="form-group">
+                <label for="CertYear">Display Blends for Cert Year:</label>
+                <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, Model.CertYear))"></select>
+            </div>
+            <div class="form-group">               
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <input type="submit" value="Update Table" class="btn btn-primary" />                
+            </div>            
+        </div>
+    </div>
+</form>
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -21,7 +36,7 @@
         </thead>
         <tbody>
         
-            @foreach (var blend in Model)
+            @foreach (var blend in Model.blends)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.BlendId">Details</a></td>
