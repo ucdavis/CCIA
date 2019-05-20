@@ -1,0 +1,229 @@
+@model CCIA.Models.ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Heritage Grain Application";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<h2>Application for Heritage Grain Quality Assurance Program: @Model.Organization.OrgName</h2>
+
+@Html.Partial("Shared/_GrowerInfoTable")
+
+<form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
+
+    <div class="form-group row">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            <label>Crop</label><em class="required">•</em>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name=@ViewBag.name>Crop
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu scrollable-menu" id="crop-select">
+                    <li><a href="#/" value="Select an option">Crop</a></li>
+                    @foreach (var crop in Model.Crops)
+                    {
+                        if (crop.Heritage == true){
+                            <li><a href="#/" value=@crop.CropId>@crop.CropKind @crop.Crop</a></li>
+                        }
+                    }                   
+                </ul>
+            </div>
+            @Html.ValidationMessage("Crop", "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            @{
+                ViewBag.name = "cropYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @Html.Partial("Shared/_CropYearDropdown")
+        </div> 
+
+        <div class="col-lg-4 col-sm-4 col-xs-4">  
+            <label for="germplasmEntity">Germplasm Entity<em class="required">•</em></label>
+            <div class="dropdown" id="variety-dropdown">
+                <p id="variety-dropdown-message" class="required"></p>
+                <div class="input-group col">
+                    <input type="text" class="form-control" id="variety" name="variety" placeholder="Germplasm Entity">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
+                    </span>
+                </div>
+                <ul class="dropdown-menu scrollable-menu" id="variety-select">
+                </ul>
+            </div>
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="varietyId" placeholder="Variety ID">
+        </div>
+    </div>
+
+    <div class="form-group">
+        @{ViewBag.name = "classProduced";}
+        <label>Class to be Produced</label><em class="required">•</em>
+        @Html.Partial("Shared/_ClassRadioButtons")
+    </div>
+
+    <!------------------- PLANTING STOCK ------------------------------------------------------------------------------------------------->
+
+    <section id="planting-stock" class="form-section">
+        <h4>Planting Stock:</h4>
+        <div class="row">
+            <div class="col-lg-4 col-sm-4 col-xs-4">  
+                <label for="germplasmEntity">Germplasm Entity<em class="required">•</em></label>
+                <div class="dropdown" id="variety-dropdown">
+                    <div class="input-group col">
+                        <input type="text" class="form-control" id="variety" name="variety" placeholder="Germplasm Entity">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
+                        </span>
+                    </div>
+                    <ul class="dropdown-menu scrollable-menu" id="variety-select">
+                    </ul>
+                </div>
+                <p id="variety-dropdown-message" class="required"></p>
+                @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-lg-4 col-sm-4 col-xs-4">
+                <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
+                <input type="text" class="form-control" id="cert-lot-num" name="certLotNum" placeholder="Certification and Lot #">
+                @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-lg-4 col-sm-4 col-xs-4">
+                <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
+                <input type="text" class="form-control" id="pounds-planted" name="poundsPlanted" placeholder="Pounds Planted">
+                @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @{ ViewBag.name = "classPlanted"; }
+            <label>Class Planted</label><em class="required">•</em>
+            @Html.Partial("Shared/_ClassRadioButtons")
+        </div>
+
+        <div class="form-group">
+            <label for="variety">Seed purchased/acquired from:</label>
+            <input type="text" class="form-control" id="seed-purchased-from" name="seedFrom" placeholder="Seed purchased/acquired from">
+        </div>
+
+        <!-- FIELD INFORMATION -------------------------------------------------------------------------------------------------------------------------------->
+
+    <section id="field-info" class="form-section">
+        <h4>Field Information:</h4>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="name-num">Name/No.:</label><em class="required">•</em>
+                <input type="text" class="form-control" id="name-num" name="nameOrNum" placeholder="Name/No.">
+                @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-6">
+                <label for="date-planted">Date Planted:</label><em class="required">•</em>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type="text" class="form-control" id="date-planted" name="datePlanted" placeholder="MM/DD/YYYY">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label>County:</label><em class="required">•</em>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" name="county">County
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu scrollable-menu" id="county-select">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value="County">County</a></li>
+                    @foreach (var county in Model.Counties)
+                    {
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@county.CountyId>@county.CountyName</a></li>
+                    }
+                </ul>
+            </div>
+            @Html.ValidationMessage("County", "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="acres-applied">Acres Applied:</label><em class="required">•</em>
+            <input type="text" class="form-control" id="acres-applied" name="acresApplied" placeholder="Acres Applied">
+            @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="comments">Additional Information/Comments:</label>
+            <textarea class="form-control" id="comments" rows="5" name="additonalInfo" placeholder="Additional Information/Comments"></textarea>
+        </div>
+
+        @Html.Partial("Shared/_FieldHistory")
+    </section>
+
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'MM/DD/YYYY'
+            });
+        });
+
+        $('#variety-search').on('click', function(e) {
+            e.preventDefault();
+            let data = { name: document.getElementById("variety").value };
+            if (data.name === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            let vs = document.getElementById("variety-select");
+            vs.innerHTML = "";
+            $.ajax({
+                type: "POST",
+                url: "/Application/FindGermplasmEntities",
+                data: data,
+                success: function(res) {
+                    let dd = document.getElementById("variety-dropdown");
+                    dd.className += " " + "open";
+                    if (res.length === 0) {
+                        dd.className = "dropdown";
+                        document.getElementById("variety-dropdown-message").innerText = "No results were found. Your typed-in value will be used as a new variety.";
+                    }            
+                    else {
+                        // console.log(res);
+                        res.forEach(function(el) {
+                        vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' tabindex='-1' href='#/' value="+el.varOffId+">"
+                                    + el.varOffName + " " + "(" + el.crop.crop + ")"
+                                    + "</a></li>";
+                    })
+                    }                      
+                },
+                error: function(res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        });
+
+        function selectVariety(e) {
+            /* Collapse dropdown */
+            let dd = document.getElementById("variety-dropdown");
+            dd.className = "dropdown";
+            // Change value of input box to name of variety
+            document.getElementById("variety").value = e.firstElementChild.innerText;
+            // Change value of hidden input to be the variety ID
+            document.getElementById("variety-id").value = e.firstElementChild.attributes.value.value;
+        }
+
+        /* Click handler to collapse variety dropdown on click outside */
+        $(document).click( function(event) { 
+            if( $(event.target).closest('#variety-select').length == 0 ) { 
+                let dd = document.getElementById("variety-dropdown");
+                dd.className = "dropdown";
+            } 
+        });
+    </script>
+}

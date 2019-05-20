@@ -1,0 +1,15 @@
+@model CCIA.Models.ApplicationViewModel
+
+<label>Crop</label>
+@if(@ViewBag.name == "CropId") { 
+    <em class="required">•</em>
+}
+<div class="form-group">
+    <select class="form-control" name=@ViewBag.name>
+        <option></option>
+        @foreach (var crop in Model.Crops)
+        {
+            <option value=@crop.CropId>@crop.CropKind @crop.Crop</option>
+        }  
+    </select>
+</div>
