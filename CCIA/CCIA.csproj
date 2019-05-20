@@ -1,17 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-CCIA-F378FD12-626C-45B9-A81F-8585601F8847</UserSecretsId>
   </PropertyGroup>
+
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1" PrivateAssets="All"/>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All"/>
-    <PackageReference Include="Moment.js" Version="2.24.0"/>
-    <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.45"/>
-    <PackageReference Include="BuildBundlerMinifier" Version="2.9.406"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" PrivateAssets="All" />
   </ItemGroup>
+
+  
+
   <ItemGroup>
-    <ProjectReference Include="..\CCIA.Core\CCIA.Core.csproj"/>
+    <ProjectReference Include="..\CCIA.Core\CCIA.Core.csproj" />
   </ItemGroup>
+
 </Project>

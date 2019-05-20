@@ -4,11 +4,10 @@
 @{
     ViewData["Title"] = "Index";
 }
-@await Html.PartialAsync("_IndexHeaderPartial", @Model)
-<h2>Applications</h2>
-<a href="/Application/NewApp" class="btn btn-primary">Create a new application</a>
 
-<div class="col">
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
+
+<div class="col-lg-1">
     <table id="table" class="table">
         <thead>
             <th></th>

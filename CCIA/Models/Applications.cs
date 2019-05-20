@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -26,7 +25,6 @@ namespace CCIA.Models
         
         public int? CropId { get; set; }
        
-        [Required]
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
@@ -63,7 +61,6 @@ namespace CCIA.Models
        
         
         public DateTime? DatePlanted { get; set; }
-        [Required]
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
         public bool? Charged { get; set; }

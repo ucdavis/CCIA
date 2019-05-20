@@ -27,10 +27,6 @@ namespace CCIA.Models
         public string ThcPercent { get; set; }
         public decimal? PlantsPerAcre { get; set; }
 
-        public Applications Applications { get; set; }
-
-        public int? AbbrevClassProducedClassProducedId {get; set; }
-
         public AbbrevClassProduced PsClassNavigation { get; set; }
 
        
