@@ -43,7 +43,10 @@ namespace CCIA.Models
          public int? ClassId { get; set; }
 
         [ForeignKey("ClassId")]
-        public AbbrevClassSeeds Class { get; set; }
+        public AbbrevClassSeeds SeedClass { get; set; }
+
+        [ForeignKey("ClassId")]
+        public AbbrevClassProduced AppClass { get; set; }
 
         public string SeedstockLotNumbers { get; set; }
 
@@ -181,6 +184,26 @@ namespace CCIA.Models
                     return "AppID";
                 }
                 return "";
+            }
+        }
+
+        public string TransferClass
+        {
+            get
+            {
+                if (SeedsID.HasValue && Seeds.ClassProduced != null)
+                {
+                    return Seeds.ClassProduced.Class;
+                }
+                if (BlendId.HasValue)
+                {
+                    return "Certified Blend";
+                }
+                if(ApplicationId.HasValue && Application.ClassProduced != null)
+                {
+                    return Application.ClassProduced.ClassProducedTrans;
+                }
+                return "Unknown";
             }
         }
 

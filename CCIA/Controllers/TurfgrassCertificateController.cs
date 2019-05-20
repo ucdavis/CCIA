@@ -13,11 +13,11 @@ using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers
 {
-    public class SeedTransferController : SuperController
+    public class TurfgrassCertificateController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
-        public SeedTransferController(CCIAContext dbContext)
+        public TurfgrassCertificateController(CCIAContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -31,11 +31,13 @@ namespace CCIA.Controllers
                 certYear = CertYearFinder.CertYear;
             }
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.SeedTransfers.Where(s => s.OriginatingOrganizationId == orgId && s.CertificateDate.Year == certYear)  
-                .Include(st => st.Seeds)              
-                .ThenInclude(s => s.ClassProduced)
-                .Include(st => st.Application)
-                .ThenInclude(a => a.ClassProduced)
+            var model = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId && a.CertYear == certYear)                
+                .Include(a => a.GrowerOrganization)                
+                .Include(a => a.County)
+                .Include(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.TurfgrassCertificates)
                 .ToListAsync();            
             return View(model);
         }
