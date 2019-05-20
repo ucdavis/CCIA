@@ -63,15 +63,13 @@ namespace CCIA.Models
 
         public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
 
-        public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
-
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucumber_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_cucurbita_isolation'. Please see the warning messages.
         
-        
+        // Unable to generate entity type for table 'dbo.turfgrass_certificates'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_brassica_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tag_series'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.ecoregions'. Please see the warning messages.
@@ -259,30 +257,6 @@ namespace CCIA.Models
 
             });
 
-            modelBuilder.Entity<TurfgrassCertificates>(entity => 
-            {
-                entity.ToTable("turfgrass_certificates");
-
-                entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id).HasColumnName("certificate_id");
-
-                entity.Property(e => e.AppId).HasColumnName("app_id");
-
-                entity.Property(e => e.Sprigs).HasColumnName("sprigs");
-
-                entity.Property(e => e.Sod).HasColumnName("sod");
-
-                entity.Property(e => e.BillingInvoice).HasColumnName("billing_invoice");
-
-                entity.Property(e => e.HarvestDate).HasColumnName("harvest_date");
-
-                entity.Property(e => e.HarvestNumber).HasColumnName("harvest_number");
-
-                
-
-            });
-
             modelBuilder.Entity<SeedTransfers>(entity => 
             {
                 entity.ToTable("seed_transfers");
@@ -403,9 +377,7 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.CreatedByContact);
 
-                entity.HasOne(e => e.SeedClass);
-
-                entity.HasOne(e => e.AppClass);
+                entity.HasOne(e => e.Class);
 
                 entity.HasOne(e => e.DestinationOrganization);
 
@@ -1354,8 +1326,6 @@ namespace CCIA.Models
                 entity.HasMany(d => d.PlantingStocks);
 
                 entity.HasMany(d => d.FieldHistories);
-
-                entity.HasMany(d => d.TurfgrassCertificates);
 
             });
 
