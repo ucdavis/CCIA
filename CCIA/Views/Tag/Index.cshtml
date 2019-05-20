@@ -49,12 +49,7 @@
                 <td>@tag.LotWeightRequested</td>
                 <td>@tag.CountRequested</td>
                 <td>@tag.BagSizePounds</td>
-                <td>
-                    @if(@tag.DateSealed.HasValue)
-                    {
-                        @tag.DateSealed.Value.ToShortDateString()
-                    }
-                </td>
+                <td>@tag.DateSealed</td>
                 <td>Link to OECD Cert</td>
                 <td>@tag.AbbrevTagType.TagTypeTrans</td>
                 <td>@tag.DateRequested.Value.ToShortDateString()

@@ -12,9 +12,8 @@
         <thead>
             <th></th>
         <th>Id</th>
+        <th>Transfer Id</th>
         <th>Transfer Type</th>
-        <th>Link Id</th>
-        <th>Link Type</th>
         <th>Date</th>
         <th>Weight</th>
         <th>Class</th>
@@ -29,20 +28,14 @@
             <tr>
                 <td><a asp-action="Details" asp-controller="SeedTransfer" asp-route-id="@transfer.Id">Details</a></td>
                 <td>@transfer.Id</td>
-                <td>@transfer.Type</td>
                 <td>@transfer.LinkId</td>
                 <td>@transfer.IdType</td>
-                <td>@transfer.CertificateDate.ToShortDateString()</td>               
+                <td>@transfer.CertificateDate</td>               
                 <td>@transfer.Pounds</td>
-                <td>@transfer.TransferClass</td>
+                <td>@transfer.ClassId</td>
                 <td>@transfer.PurchaserName</td>
-                <td>@Html.DisplayFor(model => transfer.AgricultureCommissionerApprove)</td>
-                <td>
-                    @if(@transfer.AgricultureCommissionerDateRespond.HasValue)
-                    {
-                        @transfer.AgricultureCommissionerDateRespond.Value.ToShortDateString()
-                    }
-                    </td>
+                <td>@transfer.AgricultureCommissionerApprove</td>
+                <td>@transfer.AgricultureCommissionerDateRespond</td>
             </tr>
             }
         </tbody>
