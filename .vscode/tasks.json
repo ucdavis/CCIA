@@ -31,6 +31,16 @@
                 "${workspaceFolder}/CCIA/CCIA.csproj"
             ],
             "problemMatcher": "$tsc"
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/CCIA/CCIA.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
