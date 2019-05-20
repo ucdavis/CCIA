@@ -1,11 +1,11 @@
-@model IList<BulkSalesCertificates>
+@model CCIA.Models.IndexViewModels.BulkSalesCertificatesIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Bulk Sales Certificates</h2>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         
-            @foreach (var bsc in Model)
+            @foreach (var bsc in Model.bulkSalesCertificates)
             {
             <tr>
                 

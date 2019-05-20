@@ -1,11 +1,11 @@
-@model IList<SeedTransfers>
+@model CCIA.Models.IndexViewModels.SeedTransferIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Seed Transfers</h2>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         
-            @foreach (var transfer in Model)
+            @foreach (var transfer in Model.seedsTransfers)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="SeedTransfer" asp-route-id="@transfer.Id">Details</a></td>

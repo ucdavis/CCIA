@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -15,7 +14,7 @@ namespace CCIA.Models
         public int AppId { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
-        public int? CertYear { get; set; }
+        public int CertYear { get; set; }
         public int? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
@@ -26,7 +25,6 @@ namespace CCIA.Models
         
         public int? CropId { get; set; }
        
-        [Required]
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
@@ -63,7 +61,6 @@ namespace CCIA.Models
        
         
         public DateTime? DatePlanted { get; set; }
-        [Required]
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
         public bool? Charged { get; set; }
@@ -124,5 +121,33 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }
 
+        [ForeignKey("AppId")]
+        public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
+
+        public string CropName 
+        { 
+            get
+            {
+                if(AppType=="PV")
+                {
+                    return Crop.Name;
+                }
+                return Variety.Crop.Name;
+
+            } 
+        }
+        
+        public string VarietyName 
+        { 
+            get
+            {
+                if(AppType=="PV")
+                {
+                    return "";
+                }
+                return Variety.Name;
+
+            } 
+        }
     }
 }

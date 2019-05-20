@@ -231,6 +231,8 @@ namespace CCIA.Models
                 entity.HasOne(s => s.LabResults);
 
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
+                
+                entity.HasOne(d => d.Application);
 
             });
 
@@ -914,9 +916,6 @@ namespace CCIA.Models
                 .HasColumnName("variety_title")
                 .HasMaxLength(50)
                 .IsUnicode(false);
-
-            entity.Property(e => e.GrowerSameAsApplicant)
-                .HasColumnName("grower_same_as_applicant");
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>

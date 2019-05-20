@@ -1,11 +1,11 @@
-@model IList<OECD>
+@model CCIA.Models.IndexViewModels.OECDIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>OECD</h2>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -25,7 +25,7 @@
         </thead>
         <tbody>
         
-            @foreach (var oecd in Model)
+            @foreach (var oecd in Model.oecd)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="oecd" asp-route-id="@oecd.Id">Details</a></td>

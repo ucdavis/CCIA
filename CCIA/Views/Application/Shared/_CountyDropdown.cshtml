@@ -1,8 +1,0 @@
-<label>County:</label><em class="required">•</em>
-<select name="county" class="form-control">
-    @foreach (var county in Model.Counties)
-    {
-        <option value=@county.CountyId>@county.CountyName</option>
-    }
-</select>
-@Html.ValidationMessage("County", "", new { @class = "text-danger" })

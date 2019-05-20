@@ -7,32 +7,32 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.SeedsViewModels;
 using CCIA.Models.IndexViewModels;
 
 
 
 namespace CCIA.Controllers
 {
-    public class SeedsController : SuperController
+    public class TurfgrassCertificateController : SuperController
     {
         private readonly CCIAContext _dbContext;
 
-        public SeedsController(CCIAContext dbContext)
+        public TurfgrassCertificateController(CCIAContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            
+           
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            if (certYear == 0)
+             if (certYear == 0)
             {
-                certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
+                certYear = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();
             }
-            var model = await SeedsIndexViewModel.Create(_dbContext, orgId, certYear);
+            var model = await TurgrassCertificateIndexViewModel.Create(_dbContext, orgId, certYear);            
             return View(model);
         }
 
@@ -40,9 +40,8 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
-            return View(model);
+           
+            return View();
         }
 
         // GET: Application/Create

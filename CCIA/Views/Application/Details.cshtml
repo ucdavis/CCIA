@@ -144,11 +144,8 @@
                             <td>@row.StateCountryTagIssued</td>
                         } else {
                             <td>@row.TaggedStateProvince.StateProvinceName</td>
-                        }   
-                        @if(@row.GrownStateProvince != null)
-                        {
-                            <td>@row.GrownStateProvince.StateProvinceName</td>
-                        }                     
+                        }                        
+                        <td>@row.GrownStateProvince.StateProvinceName</td>
                         <td>@row.SeedPurchasedFrom</td>
                     </tr>
                 }
