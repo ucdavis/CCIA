@@ -1,11 +1,11 @@
-﻿@model IList<Applications>
+﻿@model CCIA.Models.IndexViewModels.ApplicationIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Applications</h2>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         
-            @foreach (var app in Model)
+            @foreach (var app in Model.applications)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.AppId">Details</a></td>

@@ -7,7 +7,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.SeedsViewModels;
+using CCIA.Models.IndexViewModels;
 
 
 
@@ -26,21 +26,13 @@ namespace CCIA.Controllers
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
+            
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
+                certYear = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId).Select(b => b.Date.Year).MaxAsync();
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId && b.Date.Year == certYear)   
-                .Include(b => b.Seeds)
-                .Include(b => b.PurchaserState)                            
-                .Include(b => b.PurchaserCountry)
-                .Include(b => b.Class)
-                .Include(b => b.CreatedByContact)
-                .Include(b => b.ConditionerOrganization)
-                .Include(b => b.AdminEmployee)
-                .Include(b => b.BulkSalesCertificatesShares)
-                .ToListAsync();            
+            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);            
             return View(model);
         }
 
