@@ -14,6 +14,8 @@ namespace CCIA.Models
         public AbbrevAppType AppTypeTrans { get; set; }
         public string CertProgram { get; set; }
         public int? AppId { get; set; }
+        [ForeignKey("AppId")]
+        public Applications Application { get; set; }
         public int? SampleFormNumber { get; set; }
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
@@ -117,6 +119,32 @@ namespace CCIA.Models
         public string FullCert() {
             return $"{CertNumber()}-{LotNumber}";
         }
+
+        public string CropName
+        {
+            get
+            {
+                if (AppId.HasValue)
+                {
+                    return Application.CropName;
+                }
+                return Variety.Crop.Name;
+            }
+        }
+
+        public string VarietyName 
+        { 
+            get
+            {
+                if(AppId.HasValue)
+                {
+                    return Application.VarietyName;
+                }
+                return Variety.Name;
+
+            } 
+        }
+
 
 
 

@@ -124,5 +124,31 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
+        public string CropName 
+        { 
+            get
+            {
+                if(AppType=="PV")
+                {
+                    return Crop.Name;
+                }
+                return Variety.Crop.Name;
+
+            } 
+        }
+        
+        public string VarietyName 
+        { 
+            get
+            {
+                if(AppType=="PV")
+                {
+                    return "";
+                }
+                return Variety.Name;
+
+            } 
+        }
+
     }
 }

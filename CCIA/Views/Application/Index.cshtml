@@ -5,22 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<form method="get" class="form-inline">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h2>Applications</h2>
-        </div>
-        <div class="panel-body">            
-            <div class="form-group">
-                <label for="CertYear">Display Apps for Cert Year:</label>
-                <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, Model.CertYear))"></select>
-            </div>
-            <div class="form-group">               
-                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <input type="submit" value="Update Table" class="btn btn-primary" />                
-            </div>            
-        </div>
-    </div>
-</form>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
