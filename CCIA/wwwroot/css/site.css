@@ -29,16 +29,39 @@ html {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.form-section{
+    border-radius:.8em;
+    background:#f1f1f1;
+    padding:2px 10px;
+    margin-bottom:10px
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+.required{
+    color:#f00
+}
+
+.scrollable-menu{
+    height:auto;
+    max-height:400px;
+    overflow-x:hidden
+}
+
+.btn-secondary{
+    border:1px solid #ccc !important;
+    background:#fff
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
 }
 
 body {

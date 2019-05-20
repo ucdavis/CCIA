@@ -260,6 +260,8 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.FHCrops);
 
+                //entity.HasOne(d => d.Application);
+
 
             });
 
@@ -988,6 +990,8 @@ namespace CCIA.Models
                 .HasColumnName("variety_title")
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
@@ -1090,14 +1094,14 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Applications>(entity =>
             {
-                entity.HasKey(e => e.AppId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("applications");
 
-                entity.HasIndex(e => new { e.AppId, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.AppCancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.AppSubmitable, e.Status, e.AppApproved, e.Maps, e.CertYear })
+                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.AppCancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.AppSubmitable, e.Status, e.AppApproved, e.Maps, e.CertYear })
                     .HasName("IX_applications_cert_year");
 
-                entity.Property(e => e.AppId).HasColumnName("app_id");
+                entity.Property(e => e.Id).HasColumnName("app_id");
 
                 entity.Property(e => e.AcresApplied)
                     .HasColumnName("acres_applied")
@@ -1383,10 +1387,10 @@ namespace CCIA.Models
                     .WithMany(p => p.AppliedApplications)
                     .HasForeignKey(d => d.ApplicantId);
 
-                entity.HasOne(d => d.TraceNavigation)
-                    .WithMany(p => p.InverseTraceNavigation)
-                    .HasForeignKey(d => d.Trace)
-                    .HasConstraintName("FK_Applications_Applications2");
+                // entity.HasOne(d => d.TraceNavigation)
+                //     .WithMany(p => p.InverseTraceNavigation)
+                //     .HasForeignKey(d => d.Trace)
+                //     .HasConstraintName("FK_Applications_Applications2");
 
                 entity.HasOne(d => d.County);
 
@@ -2602,6 +2606,7 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);
+                //entity.HasOne(d => d.Application);
 
             });
 

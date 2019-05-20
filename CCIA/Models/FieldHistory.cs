@@ -14,9 +14,12 @@ namespace CCIA.Models
 
         public int AppId { get; set; }
         public int Year { get; set; }
-        public int Crop { get; set; }
+        public int? Crop { get; set; }
         public string Variety { get; set; }
         public string AppNumber { get; set; }
+
+        // [ForeignKey("AppId")]
+        // public Applications Application { get; set; }
 
        
         [ForeignKey("Crop")]

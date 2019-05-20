@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class Applications
     {
-        public Applications()
-        {
-            InverseTraceNavigation = new HashSet<Applications>();
-        }
+        // public Applications()
+        // {
+        //     InverseTraceNavigation = new HashSet<Applications>();
+        // }
 
-        public int AppId { get; set; }
+        public int Id { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
         public int CertYear { get; set; }
@@ -25,6 +26,7 @@ namespace CCIA.Models
         
         public int? CropId { get; set; }
        
+        // [Required] Not required for Pre-variety Germplasm :(
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
@@ -61,6 +63,7 @@ namespace CCIA.Models
        
         
         public DateTime? DatePlanted { get; set; }
+        [Required]
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
         public bool? Charged { get; set; }
@@ -86,8 +89,8 @@ namespace CCIA.Models
 
        
         public Crops Crop { get; set; }
-        public Applications TraceNavigation { get; set; }
-        public ICollection<Applications> InverseTraceNavigation { get; set; }
+       // public Applications TraceNavigation { get; set; }
+       // public ICollection<Applications> InverseTraceNavigation { get; set; }
 
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
