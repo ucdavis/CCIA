@@ -44,7 +44,8 @@
                 </ul>
             </div>
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectVarietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
         </div>
     </div>
 
@@ -127,6 +128,7 @@
         function loadFormRemainder() {
             let orgId = @Model.Organization.OrgId;
             let appTypeId = 1;
+            insertHiddenInput()
             /* If something is inside form-remainder div, clear it out */
             $("#form-remainder").empty();
             $("#form-remainder")
