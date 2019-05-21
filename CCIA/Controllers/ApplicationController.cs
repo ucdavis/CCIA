@@ -24,7 +24,7 @@ namespace CCIA.Controllers
         HEMP
     }
 
-    
+
     public class ApplicationController : SuperController
     {
         private readonly CCIAContext _dbContext;
@@ -36,19 +36,19 @@ namespace CCIA.Controllers
 
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
-        {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();  
-            var bud = 10;   
+        {
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
+            var bud = 10;
             if (certYear == 0)
             {
-                certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();;
+                certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync(); ;
             }
-            var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYear);            
+            var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
         }
 
         // GET: Application/Details/5
-         public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
@@ -63,7 +63,7 @@ namespace CCIA.Controllers
                 .Include(a => a.PlantingStocks)
                 .ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)                              
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .FirstOrDefaultAsync();
             return View(model);
@@ -92,7 +92,6 @@ namespace CCIA.Controllers
                     }
                 }
                 seedApp.FieldHistories = newFieldHistories;
-
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 

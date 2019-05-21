@@ -23,9 +23,7 @@ namespace CCIA.Models
         public int? UserAppDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-        
-        public int? CropId { get; set; }
-       
+               
         // [Required] Not required for Pre-variety Germplasm :(
         public string EnteredVariety { get; set; }
         
@@ -86,9 +84,12 @@ namespace CCIA.Models
         public string FieldHardiness { get; set; }
         public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
-
        
+        public int? CropId { get; set; }
+
+       [ForeignKey("CropId")]
         public Crops Crop { get; set; }
+
        // public Applications TraceNavigation { get; set; }
        // public ICollection<Applications> InverseTraceNavigation { get; set; }
 
@@ -103,9 +104,10 @@ namespace CCIA.Models
         public County County { get; set; }
         public int? FarmCounty { get; set; }
 
+        public int? SelectedVarietyId { get; set; }
+
         [ForeignKey("SelectedVarietyId")]
         public VarFull  Variety { get; set; }
-        public int? SelectedVarietyId { get; set; }
 
         [ForeignKey("ClassProducedId")]
         public AbbrevClassProduced ClassProduced { get; set; }
@@ -136,7 +138,7 @@ namespace CCIA.Models
                     return Crop.Name;
                 }
                 return Variety.Crop.Name;
-
+                // return "Alfalfa";
             } 
         }
         
@@ -149,7 +151,7 @@ namespace CCIA.Models
                     return "";
                 }
                 return Variety.Name;
-
+                // return "CUF 101";
             } 
         }
 

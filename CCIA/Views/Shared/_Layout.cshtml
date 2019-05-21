@@ -35,76 +35,88 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a href="/" class="navbar-brand">Members</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbars">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse navbars" id="navbar2">
-        <ul class="navbar-nav">             
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Field Applications</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Home</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Seed</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Potatoes</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Heritage Grain QA</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Pre-Variety Germplasm</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Rice QA</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Hemp</a>                            
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">FIR Summary</a>
-                    <a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Renewals</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Certify Seed Lots</a>
-                <div class="dropdown-menu">
-                     <a class="dropdown-item" asp-controller="Seeds" asp-action="Index">Seeds Home</a>
-                     <a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New Certified Seed Lot</a>
-                     <a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New QA/PVG Lot</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Tag" asp-action="Index" aria-haspopup="true" aria-expanded="false">Tags</a>
-                <div class="dropdown-menu">
-                     <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Tags Home</a>
-                     <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Request New Tag</a>
-                     <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Bulk Tag Request</a>
-                     <a class="dropdown-item" asp-controller="Tag" asp-action="Index">OECD-Gray Tag/Not Finally Certified</a>
-                </div>
-            </li>
-            <a class="nav-link" asp-area="" asp-controller="OECD" asp-action="Index">OECD</a>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Blend" asp-action="Index" aria-haspopup="true" aria-expanded="false">Blends</a>
-                <div class="dropdown-menu">
-                     <a class="dropdown-item" asp-controller="Blend" asp-action="Index">Blends Home</a>
-                     <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Lot Blend</a>
-                     <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Varietal Blend</a>
-                     <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New InDirt Blend</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
-                <div class="dropdown-menu">
-                     <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Bulks Sales Certificate</a>
-                     <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a>
-                     <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Seed Transfer Certificate</a>
-                     <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Seed Transfer Certificate</a>
-                     <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">My Customers</a>
-                </div>
-            </li>
-             <a class="nav-link" asp-area="" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a>
-        </ul>
-    </div>
-</nav>
-
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-         @if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"] as string))
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://ccia.ucdavis.edu/">CCIA Home</a></li>                    
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+            <div class="navbar-header">
+               
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a asp-controller="Applications" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Field Applications<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            @{
+                            var sdParams = new Dictionary<string, string>
+                            {
+                                { "appTypeId", "1" },
+                            };
+                            }
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-all-route-data="sdParams">Grow Certified Seed</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Potatoes</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Heritage Grain QA</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Pre-Variety Germplasm</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Rice QA</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Hemp</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">FIR Summary</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Renewals</a></li>                            
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-controller="Seeds" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Seeds<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">Seeds Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New Certified Seed Lot</a></li>
+                            <li><a class="dropdown-item" asp-controller="Seeds" asp-action="Index">New QA/PVG Lot</a></li>                                                       
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-controller="Tag" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Tags Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Request New Tag</a></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">Bulk Tag Request</a></li>
+                            <li><a class="dropdown-item" asp-controller="Tag" asp-action="Index">OECD-Gray Tag/Not Finally Certified</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="OECD" asp-action="Index">OECD</a></li>
+                    <li class="dropdown">
+                        <a asp-controller="Blend" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blends<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">Blends Home</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Lot Blend</a></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Varietal Blend</a></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">New In Dirt Blend</a></li>
+                        </ul>
+                    </li>
+                     <li class="dropdown">
+                        <a asp-controller="BulkSalesCertificates" asp-action="Index" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Bulk Sales Certificates</a></li>
+                            <li><a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="SeedTransfer" asp-action="Index">New Seed Transfer Certificates</a></li>
+                            <li><a class="dropdown-item" asp-controller="SeedTransfer" asp-action="Index">Completed Seed Transfer Certificates</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a class="dropdown-item" asp-controller="Blend" asp-action="Index">My Customers</a></li>
+                        </ul>
+                    </li>
+                    <li><a asp-area="" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a></li>
+                </ul>               
+            </div>
+        </div>
+    </nav>
+<div class="container body-content">
+    @if (!string.IsNullOrWhiteSpace(TempData["ErrorMessage"] as string))
     {
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -130,13 +142,16 @@
     </footer>
 
     <environment include="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
@@ -149,6 +164,7 @@
                 integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
