@@ -1044,6 +1044,10 @@ namespace CCIA.Models
                     .HasColumnName("user_modified")
                     .HasMaxLength(9)
                     .IsUnicode(false);
+
+                entity.HasOne(e => e.County);
+                entity.HasOne(e => e.StateProvince);
+                entity.HasOne(e => e.Countries);
             });
 
             modelBuilder.Entity<Applications>(entity =>
