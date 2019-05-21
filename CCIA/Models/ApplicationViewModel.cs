@@ -20,7 +20,7 @@ namespace CCIA.Models
 
         public Organizations Organization {get; set; }
 
-        public String OrgState {get; set; }
+        //public String OrgState {get; set; }
 
         public List<VarOfficial> Varieties {get; set; }
 
@@ -62,11 +62,12 @@ namespace CCIA.Models
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var organization = await dbContext.Organizations.Where(o => o.OrgId == orgId)
                 .Include(o => o.Address)
-                .FirstOrDefaultAsync();
-            var orgState = organization.Address.StateProvinceId == null ? "" : await dbContext.StateProvince
-                .Where(s => s.StateProvinceId == organization.Address.StateProvinceId)
-                .Select(s => s.StateProvinceName)
-                .FirstOrDefaultAsync();
+                .ThenInclude(a => a.Countries)
+                .Include(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(o => o.Address)
+                .ThenInclude(a => a.County)
+                .FirstOrDefaultAsync();           
             /* California's StateProvinceID is 102 -- All applications must come from CA */
             var counties = await dbContext.County
                 .Where(c => c.StateProvinceId == 102)
@@ -88,7 +89,7 @@ namespace CCIA.Models
                 StateProvince = stateProvince,
                 Counties = counties,
                 Organization = organization,
-                OrgState = orgState,
+                //OrgState = orgState,
                 RenderFormRemainder = false,
                 Varieties = varieties
             };

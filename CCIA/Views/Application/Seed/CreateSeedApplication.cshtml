@@ -58,10 +58,7 @@
 
 @section Scripts {
     <script type="text/javascript">
-        var state_country_dropdowns = document.getElementsByClassName("state-country");
-        for (let i=0; i<state_country_dropdowns.length; i++) {
-            state_country_dropdowns[i].innerHTML = "@Model.OrgState" + ' <span class="caret"></span>';
-        }
+        
 
         var form = document.getElementById("seedApplication")
         $('#seedApplication').submit (function(e) {
