@@ -1,11 +1,10 @@
 ﻿CREATE VIEW dbo.var_full
 AS
-SELECT        var_off_id AS id, var_off_name AS var_name, 'official' AS var_type, crop_id, var_category, var_status, 'official' AS tblname, ccia_certified, ccia_certified_date AS date_certified, rice_qa, rice_qa_color, 
-                         var_off_id AS parent_id, turfgrass
+SELECT        var_off_id AS id, var_off_name AS var_name, 'official' AS var_type, crop_id, var_category, var_status, ccia_certified, rice_qa, rice_qa_color, var_off_id AS parent_id, turfgrass
 FROM            dbo.var_official
 UNION
 SELECT        dbo.var_family.var_fam_id AS id, dbo.var_family.var_fam_name AS var_name, dbo.var_family.variety_type AS var_type, var_official_1.crop_id, var_official_1.var_category, var_official_1.var_status, 
-                         'family' AS tblname, var_official_1.ccia_certified, ccia_certified_date AS date_certified, rice_qa, rice_qa_color, var_family.var_off_id AS parent_id, turfgrass
+                         var_official_1.ccia_certified, rice_qa, rice_qa_color, var_family.var_off_id AS parent_id, turfgrass
 FROM            dbo.var_family INNER JOIN
                          dbo.var_official AS var_official_1 ON dbo.var_family.var_off_id = var_official_1.var_off_id
 GO

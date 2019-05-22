@@ -4,7 +4,9 @@
     [old_value]     VARCHAR (50) NULL,
     [new_value]     VARCHAR (50) NULL,
     [user_change]   VARCHAR (50) NULL,
-    [user_admin]    BIT          CONSTRAINT [DF_seed_transfer_changes_user_admin] DEFAULT ((0)) NOT NULL,
+    [user_admin]    BIT          CONSTRAINT [DF_seed_transfer_changes_used_admin] DEFAULT ((0)) NOT NULL,
     [date_change]   DATETIME     NULL
 );
+
+
 

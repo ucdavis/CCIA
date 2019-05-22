@@ -3,10 +3,10 @@
     [org_id]                              INT           NULL,
     [title]                               VARCHAR (50)  NULL,
     [form_of_addr]                        VARCHAR (25)  NULL,
-    [first_name]                          NVARCHAR (50) NOT NULL,
+    [first_name]                          VARCHAR (50)  NOT NULL,
     [mi]                                  CHAR (1)      NULL,
-    [last_name]                           NVARCHAR (50) NOT NULL,
-    [suffix]                              NVARCHAR (50) NULL,
+    [last_name]                           VARCHAR (50)  NOT NULL,
+    [suffix]                              VARCHAR (50)  NULL,
     [bus_phone]                           VARCHAR (30)  NULL,
     [bus_phone_ext]                       VARCHAR (50)  NULL,
     [mobile_phone]                        VARCHAR (30)  NULL,
@@ -17,7 +17,7 @@
     [password]                            VARCHAR (50)  NULL,
     [contact_type]                        VARCHAR (50)  NULL,
     [ccia_member]                         BIT           CONSTRAINT [DF_contacts_ccia_member] DEFAULT ((0)) NOT NULL,
-    [ccia_member_year]                    SMALLINT      NULL,
+    [ccia_member_year]                    INT           NULL,
     [board_member]                        BIT           CONSTRAINT [DF_Contacts_board_member] DEFAULT ((0)) NOT NULL,
     [board_title]                         VARCHAR (50)  NULL,
     [board_represent]                     VARCHAR (50)  NULL,
@@ -45,11 +45,13 @@
     [allow_apps]                          BIT           CONSTRAINT [DF_contacts_allow_apps] DEFAULT ((0)) NOT NULL,
     [allow_seeds]                         BIT           CONSTRAINT [DF_contacts_allow_seeds] DEFAULT ((0)) NOT NULL,
     [audit_notify]                        BIT           CONSTRAINT [DF_contacts_audit_notify] DEFAULT ((0)) NOT NULL,
-    [alfalfa_last_year_agreement]         SMALLINT      CONSTRAINT [DF_contacts_alfalfa_last_year_agreement] DEFAULT ((2000)) NULL,
-    [sweet_corn_last_year_agreement]      SMALLINT      CONSTRAINT [DF_contacts_sweet_corn_last_year_agreement] DEFAULT ((2000)) NULL,
-    [idaho_vegetable_last_year_agreement] SMALLINT      NULL,
+    [alfalfa_last_year_agreement]         INT           NULL,
+    [sweet_corn_last_year_agreement]      INT           NULL,
+    [idaho_vegetable_last_year_agreement] INT           NULL,
     CONSTRAINT [PK_Contacts] PRIMARY KEY CLUSTERED ([contact_id] ASC)
 );
+
+
 
 
 GO

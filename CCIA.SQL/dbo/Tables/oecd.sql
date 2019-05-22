@@ -3,19 +3,19 @@
     [seeds_id]         INT            NULL,
     [variety_id]       INT            NULL,
     [tag_id_link]      INT            NULL,
-    [lbs_oecd]         INT            NULL,
+    [lbs_oecd]         INT            CONSTRAINT [DF_oecd_lbs_oecd] DEFAULT ((0)) NULL,
     [cert_num]         VARCHAR (50)   NULL,
-    [oecd_num]         VARCHAR (100)  NULL,
-    [class]            TINYINT        NULL,
+    [oecd_num]         VARCHAR (50)   NULL,
+    [class]            INT            NULL,
     [close_date]       DATETIME       NULL,
     [conditioner_id]   INT            NULL,
-    [country]          SMALLINT       NULL,
+    [country]          INT            NULL,
     [issue_date]       DATETIME       NULL,
     [lot_num]          VARCHAR (50)   NULL,
     [shipper_id]       INT            NULL,
     [sample_form_num]  INT            NULL,
     [date_requested]   DATETIME       NULL,
-    [total_fee]        SMALLMONEY     NULL,
+    [total_fee]        SMALLMONEY     CONSTRAINT [DF_oecd_total_fee] DEFAULT ((0)) NULL,
     [not_cert]         BIT            NULL,
     [data_entry_date]  DATETIME       NULL,
     [data_entry_year]  AS             (case when datepart(month,[data_entry_date])=(12) OR datepart(month,[data_entry_date])=(11) OR datepart(month,[data_entry_date])=(10) then CONVERT([smallint],datepart(year,[data_entry_date])+(1),(0)) else CONVERT([smallint],datepart(year,[data_entry_date]),(0)) end) PERSISTED,
@@ -28,9 +28,7 @@
     [admin_comments]   VARCHAR (5000) NULL,
     [date_printed]     DATETIME       NULL,
     [ref_num]          VARCHAR (100)  NULL,
-    [billable]         BIT            CONSTRAINT [DF_oecd_billable] DEFAULT ((1)) NOT NULL,
-    [charged]          BIT            CONSTRAINT [DF_oecd_charged] DEFAULT ((0)) NOT NULL,
-    [usda_reported]    BIT            CONSTRAINT [DF_oecd_usda_reported] DEFAULT ((0)) NOT NULL,
+    [usda_reported]    BIT            CONSTRAINT [DF_oecd_usda_reported] DEFAULT ((0)) NULL,
     [usda_report_date] DATETIME       NULL,
     [tags_requested]   INT            CONSTRAINT [DF_oecd_tags_requested] DEFAULT ((0)) NOT NULL,
     [certificate_fee]  SMALLMONEY     NULL,
@@ -38,6 +36,8 @@
     [nfc_fee]          SMALLMONEY     NULL,
     [client_notified]  BIT            CONSTRAINT [DF_oecd_client_notified] DEFAULT ((0)) NOT NULL
 );
+
+
 
 
 GO

@@ -20,7 +20,9 @@
     [new_tag]              BIT          CONSTRAINT [DF_ccia_employees_new_tag] DEFAULT ((0)) NOT NULL,
     [tag_print]            BIT          CONSTRAINT [DF_ccia_employees_tag_print] DEFAULT ((0)) NOT NULL,
     [heritage_grain_qa]    BIT          CONSTRAINT [DF_ccia_employees_heritage_grain_qa] DEFAULT ((0)) NOT NULL,
-    [prevariety_germplasm] BIT          CONSTRAINT [DF_ccia_employees_prevariety_germplasm] DEFAULT ((0)) NOT NULL,
+    [prevariety_germplasm] BIT          CONSTRAINT [DF_ccia_employees_prevariety_germplams] DEFAULT ((0)) NOT NULL,
     [oecd_invoice_printer] BIT          CONSTRAINT [DF_ccia_employees_oecd_inoice_printer] DEFAULT ((0)) NOT NULL
 );
+
+
 

@@ -2,20 +2,20 @@
     [app_id]                   INT               IDENTITY (1, 1) NOT NULL,
     [paper_app_num]            INT               NULL,
     [cert_num]                 INT               NULL,
-    [cert_year]                SMALLINT          NULL,
-    [app_original_cert_year]   SMALLINT          NULL,
+    [cert_year]                INT               NOT NULL,
+    [app_original_cert_year]   INT               NULL,
     [lot_no]                   VARCHAR (50)      NULL,
     [app_type]                 VARCHAR (2)       NULL,
     [applicant_id]             INT               NOT NULL,
     [user_app_dataentry]       INT               NULL,
     [user_app_modifed]         INT               NULL,
     [user_app_mod_dt]          DATETIME          NULL,
-    [grower_id]                INT               NOT NULL,
+    [grower_id]                INT               NULL,
     [crop_id]                  INT               NULL,
     [selected_variety_id]      INT               NULL,
     [entered_variety]          VARCHAR (50)      NULL,
-    [class_produced_id]        TINYINT           NULL,
-    [class_produced_accession] TINYINT           NULL,
+    [class_produced_id]        INT               NULL,
+    [class_produced_accession] INT               NULL,
     [app_received]             DATETIME          NULL,
     [app_postmark]             SMALLDATETIME     NULL,
     [app_deadline]             DATETIME          CONSTRAINT [DF_applications_app_late] DEFAULT ((0)) NULL,
@@ -42,8 +42,7 @@
     [text_field]               VARCHAR (3000)    NULL,
     [geo_text_field]           VARCHAR (5000)    NULL,
     [geo_field]                [sys].[geography] NULL,
-    [geo_field_corrected]      [sys].[geography] NULL,
-    [map_zoom]                 TINYINT           NULL,
+    [map_zoom]                 INT               NULL,
     [tags]                     BIT               CONSTRAINT [DF_applications_tags] DEFAULT ((0)) NOT NULL,
     [po_lot_num]               VARCHAR (20)      NULL,
     [field_id]                 INT               NULL,
@@ -52,7 +51,7 @@
     [township]                 VARCHAR (10)      NULL,
     [range]                    VARCHAR (10)      NULL,
     [section]                  VARCHAR (10)      NULL,
-    [farm_county]              SMALLINT          NULL,
+    [farm_county]              INT               NULL,
     [date_planted]             DATETIME          NULL,
     [acres_applied]            DECIMAL (14, 2)   NULL,
     [billable]                 BIT               CONSTRAINT [DF_applications_billable] DEFAULT ((1)) NOT NULL,
@@ -61,7 +60,7 @@
     [user_emp_date_mod]        DATETIME          NULL,
     [app_cancelled]            BIT               CONSTRAINT [DF_applications_app_cancelled] DEFAULT ((0)) NOT NULL,
     [app_cancelled_by]         VARCHAR (9)       NULL,
-    [comments]                 VARCHAR (1000)    NULL,
+    [comments]                 VARCHAR (500)     NULL,
     [app_fee]                  SMALLMONEY        NULL,
     [late_fee]                 SMALLMONEY        NULL,
     [incomplete_fee]           SMALLMONEY        NULL,
@@ -74,19 +73,19 @@
     [pvg_source]               VARCHAR (50)      NULL,
     [pvg_selectionId]          VARCHAR (50)      NULL,
     [field_hardiness]          VARCHAR (50)      NULL,
-    [field_elevation]          VARCHAR (50)      NULL,
+    [field_elevation]          INT               NULL,
     [ecoregion]                INT               CONSTRAINT [DF_applications_ecoregion] DEFAULT ((0)) NOT NULL,
+    [county_permit]            VARCHAR (50)      NULL,
     CONSTRAINT [PK_Applications] PRIMARY KEY CLUSTERED ([app_id] ASC),
-    CONSTRAINT [FK_Applications_abbrev_class_produced] FOREIGN KEY ([class_produced_id]) REFERENCES [dbo].[abbrev_class_produced] ([class_produced_id]),
     CONSTRAINT [FK_Applications_Applications2] FOREIGN KEY ([trace]) REFERENCES [dbo].[applications] ([app_id]),
-    CONSTRAINT [FK_Applications_Crops] FOREIGN KEY ([crop_id]) REFERENCES [dbo].[crops] ([crop_id])
+    CONSTRAINT [FK_applications_county_farm_county] FOREIGN KEY ([farm_county]) REFERENCES [dbo].[county] ([county_id])
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_applications_cert_year]
-    ON [dbo].[applications]([cert_year] ASC)
-    INCLUDE([app_id], [app_type], [applicant_id], [grower_id], [crop_id], [app_cancelled], [tags], [po_lot_num], [field_name], [farm_county], [date_planted], [acres_applied], [selected_variety_id], [class_produced_id], [app_submitable], [status], [app_approved], [maps]);
+
 
 
 GO
@@ -340,4 +339,19 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'org_id', @l
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'WHAT DATATYPE?', @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE', @level1name = N'applications', @level2type = N'COLUMN', @level2name = N'cert_num';
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_applications_grower_id]
+    ON [dbo].[applications]([grower_id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_applications_farm_county]
+    ON [dbo].[applications]([farm_county] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_applications_applicant_id]
+    ON [dbo].[applications]([applicant_id] ASC);
 

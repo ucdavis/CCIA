@@ -2,14 +2,14 @@
     [fldinsp_id]           INT             IDENTITY (1, 1) NOT NULL,
     [app_id]               INT             NULL,
     [date_fld_rpt]         DATETIME        NULL,
-    [acres_fld]            DECIMAL (14, 2) NULL,
-    [acres_insp_only]      DECIMAL (14, 2) NULL,
-    [acres_approved]       DECIMAL (14, 2) NULL,
-    [acres_cancelled]      DECIMAL (14, 2) NULL,
-    [acres_growout]        DECIMAL (14, 2) NULL,
-    [acres_refund]         DECIMAL (14, 2) NULL,
-    [acres_rejected]       DECIMAL (14, 2) NULL,
-    [acres_no_crop]        DECIMAL (14, 2) NULL,
+    [acres_fld]            DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_fld] DEFAULT ((0)) NULL,
+    [acres_insp_only]      DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_insp_only] DEFAULT ((0)) NULL,
+    [acres_approved]       DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_approved] DEFAULT ((0)) NULL,
+    [acres_cancelled]      DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_cancelled] DEFAULT ((0)) NULL,
+    [acres_growout]        DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_growout] DEFAULT ((0)) NULL,
+    [acres_refund]         DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_refund] DEFAULT ((0)) NULL,
+    [acres_rejected]       DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_rejected] DEFAULT ((0)) NULL,
+    [acres_no_crop]        DECIMAL (14, 2) CONSTRAINT [DF_field_inspect_acres_no_crop] DEFAULT ((0)) NULL,
     [date_entered]         DATETIME        NULL,
     [user_entered]         VARCHAR (9)     NULL,
     [date_modified]        DATETIME        NULL,
@@ -40,12 +40,13 @@
     [path_pvx]             TINYINT         CONSTRAINT [DF_field_inspect_path_pvx] DEFAULT ((255)) NOT NULL,
     [path_pvy]             TINYINT         CONSTRAINT [DF_field_inspect_path_pvy] DEFAULT ((255)) NOT NULL,
     [path_comments]        VARCHAR (1000)  NULL,
+    [thc_percent]          NUMERIC (7, 4)  NULL,
     CONSTRAINT [PK_Fields] PRIMARY KEY CLUSTERED ([fldinsp_id] ASC)
 );
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_field_inpect_app_id]
-    ON [dbo].[field_inspect]([app_id] ASC)
-    INCLUDE([acres_approved]);
+
 

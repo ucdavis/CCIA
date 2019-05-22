@@ -1,14 +1,16 @@
 ﻿CREATE TABLE [dbo].[county] (
-    [county_id]       SMALLINT     IDENTITY (1, 1) NOT NULL,
+    [county_id]       INT          IDENTITY (1, 1) NOT NULL,
     [county_name]     VARCHAR (50) NOT NULL,
     [district]        VARCHAR (5)  NULL,
-    [StateProvinceID] SMALLINT     NOT NULL,
+    [StateProvinceID] INT          NOT NULL,
     [date_modified]   DATETIME     NULL,
     [user_modified]   VARCHAR (9)  NULL,
     [fips]            VARCHAR (10) NULL,
     [ag_comm_org]     INT          NULL,
     CONSTRAINT [PK_County] PRIMARY KEY CLUSTERED ([county_id] ASC)
 );
+
+
 
 
 

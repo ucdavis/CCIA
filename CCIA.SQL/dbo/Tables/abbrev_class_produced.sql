@@ -1,11 +1,13 @@
 ﻿CREATE TABLE [dbo].[abbrev_class_produced] (
-    [class_produced_id]    TINYINT       IDENTITY (1, 1) NOT NULL,
+    [class_produced_id]    INT           IDENTITY (1, 1) NOT NULL,
     [class_abbrv]          VARCHAR (3)   NULL,
     [class_produced_trans] VARCHAR (100) NULL,
-    [sort_order]           TINYINT       NULL,
-    [app_type]             TINYINT       NULL,
+    [sort_order]           INT           NULL,
+    [app_type]             INT           NULL,
     CONSTRAINT [PK_abbrev_class_produced] PRIMARY KEY CLUSTERED ([class_produced_id] ASC)
 );
+
+
 
 
 GO

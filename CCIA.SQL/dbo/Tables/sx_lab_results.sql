@@ -24,13 +24,13 @@
     [noxious_comments]              VARCHAR (100)   NULL,
     [noxious_percent]               NUMERIC (8, 7)  NULL,
     [noxious_count]                 SMALLINT        NULL,
-    [bushel_weight]                 NUMERIC (7, 2)  NULL,
     [purity_grams]                  NUMERIC (7, 2)  NULL,
+    [bushel_weight]                 NUMERIC (7, 2)  NULL,
     [ccia_germ]                     BIT             NULL,
-    [germ_hard_seed]                NUMERIC (8, 7)  NULL,
-    [assay_results]                 CHAR (1)        NULL,
+    [germ_hard_seed]                NUMERIC (8, 5)  NULL,
     [assay_test]                    BIT             CONSTRAINT [DF_sx_lab_results_assay_test] DEFAULT ((0)) NOT NULL,
-    [assay_test2]                   BIT             CONSTRAINT [DF_sx_lab_results_assay_test2_1] DEFAULT ((0)) NOT NULL,
+    [assay_results]                 CHAR (1)        NULL,
+    [assay_test2]                   BIT             CONSTRAINT [DF_sx_lab_results_assay_test2] DEFAULT ((0)) NOT NULL,
     [assay_results2]                CHAR (1)        NULL,
     [dodder_grams]                  NUMERIC (7, 2)  NULL,
     [lbs_canceled]                  NUMERIC (16, 2) NULL,
@@ -54,6 +54,8 @@
     [chewing_insect_damage_percent] NUMERIC (8, 7)  NULL,
     CONSTRAINT [PK_sx_lab_results] PRIMARY KEY NONCLUSTERED ([seeds_id] ASC)
 );
+
+
 
 
 GO

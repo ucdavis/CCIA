@@ -3,8 +3,8 @@
     [app_id]                  INT            NULL,
     [date_inspected]          DATETIME       NULL,
     [inspector]               VARCHAR (9)    NULL,
-    [applicant_contacted]     BIT            CONSTRAINT [DF_field_results_applicant_contacted] DEFAULT ((0)) NOT NULL,
-    [applicant_present]       BIT            CONSTRAINT [DF_field_results_applicant_present] DEFAULT ((0)) NOT NULL,
+    [applicant_contacted]     BIT            NULL,
+    [applicant_present]       BIT            NULL,
     [total_plants_insp]       INT            NULL,
     [PVX_tested]              BIT            CONSTRAINT [DF_field_results_PVX_tested] DEFAULT ((0)) NOT NULL,
     [stage_grow]              SMALLINT       NULL,
@@ -14,7 +14,7 @@
     [blackleg]                TINYINT        NULL,
     [other_disease]           TINYINT        NULL,
     [calico]                  TINYINT        NULL,
-    [insp_comments]           VARCHAR (5000) NULL,
+    [insp_comments]           VARCHAR (250)  NULL,
     [field_condition]         VARCHAR (50)   NULL,
     [plants_acre]             SMALLINT       NULL,
     [stand]                   VARCHAR (50)   NULL,
@@ -32,14 +32,14 @@
 );
 
 
-GO
-CREATE NONCLUSTERED INDEX [IX_field_results_app_id]
-    ON [dbo].[field_results]([app_id] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_field_results]
-    ON [dbo].[field_results]([fld_res_id] ASC);
+
+
+
+GO
+
 
 
 GO

@@ -7,6 +7,9 @@
     [cert_year]           SMALLINT    NULL,
     [date_entered]        DATETIME    NULL,
     [date_modified]       DATETIME    NULL,
-    CONSTRAINT [PK_certs] PRIMARY KEY CLUSTERED ([cert_num] ASC)
+    [cert_num_num]        INT         NULL,
+    CONSTRAINT [PK_certs_1] PRIMARY KEY CLUSTERED ([cert_num] ASC)
 );
+
+
 

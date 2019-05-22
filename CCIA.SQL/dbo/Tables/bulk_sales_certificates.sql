@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[bulk_sales_certificates] (
-    [Id]                   INT             IDENTITY (20000, 1) NOT NULL,
+    [Id]                   INT             IDENTITY (1, 1) NOT NULL,
     [cond_org]             INT             NOT NULL,
     [date]                 DATE            NOT NULL,
     [sid]                  INT             NULL,
@@ -22,6 +22,8 @@
     [admin_update_date]    DATETIME        NULL,
     [notification_sent]    BIT             CONSTRAINT [DF_bulk_sales_certificates_notification_sent] DEFAULT ((0)) NOT NULL
 );
+
+
 
 
 GO

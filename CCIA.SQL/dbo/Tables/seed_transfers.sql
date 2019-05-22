@@ -10,7 +10,7 @@
     [created_by]                 INT             NOT NULL,
     [created_on]                 DATETIME        NULL,
     [transfer_lbs]               NUMERIC (16, 2) NOT NULL,
-    [transfer_class]             TINYINT         NULL,
+    [transfer_class]             INT             NULL,
     [seedstock_lot_numbers]      VARCHAR (500)   NULL,
     [submitted_for_analysis]     BIT             CONSTRAINT [DF_seed_transfers_submitted_for_analysis] DEFAULT ((0)) NOT NULL,
     [destination_org]            INT             NULL,
@@ -49,8 +49,10 @@
     [contact_respond]            INT             NULL,
     [employee_update_date]       DATETIME        NULL,
     [employee_update_id]         VARCHAR (10)    NULL,
-    [update_by_admin]            BIT             CONSTRAINT [DF_seed_transfers_update_by_admin_1] DEFAULT ((0)) NOT NULL
+    [update_by_admin]            BIT             CONSTRAINT [DF_seed_transfers_update_by_admin] DEFAULT ((0)) NOT NULL
 );
+
+
 
 
 GO
