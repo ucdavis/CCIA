@@ -67,7 +67,6 @@
     <Build Include="dbo\Tables\var_family.sql" />
     <Build Include="dbo\Tables\var_countries.sql" />
     <Build Include="dbo\Tables\turfgrass_certificates.sql" />
-    <Build Include="dbo\Tables\trs.sql" />
     <Build Include="dbo\Tables\tags_changes.sql" />
     <Build Include="dbo\Tables\tags.sql" />
     <Build Include="dbo\Tables\tag_series.sql" />
@@ -76,7 +75,6 @@
     <Build Include="dbo\Tables\sx_lab_results.sql" />
     <Build Include="dbo\Tables\state_province.sql" />
     <Build Include="dbo\Tables\standards.sql" />
-    <Build Include="dbo\Tables\Sheet1_.sql" />
     <Build Include="dbo\Tables\seeds_changes.sql" />
     <Build Include="dbo\Tables\seeds_apps.sql" />
     <Build Include="dbo\Tables\seeds.sql" />
@@ -100,12 +98,9 @@
     <Build Include="dbo\Tables\renew_fields.sql" />
     <Build Include="dbo\Tables\renew_actions_trans.sql" />
     <Build Include="dbo\Tables\rates.sql" />
-    <Build Include="dbo\Tables\random_seeds2015.sql" />
-    <Build Include="dbo\Tables\random_samples.sql" />
     <Build Include="dbo\Tables\po_health_cert.sql" />
     <Build Include="dbo\Tables\po_cert_history.sql" />
     <Build Include="dbo\Tables\planting_stocks.sql" />
-    <Build Include="dbo\Tables\organization_deleted.sql" />
     <Build Include="dbo\Tables\organization.sql" />
     <Build Include="dbo\Tables\org_map.sql" />
     <Build Include="dbo\Tables\org_address.sql" />
@@ -113,7 +108,6 @@
     <Build Include="dbo\Tables\oecd.sql" />
     <Build Include="dbo\Tables\notices.sql" />
     <Build Include="dbo\Tables\my_customers.sql" />
-    <Build Include="dbo\Tables\meridians.sql" />
     <Build Include="dbo\Tables\map_user_access.sql" />
     <Build Include="dbo\Tables\map_typelut.sql">
       <AnsiNulls>Off</AnsiNulls>
@@ -144,7 +138,6 @@
     <Build Include="dbo\Tables\field_history.sql" />
     <Build Include="dbo\Tables\fees.sql" />
     <Build Include="dbo\Tables\ecoregions.sql" />
-    <Build Include="dbo\Tables\duplicateOrgs.sql" />
     <Build Include="dbo\Tables\districts.sql" />
     <Build Include="dbo\Tables\district_county.sql" />
     <Build Include="dbo\Tables\crops_rates.sql" />
@@ -181,6 +174,15 @@
     <Build Include="dbo\Tables\abbrev_class_produced.sql" />
     <Build Include="dbo\Tables\abbrev_app_type.sql" />
     <Build Include="dbo\Views\var_full.sql" />
+    <Build Include="dbo\Tables\AspNetUserTokens.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
+    <Build Include="dbo\Tables\AspNetRoleClaims.sql" />
+    <Build Include="dbo\Tables\app_errors.sql" />
+    <Build Include="dbo\Tables\__EFMigrationsHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\BananaToProject.scmp" />
