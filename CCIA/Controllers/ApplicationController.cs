@@ -92,6 +92,18 @@ namespace CCIA.Controllers
                     }
                 }
                 seedApp.FieldHistories = newFieldHistories;
+
+                // Remove invalid plantingstocks
+                List<PlantingStocks> newPlantingStocks = new List<PlantingStocks>();
+                foreach (var ps in seedApp.PlantingStocks)
+                {
+                    if (ps.PoundsPlanted != null || ps.PsCertNum != null || ps.PsClass != null)
+                    {
+                        newPlantingStocks.Add(ps);
+                    }
+                }
+                seedApp.PlantingStocks = newPlantingStocks;
+
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
@@ -101,28 +113,17 @@ namespace CCIA.Controllers
                 // Adds to database and populates AppId.
                 await _dbContext.SaveChangesAsync();
 
-                // Create class produced object
-                app.ClassProduced = new AbbrevClassProduced()
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
                 {
-                    ClassProducedId = (int)app.ClassProducedId
-                };
-
-                // Planting stocks
-                CreateFirstPlantingStocksRecord(app.PlantingStocks.ElementAt(0), app);
-
-                // Create second plantingstocks entry if required fields aren't null.
-                var ps2 = app.PlantingStocks.ElementAt(1);
-                if (ps2.PsCertNum != null && ps2.PoundsPlanted != null
-                    && ps2.PsClass != null && ps2.StateCountryGrown != null
-                    && ps2.StateCountryTagIssued != null)
-                {
-                    CreateSecondPlantingStocksRecord(app.PlantingStocks.ElementAt(1), app);
+                    ps.AppId = app.Id;
                 }
 
-                // Field history
-                CreateFieldHistoryRecords(app.FieldHistories, app);
+                foreach (FieldHistory fh in app.FieldHistories)
+                {
+                    fh.AppId = app.Id;
+                }
 
-                _dbContext.Add(app);
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
@@ -193,26 +194,6 @@ namespace CCIA.Controllers
                 FieldHistories = potatoApp.FieldHistories,
                 // PlantingStocks = new List<PlantingStocks> {potatoApp.PlantingStock1, potatoApp.PlantingStock2}
             };
-        }
-
-        /* Iterates through FieldHistories List to find valid entries,
-        Stages those to be committed to the FieldHistories table
-        Then sets our app's FieldHistories to be only the valid entries */
-        private void CreateFieldHistoryRecords(ICollection<FieldHistory> fieldHistories, Applications app)
-        {
-            ICollection<FieldHistory> newFieldHistories = new List<FieldHistory>();
-            // Iterate through fieldhistories and make a new record for each
-            foreach (var fh in fieldHistories)
-            {
-                if (fh.Year != 0 && fh.Crop != null)
-                {
-                    fh.AppId = app.Id;
-                    //fh.Application = app;
-                    newFieldHistories.Add(fh);
-                    _dbContext.Add(fh);
-                }
-            }
-            app.FieldHistories = newFieldHistories;
         }
 
         private void CreateFirstPlantingStocksRecord(PlantingStocks ps, Applications app)
