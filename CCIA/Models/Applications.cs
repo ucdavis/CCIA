@@ -133,12 +133,19 @@ namespace CCIA.Models
         { 
             get
             {
+                if (CropId == null && SelectedVarietyId == null)
+                {
+                    return "";
+                }
                 if(AppType=="PV")
                 {
                     return Crop.Name;
                 }
-                return Variety.Crop.Name;
-                // return "Alfalfa";
+                if (Variety != null)
+                {
+                    return Variety.Crop.Name;
+                }
+                return "";
             } 
         }
         
@@ -146,12 +153,15 @@ namespace CCIA.Models
         { 
             get
             {
-                if(AppType=="PV")
+                if(AppType=="PV" || SelectedVarietyId == null)
                 {
                     return "";
                 }
-                return Variety.Name;
-                // return "CUF 101";
+                if (Variety != null)
+                {
+                    return Variety.Name;
+                }
+                return "";
             } 
         }
 
