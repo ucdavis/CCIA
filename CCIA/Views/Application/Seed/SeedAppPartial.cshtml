@@ -13,12 +13,12 @@
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
             <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
-            @Html.ValidationMessage("CertLotNum", "", new { @class = "text-danger" })
+            @Html.ValidationMessage("PlantingStocks[0].PsCertNum", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
             <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[0].PoundsPlanted" placeholder="Pounds Planted">
-            @Html.ValidationMessage("PoundsPlanted", "", new { @class = "text-danger" })
+            @Html.ValidationMessage("PlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -26,7 +26,7 @@
         @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
         <label>Class Planted</label><em class="required">•</em>
         @Html.Partial("Shared/_ClassRadioButtons")
-        @Html.ValidationMessage("ClassPlanted", "", new { @class = "text-danger" })
+        @Html.ValidationMessage("PlantingStocks[0].PsClass", "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
@@ -89,7 +89,7 @@
         <div class="form-group col-md-6">
             <label for="name-num">Name/No.</label><em class="required">•</em>
             <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
-            @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
+            @Html.ValidationMessage("FieldName", "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted</label><em class="required">•</em>
@@ -113,7 +113,7 @@
                 </option>
             }
         </select>
-        @Html.ValidationMessage("County", "", new { @class = "text-danger" })
+        @Html.ValidationMessage("FarmCounty", "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         <label for="acres-applied">Acres Applied</label><em class="required">•</em>
@@ -130,6 +130,3 @@
 </section>
 
 <button type="submit" class="btn btn-primary">Continue with Application</button>
-
-<script type="text/javascript">
-</script>

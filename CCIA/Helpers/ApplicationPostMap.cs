@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CCIA.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CCIA.Helpers
 {
     public class ApplicationPostMap
     {
+        /* Assigns all required fields from our cshtml */
         public static Applications CreateAppRecord(Applications app, int contactId, string appType)
         {
             var newApp = new Applications()
@@ -24,7 +27,6 @@ namespace CCIA.Helpers
                 FarmCounty = app.FarmCounty,
                 FieldName = app.FieldName,
                 GrowerId = app.GrowerId,
-                
                 MapVe = false,
                 SelectedVarietyId = app.SelectedVarietyId,
                 Status = "Pending supporting material",
@@ -35,27 +37,14 @@ namespace CCIA.Helpers
             };
 
             // Insert app-specific logic (Fieldhistory, plantingstocks, unique fields, validation)
+
             return newApp;
         }
 
-        /* Iterates through FieldHistories List to find valid entries,
-        Stages those to be added to the FieldHistories table
-        Then sets our app's FieldHistories to be only the valid entries */
-        public static Applications CreateFieldHistoryRecords(ICollection<FieldHistory> fieldHistories, Applications app)
+        public static ModelStateDictionary AdjustModelState(ModelStateDictionary m)
         {
-            ICollection<FieldHistory> newFieldHistories = new List<FieldHistory>();
-            // Iterate through fieldhistories and make a new record for each
-            foreach (var fh in fieldHistories)
-            {
-                if (fh.Year != 0 && fh.Crop != null)
-                {
-                    fh.AppId = app.Id;
-                    //fh.Application = app;
-                    newFieldHistories.Add(fh);
-                }
-            }
-            app.FieldHistories = newFieldHistories;
-            return app;
+            // Check app type
+            return m;
         }
     }
 }
