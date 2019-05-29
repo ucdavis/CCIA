@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -8,9 +9,13 @@ namespace CCIA.Models
     {
         public int PsId { get; set; }
         public int? AppId { get; set; }
+
+        [Required]
         public string PsCertNum { get; set; }
         public string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }
+
+        [Required]
         public decimal? PoundsPlanted { get; set; }
         public int? PsClass { get; set; }
         public int? PsAccession { get; set; }

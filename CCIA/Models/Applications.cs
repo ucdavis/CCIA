@@ -24,7 +24,6 @@ namespace CCIA.Models
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
                
-        // [Required] Not required for Pre-variety Germplasm :(
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
@@ -57,9 +56,11 @@ namespace CCIA.Models
         public bool? Tags { get; set; }
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
+
+        [Required]
         public string FieldName { get; set; }
        
-        
+        [Required]
         public DateTime? DatePlanted { get; set; }
         [Required]
         public decimal? AcresApplied { get; set; }
@@ -85,9 +86,11 @@ namespace CCIA.Models
         public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
        
+       [Required]
         public int? CropId { get; set; }
 
-       [ForeignKey("CropId")]
+        [Required]
+        [ForeignKey("CropId")]
         public Crops Crop { get; set; }
 
        // public Applications TraceNavigation { get; set; }
@@ -102,6 +105,7 @@ namespace CCIA.Models
 
         [ForeignKey("FarmCounty")]
         public County County { get; set; }
+        [Required]
         public int? FarmCounty { get; set; }
 
         public int? SelectedVarietyId { get; set; }
