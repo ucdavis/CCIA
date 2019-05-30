@@ -21,6 +21,7 @@ namespace CCIA.Models
         public int? PsAccession { get; set; }
         public int? StateCountryTagIssued { get; set; }
         public int? StateCountryGrown { get; set; }
+        [Required]
         public string SeedPurchasedFrom { get; set; }
         public bool? WinterTest { get; set; }
         public bool? PvxTest { get; set; }
