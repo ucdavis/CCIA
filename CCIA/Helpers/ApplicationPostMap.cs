@@ -40,11 +40,5 @@ namespace CCIA.Helpers
 
             return newApp;
         }
-
-        public static ModelStateDictionary AdjustModelState(ModelStateDictionary m)
-        {
-            // Check app type
-            return m;
-        }
     }
 }

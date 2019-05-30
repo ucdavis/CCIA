@@ -89,7 +89,6 @@ namespace CCIA.Models
        [Required]
         public int? CropId { get; set; }
 
-        [Required]
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
 

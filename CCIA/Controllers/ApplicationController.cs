@@ -80,8 +80,6 @@ namespace CCIA.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSeedApplication(Applications seedApp)
         {
-            ApplicationPostMap.AdjustModelState(ModelState);
-
             if (ModelState.IsValid)
             {
                 // Remove invalid fieldhistories
