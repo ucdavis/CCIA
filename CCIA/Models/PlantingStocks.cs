@@ -17,12 +17,12 @@ namespace CCIA.Models
 
         [Required]
         public decimal? PoundsPlanted { get; set; }
-        public int? PsClass { get; set; }
+        public virtual int? PsClass { get; set; }
         public int? PsAccession { get; set; }
         public int? StateCountryTagIssued { get; set; }
         public int? StateCountryGrown { get; set; }
         [Required]
-        public string SeedPurchasedFrom { get; set; }
+        public virtual string SeedPurchasedFrom { get; set; }
         public bool? WinterTest { get; set; }
         public bool? PvxTest { get; set; }
         public DateTime? DateModified { get; set; }

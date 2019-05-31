@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
-
-
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CCIA.Controllers
 {
@@ -78,7 +77,7 @@ namespace CCIA.Controllers
 
         // POST: Application/CreateSeedApplication
         [HttpPost]
-        public async Task<IActionResult> CreateSeedApplication(Applications seedApp)
+        public async Task<IActionResult> CreateSeedApplication(SeedApp seedApp)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +93,7 @@ namespace CCIA.Controllers
                 seedApp.FieldHistories = newFieldHistories;
 
                 // Remove invalid plantingstocks
-                List<PlantingStocks> newPlantingStocks = new List<PlantingStocks>();
+                List<SeedPlantingStocks> newPlantingStocks = new List<SeedPlantingStocks>();
                 foreach (var ps in seedApp.PlantingStocks)
                 {
                     if (ps.PoundsPlanted != null || ps.PsCertNum != null || ps.PsClass != null)
@@ -110,6 +109,7 @@ namespace CCIA.Controllers
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateAppRecord(seedApp, contactId, "SD");
                 _dbContext.Add(app);
+
                 // Adds to database and populates AppId.
                 await _dbContext.SaveChangesAsync();
 
@@ -130,7 +130,7 @@ namespace CCIA.Controllers
             }
             var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
             model.RenderFormRemainder = true;
-            Message = "You are missing certain required fields.";
+
             return View("Seed/CreateSeedApplication", model);
         }
 

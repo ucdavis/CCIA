@@ -124,7 +124,7 @@ namespace CCIA.Models
         public ICollection<AppCertificates> Certificates { get; set; }
 
         [ForeignKey("AppId")]
-        public ICollection<PlantingStocks> PlantingStocks { get; set; }
+        public virtual ICollection<PlantingStocks> PlantingStocks { get; set; }
 
         [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }

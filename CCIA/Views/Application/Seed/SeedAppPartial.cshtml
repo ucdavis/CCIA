@@ -55,10 +55,12 @@
         <div class="form-group col-md-6">
             <label for="cert-lot-num">Certification and Lot #</label>
             <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[1].PsCertNum" placeholder="Certification and Lot #">
+            @Html.ValidationMessage("PlantingStocks[1].PsCertNum", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="pounds-planted">Pounds Planted</label>
             <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[1].PoundsPlanted" placeholder="Pounds Planted">
+            @Html.ValidationMessage("PlantingStocks[1].PoundsPlanted", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -68,6 +70,7 @@
         }
         <label>Class Planted</label>
         @Html.Partial("Shared/_ClassRadioButtons")
+        @Html.ValidationMessage("PlantingStocks[1].PsClass", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
