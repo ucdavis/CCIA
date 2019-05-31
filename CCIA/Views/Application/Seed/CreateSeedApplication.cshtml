@@ -6,7 +6,9 @@
 
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
-<div id="error" style="color: red"></div>
+<div id="error" style="color: red">
+    @Html.ValidationSummary()
+</div>
 
 @Html.Partial("Shared/_GrowerInfoTable")
 

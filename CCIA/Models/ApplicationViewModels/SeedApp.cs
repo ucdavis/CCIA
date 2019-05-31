@@ -1,16 +1,23 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
-    public class SeedApp : Applications {
-        
+    public class SeedApp : Applications 
+    {
+        public List<SeedPlantingStocks> PlantingStocks { get; set; }
     }
 
     public class SeedPlantingStocks : PlantingStocks {
         [Required]
-        public int? PsClass { 
+        public override int? PsClass { 
             get { return base.PsClass; }
             set { base.PsClass = value; } 
+        }
+        [Required]
+        public override string SeedPurchasedFrom { 
+            get { return base.SeedPurchasedFrom; }
+            set { base.SeedPurchasedFrom = value; } 
         }
     }
 }

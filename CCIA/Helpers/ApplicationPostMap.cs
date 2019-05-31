@@ -36,8 +36,6 @@ namespace CCIA.Helpers
                 FieldHistories = app.FieldHistories
             };
 
-            // Insert app-specific logic (Fieldhistory, plantingstocks, unique fields, validation)
-
             return newApp;
         }
     }
