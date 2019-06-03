@@ -6,7 +6,7 @@
 
 <h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
 
-<div id="error" style="color: red">
+<div id="errors" class="text-danger">
     @Html.ValidationSummary()
 </div>
 
@@ -16,14 +16,14 @@
 
     @Html.AntiForgeryToken()
 
-    <div class="form-group row">
-        <div class="col-lg-4 col-sm-4 col-xs-4">
+    <div class="row">
+        <div class="form-group col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "CropId";}
             @Html.Partial("Shared/_CropDropdown")
             @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
         </div>
         
-        <div class="col-lg-4 col-sm-4 col-xs-4">
+        <div class="form-group col-lg-4 col-sm-4 col-xs-4">
             @{
                 ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
@@ -154,6 +154,10 @@
                 let dd = document.getElementById("variety-dropdown");
                 dd.className = "dropdown";
             } 
+        });
+
+        $(document).ready(() => {
+            $('.field-validation-error').parents('.form-group').addClass('has-error');
         });
 
     </script>

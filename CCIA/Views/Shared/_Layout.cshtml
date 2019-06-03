@@ -52,13 +52,17 @@
                             <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Home</a></li>
                             <li role="separator" class="divider"></li>
                             @{
-                            var sdParams = new Dictionary<string, string>
-                            {
-                                { "appTypeId", "1" },
-                            };
+                                var sdParams = new Dictionary<string, string>
+                                {
+                                    { "appTypeId", "1" }
+                                };
+                                var poParams = new Dictionary<string, string>
+                                {
+                                    { "appTypeId", "2" }
+                                };
                             }
                             <li><a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-all-route-data="sdParams">Grow Certified Seed</a></li>
-                            <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Grow Certified Potatoes</a></li>
+                            <li><a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-all-route-data="poParams">Grow Certified Potatoes</a></li>
                             <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Heritage Grain QA</a></li>
                             <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Pre-Variety Germplasm</a></li>
                             <li><a class="dropdown-item" asp-controller="Application" asp-action="Index">Rice QA</a></li>
