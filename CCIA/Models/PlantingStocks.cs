@@ -23,8 +23,8 @@ namespace CCIA.Models
         public int? StateCountryGrown { get; set; }
         [Required]
         public virtual string SeedPurchasedFrom { get; set; }
-        public bool? WinterTest { get; set; }
-        public bool? PvxTest { get; set; }
+        public virtual bool? WinterTest { get; set; }
+        public virtual bool? PvxTest { get; set; }
         public DateTime? DateModified { get; set; }
         public string UserModified { get; set; }
         public DateTime? DateEntered { get; set; }
