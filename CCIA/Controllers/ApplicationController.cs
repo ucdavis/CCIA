@@ -81,27 +81,9 @@ namespace CCIA.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Remove invalid fieldhistories
-                List<FieldHistory> newFieldHistories = new List<FieldHistory>();
-                foreach (var fh in seedApp.FieldHistories)
-                {
-                    if (fh.Year != 0 && fh.Crop != null)
-                    {
-                        newFieldHistories.Add(fh);
-                    }
-                }
-                seedApp.FieldHistories = newFieldHistories;
+                // seedApp.FieldHistories = ApplicationPostMap.RemoveInvalidFieldHistories(seedApp);
 
-                // Remove invalid plantingstocks
-                List<SeedPlantingStocks> newPlantingStocks = new List<SeedPlantingStocks>();
-                foreach (var ps in seedApp.PlantingStocks)
-                {
-                    if (ps.PoundsPlanted != null || ps.PsCertNum != null || ps.PsClass != null)
-                    {
-                        newPlantingStocks.Add(ps);
-                    }
-                }
-                seedApp.PlantingStocks = newPlantingStocks;
+                seedApp.PlantingStocks = ApplicationPostMap.RemoveInvalidPlantingStocks<SeedPlantingStocks>(seedApp.PlantingStocks);
 
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
@@ -143,80 +125,61 @@ namespace CCIA.Controllers
 
         // POST: Application/CreatePotatoApplication
         [HttpPost]
-        public async Task<IActionResult> CreatePotatoApplication(PotatoPostModel potatoApp)
+        public async Task<IActionResult> CreatePotatoApplication(PotatoApp potatoApp)
         {
             if (ModelState.IsValid)
             {
+                // Remove invalid fieldhistories
+                List<FieldHistory> newFieldHistories = new List<FieldHistory>();
+                foreach (var fh in potatoApp.FieldHistories)
+                {
+                    if (fh.Year != 0 && fh.Crop != null)
+                    {
+                        newFieldHistories.Add(fh);
+                    }
+                }
+                potatoApp.FieldHistories = newFieldHistories;
+
+                // Remove invalid plantingstocks
+                List<SeedPlantingStocks> newPlantingStocks = new List<SeedPlantingStocks>();
+                foreach (var ps in potatoApp.PlantingStocks)
+                {
+                    if (ps.PoundsPlanted != null || ps.PsCertNum != null || ps.PsClass != null)
+                    {
+                        newPlantingStocks.Add(ps);
+                    }
+                }
+                potatoApp.PlantingStocks = newPlantingStocks;
+
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
-                Applications app = CreatePotatoAppRecord(potatoApp, contactId, "PO");
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreateAppRecord(potatoApp, contactId, "SD");
                 _dbContext.Add(app);
+
+                // Adds to database and populates AppId.
                 await _dbContext.SaveChangesAsync();
 
-                // CreateFirstPlantingStocksRecord(Potatoapp);
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
+                {
+                    ps.AppId = app.Id;
+                }
 
-                // CreateFieldHistoryRecords(app);
+                foreach (FieldHistory fh in app.FieldHistories)
+                {
+                    fh.AppId = app.Id;
+                }
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var model = await ApplicationViewModel.Create(_dbContext, potatoApp.GrowerId, 1);
+            var model = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.SEED);
             model.RenderFormRemainder = true;
-            Message = "You are missing certain required fields.";
-            return View("Potato/CreatePotatoApplication", model);
-        }
 
-        public Applications CreatePotatoAppRecord(PotatoPostModel potatoApp, int contactId, string appType)
-        {
-            return new Applications()
-            {
-                AcresApplied = potatoApp.AcresApplied,
-                ApplicantComments = potatoApp.AdditionalInfo,
-                ApplicantId = contactId,
-                AppOriginalCertYear = potatoApp.CropYear,
-                AppReceived = DateTime.Now,
-                AppType = appType,
-                CertYear = potatoApp.CropYear,
-                ClassProducedId = potatoApp.ClassProduced,
-                CropId = potatoApp.Crop,
-                DatePlanted = potatoApp.DatePlanted,
-                EnteredVariety = potatoApp.Variety,
-                FarmCounty = potatoApp.County,
-                FieldName = potatoApp.NameOrNum,
-                GrowerId = potatoApp.GrowerId,
-                MapVe = false,
-                SelectedVarietyId = potatoApp.VarietyId,
-                Status = "Pending supporting material",
-                WarningFlag = false,
-
-                FieldHistories = potatoApp.FieldHistories,
-                // PlantingStocks = new List<PlantingStocks> {potatoApp.PlantingStock1, potatoApp.PlantingStock2}
-            };
-        }
-
-        private void CreateFirstPlantingStocksRecord(PlantingStocks ps, Applications app)
-        {
-            ps.PsEnteredVariety = app.EnteredVariety;
-            ps.PsClass = app.ClassProducedId;
-            ps.AppId = app.Id;
-            //ps.Application = app;
-
-            _dbContext.Add(ps);
-        }
-
-        private void CreateSecondPlantingStocksRecord(PlantingStocks ps, Applications app)
-        {
-            // var ps2 = new PlantingStocks()
-            // {
-            //     OfficialVarietyId = app.VarietyId,
-            // };
-            ps.PsClass = app.ClassProducedId;
-            ps.AppId = app.Id;
-            //ps.Application = app;
-
-            _dbContext.Add(ps);
+            return View("Seed/CreatepotatoApplication", model);
         }
 
         // GET: Application/CreateHeritageGrainApplication

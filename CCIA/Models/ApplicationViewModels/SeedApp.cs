@@ -14,10 +14,5 @@ namespace CCIA.Models
             get { return base.PsClass; }
             set { base.PsClass = value; } 
         }
-        [Required]
-        public override string SeedPurchasedFrom { 
-            get { return base.SeedPurchasedFrom; }
-            set { base.SeedPurchasedFrom = value; } 
-        }
     }
 }

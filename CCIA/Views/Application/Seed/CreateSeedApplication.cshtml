@@ -61,8 +61,6 @@
 
 @section Scripts {
     <script type="text/javascript">
-        
-
         var form = document.getElementById("seedApplication")
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.Organization.OrgId;
@@ -156,9 +154,28 @@
             } 
         });
 
+        /* Adds red outline to invalid text boxes on form submission */
         $(document).ready(() => {
             $('.field-validation-error').parents('.form-group').addClass('has-error');
         });
 
+        $('#add-second-ps').on('click', function(e) {
+            // Populate div with second planting stocks partial
+            /*
+            $("#second-ps")
+                .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, there was an error loading the remainder of this form: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                        else {
+                            // Set functionality for date time picker after successfully loading form remainder
+                            $('#datetimepicker1').datetimepicker({
+                                format: 'MM/DD/YYYY'
+                            });
+                        }
+                });
+            */
+        });
     </script>
 }
