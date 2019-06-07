@@ -128,7 +128,6 @@
         function loadFormRemainder() {
             let orgId = @Model.Organization.OrgId;
             let appTypeId = 1;
-            insertHiddenInput()
             /* If something is inside form-remainder div, clear it out */
             $("#form-remainder").empty();
             $("#form-remainder")
@@ -160,22 +159,17 @@
         });
 
         $('#add-second-ps').on('click', function(e) {
+            e.preventDefault();
             // Populate div with second planting stocks partial
-            /*
+            let orgId = @Model.Organization.OrgId;
+            $("#second-ps").empty();
             $("#second-ps")
-                .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                .load("/Application/GetPartial?folder=Seed&partialName=_PlantingStocks&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
                         if ( status == "error" ) {
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
-                        else {
-                            // Set functionality for date time picker after successfully loading form remainder
-                            $('#datetimepicker1').datetimepicker({
-                                format: 'MM/DD/YYYY'
-                            });
-                        }
                 });
-            */
         });
     </script>
 }
