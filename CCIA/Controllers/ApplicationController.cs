@@ -81,10 +81,6 @@ namespace CCIA.Controllers
         {
             if (ModelState.IsValid)
             {
-                // seedApp.FieldHistories = ApplicationPostMap.RemoveInvalidFieldHistories(seedApp);
-
-                seedApp.PlantingStocks = ApplicationPostMap.RemoveInvalidPlantingStocks<SeedPlantingStocks>(seedApp.PlantingStocks);
-
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
@@ -111,9 +107,27 @@ namespace CCIA.Controllers
                 return RedirectToAction("Details", new { id = app.Id });
             }
             var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
+            if (SecondPlantingStockErrors())
+            {
+                model.RenderSecondPlantingStock = true;
+            }
             model.RenderFormRemainder = true;
 
             return View("Seed/CreateSeedApplication", model);
+        }
+
+        private bool SecondPlantingStockErrors()
+        {
+            foreach (var key in ModelState.Keys) {
+                var val = ModelState[key];
+                foreach (var error in val.Errors) {
+                    if (key.Contains("PlantingStocks[1]"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         // GET: Application/CreatePotatoApplication
@@ -396,9 +410,9 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId)
+        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=0)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
             return PartialView(fullPartialPath, model);
         }

@@ -5,7 +5,7 @@ namespace CCIA.Models
 {
     public class SeedApp : Applications 
     {
-        public List<SeedPlantingStocks> PlantingStocks { get; set; }
+        public ICollection<SeedPlantingStocks> PlantingStocks;
     }
 
     public class SeedPlantingStocks : PlantingStocks {

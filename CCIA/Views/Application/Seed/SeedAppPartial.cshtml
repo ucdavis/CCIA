@@ -10,53 +10,22 @@
 <section id="planting-stock" class="form-section">
     <h4>Planting Stock</h4>
 
-    @{
-        ViewBag.psNum = 6;
-        //ViewBag.v1 = "PlantingStocks["+ViewBag.psNum+"].PsCertNum";
-    }
+    <!-- First Planting Stock form --> 
     @Html.Partial("Seed/_PlantingStock")
 
-    <button id="add-second-ps" class="btn btn-primary">Add a second planting stocks record</button>
-    <div id="second-ps"></div>
-
-    <!-- <h5>Enter both parent lines for hybrid production</h5>
-    <div class="form-group">
-        <label for="variety">Variety</label>
-        <input type="text" class="form-control" name="PlantingStocks[1].PsEnteredVariety" placeholder="Variety">
-    </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="cert-lot-num">Certification and Lot #</label>
-            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
-            @Html.ValidationMessage("PlantingStocks[1].PsCertNum", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
-        </div>
-        <div class="form-group col-md-6">
-            <label for="pounds-planted">Pounds Planted</label>
-            <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[1].PoundsPlanted" placeholder="Pounds Planted">
-            @Html.ValidationMessage("PlantingStocks[1].PoundsPlanted", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @{
-            ViewBag.name = "PlantingStocks[1].PsClass";
+    <!-- Second Planting Stock form -->
+    <div id="second-ps">
+        @if (@Model.RenderSecondPlantingStock)
+        {
+            @Html.Partial("Seed/_SecondPlantingStock");
         }
-        <label>Class Planted</label>
-        @Html.Partial("Shared/_ClassRadioButtons")
-        @Html.ValidationMessage("PlantingStocks[1].PsClass", "If you choose to fill out a second Planting Stocks record, this field is required", new { @class = "text-danger" })
+        else
+        {
+            <button id="add-second-ps" class="btn btn-primary">Add a second planting stocks record</button>
+            <p><em>Enter both parent lines for hybrid production.</em></p>
+        }
     </div>
 
-    <div class="form-group">
-        <label>State/Country where Planting Stock Tag was issued</label>
-        @{ViewBag.name = "PlantingStocks[1].StateCountryTagIssued";}
-        @Html.Partial("Shared/_StateCountryDropdown")
-    </div>
-
-    <div class="form-group">
-        <label>State/Country where Planting Stock was Grown</label>
-        @{ViewBag.name = "PlantingStocks[1].StateCountryGrown";}
-        @Html.Partial("Shared/_StateCountryDropdown")
-    </div> -->
 </section>
 
 <section id="field-info" class="form-section">

@@ -1,41 +1,39 @@
-
-@{
-    string PsCertNumValidation = "PlantingStocks["+ViewBag.psNum+"].PsCertNum";
-}
-<div class="row">
-    <div class="form-group col-md-6">
-        <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
-        <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[@ViewBag.psNum].PsCertNum" placeholder="Certification and Lot #">
-        @Html.ValidationMessage("PlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
+<section class="planting-stock">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
+            <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
+            @Html.ValidationMessage("PlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
+            <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[0].PoundsPlanted" placeholder="Pounds Planted">
+            @Html.ValidationMessage("PlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
+        </div>
     </div>
-    <div class="form-group col-md-6">
-        <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
-        <input type="text" class="form-control" id="pounds-planted" name="PlantingStocks[0].PoundsPlanted" placeholder="Pounds Planted">
-        @Html.ValidationMessage("PlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
+        <label>Class Planted</label><em class="required">•</em>
+        @Html.Partial("Shared/_ClassRadioButtons")
+        @Html.ValidationMessage("PlantingStocks[0].PsClass", "", new { @class = "text-danger" })
     </div>
-</div>
 
-<div class="form-group">
-    @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
-    <label>Class Planted</label><em class="required">•</em>
-    @Html.Partial("Shared/_ClassRadioButtons")
-    @Html.ValidationMessage("PlantingStocks[0].PsClass", "", new { @class = "text-danger" })
-</div>
+    <div class="form-group">
+        <label>State/Country where Planting Stock Tag was issued</label>
+        @{ViewBag.name = "PlantingStocks[0].StateCountryTagIssued";}
+        @Html.Partial("Shared/_StateCountryDropdown")
+    </div>
 
-<div class="form-group">
-    <label>State/Country where Planting Stock Tag was issued</label>
-    @{ViewBag.name = "PlantingStocks[0].StateCountryTagIssued";}
-    @Html.Partial("Shared/_StateCountryDropdown")
-</div>
+    <div class="form-group">
+        <label>State/Country where Planting Stock was Grown</label>
+        @{ViewBag.name = "PlantingStocks[0].StateCountryGrown";}
+        @Html.Partial("Shared/_StateCountryDropdown")
+    </div>
 
-<div class="form-group">
-    <label>State/Country where Planting Stock was Grown</label>
-    @{ViewBag.name = "PlantingStocks[0].StateCountryGrown";}
-    @Html.Partial("Shared/_StateCountryDropdown")
-</div>
-
-<div class="form-group">
-    <label for="seed-purchased-from">Seed purchased/acquired from</label>
-    <input type="text" class="form-control" id="seed-purchased-from" name="PlantingStocks[0].SeedPurchasedFrom" placeholder="Seed purchased/acquired from">
-    @Html.ValidationMessage("PlantingStocks[0].SeedPurchasedFrom", "", new { @class = "text-danger"})
-</div>
+    <div class="form-group">
+        <label for="seed-purchased-from">Seed purchased/acquired from</label>
+        <input type="text" class="form-control" id="seed-purchased-from" name="PlantingStocks[0].SeedPurchasedFrom" placeholder="Seed purchased/acquired from">
+        @Html.ValidationMessage("PlantingStocks[0].SeedPurchasedFrom", "", new { @class = "text-danger"})
+    </div>
+</section>

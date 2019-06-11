@@ -62,6 +62,9 @@
 @section Scripts {
     <script type="text/javascript">
         var form = document.getElementById("seedApplication")
+
+        var fhEntryId = @Model.FieldHistoryEntryIndex;
+
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.Organization.OrgId;
 
@@ -124,6 +127,34 @@
             loadFormRemainder();
         }
 
+        // On form submission failure, and we're returning to the page
+        if ("@Model.RenderFormRemainder".toLocaleLowerCase() == "true")
+        {
+            // Set click listener for button to add second plantingstock
+            $('#add-second-ps').on('click', addSecondPsClick);
+
+            // Set click listener for button to add field history records
+            $('#add-fieldhistory').on('click', function(e) {
+                e.preventDefault();
+                // Populate div with an additional field history partial
+                let orgId = @Model.Organization.OrgId;
+                let fh_entry_div = `#fh-entry-${fhEntryId}`;
+                // $("#fh-entry-0").empty();
+                $(fh_entry_div)
+                    .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
+                            if ( status == "error" ) {
+                                var msg = "Sorry, there was an error loading the remainder of this form: ";
+                                $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                            }
+                            if (fhEntryId == @Model.MaxFieldHistoryRecords)
+                            {
+                                $("#add-fieldhistory").remove();
+                            }
+                    });
+                fhEntryId++;
+            });
+        }
+
         /* Load the rest of the form after selecting (or entering) a variety*/
         function loadFormRemainder() {
             let orgId = @Model.Organization.OrgId;
@@ -137,9 +168,35 @@
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
                         else {
-                            /* Set functionality for date time picker after successfully loading form remainder */
+                            // After successfully loading form remainder
+                            // Set functionality for date time picker
                             $('#datetimepicker1').datetimepicker({
                                 format: 'MM/DD/YYYY'
+                            });
+
+                            // Set click listener for button to add second plantingstock
+                            $('#add-second-ps').on('click', addSecondPsClick);
+
+                            // Set click listener for button to add field history records
+                            $('#add-fieldhistory').on('click', function(e) {
+                                e.preventDefault();
+                                // Populate div with an additional field history partial
+                                let orgId = @Model.Organization.OrgId;
+                                let fh_entry_div = `#fh-entry-${fhEntryId}`;
+                                console.log(fh_entry_div);
+                                // $("#fh-entry-0").empty();
+                                $(fh_entry_div)
+                                    .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
+                                            if ( status == "error" ) {
+                                                var msg = "Sorry, there was an error loading the remainder of this form: ";
+                                                $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                                            }
+                                            if (fhEntryId == @Model.MaxFieldHistoryRecords)
+                                            {
+                                                $("#add-fieldhistory").remove();
+                                            }
+                                    });
+                                fhEntryId++;
                             });
                         }
                 });
@@ -158,18 +215,19 @@
             $('.field-validation-error').parents('.form-group').addClass('has-error');
         });
 
-        $('#add-second-ps').on('click', function(e) {
+        function addSecondPsClick(e) {
+            let appTypeId = 1;
             e.preventDefault();
             // Populate div with second planting stocks partial
             let orgId = @Model.Organization.OrgId;
             $("#second-ps").empty();
             $("#second-ps")
-                .load("/Application/GetPartial?folder=Seed&partialName=_PlantingStocks&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
                         if ( status == "error" ) {
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
                 });
-        });
+        }
     </script>
 }
