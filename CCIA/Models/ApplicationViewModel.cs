@@ -25,10 +25,16 @@ namespace CCIA.Models
         public List<VarOfficial> Varieties {get; set; }
 
         public bool RenderFormRemainder {get; set; }
+        public bool RenderSecondPlantingStock { get; set; }
 
-        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType) {
+        public int FieldHistoryEntryIndex { get; set; }
+
+        public int MaxFieldHistoryRecords { get; set; }
+
+        public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType, int fhEntryId=0) {
             var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
+            var maxFieldHistoryRecords = 3;
             switch(appType) {
                 // Seed
                 case 1:
@@ -45,18 +51,22 @@ namespace CCIA.Models
                 // PVG
                 case 4:
                     crops = await dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).ToListAsync();
+                    maxFieldHistoryRecords = 5;
                     break;
                 // // RQA
                 // case 5:
+                //     maxFieldHistoryRecords = 1;
                 //     break;
                 // // Turfgrass
                 // case 6:
                 //     break;
                 // // Hemp from seed
                 // case 7:
+                //     maxFieldHistoryRecords = 5;
                 //     break;
                 // // Hemp from clones
                 // case 8:
+                //     maxFieldHistoryRecords = 5;
                 //     break;
             }
             var stateProvince = await dbContext.StateProvince.ToListAsync();
@@ -86,11 +96,14 @@ namespace CCIA.Models
                 Application = new Applications(),
                 ClassProduced = classToProduce,
                 Crops = crops,
-                StateProvince = stateProvince,
                 Counties = counties,
+                FieldHistoryEntryIndex = fhEntryId,
+                MaxFieldHistoryRecords = maxFieldHistoryRecords,
                 Organization = organization,
                 //OrgState = orgState,
                 RenderFormRemainder = false,
+                RenderSecondPlantingStock = false,
+                StateProvince = stateProvince,
                 Varieties = varieties
             };
 

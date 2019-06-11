@@ -39,21 +39,6 @@ namespace CCIA.Helpers
             return newApp;
         }
 
-        // Remove invalid fieldhistories
-
-        // public static ICollection<T> RemoveInvalidFieldHistories<T>(Applications app)
-        // {
-        //     List<T> newFieldHistories = new List<T>();
-        //     foreach (var fh in app.FieldHistories)
-        //     {
-        //         if (fh.Year == 0 || fh.Crop == null)
-        //         {
-        //             newFieldHistories.Add(fh);
-        //         }
-        //     }
-        //     return newFieldHistories;
-        // }
-
         // Remove invalid plantingstocks
         public static List<T> RemoveInvalidPlantingStocks<T>(List<T> plantingStocks)
             where T: PlantingStocks
