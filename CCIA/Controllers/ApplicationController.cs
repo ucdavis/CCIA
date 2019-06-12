@@ -106,7 +106,9 @@ namespace CCIA.Controllers
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
+            int numFieldHistoryRecords = seedApp.FieldHistories == null ? 0 : seedApp.FieldHistories.Count();
+            var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED, numFieldHistoryRecords);
+            model.Application = seedApp;
             if (SecondPlantingStockErrors())
             {
                 model.RenderSecondPlantingStock = true;
@@ -410,10 +412,11 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=0)
+        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=-1)
         {
             var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
+            ViewData["fhEntryId"] = fhEntryId;
             return PartialView(fullPartialPath, model);
         }
 

@@ -11,9 +11,10 @@ namespace CCIA.Models
     {
         [Key]
         public int Id { get; set; }
-
         public int AppId { get; set; }
-        public int Year { get; set; }
+       
+        [Required(ErrorMessage = "Please enter a year corresponding to this Field History record.")]
+        public int? Year { get; set; }
         public int? Crop { get; set; }
         public string Variety { get; set; }
         public string AppNumber { get; set; }
