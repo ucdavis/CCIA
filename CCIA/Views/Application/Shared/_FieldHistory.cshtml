@@ -3,7 +3,12 @@
 
 @for(var i=0; i<@Model.MaxFieldHistoryRecords; i++)
 {
-    <div id="fh-entry-@i"></div>
+    <div id="fh-entry-@i">
+        @if (@i < Model.FieldHistoryEntryIndex)
+        {
+            @Html.Partial("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
+        }
+    </div>
 }
 
 <button id="add-fieldhistory" class="btn btn-primary">Add a Field History record</button>

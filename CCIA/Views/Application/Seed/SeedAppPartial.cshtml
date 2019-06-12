@@ -2,7 +2,7 @@
 
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
-    @{ ViewBag.name = "ClassProducedId"; }
+    @{ ViewBag.name = "Application.ClassProducedId"; }
     @Html.Partial("Shared/_ClassRadioButtons")
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
@@ -33,18 +33,18 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="name-num">Name/No.</label><em class="required">•</em>
-            <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
-            @Html.ValidationMessage("FieldName", "", new { @class = "text-danger" })
+            <input type="text" class="form-control" id="name-num" name="Application.FieldName" placeholder="Name/No.">
+            @Html.ValidationMessageFor(m => m.Application.FieldName, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted</label><em class="required">•</em>
             <div class='input-group date' id='datetimepicker1'>
-                <input type="text" class="form-control" id="date-planted" name="DatePlanted" placeholder="MM/DD/YYYY">
+                <input type="text" class="form-control" id="date-planted" name="Application.DatePlanted" placeholder="MM/DD/YYYY">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-            @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
+            @Html.ValidationMessage("Application.DatePlanted", "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
@@ -58,17 +58,17 @@
                 </option>
             }
         </select>
-        @Html.ValidationMessage("FarmCounty", "", new { @class = "text-danger" })
+        @Html.ValidationMessage("Application.FarmCounty", "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         <label for="acres-applied">Acres Applied</label><em class="required">•</em>
-        <input type="text" class="form-control" id="acres-applied" name="AcresApplied" placeholder="Acres Applied">
-        @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
+        <input type="text" class="form-control" id="acres-applied" name="Application.AcresApplied" placeholder="Acres Applied">
+        @Html.ValidationMessage("Application.AcresApplied", "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         <label for="comments">Additional Information/Comments</label>
-        <textarea class="form-control" id="comments" rows="5" name="ApplicantComments" placeholder="Additional Information/Comments"></textarea>
+        <textarea class="form-control" id="comments" rows="5" name="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
     </div>
 
     @Html.Partial("Shared/_FieldHistory")

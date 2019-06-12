@@ -37,7 +37,7 @@
             <label for="variety">Variety<em class="required">•</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
-                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
+                    <input type="text" class="form-control" id="variety" name="Application.EnteredVariety" placeholder="Variety">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
                     </span>
@@ -46,8 +46,8 @@
                 </ul>
             </div>
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
-            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="Application.SelectedVarietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="Application.AppType" value="SD">
         </div>
     </div>
 
@@ -62,13 +62,17 @@
 @section Scripts {
     <script type="text/javascript">
         var form = document.getElementById("seedApplication")
-
+        let appTypeId = 1;
         var fhEntryId = @Model.FieldHistoryEntryIndex;
 
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.Organization.OrgId;
-
             insertHiddenInput("growerId", growerId, "#seedApplication");
+            
+            // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
+            // Used in order to aid server-side validation on re-rendering of form
+            insertHiddenInput("fhEntryId", fhEntryId, "#seedApplication");
+
             return true;
         });
 
@@ -130,35 +134,24 @@
         // On form submission failure, and we're returning to the page
         if ("@Model.RenderFormRemainder".toLocaleLowerCase() == "true")
         {
+            // After successfully loading form remainder
+            // Set functionality for date time picker
+            $('#datetimepicker1').datetimepicker({
+                format: 'MM/DD/YYYY'
+            });
+
             // Set click listener for button to add second plantingstock
-            $('#add-second-ps').on('click', addSecondPsClick);
+            $('#add-second-ps').on('click', addSecondPs);
 
             // Set click listener for button to add field history records
-            $('#add-fieldhistory').on('click', function(e) {
-                e.preventDefault();
-                // Populate div with an additional field history partial
-                let orgId = @Model.Organization.OrgId;
-                let fh_entry_div = `#fh-entry-${fhEntryId}`;
-                // $("#fh-entry-0").empty();
-                $(fh_entry_div)
-                    .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
-                            if ( status == "error" ) {
-                                var msg = "Sorry, there was an error loading the remainder of this form: ";
-                                $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                            }
-                            if (fhEntryId == @Model.MaxFieldHistoryRecords)
-                            {
-                                $("#add-fieldhistory").remove();
-                            }
-                    });
-                fhEntryId++;
+            $('#add-fieldhistory').on('click', (e) => {
+                addNewFieldHistory(e, appTypeId);
             });
         }
 
         /* Load the rest of the form after selecting (or entering) a variety*/
         function loadFormRemainder() {
             let orgId = @Model.Organization.OrgId;
-            let appTypeId = 1;
             /* If something is inside form-remainder div, clear it out */
             $("#form-remainder").empty();
             $("#form-remainder")
@@ -175,28 +168,11 @@
                             });
 
                             // Set click listener for button to add second plantingstock
-                            $('#add-second-ps').on('click', addSecondPsClick);
+                            $('#add-second-ps').on('click', addSecondPs);
 
                             // Set click listener for button to add field history records
-                            $('#add-fieldhistory').on('click', function(e) {
-                                e.preventDefault();
-                                // Populate div with an additional field history partial
-                                let orgId = @Model.Organization.OrgId;
-                                let fh_entry_div = `#fh-entry-${fhEntryId}`;
-                                console.log(fh_entry_div);
-                                // $("#fh-entry-0").empty();
-                                $(fh_entry_div)
-                                    .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
-                                            if ( status == "error" ) {
-                                                var msg = "Sorry, there was an error loading the remainder of this form: ";
-                                                $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                                            }
-                                            if (fhEntryId == @Model.MaxFieldHistoryRecords)
-                                            {
-                                                $("#add-fieldhistory").remove();
-                                            }
-                                    });
-                                fhEntryId++;
+                            $('#add-fieldhistory').on('click', (e) => {
+                                addNewFieldHistory(e, appTypeId);
                             });
                         }
                 });
@@ -210,12 +186,32 @@
             } 
         });
 
-        /* Adds red outline to invalid text boxes on form submission */
+        /* Adds red outline to invalid text boxes on loading after failed form submission */
         $(document).ready(() => {
             $('.field-validation-error').parents('.form-group').addClass('has-error');
         });
 
-        function addSecondPsClick(e) {
+        function addNewFieldHistory(e, appTypeId) {
+            e.preventDefault();
+            // Populate div with an additional field history partial
+            let orgId = @Model.Organization.OrgId;
+            fhEntryId++;
+            let fh_entry_div = `#fh-entry-${fhEntryId}`;
+            $(fh_entry_div).empty();
+            $(fh_entry_div)
+                .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, there was an error loading the remainder of this form: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                        if (fhEntryId == @Model.MaxFieldHistoryRecords)
+                        {
+                            $("#add-fieldhistory").remove();
+                        }
+                });
+        }
+
+        function addSecondPs(e) {
             let appTypeId = 1;
             e.preventDefault();
             // Populate div with second planting stocks partial
