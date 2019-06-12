@@ -65,6 +65,8 @@ namespace CCIA.Models
 
         public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
+        public virtual DbSet<MyCustomers> MyCustomers { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -81,7 +83,7 @@ namespace CCIA.Models
        
         // Unable to generate entity type for table 'dbo.map_sweetcorn_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app_listing'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.my_customers'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.map_crop_access'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
         
@@ -258,6 +260,46 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.FHCrops);
 
+
+            });
+
+            modelBuilder.Entity<MyCustomers>(entity =>
+            {
+                entity.ToTable("my_customers");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.OrganizationId).HasColumnName("org_id");
+
+                entity.Property(e => e.Name).HasColumnName("cust_name");
+
+                entity.Property(e => e.Address1).HasColumnName("cust_address_line_1");
+
+                entity.Property(e => e.Address2).HasColumnName("cust_address_line_2");
+
+                entity.Property(e => e.City).HasColumnName("cust_city");
+
+                entity.Property(e => e.StateId).HasColumnName("cust_state_id");
+
+                entity.Property(e => e.County).HasColumnName("cust_county");
+
+                entity.Property(e => e.Country).HasColumnName("cust_country");
+
+                entity.Property(e => e.Zip).HasColumnName("cust_zip");
+
+                entity.Property(e => e.Phone).HasColumnName("cust_phone");
+
+                entity.Property(e => e.Email).HasColumnName("cust_email");
+
+                entity.HasOne(e => e.State);
+
+                entity.HasOne(e => e.County);
+
+                entity.HasOne(e => e.Country);
+
+                entity.HasOne(e => e.Organization);
 
             });
 
