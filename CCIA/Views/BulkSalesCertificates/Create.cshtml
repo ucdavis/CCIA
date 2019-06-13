@@ -12,11 +12,21 @@
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group date has-feedback">
+            <div class="form-group has-feedback">
                 <label asp-for="Date" class="control-label"></label><em class="required">•</em>
                 <input asp-for="Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />               
                 <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>                
                 <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Id</label>
+                <input class="form-control" type="text" id="textId" />
+                <select class="form-control" id="selectType">
+                    <option value="SID">SID</option>
+                    <option value="Blend">Blend</option>
+                </select>
+                <button type="button" id="retrieveButton">Retrieve Info</button>
+                 <span id="result3"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -35,5 +45,26 @@
             format: 'LT',
             autoclose: "true",
         })
+
+        $(document).ready(function () {
+            $('#retrieveButton').click(function () { 
+                alert("clicked");               
+                var id = $('#textId').val();
+                alert(id);
+                var idType = $('#selectType').val();                
+                alert(idType);
+                $.ajax({
+                    type: 'GET',
+                    url: '/BulkSalesCertificates/GetSidOrBlend?id=' + id + "&lookupType=" + idType ,
+                    success: function (result) {
+                        var s = 'Id: ' + result.id;
+                        s += '<br>Name: ' + result.name;
+                        s += '<br>Price: ' + result.price;
+                        $('#result3').html(s);
+                    }
+                });
+            });
+
+        });
     </script>
 }

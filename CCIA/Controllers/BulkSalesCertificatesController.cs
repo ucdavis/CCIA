@@ -22,23 +22,23 @@ namespace CCIA.Controllers
             _dbContext = dbContext;
         }
 
-        
+
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            
+
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             if (certYear == 0)
             {
                 certYear = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId).Select(b => b.Date.Year).MaxAsync();
             }
-            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);            
+            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
         }
 
         // GET: Application/Details/5
         public ActionResult Details(int id)
-        {           
+        {
             return View();
         }
 
@@ -109,6 +109,22 @@ namespace CCIA.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetSidOrBlend(string lookupType, int id)
+        {
+            if (lookupType == "Blend")
+            {
+                var model = await _dbContext.BlendRequests.Where(b => b.BlendId == id).SingleAsync();
+                return Json(model);
+            }
+            else
+            {
+                var model = await _dbContext.Seeds.Where(s => s.Id == id).SingleAsync();
+                return Json(model);
+            }
+
         }
     }
 }

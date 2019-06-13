@@ -84,7 +84,7 @@ namespace CCIA.Models
         [ForeignKey("Id")]
         public SxLabResults LabResults { get; set; }
 
-        public bool HasLabs => LabResults.PurityPercent == null && LabResults.GermPercent == null ? false : true;
+        public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
         // NO lot number included
         public string CertNumber()
@@ -128,7 +128,8 @@ namespace CCIA.Models
                 {
                     return Application.CropName;
                 }
-                return Variety.Crop.Name;
+                return Variety == null ? "" : Variety.Crop.Name;
+                
             }
         }
 
@@ -140,7 +141,7 @@ namespace CCIA.Models
                 {
                     return Application.VarietyName;
                 }
-                return Variety.Name;
+                return Variety == null ? "" : Variety.Name;
 
             } 
         }
