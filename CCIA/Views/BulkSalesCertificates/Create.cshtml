@@ -54,14 +54,21 @@
                 var idType = $('#selectType').val();                
                 alert(idType);
                 $.ajax({
-                    type: 'GET',
-                    url: '/BulkSalesCertificates/GetSidOrBlend?id=' + id + "&lookupType=" + idType ,
-                    success: function (result) {
-                        var s = 'Id: ' + result.id;
-                        s += '<br>Name: ' + result.name;
-                        s += '<br>Price: ' + result.price;
-                        $('#result3').html(s);
+                    method: 'GET',
+                    url: '/BulkSalesCertificates/GetSidOrBlend',
+                    data: {
+                        id: id,
+                        lookupType: idType
                     }
+                })
+                .done(function(data){
+                    var s = '<br>Id: ' + data.id;
+                        s += '<br>Program: ' + data.certProgram;
+                        s += '<br>Price: ' + data.price;
+                        $('#result3').html(s);
+                })
+                .fail(function(xhr) {
+                    console.log('error', xhr);
                 });
             });
 
