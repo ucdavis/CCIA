@@ -1,0 +1,39 @@
+@model CCIA.Models.BulkSalesCertificates
+
+@{
+    ViewData["Title"] = "Create New Bulk Sales Certificate";
+}
+
+<h1>Create</h1>
+
+<h4>Bulk Sales Certificate</h4>
+<hr>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group date has-feedback">
+                <label asp-for="Date" class="control-label"></label><em class="required">•</em>
+                <input asp-for="Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />               
+                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>                
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            
+            format: 'LT',
+            autoclose: "true",
+        })
+    </script>
+}
