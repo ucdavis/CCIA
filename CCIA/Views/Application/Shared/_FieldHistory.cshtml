@@ -1,0 +1,14 @@
+<h5><strong>History:</strong></h5>
+<p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
+
+@for(var i=0; i<@Model.AppViewModel.MaxFieldHistoryRecords; i++)
+{
+    <div id="fh-entry-@i">
+        @if (@i < Model.AppViewModel.FieldHistoryEntryIndex)
+        {
+            @Html.Partial("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
+        }
+    </div>
+}
+
+<button id="add-fieldhistory" class="btn btn-primary">Add a Field History record</button>

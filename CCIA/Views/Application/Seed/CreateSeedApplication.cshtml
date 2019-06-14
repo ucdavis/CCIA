@@ -1,0 +1,230 @@
+@model CCIA.Models.SeedApp
+
+@{
+    ViewData["Title"] = "Seed Application";
+}
+
+<h2>Application to Produce Certified Seed: @Model.AppViewModel.Organization.OrgName</h2>
+
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
+@Html.Partial("Shared/_GrowerInfoTable")
+
+<form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
+
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group col-lg-4 col-sm-4 col-xs-4">
+            @{ViewBag.name = "CropId";}
+            @Html.Partial("Shared/_CropDropdown")
+            @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group col-lg-4 col-sm-4 col-xs-4">
+            @{
+                ViewBag.name = "CertYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @Html.Partial("Shared/_CropYearDropdown")
+            @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="col-lg-4 col-sm-4 col-xs-4">  
+            <label for="variety">Variety<em class="required">•</em></label>
+            <div class="dropdown" id="variety-dropdown">
+                <div class="input-group col">
+                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
+                    </span>
+                </div>
+                <ul class="dropdown-menu scrollable-menu" id="variety-select">
+                </ul>
+            </div>
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+        </div>
+    </div>
+
+    <div id="form-remainder">
+        @if (@Model.AppViewModel.RenderFormRemainder)
+        {
+            @Html.Partial("Seed/SeedAppPartial");
+        }
+    </div>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        var form = document.getElementById("seedApplication")
+        let appTypeId = 1;
+        var fhEntryId = @Model.AppViewModel.FieldHistoryEntryIndex;
+
+        $('#seedApplication').submit (function(e) {
+            var growerId = @Model.AppViewModel.Organization.OrgId;
+            insertHiddenInput("growerId", growerId, "#seedApplication");
+            
+            // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
+            // Used in order to aid server-side validation on re-rendering of form
+            insertHiddenInput("fhEntryId", fhEntryId, "#seedApplication");
+
+            return true;
+        });
+
+        $('#variety-search').on('click', function(e) {
+            e.preventDefault();
+
+            // Display error if user tries to search for variety before selecting crop
+            let crop = document.getElementsByName("CropId")[0];
+            let cropText = crop.options[crop.selectedIndex].text;
+            let cropId = crop.options[crop.selectedIndex].value;
+            let varietyName = document.getElementById("variety").value;
+            if (cropText == "") { 
+                window.alert("Please select a crop before searching for a variety."); 
+                return;
+            }
+
+            let data = { 
+                name: varietyName,
+                cropId: cropId
+            };
+            let vs = document.getElementById("variety-select");
+            vs.innerHTML = "";
+            // Take text in input box and autofill input with the variety name that most closely matches it
+            $.ajax({
+                type: "GET",
+                url: "/Application/FindVariety",
+                data: data,
+                success: function(res) {
+                    let dd = document.getElementById("variety-dropdown");
+                    if (res.length === 0) {
+                        alert("No variety with name "+varietyName+" was found in our system. A new variety will be used.");
+                        loadFormRemainder();
+                    } else {
+                        dd.className += " " + "open";               
+                    }
+                    res.forEach(function(el) {
+                        vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
+                                     + " tabindex='-1' href='#/' value="+el.varOffId+">"
+                                     + el.varOffName
+                                     + "</a></li>";
+                    })
+                },
+                error: function(res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        });
+
+        function selectVariety(e) {
+            /* Collapse dropdown */
+            let dd = document.getElementById("variety-dropdown");
+            dd.className = "dropdown";
+            document.getElementById("variety-id").value = e.firstElementChild.attributes.value.value;
+            document.getElementById("variety").value = e.firstElementChild.innerText
+
+            loadFormRemainder();
+        }
+
+        // On form submission failure, and we're returning to the page
+        if ("@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase() == "true")
+        {
+            // After successfully loading form remainder
+            // Set functionality for date time picker
+            $('#datetimepicker1').datetimepicker({
+                format: 'MM/DD/YYYY'
+            });
+
+            // Set click listener for button to add second plantingstock
+            $('#add-second-ps').on('click', addSecondPs);
+
+            // Set click listener for button to add field history records
+            $('#add-fieldhistory').on('click', (e) => {
+                addNewFieldHistory(e, appTypeId);
+            });
+        }
+
+        /* Load the rest of the form after selecting (or entering) a variety*/
+        function loadFormRemainder() {
+            let orgId = @Model.AppViewModel.Organization.OrgId;
+            /* If something is inside form-remainder div, clear it out */
+            $("#form-remainder").empty();
+            $("#form-remainder")
+                .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry but there was an error: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                        else {
+                            // After successfully loading form remainder
+                            // Set functionality for date time picker
+                            $('#datetimepicker1').datetimepicker({
+                                format: 'MM/DD/YYYY'
+                            });
+
+                            // Set click listener for button to add second plantingstock
+                            $('#add-second-ps').on('click', addSecondPs);
+
+                            // Set click listener for button to add field history records
+                            $('#add-fieldhistory').on('click', (e) => {
+                                addNewFieldHistory(e, appTypeId);
+                            });
+                        }
+                });
+        }
+
+        /* Click handler to collapse variety dropdown on click outside */
+        $(document).click( function(event) { 
+            if( $(event.target).closest('#variety-select').length == 0 ) { 
+                let dd = document.getElementById("variety-dropdown");
+                dd.className = "dropdown";
+            } 
+        });
+
+        /* Adds red outline to invalid text boxes on loading after failed form submission */
+        $(document).ready(() => {
+            $('.field-validation-error').parents('.form-group').addClass('has-error');
+        });
+
+        function addNewFieldHistory(e, appTypeId) {
+            e.preventDefault();
+            // Populate div with an additional field history partial
+            let orgId = @Model.AppViewModel.Organization.OrgId;
+            fhEntryId++;
+            let fh_entry_div = `#fh-entry-${fhEntryId}`;
+            $(fh_entry_div).empty();
+            $(fh_entry_div)
+                .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, there was an error loading the remainder of this form: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                        // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "2"
+                        if (fhEntryId == 2)
+                        {
+                            $("#add-fieldhistory").remove();
+                        }
+                });
+        }
+
+        function addSecondPs(e) {
+            let appTypeId = 1;
+            e.preventDefault();
+            // Populate div with second planting stocks partial
+            let orgId = @Model.AppViewModel.Organization.OrgId;
+            $("#second-ps").empty();
+            $("#second-ps")
+                .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, there was an error loading the remainder of this form: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                });
+        }
+    </script>
+}

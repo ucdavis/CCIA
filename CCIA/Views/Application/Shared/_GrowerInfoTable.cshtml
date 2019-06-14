@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Account #</th>
+            <th>Grower</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody id="organizations">
+        <tr>
+            <td>@Model.AppViewModel.Organization.OrgId</td>
+            <td>@Model.AppViewModel.Organization.OrgName</td>
+            <td>@Model.AppViewModel.Organization.Address.Address1</td>
+            <td>@Model.AppViewModel.Organization.Address.City</td>
+            <td>@Model.AppViewModel.Organization.Address.StateProvince.StateProvinceName</td>
+        </tr>
+    </tbody>
+</table>

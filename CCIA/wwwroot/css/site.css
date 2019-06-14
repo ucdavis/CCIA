@@ -21,9 +21,42 @@
     width: 100%;
 }
 
+.form-section{
+    border-radius:.8em;
+    background:#f1f1f1;
+    padding: 2px 10px 10px 10px;
+    margin-bottom:10px
+}
+
+.planting-stock {
+    border-radius: .8em;
+    background: #dbdbdb;
+    padding: 6px 12px 2px 12px;
+    margin-bottom: 10px;
+}
+
+.second-planting-stock {
+    background: #d2d7e1;
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;
+}
+
+.required{
+    color:#f00
+}
+
+.scrollable-menu{
+    height:auto;
+    max-height:400px;
+    overflow-x:hidden
+}
+
+.btn-secondary{
+    border:1px solid #ccc !important;
+    background:#fff
 }
 
 /* Hide/rearrange for smaller screens */

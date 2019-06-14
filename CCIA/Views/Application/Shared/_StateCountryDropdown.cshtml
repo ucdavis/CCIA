@@ -1,0 +1,13 @@
+<select class="form-control" name=@ViewBag.name>
+    <option></option>
+    @foreach (var state_country in Model.AppViewModel.StateProvince)
+    {
+        @if(state_country.StateProvinceName=="California")
+        {
+           <option value=@state_country.StateProvinceId selected="selected">@state_country.StateProvinceName</option>
+        }
+        else {
+            <option value=@state_country.StateProvinceId>@state_country.StateProvinceName</option>
+        }
+    }
+</select>

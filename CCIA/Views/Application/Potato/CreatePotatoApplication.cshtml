@@ -1,0 +1,172 @@
+@model CCIA.Models.ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Potato Application";
+}
+
+<h2>Application to Produce Certified Potato Seed @Model.Organization.OrgName</h2>
+
+@Html.Partial("Shared/_GrowerInfoTable")
+
+<form action="/Application/CreatePotatoApplication" method="post" id="potatoApplication">
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-group row">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            <label>Crop</label>
+            <div>
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Potato</button>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            @{
+                ViewBag.name = "CertYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @Html.Partial("Shared/_CropYearDropdown")
+        </div> 
+
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            <label>Variety</label><em class="required">•</em>
+            <select name="SelectedVarietyId" class="form-control">
+                @foreach (var v in Model.Varieties)
+                    {
+                        if (v.CropId == 137){
+                            <option value=@v.VarOffId>@v.VarOffName</option>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#/" value=@v.VarOffId>@v.VarOffName</a></li>
+                        }
+                    }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Class to be Produced</label><em class="required">•</em>
+        @{ ViewBag.name = "ClassProducedId"; }
+        @Html.Partial("Shared/_ClassRadioButtons")
+        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="cert-lot-num">Lot # for Certification Number<em class="required">•</em></label><i> - Do not enter year or account number</i>
+            <input type="text" class="form-control" id="cert-lot-num" name="CertNum" placeholder="Lot # for Certification Number">
+            @Html.ValidationMessage("CertNum", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <section id="planting-stock" class="form-section">
+        <h4>Planting Stock</h4>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="cert-lot-num">Certification and Lot #<em class="required">•</em></label>
+                <input type="text" class="form-control" id="cert-lot-num" name="PlantingStocks[0].PsCertNum" placeholder="Certification and Lot #">
+                @Html.ValidationMessage("PlantingStocks[0].PsCertNum", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
+            <label>Class Planted</label><em class="required">•</em>
+            @Html.Partial("Shared/_ClassRadioButtons")
+        </div>
+
+        <div class="form-group">
+            <label>State/Country where Planting Stock Tag or breeder letter was issued</label><em class="required">•</em>
+            @{ViewBag.name = "PlantingStocks[0].StateCountryTagIssued";}
+            @Html.Partial("Shared/_StateCountryDropdown")
+        </div>
+
+        <div class="form-group">
+            <label>State/Country where Planting Stock was grown</label><em class="required">•</em>
+            @{ViewBag.name = "PlantingStocks[0].StateCountryStockGrown";}
+            @Html.Partial("Shared/_StateCountryDropdown")
+        </div>
+
+        <div class="form-group">
+            <label for="farm-grown">Farm name where Planting Stock was grown</label><em class="required">•</em>
+            <input type="text" class="form-control" id="farm-grown" name="FieldName" placeholder="Farm name where Planting Stock was grown">
+        </div>
+
+        <div class="form-group">
+            <label class="form-check-label" for="winterTest">Winter test results are required for recertification</label><em class="required">•</em>
+            <i> - If yes, documentation required</i>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="winterTestCompleted1">Yes</label>
+                <input class="form-check-input" type="radio" name="PlantingStocks[0].WinterTest" id="winterTestCompleted1">
+                <label class="form-check-label" for="winterTestCompleted2">No</label>
+                <input class="form-check-input" type="radio" name="PlantingStocks[0].WinterTest" id="winterTestCompleted2">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-check-label" for="pvxTested">For prenuclear and nuclear class planted, was this lot PVX tested?</label><em class="required">•</em>
+            <i> - If yes, documentation required</i>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="pvxTested1">Yes</label>
+                <input class="form-check-input" type="radio" name="PlantingStocks[0].PvxTest" id="pvxTested1" value="true">
+                <label class="form-check-label" for="winterTestCompleted2">No</label>
+                <input class="form-check-input" type="radio" name="PlantingStocks[0].PvxTest" id="pvxTested2" value="false">
+            </div>
+        </div>
+    </section>
+
+    <section id="field-info" class="form-section">
+        <h4>Field Information</h4>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="name-num">Name/No.</label><em class="required">•</em>
+                <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
+                @Html.ValidationMessage("NameOrNum", "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-md-6">
+                <label for="date-planted">Date Planted</label><em class="required">•</em>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type="text" class="form-control" id="date-planted" name="DatePlanted" placeholder="MM/DD/YYYY">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Partial("Shared/_CountyDropdown")
+        </div>
+        <div class="form-group">
+            <label for="acres-applied">Acres Applied</label><em class="required">•</em>
+            <input type="text" class="form-control" id="acres-applied" name="AcresApplied" placeholder="Acres Applied">
+            @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label for="comments">Additional Information/Comments</label>
+            <textarea class="form-control" id="comments" rows="5" name="ApplicantComments" placeholder="Additional Information/Comments"></textarea>
+        </div>
+
+        @Html.Partial("Shared/_FieldHistory")
+    </section>
+
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#potatoApplication").submit(function(e) {
+            var growerId = @Model.Organization.OrgId;
+
+            insertHiddenInput("growerId", growerId, "#potatoApplication");
+            insertHiddenInput("Crop", 2, "#potatoApplication");
+            return true;
+        });
+
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: 'MM/DD/YYYY'
+            });
+        });
+    </script>
+}

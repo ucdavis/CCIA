@@ -1,0 +1,14 @@
+<label>Crop Year</label>
+@if(@ViewBag.name == "CertYear") {
+    <em class="required">•</em>
+}
+
+<select class="form-control" name=@ViewBag.name>
+    <option></option>
+    @for (int i = 0; i <= @ViewBag.endYearOffset; i++)
+    {
+        <option value=@(DateTime.Now.Year - i)>
+                @(DateTime.Now.Year + @ViewBag.startYearOffset - i)
+        </option>
+    }
+</select>
