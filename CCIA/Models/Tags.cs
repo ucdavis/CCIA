@@ -50,7 +50,7 @@ namespace CCIA.Models
             {
                 if(TagAbbrevClass != null)
                 {
-                    return TagAbbrevClass.Class;
+                    return TagAbbrevClass.CertClass;
                 }
                 return "";
             }
@@ -134,7 +134,7 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds.ClassProduced != null)
                 {
-                    return Seeds.ClassProduced.Class;
+                    return Seeds.ClassProduced.CertClass;
                 }
                 else if (BlendId.HasValue)
                 {

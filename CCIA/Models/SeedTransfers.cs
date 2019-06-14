@@ -193,7 +193,7 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds.ClassProduced != null)
                 {
-                    return Seeds.ClassProduced.Class;
+                    return Seeds.ClassProduced.CertClass;
                 }
                 if (BlendId.HasValue)
                 {

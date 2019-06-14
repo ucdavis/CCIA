@@ -1028,10 +1028,12 @@ namespace CCIA.Models
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Class)
+                entity.Property(e => e.CertClass)
                     .HasColumnName("class_certified_trans")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Program).HasColumnName("program");
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
             });
