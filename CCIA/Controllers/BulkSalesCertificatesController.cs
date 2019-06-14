@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
+using CCIA.Models.BulkSalesCreateViewModel;
+
 
 
 
@@ -43,9 +45,11 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var model = await BulkSalesCreateViewModel.Create(_dbContext, orgId);
+            return View(model);
         }
 
         // POST: Application/Create
@@ -112,6 +116,53 @@ namespace CCIA.Controllers
         }
 
         [HttpGet]
+        public async Task<JsonResult> GetAvailableClasses(string lookupType, int id)
+        {
+            if (lookupType == "Blend")
+            {
+                int? blendClass = await _dbContext.BlendRequests.Where(b => b.BlendId == id).Select(b => b.Class).FirstAsync();                
+                if (blendClass.HasValue)
+                {
+                    int appType = await _dbContext.AbbrevClassSeeds.Where(a => a.Id == blendClass.Value).Select(a => a.Program).FirstAsync();
+                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= blendClass && a.Program == appType)
+                        .OrderBy(a => a.Id)
+                        .Select(a => new {value = a.Id, text = a.CertClass})
+                        .ToListAsync();
+                    return Json(model);
+                }
+                else
+                {
+                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.CertClass == "Certified" && a.Program == 1)
+                        .OrderBy(a => a.Id)
+                        .Select(c => new {value = c.Id, text = c.CertClass})
+                        .ToListAsync();                   
+                    return Json(model);
+                }
+            } 
+            else
+            {
+                int? sidClass = await _dbContext.Seeds.Where(s => s.Id == id).Select(s => s.Class).FirstAsync();
+                int appType = await _dbContext.Seeds.Where(s => s.Id == id).Include(s => s.AppTypeTrans).Select(s => s.AppTypeTrans.AppTypeId).FirstAsync();
+                if(sidClass.HasValue)
+                {
+                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= sidClass && a.Program == appType)
+                        .OrderBy(a => a.Id)
+                        .Select(a => new  {value = a.Id, text = a.CertClass})
+                        .ToListAsync();
+                    return Json(model);
+                }
+                else
+                {
+                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.CertClass == "Certified")
+                        .OrderBy(a => a.Id)
+                        .Select(c => new  {value = c.Id, text = c.CertClass})
+                        .ToListAsync();
+                    return Json(model);
+                }
+            }            
+        }
+
+        [HttpGet]
         public async Task<JsonResult> GetSidOrBlend(string lookupType, int id)
         {
             if (lookupType == "Blend")
@@ -134,14 +185,17 @@ namespace CCIA.Controllers
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
-                .Select(b =>  new 
-                { 
-                    id = b.BlendId, 
-                    appTtype = "Blend", 
+                .Select(b => new
+                {
+                    id = b.BlendId,
+                    saleType = "Blend",
+                    program = b.BlendType,
                     applicant = b.ConditionerId + " " + b.Conditioner.OrgName,
                     conditioner = b.ConditionerId + " " + b.Conditioner.OrgName,
                     crop = b.GetCrop(),
                     variety = b.GetVarietyName(),
+                    cert = b.CertNumber,
+                    lot = "",
                 }).SingleAsync();
                 return Json(model);
             }
@@ -155,15 +209,18 @@ namespace CCIA.Controllers
                 .Include(s => s.Application)
                 .ThenInclude(a => a.Variety)
                 .ThenInclude(v => v.Crop)
-                .Include(c => c.ClassProduced)
-                .Select(s =>  new 
-                { 
-                    id = s.Id, 
-                    appType = "Seed",
+                .Include(s => s.AppTypeTrans)
+                .Select(s => new
+                {
+                    id = s.Id,
+                    saleType = "SID",
+                    program = s.AppTypeTrans.AppTypeTrans,
                     applicant = s.ApplicantId + " " + s.ApplicantOrganization.OrgName,
                     conditioner = s.ConditionerId + " " + s.ConditionerOrganization.OrgName,
                     crop = s.GetCropName(),
                     variety = s.GetVarietyName(),
+                    cert = s.CertNumber(),
+                    lot = s.LotNumber,
                 }).SingleAsync();
                 return Json(model);
             }

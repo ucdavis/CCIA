@@ -1,4 +1,5 @@
-@model CCIA.Models.BulkSalesCertificates
+@model CCIA.Models.BulkSalesCreateViewModel.BulkSalesCreateViewModel
+
 
 @{
     ViewData["Title"] = "Create New Bulk Sales Certificate";
@@ -13,10 +14,10 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group has-feedback">
-                <label asp-for="Date" class="control-label"></label><em class="required">•</em>
-                <input asp-for="Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />               
+                <label asp-for="BulkSalesCertificate.Date" class="control-label"></label><em class="required">•</em>
+                <input asp-for="BulkSalesCertificate.Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />               
                 <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>                
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <span asp-validation-for="BulkSalesCertificate.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Id</label>
@@ -27,6 +28,15 @@
                 </select>
                 <button type="button" id="retrieveButton">Retrieve Info</button>
                  <span id="result3"></span>
+            </div>
+            <div>
+                <label class="control-label">Class Sold</label>
+                <select class="form-control" id="ClassId"></select>
+            </div>
+            <div><hr/></div>
+            <div class="form-group">
+                <label class="control-label">Select My Customer</label>
+                <select class="form-control" asp-items="@(new SelectList(Model.Customers, "Id","Name"))"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -49,7 +59,31 @@
         $(document).ready(function () {
             $('#retrieveButton').click(function () {
                 var id = $('#textId').val();
-                var idType = $('#selectType').val();                
+                var idType = $('#selectType').val();
+
+                $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetAvailableClasses',
+                     data: {
+                        id: id,
+                        lookupType: idType
+                    }
+                })
+                .done(function(data) {
+                    $('#ClassId').empty();
+                    //alert(data.count());
+                    $.each(data,function(i,data)
+                    {
+                        var div_data="<option value="+data.id+">"+data.text+"</option>";
+                        $(div_data).appendTo('#ClassId');
+                    });
+
+                })
+                .fail(function(xhr) {
+                    alert("Could not get list of available classes");
+                    console.log('error', xhr);
+                });                
+
                 $.ajax({
                     method: 'GET',
                     url: '/BulkSalesCertificates/GetSidOrBlend',
@@ -59,16 +93,20 @@
                     }
                 })
                 .done(function(data){
+                    $('#result3').html("");
                     var s = '<br>Id: ' + data.id;                        
-                        s += '<br>App Type: ' + data.appType;
+                        s += '<br>App Type: ' + data.saleType;
+                        s += '<br>Program Type: ' + data.program;
                         s += '<br>Applicant: ' + data.applicant;
                         s += '<br>Conditioner: ' + data.conditioner;
                         s += '<br>Crop: ' + data.crop;
                         s += '<br>Variety: ' + data.variety;
+                        s += '<br>Cert Number: ' + data.cert;
+                        s += '<br>Lot Number: ' + data.lot;
                         $('#result3').html(s);
                 })
                 .fail(function(xhr) {
-                    alert("Something bad happened!");
+                    alert("Could not find info on that ID/Type");
                     console.log('error', xhr);
                 });
             });

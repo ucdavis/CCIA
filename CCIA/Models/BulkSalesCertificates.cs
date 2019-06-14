@@ -7,11 +7,15 @@ namespace CCIA.Models
 {
     public partial class BulkSalesCertificates
     {
+        public BulkSalesCertificates() {
+            Date = DateTime.Now.Date;
+        }
         public int Id { get; set; }
         public int ConditionerOrganizationId { get; set; }
 
         [ForeignKey("ConditionerOrganizationId")]
         public Organizations ConditionerOrganization { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:d}")]
         public DateTime Date { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]
