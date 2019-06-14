@@ -71,7 +71,9 @@ namespace CCIA.Controllers
         // GET: Application/CreateSeedApplication
         public async Task<IActionResult> CreateSeedApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            var model = new SeedApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
             return View("Seed/CreateSeedApplication", model);
         }
 
@@ -106,16 +108,14 @@ namespace CCIA.Controllers
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            int numFieldHistoryRecords = seedApp.FieldHistories == null ? 0 : seedApp.FieldHistories.Count();
-            var model = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED, numFieldHistoryRecords);
-            model.Application = seedApp;
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
             if (SecondPlantingStockErrors())
             {
-                model.RenderSecondPlantingStock = true;
+                appViewModel.RenderSecondPlantingStock = true;
             }
-            model.RenderFormRemainder = true;
-
-            return View("Seed/CreateSeedApplication", model);
+            appViewModel.RenderFormRemainder = true;
+            seedApp.AppViewModel = appViewModel;
+            return View("Seed/CreateSeedApplication", seedApp);
         }
 
         private bool SecondPlantingStockErrors()
@@ -414,10 +414,12 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=-1)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);
+            var seedApp = new SeedApp();
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);
+            seedApp.AppViewModel = appViewModel;
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
             ViewData["fhEntryId"] = fhEntryId;
-            return PartialView(fullPartialPath, model);
+            return PartialView(fullPartialPath, seedApp);
         }
 
     }

@@ -1,8 +1,6 @@
-@model CCIA.Models.ApplicationViewModel
-
 <select class="form-control" name=@ViewBag.name>
     <option></option>
-    @foreach (var state_country in Model.StateProvince)
+    @foreach (var state_country in Model.AppViewModel.StateProvince)
     {
         @if(state_country.StateProvinceName=="California")
         {
