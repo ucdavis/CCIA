@@ -47,12 +47,9 @@
         })
 
         $(document).ready(function () {
-            $('#retrieveButton').click(function () { 
-                alert("clicked");               
+            $('#retrieveButton').click(function () {
                 var id = $('#textId').val();
-                alert(id);
                 var idType = $('#selectType').val();                
-                alert(idType);
                 $.ajax({
                     method: 'GET',
                     url: '/BulkSalesCertificates/GetSidOrBlend',
@@ -62,12 +59,16 @@
                     }
                 })
                 .done(function(data){
-                    var s = '<br>Id: ' + data.id;
-                        s += '<br>Program: ' + data.certProgram;
-                        s += '<br>Price: ' + data.price;
+                    var s = '<br>Id: ' + data.id;                        
+                        s += '<br>App Type: ' + data.appType;
+                        s += '<br>Applicant: ' + data.applicant;
+                        s += '<br>Conditioner: ' + data.conditioner;
+                        s += '<br>Crop: ' + data.crop;
+                        s += '<br>Variety: ' + data.variety;
                         $('#result3').html(s);
                 })
                 .fail(function(xhr) {
+                    alert("Something bad happened!");
                     console.log('error', xhr);
                 });
             });

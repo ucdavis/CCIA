@@ -116,12 +116,55 @@ namespace CCIA.Controllers
         {
             if (lookupType == "Blend")
             {
-                var model = await _dbContext.BlendRequests.Where(b => b.BlendId == id).SingleAsync();
+                var model = await _dbContext.BlendRequests.Where(b => b.BlendId == id)
+                .Include(b => b.Conditioner)
+                .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
+                .ThenInclude(i => i.Crop)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)
+                .Select(b =>  new 
+                { 
+                    id = b.BlendId, 
+                    appTtype = "Blend", 
+                    applicant = b.ConditionerId + " " + b.Conditioner.OrgName,
+                    conditioner = b.ConditionerId + " " + b.Conditioner.OrgName,
+                    crop = b.GetCrop(),
+                    variety = b.GetVarietyName(),
+                }).SingleAsync();
                 return Json(model);
             }
             else
             {
-                var model = await _dbContext.Seeds.Where(s => s.Id == id).SingleAsync();
+                var model = await _dbContext.Seeds.Where(s => s.Id == id)
+                .Include(s => s.ApplicantOrganization)
+                .Include(s => s.ConditionerOrganization)
+                .Include(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(s => s.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(c => c.ClassProduced)
+                .Select(s =>  new 
+                { 
+                    id = s.Id, 
+                    appType = "Seed",
+                    applicant = s.ApplicantId + " " + s.ApplicantOrganization.OrgName,
+                    conditioner = s.ConditionerId + " " + s.ConditionerOrganization.OrgName,
+                    crop = s.GetCropName(),
+                    variety = s.GetVarietyName(),
+                }).SingleAsync();
                 return Json(model);
             }
 
