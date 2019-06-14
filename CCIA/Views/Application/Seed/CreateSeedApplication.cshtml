@@ -1,10 +1,10 @@
-@model CCIA.Models.ApplicationViewModel
+@model CCIA.Models.SeedApp
 
 @{
     ViewData["Title"] = "Seed Application";
 }
 
-<h2>Application to Produce Certified Seed: @Model.Organization.OrgName</h2>
+<h2>Application to Produce Certified Seed: @Model.AppViewModel.Organization.OrgName</h2>
 
 <div id="errors" class="text-danger">
     @Html.ValidationSummary()
@@ -37,7 +37,7 @@
             <label for="variety">Variety<em class="required">•</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
-                    <input type="text" class="form-control" id="variety" name="Application.EnteredVariety" placeholder="Variety">
+                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
                     </span>
@@ -46,13 +46,13 @@
                 </ul>
             </div>
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="Application.SelectedVarietyId">
-            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="Application.AppType" value="SD">
+            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
+            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
         </div>
     </div>
 
     <div id="form-remainder">
-        @if (@Model.RenderFormRemainder)
+        @if (@Model.AppViewModel.RenderFormRemainder)
         {
             @Html.Partial("Seed/SeedAppPartial");
         }
@@ -63,10 +63,10 @@
     <script type="text/javascript">
         var form = document.getElementById("seedApplication")
         let appTypeId = 1;
-        var fhEntryId = @Model.FieldHistoryEntryIndex;
+        var fhEntryId = @Model.AppViewModel.FieldHistoryEntryIndex;
 
         $('#seedApplication').submit (function(e) {
-            var growerId = @Model.Organization.OrgId;
+            var growerId = @Model.AppViewModel.Organization.OrgId;
             insertHiddenInput("growerId", growerId, "#seedApplication");
             
             // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
@@ -132,7 +132,7 @@
         }
 
         // On form submission failure, and we're returning to the page
-        if ("@Model.RenderFormRemainder".toLocaleLowerCase() == "true")
+        if ("@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase() == "true")
         {
             // After successfully loading form remainder
             // Set functionality for date time picker
@@ -151,7 +151,7 @@
 
         /* Load the rest of the form after selecting (or entering) a variety*/
         function loadFormRemainder() {
-            let orgId = @Model.Organization.OrgId;
+            let orgId = @Model.AppViewModel.Organization.OrgId;
             /* If something is inside form-remainder div, clear it out */
             $("#form-remainder").empty();
             $("#form-remainder")
@@ -194,7 +194,7 @@
         function addNewFieldHistory(e, appTypeId) {
             e.preventDefault();
             // Populate div with an additional field history partial
-            let orgId = @Model.Organization.OrgId;
+            let orgId = @Model.AppViewModel.Organization.OrgId;
             fhEntryId++;
             let fh_entry_div = `#fh-entry-${fhEntryId}`;
             $(fh_entry_div).empty();
@@ -204,7 +204,8 @@
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
-                        if (fhEntryId == @Model.MaxFieldHistoryRecords)
+                        // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "2"
+                        if (fhEntryId == 2)
                         {
                             $("#add-fieldhistory").remove();
                         }
@@ -215,7 +216,7 @@
             let appTypeId = 1;
             e.preventDefault();
             // Populate div with second planting stocks partial
-            let orgId = @Model.Organization.OrgId;
+            let orgId = @Model.AppViewModel.Organization.OrgId;
             $("#second-ps").empty();
             $("#second-ps")
                 .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {

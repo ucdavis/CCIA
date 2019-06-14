@@ -1,29 +1,26 @@
-@model CCIA.Models.ApplicationViewModel
-
 <div class="row">
     <div class="col-lg-2 col-sm-2 col-xs-2">
         @{
             int fhEntryId = (int)ViewData["fhEntryId"];
             int nextFhEntryId = fhEntryId+1;
-            ViewBag.name = "Application.FieldHistories["+fhEntryId+"].Year";
+            ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
             ViewBag.startYearOffset = 0;
             ViewBag.endYearOffset = 6;
         }
         @Html.Partial("Shared/_CropYearDropdown")
-        @Html.ValidationMessageFor(m => m.Application.FieldHistories.ToArray()[@fhEntryId].Year, "", new { @class = "text-danger" })
     </div>
     
     <div class="col-lg-3 col-sm-3 col-xs-3">
-        @{ViewBag.name = "Application.FieldHistories["+fhEntryId+"].Crop";}
+        @{ViewBag.name = "FieldHistories["+fhEntryId+"].Crop";}
         @Html.Partial("Shared/_CropDropdown")
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list:</label>
-        <input type="text" class="form-control" id="crop-not-in-list" name="Application.FieldHistories[@fhEntryId].Variety" placeholder="Variety or Crop not in list">
+        <input type="text" class="form-control" id="crop-not-in-list" name="FieldHistories[@fhEntryId].Variety" placeholder="Variety or Crop not in list">
     </div>
     <div class="form-group co-md-3 col-sm-3 col-xs-3">
         <label for="app-num">Application #:</label>
-        <input type="text" class="form-control" id="app-num" name="Application.FieldHistories[@fhEntryId].AppNumber" placeholder="Application #">
+        <input type="text" class="form-control" id="app-num" name="FieldHistories[@fhEntryId].AppNumber" placeholder="Application #">
     </div>
 </div>
 <div id="fe-entry-@nextFhEntryId"></div>

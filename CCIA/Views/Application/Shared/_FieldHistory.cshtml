@@ -1,10 +1,10 @@
 <h5><strong>History:</strong></h5>
 <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
 
-@for(var i=0; i<@Model.MaxFieldHistoryRecords; i++)
+@for(var i=0; i<@Model.AppViewModel.MaxFieldHistoryRecords; i++)
 {
     <div id="fh-entry-@i">
-        @if (@i < Model.FieldHistoryEntryIndex)
+        @if (@i < Model.AppViewModel.FieldHistoryEntryIndex)
         {
             @Html.Partial("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
         }
