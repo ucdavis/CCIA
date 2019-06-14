@@ -62,11 +62,11 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue )
                 {
-                    return Seeds.CropName;
+                    return Seeds.GetCropName();
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.Crop;
+                    return Blend.GetCrop();
                 }
                 if (BulkCrop != null)
                 {
@@ -82,11 +82,11 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue)
                 {
-                    return Seeds.VarietyName;
+                    return Seeds.GetVarietyName();
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.VarietyName;
+                    return Blend.GetVarietyName();
                 }
                 if (BulkVariety != null)
                 {

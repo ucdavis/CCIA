@@ -1485,6 +1485,8 @@ namespace CCIA.Models
                 entity.HasMany(e => e.InDirtBlends);
 
                 entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Conditioner);
             });
 
             modelBuilder.Entity<CertRad>(entity =>

@@ -114,7 +114,7 @@ namespace CCIA.Models
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.Crop;
+                    return Blend.GetCrop();
                 }                
                 return "Unknown";
             }
@@ -130,7 +130,7 @@ namespace CCIA.Models
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.VarietyName;
+                    return Blend.GetVarietyName();
                 }               
                 return "Unknown";
             }

@@ -27,8 +27,8 @@
                 <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.BlendId">Details</a></td>
                 <th>@blend.BlendId</th>
                 <th>@blend.BlendType</th>       
-                <th>@blend.Crop</th>
-                <th>@blend.VarietyName</th>
+                <th>@blend.GetCrop()</th>
+                <th>@blend.GetVarietyName()</th>
                 <th>@blend.RequestStarted.ToShortDateString()</th>
                 <th>@blend.Status</th>
                 <th>@blend.CertNumber</th>   

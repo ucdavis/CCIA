@@ -120,30 +120,22 @@ namespace CCIA.Models
             return $"{CertNumber()}-{LotNumber}";
         }
 
-        public string CropName
+        public string GetCropName()
         {
-            get
+            if (AppId.HasValue)
             {
-                if (AppId.HasValue)
-                {
-                    return Application.CropName;
-                }
-                return Variety == null ? "" : Variety.Crop.Name;
-                
+                return Application.CropName;
             }
+            return Variety == null ? "" : Variety.Crop.Name;
         }
 
-        public string VarietyName 
-        { 
-            get
+        public string GetVarietyName()
+        {
+            if (AppId.HasValue)
             {
-                if(AppId.HasValue)
-                {
-                    return Application.VarietyName;
-                }
-                return Variety == null ? "" : Variety.Name;
-
-            } 
+                return Application.VarietyName;
+            }
+            return Variety == null ? "" : Variety.Name;
         }
 
 
