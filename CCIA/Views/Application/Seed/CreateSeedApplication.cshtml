@@ -10,7 +10,7 @@
     @Html.ValidationSummary()
 </div>
 
-@Html.Partial("Shared/_GrowerInfoTable")
+<partial name="Shared/_GrowerInfoTable"></partial>
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
@@ -19,7 +19,7 @@
     <div class="row">
         <div class="form-group col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "CropId";}
-            @Html.Partial("Shared/_CropDropdown")
+            <partial name="Shared/_CropDropdown"></partial>
             @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
         </div>
         
@@ -29,7 +29,7 @@
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            @Html.Partial("Shared/_CropYearDropdown")
+            <partial name="Shared/_CropYearDropdown"></partial>
             @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
         
@@ -37,7 +37,7 @@
             <label for="variety">Variety<em class="required">•</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
-                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
+                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
                     <span class="input-group-btn">
                         <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
                     </span>
@@ -54,7 +54,7 @@
     <div id="form-remainder">
         @if (@Model.AppViewModel.RenderFormRemainder)
         {
-            @Html.Partial("Seed/SeedAppPartial");
+            <partial name="Seed/SeedAppPartial"></partial>
         }
     </div>
 </form>
@@ -63,7 +63,11 @@
     <script type="text/javascript">
         var form = document.getElementById("seedApplication")
         let appTypeId = 1;
-        var fhEntryId = @Model.AppViewModel.FieldHistoryEntryIndex;
+        // The index of the next Field History entry to be added to the form
+        let fhEntryId = 0;
+        // How many total Field History entries are in the form currently
+        let fhEntryCount = 0;
+        let fhIndices = [0, 0, 0];
 
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.AppViewModel.Organization.OrgId;
@@ -103,7 +107,7 @@
                 success: function(res) {
                     let dd = document.getElementById("variety-dropdown");
                     if (res.length === 0) {
-                        alert("No variety with name "+varietyName+" was found in our system. A new variety will be used.");
+                        // alert("No variety with name "+varietyName+" was found in our system. A new variety will be used.");
                         loadFormRemainder();
                     } else {
                         dd.className += " " + "open";               
@@ -174,6 +178,9 @@
                             $('#add-fieldhistory').on('click', (e) => {
                                 addNewFieldHistory(e, appTypeId);
                             });
+
+                            // DEBUGGING
+                            $("#add-fieldhistory").click();
                         }
                 });
         }
@@ -189,13 +196,21 @@
         /* Adds red outline to invalid text boxes on loading after failed form submission */
         $(document).ready(() => {
             $('.field-validation-error').parents('.form-group').addClass('has-error');
+
+            setTimeout(function() {                
+                // DEBUGGING
+                $("#variety-search").click();
+            }, 1000);
         });
 
         function addNewFieldHistory(e, appTypeId) {
             e.preventDefault();
             // Populate div with an additional field history partial
             let orgId = @Model.AppViewModel.Organization.OrgId;
-            fhEntryId++;
+            fhEntryId = findAvailableFhIndex();
+            if (fhEntryId == -1) {
+                return;
+            }
             let fh_entry_div = `#fh-entry-${fhEntryId}`;
             $(fh_entry_div).empty();
             $(fh_entry_div)
@@ -204,12 +219,35 @@
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
+                        else {
+                            // Mark that id as used
+                            fhIndices[fhEntryId] = 1;
+                            document.getElementById("fh-entry-"+fhEntryId).onclick = (e) => {
+                                // Mark this entry as unused
+                                let idToRemove = parseInt(e.target.id);
+                                fhIndices[idToRemove] = 0;
+                                e.preventDefault();
+                                fhEntryCount--;
+                                removeParentSection(e)
+                            }
+                            fhEntryCount++;
+                        }
                         // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "2"
-                        if (fhEntryId == 2)
+                        if (fhEntryCount == 3)
                         {
                             $("#add-fieldhistory").remove();
                         }
                 });
+        }
+
+        function findAvailableFhIndex() {
+            for (let i of fhIndices) {
+                // 0 = free, 1 = used
+                if (fhIndices[i] === 0) {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         function addSecondPs(e) {
@@ -223,8 +261,19 @@
                         if ( status == "error" ) {
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }
+                        }     
+                        else {
+                            document.getElementById("remove-ps2").onclick = (e) => {
+                                e.preventDefault();
+                                removeParentSection(e);
+                            }
+                        }           
                 });
         }
+
+        function removeParentSection(e) {
+            e.target.closest("section").remove();
+        }
+
     </script>
 }

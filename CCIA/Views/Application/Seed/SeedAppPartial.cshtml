@@ -3,7 +3,7 @@
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
-    @Html.Partial("Shared/_ClassRadioButtons")
+    <partial name="Shared/_ClassRadioButtons"></partial>
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
 
@@ -11,13 +11,13 @@
     <h4>Planting Stock</h4>
 
     <!-- First Planting Stock form --> 
-    @Html.Partial("Seed/_PlantingStock")
+    <partial name="Seed/_PlantingStock"></partial>
 
     <!-- Second Planting Stock form -->
     <div id="second-ps">
         @if (@Model.AppViewModel.RenderSecondPlantingStock)
         {
-            @Html.Partial("Seed/_SecondPlantingStock");
+            <partial name="Seed/_SecondPlantingStock"></partial>
         }
         else
         {
@@ -33,13 +33,13 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="name-num">Name/No.</label><em class="required">•</em>
-            <input type="text" class="form-control" id="name-num" name="FieldName" placeholder="Name/No.">
+            @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num" })
             @Html.ValidationMessageFor(m => m.FieldName, "", new { @class = "text-danger" })
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted</label><em class="required">•</em>
             <div class='input-group date' id='datetimepicker1'>
-                <input type="text" class="form-control" id="date-planted" name="DatePlanted" placeholder="MM/DD/YYYY">
+                @Html.TextBoxFor(m => m.DatePlanted, "", new { @class="form-control", id="date-planted", placeholder="MM/DD/YYYY" })
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -62,7 +62,7 @@
     </div>
     <div class="form-group">
         <label for="acres-applied">Acres Applied</label><em class="required">•</em>
-        <input type="text" class="form-control" id="acres-applied" name="AcresApplied" placeholder="Acres Applied">
+        @Html.TextBoxFor(m => m.AcresApplied, "", new { @class="form-control", id="acres-applied", placeholder="Acres Applied" })
         @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
     </div>
 
@@ -71,7 +71,7 @@
         @Html.TextAreaFor(m => m.ApplicantComments, new { @class = "form-control", placeholder="Additional Information/Comments", rows="5" }) 
     </div>
 
-    @Html.Partial("Shared/_FieldHistory")
+    <partial name="Shared/_FieldHistory"></partial>
 </section>
 
 <button type="submit" class="btn btn-primary">Continue with Application</button>
