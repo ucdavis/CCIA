@@ -6,7 +6,7 @@
 
 <h2>Application to Produce Certified Potato Seed @Model.Organization.OrgName</h2>
 
-@Html.Partial("Shared/_GrowerInfoTable")
+@await Html.PartialAsync("Shared/_GrowerInfoTable")
 
 <form action="/Application/CreatePotatoApplication" method="post" id="potatoApplication">
 
@@ -26,7 +26,7 @@
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            @Html.Partial("Shared/_CropYearDropdown")
+            @await Html.PartialAsync("Shared/_CropYearDropdown")
         </div> 
 
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -46,7 +46,7 @@
     <div class="form-group">
         <label>Class to be Produced</label><em class="required">•</em>
         @{ ViewBag.name = "ClassProducedId"; }
-        @Html.Partial("Shared/_ClassRadioButtons")
+        @await Html.PartialAsync("Shared/_ClassRadioButtons")
         @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
     </div>
 
@@ -71,19 +71,19 @@
         <div class="form-group">
             @{ ViewBag.name = "PlantingStocks[0].PsClass"; }
             <label>Class Planted</label><em class="required">•</em>
-            @Html.Partial("Shared/_ClassRadioButtons")
+            @await Html.PartialAsync("Shared/_ClassRadioButtons")
         </div>
 
         <div class="form-group">
             <label>State/Country where Planting Stock Tag or breeder letter was issued</label><em class="required">•</em>
             @{ViewBag.name = "PlantingStocks[0].StateCountryTagIssued";}
-            @Html.Partial("Shared/_StateCountryDropdown")
+            @await Html.PartialAsync("Shared/_StateCountryDropdown")
         </div>
 
         <div class="form-group">
             <label>State/Country where Planting Stock was grown</label><em class="required">•</em>
             @{ViewBag.name = "PlantingStocks[0].StateCountryStockGrown";}
-            @Html.Partial("Shared/_StateCountryDropdown")
+            @await Html.PartialAsync("Shared/_StateCountryDropdown")
         </div>
 
         <div class="form-group">
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Partial("Shared/_CountyDropdown")
+            @await Html.PartialAsync("Shared/_CountyDropdown")
         </div>
         <div class="form-group">
             <label for="acres-applied">Acres Applied</label><em class="required">•</em>
@@ -147,7 +147,7 @@
             <textarea class="form-control" id="comments" rows="5" name="ApplicantComments" placeholder="Additional Information/Comments"></textarea>
         </div>
 
-        @Html.Partial("Shared/_FieldHistory")
+        @await Html.PartialAsync("Shared/_FieldHistory")
     </section>
 
     <button type="submit" class="btn btn-primary">Continue with Application</button>
