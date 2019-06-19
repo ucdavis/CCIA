@@ -237,5 +237,26 @@ namespace CCIA.Controllers
                 .SingleAsync();
             return Json(model);
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetMyCustomerFromOrgId(int id)
+        {
+            var model = await _dbContext.Organizations.Where(o => o.OrgId == id)
+                .Include(o => o.Address)
+                .Select(o => new MyCustomers { 
+                    Name = o.OrgName, 
+                    Address1 = o.Address.Address1,
+                    Address2 = o.Address.Address2,
+                    City = o.Address.City,
+                    StateId = o.Address.StateProvinceId,
+                    CountryId = o.Address.CountryId,
+                    Zip = o.Address.PostalCode,
+                    Phone = o.Phone,
+                    Email = o.Email
+                    })
+                .SingleAsync();
+            
+            return Json(model);
+        }
     }
 }

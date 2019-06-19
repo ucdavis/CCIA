@@ -1743,6 +1743,10 @@ namespace CCIA.Models
                 entity.Property(e => e.OrgName).HasColumnName("org_name");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
+                
+                entity.Property(e => e.Phone).HasColumnName("main_phone");
+
+                entity.Property(e => e.Email).HasColumnName("main_email");
             });
 
             modelBuilder.Entity<Contacts>(entity =>

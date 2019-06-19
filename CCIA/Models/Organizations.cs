@@ -14,6 +14,11 @@ namespace CCIA.Models
         public Address Address { get; set; }
         public int? AddressId { get; set; }
 
+        public string Phone { get; set; }
+
+        public string Email { get; set; }
+
+
 
        
         public ICollection<Applications> AppliedApplications { get; set; }
