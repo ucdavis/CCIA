@@ -12,6 +12,10 @@ namespace CCIA.Models.BulkSalesCreateViewModel
         public BulkSalesCertificates BulkSalesCertificate { get; set; }
         public List<MyCustomers> Customers { get; set; }
 
+        public List<StateProvince> StateProvinces {get; set;}
+
+        public List<Countries> Countries { get; set; }
+
 
         public static async Task<BulkSalesCreateViewModel> Create(CCIAContext _dbContext, int orgId)
         {
@@ -19,10 +23,14 @@ namespace CCIA.Models.BulkSalesCreateViewModel
                     .Select(m => new MyCustomers { Id = m.Id, Name = m.Name})
                     .ToListAsync();
             customers.Insert(0, new MyCustomers { Id = 0, Name = "Select Customer"});
+            var stateProvince = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
+            var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
             var viewModel = new BulkSalesCreateViewModel
             {
                 BulkSalesCertificate = new BulkSalesCertificates(),
                 Customers = customers,
+                StateProvinces = stateProvince,
+                Countries = countries
             };
 
             return viewModel;

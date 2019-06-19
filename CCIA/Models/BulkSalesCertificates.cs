@@ -49,9 +49,9 @@ namespace CCIA.Models
 
         public string PurchaserEmail { get; set; }
 
-        public Decimal Pounds { get; set; }
+        public int Pounds { get; set; }
 
-        public int? ClassId { get; set; }
+        public int ClassId { get; set; }
 
         [ForeignKey("ClassId")]
         public AbbrevClassSeeds Class { get; set; }
