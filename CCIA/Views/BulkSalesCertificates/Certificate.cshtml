@@ -1,0 +1,151 @@
+@model CCIA.Models.BulkSalesCertificates
+
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Bulk Sales Certificate";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CCIA</title>    
+    <link rel="stylesheet" href="~/css/printStyle.css" />    
+</head>
+<body>
+<a class="noprint" asp-controller="BulkSalesCertificates" asp-action="Index">Return to Bulk Sales Certificates</a> 
+       
+                <div style="text-align: center">
+                    <% If (_QA) Then %>
+                        <img align="left" height="108" src="../../images/qaLogo.gif" />
+                    <% End if %>
+                    <img align="right" height="108" src="../../images/ccia-tra.gif" />
+                    <b>CALIFORNIA CROP IMPROVEMENT ASSOCIATION</b><br />
+                    Parsons Seed Certification Center, Davis, CA<br />
+                    <b>BULK SALE CERTIFICATE</b>
+                </div>
+                <table width="100%" border="0">
+                    <tr>
+                       
+                       <%-- <td width="5px"></td>--%>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>Certificate #<asp:Label ID="IdLabel" runat="server" Text='<%# Eval("Id") %>' /></b></td>
+                        <td>Program:</td>
+                        <td><asp:Label ID="app_type_transLabel" runat="server" Text='<%# Bind("app_type_trans") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><asp:Label runat="server" ID="org_nameLabel" Text='<%# Bind("org_name") %>' Font-Underline="True"></asp:Label>, sold on
+                            <asp:Label ID="dateLabel" runat="server" Text='<%# Bind("date", "{0:d}") %>' Font-Underline="True" /> the following seed to:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Name: 
+                            <asp:Label ID="purch_nameLabel" runat="server" Text='<%# Bind("purch_name") %>' Font-Underline="True" />
+                        </td>
+                    </tr>
+                    <tr style="vertical-align: top">
+                        <td>Address:</td>
+                        <td> <asp:Label ID="purch_address_line_1Label" runat="server" Text='<%# Bind("purch_address_line_1") %>' /><br />
+                            <asp:Label ID="purch_address_line_2Label" runat="server" Text='<%# Bind("purch_address_line_2") %>' />
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>City, State Zip:</td>
+                        <td nowrap="true">
+                            <asp:Label ID="purch_cityLabel" runat="server" Text='<%# Bind("purch_city") %>' />, 
+                           <asp:Label ID="StateProvinceNameLabel" runat="server" Text='<%# Bind("purch_state_name") %>' />
+                            <asp:Label ID="purch_zipLabel" runat="server" Text='<%# Bind("purch_zip") %>' /><br/><asp:Label ID="purch_countryLabel" runat="server" Text='<%# Bind("purch_country_name") %>' />
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phone:</td>
+                        <td><asp:Label runat="server" ID="Label1" Text='<%# Eval("purch_phone") %>'></asp:Label></td>
+                        <td></td>
+                        <td>Email:</td>
+                        <td><asp:Label runat="server" ID="Label2" Text='<%# Eval("purch_email") %>'></asp:Label></td>
+                    </tr>
+                    <tr>
+                        <td>Crop:</td>
+                        <td><asp:Label ID="cropLabel" runat="server" Text='<%# Bind("crop") %>' /></td>
+                        <td>&nbsp;</td>
+                        <td>Variety:</td>
+                        <td><asp:Label ID="var_nameLabel" runat="server" Text='<%# Bind("var_name") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td>Cert No.:</td>
+                        <td><asp:Label ID="full_certLabel" runat="server" Text='<%# Bind("full_cert") %>' /></td>
+                        <td>&nbsp;</td>
+                        <td>Lot No.:</td>
+                        <td><asp:Label ID="lot_num1Label" runat="server" Text='<%# Bind("lot_num") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td>Seed ID:</td>
+                        <td><asp:Label ID="sidLabel" runat="server" Text='<%# Bind("sid") %>' /></td>
+                        <td></td>
+                        <td>Pounds:</td>
+                        <td><asp:Label ID="cert_lbsLabel" runat="server" Text='<%# Bind("cert_lbs") %>' /></td>
+                    </tr>
+                    <tr><td colspan="5">
+                        <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="sdsClasses" DataTextField="class_certified_trans" DataValueField="class_certified_id" Enabled="False" RepeatDirection="Horizontal" TextAlign="Left" Width="100%" SelectedValue='<%# Bind("class") %>'>
+                        </asp:CheckBoxList>
+                        </td>
+                    </tr>
+                    <tr>
+                       <td colspan="5">
+                           Seed Certification Results: <asp:Label ID="Label3" runat="server" Text='<%# Bind("cert_results") %>' />
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            Remarks:
+                            <asp:Label ID="Label18" runat="server" CssClass="labelnoline" Text='<%# Eval("remarks") %>'></asp:Label><br />
+                            <asp:Label ID="Label19" runat="server" CssClass="labelnoline" Text='<%# Eval("assay_remarks") %>'></asp:Label><br />
+                            <asp:Label ID="Label7" runat="server" CssClass="labelnoline" Text='<%# Eval("sample_comments") %>'></asp:Label></td>
+                    </tr>
+                    <tr style="height: 50px">
+                        <td colspan="2" class="underline" style="text-align: center"><%# Eval("contact_full_name") %></td>
+                        <td></td>
+                        <td colspan="2" class="underline">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center">Print Name</td>
+                        <td></td>
+                        <td colspan="2" style="text-align: center">Signature</td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td><asp:Label ID="addressLine1Label" runat="server" Text='<%# Bind("addressLine1") %>' />
+                            <br/>
+                            <asp:Label ID="addressLine2Label" runat="server" Text='<%# Bind("addressLine2") %>' />
+                        </td>
+                        <td></td>
+                        <td>City, State, Zip:</td>
+                        <td nowrap="true">
+                            <asp:Label ID="cityLabel" runat="server" Text='<%# Bind("city") %>' />, 
+                            <asp:Label ID="orgStateNameLabel" runat="server" Text='<%# Bind("org_state_name") %>' /> 
+                            <asp:Label ID="postalCodeLabel" runat="server" Text='<%# Bind("postalCode") %>' /><br/>
+                        <asp:Label ID="country_nameLabel" runat="server" Text='<%# Bind("org_country_name") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td>Phone:</td>
+                        <td><asp:Label runat="server" ID="phoneLabel" Text='<%# Eval("main_phone") %>'></asp:Label></td>
+                        <td></td>
+                        <td>Email:</td>
+                        <td><asp:Label runat="server" ID="emailLabel" Text='<%# Eval("main_email") %>'></asp:Label></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="legal">
+                            California Certified Seed is produced under regulations of the California Crop Improvement Assn., a non-profit corporation, recognized as an official seed certifying agency by the laws of California. It is not a marketing agency and makes no representations or warranties concerning the sale of certified seed. Certification is limited to seed of officially recognized varieties so grown, processed, and inspected as to protect varietal identity and purity. This label when properly accompanying a bulk container of seed is evidence of certification. The vendor is responsible for an analysis label meeting requirements of state and federal seed laws. The analysis information must equal or exceed minimum standards of the California Crop Improvement Association, Davis, California.
+                        </td>
+                    </tr>
+                    <caption>
+                        <tr>
+                            <td class="legal" colspan="5">Print and sign copy for buyer. An electronic record of this certificate can be accessed by the Agricultural Commissioner, the CCIA, and the company issuing this certificate. </td>
+                        </tr>
+                    </caption>
+                </table>
+</body>
+</html>
