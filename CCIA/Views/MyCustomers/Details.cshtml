@@ -1,22 +1,60 @@
-@model CCIA.Models.IndexViewModels.MyCustomersIndexViewModel
+@model CCIA.Models.MyCustomers
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
 }
 
-<div class="panel-heading">
-    <h2>Details</h2>
-    <input type="submit" value="Add New Customer" onclick="location.href='<%: Url.Action(Create, MyCustomers) %>'" class="btn btn-primary"/>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>@Model.Name</h2>
+    </div>
+    <div class="panel-body">            
+        <a class="btn btn-primary" asp-action="Create" asp-controller="MyCustomers">Add New Customer</a>
+    </div>
 </div>
 
 <div class="col-lg-1">
     <table id="table" class="table">
-        <thead>
-        <th></th>
-        <th>Name</th>
-        <th>Address 1</th>
-        <th>City</th>     
-        </thead>
+        <tr>
+            <th>Name:</th>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <th>Address 1:</th>
+            <td>@Model.Address1</td>
+        </tr>
+        <tr>
+            <th>Address 2:</th>
+            <td>@Model.Address2</td>
+        </tr>
+        <tr>
+            <th>City:</th>
+            <td>@Model.City</td>
+        </tr>
+        <tr>
+            <th>CA County:</th>
+            <td>@Model.County.CountyName</td>
+        </tr>
+        <tr>
+            <th>State/Province:</th>
+            <td>@Model.State.StateProvinceName</td>
+        </tr>
+        <tr>
+            <th>Country:</th>
+            <td>@Model.Country.Name</td>
+        </tr>
+        <tr>
+            <th>Zip/Postal Code:</th>
+            <td>@Model.Zip</td>
+        </tr>
+        <tr>
+            <th>Phone:</th>
+            <td>@Model.Phone</td>
+        </tr>
+        <tr>
+            <th>Email:</th>
+            <td>@Model.Email</td>
+        </tr>
     </table>
 </div>

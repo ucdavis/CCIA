@@ -5,9 +5,13 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="panel-heading">
-    <h2>@Model.PageTitle</h2>
-    <a class="btn btn-primary" asp-action="Create" asp-controller="MyCustomers">Add New Customer</a>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>@Model.PageTitle</h2>
+    </div>
+    <div class="panel-body">            
+        <a class="btn btn-primary" asp-action="Create" asp-controller="MyCustomers">Add New Customer</a>
+    </div>
 </div>
 
 <div class="col-lg-1">
