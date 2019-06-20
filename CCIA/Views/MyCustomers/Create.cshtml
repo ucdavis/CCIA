@@ -6,8 +6,8 @@
 }
 
 <div class="panel-heading">
-    <h2>@Model.PageTitle</h2>
-    <a class="btn btn-primary" asp-action="Create" asp-controller="MyCustomers">Add New Customer</a>
+    <h2>New Customer</h2>
+    <input type="submit" value="Add New Customer" onclick="location.href='<%: Url.Action(Create, MyCustomers) %>'" class="btn btn-primary"/>
 </div>
 
 <div class="col-lg-1">
@@ -22,7 +22,7 @@
             @foreach (var customer in Model.myCustomers)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="MyCustomers" asp-route-id="@customer.Id">Details</a></td>
+                <td><a asp-action="Details" asp-controller="customer" asp-route-id="@customer.Id">Details</a></td>
                 <td>@customer.Name</td>
                 <td>@customer.Address1</td>
                 <td>@customer.City</td>

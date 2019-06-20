@@ -40,5 +40,28 @@ namespace CCIA.Controllers
             // return View(model);
             return View();
         }
+
+        // GET: Application/Create
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        // POST: Application/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

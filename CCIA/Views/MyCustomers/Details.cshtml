@@ -1,0 +1,22 @@
+@model CCIA.Models.IndexViewModels.MyCustomersIndexViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="panel-heading">
+    <h2>Details</h2>
+    <input type="submit" value="Add New Customer" onclick="location.href='<%: Url.Action(Create, MyCustomers) %>'" class="btn btn-primary"/>
+</div>
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+        <th></th>
+        <th>Name</th>
+        <th>Address 1</th>
+        <th>City</th>     
+        </thead>
+    </table>
+</div>
