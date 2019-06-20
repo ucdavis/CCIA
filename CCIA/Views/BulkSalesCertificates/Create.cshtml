@@ -20,9 +20,9 @@
                 <span asp-validation-for="BulkSalesCertificate.Date" class="text-danger"></span>
             </div>
             <div class="form-group required">
-                <label class="control-label">Id</label>
-                <input class="form-control" type="text" id="textId" />
-                <select class="form-control" id="selectType">
+                <label class="control-label" asp-for="textId"></label>
+                <input class="form-control" type="text" asp-for="textId" />
+                <select class="form-control" asp-for="selectType">
                     <option value="SID">SID</option>
                     <option value="Blend">Blend</option>
                 </select>
@@ -30,8 +30,8 @@
                  <span id="result3"></span>
             </div>
             <div class="form-group required">
-                <label class="control-label">Class Sold</label>
-                <select class="form-control" id="ClassId"></select>
+                <label class="control-label" asp-for="BulkSalesCertificate.ClassId"></label>
+                <select class="form-control" asp-for="BulkSalesCertificate.ClassId"></select>
             </div>
             <div class="form-group required">
                 <label class="control-label" asp-for="BulkSalesCertificate.Pounds"></label>
@@ -67,11 +67,11 @@
                 <input asp-for="BulkSalesCertificate.PurchaserCity" class="form-control"></input>
             </div>
             <div class="form-group">
-                <label class="control-label">State</label>
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserStateId"></label>
                 <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","StateProvinceName"))"></select>
             </div>             
             <div class="form-group">
-                <label class="control-label">Country</label>
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCountryId"></label>
                 <select asp-for="BulkSalesCertificate.PurchaserCountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
             </div>
             <div class="form-group">
@@ -118,12 +118,12 @@
                     }
                 })
                 .done(function(data) {
-                    $('#ClassId').empty();
+                    $('#BulkSalesCertificate_ClassId').empty();
                     //alert(data.count());
                     $.each(data,function(i,data)
                     {
-                        var div_data="<option value="+data.id+">"+data.text+"</option>";
-                        $(div_data).appendTo('#ClassId');
+                        var div_data="<option value="+data.value+">"+data.text+"</option>";
+                        $(div_data).appendTo('#BulkSalesCertificate_ClassId');
                     });
 
                 })

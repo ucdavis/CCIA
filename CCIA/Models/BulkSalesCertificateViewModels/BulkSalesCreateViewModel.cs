@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,12 @@ namespace CCIA.Models.BulkSalesCreateViewModel
 
         public List<Countries> Countries { get; set; }
 
+        [DisplayName("Id")]
+        public int? textId { get; set; }
+
+        public string selectType { get; set; }
+
+       
 
         public static async Task<BulkSalesCreateViewModel> Create(CCIAContext _dbContext, int orgId)
         {

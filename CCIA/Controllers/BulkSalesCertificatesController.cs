@@ -55,17 +55,56 @@ namespace CCIA.Controllers
         // POST: Application/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(BulkSalesCreateViewModel model)
         {
             try
             {
-                // TODO: Add insert logic here
+                // TODO Use real contact ID
+                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+                var newBulkSalesCertificate = new BulkSalesCertificates();
+                newBulkSalesCertificate.ConditionerOrganizationId = orgId;
+                newBulkSalesCertificate.Date = model.BulkSalesCertificate.Date;
+                if(model.selectType == "SID")
+                {
+                    newBulkSalesCertificate.SeedsID = model.textId;
+                    var seed = await _dbContext.Seeds.Where(s => s.Id == model.textId).SingleAsync();
+                    newBulkSalesCertificate.CertProgram = seed.CertProgram;
+                } else
+                {
+                    newBulkSalesCertificate.BlendId = model.textId;
+                    newBulkSalesCertificate.CertProgram = "Blend";
+                }
+                newBulkSalesCertificate.PurchaserName = model.BulkSalesCertificate.PurchaserName;
+                newBulkSalesCertificate.PurchaserAddressLine1 = model.BulkSalesCertificate.PurchaserAddressLine1;
+                newBulkSalesCertificate.PurchaserAddressLine2 = model.BulkSalesCertificate.PurchaserAddressLine2;
+                newBulkSalesCertificate.PurchaserCity = model.BulkSalesCertificate.PurchaserCity;
+                newBulkSalesCertificate.PurchaserStateId = model.BulkSalesCertificate.PurchaserStateId;
+                newBulkSalesCertificate.PurchaserCountryId = model.BulkSalesCertificate.PurchaserCountryId;
+                newBulkSalesCertificate.PurchaserZip = model.BulkSalesCertificate.PurchaserZip;
+                newBulkSalesCertificate.PurchaserPhone = model.BulkSalesCertificate.PurchaserPhone;
+                newBulkSalesCertificate.PurchaserEmail = model.BulkSalesCertificate.PurchaserEmail;
+                newBulkSalesCertificate.Pounds = model.BulkSalesCertificate.Pounds;
+                newBulkSalesCertificate.ClassId = model.BulkSalesCertificate.ClassId;
 
+                // TODO use real contact id
+                newBulkSalesCertificate.CreatedById = 1;
+                newBulkSalesCertificate.CreatedOn = DateTime.Now;
+                
+
+                if(ModelState.IsValid)
+                {
+                    _dbContext.Add(newBulkSalesCertificate);
+                    await _dbContext.SaveChangesAsync();
+                } else 
+                {
+                    return View(model);
+                }
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
 
