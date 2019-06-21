@@ -3,12 +3,16 @@
     <em class="required">•</em>
 }
 
-<select class="form-control" name=@ViewBag.name>
-    <option></option>
-    @for (int i = 0; i <= @ViewBag.endYearOffset; i++)
+@{
+    string name = ViewBag.name;
+    var selectListItems = new List<SelectListItem>();
+    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
+    @for (int i = 0; i <= ViewBag.endYearOffset; i++)
     {
-        <option value=@(DateTime.Now.Year - i)>
-                @(DateTime.Now.Year + @ViewBag.startYearOffset - i)
-        </option>
+        int year = DateTime.Now.Year + ViewBag.startYearOffset - i;
+        selectListItems.Add(new SelectListItem { Text = year.ToString(), Value = year.ToString() });
     }
-</select>
+    var selectList = new SelectList(selectListItems, "Value", "Text"); 
+}
+
+@Html.DropDownList(name, selectList, new { @class="form-control" })

@@ -3,16 +3,15 @@
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
-    <partial name="Shared/_ClassRadioButtons"></partial>
+    @await Html.PartialAsync("Shared/_ClassRadioButtons", Model.AppViewModel)
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
 
-<section id="planting-stock" class="form-section">
+<section id="planting-stock" class="rounded-section off-white">
     <h4>Planting Stock</h4>
 
     <!-- First Planting Stock form --> 
     <partial name="Seed/_PlantingStock"></partial>
-
     <!-- Second Planting Stock form -->
     <div id="second-ps">
         @if (@Model.AppViewModel.RenderSecondPlantingStock)
@@ -21,14 +20,14 @@
         }
         else
         {
-            <button id="add-second-ps" class="btn btn-primary">Add a second planting stocks record</button>
             <p><em>Enter both parent lines for hybrid production.</em></p>
         }
     </div>
+    <button id="add-second-ps" class="btn btn-warning">Add a second planting stocks record</button>
 
 </section>
 
-<section id="field-info" class="form-section">
+<section id="field-info" class="rounded-section off-white">
     <h4>Field Information</h4>
     <div class="row">
         <div class="form-group col-md-6">
@@ -74,4 +73,6 @@
     <partial name="Shared/_FieldHistory"></partial>
 </section>
 
-<button type="submit" class="btn btn-primary">Continue with Application</button>
+<div class="text-right">
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
+</div>

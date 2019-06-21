@@ -8,6 +8,19 @@ namespace CCIA.Helpers
 {
     public class ApplicationPostMap
     {
+        // Dictionary to store names of Action methods corresponding to App Type Ids
+        public static Dictionary<int, string> ActionTypes = new Dictionary<int, string>
+        {
+            {1, "CreateSeedApplication"},
+            {2, "CreatePotatoApplication"},
+            {3, "CreateHeritageGrainApplication"},
+            {4, "CreateGemplasmApplication"},
+            {5, "CreateRiceApplication"},
+            {6, "CreateTurfgrassApplication"},
+            {7, "CreateHempFromSeedApplication"},
+            {8, "CreateHempFromClonesApplication"},
+        };
+
         /* Assigns all required fields from our cshtml */
         public static Applications CreateAppRecord(Applications app, int contactId, string appType)
         {
@@ -37,20 +50,6 @@ namespace CCIA.Helpers
             };
 
             return newApp;
-        }
-
-        // Remove invalid plantingstocks
-        public static List<T> RemoveInvalidPlantingStocks<T>(List<T> plantingStocks)
-            where T: PlantingStocks
-        {
-            foreach (var ps in plantingStocks)
-            {
-                if (ps.PoundsPlanted == null || ps.PsCertNum == null || ps.PsClass == null)
-                {
-                    plantingStocks.Remove(ps);
-                }
-            }
-            return plantingStocks;
         }
     }
 }

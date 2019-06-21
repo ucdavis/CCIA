@@ -99,9 +99,12 @@ namespace CCIA.Controllers
                     ps.AppId = app.Id;
                 }
 
-                foreach (FieldHistory fh in app.FieldHistories)
+                if (app.FieldHistories != null)
                 {
-                    fh.AppId = app.Id;
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
                 }
 
                 await _dbContext.SaveChangesAsync();
@@ -311,35 +314,29 @@ namespace CCIA.Controllers
 
         // GET: Application/Lookup
         [HttpGet]
-        public async Task<JsonResult> Lookup(String lookupVal)
+        public async Task<IActionResult> Lookup(string lookupVal, int appTypeId)
         {
             var orgs = new List<Organizations>();
             int id = 0;
-            // Parsing was successful (we have an ID instead of a name)
+            // Parsing was successful (we have an ID number instead of a name)
             if (Int32.TryParse(lookupVal, out id))
             {
-
                 orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
-                    .Select(o => new Organizations
-                    {
-                        OrgId = o.OrgId,
-                        OrgName = o.OrgName,
-                        Address = o.Address != null ? o.Address : new Address()
-                    })
+                    .Include(o => o.Address).ThenInclude(a => a.StateProvince)
                     .ToListAsync();
             }
             else
             {
                 orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookupVal.ToLower()))
-                   .Select(o => new Organizations
-                   {
-                       OrgId = o.OrgId,
-                       OrgName = o.OrgName,
-                       Address = o.Address != null ? o.Address : new Address()
-                   })
-                   .ToListAsync();
+                    .Include(o => o.Address).ThenInclude(a => a.StateProvince)
+                    .ToListAsync();
             }
-            return Json(orgs);
+            GrowerInfo growerInfo = new GrowerInfo();
+            growerInfo.Orgs = orgs;
+            growerInfo.AppTypeId = appTypeId;
+            growerInfo.ActionType = ApplicationPostMap.ActionTypes[appTypeId];
+            string fullPartialPath = "~/Views/Application/Shared/_GrowerLookupInfoTable.cshtml";
+            return PartialView(fullPartialPath, growerInfo);
         }
 
         // GET: Application/FindStateProvince
