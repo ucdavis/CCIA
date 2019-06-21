@@ -6,42 +6,18 @@
 
 <div class="form-group">  
     <label for="account">Name or Account Number:</label>
-    <input type="text" class="form-control" id="account" placeholder="Enter your name or account number">
+    <div class="input-group col">
+        <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+        <span class="input-group-btn">
+            <button class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+        </span>
+    </div>
 </div>
-<button class="btn btn-primary" id="account-lookup-btn">Look Up</button>
 
-<h5><em id="res-warning" style="color: red"></em></h5>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Account #</th>
-            <th>Grower</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody id="organizations">
-    </tbody>
-</table>
+<div id="growersTable"></div>
 
 @section Scripts {
     <script type="text/javascript">
-
-        function getStateOrProvince(sp_code, data, populateTable) {
-            const antiforgery = $("input[name='__RequestVerificationToken']").val();
-            $.get({
-                url: "/Application/FindStateProvince",
-                data: {code: sp_code, StateProvince__RequestVerificationToken: antiforgery}
-            })
-            .success(state_province => {
-                populateTable(data, state_province);
-            })
-            .error(() => {
-                alert("An internal error occured...");
-            });
-        }
 
         function lookupOrgs() {
             const antiforgery = $("input[name='__RequestVerificationToken']").val();
@@ -66,9 +42,9 @@
                     // clear our table before populating it
                     $("#organizations").empty();
                     // Get state/province from code                    
-                    var row = "";
+                    var row = "";                   
                     jQuery.each(response, function(i, data) {
-                        let state_province = getStateOrProvince(data.address.stateProvinceId, data, populateOrgsTable);                               
+                        populateOrgsTable(data);
                     });
                 },
                 error: (e) => {
@@ -78,60 +54,37 @@
                 });
         }
 
-        function populateOrgsTable(data, state_province) {
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
+            getOrgsTable();
+        });
+
+        // Load table of organizations based on ID or name input
+        function getOrgsTable() {
             /* Get app type id from querystring */
             const urlParams = new URLSearchParams(window.location.search);
             const appTypeId = parseInt(urlParams.get('appTypeId'));
-            let actionType = "";
-            switch(appTypeId){
-                case 1:
-                    actionType="CreateSeedApplication";
-                    break;
-                case 2:
-                    actionType="CreatePotatoApplication";
-                    break;
-                case 3:
-                    actionType=`CreateHeritageGrainApplication`;
-                    break;
-                case 4:
-                    actionType=`CreateGemplasmApplication`;
-                    break;
-                case 5:
-                    actionType=`CreateRiceApplication`;
-                    break;
-                case 6:
-                    actionType=`CreateTurfgrassApplication`;
-                    break;
-                case 7:
-                    actionType=`CreateHempFromSeedApplication`;
-                    break;
-                case 8:
-                    actionType=`CreateHempFromClonesApplication`;
-                    break;
-                default:
-                    actionType=`CreateSeedApplication`;
+            let lookupVal = document.getElementById("account").value;
+            if (lookupVal === "") {
+                alert("This field cannot be empty.");
+                return;
             }
-            $("#organizations")
-                .append(`<tr>
-                        <td><a class="btn btn-primary" href='/Application/${actionType}/?orgId=${data.orgId}&appTypeId=${appTypeId}'>Select</a>
-                        <td>${data.orgId}</td>
-                        <td>${data.orgName}</td>
-                        <td>${data.address.address1}</td>
-                        <td>${data.address.city}</td>
-                        <td>${state_province}</td>
-                        </tr>`);
+            /* If something is inside form-remainder div, clear it out */
+            $("#growersTable").empty();
+            $("#growersTable")
+                .load("/Application/Lookup?lookupVal="+lookupVal+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, the following error occurred: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                });
         }
-        
-        $('#account-lookup-btn').click(function(e){
-            e.preventDefault();
-            lookupOrgs();
-        });
 
         window.onkeyup = (e) => {
             let key = e.keyCode ? e.keyCode : e.which;
 
             if (key == 13) {
-                lookupOrgs();
+                getOrgsTable();
             }
         }
 

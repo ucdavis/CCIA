@@ -19,8 +19,6 @@ namespace CCIA.Models
 
         public Organizations Organization {get; set; }
 
-        //public String OrgState {get; set; }
-
         public List<VarOfficial> Varieties {get; set; }
 
         public bool RenderFormRemainder {get; set; }
@@ -100,7 +98,6 @@ namespace CCIA.Models
                 FieldHistoryEntryIndex = fhEntryId,
                 MaxFieldHistoryRecords = maxFieldHistoryRecords,
                 Organization = organization,
-                //OrgState = orgState,
                 RenderFormRemainder = false,
                 RenderSecondPlantingStock = false,
                 StateProvince = stateProvince,

@@ -3,7 +3,7 @@
 
 @for(var i=0; i<@Model.AppViewModel.MaxFieldHistoryRecords; i++)
 {
-    <section id="fh-entry-@i">
+    <section id="fh-entry-@i" class="rounded-section pos-rel light-blue hidden">
         @if (@i < Model.AppViewModel.FieldHistoryEntryIndex)
         {
             @await Html.PartialAsync("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
@@ -11,4 +11,4 @@
     </section>
 }
 
-<button id="add-fieldhistory" class="btn btn-primary">Add a Field History record</button>
+<button id="add-fieldhistory" class="btn btn-warning">Add a Field History record</button>
