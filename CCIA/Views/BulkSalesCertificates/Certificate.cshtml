@@ -16,11 +16,16 @@
 </head>
 <body>
 <a class="noprint" asp-controller="BulkSalesCertificates" asp-action="Index">Return to Bulk Sales Certificates</a> 
-       
-                <div style="text-align: center">
-                    <% If (_QA) Then %>
-                        <img align="left" height="108" src="../../images/qaLogo.gif" />
-                    <% End if %>
+<div style="text-align: center">
+    @if(Model.Seeds.AppTypeTrans.AppTypeTrans == "Heritage Grain QA" || Model.Seeds.AppTypeTrans.AppTypeTrans == "Rice QA")
+    {
+        <img align="left" height="108" src="../../images/qaLogo.gif" />
+    }
+
+
+                  
+                   
+                    
                     <img align="right" height="108" src="../../images/ccia-tra.gif" />
                     <b>CALIFORNIA CROP IMPROVEMENT ASSOCIATION</b><br />
                     Parsons Seed Certification Center, Davis, CA<br />
@@ -29,10 +34,10 @@
                 <table width="100%" border="0">
                     <tr>
                        
-                       <%-- <td width="5px"></td>--%>
+                      
                     </tr>
                     <tr>
-                        <td colspan="3"><b>Certificate #<asp:Label ID="IdLabel" runat="server" Text='<%# Eval("Id") %>' /></b></td>
+                        <td colspan="3"><b>Certificate #@Model.Id</b></td>
                         <td>Program:</td>
                         <td><asp:Label ID="app_type_transLabel" runat="server" Text='<%# Bind("app_type_trans") %>' /></td>
                     </tr>

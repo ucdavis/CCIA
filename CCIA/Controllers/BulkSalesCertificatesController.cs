@@ -111,7 +111,10 @@ namespace CCIA.Controllers
         public async Task<ActionResult> Certificate(int id)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId).SingleAsync();
+            var model = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .SingleAsync();
             return View(model);
         }
 
