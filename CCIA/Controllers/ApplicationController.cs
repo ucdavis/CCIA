@@ -411,12 +411,12 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=-1)
         {
-            var seedApp = new SeedApp();
+            var app = ApplicationPostMap.CreateAppByAppType(appTypeId);
             var appViewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);
-            seedApp.AppViewModel = appViewModel;
+            app.AppViewModel = appViewModel;
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
             ViewData["fhEntryId"] = fhEntryId;
-            return PartialView(fullPartialPath, seedApp);
+            return PartialView(fullPartialPath, app);
         }
 
     }
