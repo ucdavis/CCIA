@@ -49,23 +49,13 @@
                         <i class="fas fa-search"></i>
                     </button>     
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
+                        <div class="text-center">
+                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
                         </div>
                     </div> 
                 </div>
-            </div>            
-            <!-- <div class="dropdown" id="variety-dropdown">
-                <div class="input-group col">
-                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
-                    </span>
-                </div>
-                <ul class="dropdown-menu scrollable-menu" id="variety-select">
-                </ul>
-            </div>
-            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" }) -->
+            </div>     
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
             <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
             <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
         </div>
@@ -81,6 +71,7 @@
 
 @section Scripts {
     <script type="text/javascript">
+        const spinner_div = `<div class="text-center"><div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div></div>`
         var form = document.getElementById("seedApplication")
         let appTypeId = 1;
         // The index of the next Field History entry to be added to the form
@@ -124,18 +115,14 @@
                 url: "/Application/FindVariety",
                 data: data,
                 success: function(res) {
-                    console.log(res);
                     vs.innerHTML = "";
                     if (res.length === 0) {
                         $("#varAlert").modal('show');
                         loadFormRemainder();
                     }
-                    res.forEach(function(el) {
-                        vs.innerHTML += `<button class="dropdown-item" type="button">Action</button>`;
-                        /*vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
-                                     + " tabindex='-1' href='#/' value="+el.varOffId+">"
-                                     + el.varOffName
-                                     + "</a></li>";*/
+                    res.forEach((el) => {
+                        vs.innerHTML += `<a class="dropdown-item" href="#" onclick='selectVariety(this)'
+                                        id=${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
                     })
                 },
                 error: function(res) {
@@ -145,11 +132,11 @@
         });
 
         function selectVariety(e) {
-            /* Collapse dropdown */
-            let dd = document.getElementById("variety-dropdown");
-            dd.className = "dropdown";
-            document.getElementById("variety-id").value = e.firstElementChild.attributes.value.value;
-            document.getElementById("variety").value = e.firstElementChild.innerText
+            // Fill hidden fields
+            document.getElementById("variety-id").value = e.value;
+            document.getElementById("variety").value = e.innerText
+            // Reset dropdown to be spinner for next search
+            document.getElementById("variety-dropdown").innerHTML =  spinner_div;
 
             loadFormRemainder();
         }
@@ -174,9 +161,10 @@
 
         /* Load the rest of the form after selecting (or entering) a variety*/
         function loadFormRemainder() {
+            let yPos = window.scrollY;
+            showSpinner("form-remainder");
             let orgId = @Model.AppViewModel.Organization.OrgId;
             /* If something is inside form-remainder div, clear it out */
-            $("#form-remainder").empty();
             $("#form-remainder")
                 .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
                         if ( status == "error" ) {
@@ -184,6 +172,10 @@
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
                         else {
+                            // Reset window to previous scroll position
+                            window.scroll(0, yPos);
+
+                            // Stop centering text after spinner is gone
                             // After successfully loading form remainder
                             // Set functionality for date time picker
                             $('#datetimepicker1').datetimepicker({
@@ -201,13 +193,10 @@
                 });
         }
 
-        /* Click handler to collapse variety dropdown on click outside */
-        /* $(document).click( function(event) { 
-            if( $(event.target).closest('#variety-select').length == 0 ) { 
-                let dd = document.getElementById("variety-dropdown");
-                dd.className = "dropdown";
-            } 
-        }); */
+        // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
+        function showSpinner(parentId) {
+            $(`#${parentId}`)[0].innerHTML = spinner_div;
+        }
 
         /* Adds red outline to invalid text boxes on loading after failed form submission */
         $(document).ready(() => {
@@ -223,7 +212,9 @@
                 return;
             }
             let fh_entry_div = `#fh-entry-${fhEntryId}`;
-            $(fh_entry_div).empty();
+            // Show the section
+            document.getElementById("fh-entry-"+fhEntryId).classList.remove("hidden");
+            showSpinner("fh-entry-"+fhEntryId);
             $(fh_entry_div)
                 .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
                         if ( status == "error" ) {
@@ -233,9 +224,6 @@
                         else {
                             // Mark that id as used
                             fhIndices[fhEntryId] = 1;
-
-                            // Show the section
-                            document.getElementById("fh-entry-"+fhEntryId).classList.remove("hidden");
 
                             // Click handler for removing additional field history entry
                             document.getElementById(fhEntryId).onclick = (e) => {
@@ -277,13 +265,13 @@
 
         function addSecondPs(e) {
             e.preventDefault();
+            showSpinner("second-ps");
             let appTypeId = 1;
             if (secondPsRendered) {
                 return;
             }
             // Populate div with second planting stocks partial
             let orgId = @Model.AppViewModel.Organization.OrgId;
-            $("#second-ps").empty();
             $("#second-ps")
                 .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
                         if ( status == "error" ) {

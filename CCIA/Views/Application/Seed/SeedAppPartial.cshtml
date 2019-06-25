@@ -8,7 +8,9 @@
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
-    @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
+    <div>
+        @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
+    </div>
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
 
