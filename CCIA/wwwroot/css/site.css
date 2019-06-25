@@ -17,6 +17,22 @@ html {
     font-size: 16px;
   }
 }
+.close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+.rounded-section {
+  border-radius: .8em;
+  background: #dbdbdb;
+  padding: 6px 12px 2px 12px;
+  margin-bottom: 10px;
+}
 
 .border-top {
   border-top: 1px solid #e5e5e5;
@@ -54,3 +70,57 @@ body {
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
+
+#planting-stock, #field-info {
+  padding: 2px 10px 10px 10px;
+}
+
+.pos-rel {
+  position: relative;
+}
+
+.top-right-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 1;
+  background: #f1f1f1;
+}
+
+#second-ps-first-row {
+  margin-top: 16px;
+}
+
+.off-white {
+  background:#f1f1f1;
+}
+
+.light-grey {
+  background: #dbdbdb;
+}
+
+.light-blue {
+  background: #d2d7e1;
+}
+
+.circular{
+  border-radius: 50%;
+}
+
+.required{
+  color:#f00
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 400px;
+  overflow-x: hidden;
+}
+
+.btn-secondary {
+  border: 1px solid #ccc !important;
+  background: white;
+}
+
+
+
