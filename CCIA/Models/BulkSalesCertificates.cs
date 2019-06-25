@@ -16,6 +16,7 @@ namespace CCIA.Models
 
         [ForeignKey("ConditionerOrganizationId")]
         public Organizations ConditionerOrganization { get; set; }
+
         [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:d}")]
         [DisplayName("Date Sold")]
         public DateTime Date { get; set; }
@@ -166,6 +167,35 @@ namespace CCIA.Models
                     return Blend.CertNumber;
                 }                
                 return "Unknown";
+            }
+        }
+
+        public string LotNumber 
+        { 
+            get
+            {
+                if(SeedsID.HasValue && Seeds != null)
+                {
+                    return Seeds.LotNumber;
+                }
+
+                return "";
+            }
+        }
+
+        public string Program 
+        { 
+            get
+            {
+                if (SeedsID.HasValue)
+                {
+                    return Seeds.AppTypeTrans.AppTypeTrans;
+                }
+                if (BlendId.HasValue)
+                {
+                    return "Blend";
+                }
+                return "";
             }
         }
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using CCIA.Models.BulkSalesCreateViewModel;
+using CCIA.Models.CertificateViewModel;
 
 
 
@@ -64,12 +65,13 @@ namespace CCIA.Controllers
                 var newBulkSalesCertificate = new BulkSalesCertificates();
                 newBulkSalesCertificate.ConditionerOrganizationId = orgId;
                 newBulkSalesCertificate.Date = model.BulkSalesCertificate.Date;
-                if(model.selectType == "SID")
+                if (model.selectType == "SID")
                 {
                     newBulkSalesCertificate.SeedsID = model.textId;
                     var seed = await _dbContext.Seeds.Where(s => s.Id == model.textId).SingleAsync();
                     newBulkSalesCertificate.CertProgram = seed.CertProgram;
-                } else
+                }
+                else
                 {
                     newBulkSalesCertificate.BlendId = model.textId;
                     newBulkSalesCertificate.CertProgram = "Blend";
@@ -89,17 +91,18 @@ namespace CCIA.Controllers
                 // TODO use real contact id
                 newBulkSalesCertificate.CreatedById = 1;
                 newBulkSalesCertificate.CreatedOn = DateTime.Now;
-                
 
-                if(ModelState.IsValid)
+
+                if (ModelState.IsValid)
                 {
                     _dbContext.Add(newBulkSalesCertificate);
                     await _dbContext.SaveChangesAsync();
-                } else 
+                }
+                else
                 {
                     return View(model);
                 }
-                
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -111,27 +114,24 @@ namespace CCIA.Controllers
         public async Task<ActionResult> Certificate(int id)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
-                .Include(b => b.Seeds)
-                .ThenInclude(s => s.AppTypeTrans)
-                .SingleAsync();
+            var model = await CertificateViewModel.Create(_dbContext, id, orgId);            
             return View(model);
         }
 
-      
+
 
         [HttpGet]
         public async Task<JsonResult> GetAvailableClasses(string lookupType, int id)
         {
             if (lookupType == "Blend")
             {
-                int? blendClass = await _dbContext.BlendRequests.Where(b => b.BlendId == id).Select(b => b.Class).FirstAsync();                
+                int? blendClass = await _dbContext.BlendRequests.Where(b => b.BlendId == id).Select(b => b.Class).FirstAsync();
                 if (blendClass.HasValue)
                 {
                     int appType = await _dbContext.AbbrevClassSeeds.Where(a => a.Id == blendClass.Value).Select(a => a.Program).FirstAsync();
                     var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= blendClass && a.Program == appType)
                         .OrderBy(a => a.Id)
-                        .Select(a => new {value = a.Id, text = a.CertClass})
+                        .Select(a => new { value = a.Id, text = a.CertClass })
                         .ToListAsync();
                     return Json(model);
                 }
@@ -139,20 +139,20 @@ namespace CCIA.Controllers
                 {
                     var model = await _dbContext.AbbrevClassSeeds.Where(a => a.CertClass == "Certified" && a.Program == 1)
                         .OrderBy(a => a.Id)
-                        .Select(c => new {value = c.Id, text = c.CertClass})
-                        .ToListAsync();                   
+                        .Select(c => new { value = c.Id, text = c.CertClass })
+                        .ToListAsync();
                     return Json(model);
                 }
-            } 
+            }
             else
             {
                 int? sidClass = await _dbContext.Seeds.Where(s => s.Id == id).Select(s => s.Class).FirstAsync();
                 int appType = await _dbContext.Seeds.Where(s => s.Id == id).Include(s => s.AppTypeTrans).Select(s => s.AppTypeTrans.AppTypeId).FirstAsync();
-                if(sidClass.HasValue)
+                if (sidClass.HasValue)
                 {
                     var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= sidClass && a.Program == appType)
                         .OrderBy(a => a.Id)
-                        .Select(a => new  {value = a.Id, text = a.CertClass})
+                        .Select(a => new { value = a.Id, text = a.CertClass })
                         .ToListAsync();
                     return Json(model);
                 }
@@ -160,11 +160,11 @@ namespace CCIA.Controllers
                 {
                     var model = await _dbContext.AbbrevClassSeeds.Where(a => a.CertClass == "Certified")
                         .OrderBy(a => a.Id)
-                        .Select(c => new  {value = c.Id, text = c.CertClass})
+                        .Select(c => new { value = c.Id, text = c.CertClass })
                         .ToListAsync();
                     return Json(model);
                 }
-            }            
+            }
         }
 
         [HttpGet]
@@ -248,8 +248,9 @@ namespace CCIA.Controllers
         {
             var model = await _dbContext.Organizations.Where(o => o.OrgId == id)
                 .Include(o => o.Address)
-                .Select(o => new MyCustomers { 
-                    Name = o.OrgName, 
+                .Select(o => new MyCustomers
+                {
+                    Name = o.OrgName,
                     Address1 = o.Address.Address1,
                     Address2 = o.Address.Address2,
                     City = o.Address.City,
@@ -258,9 +259,9 @@ namespace CCIA.Controllers
                     Zip = o.Address.PostalCode,
                     Phone = o.Phone,
                     Email = o.Email
-                    })
+                })
                 .SingleAsync();
-            
+
             return Json(model);
         }
     }

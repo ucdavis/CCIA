@@ -1,4 +1,4 @@
-@model CCIA.Models.BulkSalesCertificates
+@model CCIA.Models.CertificateViewModel.CertificateViewModel
 
 
 @{
@@ -17,15 +17,11 @@
 <body>
 <a class="noprint" asp-controller="BulkSalesCertificates" asp-action="Index">Return to Bulk Sales Certificates</a> 
 <div style="text-align: center">
-    @if(Model.Seeds.AppTypeTrans.AppTypeTrans == "Heritage Grain QA" || Model.Seeds.AppTypeTrans.AppTypeTrans == "Rice QA")
+    @if(Model.BulkSalesCertificate.Program == "Heritage Grain QA" || Model.BulkSalesCertificate.Program == "Rice QA")
     {
         <img align="left" height="108" src="../../images/qaLogo.gif" />
     }
-
-
-                  
-                   
-                    
+              
                     <img align="right" height="108" src="../../images/ccia-tra.gif" />
                     <b>CALIFORNIA CROP IMPROVEMENT ASSOCIATION</b><br />
                     Parsons Seed Certification Center, Davis, CA<br />
@@ -37,61 +33,58 @@
                       
                     </tr>
                     <tr>
-                        <td colspan="3"><b>Certificate #@Model.Id</b></td>
+                        <td colspan="3"><b>Certificate #@Model.BulkSalesCertificate.Id</b></td>
                         <td>Program:</td>
-                        <td><asp:Label ID="app_type_transLabel" runat="server" Text='<%# Bind("app_type_trans") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.Program</td>
                     </tr>
                     <tr>
-                        <td colspan="5"><asp:Label runat="server" ID="org_nameLabel" Text='<%# Bind("org_name") %>' Font-Underline="True"></asp:Label>, sold on
-                            <asp:Label ID="dateLabel" runat="server" Text='<%# Bind("date", "{0:d}") %>' Font-Underline="True" /> the following seed to:
+                        <td colspan="5"><u>@Model.BulkSalesCertificate.ConditionerOrganization.OrgName</u>, sold on
+                            <u>@Html.DisplayFor(model => model.BulkSalesCertificate.Date)</u> the following seed to:
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="5">Name: 
-                            <asp:Label ID="purch_nameLabel" runat="server" Text='<%# Bind("purch_name") %>' Font-Underline="True" />
+                        <td colspan="5">Name: <u>@Model.BulkSalesCertificate.PurchaserName</u>
                         </td>
                     </tr>
                     <tr style="vertical-align: top">
                         <td>Address:</td>
-                        <td> <asp:Label ID="purch_address_line_1Label" runat="server" Text='<%# Bind("purch_address_line_1") %>' /><br />
-                            <asp:Label ID="purch_address_line_2Label" runat="server" Text='<%# Bind("purch_address_line_2") %>' />
+                        <td> @Model.BulkSalesCertificate.PurchaserAddressLine1<br />
+                             @Model.BulkSalesCertificate.PurchaserAddressLine2
                         </td>
                         <td>&nbsp;</td>
                         <td>City, State Zip:</td>
                         <td nowrap="true">
-                            <asp:Label ID="purch_cityLabel" runat="server" Text='<%# Bind("purch_city") %>' />, 
-                           <asp:Label ID="StateProvinceNameLabel" runat="server" Text='<%# Bind("purch_state_name") %>' />
-                            <asp:Label ID="purch_zipLabel" runat="server" Text='<%# Bind("purch_zip") %>' /><br/><asp:Label ID="purch_countryLabel" runat="server" Text='<%# Bind("purch_country_name") %>' />
-                            
+                            @Model.BulkSalesCertificate.PurchaserCity, @Model.BulkSalesCertificate.PurchaserState.StateProvinceName @Model.BulkSalesCertificate.PurchaserZip                           
+                           <br/>@Model.BulkSalesCertificate.PurchaserCountry.Name                            
                         </td>
                     </tr>
                     <tr>
                         <td>Phone:</td>
-                        <td><asp:Label runat="server" ID="Label1" Text='<%# Eval("purch_phone") %>'></asp:Label></td>
+                        <td>@Model.BulkSalesCertificate.PurchaserPhone</td>
                         <td></td>
                         <td>Email:</td>
-                        <td><asp:Label runat="server" ID="Label2" Text='<%# Eval("purch_email") %>'></asp:Label></td>
+                        <td>@Model.BulkSalesCertificate.PurchaserEmail</td>
                     </tr>
                     <tr>
                         <td>Crop:</td>
-                        <td><asp:Label ID="cropLabel" runat="server" Text='<%# Bind("crop") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.CropName</td>
                         <td>&nbsp;</td>
                         <td>Variety:</td>
-                        <td><asp:Label ID="var_nameLabel" runat="server" Text='<%# Bind("var_name") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.VarietyName</td>
                     </tr>
                     <tr>
                         <td>Cert No.:</td>
-                        <td><asp:Label ID="full_certLabel" runat="server" Text='<%# Bind("full_cert") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.CertNumber</td>
                         <td>&nbsp;</td>
                         <td>Lot No.:</td>
-                        <td><asp:Label ID="lot_num1Label" runat="server" Text='<%# Bind("lot_num") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.LotNumber</td>
                     </tr>
                     <tr>
-                        <td>Seed ID:</td>
-                        <td><asp:Label ID="sidLabel" runat="server" Text='<%# Bind("sid") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.IdType</td>
+                        <td>@Model.BulkSalesCertificate.LinkId</td>
                         <td></td>
                         <td>Pounds:</td>
-                        <td><asp:Label ID="cert_lbsLabel" runat="server" Text='<%# Bind("cert_lbs") %>' /></td>
+                        <td>@Model.BulkSalesCertificate.Pounds</td>
                     </tr>
                     <tr><td colspan="5">
                         <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="sdsClasses" DataTextField="class_certified_trans" DataValueField="class_certified_id" Enabled="False" RepeatDirection="Horizontal" TextAlign="Left" Width="100%" SelectedValue='<%# Bind("class") %>'>
