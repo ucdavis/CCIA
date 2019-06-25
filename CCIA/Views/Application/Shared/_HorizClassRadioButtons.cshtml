@@ -1,0 +1,10 @@
+@model ApplicationViewModel
+
+@{ string name = ViewBag.name; }
+<div class="form-check form-check-inline">
+    @foreach (var item in Model.ClassProducedList) 
+    {
+        @Html.RadioButton(name, item.ClassProducedId, new { @class = "form-check-input"} )
+        <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
+    }
+</div>

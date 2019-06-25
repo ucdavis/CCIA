@@ -1,9 +1,14 @@
 @model CCIA.Models.SeedApp
 
+<style>
+    .form-check-label {
+        margin-right: 30px;
+    }
+</style>
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
-    @await Html.PartialAsync("Shared/_ClassRadioButtons", Model.AppViewModel)
+    @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
     @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
 </div>
 
@@ -46,23 +51,25 @@
             @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="form-group">
-        <label>County</label><em class="required">•</em>
-        <select class="form-control" name=FarmCounty>
-            <option></option>
-            @foreach (var county in Model.AppViewModel.Counties)
-            {
-                <option value=@county.CountyId>
-                    @county.CountyName
-                </option>
-            }
-        </select>
-        @Html.ValidationMessage("FarmCounty", "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        <label for="acres-applied">Acres Applied</label><em class="required">•</em>
-        @Html.TextBoxFor(m => m.AcresApplied, "", new { @class="form-control", id="acres-applied", placeholder="Acres Applied" })
-        @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>County</label><em class="required">•</em>
+            <select class="form-control" name=FarmCounty>
+                <option></option>
+                @foreach (var county in Model.AppViewModel.Counties)
+                {
+                    <option value=@county.CountyId>
+                        @county.CountyName
+                    </option>
+                }
+            </select>
+            @Html.ValidationMessage("FarmCounty", "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-6">
+            <label for="acres-applied">Acres Applied</label><em class="required">•</em>
+            @Html.TextBoxFor(m => m.AcresApplied, "", new { @class="form-control", id="acres-applied", placeholder="Acres Applied" })
+            @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
+        </div>
     </div>
 
     <div class="form-group">
