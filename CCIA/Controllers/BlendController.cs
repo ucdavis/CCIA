@@ -7,7 +7,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.SeedsViewModels;
+using CCIA.Models.IndexViewModels;
 
 
 
@@ -25,30 +25,13 @@ namespace CCIA.Controllers
         
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
-        {
+        {           
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();   
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
-            }
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();           
-            var model = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
-                .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
-                .ThenInclude(l => l.Seeds)
-                .ThenInclude(s => s.Variety)
-                .ThenInclude(v => v.Crop)
-                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
-                .ThenInclude(i => i.Application)
-                .ThenInclude(a => a.Variety)
-                .Include(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
-                .ThenInclude(i => i.Application) 
-                .ThenInclude(a => a.Crop)
-                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
-                .ThenInclude(i => i.Crop)
-                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
-                .ThenInclude(i => i.Variety)
-                .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
-                .ThenInclude(v => v.Crop)
-                .ToListAsync();
+                certYear = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId).Select(b => b.CertYear).MaxAsync();;
+            }         
+            var model = await BlendIndexViewModel.Create(_dbContext, orgId, certYear);             
             return View(model);
         }
 

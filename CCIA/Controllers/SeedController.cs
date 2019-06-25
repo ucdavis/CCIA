@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SeedsViewModels;
+using CCIA.Models.IndexViewModels;
 
 
 
@@ -25,18 +26,13 @@ namespace CCIA.Controllers
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
+            
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
+                certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
             }
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
-                .Include(a => a.ApplicantOrganization)
-                .Include(v => v.Variety)
-                .ThenInclude(v => v.Crop)
-                .Include(c => c.ClassProduced)
-                .Include(l => l.LabResults)
-                .ToListAsync();
+            var model = await SeedsIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
         }
 

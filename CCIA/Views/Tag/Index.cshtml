@@ -1,11 +1,11 @@
-@model IList<Tags>
+@model CCIA.Models.IndexViewModels.TagIndexViewModel
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Tags</h2>
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
 <div class="col-lg-1">
     <table id="table" class="table">
@@ -33,7 +33,7 @@
         </thead>
         <tbody>
         
-            @foreach (var tag in Model)
+            @foreach (var tag in Model.tags)
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="tag" asp-route-id="@tag.Id">Details</a></td>

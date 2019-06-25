@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class Applications
     {
-        public Applications()
-        {
-            InverseTraceNavigation = new HashSet<Applications>();
-        }
+        // public Applications()
+        // {
+        //     InverseTraceNavigation = new HashSet<Applications>();
+        // }
 
-        public int AppId { get; set; }
+        public int Id { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
-        public int? CertYear { get; set; }
+        public int CertYear { get; set; }
         public int? AppOriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
@@ -22,9 +23,7 @@ namespace CCIA.Models
         public int? UserAppDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-        
-        public int? CropId { get; set; }
-       
+               
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
@@ -57,10 +56,13 @@ namespace CCIA.Models
         public bool? Tags { get; set; }
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
+
+        [Required]
         public string FieldName { get; set; }
        
-        
+        [Required]
         public DateTime? DatePlanted { get; set; }
+        [Required]
         public decimal? AcresApplied { get; set; }
         public bool? Billable { get; set; }
         public bool? Charged { get; set; }
@@ -83,11 +85,15 @@ namespace CCIA.Models
         public string FieldHardiness { get; set; }
         public int? FieldElevation { get; set; }
         public int Ecoregion { get; set; }
-
        
+       [Required]
+        public int? CropId { get; set; }
+
+        [ForeignKey("CropId")]
         public Crops Crop { get; set; }
-        public Applications TraceNavigation { get; set; }
-        public ICollection<Applications> InverseTraceNavigation { get; set; }
+
+       // public Applications TraceNavigation { get; set; }
+       // public ICollection<Applications> InverseTraceNavigation { get; set; }
 
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
@@ -98,11 +104,13 @@ namespace CCIA.Models
 
         [ForeignKey("FarmCounty")]
         public County County { get; set; }
+        [Required]
         public int? FarmCounty { get; set; }
+
+        public int? SelectedVarietyId { get; set; }
 
         [ForeignKey("SelectedVarietyId")]
         public VarFull  Variety { get; set; }
-        public int? SelectedVarietyId { get; set; }
 
         [ForeignKey("ClassProducedId")]
         public AbbrevClassProduced ClassProduced { get; set; }
@@ -116,13 +124,49 @@ namespace CCIA.Models
         public ICollection<AppCertificates> Certificates { get; set; }
 
         [ForeignKey("AppId")]
-        public ICollection<PlantingStocks> PlantingStocks { get; set; }
+        public virtual ICollection<PlantingStocks> PlantingStocks { get; set; }
 
         [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }
 
         [ForeignKey("AppId")]
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
+
+        public string CropName 
+        { 
+            get
+            {
+                if (CropId == null && SelectedVarietyId == null)
+                {
+                    return "";
+                }
+                if(AppType=="PV")
+                {
+                    return Crop.Name;
+                }
+                if (Variety != null)
+                {
+                    return Variety.Crop.Name;
+                }
+                return "";
+            } 
+        }
+        
+        public string VarietyName 
+        { 
+            get
+            {
+                if(AppType=="PV" || SelectedVarietyId == null)
+                {
+                    return "";
+                }
+                if (Variety != null)
+                {
+                    return Variety.Name;
+                }
+                return "";
+            } 
+        }
 
     }
 }

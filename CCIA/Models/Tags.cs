@@ -60,9 +60,9 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety.Crop != null)
+                if (SeedsID.HasValue )
                 {
-                    return Seeds.Variety.Crop.Name;
+                    return Seeds.CropName;
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
@@ -80,9 +80,9 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety != null)
+                if (SeedsID.HasValue)
                 {
-                    return Seeds.Variety.Name;
+                    return Seeds.VarietyName;
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
