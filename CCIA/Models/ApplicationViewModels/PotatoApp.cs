@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
-    public class PotatoApp : Applications 
+    public class PotatoApp : MasterApplicationViewModel 
     {
         public List<SeedPlantingStocks> PlantingStocks { get; set; }
     }

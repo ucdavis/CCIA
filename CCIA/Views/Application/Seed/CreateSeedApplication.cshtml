@@ -40,10 +40,22 @@
             <partial name="Shared/_CropYearDropdown"></partial>
             @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
-        
         <div class="col-lg-4 col-sm-4 col-xs-4">  
             <label for="variety">Variety<em class="required">•</em></label>
-            <div class="dropdown" id="variety-dropdown">
+            <div>
+                <div class="btn-group">
+                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
+                    <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search"></i>
+                    </button>     
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div> 
+                </div>
+            </div>            
+            <!-- <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
                     @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
                     <span class="input-group-btn">
@@ -53,7 +65,7 @@
                 <ul class="dropdown-menu scrollable-menu" id="variety-select">
                 </ul>
             </div>
-            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" }) -->
             <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
             <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
         </div>
@@ -105,26 +117,25 @@
                 name: varietyName,
                 cropId: cropId
             };
-            let vs = document.getElementById("variety-select");
+            let vs = document.getElementById("variety-dropdown");
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
                 type: "GET",
                 url: "/Application/FindVariety",
                 data: data,
                 success: function(res) {
+                    console.log(res);
                     vs.innerHTML = "";
-                    let dd = document.getElementById("variety-dropdown");
                     if (res.length === 0) {
                         $("#varAlert").modal('show');
                         loadFormRemainder();
-                    } else {
-                        dd.className += " " + "open";               
                     }
                     res.forEach(function(el) {
-                        vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
+                        vs.innerHTML += `<button class="dropdown-item" type="button">Action</button>`;
+                        /*vs.innerHTML += "<li role='presentation' onclick='selectVariety(this)'><a role='menuitem' id="+el.varOffId
                                      + " tabindex='-1' href='#/' value="+el.varOffId+">"
                                      + el.varOffName
-                                     + "</a></li>";
+                                     + "</a></li>";*/
                     })
                 },
                 error: function(res) {
@@ -191,12 +202,12 @@
         }
 
         /* Click handler to collapse variety dropdown on click outside */
-        $(document).click( function(event) { 
+        /* $(document).click( function(event) { 
             if( $(event.target).closest('#variety-select').length == 0 ) { 
                 let dd = document.getElementById("variety-dropdown");
                 dd.className = "dropdown";
             } 
-        });
+        }); */
 
         /* Adds red outline to invalid text boxes on loading after failed form submission */
         $(document).ready(() => {
