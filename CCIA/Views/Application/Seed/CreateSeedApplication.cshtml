@@ -83,11 +83,11 @@
 
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.AppViewModel.Organization.OrgId;
-            insertHiddenInput("growerId", growerId, "#seedApplication");
+            insertHiddenInput("growerId", growerId, "seedApplication");
             
             // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
             // Used in order to aid server-side validation on re-rendering of form
-            insertHiddenInput("fhEntryId", fhEntryId, "#seedApplication");
+            insertHiddenInput("fhEntryId", fhEntryId, "seedApplication");
 
             return true;
         });
@@ -132,13 +132,16 @@
         });
 
         function selectVariety(e) {
-            // Fill hidden fields
-            document.getElementById("variety-id").value = e.value;
-            document.getElementById("variety").value = e.innerText
+            insertHiddenInput("SelectedVarietyId", e.getAttribute("value"), "seedApplication");
             // Reset dropdown to be spinner for next search
-            document.getElementById("variety-dropdown").innerHTML =  spinner_div;
-
+            showSpinner("variety-dropdown");
             loadFormRemainder();
+        }
+
+        function fillHiddenVarietyFields(id, variety) {
+            insertHiddenInput
+            document.getElementById("variety-id").value = id;
+            document.getElementById("ps1-variety").value = variety;
         }
 
         // On form submission failure, and we're returning to the page

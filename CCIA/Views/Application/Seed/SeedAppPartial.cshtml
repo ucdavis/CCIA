@@ -44,11 +44,14 @@
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted</label><em class="required">•</em>
-            <div class='input-group date' id='datetimepicker1'>
-                @Html.TextBoxFor(m => m.DatePlanted, "", new { @class="form-control", id="date-planted", placeholder="MM/DD/YYYY" })
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class='input-group date' id='datetimepicker1' data-target-input>
+                @Html.TextBox("DatePlanted", "", new { @class="form-control datetimepicker-input", 
+                                                               id="date-planted", 
+                                                               placeholder="MM/DD/YYYY",
+                                                               data_target="#datetimepicker1" })
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
             </div>
             @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
         </div>
