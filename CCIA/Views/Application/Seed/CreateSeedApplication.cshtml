@@ -10,7 +10,15 @@
     @Html.ValidationSummary()
 </div>
 
-@Html.Partial("Shared/_GrowerInfoTable")
+<partial name="Shared/_GrowerInfoTable"></partial>
+
+<!-- Alert dialog modals -->
+@{
+    var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
+    var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+}
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
@@ -19,17 +27,17 @@
     <div class="row">
         <div class="form-group col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "CropId";}
-            @Html.Partial("Shared/_CropDropdown")
+            <partial name="Shared/_CropDropdown"></partial>
             @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
         </div>
-        
+    
         <div class="form-group col-lg-4 col-sm-4 col-xs-4">
             @{
                 ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            @Html.Partial("Shared/_CropYearDropdown")
+            <partial name="Shared/_CropYearDropdown"></partial>
             @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
         
@@ -37,7 +45,7 @@
             <label for="variety">Variety<em class="required">•</em></label>
             <div class="dropdown" id="variety-dropdown">
                 <div class="input-group col">
-                    <input type="text" class="form-control" id="variety" name="EnteredVariety" placeholder="Variety">
+                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
                     <span class="input-group-btn">
                         <button class="btn btn-primary" id="variety-search"><i class="fas fa-search"></i></button>                    
                     </span>
@@ -54,7 +62,7 @@
     <div id="form-remainder">
         @if (@Model.AppViewModel.RenderFormRemainder)
         {
-            @Html.Partial("Seed/SeedAppPartial");
+            <partial name="Seed/SeedAppPartial"></partial>
         }
     </div>
 </form>
@@ -63,7 +71,12 @@
     <script type="text/javascript">
         var form = document.getElementById("seedApplication")
         let appTypeId = 1;
-        var fhEntryId = @Model.AppViewModel.FieldHistoryEntryIndex;
+        // The index of the next Field History entry to be added to the form
+        let fhEntryId = 0;
+        // How many total Field History entries are in the form currently
+        let fhEntryCount = 0;
+        let secondPsRendered = false;
+        let fhIndices = [0, 0, 0];
 
         $('#seedApplication').submit (function(e) {
             var growerId = @Model.AppViewModel.Organization.OrgId;
@@ -78,14 +91,13 @@
 
         $('#variety-search').on('click', function(e) {
             e.preventDefault();
-
             // Display error if user tries to search for variety before selecting crop
             let crop = document.getElementsByName("CropId")[0];
             let cropText = crop.options[crop.selectedIndex].text;
             let cropId = crop.options[crop.selectedIndex].value;
             let varietyName = document.getElementById("variety").value;
             if (cropText == "") { 
-                window.alert("Please select a crop before searching for a variety."); 
+                $("#cropAlert").modal('show');
                 return;
             }
 
@@ -94,16 +106,16 @@
                 cropId: cropId
             };
             let vs = document.getElementById("variety-select");
-            vs.innerHTML = "";
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
                 type: "GET",
                 url: "/Application/FindVariety",
                 data: data,
                 success: function(res) {
+                    vs.innerHTML = "";
                     let dd = document.getElementById("variety-dropdown");
                     if (res.length === 0) {
-                        alert("No variety with name "+varietyName+" was found in our system. A new variety will be used.");
+                        $("#varAlert").modal('show');
                         loadFormRemainder();
                     } else {
                         dd.className += " " + "open";               
@@ -195,7 +207,10 @@
             e.preventDefault();
             // Populate div with an additional field history partial
             let orgId = @Model.AppViewModel.Organization.OrgId;
-            fhEntryId++;
+            fhEntryId = findAvailableFhIndex();
+            if (fhEntryId == -1) {
+                return;
+            }
             let fh_entry_div = `#fh-entry-${fhEntryId}`;
             $(fh_entry_div).empty();
             $(fh_entry_div)
@@ -204,17 +219,57 @@
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                         }
-                        // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "2"
-                        if (fhEntryId == 2)
+                        else {
+                            // Mark that id as used
+                            fhIndices[fhEntryId] = 1;
+
+                            // Show the section
+                            document.getElementById("fh-entry-"+fhEntryId).classList.remove("hidden");
+
+                            // Click handler for removing additional field history entry
+                            document.getElementById(fhEntryId).onclick = (e) => {
+                                e.preventDefault();
+                                // Grabs ID from closest parent section -- the parent section containing the "X" button
+                                let idToRemove = parseInt(e.target.closest("button").id);
+                                // Hide the section
+                                document.getElementById("fh-entry-"+idToRemove).classList.add("hidden");
+                                // Mark this entry as unused
+                                if (fhEntryCount === 3) {
+                                    // Re-enable button to add new entry
+                                    document.getElementById("add-fieldhistory").disabled = false;
+                                }
+                                idToRemove = parseInt(e.target.closest("button").id);
+                                fhIndices[idToRemove] = 0;
+                                e.preventDefault();
+                                fhEntryCount--;
+                                removeFhEntryById(idToRemove);                              
+                            }
+                            fhEntryCount++;
+                        }
+                        // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "3"
+                        if (fhEntryCount === 3)
                         {
-                            $("#add-fieldhistory").remove();
+                            document.getElementById("add-fieldhistory").disabled = true;
                         }
                 });
         }
 
+        function findAvailableFhIndex() {
+            for (let i=0; i<fhIndices.length; i++) {
+                // 0 = free, 1 = used
+                if (fhIndices[i] === 0) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         function addSecondPs(e) {
-            let appTypeId = 1;
             e.preventDefault();
+            let appTypeId = 1;
+            if (secondPsRendered) {
+                return;
+            }
             // Populate div with second planting stocks partial
             let orgId = @Model.AppViewModel.Organization.OrgId;
             $("#second-ps").empty();
@@ -223,8 +278,32 @@
                         if ( status == "error" ) {
                             var msg = "Sorry, there was an error loading the remainder of this form: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }
+                        }     
+                        else {
+                            secondPsRendered = true;
+                            let addSeconPsBtn = document.getElementById("add-second-ps");
+                            addSeconPsBtn.disabled = true;
+
+                            // Click handler for removing the second planting stocks record
+                            document.getElementById("remove-ps2").onclick = (e) => {
+                                secondPsRendered = false;
+                                e.preventDefault();
+                                removeSecondPSEntry();
+                                addSeconPsBtn.disabled = false;
+                            }
+                        }           
                 });
         }
+
+        // Removes contents of a field history section, while keeping the section tags intact
+        function removeFhEntryById(id) {
+            let fhEntrySection = `#fh-entry-${id}`;
+            $(fhEntrySection).empty();
+        }
+
+        function removeSecondPSEntry(){
+            $("#second-ps").empty();
+        }
+
     </script>
 }

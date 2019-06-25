@@ -1,26 +1,28 @@
-<div class="row">
+@{
+    int fhEntryId = (int)ViewData["fhEntryId"];
+    int nextFhEntryId = fhEntryId+1;
+    ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
+    ViewBag.startYearOffset = 0;
+    ViewBag.endYearOffset = 6;
+}
+<button id="@fhEntryId" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this field history record">
+    <i class="fas fa-times"></i>
+</button>
+<div class="row" id="second-ps-first-row">
     <div class="col-lg-2 col-sm-2 col-xs-2">
-        @{
-            int fhEntryId = (int)ViewData["fhEntryId"];
-            int nextFhEntryId = fhEntryId+1;
-            ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
-            ViewBag.startYearOffset = 0;
-            ViewBag.endYearOffset = 6;
-        }
-        @Html.Partial("Shared/_CropYearDropdown")
+        @await Html.PartialAsync("Shared/_CropYearDropdown")
     </div>
     
-    <div class="col-lg-3 col-sm-3 col-xs-3">
+    <div class="col-lg-2 col-sm-2 col-xs-2">
         @{ViewBag.name = "FieldHistories["+fhEntryId+"].Crop";}
-        @Html.Partial("Shared/_CropDropdown")
+        @await Html.PartialAsync("Shared/_CropDropdown")
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list:</label>
         <input type="text" class="form-control" id="crop-not-in-list" name="FieldHistories[@fhEntryId].Variety" placeholder="Variety or Crop not in list">
     </div>
-    <div class="form-group co-md-3 col-sm-3 col-xs-3">
+    <div class="form-group co-md-4 col-sm-4 col-xs-4">
         <label for="app-num">Application #:</label>
         <input type="text" class="form-control" id="app-num" name="FieldHistories[@fhEntryId].AppNumber" placeholder="Application #">
     </div>
 </div>
-<div id="fe-entry-@nextFhEntryId"></div>
