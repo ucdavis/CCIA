@@ -12,9 +12,15 @@
         <tr>
             <td>@Model.AppViewModel.Organization.OrgId</td>
             <td>@Model.AppViewModel.Organization.OrgName</td>
-            <td>@Model.AppViewModel.Organization.Address.Address1</td>
-            <td>@Model.AppViewModel.Organization.Address.City</td>
-            <td>@Model.AppViewModel.Organization.Address.StateProvince.StateProvinceName</td>
+            @if (@Model.AppViewModel.Organization.Address != null)
+            {
+                <td>@Model.AppViewModel.Organization.Address.Address1</td>
+                <td>@Model.AppViewModel.Organization.Address.City</td>
+                @if (@Model.AppViewModel.Organization.Address.StateProvince != null)
+                {
+                    <td>@Model.AppViewModel.Organization.Address.StateProvince.StateProvinceName</td>
+                }                
+            }
         </tr>
     </tbody>
 </table>

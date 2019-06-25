@@ -1,0 +1,37 @@
+@model GrowerInfo
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Account #</th>
+            <th>Grower</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody id="organizations">
+        @if (Model.Orgs.Count == 0)
+        {
+            <p class="text-danger">No records matched your search</p>
+        }
+        @foreach (var org in Model.Orgs)
+        {
+            <tr>
+                <td><a class="btn btn-primary" href="/Application/@Model.ActionType/?orgId=@org.OrgId&appTypeId=@Model.AppTypeId">Select</a>
+                <td>@org.OrgId</td>
+                <td>@org.OrgName</td>
+                @if (org.Address != null)
+                {
+                    <td>@org.Address.Address1</td>
+                    <td>@org.Address.City</td>
+                    @if (org.Address.StateProvince != null)
+                    {
+                        <td>@org.Address.StateProvince.StateProvinceName</td>
+                    }                
+                }
+            </tr>
+        }
+    </tbody>
+</table>

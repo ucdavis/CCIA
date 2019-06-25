@@ -1,13 +1,20 @@
+@model MasterApplicationViewModel
+
 <label>Crop</label>
 @if(@ViewBag.name == "CropId") { 
     <em class="required">•</em>
 }
+@{
+    // Populating a SelectList for @Html.DropDownList -- used for closer data binding
+    string name = ViewBag.name;
+    var selectListItems = new List<SelectListItem>();
+    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
+    foreach (var crop in Model.AppViewModel.Crops)
+    {
+        selectListItems.Add(new SelectListItem { Text = crop.CropKind + " " + crop.Crop, Value = crop.CropId.ToString() } );
+    }  
+    var selectList = new SelectList(selectListItems, "Value", "Text"); 
+}
 <div class="form-group">
-    <select class="form-control" name=@ViewBag.name>
-        <option></option>
-        @foreach (var crop in Model.AppViewModel.Crops)
-        {
-            <option value=@crop.CropId>@crop.CropKind @crop.Crop</option>
-        }  
-    </select>
+    @Html.DropDownList(name, selectList, new { @class="form-control" })
 </div>
