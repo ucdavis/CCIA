@@ -19,6 +19,22 @@ html {
     font-size: 16px;
   }
 }
+.close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+.rounded-section {
+  border-radius: .8em;
+  background: #dbdbdb;
+  padding: 6px 12px 2px 12px;
+  margin-bottom: 10px;
+}
 
 .border-top {
   border-top: 1px solid #e5e5e5;
