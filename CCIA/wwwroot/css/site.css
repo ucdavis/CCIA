@@ -56,6 +56,11 @@ button.accept-policy {
   width: 100%;
 }
 
+.body-content {
+  /* To prevent absolute footer overlap */
+  margin-bottom: 60px;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -91,6 +96,8 @@ button.accept-policy {
 }
 
 .top-right-btn {
+    height: 37px;
+    width: auto;
     position: absolute;
     top: 8px;
     right: 10px;
