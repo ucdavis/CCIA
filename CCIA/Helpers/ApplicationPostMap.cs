@@ -51,5 +51,16 @@ namespace CCIA.Helpers
 
             return newApp;
         }
+
+        public static MasterApplicationViewModel CreateAppByAppType(int appTypeId)
+        {
+            switch(appTypeId)
+            {
+                case 2:
+                    return new PotatoApp();
+                default:
+                    return new SeedApp();
+            }
+        }
     }
 }
