@@ -4,7 +4,10 @@
     ViewData["Title"] = "Seed Application";
 }
 
-<h2>Application to Produce Certified Seed: @Model.AppViewModel.Organization.OrgName</h2>
+<section class="app-header">
+    <h2>Application to Produce Certified Seed</h2>
+    <h5>@Model.AppViewModel.Organization.OrgName</h5>
+</section>
 
 <div id="errors" class="text-danger">
     @Html.ValidationSummary()
@@ -16,9 +19,11 @@
 @{
     var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
     var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+    var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
 }
 @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
 @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
 
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
@@ -56,7 +61,6 @@
                 </div>
             </div>     
             @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="variety-id" name="SelectedVarietyId">
             <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
         </div>
     </div>
@@ -71,241 +75,9 @@
 
 @section Scripts {
     <script type="text/javascript">
-        const spinner_div = `<div class="text-center"><div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div></div>`
-        var form = document.getElementById("seedApplication")
-        let appTypeId = 1;
-        // The index of the next Field History entry to be added to the form
-        let fhEntryId = 0;
-        // How many total Field History entries are in the form currently
-        let fhEntryCount = 0;
-        let secondPsRendered = false;
-        let fhIndices = [0, 0, 0];
-
-        $('#seedApplication').submit (function(e) {
-            var growerId = @Model.AppViewModel.Organization.OrgId;
-            insertHiddenInput("growerId", growerId, "seedApplication");
-            
-            // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
-            // Used in order to aid server-side validation on re-rendering of form
-            insertHiddenInput("fhEntryId", fhEntryId, "seedApplication");
-
-            return true;
-        });
-
-        $('#variety-search').on('click', function(e) {
-            e.preventDefault();
-            // Display error if user tries to search for variety before selecting crop
-            let crop = document.getElementsByName("CropId")[0];
-            let cropText = crop.options[crop.selectedIndex].text;
-            let cropId = crop.options[crop.selectedIndex].value;
-            let varietyName = document.getElementById("variety").value;
-            if (cropText == "") { 
-                $("#cropAlert").modal('show');
-                return;
-            }
-
-            let data = { 
-                name: varietyName,
-                cropId: cropId
-            };
-            let vs = document.getElementById("variety-dropdown");
-            // Take text in input box and autofill input with the variety name that most closely matches it
-            $.ajax({
-                type: "GET",
-                url: "/Application/FindVariety",
-                data: data,
-                success: function(res) {
-                    vs.innerHTML = "";
-                    if (res.length === 0) {
-                        $("#varAlert").modal('show');
-                        loadFormRemainder();
-                    }
-                    res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" href="#" onclick='selectVariety(this)'
-                                        id=${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
-                    })
-                },
-                error: function(res) {
-                    alert("There was an error processing the request");
-                }
-            });
-        });
-
-        function selectVariety(e) {
-            insertHiddenInput("SelectedVarietyId", e.getAttribute("value"), "seedApplication");
-            // Reset dropdown to be spinner for next search
-            showSpinner("variety-dropdown");
-            loadFormRemainder();
-        }
-
-        function fillHiddenVarietyFields(id, variety) {
-            insertHiddenInput
-            document.getElementById("variety-id").value = id;
-            document.getElementById("ps1-variety").value = variety;
-        }
-
-        // On form submission failure, and we're returning to the page
-        if ("@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase() == "true")
-        {
-            // After successfully loading form remainder
-            // Set functionality for date time picker
-            $('#datetimepicker1').datetimepicker({
-                format: 'MM/DD/YYYY'
-            });
-
-            // Set click listener for button to add second plantingstock
-            $('#add-second-ps').on('click', addSecondPs);
-
-            // Set click listener for button to add field history records
-            $('#add-fieldhistory').on('click', (e) => {
-                addNewFieldHistory(e, appTypeId);
-            });
-        }
-
-        /* Load the rest of the form after selecting (or entering) a variety*/
-        function loadFormRemainder() {
-            let yPos = window.scrollY;
-            showSpinner("form-remainder");
-            let orgId = @Model.AppViewModel.Organization.OrgId;
-            /* If something is inside form-remainder div, clear it out */
-            $("#form-remainder")
-                .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
-                        if ( status == "error" ) {
-                            var msg = "Sorry but there was an error: ";
-                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }
-                        else {
-                            // Reset window to previous scroll position
-                            window.scroll(0, yPos);
-
-                            // Stop centering text after spinner is gone
-                            // After successfully loading form remainder
-                            // Set functionality for date time picker
-                            $('#datetimepicker1').datetimepicker({
-                                format: 'MM/DD/YYYY'
-                            });
-
-                            // Set click listener for button to add second plantingstock
-                            $('#add-second-ps').on('click', addSecondPs);
-
-                            // Set click listener for button to add field history records
-                            $('#add-fieldhistory').on('click', (e) => {
-                                addNewFieldHistory(e, appTypeId);
-                            });
-                        }
-                });
-        }
-
-        // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
-        function showSpinner(parentId) {
-            $(`#${parentId}`)[0].innerHTML = spinner_div;
-        }
-
-        /* Adds red outline to invalid text boxes on loading after failed form submission */
-        $(document).ready(() => {
-            $('.field-validation-error').parents('.form-group').addClass('has-error');
-        });
-
-        function addNewFieldHistory(e, appTypeId) {
-            e.preventDefault();
-            // Populate div with an additional field history partial
-            let orgId = @Model.AppViewModel.Organization.OrgId;
-            fhEntryId = findAvailableFhIndex();
-            if (fhEntryId == -1) {
-                return;
-            }
-            let fh_entry_div = `#fh-entry-${fhEntryId}`;
-            // Show the section
-            document.getElementById("fh-entry-"+fhEntryId).classList.remove("hidden");
-            showSpinner("fh-entry-"+fhEntryId);
-            $(fh_entry_div)
-                .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId="+orgId+"&appTypeId="+appTypeId+"&fhEntryId="+fhEntryId, (response, status, xhr) => {
-                        if ( status == "error" ) {
-                            var msg = "Sorry, there was an error loading the remainder of this form: ";
-                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }
-                        else {
-                            // Mark that id as used
-                            fhIndices[fhEntryId] = 1;
-
-                            // Click handler for removing additional field history entry
-                            document.getElementById(fhEntryId).onclick = (e) => {
-                                e.preventDefault();
-                                // Grabs ID from closest parent section -- the parent section containing the "X" button
-                                let idToRemove = parseInt(e.target.closest("button").id);
-                                // Hide the section
-                                document.getElementById("fh-entry-"+idToRemove).classList.add("hidden");
-                                // Mark this entry as unused
-                                if (fhEntryCount === 3) {
-                                    // Re-enable button to add new entry
-                                    document.getElementById("add-fieldhistory").disabled = false;
-                                }
-                                idToRemove = parseInt(e.target.closest("button").id);
-                                fhIndices[idToRemove] = 0;
-                                e.preventDefault();
-                                fhEntryCount--;
-                                removeFhEntryById(idToRemove);                              
-                            }
-                            fhEntryCount++;
-                        }
-                        // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "3"
-                        if (fhEntryCount === 3)
-                        {
-                            document.getElementById("add-fieldhistory").disabled = true;
-                        }
-                });
-        }
-
-        function findAvailableFhIndex() {
-            for (let i=0; i<fhIndices.length; i++) {
-                // 0 = free, 1 = used
-                if (fhIndices[i] === 0) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        function addSecondPs(e) {
-            e.preventDefault();
-            showSpinner("second-ps");
-            let appTypeId = 1;
-            if (secondPsRendered) {
-                return;
-            }
-            // Populate div with second planting stocks partial
-            let orgId = @Model.AppViewModel.Organization.OrgId;
-            $("#second-ps")
-                .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId="+orgId+"&appTypeId="+appTypeId, (response, status, xhr) => {
-                        if ( status == "error" ) {
-                            var msg = "Sorry, there was an error loading the remainder of this form: ";
-                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }     
-                        else {
-                            secondPsRendered = true;
-                            let addSeconPsBtn = document.getElementById("add-second-ps");
-                            addSeconPsBtn.disabled = true;
-
-                            // Click handler for removing the second planting stocks record
-                            document.getElementById("remove-ps2").onclick = (e) => {
-                                secondPsRendered = false;
-                                e.preventDefault();
-                                removeSecondPSEntry();
-                                addSeconPsBtn.disabled = false;
-                            }
-                        }           
-                });
-        }
-
-        // Removes contents of a field history section, while keeping the section tags intact
-        function removeFhEntryById(id) {
-            let fhEntrySection = `#fh-entry-${id}`;
-            $(fhEntrySection).empty();
-        }
-
-        function removeSecondPSEntry(){
-            $("#second-ps").empty();
-        }
-
+        var orgId = @Model.AppViewModel.Organization.OrgId;
+        var growerId = @Model.AppViewModel.Organization.OrgId;
+        var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
     </script>
+    <script src="~/js/seedapp.js" asp-append-version="true"></script>
 }
