@@ -10,8 +10,11 @@
     @foreach (var item in Model.ClassProducedList) 
     {
         <div class="top-margin">
-            @Html.RadioButton(name, item.ClassProducedId, new { @class = "form-check-input"} )
-            <label class="form-check-label" for="inlineRadio1">@item.ClassProducedTrans</label>
+            <label class="form-check-label radio-btn-container" for="@name-@item.ClassProducedId">
+                @Html.RadioButton(name, item.ClassProducedId, new { @class = "form-check-input checkbox", id=name+"-"+item.ClassProducedId } )
+                @item.ClassProducedTrans
+                <span class="checkmark"></span>
+            </label>
         </div>
     }
 </div>

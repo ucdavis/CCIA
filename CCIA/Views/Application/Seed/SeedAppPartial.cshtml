@@ -2,7 +2,11 @@
 
 <style>
     .form-check-label {
-        margin-right: 30px;
+        margin-right: 50px;
+    }
+
+    .form-check {
+        padding-left: 0;
     }
 </style>
 <div class="form-group">
@@ -44,7 +48,7 @@
         </div>
         <div class="form-group col-md-6">
             <label for="date-planted">Date Planted</label><em class="required">•</em>
-            <div class='input-group date' id='datetimepicker1' data-target-input>
+            <div class='input-group date' id='datetimepicker1' data-target-input="nearest">
                 @Html.TextBox("DatePlanted", "", new { @class="form-control datetimepicker-input", 
                                                                id="date-planted", 
                                                                placeholder="MM/DD/YYYY",
@@ -58,17 +62,7 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <label>County</label><em class="required">•</em>
-            <select class="form-control" name=FarmCounty>
-                <option></option>
-                @foreach (var county in Model.AppViewModel.Counties)
-                {
-                    <option value=@county.CountyId>
-                        @county.CountyName
-                    </option>
-                }
-            </select>
-            @Html.ValidationMessage("FarmCounty", "", new { @class = "text-danger" })
+            @await Html.PartialAsync("Shared/_CountyDropdown", Model.AppViewModel)
         </div>
         <div class="form-group col-md-6">
             <label for="acres-applied">Acres Applied</label><em class="required">•</em>
@@ -88,3 +82,19 @@
 <div class="text-right">
     <button type="submit" class="btn btn-primary">Continue with Application</button>
 </div>
+
+<script type="text/javascript">
+    // After successfully loading form remainder
+    // Set functionality for date time picker
+    $('#datetimepicker1').datetimepicker({
+        format: 'MM/DD/YYYY'
+    });
+
+    // Set click listener for button to add second plantingstock
+    $('#add-second-ps').on('click', addSecondPs);
+
+    // Set click listener for button to add field history records
+    $('#add-fieldhistory').on('click', (e) => {
+        addNewFieldHistory(e, appTypeId);
+    });
+</script>
