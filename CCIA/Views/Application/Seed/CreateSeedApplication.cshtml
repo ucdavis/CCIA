@@ -71,6 +71,10 @@
             <partial name="Seed/SeedAppPartial"></partial>
         }
     </div>
+
+    <!-- Hidden fields -->
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id", name="SelectedVarietyId" })
+    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id", name="SelectedVarietyId" })
 </form>
 
 @section Scripts {

@@ -138,7 +138,9 @@ namespace CCIA.Controllers
         // GET: Application/CreatePotatoApplication
         public async Task<IActionResult> CreatePotatoApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            var model = new PotatoApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
             return View("Potato/CreatePotatoApplication", model);
         }
 

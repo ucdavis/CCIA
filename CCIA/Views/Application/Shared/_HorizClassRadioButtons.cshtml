@@ -1,7 +1,16 @@
 @model ApplicationViewModel
 
+<style>
+    .classradio .form-check-label {
+        margin-right: 50px;
+    }
+
+    .classradio .form-check {
+        padding-left: 0;
+    }
+</style>
 @{ string name = ViewBag.name; }
-<div class="form-check form-check-inline">
+<div class="form-check form-check-inline classradio">
     @foreach (var item in Model.ClassProducedList) 
     {
         <label class="form-check-label radio-btn-container" for="@name-@item.ClassProducedId">

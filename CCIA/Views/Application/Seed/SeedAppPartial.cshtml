@@ -1,14 +1,4 @@
 @model CCIA.Models.SeedApp
-
-<style>
-    .form-check-label {
-        margin-right: 50px;
-    }
-
-    .form-check {
-        padding-left: 0;
-    }
-</style>
 <div class="form-group">
     <label>Class to be Produced</label><em class="required">•</em>
     @{ ViewBag.name = "ClassProducedId"; }
@@ -29,72 +19,16 @@
         {
             <partial name="Seed/_SecondPlantingStock"></partial>
         }
-        else
-        {
-            <p><em>Enter both parent lines for hybrid production.</em></p>
-        }
+        <p><em>Enter both parent lines for hybrid production.</em></p>
     </div>
     <button id="add-second-ps" class="btn btn-warning">Add a second planting stocks record</button>
 
 </section>
 
 <section id="field-info" class="rounded-section off-white">
-    <h4>Field Information</h4>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="name-num">Name/No.</label><em class="required">•</em>
-            @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num" })
-            @Html.ValidationMessageFor(m => m.FieldName, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group col-md-6">
-            <label for="date-planted">Date Planted</label><em class="required">•</em>
-            <div class='input-group date' id='datetimepicker1' data-target-input="nearest">
-                @Html.TextBox("DatePlanted", "", new { @class="form-control datetimepicker-input", 
-                                                               id="date-planted", 
-                                                               placeholder="MM/DD/YYYY",
-                                                               data_target="#datetimepicker1" })
-                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-            @Html.ValidationMessage("DatePlanted", "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            @await Html.PartialAsync("Shared/_CountyDropdown", Model.AppViewModel)
-        </div>
-        <div class="form-group col-md-6">
-            <label for="acres-applied">Acres Applied</label><em class="required">•</em>
-            @Html.TextBoxFor(m => m.AcresApplied, "", new { @class="form-control", id="acres-applied", placeholder="Acres Applied" })
-            @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="comments">Additional Information/Comments</label>
-        @Html.TextAreaFor(m => m.ApplicantComments, new { @class = "form-control", placeholder="Additional Information/Comments", rows="5" }) 
-    </div>
-
-    <partial name="Shared/_FieldHistory"></partial>
+    @await Html.PartialAsync("Shared/_FieldInformation")
 </section>
 
 <div class="text-right">
     <button type="submit" class="btn btn-primary">Continue with Application</button>
 </div>
-
-<script type="text/javascript">
-    // After successfully loading form remainder
-    // Set functionality for date time picker
-    $('#datetimepicker1').datetimepicker({
-        format: 'MM/DD/YYYY'
-    });
-
-    // Set click listener for button to add second plantingstock
-    $('#add-second-ps').on('click', addSecondPs);
-
-    // Set click listener for button to add field history records
-    $('#add-fieldhistory').on('click', (e) => {
-        addNewFieldHistory(e, appTypeId);
-    });
-</script>
