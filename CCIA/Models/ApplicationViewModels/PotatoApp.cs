@@ -5,6 +5,7 @@ namespace CCIA.Models
 {
     public class PotatoApp : MasterApplicationViewModel 
     {
+        public override ApplicationViewModel AppViewModel { get; set; }
         public List<SeedPlantingStocks> PlantingStocks { get; set; }
     }
 

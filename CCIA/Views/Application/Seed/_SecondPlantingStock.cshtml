@@ -67,11 +67,5 @@
             </div>
         </div>
     </div>
+    @Html.TextBox("PlantingStocks[1].OfficialVarietyId", "", new { type="hidden", id="ps2-variety-id", name="SelectedVarietyId" })
 </section>
-<script type="text/javascript">
-    // Click listener for first variety search button
-    $('#ps2-variety-search').on('click', function(e) {
-        e.preventDefault();
-        searchVarieties("ps2-variety-dropdown", "ps2-variety", "selectPs2Variety");
-    });
-</script>

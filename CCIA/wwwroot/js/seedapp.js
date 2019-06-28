@@ -8,6 +8,20 @@ let fhEntryCount = 0;
 let secondPsRendered = false;
 let fhIndices = [0, 0, 0];
 
+// After successfully loading form remainder
+// Set functionality for date time picker
+$('#datetimepicker1').datetimepicker({
+    format: 'MM/DD/YYYY'
+});
+
+// Set click listener for button to add second plantingstock
+$('#add-second-ps').on('click', addSecondPs);
+
+// Set click listener for button to add field history records
+$('#add-fieldhistory').on('click', (e) => {
+    addNewFieldHistory(e, appTypeId);
+});
+
 $('#seedApplication').submit (function(e) {
     insertHiddenInput("growerId", growerId, "seedApplication");
     
@@ -26,19 +40,19 @@ $('#variety-search').on('click', function(e) {
 
 // Called when clicking a variety name in the first variety dropdown
 function selectVariety(e) {
-    insertHiddenInput("SelectedVarietyId", e.getAttribute("value"), "seedApplication");
-    document.getElementById("variety").value = e.innerHTML;
+    // Set hidden input of variety id from selected variety
+    document.getElementById("variety-id").value = e.getAttribute("value");
+    // Set variety input text to be the selected variety from dropdown
+    document.getElementById("variety").value = e.innerText;
 
     // Reset dropdown to be spinner for next search
     showSpinner("variety-dropdown");
-
-    loadFormRemainder(e.getAttribute("value"), e.getAttribute("innerText"));
+    loadFormRemainder(e.getAttribute("value"), e.innerText);
 }
 
 // Called when clicking a variety name in the second planting stock variety dropdown
 function selectPs2Variety(e) {
-    // Add hidden input of selected variety's id
-    insertHiddenInput("PlantingStocks[1].OfficialVarietyId", e.getAttribute("value"), "seedApplication");
+    // Set hidden input of selected variety's id
     document.getElementById("ps2-variety").value = e.innerHTML;
 }
 
@@ -54,9 +68,9 @@ function loadFormRemainder(varietyId, varietyName) {
                 }
                 else {
                     // Set text in planting stock 1's variety to be what we selected above
-                    document.getElementById("ps1-variety").value = document.getElementById("variety").value;
-                    // Create hidden input for planting stock 1's variety id
-                    insertHiddenInput("PlantingStocks[0].OfficialVarietyId", varietyId, "seedApplication");
+                    document.getElementById("ps1-variety").value = varietyName;
+                    // Set hidden input for planting stock 1's variety id
+                    document.getElementById("ps1-variety-id").value = varietyId;
                 }
         });
 }
@@ -106,7 +120,6 @@ function addNewFieldHistory(e, appTypeId) {
                         }
                         idToRemove = parseInt(e.target.closest("button").id);
                         fhIndices[idToRemove] = 0;
-                        e.preventDefault();
                         fhEntryCount--;
                         removeFhEntryById(idToRemove);                              
                     }
@@ -145,6 +158,12 @@ function addSecondPs(e) {
                     $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                 }     
                 else {
+                    // Click listener for first variety search button
+                    $('#ps2-variety-search').on('click', function(e) {
+                        e.preventDefault();
+                        searchVarieties("ps2-variety-dropdown", "ps2-variety", "selectPs2Variety");
+                    });
+
                     secondPsRendered = true;
                     let addSeconPsBtn = document.getElementById("add-second-ps");
                     addSeconPsBtn.disabled = true;

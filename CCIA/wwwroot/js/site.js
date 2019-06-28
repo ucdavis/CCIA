@@ -41,7 +41,10 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
             vs.innerHTML = "";
             if (res.length === 0) {
                 $("#varAlert").modal('show');
-                loadFormRemainder();
+                // If this is the first variety, then load the rest of the form.
+                if (varietyInputId == "variety") {
+                    loadFormRemainder(-1, varietyName);
+                }
             }
             // Populate dropdown with list of varieties
             res.forEach((el) => {
@@ -50,7 +53,6 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
             })
         },
         error: function(res) {
-            console.log(res);
             alert("There was an error processing the request");
         }
     });

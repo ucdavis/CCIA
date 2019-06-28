@@ -6,7 +6,6 @@
 @{
     string name = ViewBag.name;
     var selectListItems = new List<SelectListItem>();
-    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
     @for (int i = 0; i <= ViewBag.endYearOffset; i++)
     {
         int year = DateTime.Now.Year + ViewBag.startYearOffset - i;

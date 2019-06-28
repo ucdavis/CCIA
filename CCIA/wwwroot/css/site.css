@@ -161,12 +161,13 @@ button.accept-policy {
 
 /* Create a custom radio button */
 .checkmark {
+  border: 1px solid #ced4da;
   position: absolute;
   top: 0;
   left: 0;
   height: 25px;
   width: 25px;
-  background-color: #eee;
+  background-color: #fff;
   border-radius: 50%;
 }
 
@@ -204,10 +205,6 @@ button.accept-policy {
   background: white;
 }
 
-
-
-
-
 /* QR code generator */
 #qrCode {
     margin: 15px;
@@ -225,7 +222,6 @@ button.accept-policy {
 
 .btn-secondary{
     border:1px solid #ccc !important;
-    background:#fff
 }
 
 .circular{

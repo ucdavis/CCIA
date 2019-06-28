@@ -1,0 +1,17 @@
+@{ 
+    string name = ViewData["binRadioBtnName"].ToString();
+    dynamic[] options = new dynamic[] {
+        new {label = "Yes", val = "true"},
+        new {label = "No", val = "false"}
+    }; 
+}
+<div class="form-check form-check-inline">
+    @for(int i=0; i<options.Length; i++)
+    {
+        <label class="form-check-label radio-btn-container" for='@ViewData["binRadioBtnName"]-@options[i].label'>
+            @Html.RadioButton(name, "@option", new { @class = "form-check-input checkbox", id=name+"-"+options[i].label } )
+            @options[i].label
+            <span class="checkmark"></span>
+        </label>
+    }
+</div>

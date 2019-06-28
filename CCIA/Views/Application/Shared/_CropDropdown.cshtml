@@ -8,7 +8,6 @@
     // Populating a SelectList for @Html.DropDownList -- used for closer data binding
     string name = ViewBag.name;
     var selectListItems = new List<SelectListItem>();
-    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
     foreach (var crop in Model.AppViewModel.Crops)
     {
         selectListItems.Add(new SelectListItem { Text = crop.CropKind + " " + crop.Crop, Value = crop.CropId.ToString() } );
