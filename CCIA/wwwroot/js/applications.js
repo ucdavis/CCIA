@@ -1,3 +1,7 @@
+//////////////////////
+// Global variables //
+//////////////////////
+
 const spinner_div = `<div class="text-center"><div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div></div>`
 var form = document.getElementById("seedApplication")
 let appTypeId = 1;
@@ -8,10 +12,13 @@ let fhEntryCount = 0;
 let secondPsRendered = false;
 let fhIndices = [0, 0, 0];
 
-// After successfully loading form remainder
-// Set functionality for date time picker
-$('#datetimepicker1').datetimepicker({
-    format: 'MM/DD/YYYY'
+////////////////////
+// Event handlers //
+////////////////////
+
+/* Adds red outline to invalid text boxes on loading after failed form submission */
+$(document).ready(() => {
+    $('.field-validation-error').parents('.form-group').addClass('has-error');
 });
 
 // Set click listener for button to add second plantingstock
@@ -22,38 +29,16 @@ $('#add-fieldhistory').on('click', (e) => {
     addNewFieldHistory(e, appTypeId);
 });
 
-$('#seedApplication').submit (function(e) {
-    insertHiddenInput("growerId", growerId, "seedApplication");
-    
-    // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
-    // Used in order to aid server-side validation on re-rendering of form
-    insertHiddenInput("fhEntryId", fhEntryId, "seedApplication");
 
-    return true;
-});
+///////////////////////////
+// General-Use Functions //
+///////////////////////////
 
-// Click listener for first variety search button
-$('#variety-search').on('click', function(e) {
-    e.preventDefault();
-    searchVarieties("variety-dropdown", "variety", "selectVariety");
-});
-
-// Called when clicking a variety name in the first variety dropdown
-function selectVariety(e) {
+function fillVarietyNameAndId(varietyNameInput, varietyIdInput, varietyId, varietyName) {
     // Set hidden input of variety id from selected variety
-    document.getElementById("variety-id").value = e.getAttribute("value");
+    document.getElementById(varietyIdInput).value = varietyId;
     // Set variety input text to be the selected variety from dropdown
-    document.getElementById("variety").value = e.innerText;
-
-    // Reset dropdown to be spinner for next search
-    showSpinner("variety-dropdown");
-    loadFormRemainder(e.getAttribute("value"), e.innerText);
-}
-
-// Called when clicking a variety name in the second planting stock variety dropdown
-function selectPs2Variety(e) {
-    // Set hidden input of selected variety's id
-    document.getElementById("ps2-variety").value = e.innerHTML;
+    document.getElementById(varietyNameInput).value = varietyName;
 }
 
 /* Load the rest of the form after selecting (or entering) a variety*/
@@ -66,13 +51,69 @@ function loadFormRemainder(varietyId, varietyName) {
                     var msg = "Sorry, the following error occurred while loading the remainder of the form: ";
                     $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                 }
-                else {
-                    // Set text in planting stock 1's variety to be what we selected above
-                    document.getElementById("ps1-variety").value = varietyName;
-                    // Set hidden input for planting stock 1's variety id
-                    document.getElementById("ps1-variety-id").value = varietyId;
+                else {                    
+                    // Planting Stock 1 Variety
+                    fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
                 }
         });
+}
+
+function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
+    // Display error if user tries to search for variety before selecting crop
+    let crop = document.getElementsByName("CropId")[0];
+    let cropText = crop.options[crop.selectedIndex].text;
+    let cropId = crop.options[crop.selectedIndex].value;
+    if (cropText === "") { 
+        $("#cropAlert").modal('show');
+        return;
+    }
+
+    let varietyName = document.getElementById(varietyInputId).value;
+    if (varietyName === "") {
+        $("#emptyVarAlert").modal('show');
+        return;
+    }
+
+    let data = { 
+        name: varietyName,
+        cropId: cropId
+    };
+    let vs = document.getElementById(dropdownId);
+    // Take text in input box and autofill input with the variety name that most closely matches it
+    $.ajax({
+        type: "GET",
+        url: "/Application/FindVariety",
+        data: data,
+        success: function(res) {
+            vs.innerHTML = "";
+            // No varieties were found
+            if (res.length === 0) {
+                $("#varAlert").modal('show');
+                // If this is the first variety, then load the rest of the form.
+                window[ selectVarietyCallback ](-1, varietyName);
+            }
+            // Populate dropdown with list of varieties
+            res.forEach((el) => {
+                vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
+                document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
+                    window [ selectVarietyCallback ](el.varOffId, el.varOffName); 
+                });
+            })
+        },
+        error: function(res) {
+            alert("There was an error processing the request");
+        }
+    });
+}
+
+// Called when clicking a variety name in the first variety dropdown
+function selectVariety(varietyId, varietyName) {
+
+    // Reset dropdown to be spinner for next search
+    showSpinner("variety-dropdown");
+    if (document.getElementById("form-remainder")!== undefined) {
+        loadFormRemainder(varietyId, varietyName);
+    }
 }
 
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
@@ -80,10 +121,10 @@ function showSpinner(parentId) {
     $(`#${parentId}`)[0].innerHTML = spinner_div;
 }
 
-/* Adds red outline to invalid text boxes on loading after failed form submission */
-$(document).ready(() => {
-    $('.field-validation-error').parents('.form-group').addClass('has-error');
-});
+
+/////////////////////////////
+// Field History Functions //
+/////////////////////////////
 
 function addNewFieldHistory(e, appTypeId) {
     e.preventDefault();
@@ -143,6 +184,17 @@ function findAvailableFhIndex() {
     return -1;
 }
 
+// Removes contents of a field history section, while keeping the section tags intact
+function removeFhEntryById(id) {
+    let fhEntrySection = `#fh-entry-${id}`;
+    $(fhEntrySection).empty();
+}
+
+
+//////////////////////////////
+// Planting Stock Functions //
+//////////////////////////////
+
 function addSecondPs(e) {
     e.preventDefault();
     showSpinner("second-ps");
@@ -158,31 +210,25 @@ function addSecondPs(e) {
                     $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
                 }     
                 else {
-                    // Click listener for first variety search button
+                    // Click listener for ps2 variety search button
                     $('#ps2-variety-search').on('click', function(e) {
                         e.preventDefault();
                         searchVarieties("ps2-variety-dropdown", "ps2-variety", "selectPs2Variety");
                     });
 
                     secondPsRendered = true;
-                    let addSeconPsBtn = document.getElementById("add-second-ps");
-                    addSeconPsBtn.disabled = true;
+                    let addSecondPsBtn = document.getElementById("add-second-ps");
+                    addSecondPsBtn.disabled = true;
 
                     // Click handler for removing the second planting stocks record
                     document.getElementById("remove-ps2").onclick = (e) => {
                         secondPsRendered = false;
                         e.preventDefault();
                         removeSecondPSEntry();
-                        addSeconPsBtn.disabled = false;
+                        addSecondPsBtn.disabled = false;
                     }
                 }           
         });
-}
-
-// Removes contents of a field history section, while keeping the section tags intact
-function removeFhEntryById(id) {
-    let fhEntrySection = `#fh-entry-${id}`;
-    $(fhEntrySection).empty();
 }
 
 function removeSecondPSEntry(){
