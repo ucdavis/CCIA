@@ -138,6 +138,23 @@ namespace CCIA.Models
             return Variety == null ? "" : Variety.Name;
         }
 
+        public string CertResults()
+        {
+            if(NotFinallyCertified)
+            {
+                return "REJECTED - LOT 'Not Finally Certified'";
+            }
+            if(LabResults.PurityResults == "P" && LabResults.GermResults == "P" && (LabResults.AssayResults == "P" || LabResults.AssayResults == "N"))
+            {
+                return "PASSED";
+            }
+            if(LabResults.PurityResults == "S" || LabResults.GermResults == "S" || LabResults.AssayResults == "S")
+            {
+                return "Passed - Substandard";
+            }
+            return "REJECTED";
+        }
+
 
 
 

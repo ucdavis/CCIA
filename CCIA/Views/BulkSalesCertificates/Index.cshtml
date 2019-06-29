@@ -10,8 +10,7 @@
 
 <div class="col-lg-1">
     <table id="table" class="table">
-        <thead> 
-        <th></th>        
+        <thead>        
         <th>Cert#</th>
         <th>ID</th>
         <th>Id Type</th>
@@ -27,8 +26,7 @@
         
             @foreach (var bsc in Model.bulkSalesCertificates)
             {
-            <tr>
-               <td><a asp-action="Details" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Details</a></td>
+            <tr>               
                 <td>@bsc.Id</td>
                 <td>@bsc.LinkId</td>
                 <td>@bsc.IdType</td>
@@ -38,7 +36,7 @@
                 <td>@bsc.Date</td>
                 <td>Link to share page</td>
                 <td> @Html.Encode(String.Join(", ", bsc.BulkSalesCertificatesShares.Select(s => s.ShareOrganizationId)))</td>
-                <td><a asp-action="Details" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Certificate</a></td>
+                <td><a asp-action="Certificate" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Certificate</a></td>
             </tr>
             }
         </tbody>

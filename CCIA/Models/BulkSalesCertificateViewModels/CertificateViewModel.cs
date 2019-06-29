@@ -17,7 +17,9 @@ namespace CCIA.Models.CertificateViewModel
        
 
         public static async Task<CertificateViewModel> Create(CCIAContext _dbContext, int id, int orgId)
-        {           
+        {
+            var programId = await _dbContext.BulkSalesCertificates.Include(b => b.CertProgram).Where(b => b.Id == id).Select(b => b.CertProgram.AppTypeId).SingleAsync();
+            var classes = await _dbContext.AbbrevClassSeeds.Where(s => s.Program == programId).ToListAsync();
             var viewModel = new CertificateViewModel
             {
                 BulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
@@ -26,6 +28,8 @@ namespace CCIA.Models.CertificateViewModel
                 .Include(b => b.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.LabResults)
                 .Include(b => b.ConditionerOrganization)
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)
@@ -51,7 +55,8 @@ namespace CCIA.Models.CertificateViewModel
                 .Include(t => t.Blend)
                 .ThenInclude(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
-                .SingleAsync()
+                .SingleAsync(),
+                Classes = classes,
             };
 
             return viewModel;

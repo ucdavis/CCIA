@@ -27,7 +27,9 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public BlendRequests Blend { get; set; }
 
-        public string CertProgram { get; set; }
+        public string CertProgramAbbreviation { get; set; }
+        [ForeignKey("CertProgramAbbreviation")]
+        public AbbrevAppType CertProgram { get; set; }
 
         [DisplayName("Purchaser Name")]
         public string PurchaserName { get; set; }
@@ -196,6 +198,22 @@ namespace CCIA.Models
                     return "Blend";
                 }
                 return "";
+            }
+        }
+
+        public string CertResults
+        {
+            get
+            {
+                if(SeedsID.HasValue)
+                {
+                    return Seeds.CertResults();
+                }
+                if(BlendId.HasValue)
+                {
+                    return "Passed";
+                }
+                return "ReJECTED";
             }
         }
 

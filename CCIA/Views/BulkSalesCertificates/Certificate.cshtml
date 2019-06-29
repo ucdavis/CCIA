@@ -87,8 +87,10 @@
                         <td>@Model.BulkSalesCertificate.Pounds</td>
                     </tr>
                     <tr><td colspan="5">
-                        <asp:CheckBoxList ID="CheckBoxList1" runat="server" DataSourceID="sdsClasses" DataTextField="class_certified_trans" DataValueField="class_certified_id" Enabled="False" RepeatDirection="Horizontal" TextAlign="Left" Width="100%" SelectedValue='<%# Bind("class") %>'>
-                        </asp:CheckBoxList>
+                        @foreach (var seedClass in Model.Classes)
+                        {                            
+                            <input type="checkbox" name="ClassId" value="@seedClass.Id" @(seedClass.Id == Model.BulkSalesCertificate.ClassId ? "checked" : "") /> @seedClass.CertClass 
+                        }                       
                         </td>
                     </tr>
                     <tr>
@@ -98,7 +100,7 @@
                     </tr>
                     <tr>
                         <td colspan="5">
-                            Remarks:
+                            Remarks: @Model.BulkSalesCertificate.CertResults
                             <asp:Label ID="Label18" runat="server" CssClass="labelnoline" Text='<%# Eval("remarks") %>'></asp:Label><br />
                             <asp:Label ID="Label19" runat="server" CssClass="labelnoline" Text='<%# Eval("assay_remarks") %>'></asp:Label><br />
                             <asp:Label ID="Label7" runat="server" CssClass="labelnoline" Text='<%# Eval("sample_comments") %>'></asp:Label></td>

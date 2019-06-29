@@ -69,12 +69,12 @@ namespace CCIA.Controllers
                 {
                     newBulkSalesCertificate.SeedsID = model.textId;
                     var seed = await _dbContext.Seeds.Where(s => s.Id == model.textId).SingleAsync();
-                    newBulkSalesCertificate.CertProgram = seed.CertProgram;
+                    newBulkSalesCertificate.CertProgramAbbreviation = seed.CertProgram;
                 }
                 else
                 {
                     newBulkSalesCertificate.BlendId = model.textId;
-                    newBulkSalesCertificate.CertProgram = "Blend";
+                    newBulkSalesCertificate.CertProgramAbbreviation = "Blend";
                 }
                 newBulkSalesCertificate.PurchaserName = model.BulkSalesCertificate.PurchaserName;
                 newBulkSalesCertificate.PurchaserAddressLine1 = model.BulkSalesCertificate.PurchaserAddressLine1;

@@ -549,7 +549,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BlendId).HasColumnName("bid");
 
-                entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+                entity.Property(e => e.CertProgramAbbreviation).HasColumnName("cert_program");
 
                 entity.Property(e => e.PurchaserName).HasColumnName("purch_name");
 
@@ -601,6 +601,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.AdminEmployee);
 
                 entity.HasMany(e => e.BulkSalesCertificatesShares);
+
+                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificates).HasForeignKey(e => e.CertProgramAbbreviation).HasPrincipalKey(a => a.Abbreviation);
 
             });
 
