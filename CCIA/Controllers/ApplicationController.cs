@@ -150,28 +150,6 @@ namespace CCIA.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Remove invalid fieldhistories
-                List<FieldHistory> newFieldHistories = new List<FieldHistory>();
-                foreach (var fh in potatoApp.FieldHistories)
-                {
-                    if (fh.Year != 0 && fh.Crop != null)
-                    {
-                        newFieldHistories.Add(fh);
-                    }
-                }
-                potatoApp.FieldHistories = newFieldHistories;
-
-                // Remove invalid plantingstocks
-                List<SeedPlantingStocks> newPlantingStocks = new List<SeedPlantingStocks>();
-                foreach (var ps in potatoApp.PlantingStocks)
-                {
-                    if (ps.PoundsPlanted != null || ps.PsCertNum != null || ps.PsClass != null)
-                    {
-                        newPlantingStocks.Add(ps);
-                    }
-                }
-                potatoApp.PlantingStocks = newPlantingStocks;
-
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
@@ -188,19 +166,26 @@ namespace CCIA.Controllers
                     ps.AppId = app.Id;
                 }
 
-                foreach (FieldHistory fh in app.FieldHistories)
+                if (app.FieldHistories != null)
                 {
-                    fh.AppId = app.Id;
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
                 }
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var model = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.SEED);
-            model.RenderFormRemainder = true;
-
-            return View("Seed/CreatepotatoApplication", model);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.SEED);
+            if (SecondPlantingStockErrors())
+            {
+                appViewModel.RenderSecondPlantingStock = true;
+            }
+            appViewModel.RenderFormRemainder = true;
+            potatoApp.AppViewModel = appViewModel;
+            return View("Potato/CreatePotatoApplication", potatoApp);
         }
 
         // GET: Application/CreateHeritageGrainApplication

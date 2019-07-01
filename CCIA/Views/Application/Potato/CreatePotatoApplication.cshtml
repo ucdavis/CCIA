@@ -9,6 +9,10 @@
     <h5>@Model.AppViewModel.Organization.OrgName</h5>
 </section>
 
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
 @await Html.PartialAsync("Shared/_GrowerInfoTable")
 
 <!-- Alert dialog modals -->
@@ -108,35 +112,17 @@
     </div>
 
     <!-- Hidden fields -->
-    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id", name="SelectedVarietyId" })
-    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id", name="SelectedVarietyId" })
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
+    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
+    @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
 </form>
 
 @section Scripts {
     <script type="text/javascript">
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
-
-        $("#potatoApplication").submit(function(e) {
-            var growerId = @Model.AppViewModel.Organization.OrgId;
-
-            insertHiddenInput("growerId", growerId, "#potatoApplication");
-            insertHiddenInput("Crop", 2, "#potatoApplication");
-            return true;
-        });
     </script>
-    <script type="text/javascript" src="~/js/applications.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        // Set search variety click listener
-        $('#variety-search').on('click', () => {
-            searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder")
-        });
-
-        function selectFirstVariety(varietyId, varietyName) {
-            // Original variety
-            fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-            // Planting Stock 1 Variety
-            fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
-        }
-    </script>
+    <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/applications/potato.js" asp-append-version="true"></script>
 }
