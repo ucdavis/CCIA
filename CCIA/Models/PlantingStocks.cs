@@ -12,7 +12,7 @@ namespace CCIA.Models
 
         [Required]
         public string PsCertNum { get; set; }
-        public string PsEnteredVariety { get; set; }
+        public virtual string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }
 
         [Required]

@@ -285,9 +285,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.StateId).HasColumnName("cust_state_id");
 
-                entity.Property(e => e.County).HasColumnName("cust_county");
+                entity.Property(e => e.CountyId).HasColumnName("cust_county");
 
-                entity.Property(e => e.Country).HasColumnName("cust_country");
+                entity.Property(e => e.CountryId).HasColumnName("cust_country");
 
                 entity.Property(e => e.Zip).HasColumnName("cust_zip");
 
