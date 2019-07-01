@@ -15,8 +15,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group required has-feedback">
                 <label asp-for="BulkSalesCertificate.Date" class="control-label"></label>
-                <input asp-for="BulkSalesCertificate.Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />               
-                <span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>                
+                <div class="input-group mb-3">
+                    <input asp-for="BulkSalesCertificate.Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />  
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>
+                </div>               
                 <span asp-validation-for="BulkSalesCertificate.Date" class="text-danger"></span>
             </div>
             <div class="form-group required">
