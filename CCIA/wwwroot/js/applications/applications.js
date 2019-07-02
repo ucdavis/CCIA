@@ -121,9 +121,9 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
 function selectFirstVarietyFormRemainder(varietyId, varietyName) {
     // Original variety
     fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
+    loadFormRemainder(varietyId, varietyName);
     // Planting Stock 1 Variety
     fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
-    loadFormRemainder(varietyId, varietyName);
 }
 
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
