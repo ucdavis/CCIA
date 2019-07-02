@@ -254,8 +254,8 @@ namespace CCIA.Controllers
                     Address1 = o.Address.Address1,
                     Address2 = o.Address.Address2,
                     City = o.Address.City,
-                    StateId = o.Address.StateProvinceId,
-                    CountryId = o.Address.CountryId,
+                    StateId = o.Address.StateProvinceId.Value,
+                    CountryId = o.Address.CountryId.Value,
                     Zip = o.Address.PostalCode,
                     Phone = o.Phone,
                     Email = o.Email

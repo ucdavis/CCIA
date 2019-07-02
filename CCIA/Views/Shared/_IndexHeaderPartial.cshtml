@@ -3,18 +3,20 @@
 
 
 <form method="get" class="form-inline">
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
             <h2>@Model.PageTitle</h2>
         </div>
-        <div class="panel-body">            
+        <div class="card-body">
+            <div class="form-row">
             <div class="form-group">
                 <label for="CertYear">@Model.DropDownText</label>
                 <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, Model.CertYear))"></select>
             </div>
-            <div class="form-group">               
-                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> <input type="submit" value="Update Table" class="btn btn-primary" />                
-            </div>            
+            <div class="form-group"> 
+                <i class="fa fa-refresh"></i><input type="submit" value="Update Table" class="btn btn-primary">                                           
+            </div> 
+            </div>
         </div>
-    </div>
+    </div>    
 </form>

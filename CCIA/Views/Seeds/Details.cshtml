@@ -11,79 +11,79 @@
             </div>
             <div class="form-group row">
                 <label asp-for="seed.Id" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Id)
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.CertProgram" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.AppTypeTrans.AppTypeTrans)
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.CertYear" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.CertYear)
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.ApplicantOrganization.OrgName" class="col-sm-3 col-form-label">Conditioner</label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.ConditionerOrganization.OrgName)
                 </div>
             </div>  
             <div class="form-group row">
                 <label asp-for="seed.ApplicantOrganization.OrgName" class="col-sm-3 col-form-label">Applicant</label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.ApplicantOrganization.OrgName)
                 </div>
             </div>   
             <div class="form-group row">
                 <label asp-for="seed.Variety.Crop.Name" class="col-sm-3 col-form-label">Crop</label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Variety.Crop.Name)
                 </div>
             </div>   
             <div class="form-group row">
                 <label asp-for="seed.Variety.Name" class="col-sm-3 col-form-label">Variety</label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Variety.Name)
                 </div>
             </div>  
             <div class="form-group row">
                 <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
                 </div>
             </div>  
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Cert #</label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Model.seed.CertNumber()
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.LotNumber)
                 </div>
             </div> 
             <div class="form-group row">
                 <label asp-for="seed.PoundsLot" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.PoundsLot)
                 </div>
             </div> 
                 <div class="form-group row">
                 <label asp-for="seed.Remarks" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Remarks)
                 </div>
             </div> 
                 <div class="form-group row">
                 <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9">
+                <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Status)
                 </div>
             </div>                
