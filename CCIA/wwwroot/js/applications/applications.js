@@ -29,6 +29,14 @@ $('#add-fieldhistory').on('click', (e) => {
     addNewFieldHistory(e, appTypeId);
 });
 
+// Click handler for removing the second planting stocks record
+document.getElementById("remove-ps2").onclick = (e) => {
+    secondPsRendered = false;
+    e.preventDefault();
+    removeSecondPSEntry();
+    document.getElementById("add-second-ps").disabled = false;
+}
+
 
 ///////////////////////////
 // General-Use Functions //
