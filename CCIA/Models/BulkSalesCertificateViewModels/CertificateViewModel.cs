@@ -13,6 +13,8 @@ namespace CCIA.Models.CertificateViewModel
         public BulkSalesCertificates BulkSalesCertificate { get; set; }
 
         public List<AbbrevClassSeeds> Classes { get; set; }
+
+        public string StandardsMessage { get; set; }
        
        
 
@@ -20,6 +22,8 @@ namespace CCIA.Models.CertificateViewModel
         {
             var programId = await _dbContext.BulkSalesCertificates.Include(b => b.CertProgram).Where(b => b.Id == id).Select(b => b.CertProgram.AppTypeId).SingleAsync();
             var classes = await _dbContext.AbbrevClassSeeds.Where(s => s.Program == programId).ToListAsync();
+            var sid = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id).Select(b => b.SeedsID).SingleAsync();
+            var query = await _dbContext.Seeds.Where(x => x.Id == sid.Value).Select(d => CCIAContext.GetStandardsMessage(d.Id)).FirstOrDefaultAsync();
             var viewModel = new CertificateViewModel
             {
                 BulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
@@ -57,6 +61,7 @@ namespace CCIA.Models.CertificateViewModel
                 .ThenInclude(v => v.Crop)
                 .SingleAsync(),
                 Classes = classes,
+                StandardsMessage = query,
             };
 
             return viewModel;

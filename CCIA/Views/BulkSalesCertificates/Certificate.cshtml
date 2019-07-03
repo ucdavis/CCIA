@@ -87,20 +87,26 @@
                         <td>@Model.BulkSalesCertificate.Pounds</td>
                     </tr>
                     <tr><td colspan="5">
-                        @foreach (var seedClass in Model.Classes)
-                        {                            
-                            <input type="checkbox" name="ClassId" value="@seedClass.Id" @(seedClass.Id == Model.BulkSalesCertificate.ClassId ? "checked" : "") /> @seedClass.CertClass 
-                        }                       
+                        <table class="table" width="100%">
+                            <tr>
+                                @foreach (var seedClass in Model.Classes)
+                                {   
+                                    <td>                         
+                                        <input type="checkbox" name="ClassId" value="@seedClass.Id" @(seedClass.Id == Model.BulkSalesCertificate.ClassId ? "checked" : "") /> @seedClass.CertClass 
+                                    </td>
+                                }
+                            </tr>
+                        <table>                       
                         </td>
                     </tr>
                     <tr>
                        <td colspan="5">
-                           Seed Certification Results: <asp:Label ID="Label3" runat="server" Text='<%# Bind("cert_results") %>' />
+                           Seed Certification Results: @Model.BulkSalesCertificate.CertResults
                        </td> 
                     </tr>
                     <tr>
                         <td colspan="5">
-                            Remarks: @Model.BulkSalesCertificate.CertResults
+                            Remarks: @Model.StandardsMessage
                             <asp:Label ID="Label18" runat="server" CssClass="labelnoline" Text='<%# Eval("remarks") %>'></asp:Label><br />
                             <asp:Label ID="Label19" runat="server" CssClass="labelnoline" Text='<%# Eval("assay_remarks") %>'></asp:Label><br />
                             <asp:Label ID="Label7" runat="server" CssClass="labelnoline" Text='<%# Eval("sample_comments") %>'></asp:Label></td>
