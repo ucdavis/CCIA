@@ -1,0 +1,63 @@
+@model CCIA.Models.BulkSalesCertificates
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Blend Details</h2>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Date" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Date)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="IdType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.IdType)
+                </div>
+            </div>           
+            <div class="form-group row">
+                <label asp-for="LinkId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LinkId)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Program" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Program)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Pounds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Pounds)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CropName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CropName)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            Form to add new share
+        </div>
+    </div>
+</div>

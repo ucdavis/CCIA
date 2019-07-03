@@ -118,6 +118,22 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        public async Task<ActionResult> Share(int id)
+        {
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var model = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)               
+                .Include(b => b.PurchaserState)
+                .Include(b => b.PurchaserCountry)
+                .Include(b => b.BulkSalesCertificatesShares)               
+                .SingleAsync();
+            return View(model);
+        }
+
 
 
         [HttpGet]

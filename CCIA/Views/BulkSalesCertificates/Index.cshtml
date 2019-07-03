@@ -8,7 +8,7 @@
 
 @await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
-<div class="col-lg-1">
+<div class="col-lg-12">
     <table id="table" class="table">
         <thead>        
         <th>Cert#</th>
@@ -33,12 +33,15 @@
                 <td>@bsc.PurchaserName</td>               
                 <td>@bsc.Pounds</td>
                 <td>@bsc.Class.CertClass</td>
-                <td>@bsc.Date</td>
-                <td>Link to share page</td>
+                <td>@bsc.Date.ToShortDateString()</td>
+                <td><a asp-action="Share" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Share</a></td>
                 <td> @Html.Encode(String.Join(", ", bsc.BulkSalesCertificatesShares.Select(s => s.ShareOrganizationId)))</td>
                 <td><a asp-action="Certificate" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Certificate</a></td>
             </tr>
             }
         </tbody>
     </table>
+    <p>Once created, you will be able to view and print your certificates, but must contact CCIA staff to make any edits.</p>
+
+<p>* Certificates can be shared by Org ID so companies may see certificates belonging to other companies. Most often this is so conditioners can see their client's certificates. Only the company that created the certificate may add shares.</p>
 </div>
