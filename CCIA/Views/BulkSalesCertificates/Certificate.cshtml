@@ -106,13 +106,13 @@
                     </tr>
                     <tr>
                         <td colspan="5">
-                            Remarks: @Model.StandardsMessage
-                            <asp:Label ID="Label18" runat="server" CssClass="labelnoline" Text='<%# Eval("remarks") %>'></asp:Label><br />
-                            <asp:Label ID="Label19" runat="server" CssClass="labelnoline" Text='<%# Eval("assay_remarks") %>'></asp:Label><br />
-                            <asp:Label ID="Label7" runat="server" CssClass="labelnoline" Text='<%# Eval("sample_comments") %>'></asp:Label></td>
+                            Remarks: @Model.StandardsMessage<br/>
+                            @Model.AssayMessage<br/>
+                            @Model.BulkSalesCertificate.Seeds.LabResults.SampleComments
+                        </td>
                     </tr>
                     <tr style="height: 50px">
-                        <td colspan="2" class="underline" style="text-align: center"><%# Eval("contact_full_name") %></td>
+                        <td colspan="2" class="underline" style="text-align: center">@Model.BulkSalesCertificate.CreatedByContact.FullName()</td>
                         <td></td>
                         <td colspan="2" class="underline">&nbsp;</td>
                     </tr>
@@ -123,24 +123,24 @@
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td><asp:Label ID="addressLine1Label" runat="server" Text='<%# Bind("addressLine1") %>' />
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Address.Address1
                             <br/>
-                            <asp:Label ID="addressLine2Label" runat="server" Text='<%# Bind("addressLine2") %>' />
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.Address2
                         </td>
                         <td></td>
                         <td>City, State, Zip:</td>
                         <td nowrap="true">
-                            <asp:Label ID="cityLabel" runat="server" Text='<%# Bind("city") %>' />, 
-                            <asp:Label ID="orgStateNameLabel" runat="server" Text='<%# Bind("org_state_name") %>' /> 
-                            <asp:Label ID="postalCodeLabel" runat="server" Text='<%# Bind("postalCode") %>' /><br/>
-                        <asp:Label ID="country_nameLabel" runat="server" Text='<%# Bind("org_country_name") %>' /></td>
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.City, 
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.StateProvince.StateProvinceName
+                             @Model.BulkSalesCertificate.ConditionerOrganization.Address.PostalCode<br/>
+                        @Model.BulkSalesCertificate.ConditionerOrganization.Address.Countries.Name</td>
                     </tr>
                     <tr>
                         <td>Phone:</td>
-                        <td><asp:Label runat="server" ID="phoneLabel" Text='<%# Eval("main_phone") %>'></asp:Label></td>
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Phone</td>
                         <td></td>
                         <td>Email:</td>
-                        <td><asp:Label runat="server" ID="emailLabel" Text='<%# Eval("main_email") %>'></asp:Label></td>
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Email</td>
                     </tr>
                     <tr>
                         <td colspan="5" class="legal">

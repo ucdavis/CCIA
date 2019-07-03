@@ -17,6 +17,12 @@ namespace CCIA.Models
             throw new NotImplementedException();
         }
 
+        [DbFunction("sid_standards_msg_assay","dbo")]
+        public static string GetAssayMessage(int seed_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
