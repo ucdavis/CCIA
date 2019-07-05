@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using CCIA.Models.BulkSalesCreateViewModel;
 using CCIA.Models.CertificateViewModel;
+using CCIA.Models.BulkSalesCertificateShareViewModel;
 
 
 
@@ -121,16 +122,7 @@ namespace CCIA.Controllers
         public async Task<ActionResult> Share(int id)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
-                .Include(b => b.Seeds)
-                .ThenInclude(s => s.AppTypeTrans)
-                .Include(b => b.Seeds)
-                .ThenInclude(s => s.Variety)
-                .ThenInclude(v => v.Crop)               
-                .Include(b => b.PurchaserState)
-                .Include(b => b.PurchaserCountry)
-                .Include(b => b.BulkSalesCertificatesShares)               
-                .SingleAsync();
+            var model = await  BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
             return View(model);
         }
 

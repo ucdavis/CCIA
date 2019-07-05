@@ -1,4 +1,4 @@
-@model CCIA.Models.BulkSalesCertificates
+@model CCIA.Models.BulkSalesCertificateShareViewModel.BulkSalesCertificateShareViewModel
 
 
 @{
@@ -14,51 +14,51 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Id)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Id)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="Date" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.Date" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Date)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Date)
                 </div>
             </div>    
             <div class="form-group row">
-                <label asp-for="IdType" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.IdType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.IdType)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.IdType)
                 </div>
             </div>           
             <div class="form-group row">
-                <label asp-for="LinkId" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.LinkId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LinkId)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.LinkId)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="Program" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.Program" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Program)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Program)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="Pounds" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.Pounds" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Pounds)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Pounds)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="CropName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.CropName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CropName)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.CropName)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="VarietyName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.VarietyName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.VarietyName)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.VarietyName)
                 </div>
             </div>
              <div class="row">
@@ -67,51 +67,51 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserName)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserName)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserAddressLine1)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserAddressLine1)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserCity" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserCity" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserCity)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserCity)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserState.StateProvinceName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserState.StateProvinceName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserState.StateProvinceName)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserState.StateProvinceName)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserCountry.Name" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserCountry.Name" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserCountry.Name)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserCountry.Name)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserZip" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserZip" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserZip)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserZip)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserPhone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserPhone)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserPhone)
                 </div>
             </div>
              <div class="form-group row">
-                <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label"></label>
+                <label asp-for="BulkSalesCertificate.PurchaserEmail" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PurchaserEmail)
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserEmail)
                 </div>
             </div>
             <div class="row">
@@ -125,15 +125,13 @@
                         <th>Org Id</th>
                         <th>Name</th>
                     </tr>
-                    @foreach (var org in Model.BulkSalesCertificatesShares.ShareOrganization)
+                   @foreach (var share in Model.Shares)
                     {
                         <tr>
-                            <td>
-                               @org.Id
-                            </td>
-                            <td>@org.Name</td>
+                            <td>@share.ShareOrganization.OrgId</td>
+                            <td>@share.ShareOrganization.OrgName</td>
                         </tr>
-                    }
+                    } 
                 </table>
             </div>
         </div>
