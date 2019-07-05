@@ -55,6 +55,87 @@
                     @Html.DisplayFor(x => x.CropName)
                 </div>
             </div>
+            <div class="form-group row">
+                <label asp-for="VarietyName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.VarietyName)
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-sm-12">
+                    <h2>Purchaser</h2>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserName)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserAddressLine1)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserCity" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserCity)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserState.StateProvinceName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserState.StateProvinceName)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserCountry.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserCountry.Name)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserZip" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserZip)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserPhone)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserEmail)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Currently Shared with:</h2>
+                </div>
+            </div>
+            <div>
+                <table class="table">
+                    <tr>
+                        <th>Org Id</th>
+                        <th>Name</th>
+                    </tr>
+                    @foreach (var org in Model.BulkSalesCertificatesShares.ShareOrganization)
+                    {
+                        <tr>
+                            <td>
+                               @org.Id
+                            </td>
+                            <td>@org.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
         <div class="col-md-5">
             Form to add new share

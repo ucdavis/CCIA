@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+
 
 namespace CCIA.Models
 {
@@ -7,6 +9,7 @@ namespace CCIA.Models
     {
         public int Id { get; set; }
         public string Code { get; set; }
+        [DisplayName("Country")]
         public string Name { get; set; }
         public bool? OecdMember { get; set; }
        
