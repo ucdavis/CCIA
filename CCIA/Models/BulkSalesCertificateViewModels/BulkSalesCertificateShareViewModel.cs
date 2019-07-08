@@ -25,7 +25,7 @@ namespace CCIA.Models.BulkSalesCertificateShareViewModel
                 .ThenInclude(v => v.Crop)               
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)               
-                .SingleAsync();
+                .SingleOrDefaultAsync();
             var shares = await _dbContext.BulkSalesCertificatesShares.Where(s => s.BulkSalesCertificatesId == id)
                 .Include(s => s.ShareOrganization)
                 .ToListAsync();

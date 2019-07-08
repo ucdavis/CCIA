@@ -34,7 +34,10 @@
                 <td>@bsc.Pounds</td>
                 <td>@bsc.Class.CertClass</td>
                 <td>@bsc.Date.ToShortDateString()</td>
-                <td><a asp-action="Share" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Share</a></td>
+                <td>
+                    <!-- TODO: Add check that current org id == bsc.conditionerId -->
+                    <a asp-action="Share" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Share</a>
+                </td>
                 <td> @Html.Encode(String.Join(", ", bsc.BulkSalesCertificatesShares.Select(s => s.ShareOrganizationId)))</td>
                 <td><a asp-action="Certificate" asp-controller="BulkSalesCertificates" asp-route-id="@bsc.Id">Certificate</a></td>
             </tr>

@@ -36,16 +36,10 @@ namespace CCIA.Controllers
             {
                 certYear = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId).Select(b => b.Date.Year).MaxAsync();
             }
-            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);
+            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);            
             return View(model);
         }
-
-        // GET: Application/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
+        
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
@@ -123,6 +117,10 @@ namespace CCIA.Controllers
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
             var model = await  BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
+            if(model.BulkSalesCertificate == null){
+                Message = "Bulk Sales Certificate not found, or does not belong to your Organization";
+                return RedirectToAction(nameof(Index));
+            }
             return View(model);
         }
 
