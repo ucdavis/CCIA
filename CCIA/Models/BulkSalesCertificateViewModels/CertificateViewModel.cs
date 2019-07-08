@@ -26,9 +26,10 @@ namespace CCIA.Models.CertificateViewModel
             var classes = await _dbContext.AbbrevClassSeeds.Where(s => s.Program == programId.Item1).ToListAsync();            
             var standardsMessage = await _dbContext.Seeds.Where(x => x.Id == programId.Item2).Select(d => CCIAContext.GetStandardsMessage(d.Id)).FirstOrDefaultAsync();
             var assayMessage = await _dbContext.Seeds.Where(x => x.Id == programId.Item2).Select(d => CCIAContext.GetAssayMessage(d.Id)).FirstOrDefaultAsync();
+            var shares = await _dbContext.BulkSalesCertificatesShares.Where(s => s.ShareOrganizationId == orgId && s.BulkSalesCertificatesId == id).Select(s => s.BulkSalesCertificatesId).ToListAsync();
             var viewModel = new CertificateViewModel
             {
-                BulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId)
+                BulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)))
                 .Include(b => b.Seeds)
                 .ThenInclude(s => s.AppTypeTrans)
                 .Include(b => b.Seeds)
