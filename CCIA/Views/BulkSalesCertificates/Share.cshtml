@@ -140,7 +140,77 @@
                 <div class="col-sm-12">
                     <h2>Currently Shared with:</h2>
                 </div>
+                <div class="form-group">  
+                    <label for="account">Name or Account Number:</label>
+                    <div class="input-group col">
+                        <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" id="accountLookupButton"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span id="result3"></span>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+
+        $("#accountLookupButton").click(function() {
+            lookupOrgs();
+        })
+
+        function lookupOrgs() {
+            
+            var val = $("#account").val();
+            
+            if (val === "") {
+                alert("This field cannot be empty");
+                return;
+            }
+
+
+            $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetOrgs',
+                     data: {                        
+                        lookup: val,
+                    }
+                })
+                .done(function(data) {
+                    $('#result3').html("");
+                    var s = "<table class='table'><tr><th>&nbsp;</th><th>OrgId</th><th>Name</th>";
+                    $.each(data, function(i) {
+                        var item = data[i]
+                        s += '<tr><td><form action="/BulkSalesCertificates/AddShare/' + @Model.BulkSalesCertificate.Id +'" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><input type="hidden" name="shareOrgId" id="shareOrgId" value="' + item.id + '"><input type="submit" value="share"></form></td>'
+                        s += '<td>' + item.id + '</td>';
+                        s += '<td>' + item.name + '</td></tr>';
+                    })
+                    s += '</table>'
+                    $('#result3').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not get list of organizations");
+                    console.log('error', xhr);
+                });  
+        }
+
+        
+
+           
+
+    </script>
+}
