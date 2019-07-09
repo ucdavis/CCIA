@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using CCIA.Models.BulkSalesCreateViewModel;
 using CCIA.Models.CertificateViewModel;
+using CCIA.Models.BulkSalesCertificateShareViewModel;
 
 
 
@@ -37,12 +38,6 @@ namespace CCIA.Controllers
             }
             var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
-        }
-
-        // GET: Application/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         // GET: Application/Create
@@ -114,8 +109,49 @@ namespace CCIA.Controllers
         public async Task<ActionResult> Certificate(int id)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-            var model = await CertificateViewModel.Create(_dbContext, id, orgId);            
+            var model = await CertificateViewModel.Create(_dbContext, id, orgId);
             return View(model);
+        }
+
+        public async Task<ActionResult> Share(int id)
+        {
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var model = await BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
+            if (model.BulkSalesCertificate == null)
+            {
+                Message = "Bulk Sales Certificate not found, or does not belong to your Organization";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddShare(int id, int shareOrgId)
+        {
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var bulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId).SingleOrDefaultAsync();
+            if (bulkSalesCertificate == null)
+            {
+                ErrorMessage = "Bulk Sales Certificate could not be found.";
+                return RedirectToAction(nameof(Index));
+            }
+            var newShare = new BulkSalesCertificatesShares();
+            newShare.BulkSalesCertificatesId = bulkSalesCertificate.Id;
+            newShare.ShareOrganizationId = shareOrgId;
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(newShare);
+                await _dbContext.SaveChangesAsync();
+                Message = $"Bulk Sales Certificate shared with {shareOrgId}";
+            }
+            else
+            {
+                ErrorMessage = "Something bad happened";
+            }
+
+            var model = await BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
+            return View("Share", model);
         }
 
 
@@ -241,6 +277,23 @@ namespace CCIA.Controllers
                 .Include(m => m.Country)
                 .SingleAsync();
             return Json(model);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetOrgs(string lookup)
+        {
+            int id = 0;
+            // Parsing was successful (we have an ID number instead of a name)
+            if (Int32.TryParse(lookup, out id))
+            {
+                var orgs = await _dbContext.Organizations.Where(o => o.OrgId == id).Select(o => new { id = o.OrgId, name = o.OrgName }).ToListAsync();
+                return Json(orgs);
+            }
+            else
+            {
+                var orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookup.ToLower())).Select(o => new { id = o.OrgId, name = o.OrgName }).ToListAsync();
+                return Json(orgs);
+            }
         }
 
         [HttpGet]
