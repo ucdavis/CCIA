@@ -108,8 +108,7 @@
                 <tr>
                     <th>Cert#</th>
                     <th>Variety</th>
-                    <th>Pounds Planted</th>
-                    <th># Plants</th>
+                    <th>Planted</th>
                     <th>Class</th>
                     <th>Tag Issued</th>
                     <th>Grown</th>
@@ -124,8 +123,17 @@
                             @row.PsCertNum
                         </td>
                         <td>@row.PsEnteredVariety</td>
-                        <td>@row.PoundsPlanted</td>
-                        <td>@row.PlantsPerAcre</td>
+                        <td>
+                            @{ var message = "" ; }
+                            @if(row.PoundsPlanted != null)
+                            {
+                               message = row.PoundsPlanted + " pounds";
+                            } else
+                            {
+                               message = row.PlantsPerAcre + " plants/acre";
+                            }  
+                            @message                          
+                        </td>                        
                         <td>@row.PsClassNavigation.ClassProducedTrans</td>
                         @if(@row.TaggedStateProvince == null)
                         {
