@@ -87,37 +87,42 @@ namespace CCIA.Models
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
         // NO lot number included
-        public string CertNumber()
+        [Display(Name = "Cert#")]
+        public string CertNumber
         {
-            string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
-            if (OriginState != 102 || AppId != null)
+            get
             {
-                if (AppId != null)
+                string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+                if (OriginState != 102 || AppId != null)
                 {
-                    return SampleFormCertNumber;
+                    if (AppId != null)
+                    {
+                        return SampleFormCertNumber;
+                    }
+                    if (OriginState != 102)
+                    {
+                        return SampleFormCertNumber;
+                    }
+                    if (CertYear < 2007)
+                    {
+                        return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
+                    }
+                    return $"{certYearAbbrev}CA-{SampleFormCertNumber}";
                 }
-                if (OriginState != 102)
+                else
                 {
-                    return SampleFormCertNumber;
+                    if (CertYear < 2007)
+                    {
+                        return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
+                    }
+                    return $"{certYearAbbrev}CA-{SampleFormRad}-{SampleFormCertNumber}";
                 }
-                if (CertYear < 2007)
-                {
-                    return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
-                }
-                return $"{certYearAbbrev}CA-{SampleFormCertNumber}";
-            }
-            else
-            {
-                if(CertYear < 2007) {
-                    return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
-                }
-                return $"{certYearAbbrev}CA-{SampleFormRad}-{SampleFormCertNumber}";
-            }
 
+            }
         }
 
         public string FullCert() {
-            return $"{CertNumber()}-{LotNumber}";
+            return $"{CertNumber}-{LotNumber}";
         }
 
         public string GetCropName()

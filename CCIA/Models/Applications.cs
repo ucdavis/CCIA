@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace CCIA.Models
 {
@@ -48,6 +49,7 @@ namespace CCIA.Models
         public DateTime? MapsSubDt { get; set; }
         public decimal? MapCenterLat { get; set; }
         public decimal? MapCenterLong { get; set; }
+        [DisplayName("Map?")] 
         public bool? MapVe { get; set; }
         public string MapUploadFile { get; set; }
         public string TextField { get; set; }

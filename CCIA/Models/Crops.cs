@@ -44,7 +44,7 @@ namespace CCIA.Models
         public decimal? IsolationParentR { get; set; }
 
         [StringLength(256)]
-        [Display(Name = "Name")]
+        [Display(Name = "Crop")]
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
 
 

@@ -260,7 +260,7 @@ namespace CCIA.Controllers
                     conditioner = s.ConditionerId + " " + s.ConditionerOrganization.OrgName,
                     crop = s.GetCropName(),
                     variety = s.GetVarietyName(),
-                    cert = s.CertNumber(),
+                    cert = s.CertNumber,
                     lot = s.LotNumber,
                 }).SingleAsync();
                 return Json(model);

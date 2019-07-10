@@ -102,7 +102,7 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds != null)
                 {
-                    return Seeds.CertNumber();
+                    return Seeds.CertNumber;
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
