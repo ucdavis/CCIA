@@ -82,7 +82,21 @@
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
         var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
+        var appTypeId = 1;
+        // How many field history records are possible for this application
+        let maxFieldHistories = @Model.AppViewModel.MaxFieldHistoryRecords;
+        let secondPsRendered = false;
+        let fhEntryId = -1;
+
+        // Converting our fixed-size array of booleans from the model to a JavaScript array
+        // for use with removing/adding field history entries
+        let fhIndices = @Model.AppViewModel.FieldHistoryIndices;
+
+        // Counts the occurrences of used spaces in fhIndices\
+        // Used spaces are indicated by 1s. Free spaces are marked with 0s.
+        let fhEntryCount = countOccurrences(1, fhIndices);
     </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/applications/applications.js" asp-append-version="true"></script>
     <script src="~/js/applications/seed.js" asp-append-version="true"></script>
 }

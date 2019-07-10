@@ -1,10 +1,17 @@
 <h5><strong>History:</strong></h5>
 <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
 
-@for(var i=0; i<@Model.AppViewModel.MaxFieldHistoryRecords; i++)
+@{ 
+    // Shorten string to exclude parentheses
+    string fhIndicesStr = Model.AppViewModel.FieldHistoryIndices.Substring(1, Model.AppViewModel.FieldHistoryIndices.Length-2);
+    // Convert string to int array
+    int[] fhIndicesArr = Array.ConvertAll(fhIndicesStr.Split(','), int.Parse);
+}
+
+@for(int i=0; i<@fhIndicesArr.Length; i++)
 {
-    <section id="fh-entry-@i" class="rounded-section pos-rel light-blue hidden">
-        @if (@i < Model.AppViewModel.FieldHistoryEntryIndex)
+    <section id="fh-entry-@i" class="@("rounded-section pos-rel light-blue " + (fhIndicesArr[i] == 0 ? "hidden" : ""))">
+        @if (@fhIndicesArr[i] == 1)
         {
             @await Html.PartialAsync("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
         }

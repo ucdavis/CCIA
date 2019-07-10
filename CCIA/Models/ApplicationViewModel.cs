@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Models
 {
-    public class ApplicationViewModel : Applications
+    public class ApplicationViewModel
     {
         public Applications Application { get; set; }
         public List<AbbrevClassProduced> ClassProducedList { get; set; }
@@ -24,16 +24,20 @@ namespace CCIA.Models
         public bool RenderFormRemainder {get; set; }
         public bool RenderSecondPlantingStock { get; set; }
 
-        // The most recently used field history entry index. Starts at -1 for no records.
-        public int FieldHistoryEntryIndex { get; set; }
-
         // Maximum number of field history records allowed for a specified app type
         public int MaxFieldHistoryRecords { get; set; }
+
+        public string FieldHistoryIndices { get; set; }
 
         public static async Task<ApplicationViewModel> Create (CCIAContext dbContext, int orgId, int appType, int fhEntryId=-1) {
             var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
-            var maxFieldHistoryRecords = 3;
+            var maxFieldHistoryRecords = 4;
+
+            // Make a string representation of field history indices for use in JavaScript files
+            var fieldHistoryIndices = "[" + string.Join(",", new int[maxFieldHistoryRecords]) + "]";
+
+            // Querying for certain crops depending on Application Type
             switch(appType) {
                 // Seed
                 case 1:
@@ -95,7 +99,7 @@ namespace CCIA.Models
                 ClassProducedList = classToProduce,
                 Crops = crops,
                 Counties = counties,
-                FieldHistoryEntryIndex = fhEntryId,
+                FieldHistoryIndices = fieldHistoryIndices,
                 MaxFieldHistoryRecords = maxFieldHistoryRecords,
                 Organization = organization,
                 RenderFormRemainder = false,
@@ -103,6 +107,8 @@ namespace CCIA.Models
                 StateProvince = stateProvince,
                 Varieties = varieties
             };
+
+            fieldHistoryIndices.ToList().ForEach(Console.WriteLine);
 
             return model;
         }

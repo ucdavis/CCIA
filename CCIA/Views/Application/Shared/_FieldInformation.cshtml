@@ -7,8 +7,9 @@
         @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num" })
         @Html.ValidationMessageFor(m => m.FieldName, "", new { @class = "text-danger" })
     </div>
+    <!-- Date Time Picker -->
     <div class="form-group col-md-6">
-        @await Html.PartialAsync("Shared/_DateTimePicker")
+        @await Html.PartialAsync("Shared/_DateTimePicker")  
     </div>
 </div>
 <div class="row">

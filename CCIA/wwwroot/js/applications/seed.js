@@ -1,14 +1,14 @@
 // Set search variety click listener
+// Located in seed.js because the callback of selecting a variety changes depending on App type
 $('#variety-search').on('click', () => {
     searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder")
 });
 
+// Called before HTML form submitted to controller
 $('#seedApplication').submit(function (e) {
     insertHiddenInput("growerId", growerId, "seedApplication");
-
-    // Insert hidden input for fhEntryId to let the server know how many fieldhistory records we're submitting
-    // Used in order to aid server-side validation on re-rendering of form
-    insertHiddenInput("fhEntryId", fhEntryId, "seedApplication");
+    let fhIndicesStr = JSON.stringify(fhIndices);
+    insertHiddenInput("AppViewModel.FieldHistoryIndices", fhIndicesStr, "seedApplication");
     return true;
 });
 

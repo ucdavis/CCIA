@@ -29,6 +29,10 @@ html {
   display: none;
 }
 
+#calendar-btn:hover {
+  cursor: pointer;
+}
+
 .rounded-section {
   border-radius: .8em;
   background: #dbdbdb;

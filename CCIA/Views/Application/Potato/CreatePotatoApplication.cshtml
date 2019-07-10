@@ -120,8 +120,16 @@
 
 @section Scripts {
     <script type="text/javascript">
+        var appTypeId = 1;
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
+
+        // The index of the next Field History entry to be added to the form
+        let fhEntryId = 0;
+        // How many total Field History entries are in the form currently
+        let fhEntryCount = 0;
+        let secondPsRendered = false;
+        let fhIndices = [0, 0, 0];
     </script>
     <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
     <script type="text/javascript" src="~/js/applications/potato.js" asp-append-version="true"></script>

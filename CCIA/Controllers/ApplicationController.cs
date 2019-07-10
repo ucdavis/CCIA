@@ -117,6 +117,9 @@ namespace CCIA.Controllers
                 appViewModel.RenderSecondPlantingStock = true;
             }
             appViewModel.RenderFormRemainder = true;
+
+            // Newtonsoft.Json.Linq.JArray fhIndices = Newtonsoft.Json.Linq.JArray.Parse(seedApp.AppViewModel.FieldHistoryIndicesStr);
+            appViewModel.FieldHistoryIndices = seedApp.AppViewModel.FieldHistoryIndices;
             seedApp.AppViewModel = appViewModel;
             return View("Seed/CreateSeedApplication", seedApp);
         }
