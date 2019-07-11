@@ -37,7 +37,6 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Index(int certYear)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
-            var bud = 10;
             if (certYear == 0)
             {
                 certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync(); ;
@@ -50,8 +49,8 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).ToArrayAsync();
-            var model = await _dbContext.Applications.Where(a => a.Id == id && orgId.Contains(a.ApplicantId))
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
+            var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
