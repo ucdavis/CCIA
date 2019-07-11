@@ -14,6 +14,11 @@ namespace CCIA.Models
 
     public class SeedPlantingStocks : PlantingStocks {
         [Required]
+        public override decimal? PoundsPlanted { 
+            get { return base.PoundsPlanted; }
+            set { base.PoundsPlanted = value; } 
+        }
+        [Required]
         public override int? PsClass { 
             get { return base.PsClass; }
             set { base.PsClass = value; } 

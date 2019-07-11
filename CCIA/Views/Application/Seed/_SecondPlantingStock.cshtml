@@ -6,20 +6,8 @@
     </button>    
     <div class="row" id="second-ps-first-row">
         <div class="form-group col-md-4">
-            <label for="ps2-variety">Variety<em class="required">•</em></label>
-            <div>
-                <div class="btn-group">
-                    @Html.TextBox("PlantingStocks[1].PsEnteredVariety", "", new { @class="form-control", id="ps2-variety", placeholder="Variety" })
-                    <button class="btn btn-primary dropdown-toggle" id="ps2-variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search"></i>
-                    </button>     
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="ps2-variety-dropdown">
-                        <div class="text-center">
-                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
-                        </div>
-                    </div> 
-                </div>
-            </div>     
+            @{ ViewData["varietyName"] = "PlantingStocks[1].PsEnteredVariety"; } 
+            @await Html.PartialAsync("Shared/_VarietySelect")
         </div>
         @Html.ValidationMessage("PlantingStocks[1].PsEnteredVariety", "", new { @class = "text-danger" })
         <div class="form-group col-md-4">

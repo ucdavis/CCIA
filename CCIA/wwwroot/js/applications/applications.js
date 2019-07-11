@@ -8,11 +8,6 @@ const spinner_div = `<div class="text-center"><div class="spinner-border text-ce
 // Event handlers //
 ////////////////////
 
-/* Adds red outline to invalid text boxes on loading after failed form submission */
-$(document).ready(() => {
-    $('.field-validation-error').parents('.form-group').addClass('has-error');
-});
-
 // Set click listener for button to add second plantingstock
 $('#add-second-ps').on('click', addSecondPs);
 

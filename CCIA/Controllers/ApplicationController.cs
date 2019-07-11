@@ -194,8 +194,10 @@ namespace CCIA.Controllers
         // GET: Application/CreateHeritageGrainApplication
         public async Task<IActionResult> CreateHeritageGrainApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
+            var model = new HeritageGrainQAApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
+            return View("HeritageGrain/CreateHeritageGrainApplication", model);
         }
 
         // GET: Application/CreateGermplasmApplication

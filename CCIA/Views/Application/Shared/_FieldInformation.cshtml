@@ -4,7 +4,7 @@
 <div class="row">
     <div class="form-group col-md-6">
         <label for="name-num">Name/No.</label><em class="required">•</em>
-        @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num" })
+        @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num", placeholder="Name/No." })
         @Html.ValidationMessageFor(m => m.FieldName, "", new { @class = "text-danger" })
     </div>
     <!-- Date Time Picker -->

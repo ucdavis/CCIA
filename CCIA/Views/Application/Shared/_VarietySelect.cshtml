@@ -1,0 +1,17 @@
+@{ string name = ViewData["varietyName"].ToString(); }
+
+<label for="variety">Variety<em class="required">•</em></label>
+<div>
+    <div class="btn-group">
+        @Html.TextBox(name, "", new { @class="form-control", id="variety", placeholder="Variety" })
+        <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-search"></i>
+        </button>     
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+            <div class="text-center">
+                <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+        </div> 
+    </div>
+</div>     
+@Html.ValidationMessage(name, "", new { @class = "text-danger" })

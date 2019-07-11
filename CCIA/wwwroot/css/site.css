@@ -33,6 +33,10 @@ html {
   cursor: pointer;
 }
 
+.input-validation-error {
+  border-color: #dc3545;
+}
+
 .rounded-section {
   border-radius: .8em;
   background: #dbdbdb;
