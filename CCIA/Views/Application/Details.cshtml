@@ -1,5 +1,10 @@
 @model CCIA.Models.Applications
-
+@{
+    bool showPurchasedFrom = false;
+    bool showPounds = false;
+    bool showPlantsPerAcre = false;
+    bool showTHC = false;
+}
 
 <h2>Application Details</h2> 
 <div class="container">
@@ -108,11 +113,34 @@
                 <tr>
                     <th>Cert#</th>
                     <th>Variety</th>
-                    <th>Planted</th>
+                    @if(Model.PlantingStocks.First().PoundsPlanted != null || Model.PlantingStocks.Last().PoundsPlanted != null)
+                    {
+                        showPounds = true;
+                        <th>Pounds Planted</th>
+                    } 
+                    @if(Model.PlantingStocks.First().PlantsPerAcre != null || Model.PlantingStocks.Last().PlantsPerAcre != null)
+                    { 
+                        showPlantsPerAcre = true;                       
+                        <th>Plants/Acre</th>
+                    }                 
                     <th>Class</th>
                     <th>Tag Issued</th>
                     <th>Grown</th>
-                    <th>Purchased From</th>
+                    @if(Model.PlantingStocks.First().SeedPurchasedFrom != null || Model.PlantingStocks.Last().SeedPurchasedFrom != null)
+                    {
+                        showPurchasedFrom = true;
+                        <th>Purchased From</th>
+                    } 
+                    @if(Model.AppType == "PO")
+                    {
+                        <th>Winter test?</th>
+                        <th>PVX test?</th>
+                    }
+                    @if(Model.PlantingStocks.First().ThcPercent != null || Model.PlantingStocks.Last().ThcPercent != null)
+                    {
+                        showTHC = true;
+                        <th>THC%</th>
+                    } 
                 </tr>
             </thead>
             <tbody>
@@ -123,17 +151,14 @@
                             @row.PsCertNum
                         </td>
                         <td>@row.PsEnteredVariety</td>
-                        <td>
-                            @{ var message = "" ; }
-                            @if(row.PoundsPlanted != null)
-                            {
-                               message = row.PoundsPlanted + " pounds";
-                            } else
-                            {
-                               message = row.PlantsPerAcre + " plants/acre";
-                            }  
-                            @message                          
-                        </td>                        
+                        @if(showPounds)
+                        {
+                            <td>@row.PoundsPlanted</td>
+                        }
+                        @if(showPlantsPerAcre)
+                        {
+                            <td>@row.PlantsPerAcre</td>
+                        }                        
                         <td>@row.PsClassNavigation.ClassProducedTrans</td>
                         @if(@row.TaggedStateProvince == null)
                         {
@@ -142,10 +167,19 @@
                         {
                             <td>@row.TaggedStateProvince.StateProvinceName</td>
                         }  else {
-                            <td></td>
+                            <td>&nbsp;</td>
                         }                      
                         <td>@row.GrownStateProvince.StateProvinceName</td>
                         <td>@row.SeedPurchasedFrom</td>
+                        @if(Model.AppType == "PO")
+                        {
+                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
+                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
+                        }
+                        @if(showTHC)
+                        {
+                            <td>@row.ThcPercent</td>
+                        }
                     </tr>
                 }
             </tbody>
