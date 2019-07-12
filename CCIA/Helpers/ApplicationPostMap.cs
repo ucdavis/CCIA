@@ -14,7 +14,7 @@ namespace CCIA.Helpers
             {1, "CreateSeedApplication"},
             {2, "CreatePotatoApplication"},
             {3, "CreateHeritageGrainApplication"},
-            {4, "CreateGemplasmApplication"},
+            {4, "CreatePreVarietyGermplasmApplication"},
             {5, "CreateRiceApplication"},
             {6, "CreateTurfgrassApplication"},
             {7, "CreateHempFromSeedApplication"},

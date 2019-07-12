@@ -201,38 +201,30 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/CreateGermplasmApplication
-        public async Task<IActionResult> CreateGermplasmApplication(int orgId, int appTypeId)
+        public async Task<IActionResult> CreatePreVarietyGermplasmApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
+            var model = new PreVarietyGermplasmApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
+            return View("PreVarietyGermplasm/CreatePreVarietyGermplasmApplication", model);
         }
 
         // GET: Application/CreateRiceApplication
         public async Task<IActionResult> CreateRiceApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
-        }
-
-        // GET: Application/CreateTurfgrassApplication
-        public async Task<IActionResult> CreateTurfgrassApplication(int orgId, int appTypeId)
-        {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
+            var model = new RiceQAApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
+            return View("Rice/CreateRiceApplication", model);
         }
 
         // GET: Application/CreateHempFromSeedApplication
         public async Task<IActionResult> CreateHempFromSeedApplication(int orgId, int appTypeId)
         {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
-        }
-
-        // GET: Application/CreateHempFromClonesApplication
-        public async Task<IActionResult> CreateHempFromClonesApplication(int orgId, int appTypeId)
-        {
-            var model = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
-            return View(model);
+            var model = new HempFromSeedApp();
+            var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
+            model.AppViewModel = viewModel;
+            return View("HempFromSeed/CreateHempFromSeedApplication", model);
         }
 
         // GET: Application/GrowerLookup

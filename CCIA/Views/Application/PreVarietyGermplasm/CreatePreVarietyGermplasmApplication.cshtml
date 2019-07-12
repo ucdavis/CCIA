@@ -1,7 +1,8 @@
 @model CCIA.Models.MasterApplicationViewModel
+@using CCIA.Helpers
 
 @{
-    ViewData["Title"] = "Heritage Grain Application";
+    ViewData["Title"] = "Pre-Variety Germplasm Application";
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
@@ -10,13 +11,13 @@
 }
 
 <section class="app-header">
-    <h2>Application for Heritage Grain Quality Assurance Program</h2>
+    <h2>Application for Pre-Variety Germplasm Program</h2>
     <h5>@Model.AppViewModel.Organization.OrgName</h5>
 </section>
 
 @await Html.PartialAsync("Shared/_GrowerInfoTable")
 
-<form action="/Application/CreateHeritageGrainApplication" method="post" id="heritageGrainQAApplication">
+<form action="/Application/CreatePreVarietyGermplasmApplication" method="post" id="preVarietyGermplasmApplication">
     <div class="form-group row">
         <!-- Crop -->
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -33,43 +34,47 @@
             }
             @await Html.PartialAsync("Shared/_CropYearDropdown")
         </div> 
-        <!-- Variety Lookup -->
-        <div class="col-lg-4 col-sm-4 col-xs-4">  
-            @{ ViewData["varietyName"] = "EnteredVariety"; }
-            @await Html.PartialAsync("Shared/_VarietySelect")
+        <!-- Germplasm Source -->
+        <div class="col">
+            <label for="germplasmSource">Germplasm Source<em class="required">•</em></label>
+            @{
+                var selectListItems = new List<SelectListItem>();
+                foreach(GermplasmSource source in Enum.GetValues(typeof(GermplasmSource)))
+                {
+                    selectListItems.Add(new SelectListItem { Text = @source.GetDisplayName(), Value = @source.GetDisplayName() } );
+                }
+                SelectList GermplasmSourceList = new SelectList(selectListItems, "Value", "Text");
+            }
+            @Html.DropDownListFor(m => m.PvgSource, 
+                    GermplasmSourceList,
+                    new { @class="form-control", id="germplasmSource" })
         </div>
+        
     </div>
 
-    <!-- Class produced -->
     <div class="form-group">
+        @{ViewBag.name = "classProduced";}
         <label>Class to be Produced</label><em class="required">•</em>
-        @{ ViewBag.name = "ClassProducedId"; }
-        <div>
-            @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
-        </div>
-        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+        @await Html.PartialAsync("Shared/_ClassRadioButtons", Model.AppViewModel)
     </div>
 
     <!-- Planting Stock -->
-    <section id="planting-stock" class="rounded-section off-white">
-        <h4>Planting Stock:</h4>
+    <section id="planting-stock" class="form-section">
         @await Html.PartialAsync("Shared/_PlantingStock")
     </section>
 
     <!-- Field Information -->
-    <section id="field-info" class="rounded-section off-white">
+    <section id="field-info" class="form-section">
         @await Html.PartialAsync("Shared/_FieldInformation")
     </section>
 
-    <div class="text-right">
-        <button type="submit" class="btn btn-primary">Continue with Application</button>
-    </div>
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
 
     <!-- Hidden fields -->
     @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
     @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
     @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
-    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PO">
+    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PV">
 </form>
 
 <!-- Alert dialog modals -->
@@ -98,5 +103,4 @@
     </script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/applications/heritage-grain-qa.js" asp-append-version="true"></script>
 }

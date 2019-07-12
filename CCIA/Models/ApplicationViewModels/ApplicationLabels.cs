@@ -13,17 +13,18 @@ namespace CCIA.Models
         {
             switch(appTypeId)
             {
-                // Potato
-                case 2:
                 // Heritate Grain QA
                 case 3:
                     return new ApplicationLabels
                     {
-                        Ps1Variety = "Germplasm Entity",
+                        Ps1Variety = "Heritage Grain",
                         PsCertNum = "Accession/QA Program Number/Lot Number"
                     };
+                // Pre-Variety Germplasm
                 case 4:
+                // Rice
                 case 5:
+                // Hemp from Seed
                 case 7:
                 default:
                     return new ApplicationLabels
