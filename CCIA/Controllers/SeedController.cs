@@ -46,9 +46,30 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Create
-        public ActionResult Create()
+        public ActionResult SelectOrigin()
         {
+            // TODO: Check that logged in user has permission to create seeds.
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult SelectOrigin(string origin)
+        {
+            if(origin == "Ca")
+            {
+                return RedirectToAction("SelectApp");
+            }
+            if(origin == "OOS")
+            {
+                return RedirectToAction("NewOOSSeedLot");
+            }
+            return View();
+        }
+
+        public ActionResult SelectApp()
+        {
+            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2007 + 1).ToArray();
+            return View(years);
         }
 
         // POST: Application/Create

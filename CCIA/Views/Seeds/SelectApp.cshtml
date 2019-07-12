@@ -1,0 +1,33 @@
+@model int[]
+@{
+    ViewData["Title"] = "Select Application";
+}
+
+
+
+
+<div class="card" style="width: 100%;">
+    <div class="card-header">
+        <h2>Enter the California Certification Number:</h2>
+    </div>
+    <div class="card-body">
+        <table class="tablde">
+            <tr>
+                <td>Year</td>
+                <td>&nbsp;</td>
+                <td>RAD*</td>
+                <td>&nbsp;</td>
+                <td>Cert Number</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>@Html.DropDownList("CertYear", new SelectList(Model)) </td>
+                <td>CA-</td>
+                <td><input id="RAD" type="text" /></td>
+                <td>-</td>
+                <td><input id="CertNumber" type="text"</td>
+                <td><input type="button" value="Get Apps" class="btn btn-primary">  </td>
+            </tr>
+        </table> 
+    </div>
+</div>    
