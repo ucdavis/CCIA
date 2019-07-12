@@ -2,12 +2,12 @@
 
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h2>New Customer</h2>
+        <h2>@Model.Name</h2>
     </div>
 </div>
 
@@ -19,75 +19,75 @@
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Name">Name:</label></th>
-                        <td><input asp-for="Name" class="form-control" placeholder="Enter a name"></td>
+                        <td><input asp-for="Name" class="form-control" id="Name" placeholder="Enter a name"></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Address1">Address 1:</label></th>
-                        <td><input asp-for="Address1" class="form-control" placeholder="Enter an address"/></td>
+                        <td><input asp-for="Address1" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Address2">Address 2:</label></th>
-                        <td><input asp-for="Address2" class="form-control" placeholder="Apt/Suite #"/></td>
+                        <td><input asp-for="Address2" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="City">City:</label></th>
-                        <td><input asp-for="City" class="form-control" placeholder="Enter a city"/></td>
+                        <td><input asp-for="City" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="County.CountyName">County</label></th>
-                        <td><input asp-for="County.CountyName" class="form-control" placeholder="Enter a county"/></td>
+                        <td><input asp-for="County.CountyName" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="State.StateProvinceName">State</label></th>
-                        <td><select asp-for="State.StateProvinceName" asp-items="Model.States"></select></td>
+                        <td><input asp-for="State.StateProvinceName" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Country.Name"></label>Country</th>
-                        <td><input asp-for="Country.Name" class="form-control" placeholder="Enter a country"/></td>
+                        <td><input asp-for="Country.Name" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Zip">Zip</label></th>
-                        <td><input asp-for="Zip" class="form-control" placeholder="Enter a zip code"/></td>
+                        <td><input asp-for="Zip" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Phone"></label></th>
-                        <td><input asp-for="Phone" class="form-control" placeholder="Enter a phone number"/></td>
+                        <td><input asp-for="Phone" class="form-control" /></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Email"></label></th>
-                        <td><input asp-for="Email" class="form-control" placeholder="Enter an email address"/></td>
+                        <td><input asp-for="Email" class="form-control" /></td>
                     </tr>
                 </div>
 
             </table>
     </div>
-            <button class="btn btn-primary" type="submit" class="btn btn-default">Add</button>
-            <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Cancel</a>
+            <button class="btn btn-primary" type="submit" class="btn btn-default">Save</button>
+            <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.Id">Cancel</a>
 </form>
