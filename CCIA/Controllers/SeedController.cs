@@ -72,6 +72,16 @@ namespace CCIA.Controllers
             return View(years);
         }
 
+        [HttpPost]
+        public ActionResult AssociateApps(int[] appId)
+        {
+            if(appId != null)
+            {  
+                return Content(string.Join(",", appId));
+            }
+            return View();
+        }
+
         // POST: Application/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -133,6 +143,33 @@ namespace CCIA.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAppsFromCertNumber(int certYear, int? rad, int certNumber)
+        {
+            if(rad.HasValue){
+                var certs = await _dbContext.CertRad.Where(c => c.CertYear == certYear && c.CertNum == certNumber && c.Rad == rad).FirstAsync();
+                var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certs.CertNum)
+                    .Include(a => a.GrowerOrganization)
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .ToListAsync();
+                if(model != null)
+                {
+                    return Json(model);
+                }                
+            } else
+            {
+               var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certNumber)
+                    .Include(a => a.GrowerOrganization)
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .ToListAsync();
+               if(model != null)
+                {
+                    return Json(model);
+                } 
+            }
+            return BadRequest();
         }
     }
 }
