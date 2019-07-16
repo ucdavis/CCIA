@@ -62,7 +62,7 @@
                 })
                 .done(function(data){
                     $('#results').html("");
-                    var s = '<form action="/Seeds/AssociateApps/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
+                    var s = '<form action="/Seeds/CreateInState/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
                         $.each(data,
                             function(i) {
                                 var item = data[i];

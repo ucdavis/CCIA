@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SeedsViewModels;
 using CCIA.Models.IndexViewModels;
+using CCIA.Models.SeedsCreateViewModel;
 
 
 
@@ -73,13 +74,11 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        public ActionResult AssociateApps(int[] appId)
+        public async Task<ActionResult> CreateInState(int[] appId)
         {
-            if(appId != null)
-            {  
-                return Content(string.Join(",", appId));
-            }
-            return View();
+            var model = await SeedsCreateViewModel.Create(_dbContext, appId);
+           
+            return View(model);
         }
 
         // POST: Application/Create
