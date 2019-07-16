@@ -54,7 +54,29 @@
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="State.StateProvinceName">State</label></th>
-                        <td><input asp-for="State.StateProvinceName" class="form-control" /></td>
+                        <td>
+                            @using System.Text.RegularExpressions
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+                                listItems.Add(new SelectListItem { Value = null, Text = "Select a state", Selected = true, Disabled = true });
+
+                                foreach (string state in Enum.GetNames(typeof(States)))
+                                {
+                                    var words =
+                                        Regex.Matches(state, @"([A-Z][a-z]+)")
+                                        .Cast<Match>()
+                                        .Select(m => m.Value);
+
+                                    var stateName = string.Join(" ", words);
+
+                                    listItems.Add(new SelectListItem { Value = stateName, Text = stateName, Selected = Model.State.StateProvinceName.Equals(stateName) });
+                                }
+                            }
+
+                            @Html.DropDownList("State",
+                              listItems,
+                              new { @class = "form-control" })
+                        </td>
                     </tr>
                 </div>
 

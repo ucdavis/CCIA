@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
 
 namespace CCIA.Models
 {
@@ -17,12 +18,13 @@ namespace CCIA.Models
         public string City { get; set; }
         public int StateId { get; set; }
 
+        /*
         [NotMapped]
         public List<SelectListItem> States { get; set; }
             = new List<SelectListItem>
             {
                 new SelectListItem { Value = null, Text = "Select a state", Selected = true, Disabled = true },
-                new SelectListItem { Value = "AL", Text = "Alabama" },
+                new SelectListItem { Value = "AL", Text = "Alabama"},
                 new SelectListItem { Value = "AK", Text = "Alaska" },
                 new SelectListItem { Value = "AZ", Text = "Arizona" },
                 new SelectListItem { Value = "AR", Text = "Arkansas" },
@@ -72,7 +74,7 @@ namespace CCIA.Models
                 new SelectListItem { Value = "WV", Text = "West Virginia" },
                 new SelectListItem { Value = "WI", Text = "Wisconsin" },
                 new SelectListItem { Value = "WY", Text = "Wyoming" }
-            };
+            };   */
             
         [ForeignKey("StateId")]
         public StateProvince State { get; set; }
@@ -85,6 +87,69 @@ namespace CCIA.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-            
+    }
+
+    public enum States
+    {
+        Alabama,
+        Alaska,
+        Arizona,
+        Arkansas,
+        California,
+        Colorado,
+        Connecticut,
+        Delaware,
+        Florida,
+        Georgia,
+        Hawaii,
+        Idaho,
+        Illinois,
+        Indiana,
+        Iowa,
+        Kansas,
+        Kentucky,
+        Louisiana,
+        Maine,
+        Maryland,
+        Massachusetts,
+        Michigan,
+        Minnesota,
+        Mississippi,
+        Missouri,
+        Montana,
+        [Description("North Carolina")]
+        NorthCarolina,
+        [Description("North Dakota")]
+        NorthDakota,
+        Nebraska,
+        Nevada,
+        [Description("New Hampshire")]
+        NewHampshire,
+        [Description("New Jersey")]
+        NewJersey,
+        [Description("New Mexico")]
+        NewMexico,
+        [Description("New York")]
+        NewYork,
+        Ohio,
+        Oklahoma,
+        Oregon,
+        Pennsylvania,
+        [Description("Rhode Island")]
+        RhodeIsland,
+        [Description("South Carolina")]
+        SouthCarolina,
+        [Description("South Dakota")]
+        SouthDakota,
+        Tennessee,
+        Texas,
+        Utah,
+        Vermont,
+        Virginia,
+        Washington,
+        [Description("West Virginia")]
+        WestVirginia,
+        Wisconsin,
+        Wyoming
     }
 }
