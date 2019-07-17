@@ -10,6 +10,19 @@ namespace CCIA.Models
 {
     public partial class CCIAContext : IdentityDbContext<ApplicationUser>
     {
+
+        [DbFunction("sid_standards_msg","dbo")]
+        public static string GetStandardsMessage(int seed_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [DbFunction("sid_standards_msg_assay","dbo")]
+        public static string GetAssayMessage(int seed_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
@@ -560,7 +573,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BlendId).HasColumnName("bid");
 
-                entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+                entity.Property(e => e.CertProgramAbbreviation).HasColumnName("cert_program");
 
                 entity.Property(e => e.PurchaserName).HasColumnName("purch_name");
 
@@ -612,6 +625,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.AdminEmployee);
 
                 entity.HasMany(e => e.BulkSalesCertificatesShares);
+
+                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificates).HasForeignKey(e => e.CertProgramAbbreviation).HasPrincipalKey(a => a.Abbreviation);
 
             });
 
@@ -1041,10 +1056,12 @@ namespace CCIA.Models
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Class)
+                entity.Property(e => e.CertClass)
                     .HasColumnName("class_certified_trans")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Program).HasColumnName("program");
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
             });
@@ -1506,6 +1523,8 @@ namespace CCIA.Models
                 entity.HasMany(e => e.InDirtBlends);
 
                 entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Conditioner);
             });
 
             modelBuilder.Entity<CertRad>(entity =>
@@ -1760,6 +1779,10 @@ namespace CCIA.Models
                 entity.Property(e => e.OrgName).HasColumnName("org_name");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
+                
+                entity.Property(e => e.Phone).HasColumnName("main_phone");
+
+                entity.Property(e => e.Email).HasColumnName("main_email");
             });
 
             modelBuilder.Entity<Contacts>(entity =>

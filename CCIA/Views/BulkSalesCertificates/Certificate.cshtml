@@ -1,0 +1,157 @@
+@model CCIA.Models.CertificateViewModel.CertificateViewModel
+
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Bulk Sales Certificate";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CCIA</title>    
+    <link rel="stylesheet" href="~/css/printStyle.css" />    
+</head>
+<body>
+<a class="noprint" asp-controller="BulkSalesCertificates" asp-action="Index">Return to Bulk Sales Certificates</a> 
+<div style="text-align: center">
+    @if(Model.BulkSalesCertificate.Program == "Heritage Grain QA" || Model.BulkSalesCertificate.Program == "Rice QA")
+    {
+        <img align="left" height="108" src="../../images/qaLogo.gif" />
+    }
+              
+                    <img align="right" height="108" src="../../images/ccia-tra.gif" />
+                    <b>CALIFORNIA CROP IMPROVEMENT ASSOCIATION</b><br />
+                    Parsons Seed Certification Center, Davis, CA<br />
+                    <b>BULK SALE CERTIFICATE</b>
+                </div>
+                <table width="100%" border="0">
+                    <tr>
+                       
+                      
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>Certificate #@Model.BulkSalesCertificate.Id</b></td>
+                        <td>Program:</td>
+                        <td>@Model.BulkSalesCertificate.Program</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><u>@Model.BulkSalesCertificate.ConditionerOrganization.OrgName</u>, sold on
+                            <u>@Html.DisplayFor(model => model.BulkSalesCertificate.Date)</u> the following seed to:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Name: <u>@Model.BulkSalesCertificate.PurchaserName</u>
+                        </td>
+                    </tr>
+                    <tr style="vertical-align: top">
+                        <td>Address:</td>
+                        <td> @Model.BulkSalesCertificate.PurchaserAddressLine1<br />
+                             @Model.BulkSalesCertificate.PurchaserAddressLine2
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>City, State Zip:</td>
+                        <td nowrap="true">
+                            @Model.BulkSalesCertificate.PurchaserCity, @Model.BulkSalesCertificate.PurchaserState.StateProvinceName @Model.BulkSalesCertificate.PurchaserZip                           
+                           <br/>@Model.BulkSalesCertificate.PurchaserCountry.Name                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Phone:</td>
+                        <td>@Model.BulkSalesCertificate.PurchaserPhone</td>
+                        <td></td>
+                        <td>Email:</td>
+                        <td>@Model.BulkSalesCertificate.PurchaserEmail</td>
+                    </tr>
+                    <tr>
+                        <td>Crop:</td>
+                        <td>@Model.BulkSalesCertificate.CropName</td>
+                        <td>&nbsp;</td>
+                        <td>Variety:</td>
+                        <td>@Model.BulkSalesCertificate.VarietyName</td>
+                    </tr>
+                    <tr>
+                        <td>Cert No.:</td>
+                        <td>@Model.BulkSalesCertificate.CertNumber</td>
+                        <td>&nbsp;</td>
+                        <td>Lot No.:</td>
+                        <td>@Model.BulkSalesCertificate.LotNumber</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.BulkSalesCertificate.IdType</td>
+                        <td>@Model.BulkSalesCertificate.LinkId</td>
+                        <td></td>
+                        <td>Pounds:</td>
+                        <td>@Model.BulkSalesCertificate.Pounds</td>
+                    </tr>
+                    <tr><td colspan="5">
+                        <table class="table" width="100%">
+                            <tr>
+                                @foreach (var seedClass in Model.Classes)
+                                {   
+                                    <td>                         
+                                        <input type="checkbox" name="ClassId" value="@seedClass.Id" @(seedClass.Id == Model.BulkSalesCertificate.ClassId ? "checked" : "") /> @seedClass.CertClass 
+                                    </td>
+                                }
+                            </tr>
+                        <table>                       
+                        </td>
+                    </tr>
+                    <tr>
+                       <td colspan="5">
+                           Seed Certification Results: @Model.BulkSalesCertificate.CertResults
+                       </td> 
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            Remarks: @Model.StandardsMessage<br/>
+                            @Model.AssayMessage<br/>
+                            @Model.BulkSalesCertificate.Seeds.LabResults.SampleComments
+                        </td>
+                    </tr>
+                    <tr style="height: 50px">
+                        <td colspan="2" class="underline" style="text-align: center">@Model.BulkSalesCertificate.CreatedByContact.FullName()</td>
+                        <td></td>
+                        <td colspan="2" class="underline">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center">Print Name</td>
+                        <td></td>
+                        <td colspan="2" style="text-align: center">Signature</td>
+                    </tr>
+                    <tr>
+                        <td>Address:</td>
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Address.Address1
+                            <br/>
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.Address2
+                        </td>
+                        <td></td>
+                        <td>City, State, Zip:</td>
+                        <td nowrap="true">
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.City, 
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.StateProvince.StateProvinceName
+                             @Model.BulkSalesCertificate.ConditionerOrganization.Address.PostalCode<br/>
+                        @Model.BulkSalesCertificate.ConditionerOrganization.Address.Countries.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Phone:</td>
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Phone</td>
+                        <td></td>
+                        <td>Email:</td>
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Email</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="legal">
+                            California Certified Seed is produced under regulations of the California Crop Improvement Assn., a non-profit corporation, recognized as an official seed certifying agency by the laws of California. It is not a marketing agency and makes no representations or warranties concerning the sale of certified seed. Certification is limited to seed of officially recognized varieties so grown, processed, and inspected as to protect varietal identity and purity. This label when properly accompanying a bulk container of seed is evidence of certification. The vendor is responsible for an analysis label meeting requirements of state and federal seed laws. The analysis information must equal or exceed minimum standards of the California Crop Improvement Association, Davis, California.
+                        </td>
+                    </tr>
+                    <caption>
+                        <tr>
+                            <td class="legal" colspan="5">Print and sign copy for buyer. An electronic record of this certificate can be accessed by the Agricultural Commissioner, the CCIA, and the company issuing this certificate. </td>
+                        </tr>
+                    </caption>
+                </table>
+</body>
+</html>

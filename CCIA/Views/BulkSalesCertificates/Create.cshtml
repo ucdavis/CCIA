@@ -1,0 +1,219 @@
+@model CCIA.Models.BulkSalesCreateViewModel.BulkSalesCreateViewModel
+
+
+@{
+    ViewData["Title"] = "Create New Bulk Sales Certificate";
+}
+
+<h1>Create</h1>
+
+<h4>Bulk Sales Certificate</h4>
+<hr>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group required has-feedback">
+                <label asp-for="BulkSalesCertificate.Date" class="control-label"></label>
+                <div class="input-group mb-3">
+                    <input asp-for="BulkSalesCertificate.Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />  
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>
+                </div>               
+                <span asp-validation-for="BulkSalesCertificate.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group required">
+                <label class="control-label" asp-for="textId"></label>
+                <input class="form-control" type="text" asp-for="textId" />
+                <select class="form-control" asp-for="selectType">
+                    <option value="SID">SID</option>
+                    <option value="Blend">Blend</option>
+                </select>
+                <button type="button" id="retrieveButton">Retrieve Info</button>
+                 <span id="result3"></span>
+            </div>
+            <div class="form-group required">
+                <label class="control-label" asp-for="BulkSalesCertificate.ClassId"></label>
+                <select class="form-control" asp-for="BulkSalesCertificate.ClassId"></select>
+            </div>
+            <div class="form-group required">
+                <label class="control-label" asp-for="BulkSalesCertificate.Pounds"></label>
+                <input asp-for="BulkSalesCertificate.Pounds" class="form-control">
+            </div>
+            <div><hr/></div>
+            <div class="form-group">
+                <label class="control-label">Select My Customer</label>
+                <select id="MyCustomerSelect" class="form-control" asp-items="@(new SelectList(Model.Customers, "Id","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Retrieve from Org ID</label>
+                <input type="text" id="OrgId" class="form-control"></input>
+                <button type="button" id="retrieveFromOrgIdButton">Retrieve Org Info</button>
+            </div>
+            <div>
+               Or just fill in the appropriate fields below 
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserName"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserName" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserAddressLine1"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserAddressLine1" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserAddressLine2"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserAddressLine2" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCity"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserCity" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserStateId"></label>
+                <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","StateProvinceName"))"></select>
+            </div>             
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCountryId"></label>
+                <select asp-for="BulkSalesCertificate.PurchaserCountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserZip"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserZip" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserPhone"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserPhone" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserEmail"></label>
+                <input asp-for="BulkSalesCertificate.PurchaserEmail" class="form-control"></input>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            
+            format: 'LT',
+            autoclose: "true",
+        })
+
+        $(document).ready(function () {
+            $('#retrieveButton').click(function () {
+                var id = $('#textId').val();
+                var idType = $('#selectType').val();
+
+                $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetAvailableClasses',
+                     data: {
+                        id: id,
+                        lookupType: idType
+                    }
+                })
+                .done(function(data) {
+                    $('#BulkSalesCertificate_ClassId').empty();
+                    //alert(data.count());
+                    $.each(data,function(i,data)
+                    {
+                        var div_data="<option value="+data.value+">"+data.text+"</option>";
+                        $(div_data).appendTo('#BulkSalesCertificate_ClassId');
+                    });
+
+                })
+                .fail(function(xhr) {
+                    alert("Could not get list of available classes");
+                    console.log('error', xhr);
+                });                
+
+                $.ajax({
+                    method: 'GET',
+                    url: '/BulkSalesCertificates/GetSidOrBlend',
+                    data: {
+                        id: id,
+                        lookupType: idType
+                    }
+                })
+                .done(function(data){
+                    $('#result3').html("");
+                    var s = '<br>Id: ' + data.id;                        
+                        s += '<br>App Type: ' + data.saleType;
+                        s += '<br>Program Type: ' + data.program;
+                        s += '<br>Applicant: ' + data.applicant;
+                        s += '<br>Conditioner: ' + data.conditioner;
+                        s += '<br>Crop: ' + data.crop;
+                        s += '<br>Variety: ' + data.variety;
+                        s += '<br>Cert Number: ' + data.cert;
+                        s += '<br>Lot Number: ' + data.lot;
+                        $('#result3').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not find info on that ID/Type");
+                    console.log('error', xhr);
+                });
+            });
+
+            $('#MyCustomerSelect').change(function () {
+                var id = $('#MyCustomerSelect').val();
+                $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetMyCustomerInfo',
+                    data: {
+                        id: id,
+                    }
+                })
+                .done(function(data){
+                    //alert(data.name);
+                    populateForm(data);
+                })
+                .fail(function(xhr) {
+                    alert("Could not retrieve 'My Customer' information");
+                    console.log('error', xhr);
+                });                
+            });
+
+            $('#retrieveFromOrgIdButton').click(function () {
+                var id = $('#OrgId').val();
+                $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetMyCustomerFromOrgId',
+                    data: { id: id,}
+                })
+                .done(function(data){
+                    populateForm(data);
+                })
+                .fail(function(xhr) {
+                    alert("Could not retrieve 'My Customer' information");
+                    console.log('error', xhr);
+                }); 
+
+
+            });
+
+        });
+
+        function populateForm(data)
+        {
+            $('#BulkSalesCertificate_PurchaserName').val(data.name);
+            $('#BulkSalesCertificate_PurchaserAddressLine1').val(data.address1);
+            $('#BulkSalesCertificate_PurchaserAddressLine2').val(data.address2);
+            $('#BulkSalesCertificate_PurchaserCity').val(data.city);
+            $('#BulkSalesCertificate_PurchaserStateId').val(data.stateId);
+            $('#BulkSalesCertificate_PurchaserCountryId').val(data.countryId);
+            $('#BulkSalesCertificate_PurchaserZip').val(data.zip);
+            $('#BulkSalesCertificate_PurchaserPhone').val(data.phone);
+            $('#BulkSalesCertificate_PurchaserEmail').val(data.email);
+
+        }
+    </script>
+}

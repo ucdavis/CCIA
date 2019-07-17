@@ -1,5 +1,10 @@
 @model CCIA.Models.Applications
-
+@{
+    bool showPurchasedFrom = false;
+    bool showPounds = false;
+    bool showPlantsPerAcre = false;
+    bool showTHC = false;
+}
 
 <h2>Application Details</h2> 
 <div class="container">
@@ -7,43 +12,37 @@
         <div class="col-lg-6">
                 <div class="form-group row">
                     <label asp-for="Id" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.Id)
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="Status" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.Status)
                     </div>
-                </div>
+                </div>                
                 <div class="form-group row">
-                    <label asp-for="ApplicantId" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-                        @Html.DisplayFor(x => x.ApplicantId)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="ApplicantOrganization.OrgName" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-                        @Html.DisplayFor(x => x.ApplicantOrganization.OrgName)
+                    <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
+                    <div class="col-sm-10 form-control-plaintext">
+                        @Html.DisplayFor(x => x.ApplicantOrganization.NameAndId)
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="Crop.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.Crop.Name)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-2 col-form-label">Class</label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.ClassProduced.ClassProducedTrans)
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="MapVe" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.CheckBox("MapsVe", Model.MapVe ?? false, new {@disabled = true})
                     </div>
                 </div>
@@ -51,37 +50,31 @@
         <div class="col-lg-6">
                 <div class="form-group row">
                     <label asp-for="CertYear" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.CertYear)
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="AppType" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.AppTypeTrans.AppTypeTrans)
                     </div>
-                </div>
+                </div>               
                 <div class="form-group row">
-                    <label asp-for="GrowerId" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-                        @Html.DisplayFor(x => x.GrowerId)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="GrowerOrganization.OrgName" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-                        @Html.DisplayFor(x => x.GrowerOrganization.OrgName)
+                    <label asp-for="GrowerOrganization.NameAndId" class="col-sm-2 col-form-label">Grower</label>
+                    <div class="col-sm-10 form-control-plaintext">
+                        @Html.DisplayFor(x => x.GrowerOrganization.NameAndId)
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="Variety.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.Variety.Name)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="AcresApplied" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <label asp-for="AcresApplied" class="col-sm-2 col-form-label">Acres</label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.AcresApplied)
                     </div>
                 </div>
@@ -120,12 +113,34 @@
                 <tr>
                     <th>Cert#</th>
                     <th>Variety</th>
-                    <th>Pounds Planted</th>
-                    <th># Plants</th>
+                    @if(Model.PlantingStocks.First().PoundsPlanted != null || Model.PlantingStocks.Last().PoundsPlanted != null)
+                    {
+                        showPounds = true;
+                        <th>Pounds Planted</th>
+                    } 
+                    @if(Model.PlantingStocks.First().PlantsPerAcre != null || Model.PlantingStocks.Last().PlantsPerAcre != null)
+                    { 
+                        showPlantsPerAcre = true;                       
+                        <th>Plants/Acre</th>
+                    }                 
                     <th>Class</th>
                     <th>Tag Issued</th>
                     <th>Grown</th>
-                    <th>Purchased From</th>
+                    @if(Model.PlantingStocks.First().SeedPurchasedFrom != null || Model.PlantingStocks.Last().SeedPurchasedFrom != null)
+                    {
+                        showPurchasedFrom = true;
+                        <th>Purchased From</th>
+                    } 
+                    @if(Model.AppType == "PO")
+                    {
+                        <th>Winter test?</th>
+                        <th>PVX test?</th>
+                    }
+                    @if(Model.PlantingStocks.First().ThcPercent != null || Model.PlantingStocks.Last().ThcPercent != null)
+                    {
+                        showTHC = true;
+                        <th>THC%</th>
+                    } 
                 </tr>
             </thead>
             <tbody>
@@ -136,8 +151,14 @@
                             @row.PsCertNum
                         </td>
                         <td>@row.PsEnteredVariety</td>
-                        <td>@row.PoundsPlanted</td>
-                        <td>@row.PlantsPerAcre</td>
+                        @if(showPounds)
+                        {
+                            <td>@row.PoundsPlanted</td>
+                        }
+                        @if(showPlantsPerAcre)
+                        {
+                            <td>@row.PlantsPerAcre</td>
+                        }                        
                         <td>@row.PsClassNavigation.ClassProducedTrans</td>
                         @if(@row.TaggedStateProvince == null)
                         {
@@ -146,10 +167,19 @@
                         {
                             <td>@row.TaggedStateProvince.StateProvinceName</td>
                         }  else {
-                            <td></td>
+                            <td>&nbsp;</td>
                         }                      
                         <td>@row.GrownStateProvince.StateProvinceName</td>
                         <td>@row.SeedPurchasedFrom</td>
+                        @if(Model.AppType == "PO")
+                        {
+                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
+                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
+                        }
+                        @if(showTHC)
+                        {
+                            <td>@row.ThcPercent</td>
+                        }
                     </tr>
                 }
             </tbody>

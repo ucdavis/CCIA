@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,11 +8,17 @@ namespace CCIA.Models
 {
     public partial class BulkSalesCertificates
     {
+        public BulkSalesCertificates() {
+            Date = DateTime.Now.Date;
+        }
         public int Id { get; set; }
         public int ConditionerOrganizationId { get; set; }
 
         [ForeignKey("ConditionerOrganizationId")]
         public Organizations ConditionerOrganization { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:d}")]
+        [DisplayName("Date Sold")]
         public DateTime Date { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]
@@ -20,34 +27,46 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public BlendRequests Blend { get; set; }
 
-        public string CertProgram { get; set; }
+        public string CertProgramAbbreviation { get; set; }
+        [ForeignKey("CertProgramAbbreviation")]
+        public AbbrevAppType CertProgram { get; set; }
 
+        [DisplayName("Purchaser Name")]
         public string PurchaserName { get; set; }
 
+        [DisplayName("Address Line1")]
         public string PurchaserAddressLine1 { get; set; }
 
+        [DisplayName("Address Line2")]
         public string PurchaserAddressLine2 { get; set; }
 
+        [DisplayName("City")]
         public string PurchaserCity { get; set; }
 
+        [DisplayName("State")]
         public int? PurchaserStateId { get; set; }
 
         [ForeignKey("PurchaserStateId")]
         public StateProvince PurchaserState { get; set; }
 
+        [DisplayName("Country")]
         public int? PurchaserCountryId { get; set; }
 
         public Countries PurchaserCountry { get; set; }
 
+         [DisplayName("Zip")]
         public string PurchaserZip { get; set; }
 
+         [DisplayName("Phone")]
         public string PurchaserPhone { get; set; }
 
+         [DisplayName("Email")]
         public string PurchaserEmail { get; set; }
 
-        public Decimal Pounds { get; set; }
+        public int Pounds { get; set; }
 
-        public int? ClassId { get; set; }
+        [DisplayName("Class Sold")]
+        public int ClassId { get; set; }
 
         [ForeignKey("ClassId")]
         public AbbrevClassSeeds Class { get; set; }
@@ -57,6 +76,7 @@ namespace CCIA.Models
         [ForeignKey("CreatedById")]
         public Contacts CreatedByContact { get; set; }
 
+        [DisplayName("Date Created")]
         public DateTime CreatedOn { get; set; }
 
         public string AdminUpdatedId { get; set; }
@@ -114,7 +134,7 @@ namespace CCIA.Models
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.Crop;
+                    return Blend.GetCrop();
                 }                
                 return "Unknown";
             }
@@ -130,7 +150,7 @@ namespace CCIA.Models
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.VarietyName;
+                    return Blend.GetVarietyName();
                 }               
                 return "Unknown";
             }
@@ -142,13 +162,58 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds != null)
                 {
-                    return Seeds.CertNumber();
+                    return Seeds.CertNumber;
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
                     return Blend.CertNumber;
                 }                
                 return "Unknown";
+            }
+        }
+
+        public string LotNumber 
+        { 
+            get
+            {
+                if(SeedsID.HasValue && Seeds != null)
+                {
+                    return Seeds.LotNumber;
+                }
+
+                return "";
+            }
+        }
+
+        public string Program 
+        { 
+            get
+            {
+                if (SeedsID.HasValue)
+                {
+                    return Seeds.AppTypeTrans.AppTypeTrans;
+                }
+                if (BlendId.HasValue)
+                {
+                    return "Blend";
+                }
+                return "";
+            }
+        }
+
+        public string CertResults
+        {
+            get
+            {
+                if(SeedsID.HasValue)
+                {
+                    return Seeds.CertResults();
+                }
+                if(BlendId.HasValue)
+                {
+                    return "Passed";
+                }
+                return "ReJECTED";
             }
         }
 

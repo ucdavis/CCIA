@@ -14,7 +14,7 @@ namespace CCIA.Models
         public string PsCertNum { get; set; }
         public virtual string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }
-        public virtual decimal? PoundsPlanted { get; set; }
+        public decimal? PoundsPlanted { get; set; }
         public virtual int? PsClass { get; set; }
         public int? PsAccession { get; set; }
         public int? StateCountryTagIssued { get; set; }

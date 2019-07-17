@@ -50,7 +50,7 @@ namespace CCIA.Models
             {
                 if(TagAbbrevClass != null)
                 {
-                    return TagAbbrevClass.Class;
+                    return TagAbbrevClass.CertClass;
                 }
                 return "";
             }
@@ -62,11 +62,11 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue )
                 {
-                    return Seeds.CropName;
+                    return Seeds.GetCropName();
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.Crop;
+                    return Blend.GetCrop();
                 }
                 if (BulkCrop != null)
                 {
@@ -82,11 +82,11 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue)
                 {
-                    return Seeds.VarietyName;
+                    return Seeds.GetVarietyName();
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
-                    return Blend.VarietyName;
+                    return Blend.GetVarietyName();
                 }
                 if (BulkVariety != null)
                 {
@@ -102,7 +102,7 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds != null)
                 {
-                    return Seeds.CertNumber();
+                    return Seeds.CertNumber;
                 }
                 if (BlendId.HasValue && Blend != null)
                 {
@@ -134,7 +134,7 @@ namespace CCIA.Models
             {
                 if (SeedsID.HasValue && Seeds.ClassProduced != null)
                 {
-                    return Seeds.ClassProduced.Class;
+                    return Seeds.ClassProduced.CertClass;
                 }
                 else if (BlendId.HasValue)
                 {

@@ -20,5 +20,9 @@ namespace CCIA.Models
 
         public ICollection<Applications> Applications { get; set; }
         public ICollection<Seeds> Seeds { get; set; }
+
+        public ICollection<BulkSalesCertificates> BulkSalesCertificates { get; set; }
+
+        
     }
 }

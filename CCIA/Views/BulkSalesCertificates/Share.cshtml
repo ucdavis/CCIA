@@ -1,0 +1,210 @@
+@model CCIA.Models.BulkSalesCertificateShareViewModel.BulkSalesCertificateShareViewModel
+
+
+@{
+    ViewData["Title"] = "Share Bulk Sales Certificates";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Blend Details</h2>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.Date" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Date)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.IdType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.IdType)
+                </div>
+            </div>           
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.LinkId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.LinkId)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.Program" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Program)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.Pounds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.Pounds)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.CropName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.CropName)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.VarietyName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.VarietyName)
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-sm-12">
+                    <h2>Purchaser</h2>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserName)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserAddressLine1)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserCity" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserCity)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserState.StateProvinceName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserState.StateProvinceName)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserCountry.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserCountry.Name)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserZip" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserZip)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserPhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserPhone)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="BulkSalesCertificate.PurchaserEmail" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesCertificate.PurchaserEmail)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Currently Shared with:</h2>
+                </div>
+            </div>
+            <div>
+                <table class="table">
+                    <tr>
+                        <th>Org Id</th>
+                        <th>Name</th>
+                    </tr>
+                   @foreach (var share in Model.Shares)
+                    {
+                        <tr>
+                            <td>@share.ShareOrganization.OrgId</td>
+                            <td>@share.ShareOrganization.OrgName</td>
+                        </tr>
+                    } 
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Currently Shared with:</h2>
+                </div>
+                <div class="form-group">  
+                    <label for="account">Name or Account Number:</label>
+                    <div class="input-group col">
+                        <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" id="accountLookupButton"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span id="result3"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+        
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+
+        $("#accountLookupButton").click(function() {
+            lookupOrgs();
+        })
+
+        function lookupOrgs() {
+            
+            var val = $("#account").val();
+            
+            if (val === "") {
+                alert("This field cannot be empty");
+                return;
+            }
+
+            $.ajax({
+                    method: 'Get',
+                    url: '/BulkSalesCertificates/GetOrgs',
+                     data: {                        
+                        lookup: val,
+                    }
+                })
+                .done(function(data) {
+                    $('#result3').html("");
+                    var s = "<table class='table'><tr><th>&nbsp;</th><th>OrgId</th><th>Name</th>";
+                    $.each(data, function(i) {
+                        var item = data[i]
+                        s += '<tr><td><form action="/BulkSalesCertificates/AddShare/' + @Model.BulkSalesCertificate.Id +'" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><input type="hidden" name="shareOrgId" id="shareOrgId" value="' + item.id + '"><input type="submit" value="share"></form></td>'
+                        s += '<td>' + item.id + '</td>';
+                        s += '<td>' + item.name + '</td></tr>';
+                    })
+                    s += '</table>'
+                    $('#result3').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not get list of organizations");
+                    console.log('error', xhr);
+                });  
+        }     
+    </script>
+}

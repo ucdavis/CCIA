@@ -10,9 +10,10 @@ namespace CCIA.Models
         [Key]
         public int Id { get; set; }
         public string Abbrv { get; set; }
-        public string Class { get; set; }
+        public string CertClass { get; set; }
         public int? SortOrder { get; set; }
-       
+        
+        public int  Program { get; set; }
         
     }
 }

@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/cupertino/jquery-ui.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -79,10 +81,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Bulks Sales Certificate</a>
+                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Create">New Bulks Sales Certificate</a>
                             <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a>
-                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">New Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-controller="SeedTransfers" asp-action="Create">New Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-controller="SeedTransfers" asp-action="Index">Completed Seed Transfer Certificate</a>
                             <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">My Customers</a>
                         </div>
                     </li>
@@ -113,8 +115,10 @@
         </div>
     </div>
 
-    <footer class="footer container-fluid">
-        <span class="text-muted">&copy; 2019 - CCIA </span>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">&copy; 2019 - CCIA </span>
+        </div>
     </footer>
 
     <environment include="Development">
@@ -126,7 +130,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     </environment>
     <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
