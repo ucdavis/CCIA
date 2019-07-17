@@ -7,6 +7,7 @@ $('#variety-search').on('click', () => {
 // Called before HTML form submitted to controller
 $('#hempFromSeedApplication').submit(function (e) {
     insertHiddenInput("growerId", growerId, "hempFromSeedApplication");
+    insertHiddenInput("OrgId", orgId, "potatoApplication");
     let fhIndicesStr = JSON.stringify(fhIndices);
     insertHiddenInput("AppViewModel.FieldHistoryIndices", fhIndicesStr, "hempFromSeedApplication");
     return true;

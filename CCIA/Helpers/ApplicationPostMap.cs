@@ -49,6 +49,8 @@ namespace CCIA.Helpers
                 FieldHistories = app.FieldHistories
             };
 
+            newApp.PlantingStocks = app.PlantingStocks;
+
             return newApp;
         }
 

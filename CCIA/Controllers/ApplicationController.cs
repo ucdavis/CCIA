@@ -145,7 +145,7 @@ namespace CCIA.Controllers
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
-                Applications app = ApplicationPostMap.CreateAppRecord(potatoApp, contactId, "SD");
+                Applications app = ApplicationPostMap.CreateAppRecord(potatoApp, contactId, "PO");
                 _dbContext.Add(app);
 
                 // Adds to database and populates AppId.
@@ -169,11 +169,7 @@ namespace CCIA.Controllers
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.SEED);
-            if (SecondPlantingStockErrors())
-            {
-                appViewModel.RenderSecondPlantingStock = true;
-            }
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.POTATO);
             appViewModel.RenderFormRemainder = true;
             potatoApp.AppViewModel = appViewModel;
             return View("Potato/CreatePotatoApplication", potatoApp);

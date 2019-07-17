@@ -19,10 +19,10 @@
     </div>
     <div class="form-group col-md-4 col-sm-4 col-xs-4">
         <label for="crop-not-in-list">Variety or Crop not in list</label>
-        <input type="text" class="form-control" id="crop-not-in-list" name="FieldHistories[@fhEntryId].Variety" placeholder="Variety or Crop not in list">
+        @Html.TextBox("FieldHistories["+fhEntryId+"].Variety", "", new { @class="form-control", id="crop-not-in-list" })
     </div>
     <div class="form-group co-md-4 col-sm-4 col-xs-4">
         <label for="app-num">Application Number</label>
-        <input type="text" class="form-control" id="app-num" name="FieldHistories[@fhEntryId].AppNumber" placeholder="Application #">
+        @Html.TextBox("FieldHistories["+fhEntryId+"].AppNumber", "", new { @class="form-control", id="app-num" })
     </div>
 </div>
