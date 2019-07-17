@@ -61,6 +61,9 @@
                     }
                 })
                 .done(function(data){
+                    var certYear = $('#CertYear').val();
+                    var rad = $('#RAD').val();
+                    var certNumber = $('#CertNumber').val();
                     $('#results').html("");
                     var s = '<form action="/Seeds/CreateInState/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
                         $.each(data,
@@ -73,7 +76,11 @@
                                 s += '<td>' + item.grower + '</td>';
                                 s += '<td>' + item.acres + '</td></tr>';
                             });
-                        s += '</table><input type="submit" value="Select App(s)"></form>';
+                        s += '</table>';
+                        s += '<input type="hidden" value=' + certYear + ' name="certYear" />'
+                        s += '<input type="hidden" value=' + rad + ' name="certRad" />'
+                        s += '<input type="hidden" value=' + certNumber + ' name="certNum" />'
+                        s += '<input type="submit" value="Select App(s)"></form>';
                     $('#results').html(s);
                 })
                 .fail(function(xhr) {

@@ -74,9 +74,28 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateInState(int[] appId)
+        public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
         {
-            var model = await SeedsCreateViewModel.Create(_dbContext, appId);
+            if(appId == null || appId.Count() == 0)
+            {
+                ErrorMessage = "No apps selected";
+                return RedirectToAction(nameof(SelectApp));
+
+            }
+            var model = await SeedsCreateViewModel.Create(_dbContext, appId, certYear, certNum, certRad);
+           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
+        {
+            var seed = model.Seed;
+            var newSeed = new Seeds();
+            
+
+            
+            
            
             return View(model);
         }
