@@ -37,7 +37,9 @@ namespace CCIA.Models
         public int? OfficialVarietyId { get; set; }
         //public VarFull  Variety { get; set; }
 
+        [Display(Name="Lot Number")]
         public string LotNumber { get; set; }
+        [Display(Name="Lot Weight (pounds)")]
         public decimal PoundsLot { get; set; }
 
         [ForeignKey("Class")]
@@ -45,6 +47,7 @@ namespace CCIA.Models
         public int? Class { get; set; }
         public int? ClassAccession { get; set; }
         public string Status { get; set; }
+        [Display(Name="County Drawn")]
         public int? CountyDrawn { get; set; }
         public int? OriginState { get; set; }
         public int? OriginCountry { get; set; }
@@ -59,6 +62,7 @@ namespace CCIA.Models
         public string SampleDrawnBy { get; set; }
         public int? CertId { get; set; }
         public int? SampleId { get; set; }
+        [Display(Name="OECD Lot?")]
         public bool OECDLot { get; set; }
         public bool Rush { get; set; }
         public bool InDirt { get; set; }

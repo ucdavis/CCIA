@@ -1,0 +1,93 @@
+@model int[]
+@{
+    ViewData["Title"] = "Select Application";
+}
+
+
+
+
+<div class="card" style="width: 100%;">
+    <div class="card-header">
+        <h2>Enter the California Certification Number:</h2>
+    </div>
+    <div class="card-body">
+        <table class="tablde">
+            <tr>
+                <td>Year</td>
+                <td>&nbsp;</td>
+                <td>RAD*</td>
+                <td>&nbsp;</td>
+                <td>Cert Number</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>@Html.DropDownList("CertYear", new SelectList(Model)) </td>
+                <td>CA-</td>
+                <td><input id="RAD" type="text" /></td>
+                <td>-</td>
+                <td><input id="CertNumber" type="text"</td>
+                <td><input type="button" id="retrieveButton" value="Get Apps" class="btn btn-primary">  </td>
+            </tr>
+        </table>
+        <div>
+            <span id="results"></span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        };
+
+        $(document).ready(function () {
+            $('#retrieveButton').click(function () {
+                var certYear = $('#CertYear').val();
+                var rad = $('#RAD').val();
+                var certNumber = $('#CertNumber').val();
+
+                $.ajax({
+                    method: 'GET',
+                    url: '/Seeds/GetAppsFromCertNumber',
+                    data: {
+                        certYear: certYear,
+                        rad: rad,
+                        certNumber: certNumber,
+                    }
+                })
+                .done(function(data){
+                    var certYear = $('#CertYear').val();
+                    var rad = $('#RAD').val();
+                    var certNumber = $('#CertNumber').val();
+                    $('#results').html("");
+                    var s = '<form action="/Seeds/CreateInState/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
+                        $.each(data,
+                            function(i) {
+                                var item = data[i];
+                                s += '<tr><td><input type="checkbox" name="appId" id="appId" value="' +
+                                    item.appId +
+                                    '"></td>';
+                                s += '<td>' + item.appId + '</td>';
+                                s += '<td>' + item.grower + '</td>';
+                                s += '<td>' + item.acres + '</td></tr>';
+                            });
+                        s += '</table>';
+                        s += '<input type="hidden" value=' + certYear + ' name="certYear" />'
+                        s += '<input type="hidden" value=' + rad + ' name="certRad" />'
+                        s += '<input type="hidden" value=' + certNumber + ' name="certNum" />'
+                        s += '<input type="submit" value="Select App(s)"></form>';
+                    $('#results').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not find info on that ID/Type");
+                    console.log('error', xhr);
+                });
+            });
+        });
+    </script>
+}

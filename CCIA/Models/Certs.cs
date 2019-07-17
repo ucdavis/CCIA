@@ -10,7 +10,7 @@ namespace CCIA.Models
         public int OrgId { get; set; }
         public int ClassProduced { get; set; }
         public string ClassProducedChar { get; set; }
-        public short? CertYear { get; set; }
+        public int? CertYear { get; set; }
         public DateTime? DateEntered { get; set; }
         public DateTime? DateModified { get; set; }
     }

@@ -1783,6 +1783,8 @@ namespace CCIA.Models
                 entity.Property(e => e.Phone).HasColumnName("main_phone");
 
                 entity.Property(e => e.Email).HasColumnName("main_email");
+
+                entity.Property(e => e.CountyId).HasColumnName("county_id");
             });
 
             modelBuilder.Entity<Contacts>(entity =>
