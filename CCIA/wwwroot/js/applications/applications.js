@@ -37,7 +37,6 @@ function fillVarietyNameAndId(varietyNameInput, varietyIdInput, varietyId, varie
 /* Load the rest of the form after selecting (or entering) a variety*/
 function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
     showSpinner("form-remainder");
-    /* If something is inside form-remainder div, clear it out */
     $("#form-remainder")
         .load("/Application/GetPartial?folder="+remainderFolder+"&partialName="+remainderName+"&orgId="+orgId+"&appTypeId="+appTypeId, 
         (response, status, xhr) => {
@@ -62,6 +61,8 @@ function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderNam
 
                 // Planting Stock 1 Variety
                 fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
+
+                showSpinner("variety-dropdown");
             }
         });
 }
