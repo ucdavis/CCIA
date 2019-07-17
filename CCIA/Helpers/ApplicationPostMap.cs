@@ -58,6 +58,14 @@ namespace CCIA.Helpers
             {
                 case 2:
                     return new PotatoApp();
+                case 3:
+                    return new HeritageGrainQAApp();
+                case 4:
+                    return new PreVarietyGermplasmApp();
+                case 5:
+                    return new RiceQAApp();
+                case 6:
+                    return new HempFromSeedApp();
                 default:
                     return new SeedApp();
             }

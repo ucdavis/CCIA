@@ -28,7 +28,7 @@
         <!-- Crop year -->
         <div class="col-lg-4 col-sm-4 col-xs-4">
             @{
-                ViewBag.name = "cropYear";
+                ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
@@ -46,25 +46,32 @@
                 SelectList GermplasmSourceList = new SelectList(selectListItems, "Value", "Text");
             }
             @Html.DropDownListFor(m => m.PvgSource, 
-                    GermplasmSourceList,
-                    new { @class="form-control", id="germplasmSource" })
+                GermplasmSourceList,
+                new { @class="form-control", id="germplasmSource" })
         </div>
         
     </div>
 
-    <div class="form-group">
-        @{ViewBag.name = "classProduced";}
-        <label>Class to be Produced</label><em class="required">•</em>
-        @await Html.PartialAsync("Shared/_ClassRadioButtons", Model.AppViewModel)
+    <div class="form-group row">
+        <div class="col">
+            @{ViewBag.name = "classProduced";}
+            <label>Class to be Produced</label><em class="required">•</em>
+            @await Html.PartialAsync("Shared/_ClassDropdown")
+        </div>
+        <div class="col">
+            <label>Pre-Variety Germplam Selection ID</label><em class="required">•</em>
+            @Html.TextBox("PvgSelectionId", "", new { @class="form-control", placeholder="Pre-Variety Germplam Selection ID" })
+        </div>
     </div>
 
     <!-- Planting Stock -->
-    <section id="planting-stock" class="form-section">
+    <section id="planting-stock" class="rounded-section off-white">
+        <h4>Planting Stock</h4>
         @await Html.PartialAsync("Shared/_PlantingStock")
     </section>
 
     <!-- Field Information -->
-    <section id="field-info" class="form-section">
+    <section id="field-info" class="rounded-section off-white">
         @await Html.PartialAsync("Shared/_FieldInformation")
     </section>
 
@@ -90,7 +97,7 @@
 @section Scripts {
     <script type="text/javascript">
         // Global variables, some pulling from viewmodel
-        var appTypeId = 3;
+        var appTypeId = @Model.AppViewModel.AppTypeId;
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
         // The index of the next Field History entry to be added to the form
@@ -103,4 +110,5 @@
     </script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/applications/prevariety-germplasm.js"></script>
 }

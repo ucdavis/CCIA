@@ -22,8 +22,18 @@ namespace CCIA.Models
                     };
                 // Pre-Variety Germplasm
                 case 4:
+                    return new ApplicationLabels
+                    {
+                        Ps1Variety = "Selection ID",
+                        PsCertNum = "PV Program Number/Lot Number"
+                    };
                 // Rice
                 case 5:
+                    return new ApplicationLabels
+                    {
+                        Ps1Variety = "Rice QA Variety",
+                        PsCertNum = "QA Program Number/Lot Number"
+                    };
                 // Hemp from Seed
                 case 7:
                 default:

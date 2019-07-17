@@ -1,0 +1,86 @@
+@model CCIA.Models.MasterApplicationViewModel
+@using CCIA.Helpers
+
+@{
+    ViewData["Title"] = "Rice Seed QA Program";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<section class="app-header">
+    <h2>Application for Rice Seed Quality Assurance Program</h2>
+    <h5>@Model.AppViewModel.Organization.OrgName</h5>
+</section>
+
+@await Html.PartialAsync("Shared/_GrowerInfoTable")
+
+<form action="/Application/CreatePreVarietyGermplasmApplication" method="post" id="riceQAApplication">
+    <div class="form-group row">
+        <!-- Crop -->
+        <div class="col">
+            @{ViewBag.name = "CropId";}
+            @await Html.PartialAsync("Shared/_CropDropdown")
+            @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
+        </div>
+        <!-- Crop year -->
+        <div class="col">
+            @{
+                ViewBag.name = "CertYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @await Html.PartialAsync("Shared/_CropYearDropdown")
+        </div> 
+        <div class="col"> 
+            @{ ViewData["varietyName"] = "EnteredVariety"; } 
+            @await Html.PartialAsync("Shared/_VarietySelect")
+        </div>
+        
+    </div>
+
+    <div id="form-remainder">
+        @if (@Model.AppViewModel.RenderFormRemainder)
+        {
+            @await Html.PartialAsync("Seed/SeedAppPartial")
+        }
+    </div>
+
+    <!-- Hidden fields -->
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
+    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
+    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PV">
+</form>
+
+<!-- Alert dialog modals -->
+@{
+    var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
+    var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+    var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
+}
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
+
+@section Scripts {
+    <script type="text/javascript">
+        // Global variables, some pulling from viewmodel
+        var appTypeId = @Model.AppViewModel.AppTypeId;
+        var orgId = @Model.AppViewModel.Organization.OrgId;
+        var growerId = @Model.AppViewModel.Organization.OrgId;
+        var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
+        // The index of the next Field History entry to be added to the form
+        let fhEntryId = -1;
+        // How many total Field History entries are in the form currently
+        let secondPsRendered = false;
+        let maxFieldHistories = @Model.AppViewModel.MaxFieldHistoryRecords;
+        let fhIndices = @Model.AppViewModel.FieldHistoryIndices;
+        let fhEntryCount = countOccurrences(1, fhIndices);
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/applications/rice.js"></script>
+}

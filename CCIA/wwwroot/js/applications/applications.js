@@ -35,11 +35,12 @@ function fillVarietyNameAndId(varietyNameInput, varietyIdInput, varietyId, varie
 }
 
 /* Load the rest of the form after selecting (or entering) a variety*/
-function loadFormRemainder(varietyId, varietyName) {
+function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
     showSpinner("form-remainder");
     /* If something is inside form-remainder div, clear it out */
     $("#form-remainder")
-        .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId=" + orgId + "&appTypeId=" + appTypeId, (response, status, xhr) => {
+        .load("/Application/GetPartial?folder="+remainderFolder+"&partialName="+remainderName+"&orgId="+orgId+"&appTypeId="+appTypeId, 
+        (response, status, xhr) => {
             if (status == "error") {
                 var msg = "Sorry, the following error occurred while loading the remainder of the form: ";
                 $("#error").html(msg + xhr.status + " " + xhr.statusText);
@@ -65,7 +66,7 @@ function loadFormRemainder(varietyId, varietyName) {
         });
 }
 
-function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
+function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {
     // Display error if user tries to search for variety before selecting crop
     let crop = document.getElementsByName("CropId")[0];
     let cropText = crop.options[crop.selectedIndex].text;
@@ -97,13 +98,13 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
             if (res.length === 0) {
                 $("#varAlert").modal('show');
                 // If this is the first variety, then load the rest of the form.
-                window[selectVarietyCallback](-1, varietyName);
+                window[selectVarietyCallback](-1, varietyName, remainderFolder, remainderName);
             }
             // Populate dropdown with list of varieties
             res.forEach((el) => {
                 vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
                 document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
-                    window[selectVarietyCallback](el.varOffId, el.varOffName);
+                    window[selectVarietyCallback](el.varOffId, el.varOffName, remainderFolder, remainderName);
                 });
             })
         },
@@ -113,10 +114,18 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
     });
 }
 
-function selectFirstVarietyFormRemainder(varietyId, varietyName) {
+function selectFirstVariety(varietyId, varietyName) {
     // Original variety
     fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-    loadFormRemainder(varietyId, varietyName);
+    // Planting Stock 1 Variety
+    fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
+    showSpinner("variety-dropdown");
+}
+
+function selectFirstVarietyFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
+    // Original variety
+    fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
+    loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName);
 }
 
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside

@@ -12,17 +12,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CCIA.Controllers
 {
-    enum AppTypes
-    {
-        SEED = 1,
-        POTATO,
-        GRAINQA,
-        GERMPLASM,
-        RICE,
-        TURFGRASS,
-        HEMP
-    }
-
 
     public class ApplicationController : SuperController
     {

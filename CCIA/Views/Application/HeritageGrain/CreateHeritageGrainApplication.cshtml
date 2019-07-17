@@ -27,7 +27,7 @@
         <!-- Crop year -->
         <div class="col-lg-4 col-sm-4 col-xs-4">
             @{
-                ViewBag.name = "cropYear";
+                ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
@@ -40,29 +40,11 @@
         </div>
     </div>
 
-    <!-- Class produced -->
-    <div class="form-group">
-        <label>Class to be Produced</label><em class="required">•</em>
-        @{ ViewBag.name = "ClassProducedId"; }
-        <div>
-            @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
-        </div>
-        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
-    </div>
-
-    <!-- Planting Stock -->
-    <section id="planting-stock" class="rounded-section off-white">
-        <h4>Planting Stock:</h4>
-        @await Html.PartialAsync("Shared/_PlantingStock")
-    </section>
-
-    <!-- Field Information -->
-    <section id="field-info" class="rounded-section off-white">
-        @await Html.PartialAsync("Shared/_FieldInformation")
-    </section>
-
-    <div class="text-right">
-        <button type="submit" class="btn btn-primary">Continue with Application</button>
+    <div id="form-remainder">
+        @if (@Model.AppViewModel.RenderFormRemainder)
+        {
+            @await Html.PartialAsync("Seed/SeedAppPartial")
+        }
     </div>
 
     <!-- Hidden fields -->
@@ -85,7 +67,7 @@
 @section Scripts {
     <script type="text/javascript">
         // Global variables, some pulling from viewmodel
-        var appTypeId = 3;
+        var appTypeId = @Model.AppViewModel.AppTypeId;
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
         // The index of the next Field History entry to be added to the form

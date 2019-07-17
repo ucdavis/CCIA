@@ -107,6 +107,8 @@ namespace CCIA.Models
         [Required]
         public int? FarmCounty { get; set; }
 
+        public string CountyPermit { get; set; }
+
         public int? SelectedVarietyId { get; set; }
 
         [ForeignKey("SelectedVarietyId")]

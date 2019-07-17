@@ -17,7 +17,7 @@ function insertHiddenInput(name, insertVal, formId) {
  * @param {Array} array 
  */
 function countOccurrences(element, array) {
-    let count;
+    let count = 0;
     for (let item of array) {
         if (item === element) {
             count++;

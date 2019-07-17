@@ -1,6 +1,11 @@
 @model MasterApplicationViewModel
 
-<label for="date-planted">Date Planted</label><em class="required">•</em>
+<label for="date-planted">Date Planted
+    @if(Model.AppViewModel.AppTypeId == 4)
+    {
+        <text>(or collection date for G0)</text>
+    }
+</label><em class="required">•</em>
 <div class="input-group mb-3">
     @Html.TextBox("DatePlanted", "", new { @class="form-control datepicker", 
                                                     id="datepicker", 

@@ -1,0 +1,29 @@
+<div class="form-group row">
+    <div class="col">
+        @{ViewBag.name = "classProduced";}
+        <label>Class to be Produced</label><em class="required">•</em>
+        @await Html.PartialAsync("Shared/_ClassDropdown")
+    </div>
+</div>
+
+<!-- Planting Stock -->
+<section id="planting-stock" class="rounded-section off-white">
+    <h4>Planting Stock</h4>
+    @await Html.PartialAsync("Shared/_PlantingStock")
+    <!-- Second Planting Stock form -->
+    <div id="second-ps">
+        @if (@Model.AppViewModel.RenderSecondPlantingStock)
+        {
+            <partial name="Seed/_SecondPlantingStock"></partial>
+        }
+        <p><em>Enter both parent lines for hybrid production.</em></p>
+    </div>
+    <button id="add-second-ps" class="btn btn-warning">Add a second planting stocks record</button>
+</section>
+
+<!-- Field Information -->
+<section id="field-info" class="rounded-section off-white">
+    @await Html.PartialAsync("Shared/_FieldInformation")
+</section>
+
+<button type="submit" class="btn btn-primary">Continue with Application</button>

@@ -108,7 +108,7 @@
 @section Scripts {
     <script type="text/javascript">
         // Global variables, some pulling from viewmodel
-        var appTypeId = 2;
+        var appTypeId = @Model.AppViewModel.AppTypeId;
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
         // The index of the next Field History entry to be added to the form

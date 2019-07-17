@@ -118,8 +118,8 @@ button.accept-policy {
 }
 
 .top-right-btn {
-    height: 37px;
-    width: auto;
+    height: 2.5rem;
+    width: 2.5rem;
     position: absolute;
     top: 8px;
     right: 10px;

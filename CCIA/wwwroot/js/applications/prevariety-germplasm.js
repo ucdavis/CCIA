@@ -1,6 +1,6 @@
 // Set search variety click listener
 $('#variety-search').on('click', () => {
-    searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder", "HeritageGrain", "_HeritageGrainRemainder");
+    searchVarieties("variety-dropdown", "variety", "selectFirstVariety");
 });
 
 // Called before HTML form submitted to controller
