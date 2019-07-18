@@ -63,8 +63,11 @@ namespace CCIA.Models.SeedsCreateViewModel
         public int[] AppId { get; set; }
 
         [Display(Name = "Lot Number")]
+        [Required]
         public string LotNumber { get; set; }
         [Display(Name = "Lot Weight (pounds)")]
+        [Required]
+        [Range(1, 40000000, ErrorMessage = "Value for {0} must be between {1} and {2}")]
         public decimal PoundsLot { get; set; }
 
         public int? Class { get; set; }
@@ -77,6 +80,7 @@ namespace CCIA.Models.SeedsCreateViewModel
         public string Remarks { get; set; }
         public string SampleDrawnBy { get; set; }
         [Display(Name = "Name of Sampler")]
+        [Required]
         public string SamplerName { get; set; }
         [Display(Name = "OECD Lot?")]
         public bool OECDLot { get; set; }

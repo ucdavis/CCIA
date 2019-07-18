@@ -211,10 +211,6 @@ button.accept-policy {
     margin: 15px;
 }
 
-.required{
-    color:#f00
-}
-
 .scrollable-menu{
     height:auto;
     max-height:400px;
@@ -287,8 +283,9 @@ body {
   border-radius: 50%;
 }
 
-.required{
-  color:#f00
+div.required label.col-form-label:after {
+  content: " *";
+  color: red;
 }
 
 .scrollable-menu {

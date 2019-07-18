@@ -73,7 +73,7 @@ namespace CCIA.Controllers
             return View(years);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
         {
             if(appId == null || appId.Count() == 0)
@@ -91,6 +91,19 @@ namespace CCIA.Controllers
         public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
         {
             var seed = model.Seed;
+            
+            if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
+                ErrorMessage = "Must Select county";
+                return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
+            }
+            
+            if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber.ToString() && s.SampleFormRad == seed.SampleFormRad))
+            {
+                ErrorMessage = "SID with same Lot, Cert Year, Cert Number, and Rad found. Duplicates are not allowed.";
+                return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
+            }
+            
+            
             var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
                 .Include(a => a.Variety)
                 .FirstAsync();
@@ -139,6 +152,13 @@ namespace CCIA.Controllers
                 seedapps.Add(new SeedsApplications { AppId = sa});
             }
             newSeed.SeedsApplications = seedapps;
+
+            
+
+
+
+
+
             
             if(ModelState.IsValid)
             {
