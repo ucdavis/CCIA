@@ -91,77 +91,75 @@ namespace CCIA.Controllers
         public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
         {
             var seed = model.Seed;
+            var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
+                .Include(a => a.Variety)
+                .FirstAsync();
+            var state = await _dbContext.County.Where(c => c.CountyId == seed.CountyDrawn).Select(c => c.StateProvinceId).FirstAsync();
+            var country = await _dbContext.Countries.Where(c => c.Code == "USA").Select(c => c.Id).FirstAsync();
             var newSeed = new Seeds();
+            newSeed.SampleFormDate = DateTime.Now;
+            newSeed.SampleFormCertNumber = seed.SampleFormCertNumber.ToString();
+            newSeed.SampleFormRad = seed.SampleFormRad;
+            newSeed.CertYear = seed.CertYear;
+            newSeed.ApplicantId = app.ApplicantId;
+            // TODO Used logged in user org ID and logged in contact ID
+            newSeed.ConditionerId = 168;
+            newSeed.UserEntered = 1;
+            newSeed.SampleFormVarietyId = app.SelectedVarietyId;
+            newSeed.OfficialVarietyId = app.Variety.ParendId;
+            newSeed.LotNumber = seed.LotNumber;
+            newSeed.PoundsLot = seed.PoundsLot;
+            newSeed.Class = seed.Class;
+            newSeed.CountyDrawn = seed.CountyDrawn;
+            newSeed.OriginState = state;
+            newSeed.OriginCountry = country;
+            if(seed.Type == "Original Run")
+            {
+                newSeed.OriginalRun = true;
+            } else
+            {
+                newSeed.OriginalRun = false;
+            }
+            if(seed.Type == "Remill")
+            {
+                newSeed.Remill = true;
+            } else
+            {
+                newSeed.Remill = false;
+            }
+            newSeed.Remarks = seed.Remarks;
+            newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.OECDLot = seed.OECDLot;
+            newSeed.Confirmed = false;
+            newSeed.Status = "Pending supporting material";
+            newSeed.CertProgram = app.AppType;
+            var seedapps = new List<SeedsApplications>();
+            foreach(var sa in seed.AppId)
+            {
+                seedapps.Add(new SeedsApplications { AppId = sa});
+            }
+            newSeed.SeedsApplications = seedapps;
             
+            if(ModelState.IsValid)
+            {
+                await _dbContext.Seeds.AddAsync(newSeed);
+                await _dbContext.SaveChangesAsync();
 
-            
-            
+                var labresults = new SxLabResults();
+                labresults.SeedsId = newSeed.Id;
+                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+
+                Message = "Certified Seed Lot created";
+            } else
+            {
+                ErrorMessage = "Error encountered saving seed lot";
+                return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
+            }
            
-            return View(model);
+            return RedirectToAction("Details", new { id = newSeed.Id });
         }
-
-        // POST: Application/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Application/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAppsFromCertNumber(int certYear, int? rad, int certNumber)

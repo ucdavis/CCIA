@@ -86,7 +86,28 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Status)
                 </div>
-            </div>                
+            </div>  
+            <div>
+                @if(Model.seed.SeedsApplications.Count > 0)
+                {
+                    @:Apps in this lot:
+                    <table class="table">
+                        <tr>
+                            <th>AppID</th>
+                            <th>Grower</th>
+                            <th>Acres</th>
+                        </tr>
+                        @foreach(var app in Model.seed.SeedsApplications)
+                        {
+                            <tr>
+                                <td>@app.Application.Id</td>
+                                <td>@app.Application.GrowerOrganization.OrgName</td>
+                                <td>@app.Application.AcresApplied</td>
+                            </tr>
+                        }
+                    </table>
+                }           
+            </div>
         </div> 
         <div class="col-md-5">
             <div class="row">
