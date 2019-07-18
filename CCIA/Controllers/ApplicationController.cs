@@ -75,7 +75,7 @@ namespace CCIA.Controllers
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
-                Applications app = ApplicationPostMap.CreateAppRecord(seedApp, contactId, "SD");
+                Applications app = ApplicationPostMap.CreateSeedAppRecord(seedApp, contactId, "SD");
                 _dbContext.Add(app);
 
                 // Adds to database and populates AppId.
@@ -114,9 +114,11 @@ namespace CCIA.Controllers
 
         private bool SecondPlantingStockErrors()
         {
-            foreach (var key in ModelState.Keys) {
+            foreach (var key in ModelState.Keys)
+            {
                 var val = ModelState[key];
-                foreach (var error in val.Errors) {
+                foreach (var error in val.Errors)
+                {
                     if (key.Contains("PlantingStocks[1]"))
                     {
                         return true;
@@ -145,7 +147,7 @@ namespace CCIA.Controllers
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
-                Applications app = ApplicationPostMap.CreateAppRecord(potatoApp, contactId, "PO");
+                Applications app = ApplicationPostMap.CreatePotatoAppRecord(potatoApp, contactId, "PO");
                 _dbContext.Add(app);
 
                 // Adds to database and populates AppId.
@@ -184,6 +186,46 @@ namespace CCIA.Controllers
             return View("HeritageGrain/CreateHeritageGrainApplication", model);
         }
 
+        // POST: Application/CreateHeritageGrainApplication
+        [HttpPost]
+        public async Task<IActionResult> CreateHeritageGrainApplication(HeritageGrainQAApp heritageGrainApp)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == heritageGrainApp.GrowerId).FirstOrDefaultAsync();
+
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreateHeritageGrainAppRecord(heritageGrainApp, contactId, "GQ");
+                _dbContext.Add(app);
+
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
+                {
+                    ps.AppId = app.Id;
+                }
+
+                if (app.FieldHistories != null)
+                {
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = app.Id });
+            }
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)heritageGrainApp.GrowerId, (int)AppTypes.GRAINQA);
+            appViewModel.RenderFormRemainder = true;
+            heritageGrainApp.AppViewModel = appViewModel;
+            return View("HeritageGrain/CreateheritageGrainApplication", heritageGrainApp);
+        }
+
         // GET: Application/CreateGermplasmApplication
         public async Task<IActionResult> CreatePreVarietyGermplasmApplication(int orgId, int appTypeId)
         {
@@ -191,6 +233,46 @@ namespace CCIA.Controllers
             var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             model.AppViewModel = viewModel;
             return View("PreVarietyGermplasm/CreatePreVarietyGermplasmApplication", model);
+        }
+
+        // POST: Application/CreatePreVarietyGermplasmApplication
+        [HttpPost]
+        public async Task<IActionResult> CreatePreVarietyGermplasmApplication(PreVarietyGermplasmApp preVarietyGermplasmApp)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == preVarietyGermplasmApp.GrowerId).FirstOrDefaultAsync();
+
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreatePreVarietyGermplasmAppRecord(preVarietyGermplasmApp, contactId, "PV");
+                _dbContext.Add(app);
+
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
+                {
+                    ps.AppId = app.Id;
+                }
+
+                if (app.FieldHistories != null)
+                {
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = app.Id });
+            }
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)preVarietyGermplasmApp.GrowerId, (int)AppTypes.GERMPLASM);
+            appViewModel.RenderFormRemainder = true;
+            preVarietyGermplasmApp.AppViewModel = appViewModel;
+            return View("PreVarietyGermplasm/CreatepreVarietyGermplasmApplication", preVarietyGermplasmApp);
         }
 
         // GET: Application/CreateRiceApplication
@@ -202,6 +284,46 @@ namespace CCIA.Controllers
             return View("Rice/CreateRiceApplication", model);
         }
 
+        // POST: Application/CreateRiceApplication
+        [HttpPost]
+        public async Task<IActionResult> CreateRiceApplication(RiceQAApp riceApp)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == riceApp.GrowerId).FirstOrDefaultAsync();
+
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreateRiceAppRecord(riceApp, contactId, "RQ");
+                _dbContext.Add(app);
+
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
+                {
+                    ps.AppId = app.Id;
+                }
+
+                if (app.FieldHistories != null)
+                {
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = app.Id });
+            }
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)riceApp.GrowerId, (int)AppTypes.RICE);
+            appViewModel.RenderFormRemainder = true;
+            riceApp.AppViewModel = appViewModel;
+            return View("Rice/CreatericeApplication", riceApp);
+        }
+
         // GET: Application/CreateHempFromSeedApplication
         public async Task<IActionResult> CreateHempFromSeedApplication(int orgId, int appTypeId)
         {
@@ -209,6 +331,46 @@ namespace CCIA.Controllers
             var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             model.AppViewModel = viewModel;
             return View("HempFromSeed/CreateHempFromSeedApplication", model);
+        }
+
+        // POST: Application/CreateHempFromSeedApplication
+        [HttpPost]
+        public async Task<IActionResult> CreateHempFromSeedApplication(HempFromSeedApp hempFromSeedApp)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get contact id associated with growerid
+                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == hempFromSeedApp.GrowerId).FirstOrDefaultAsync();
+
+                // Use helper class to create application record based on app type
+                Applications app = ApplicationPostMap.CreateHempFromSeedAppRecord(hempFromSeedApp, contactId, "HS");
+                _dbContext.Add(app);
+
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // Add AppId wherever we need it in plantingstocks and fieldhistory
+                foreach (PlantingStocks ps in app.PlantingStocks)
+                {
+                    ps.AppId = app.Id;
+                }
+
+                if (app.FieldHistories != null)
+                {
+                    foreach (FieldHistory fh in app.FieldHistories)
+                    {
+                        fh.AppId = app.Id;
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = app.Id });
+            }
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)hempFromSeedApp.GrowerId, (int)AppTypes.HEMP);
+            appViewModel.RenderFormRemainder = true;
+            hempFromSeedApp.AppViewModel = appViewModel;
+            return View("HempFromSeed/CreatehempFromSeedApplication", hempFromSeedApp);
         }
 
         // GET: Application/GrowerLookup
@@ -377,7 +539,7 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId=-1)
+        public async Task<IActionResult> GetPartial(string folder, string partialName, int orgId, int appTypeId, int fhEntryId = -1)
         {
             var app = ApplicationPostMap.CreateAppByAppType(appTypeId);
             var appViewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId, fhEntryId);

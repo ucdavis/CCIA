@@ -49,8 +49,8 @@
     </div>
 
     <!-- Hidden fields -->
-    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id", name="SelectedVarietyId" })
-    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id", name="SelectedVarietyId" })
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
+    @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
     <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
 
     <!-- Alert dialog modals -->

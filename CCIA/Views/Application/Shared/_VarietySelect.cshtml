@@ -1,8 +1,8 @@
 @{
     string name = ViewData["varietyName"].ToString(); 
-    string varSearchId = name == "PlantingStocks[1].PsEnteredVariety" ? "ps2-variety-search" : "variety-search";
-    string varDropdownId = name == "PlantingStocks[1].PsEnteredVariety" ? "ps2-variety-dropdown" : "variety-dropdown";
-    string varInputId = name == "PlantingStocks[1].PsEnteredVariety" ? "ps2-variety" : "variety";
+    string varSearchId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety-search" : "variety-search";
+    string varDropdownId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety-dropdown" : "variety-dropdown";
+    string varInputId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety" : "variety";
 }
 
 <label for=@varDropdownId>@Model.AppViewModel.ApplicationLabels.Ps1Variety<em class="required">•</em></label>

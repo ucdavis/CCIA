@@ -67,14 +67,14 @@
         <div class="form-group">
             <label for="winterTest">Winter test results are required for recertification</label><em class="required">•</em>
             <p><i> - If yes, documentation required</i></p>
-            @{ ViewData["binRadioBtnName"] = "PlantingStocks[0].WinterTest"; }
+            @{ ViewData["binRadioBtnName"] = "AppSpecificPlantingStocks[0].WinterTest"; }
             @await Html.PartialAsync("Shared/_BinaryRadioBtns")       
         </div>
 
         <div class="form-group">
             <label for="pvxTested">For prenuclear and nuclear class planted, was this lot PVX tested?</label><em class="required">•</em>
             <p><i> - If yes, documentation required</i></p>
-            @{ ViewData["binRadioBtnName"] = "PlantingStocks[0].PvxTest"; }
+            @{ ViewData["binRadioBtnName"] = "AppSpecificPlantingStocks[0].PvxTest"; }
             @await Html.PartialAsync("Shared/_BinaryRadioBtns")
         </div>
     </section>
@@ -90,7 +90,7 @@
 
     <!-- Hidden fields -->
     @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
-    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
     <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PO">
 </form>
 

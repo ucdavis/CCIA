@@ -4,19 +4,20 @@
     ViewData["Title"] = "Heritage Grain Application";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
-{
-    @Html.AntiForgeryToken()
-}
-
 <section class="app-header">
     <h2>Application for Heritage Grain Quality Assurance Program</h2>
     <h5>@Model.AppViewModel.Organization.OrgName</h5>
 </section>
 
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
 @await Html.PartialAsync("Shared/_GrowerInfoTable")
 
 <form action="/Application/CreateHeritageGrainApplication" method="post" id="heritageGrainQAApplication">
+    @Html.AntiForgeryToken()
+
     <div class="form-group row">
         <!-- Crop -->
         <div class="col-lg-4 col-sm-4 col-xs-4">
@@ -49,8 +50,8 @@
 
     <!-- Hidden fields -->
     @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
-    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
-    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PO">
+    @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="GQ">
 </form>
 
 <!-- Alert dialog modals -->

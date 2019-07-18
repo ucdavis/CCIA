@@ -9,7 +9,7 @@ namespace CCIA.Models
         public override ApplicationViewModel AppViewModel { get; set; }
         
         // Hidden to account for different variations of PlantingStocks on each application type.
-        public ICollection<SeedPlantingStocks> PlantingStocks;
+        public ICollection<PreVarietyGermplasmPlantingStocks> AppSpecificPlantingStocks { get; set; }
     }
 
     public class PreVarietyGermplasmPlantingStocks : PlantingStocks {
