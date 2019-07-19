@@ -15,102 +15,103 @@
 <form method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="col-lg-1">
-            <table id="table" class="table">
+        <table id="table" class="table">
 
-                <div class="form-group">
-                    <tr>
-                        <th width="20%"><label asp-for="Name">Name:</label></th>
-                        <td width="50%"><input asp-for="Name" class="form-control"></td>
-                        <td width="30%"></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th width="20%"><label asp-for="Name">Name:</label></th>
+                    <td width="50%"><input asp-for="Name" class="form-control" required></td>
+                    <td width="30%"></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Address1">Address 1:</label></th>
-                        <td><input asp-for="Address1" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Address1">Address 1:</label></th>
+                    <td><input asp-for="Address1" class="form-control" required/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Address2">Address 2:</label></th>
-                        <td><input asp-for="Address2" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Address2">Address 2:</label></th>
+                    <td><input asp-for="Address2" class="form-control"/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="City">City:</label></th>
-                        <td><input asp-for="City" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="City">City:</label></th>
+                    <td><input asp-for="City" class="form-control" required/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="County.CountyName">CA County:</label></th>
-                        <td>
-                            @Html.DropDownList("County.CountyName",
-                              Model.GetListItems<@Counties>("Select a county", null, false, false, Model.County.CountyName, true),
-                              new { @class = "form-control" })                       
-                        </td>
-                        <td>(Leave on "Select a county" for addresses outside California)</td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="County.CountyName">CA County:</label></th>
+                    <td>
+                        @Html.DropDownList("County.CountyName",
+                               Model.GetListItems<@Counties>("Select a county", false, false, Model.County.CountyName, true),
+                               new { @class = "form-control", required = "required" })
+                    </td>
+                    <td>(Leave on "Select a county" for addresses outside California)</td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="State.StateProvinceName">State</label></th>
-                        <td>
-                            @Html.DropDownList("State.StateProvinceName",
-                              Model.GetListItems<@States>("Select a state", Model.StateCodes, false, true, Model.State.StateProvinceName, false),
-                              new { @class = "form-control" })
-                        </td>
-                        <td>(Select "Outside US" as appropriate)</td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="State.StateProvinceName">State</label></th>
+                    <td>
+                        @Html.DropDownList("State.StateProvinceName",
+                               Model.GetListItems<@States>("Select a state", false, true, Model.State.StateProvinceName, false),
+                               new { @class = "form-control", required = "required" })
+                    </td>
+                    <td>(Select "Outside US" as appropriate)</td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Country.Name">Country</label></th>
-                        <td>
-                            @Html.DropDownList("Country.Name",
-                              Model.GetListItems<@CountryNames>("Select a country", null, false, true, Model.Country.Name, false),
-                              new { @class = "form-control" })
-                        </td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Country.Name">Country</label></th>
+                    <td>
+                        @Html.DropDownList("Country.Name",
+                               Model.GetListItems<@CountryNames>("Select a country", false, true, Model.Country.Name, false),
+                               new { @class = "form-control", required = "required" })
+                    </td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Zip">Zip</label></th>
-                        <td><input asp-for="Zip" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Zip">Zip</label></th>
+                    <td><input asp-for="Zip" class="form-control" required/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Phone"></label></th>
-                        <td><input asp-for="Phone" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Phone"></label></th>
+                    <td><input asp-for="Phone" class="form-control"/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-                <div class="form-group">
-                    <tr>
-                        <th><label asp-for="Email"></label></th>
-                        <td><input asp-for="Email" class="form-control" /></td>
-                        <td></td>
-                    </tr>
-                </div>
+            <div class="form-group">
+                <tr>
+                    <th><label asp-for="Email"></label></th>
+                    <td><input asp-for="Email" class="form-control"/></td>
+                    <td></td>
+                </tr>
+            </div>
 
-            </table>
+        </table>
     </div>
-            <button class="btn btn-primary" type="submit" class="btn btn-default" asp-route-id="@Model.Id">Save</button>
-            <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.Id">Cancel</a>
+    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Save</button>
+    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Delete" asp-route-id="@Model.Id">Delete</button>
+    <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.Id">Cancel</a>
 </form>

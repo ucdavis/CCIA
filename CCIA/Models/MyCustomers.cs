@@ -17,7 +17,7 @@ namespace CCIA.Models
         public string Address2 { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
-            
+
         [ForeignKey("StateId")]
         public StateProvince State { get; set; }
         public int CountyId { get; set; }
@@ -30,9 +30,8 @@ namespace CCIA.Models
         public string Phone { get; set; }
         public string Email { get; set; }
 
-        public List<SelectListItem> GetListItems<T> (String defaultText, IDictionary<string, string> objectMaps = null, 
-            bool isDefaultSelected = false, bool isDefaultDisabled = false, String selectedObject = null, 
-            bool CapitalizeList = false)
+        public List<SelectListItem> GetListItems<T>(String defaultText, bool isDefaultSelected = false,
+            bool isDefaultDisabled = false, String selectedObject = null, bool CapitalizeList = false)
         {
             List<SelectListItem> listItems = new List<SelectListItem>();
 
@@ -42,9 +41,12 @@ namespace CCIA.Models
             {
                 var objectName = "";
 
-                if (item.Equals("OutsideUS")) {
+                if (item.Equals("OutsideUS"))
+                {
                     objectName = "Outside US";
-                } else {
+                }
+                else
+                {
                     // split the camelcase words (enum didn't allow 
                     // space so New York became NewYork and etc.)
                     var words = Regex.Split(item, @"(?<!^)(?=[A-Z])");
@@ -60,77 +62,11 @@ namespace CCIA.Models
                 if (!isDefaultSelected)
                     isObjectSelected = selectedObject.Equals(objectName);
 
-                String value = objectName;
-
-                if (objectMaps != null)
-                    value = objectMaps[objectName];
-
                 listItems.Add(new SelectListItem(objectName, objectName, isObjectSelected));
             }
 
             return listItems;
         }
-
-        public IDictionary<string, string> StateCodes
-            = new Dictionary<string, string>() {
-                {"Outside US", "OUS"},
-                {"Alabama", "AL"}, 
-                {"Alaska", "AK"},
-                {"American Samoa", "AS"},
-                {"Arizona", "AZ"},
-                {"Arkansas", "AR"},
-                {"California", "CA"},
-                {"Colorado", "CO"},
-                {"Connecticut", "CT"},
-                {"Delaware", "DE"},
-                {"District of Columbia", "DC"},
-                {"Florida", "FL"},
-                {"Georgia", "GA"},
-                {"Guam", "GU"},
-                {"Hawaii", "HI"},
-                {"Idaho", "ID"},
-                {"Illinois", "IL"},
-                {"Indiana", "IN"},
-                {"Iowa", "IA"},
-                {"Kansas", "KS"},
-                {"Kentucky", "KY"},
-                {"Louisiana", "LA"},
-                {"Maine", "ME"},
-                {"Maryland", "MD"},
-                {"Marshall Islands", "MH"},
-                {"Massachusetts", "MA"},
-                {"Michigan", "MI"},
-                {"Minnesota", "MN"},
-                {"Mississippi", "MS"},
-                {"Missouri", "MO"},
-                {"Montana", "MT"},
-                {"Nebraska", "NE"},
-                {"Nevada", "NV"},
-                {"New Hampshire", "NH"},
-                {"New Jersey", "NJ"},
-                {"New Mexico", "NM"},
-                {"New York", "NY"},
-                {"North Carolina", "NC"},
-                {"North Dakota", "ND"},
-                {"Ohio", "OH"},
-                {"Oklahoma", "OK"},
-                {"Oregon", "OR"},
-                {"Pennsylvania", "PA"},
-                {"Puerto Rico", "PR"},
-                {"Rhode Island", "RI"},
-                {"South Carolina", "SC"},
-                {"South Dakota", "SD"},
-                {"Tennessee", "TN"},
-                {"Texas", "TX"},
-                {"Utah", "UT"},
-                {"Vermont", "VT"},
-                {"Virgin Islands", "VI"},
-                {"Virginia", "VA"},
-                {"Washington", "WA"},
-                {"West Virginia", "WV"},
-                {"Wisconsin", "WI"},
-                {"Wyoming", "WY"}
-            };
     }
 
     public enum States

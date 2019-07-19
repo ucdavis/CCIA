@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <tr>
                         <th width="20%"><label asp-for="Name">Name:</label></th>
-                        <td width="50%"><input asp-for="Name" class="form-control" placeholder="Enter a name"></td>
+                        <td width="50%"><input asp-for="Name" class="form-control" placeholder="Enter a name" required></td>
                         <td width="30%"></td>
                     </tr>
                 </div>
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Address1">Address 1:</label></th>
-                        <td><input asp-for="Address1" class="form-control" placeholder="Enter an address"/></td>
+                        <td><input asp-for="Address1" class="form-control" placeholder="Enter an address" required/></td>
                         <td></td>
                     </tr>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="City">City:</label></th>
-                        <td><input asp-for="City" class="form-control" placeholder="Enter a city"/></td>
+                        <td><input asp-for="City" class="form-control" placeholder="Enter a city" required/></td>
                         <td></td>
                     </tr>
                 </div>
@@ -52,8 +52,8 @@
                         <th><label asp-for="County.CountyName">County</label></th>
                         <td>
                             @Html.DropDownList("County.CountyName",
-                              Model.GetListItems<@Counties>("Select a county", null, true, false, null, true),
-                              new { @class = "form-control" })                       
+                              Model.GetListItems<@Counties>("Select a county", true, false, null, true),
+                              new { @class = "form-control", required = "required" })                       
                         </td>
                         <td>(Leave on "Select a county" for<br/>addresses outside California)</td>
                     </tr>
@@ -64,8 +64,8 @@
                         <th><label asp-for="State.StateProvinceName">State</label></th>
                         <td>
                             @Html.DropDownList("State.StateProvinceName",
-                              Model.GetListItems<@States>("Select a state", Model.StateCodes, true, true),
-                              new { @class = "form-control" })
+                              Model.GetListItems<@States>("Select a state", true, true),
+                              new { @class = "form-control", required = "required" })
                         </td>
                         <td>(Select "Outside US"<br/>as appropriate)</td>
                     </tr>
@@ -76,8 +76,8 @@
                         <th><label asp-for="Country.Name">Country</label></th>
                         <td>
                             @Html.DropDownList("Country.Name",
-                              Model.GetListItems<@CountryNames>("Select a country", null, true, true),
-                              new { @class = "form-control" })
+                              Model.GetListItems<@CountryNames>("Select a country", true, true),
+                              new { @class = "form-control", required = "required" })
                         </td>
                         <td></td>
                     </tr>
@@ -86,7 +86,7 @@
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="Zip">Zip</label></th>
-                        <td><input asp-for="Zip" class="form-control" placeholder="Enter a zip code"/></td>
+                        <td><input asp-for="Zip" class="form-control" placeholder="Enter a zip code" required/></td>
                         <td></td>
                     </tr>
                 </div>

@@ -21,9 +21,11 @@ namespace CCIA.Controllers
         }
 
         // GET: Application
-        public async Task<IActionResult> Index()
-        {           
-            
+        public async Task<IActionResult> Index(bool isFromDelete = false, string name = null)
+        {          
+            if (isFromDelete)
+                Message = name + " has been successfully deleted.";
+
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();        
             var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId);            
             return View(model);
@@ -45,8 +47,14 @@ namespace CCIA.Controllers
 
             myCustomer.OrganizationId = orgId;
 
+            // These 3 initializations are needed somehow for dbContext.Add() to work
+            // country code can't be null and dates are invalid errors
+            myCustomer.Country.Code = "";
+            myCustomer.County.DateModified = DateTime.Now;
+            myCustomer.State.DateModified = DateTime.Now;
+
             // check ModelState before saving the changes
-            if(ModelState.IsValid) {
+            if (ModelState.IsValid) {
                 _dbContext.Add(myCustomer);
                 await _dbContext.SaveChangesAsync();
             } else {
@@ -60,18 +68,18 @@ namespace CCIA.Controllers
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id, bool isFromEdit = false, bool isFromCreate = false)
         {
-            if (isFromEdit)
-                Message = "Edit Successful";
-
-            if (isFromCreate)
-                Message = "Customer Created Successfully";
-
             var model = await _dbContext.MyCustomers.Where(a => a.Id == id)
                 .Include(e => e.State)
                 .Include(e => e.County)
                 .Include(e => e.Country)
                 .Include(e => e.Organization)
                 .FirstOrDefaultAsync();
+
+            if (isFromEdit)
+                Message = "Edit Successful";
+
+            if (isFromCreate)
+                Message = model.Name +" has been successfully created.";
 
             return View(model);
         }
@@ -131,10 +139,28 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = myCustomer.Id, isFromEdit = true });
         }
 
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
+        // POST: Application/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var myCustomerToDelete = await _dbContext.MyCustomers.Where(m => m.Id == id)
+                .FirstOrDefaultAsync();
+
+            string name = myCustomerToDelete.Name;
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Remove(myCustomerToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                return View(myCustomerToDelete);
+            }
+
+            return RedirectToAction(nameof(Index), new { isFromDelete = true, name });
         }
     }
 }
