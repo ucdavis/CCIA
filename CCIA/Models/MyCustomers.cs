@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace CCIA.Models
 {
@@ -17,64 +17,6 @@ namespace CCIA.Models
         public string Address2 { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
-
-        /*
-        [NotMapped]
-        public List<SelectListItem> States { get; set; }
-            = new List<SelectListItem>
-            {
-                new SelectListItem { Value = null, Text = "Select a state", Selected = true, Disabled = true },
-                new SelectListItem { Value = "AL", Text = "Alabama"},
-                new SelectListItem { Value = "AK", Text = "Alaska" },
-                new SelectListItem { Value = "AZ", Text = "Arizona" },
-                new SelectListItem { Value = "AR", Text = "Arkansas" },
-                new SelectListItem { Value = "CA", Text = "California"},
-                new SelectListItem { Value = "CO", Text = "Colorado" },
-                new SelectListItem { Value = "CT", Text = "Connecticut" },
-                new SelectListItem { Value = "DE", Text = "Delaware" },
-                new SelectListItem { Value = "FL", Text = "Florida" },
-                new SelectListItem { Value = "GA", Text = "Georgia" },
-                new SelectListItem { Value = "HI", Text = "Hawaii" },
-                new SelectListItem { Value = "ID", Text = "Idaho" },
-                new SelectListItem { Value = "IL", Text = "Illinois" },
-                new SelectListItem { Value = "IN", Text = "Indiana" },
-                new SelectListItem { Value = "IA", Text = "Iowa" },
-                new SelectListItem { Value = "KS", Text = "Kansas" },
-                new SelectListItem { Value = "KY", Text = "Kentucky" },
-                new SelectListItem { Value = "LA", Text = "Louisiana" },
-                new SelectListItem { Value = "ME", Text = "Maine" },
-                new SelectListItem { Value = "MD", Text = "Maryland" },
-                new SelectListItem { Value = "MA", Text = "Massachusetts" },
-                new SelectListItem { Value = "MI", Text = "Michigan" },
-                new SelectListItem { Value = "MN", Text = "Minnesota" },
-                new SelectListItem { Value = "MS", Text = "Mississippi" },
-                new SelectListItem { Value = "MO", Text = "Missouri" },
-                new SelectListItem { Value = "MT", Text = "Montana" },
-                new SelectListItem { Value = "NC", Text = "North Carolina" },
-                new SelectListItem { Value = "ND", Text = "North Dakota" },
-                new SelectListItem { Value = "NE", Text = "Nebraska" },
-                new SelectListItem { Value = "NV", Text = "Nevada" },
-                new SelectListItem { Value = "NH", Text = "New Hampshire" },
-                new SelectListItem { Value = "NJ", Text = "New Jersey" },
-                new SelectListItem { Value = "NM", Text = "New Mexico" },
-                new SelectListItem { Value = "NY", Text = "New York" },
-                new SelectListItem { Value = "OH", Text = "Ohio" },
-                new SelectListItem { Value = "OK", Text = "Oklahoma" },
-                new SelectListItem { Value = "OR", Text = "Oregon" },
-                new SelectListItem { Value = "PA", Text = "Pennsylvania" },
-                new SelectListItem { Value = "RI", Text = "Rhode Island" },
-                new SelectListItem { Value = "SC", Text = "South Carolina" },
-                new SelectListItem { Value = "SD", Text = "South Dakota" },
-                new SelectListItem { Value = "TN", Text = "Tennessee" },
-                new SelectListItem { Value = "TX", Text = "Texas" },
-                new SelectListItem { Value = "UT", Text = "Utah" },
-                new SelectListItem { Value = "VT", Text = "Vermont" },
-                new SelectListItem { Value = "VA", Text = "Virginia" },
-                new SelectListItem { Value = "WA", Text = "Washington" },
-                new SelectListItem { Value = "WV", Text = "West Virginia" },
-                new SelectListItem { Value = "WI", Text = "Wisconsin" },
-                new SelectListItem { Value = "WY", Text = "Wyoming" }
-            };   */
             
         [ForeignKey("StateId")]
         public StateProvince State { get; set; }
@@ -87,6 +29,108 @@ namespace CCIA.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+
+        public List<SelectListItem> GetListItems<T> (String defaultText, IDictionary<string, string> objectMaps = null, 
+            bool isDefaultSelected = false, bool isDefaultDisabled = false, String selectedObject = null, 
+            bool CapitalizeList = false)
+        {
+            List<SelectListItem> listItems = new List<SelectListItem>();
+
+            listItems.Add(new SelectListItem { Value = null, Text = defaultText, Selected = isDefaultSelected, Disabled = isDefaultDisabled });
+
+            foreach (string item in Enum.GetNames(typeof(T)))
+            {
+                var objectName = "";
+
+                if (item.Equals("OutsideUS")) {
+                    objectName = "Outside US";
+                } else {
+                    // split the camelcase words (enum didn't allow 
+                    // space so New York became NewYork and etc.)
+                    var words = Regex.Split(item, @"(?<!^)(?=[A-Z])");
+
+                    objectName = string.Join(" ", words);
+
+                    if (CapitalizeList)
+                        objectName = objectName.ToUpper();
+                }
+
+                bool isObjectSelected = false;
+
+                if (!isDefaultSelected)
+                    isObjectSelected = selectedObject.Equals(objectName);
+
+                String value = objectName;
+
+                if (objectMaps != null)
+                    value = objectMaps[objectName];
+
+                listItems.Add(new SelectListItem(objectName, objectName, isObjectSelected));
+            }
+
+            return listItems;
+        }
+
+        public IDictionary<string, string> StateCodes
+            = new Dictionary<string, string>() {
+                {"Outside US", "OUS"},
+                {"Alabama", "AL"}, 
+                {"Alaska", "AK"},
+                {"American Samoa", "AS"},
+                {"Arizona", "AZ"},
+                {"Arkansas", "AR"},
+                {"California", "CA"},
+                {"Colorado", "CO"},
+                {"Connecticut", "CT"},
+                {"Delaware", "DE"},
+                {"District of Columbia", "DC"},
+                {"Florida", "FL"},
+                {"Georgia", "GA"},
+                {"Guam", "GU"},
+                {"Hawaii", "HI"},
+                {"Idaho", "ID"},
+                {"Illinois", "IL"},
+                {"Indiana", "IN"},
+                {"Iowa", "IA"},
+                {"Kansas", "KS"},
+                {"Kentucky", "KY"},
+                {"Louisiana", "LA"},
+                {"Maine", "ME"},
+                {"Maryland", "MD"},
+                {"Marshall Islands", "MH"},
+                {"Massachusetts", "MA"},
+                {"Michigan", "MI"},
+                {"Minnesota", "MN"},
+                {"Mississippi", "MS"},
+                {"Missouri", "MO"},
+                {"Montana", "MT"},
+                {"Nebraska", "NE"},
+                {"Nevada", "NV"},
+                {"New Hampshire", "NH"},
+                {"New Jersey", "NJ"},
+                {"New Mexico", "NM"},
+                {"New York", "NY"},
+                {"North Carolina", "NC"},
+                {"North Dakota", "ND"},
+                {"Ohio", "OH"},
+                {"Oklahoma", "OK"},
+                {"Oregon", "OR"},
+                {"Pennsylvania", "PA"},
+                {"Puerto Rico", "PR"},
+                {"Rhode Island", "RI"},
+                {"South Carolina", "SC"},
+                {"South Dakota", "SD"},
+                {"Tennessee", "TN"},
+                {"Texas", "TX"},
+                {"Utah", "UT"},
+                {"Vermont", "VT"},
+                {"Virgin Islands", "VI"},
+                {"Virginia", "VA"},
+                {"Washington", "WA"},
+                {"West Virginia", "WV"},
+                {"Wisconsin", "WI"},
+                {"Wyoming", "WY"}
+            };
     }
 
     public enum States
@@ -117,29 +161,21 @@ namespace CCIA.Models
         Mississippi,
         Missouri,
         Montana,
-        [Description("North Carolina")]
         NorthCarolina,
-        [Description("North Dakota")]
         NorthDakota,
         Nebraska,
         Nevada,
-        [Description("New Hampshire")]
         NewHampshire,
-        [Description("New Jersey")]
         NewJersey,
-        [Description("New Mexico")]
         NewMexico,
-        [Description("New York")]
         NewYork,
         Ohio,
         Oklahoma,
         Oregon,
+        OutsideUS,
         Pennsylvania,
-        [Description("Rhode Island")]
         RhodeIsland,
-        [Description("South Carolina")]
         SouthCarolina,
-        [Description("South Dakota")]
         SouthDakota,
         Tennessee,
         Texas,
@@ -147,9 +183,267 @@ namespace CCIA.Models
         Vermont,
         Virginia,
         Washington,
-        [Description("West Virginia")]
         WestVirginia,
         Wisconsin,
         Wyoming
+    }
+
+    public enum Counties 
+    {
+        Alameda,
+        Alpine,
+        Amador,
+        Butte,
+        Calaveras,
+        Colusa,
+        ContraCosta,
+        DelNorte,
+        ElDorado,
+        Fresno,
+        Glenn,
+        Humboldt,
+        Imperial,
+        Inyo,
+        Kern,
+        Kings,
+        Lake,
+        Lassen,
+        LosAngeles,
+        Madera,
+        Marin,
+        Mariposa,
+        Mendocino,
+        Merced,
+        Modoc,
+        Mono,
+        Monterey,
+        Napa,
+        Nevada,
+        Orange,
+        Placer,
+        Plumas,
+        Riverside,
+        Sacramento,
+        SanBenito,
+        SanBernardino,
+        SanDiego,
+        SanFrancisco,
+        SanJoaquin,
+        SanLuisObispo,
+        SanMateo,
+        SantaBarbara,
+        SantaClara,
+        SantaCruz,
+        Shasta,
+        Sierra,
+        Siskiyou,
+        Solano,
+        Sonoma,
+        Stanislaus,
+        Sutter,
+        Tehama,
+        Trinity,
+        Tulare,
+        Tuolumne,
+        Ventura,
+        Yolo,
+        Yuba
+    }
+
+    public enum CountryNames {
+        Afghanistan,
+        Albania,
+        Algeria,
+        Andorra,
+        Angola,
+        Argentina,
+        Armenia,
+        Australia,
+        Austria,
+        Azerbaijan,
+        Bahamas,
+        Bahrain,
+        Bangladesh,
+        Barbados,
+        Belarus,
+        Belgium,
+        Belize,
+        Benin,
+        Bhutan,
+        Bolivia,
+        BosniaHerzegovina,
+        Botswana,
+        Brazil,
+        Brunei,
+        Bulgaria,
+        Burkina,
+        Burundi,
+        Cambodia,
+        Cameroon,
+        Canada,
+        CapeVerde,
+        CentralAfricanRep,
+        Chad,
+        Chile,
+        China,
+        Colombia,
+        Comoros,
+        Congo,
+        CostaRica,
+        Croatia,
+        Cuba,
+        Cyprus,
+        CzechRepublic,
+        Denmark,
+        Djibouti,
+        Dominica,
+        DominicanRepublic,
+        EastTimor,
+        Ecuador,
+        Egypt,
+        ElSalvador,
+        EquatorialGuinea,
+        Eritrea,
+        Estonia,
+        Ethiopia,
+        Fiji,
+        Finland,
+        France,
+        Gabon,
+        Gambia,
+        Georgia,
+        Germany,
+        Ghana,
+        Greece,
+        Grenada,
+        Guatemala,
+        Guinea,
+        GuineaBissau,
+        Guyana,
+        Haiti,
+        Honduras,
+        Hungary,
+        Iceland,
+        India,
+        Indonesia,
+        Iran,
+        Iraq,
+        Ireland,
+        Israel,
+        Italy,
+        IvoryCoast,
+        Jamaica,
+        Japan,
+        Jordan,
+        Kazakhstan,
+        Kenya,
+        Kiribati,
+        NorthKorea,
+        SouthKorea,
+        Kosovo,
+        Kuwait,
+        Kyrgyzstan,
+        Laos,
+        Latvia,
+        Lebanon,
+        Lesotho,
+        Liberia,
+        Libya,
+        Liechtenstein,
+        Lithuania,
+        Luxembourg,
+        Macedonia,
+        Madagascar,
+        Malawi,
+        Malaysia,
+        Maldives,
+        Mali,
+        Malta,
+        MarshallIslands,
+        Mauritania,
+        Mauritius,
+        Mexico,
+        Micronesia,
+        Moldova,
+        Monaco,
+        Mongolia,
+        Montenegro,
+        Morocco,
+        Mozambique,
+        Myanmar,
+        Namibia,
+        Nauru,
+        Nepal,
+        Netherlands,
+        NewZealand,
+        Nicaragua,
+        Niger,
+        Nigeria,
+        Norway,
+        Oman,
+        Pakistan,
+        Palau,
+        Panama,
+        PapuaNewGuinea,
+        Paraguay,
+        Peru,
+        Philippines,
+        Poland,
+        Portugal,
+        Qatar,
+        Romania,
+        RussianFederation,
+        Rwanda,
+        StKittsNevis,
+        StLucia,
+        SaintVincenttheGrenadines,
+        Samoa,
+        SanMarino,
+        SaoTomePrincipe,
+        SaudiArabia,
+        Senegal,
+        Serbia,
+        Seychelles,
+        SierraLeone,
+        Singapore,
+        Slovakia,
+        Slovenia,
+        SolomonIslands,
+        Somalia,
+        SouthAfrica,
+        SouthSudan,
+        Spain,
+        SriLanka,
+        Sudan,
+        Suriname,
+        Swaziland,
+        Sweden,
+        Switzerland,
+        Syria,
+        Taiwan,
+        Tajikistan,
+        Tanzania,
+        Thailand,
+        Togo,
+        Tonga,
+        TrinidadTobago,
+        Tunisia,
+        Turkey,
+        Turkmenistan,
+        Tuvalu,
+        Uganda,
+        Ukraine,
+        UnitedArabEmirates,
+        UnitedKingdom,
+        UnitedStates,
+        Uruguay,
+        Uzbekistan,
+        Vanuatu,
+        VaticanCity,
+        Venezuela,
+        Vietnam,
+        Yemen,
+        Zambia,
+        Zimbabwe
     }
 }

@@ -111,7 +111,7 @@ namespace CCIA.Models.IndexViewModels
     {
         public List<MyCustomers> myCustomers { get; set; }
 
-        public static async Task<MyCustomersIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        public static async Task<MyCustomersIndexViewModel> Create(CCIAContext _dbContext, int orgId)
         {
             var viewModel = new MyCustomersIndexViewModel
             {

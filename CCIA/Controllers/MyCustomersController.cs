@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 
-
-
 namespace CCIA.Controllers
 {
     public class MyCustomersController : SuperController
@@ -22,42 +20,52 @@ namespace CCIA.Controllers
             _dbContext = dbContext;
         }
 
+        // GET: Application
+        public async Task<IActionResult> Index()
+        {           
+            
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();        
+            var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId);            
+            return View(model);
+        }
+
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
-            var model = new MyCustomers();
+            var model = new MyCustomers();            
             return View(model);
         }
 
         // POST: Application/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(MyCustomers customer)
+        public async Task<ActionResult> Create(MyCustomers myCustomer)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            myCustomer.OrganizationId = orgId;
 
-        
-        // GET: Application
-        public async Task<IActionResult> Index()
-        {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();        
-            var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId, 0);             
-            return View(model);
+            // check ModelState before saving the changes
+            if(ModelState.IsValid) {
+                _dbContext.Add(myCustomer);
+                await _dbContext.SaveChangesAsync();
+            } else {
+                ErrorMessage = "Something went wrong.";
+                return View(myCustomer);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = myCustomer.Id, isFromCreate = true });
         }
 
         // GET: Application/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, bool isFromEdit = false, bool isFromCreate = false)
         {
+            if (isFromEdit)
+                Message = "Edit Successful";
+
+            if (isFromCreate)
+                Message = "Customer Created Successfully";
+
             var model = await _dbContext.MyCustomers.Where(a => a.Id == id)
                 .Include(e => e.State)
                 .Include(e => e.County)
@@ -84,19 +92,43 @@ namespace CCIA.Controllers
         // POST: Application/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MyCustomers customer)
+        public async Task<ActionResult> Edit(int id, MyCustomers myCustomer)
         {
-            try
-            {
-                // TODO: Add update logic here
-                
+            // get the MyCustomer from database
+            var myCustomerToEdit = await _dbContext.MyCustomers.Where(m => m.Id == id)
+                .Include(e => e.State)
+                .Include(e => e.County)
+                .Include(e => e.Country)
+                .Include(e => e.Organization)
+                .FirstOrDefaultAsync();
 
-                return RedirectToAction(nameof(Details), new { id = customer.Id });
+            // if it's null, display error message.
+            if (myCustomerToEdit == null) {
+                ErrorMessage = "Customer not found. Please try again.";
+                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
+
+            // if MyCustomer does exist in database. then update value
+            myCustomerToEdit.Name = myCustomer.Name;
+            myCustomerToEdit.Address1 = myCustomer.Address1;
+            myCustomerToEdit.Address2 = myCustomer.Address2;
+            myCustomerToEdit.City = myCustomer.City;
+            myCustomerToEdit.County.CountyName = myCustomer.County.CountyName;
+            myCustomerToEdit.State.StateProvinceName = myCustomer.State.StateProvinceName;
+            myCustomerToEdit.Country.Name = myCustomer.Country.Name;
+            myCustomerToEdit.Zip = myCustomer.Zip;
+            myCustomerToEdit.Phone = myCustomer.Phone;
+            myCustomerToEdit.Email = myCustomer.Email;
+
+            // check ModelState before saving the changes
+            if(ModelState.IsValid) {
+                await _dbContext.SaveChangesAsync();
+            } else {
+                ErrorMessage = "Something went wrong.";
+                return View(myCustomer);
             }
+
+            return RedirectToAction(nameof(Details), new { id = myCustomer.Id, isFromEdit = true });
         }
 
         // GET: Application/Delete/5

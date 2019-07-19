@@ -1,6 +1,5 @@
 @model CCIA.Models.MyCustomers
 
-
 @{
     ViewData["Title"] = "Create";
 }
@@ -18,8 +17,9 @@
 
                 <div class="form-group">
                     <tr>
-                        <th><label asp-for="Name">Name:</label></th>
-                        <td><input asp-for="Name" class="form-control" placeholder="Enter a name"></td>
+                        <th width="20%"><label asp-for="Name">Name:</label></th>
+                        <td width="50%"><input asp-for="Name" class="form-control" placeholder="Enter a name"></td>
+                        <td width="30%"></td>
                     </tr>
                 </div>
 
@@ -27,6 +27,7 @@
                     <tr>
                         <th><label asp-for="Address1">Address 1:</label></th>
                         <td><input asp-for="Address1" class="form-control" placeholder="Enter an address"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
@@ -34,6 +35,7 @@
                     <tr>
                         <th><label asp-for="Address2">Address 2:</label></th>
                         <td><input asp-for="Address2" class="form-control" placeholder="Apt/Suite #"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
@@ -41,27 +43,43 @@
                     <tr>
                         <th><label asp-for="City">City:</label></th>
                         <td><input asp-for="City" class="form-control" placeholder="Enter a city"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="County.CountyName">County</label></th>
-                        <td><input asp-for="County.CountyName" class="form-control" placeholder="Enter a county"/></td>
+                        <td>
+                            @Html.DropDownList("County.CountyName",
+                              Model.GetListItems<@Counties>("Select a county", null, true, false, null, true),
+                              new { @class = "form-control" })                       
+                        </td>
+                        <td>(Leave on "Select a county" for<br/>addresses outside California)</td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
                         <th><label asp-for="State.StateProvinceName">State</label></th>
-                        <!--<td><select asp-for="State.StateProvinceName" asp-items="Model.States"></select></td>-->
+                        <td>
+                            @Html.DropDownList("State.StateProvinceName",
+                              Model.GetListItems<@States>("Select a state", Model.StateCodes, true, true),
+                              new { @class = "form-control" })
+                        </td>
+                        <td>(Select "Outside US"<br/>as appropriate)</td>
                     </tr>
                 </div>
 
                 <div class="form-group">
                     <tr>
-                        <th><label asp-for="Country.Name"></label>Country</th>
-                        <td><input asp-for="Country.Name" class="form-control" placeholder="Enter a country"/></td>
+                        <th><label asp-for="Country.Name">Country</label></th>
+                        <td>
+                            @Html.DropDownList("Country.Name",
+                              Model.GetListItems<@CountryNames>("Select a country", null, true, true),
+                              new { @class = "form-control" })
+                        </td>
+                        <td></td>
                     </tr>
                 </div>
 
@@ -69,6 +87,7 @@
                     <tr>
                         <th><label asp-for="Zip">Zip</label></th>
                         <td><input asp-for="Zip" class="form-control" placeholder="Enter a zip code"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
@@ -76,6 +95,7 @@
                     <tr>
                         <th><label asp-for="Phone"></label></th>
                         <td><input asp-for="Phone" class="form-control" placeholder="Enter a phone number"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
@@ -83,6 +103,7 @@
                     <tr>
                         <th><label asp-for="Email"></label></th>
                         <td><input asp-for="Email" class="form-control" placeholder="Enter an email address"/></td>
+                        <td></td>
                     </tr>
                 </div>
 
