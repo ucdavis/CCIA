@@ -101,8 +101,7 @@ namespace CCIA.Controllers
             {
                 ErrorMessage = "SID with same Lot, Cert Year, Cert Number, and Rad found. Duplicates are not allowed.";
                 return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
-            }
-            
+            }            
             
             var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
                 .Include(a => a.Variety)
@@ -152,13 +151,6 @@ namespace CCIA.Controllers
                 seedapps.Add(new SeedsApplications { AppId = sa});
             }
             newSeed.SeedsApplications = seedapps;
-
-            
-
-
-
-
-
             
             if(ModelState.IsValid)
             {
