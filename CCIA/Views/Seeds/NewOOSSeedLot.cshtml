@@ -1,0 +1,78 @@
+
+@{
+    ViewData["Title"] = "Create New Seed Lot";
+}
+
+<h1>Create New Seed Lot from Seed grown outside California</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="SubmitInState" method="post">            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group row">
+                <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
+                <div class="input-group col-sm-9 " >
+                    <input id="ApplicantSearch" class="form-control"></input> 
+                    <div class="input-group-append">
+                        <i class="fa fa-search input-group-text" id="retrieveButton"></i>
+                    </div>
+                </div>               
+            </div>             
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="application/javascript">
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        };
+
+        $(document).ready(function () {
+            $('#retrieveButton').click(function () {
+                alert("hello");
+                var searchTerm = $('#ApplicantSearch').val();
+                alert(searchTerm);
+                $.ajax({
+                    method: 'GET',
+                    url: '/Seeds/GetApplicants',
+                    data: {
+                        search: searchTerm,
+                    }
+                })
+                .done(function(data){                    
+                    $('#results').html("");
+                    var s = '<form action="/Seeds/CreateInState/" method="get"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
+                        $.each(data,
+                            function(i) {
+                                var item = data[i];
+                                s += '<tr><td><input type="checkbox" name="appId" id="appId" value="' +
+                                    item.appId +
+                                    '"></td>';
+                                s += '<td>' + item.appId + '</td>';
+                                s += '<td>' + item.grower + '</td>';
+                                s += '<td>' + item.acres + '</td></tr>';
+                            });
+                        s += '</table>';
+                        s += '<input type="hidden" value=' + certYear + ' name="certYear" />'
+                        s += '<input type="hidden" value=' + rad + ' name="certRad" />'
+                        s += '<input type="hidden" value=' + certNumber + ' name="certNum" />'
+                        s += '<input type="submit" value="Select App(s)"></form>';
+                    $('#results').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not find info on that ID/Type");
+                    console.log('error', xhr);
+                }); 
+            });
+        });
+       
+
+    </script>
+}

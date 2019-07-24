@@ -67,6 +67,11 @@ namespace CCIA.Controllers
             return View();
         }
 
+        public ActionResult NewOOSSeedLot()
+        {
+            return View();
+        }
+
         public ActionResult SelectApp()
         {
             int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2007 + 1).ToArray();
@@ -198,6 +203,27 @@ namespace CCIA.Controllers
                 } 
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetApplicants(string search)
+        {
+            var orgs = new List<Organizations>();
+            int id = 0;
+            // Parsing was successful (we have an ID number instead of a name)
+            if (Int32.TryParse(search, out id))
+            {
+                orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
+                    .Select(o => new Organizations{ OrgId = o.OrgId, OrgName = o.OrgName})
+                    .ToListAsync();
+            }
+            else
+            {
+                orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(search.ToLower()))
+                    .Select(o => new Organizations{ OrgId = o.OrgId, OrgName = o.OrgName})
+                    .ToListAsync();
+            }
+            return Json(orgs);
         }
     }
 }
