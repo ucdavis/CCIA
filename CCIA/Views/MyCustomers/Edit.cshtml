@@ -1,7 +1,5 @@
 @model CCIA.Models.MyCustomers
 
-@using System.Text.RegularExpressions
-
 @{
     ViewData["Title"] = "Edit";
 }
@@ -12,106 +10,64 @@
     </div>
 </div>
 
-<form method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="col-lg-1">
-        <table id="table" class="table">
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+                <div class="form-group required">
+                    <label class="control-label" asp-for="Name"></label>
+                    <input class="form-control" type="text" asp-for="Name" placeholder="Enter a name">
+                </div>                
 
-            <div class="form-group">
-                <tr>
-                    <th width="20%"><label asp-for="Name">Name:</label></th>
-                    <td width="50%"><input asp-for="Name" class="form-control" required></td>
-                    <td width="30%"></td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label class="control-label" asp-for="Address1"></label>
+                    <input class="form-control" type="text" asp-for="Address1" placeholder="Enter an address"/>
+                </div>               
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Address1">Address 1:</label></th>
-                    <td><input asp-for="Address1" class="form-control" required/></td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Address2"></label>
+                    <input class="form-control" type="text" asp-for="Address2" placeholder="Apt/Suite #"/>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Address2">Address 2:</label></th>
-                    <td><input asp-for="Address2" class="form-control"/></td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label class="control-label" asp-for="City"></label>
+                    <input class="form-control" type="text" asp-for="City" placeholder="Enter a city"/>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="City">City:</label></th>
-                    <td><input asp-for="City" class="form-control" required/></td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label class="control-label" asp-for="County.CountyName">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
+                    <select asp-for="County.CountyName" class="form-control" asp-items="@(new SelectList(Model.CountyNames, "CountyName", "CountyName"))"></select>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="County.CountyName">CA County:</label></th>
-                    <td>
-                        @Html.DropDownList("County.CountyName",
-                               Model.GetListItems<@Counties>("Select a county", false, false, Model.County.CountyName, true),
-                               new { @class = "form-control", required = "required" })
-                    </td>
-                    <td>(Leave on "Select a county" for addresses outside California)</td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label asp-for="State.StateProvinceName">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
+                    <select asp-for="State.StateProvinceName" class="form-control" asp-items="@(new SelectList(Model.StateProvinceNames, "StateProvinceName", "StateProvinceName"))"></select>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="State.StateProvinceName">State</label></th>
-                    <td>
-                        @Html.DropDownList("State.StateProvinceName",
-                               Model.GetListItems<@States>("Select a state", false, true, Model.State.StateProvinceName, false),
-                               new { @class = "form-control", required = "required" })
-                    </td>
-                    <td>(Select "Outside US" as appropriate)</td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label asp-for="Country.Name">Country</label>
+                    <select asp-for="Country.Name" class="form-control" asp-items="@(new SelectList(Model.CountryNames, "Name", "Name"))"></select>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Country.Name">Country</label></th>
-                    <td>
-                        @Html.DropDownList("Country.Name",
-                               Model.GetListItems<@CountryNames>("Select a country", false, true, Model.Country.Name, false),
-                               new { @class = "form-control", required = "required" })
-                    </td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group required">
+                    <label asp-for="Zip">Zip</label>
+                    <input asp-for="Zip" class="form-control" placeholder="Enter a zip code"/>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Zip">Zip</label></th>
-                    <td><input asp-for="Zip" class="form-control" required/></td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="form-control" placeholder="Enter a phone number"/>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Phone"></label></th>
-                    <td><input asp-for="Phone" class="form-control"/></td>
-                    <td></td>
-                </tr>
-            </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter an email address"/>
+                </div>
 
-            <div class="form-group">
-                <tr>
-                    <th><label asp-for="Email"></label></th>
-                    <td><input asp-for="Email" class="form-control"/></td>
-                    <td></td>
-                </tr>
-            </div>
-
-        </table>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Save</button>
+                    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Delete" asp-route-id="@Model.Id">Delete</button>
+                    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Details" asp-route-id="@Model.Id">Cancel</button>
+                </div>
+        </form>
     </div>
-    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Save</button>
-    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Delete" asp-route-id="@Model.Id">Delete</button>
-    <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.Id">Cancel</a>
-</form>
+</div>

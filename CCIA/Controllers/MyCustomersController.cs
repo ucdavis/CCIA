@@ -34,7 +34,16 @@ namespace CCIA.Controllers
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
-            var model = new MyCustomers();            
+            var model = new MyCustomers();    
+
+            var stateProvinces = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
+            var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
+            var counties = await _dbContext.County.Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync();
+
+            model.StateProvinceNames = stateProvinces;
+            model.CountryNames = countries;
+            model.CountyNames = counties;
+
             return View(model);
         }
 
@@ -93,6 +102,14 @@ namespace CCIA.Controllers
                 .Include(e => e.Country)
                 .Include(e => e.Organization)
                 .FirstOrDefaultAsync();
+
+            var stateProvinces = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
+            var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
+            var counties = await _dbContext.County.Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync();
+
+            model.StateProvinceNames = stateProvinces;
+            model.CountryNames = countries;
+            model.CountyNames = counties;
 
             return View(model);
         }
