@@ -1,3 +1,4 @@
+@model CCIA.Models.SeedsCreateOOSViewModel.SeedsCreateOOSViewModel
 
 @{
     ViewData["Title"] = "Create New Seed Lot";
@@ -16,8 +17,27 @@
                     <div class="input-group-append">
                         <i class="fa fa-search input-group-text" id="retrieveButton"></i>
                     </div>
+                    &nbsp;(enter Org Id or Name)
                 </div>               
-            </div>             
+            </div>
+             <div>
+                <span id="results"></span>
+            </div>
+            <div id="selectCrop" style="display: none !important;">
+                <input type="hidden" value="" asp-for="Seed.ApplicantId" /> 
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Crop:</label>
+                    <div class="form-check col-sm-9">
+                        <input class="form-check-input" id="crop" />
+                    </div>               
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Variety:</label>
+                    <div class="form-check col-sm-9">
+                        <input class="form-check-input" id="Variety" />
+                    </div>               
+                </div>
+            </div>            
         </form>
     </div>
 </div>
@@ -36,9 +56,7 @@
 
         $(document).ready(function () {
             $('#retrieveButton').click(function () {
-                alert("hello");
-                var searchTerm = $('#ApplicantSearch').val();
-                alert(searchTerm);
+                var searchTerm = $('#ApplicantSearch').val();                
                 $.ajax({
                     method: 'GET',
                     url: '/Seeds/GetApplicants',
@@ -48,30 +66,29 @@
                 })
                 .done(function(data){                    
                     $('#results').html("");
-                    var s = '<form action="/Seeds/CreateInState/" method="get"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
+                    var s = '<table class="table"><tr><th>&nbsp;</th><th>Org Id</th><th>Applicant</th></tr>';
                         $.each(data,
                             function(i) {
                                 var item = data[i];
-                                s += '<tr><td><input type="checkbox" name="appId" id="appId" value="' +
-                                    item.appId +
-                                    '"></td>';
-                                s += '<td>' + item.appId + '</td>';
-                                s += '<td>' + item.grower + '</td>';
-                                s += '<td>' + item.acres + '</td></tr>';
+                                s += '<tr><td><input type="button" value="Select" onClick="selectApplicant(' + item.orgId + ')"></input></td>';
+                                s += '<td>' + item.orgId + '</td>';
+                                s += '<td>' + item.orgName + '</td>';
                             });
-                        s += '</table>';
-                        s += '<input type="hidden" value=' + certYear + ' name="certYear" />'
-                        s += '<input type="hidden" value=' + rad + ' name="certRad" />'
-                        s += '<input type="hidden" value=' + certNumber + ' name="certNum" />'
-                        s += '<input type="submit" value="Select App(s)"></form>';
+                        s += '</table>';                                                
                     $('#results').html(s);
                 })
                 .fail(function(xhr) {
-                    alert("Could not find info on that ID/Type");
+                    alert("Could not find info on that Org Id or Name");
                     console.log('error', xhr);
                 }); 
             });
         });
+
+        function selectApplicant(orgId)
+        {
+            $("#selectCrop").show();
+            $("#ApplicantId").val(orgId);           
+        }
        
 
     </script>
