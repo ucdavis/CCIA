@@ -42,6 +42,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
+                Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
             };

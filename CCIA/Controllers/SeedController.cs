@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SeedsViewModels;
 using CCIA.Models.IndexViewModels;
 using CCIA.Models.SeedsCreateViewModel;
+using CCIA.Models.SeedsCreateOOSViewModel;
 
 
 
@@ -67,9 +68,10 @@ namespace CCIA.Controllers
             return View();
         }
 
-        public ActionResult NewOOSSeedLot()
+        public async Task<ActionResult> NewOOSSeedLot()
         {
-            return View();
+            var model = await SeedsCreateOOSViewModel.Create(_dbContext);
+            return View(model);
         }
 
         public ActionResult SelectApp()
