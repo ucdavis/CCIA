@@ -15,12 +15,12 @@
         <form asp-action="Create" method="post">
                 <div class="form-group required">
                     <label class="control-label" asp-for="Name"></label>
-                    <input class="form-control" type="text" asp-for="Name" placeholder="Enter a name">
+                    <input required class="form-control" type="text" asp-for="Name" placeholder="Enter a name">
                 </div>                
 
                 <div class="form-group required">
                     <label class="control-label" asp-for="Address1"></label>
-                    <input class="form-control" type="text" asp-for="Address1" placeholder="Enter an address"/>
+                    <input required class="form-control" type="text" asp-for="Address1" placeholder="Enter an address"/>
                 </div>               
 
                 <div class="form-group">
@@ -30,42 +30,42 @@
 
                 <div class="form-group required">
                     <label class="control-label" asp-for="City"></label>
-                    <input class="form-control" type="text" asp-for="City" placeholder="Enter a city"/>
+                    <input required class="form-control" type="text" asp-for="City" placeholder="Enter a city"/>
                 </div>
 
                 <div class="form-group required">
                     <label class="control-label" asp-for="County.CountyName">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
-                    <select asp-for="County.CountyName" class="form-control" asp-items="@(new SelectList(Model.CountyNames, "CountyName", "CountyName"))"></select>
+                    <select required asp-for="County.CountyName" class="form-control" asp-items="@(new SelectList(Model.CountyNames, "CountyName", "CountyName"))"></select>
                 </div>
 
                 <div class="form-group required">
                     <label asp-for="State.StateProvinceName">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
-                    <select asp-for="State.StateProvinceName" class="form-control" asp-items="@(new SelectList(Model.StateProvinceNames, "StateProvinceName", "StateProvinceName"))"></select>
+                    <select required asp-for="State.StateProvinceName" class="form-control" asp-items="@(new SelectList(Model.StateProvinceNames, "StateProvinceName", "StateProvinceName"))"></select>
                 </div>
 
                 <div class="form-group required">
                     <label asp-for="Country.Name">Country</label>
-                    <select asp-for="Country.Name" class="form-control" asp-items="@(new SelectList(Model.CountryNames, "Name", "Name"))"></select>
+                    <select required asp-for="Country.Name" class="form-control" asp-items="@(new SelectList(Model.CountryNames, "Name", "Name"))"></select>
                 </div>
 
                 <div class="form-group required">
                     <label asp-for="Zip">Zip</label>
-                    <input asp-for="Zip" class="form-control" placeholder="Enter a zip code"/>
+                    <input required asp-for="Zip" type="text" class="form-control" placeholder="Enter a zip code"/>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Phone"></label>
-                    <input asp-for="Phone" class="form-control" placeholder="Enter a phone number"/>
+                    <input asp-for="Phone" type="text" class="form-control" placeholder="Enter a phone number"/>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" placeholder="Enter an email address"/>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter an email address"/>
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Create" asp-route-id="@Model.Id">Add</button>
-                    <button class="btn btn-primary" type="submit" class="btn btn-default" asp-action="Index" asp-controller="MyCustomers">Cancel</button>
+                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.Id">Add</button>
+                    <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Cancel</a>
                 </div>
         </form>
     </div>
