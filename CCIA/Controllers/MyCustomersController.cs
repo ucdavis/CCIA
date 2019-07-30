@@ -21,11 +21,8 @@ namespace CCIA.Controllers
         }
 
         // GET: Application
-        public async Task<IActionResult> Index(bool isFromDelete = false, string name = null)
+        public async Task<IActionResult> Index()
         {          
-            if (isFromDelete)
-                Message = name + " has been successfully deleted.";
-
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();        
             var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId);            
             return View(model);
@@ -66,16 +63,17 @@ namespace CCIA.Controllers
             if (ModelState.IsValid) {
                 _dbContext.Add(myCustomer);
                 await _dbContext.SaveChangesAsync();
+                Message = myCustomer.Name + " has been successfully created.";
             } else {
                 ErrorMessage = "Something went wrong.";
                 return View(myCustomer);
             }
 
-            return RedirectToAction(nameof(Details), new { id = myCustomer.Id, isFromCreate = true });
+            return RedirectToAction(nameof(Details), new { id = myCustomer.Id });
         }
 
         // GET: Application/Details/5
-        public async Task<IActionResult> Details(int id, bool isFromEdit = false, bool isFromCreate = false)
+        public async Task<IActionResult> Details(int id)
         {
             var model = await _dbContext.MyCustomers.Where(a => a.Id == id)
                 .Include(e => e.State)
@@ -83,12 +81,6 @@ namespace CCIA.Controllers
                 .Include(e => e.Country)
                 .Include(e => e.Organization)
                 .FirstOrDefaultAsync();
-
-            if (isFromEdit)
-                Message = "Edit Successful";
-
-            if (isFromCreate)
-                Message = model.Name +" has been successfully created.";
 
             return View(model);
         }
@@ -148,12 +140,13 @@ namespace CCIA.Controllers
             // check ModelState before saving the changes
             if(ModelState.IsValid) {
                 await _dbContext.SaveChangesAsync();
+                Message = "Edit Successful";
             } else {
                 ErrorMessage = "Something went wrong.";
                 return View(myCustomer);
             }
 
-            return RedirectToAction(nameof(Details), new { id = myCustomer.Id, isFromEdit = true });
+            return RedirectToAction(nameof(Details), new { id = myCustomer.Id });
         }
 
         // POST: Application/Delete/5
@@ -164,12 +157,11 @@ namespace CCIA.Controllers
             var myCustomerToDelete = await _dbContext.MyCustomers.Where(m => m.Id == id)
                 .FirstOrDefaultAsync();
 
-            string name = myCustomerToDelete.Name;
-
             if (ModelState.IsValid)
             {
                 _dbContext.Remove(myCustomerToDelete);
                 await _dbContext.SaveChangesAsync();
+                Message = myCustomerToDelete.Name + " has been successfully deleted.";
             }
             else
             {
@@ -177,7 +169,7 @@ namespace CCIA.Controllers
                 return View(myCustomerToDelete);
             }
 
-            return RedirectToAction(nameof(Index), new { isFromDelete = true, name });
+            return RedirectToAction(nameof(Index));
         }
     }
 }
