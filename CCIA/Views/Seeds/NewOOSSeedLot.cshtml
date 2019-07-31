@@ -12,10 +12,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group row">
                 <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
-                <div class="input-group col-sm-9 " >
-                    <input id="ApplicantSearch" class="form-control"></input> 
+                <div class="input-group col-sm-9" >
+                    <input id="ApplicantSearch" class="form-control"></input>                    
                     <div class="input-group-append">
-                        <i class="fa fa-search input-group-text" id="retrieveButton"></i>
+                        <button class="btn btn-primary" id="retrieveApplicantButton" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>                        
                     </div>
                     &nbsp;(enter Org Id or Name)
                 </div>               
@@ -27,13 +29,45 @@
                 <input type="hidden" value="" asp-for="Seed.ApplicantId" /> 
                 <div class="form-group row">
                    <label class="col-sm-3 col-form-label">Crop:</label>
-                   <select id="Crop" class="form-control  col-sm-9" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>          
+                   <select id="Crop" name="Crop" class="form-control  col-sm-9" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>          
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Variety:</label>
-                    <div class="form-check col-sm-9">
-                        <input class="form-check-input" id="Variety" />
+                    <div class="input-group col-sm-9">
+                        <input class="form-check" id="Variety" />
+                        <div class="input-group-append">
+                            <i class="fa fa-search input-group-text" id="retrieveVariety"></i>
+                        </div>
                     </div>               
+                </div> -->
+                <div class="form-group row required">  
+                    <label asp-for="Seed.SampleFormVarietyId" class="col-sm-3 col-form-label"></label>
+                    <div class="input-group col-sm-9">                        
+                            <input class="form-check" id="Variety" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-search"></i>
+                                </button>     
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>     
+                    @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+                </div>
+            </div>
+              
+            <div id="completeForm" style="display: none !important;">
+                <input type="hidden" value="" asp-for="Seed.SampleFormVarietyId" /> 
+                <div class="form-group row required">
+                    <label asp-for="Seed.CertYear" class="col-sm-3 col-form-label"></label>
+                    @Html.DropDownList("CertYear", new SelectList(Model.CertYears))
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.OriginCountry" class="col-sm-3 col-form-label"></label>
+                    @Html.DropDownList("OriginCountry", new SelectList(Model.Countries, "Id", "Name",58))                    
                 </div>
             </div>            
         </form>
@@ -46,6 +80,7 @@
 
     <script type="application/javascript">
 
+        
         function gettoken() {
             var token = '@Html.AntiForgeryToken()';
             token = $(token).val();
@@ -53,7 +88,7 @@
         };
 
         $(document).ready(function () {
-            $('#retrieveButton').click(function () {
+            $('#retrieveApplicantButton').click(function () {
                 var searchTerm = $('#ApplicantSearch').val();                
                 $.ajax({
                     method: 'GET',
@@ -85,8 +120,59 @@
         function selectApplicant(orgId)
         {
             $("#selectCrop").show();
-            $("#ApplicantId").val(orgId);           
+            $("#Seed_ApplicantId").val(orgId);           
         }
+
+        $('#variety-search').on('click', () => {
+            searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder")
+        });
+
+        
+
+        function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {            
+            let cropId = $("#Crop").val();
+
+            let varietyName = $("#Variety").val();
+            if (varietyName === "") {
+                alert("Warning: No variety found. No variety with the entered name was found in our system. Please update and try again"); 
+                return;
+            }
+
+            let data = {
+                name: varietyName,
+                cropId: cropId
+            };
+            let vs = document.getElementById(dropdownId);
+            // Take text in input box and autofill input with the variety name that most closely matches it
+            $.ajax({
+                type: "GET",
+                url: "/Application/FindVariety",
+                data: data,
+                success: function (res) {
+                    vs.innerHTML = "";
+                    // No varieties were found
+                    if (res.length === 0) {
+                        alert("Warning: No variety found. No variety with the entered name was found in our system. Please update and try again"); 
+                        //window[selectVarietyCallback](-1, varietyName);                      
+                    }
+                    // Populate dropdown with list of varieties
+                    res.forEach((el) => {
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
+                        document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
+                            varietySelected(el.varOffId);
+                        });
+                    })
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+        });
+
+        function varietySelected(varietyId) {
+            $("#completeForm").show();            
+            $("#Seed_SampleFormVarietyId").val(varietyId);                
+        };
+}
        
 
     </script>

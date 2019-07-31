@@ -45,6 +45,8 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                 Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                Countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                CertYears = Enumerable.Range(2007, seed.CertYear.Value - 2007).ToList(),
             };
 
             return viewModel;
@@ -80,5 +82,15 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         public int? CertYear { get; set; }
         public int SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
+ 
+        [Display(Name = "Variety")]
+         public int? SampleFormVarietyId { get; set; }
+        
+        [Required]
+        [Display(Name = "State Origin")]
+        public int OriginState { get; set; }
+        [Required]
+        [Display(Name = "Country Origin")]
+        public int OriginCountry { get; set; }
     }
 }
