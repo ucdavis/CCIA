@@ -76,7 +76,7 @@ namespace CCIA.Controllers
 
         public ActionResult SelectApp()
         {
-            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2007 + 1).ToArray();
+            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2006).ToArray();
             return View(years);
         }
 
@@ -177,6 +177,76 @@ namespace CCIA.Controllers
             }
            
             return RedirectToAction("Details", new { id = newSeed.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewOOSSeedLot(SeedsCreateOOSViewModel model)
+        {
+            var seed = model.Seed;  
+            seed.LotNumber = seed.LotNumber.Trim();
+            seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();          
+            
+            if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
+                ErrorMessage = "Must Select county";
+                var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
+                return View(returnModel);
+            }
+            
+            if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber))
+            {
+                ErrorMessage = "SID with same Lot, Cert Year, and Cert Number found. Duplicates are not allowed.";
+                var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
+                return View(returnModel);                
+            }            
+            
+            var newSeed = new Seeds();
+            newSeed.SampleFormDate = DateTime.Now;
+            newSeed.SampleFormCertNumber = seed.SampleFormCertNumber;
+            newSeed.CertYear = seed.CertYear;
+            newSeed.ApplicantId = seed.ApplicantId;
+            newSeed.SampleFormVarietyId = seed.SampleFormVarietyId;
+            newSeed.OfficialVarietyId = seed.SampleFormVarietyId.HasValue ? seed.SampleFormVarietyId.Value : 0;
+            
+            // TODO Used logged in user org ID and logged in contact ID
+            newSeed.ConditionerId = 168;
+            newSeed.UserEntered = 1;           
+            newSeed.LotNumber = seed.LotNumber;
+            newSeed.PoundsLot = seed.PoundsLot;
+            newSeed.Class = seed.Class;
+            newSeed.CountyDrawn = seed.CountyDrawn;
+            newSeed.OriginState = seed.OriginState;
+            newSeed.OriginCountry = seed.OriginCountry;
+            newSeed.OriginalRun = seed.Type == "Original Run" ? true : false;
+            newSeed.Remill = seed.Type == "Remill" ? true : false;            
+            newSeed.Remarks = seed.Remarks;
+            newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.OECDLot = seed.OECDLot;
+            newSeed.Confirmed = false;
+            newSeed.CertProgram = "SD";
+            newSeed.Status = "Pending supporting material";
+            //newSeed.CertProgram = app.AppType;
+            
+            
+            if(ModelState.IsValid)
+            {
+                await _dbContext.Seeds.AddAsync(newSeed);
+                await _dbContext.SaveChangesAsync();
+
+                var labresults = new SxLabResults();
+                labresults.SeedsId = newSeed.Id;
+                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+
+                Message = "Certified Seed Lot created";
+            } else
+            {
+                ErrorMessage = "Error encountered saving seed lot";
+                var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
+                return View(returnModel);                
+            }
+           
+            return RedirectToAction("Details", new { id = newSeed.Id });
+
         }
         
 

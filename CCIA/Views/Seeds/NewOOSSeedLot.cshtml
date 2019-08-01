@@ -7,12 +7,12 @@
 <h1>Create New Seed Lot from Seed grown outside California</h1>
 
 <div class="row">
-    <div class="col-md-6">
-        <form asp-action="SubmitInState" method="post">            
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+    <div class="col-sm-8">
+        <form asp-action="NewOOSSeedLot" method="post">            
+            <div asp-validation-summary="All" class="text-danger"></div>                      
             <div class="form-group row">
                 <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
-                <div class="input-group col-sm-9" >
+                <div class="input-group col-sm-6" >
                     <input id="ApplicantSearch" class="form-control"></input>                    
                     <div class="input-group-append">
                         <button class="btn btn-primary" id="retrieveApplicantButton" type="button">
@@ -25,24 +25,16 @@
              <div>
                 <span id="results"></span>
             </div>
+
             <div id="selectCrop" style="display: none !important;">
-                <input type="hidden" value="" asp-for="Seed.ApplicantId" /> 
+                <input type="hidden" asp-for="Seed.ApplicantId" /> 
                 <div class="form-group row">
                    <label class="col-sm-3 col-form-label">Crop:</label>
-                   <select id="Crop" name="Crop" class="form-control  col-sm-9" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>          
+                   <select id="Crop" name="Crop" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>          
                 </div>
-                <!-- <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Variety:</label>
-                    <div class="input-group col-sm-9">
-                        <input class="form-check" id="Variety" />
-                        <div class="input-group-append">
-                            <i class="fa fa-search input-group-text" id="retrieveVariety"></i>
-                        </div>
-                    </div>               
-                </div> -->
                 <div class="form-group row required">  
                     <label asp-for="Seed.SampleFormVarietyId" class="col-sm-3 col-form-label"></label>
-                    <div class="input-group col-sm-9">                        
+                    <div class="input-group col-sm-6">                        
                             <input class="form-check" id="Variety" />
                             <div class="input-group-append">
                                 <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
@@ -60,15 +52,88 @@
             </div>
               
             <div id="completeForm" style="display: none !important;">
-                <input type="hidden" value="" asp-for="Seed.SampleFormVarietyId" /> 
+                <input type="hidden" asp-for="Seed.SampleFormVarietyId" /> 
                 <div class="form-group row required">
                     <label asp-for="Seed.CertYear" class="col-sm-3 col-form-label"></label>
-                    @Html.DropDownList("CertYear", new SelectList(Model.CertYears))
+                    <select asp-for="Seed.CertYear" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.CertYears))"></select> 
                 </div>
                 <div class="form-group row required">
-                    <label asp-for="Seed.OriginCountry" class="col-sm-3 col-form-label"></label>
-                    @Html.DropDownList("OriginCountry", new SelectList(Model.Countries, "Id", "Name",58))                    
+                    <label asp-for="Seed.OriginCountry" class="col-sm-3 col-form-label"></label>                    
+                    <select asp-for="Seed.OriginCountry" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.Countries, "Id","Name", 58))"></select>                  
                 </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.OriginState" class="col-sm-3 col-form-label"></label>                    
+                    <select asp-for="Seed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateProvinceName"))"></select>                  
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.SampleFormCertNumber" class="col-sm-3 col-form-label"></label>                    
+                    <input asp-for="Seed.SampleFormCertNumber" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.SampleFormCertNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.LotNumber" class="col-sm-3 col-form-label"></label>                    
+                    <input asp-for="Seed.LotNumber" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.LotNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="Seed.PoundsLot" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.PoundsLot" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.Class" class="col-sm-3 col-form-label"></label>                
+                    <select asp-for="Seed.Class" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.ClassProducible, "ClassProducedId","ClassProducedTrans"))"></select>
+                    <span asp-validation-for="Seed.Class" class="text-danger"></span>               
+                </div>
+                <div class="form-group row required">
+                <label asp-for="Seed.Type" class="col-sm-3 col-form-label"></label>                
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" asp-for="Seed.Type" value="Original Run" />Original Run
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" asp-for="Seed.Type" value="Remill" />Remill
+                    </label>
+                </div>   
+                <span asp-validation-for="Seed.Type" class="text-danger"></span>   
+            </div>
+            <div class="form-group row">
+                <label asp-for="Seed.OECDLot" class="col-sm-3 col-form-label"></label>
+                <div class="form-check col-sm-6">
+                    <input asp-for="Seed.OECDLot" class="form-check-input" />
+                </div>
+                <span asp-validation-for="Seed.OECDLot" class="text-danger"></span>               
+            </div>
+            <div class="form-group row">
+                <label asp-for="Seed.Remarks" class="col-sm-3 col-form-label"></label>
+                <textarea class="col-sm-6 form-control" asp-for="Seed.Remarks" rows="5"></textarea>
+                <span asp-validation-for="Seed.Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Seed.SampleDrawnBy" class="col-sm-3 col-form-label">Sample Drawn By</label>
+                <select asp-for="Seed.SampleDrawnBy" class="col-sm-6 form-control">
+                    <option value="Seed Conditioner">Seed Conditioner</option>
+                    <option value="Ag. Commissioner">Ag. Commissioner</option>
+                </select>
+                <span asp-validation-for="Seed.SampleDrawnBy" class="text-danger"></span>
+            </div>
+            <div class="form-group row required">
+                <label asp-for="Seed.SamplerName" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Seed.SamplerName" type="text" class="col-sm-6 form-control"></input>
+                <span asp-validation-for="Seed.SamplerName" class="text-danger"></span>
+            </div>
+            <div class="form-group row required">
+                <label asp-for="Seed.CountyDrawn" class="col-sm-3 col-form-label"></label>                
+                <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","CountyName"))">
+                    <option value="0">Select county....</option>
+                </select>
+                <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               
+            </div>
+            <div class="form-group">                
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
             </div>            
         </form>
     </div>
@@ -88,6 +153,11 @@
         };
 
         $(document).ready(function () {
+            if($('#Seed_SampleFormCertNumber').val() != ""){
+                $("#completeForm").show();
+                $("#selectCrop").show();
+            }
+
             $('#retrieveApplicantButton').click(function () {
                 var searchTerm = $('#ApplicantSearch').val();                
                 $.ajax({
@@ -115,7 +185,49 @@
                     console.log('error', xhr);
                 }); 
             });
+
+            $('#Seed_OriginCountry').change(function () {                
+                var country = $("#Seed_OriginCountry option:selected");
+
+                if(country.text() === "United States")
+                {
+                    showStates("USA");
+                } else  if(country.text() === "Canada")
+                {
+                    showStates("Canada");
+                } else 
+                {
+                    showStates("Outside");
+                }
+            })
+
         });
+
+        function showStates(country)
+        {   
+            $("#Seed_OriginState option").filter(function(index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+            var selectText, indexText ;
+            if(country === "USA")
+            {   
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if(country === "Canada"){
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";               
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";                   
+            }
+            $("#Seed_OriginState option").filter(function(index) { return $(this).text() === selectText; }).attr('selected', 'selected');             
+                $("#Seed_OriginState > option").each(function() {
+                    if(~this.text.indexOf(indexText))
+                    {
+                       $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', false);
+                    } else {
+                       $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', true); 
+                    }
+                });
+        };
 
         function selectApplicant(orgId)
         {
@@ -172,6 +284,8 @@
             $("#completeForm").show();            
             $("#Seed_SampleFormVarietyId").val(varietyId);                
         };
+
+
 }
        
 

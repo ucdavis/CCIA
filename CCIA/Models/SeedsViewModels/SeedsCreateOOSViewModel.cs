@@ -11,7 +11,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
     {
         public List<Crops> Crops { get; set; }
 
-        public List<AbbrevClassProduced> ClassProducable { get; set; }
+        public List<AbbrevClassProduced> ClassProducible { get; set; }
 
         public List<int> CertYears { get; set; }
 
@@ -37,8 +37,8 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
             var viewModel = new SeedsCreateOOSViewModel
             {
-                States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName}).ToListAsync(),
-                ClassProducable = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
+                States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
@@ -46,7 +46,31 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
                 Countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
-                CertYears = Enumerable.Range(2007, seed.CertYear.Value - 2007).ToList(),
+                CertYears = Enumerable.Range(2007, seed.CertYear.Value - 2006).ToList(),
+            };
+
+            return viewModel;
+        }
+
+        public static async Task<SeedsCreateOOSViewModel> Return(CCIAContext _dbContext, NewOOSSeeds seed )
+        {   
+            // TODO : get real org ID!
+            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync(); 
+            var cal = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();           
+            var currentCertYear =  CertYearFinder.CertYear;
+
+            var viewModel = new SeedsCreateOOSViewModel
+            {
+                States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
+                    Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
+                    .ToListAsync(),
+                Seed = seed,
+                Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),
+                Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
+                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                Countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                CertYears = Enumerable.Range(2007, currentCertYear - 2006).ToList(),
             };
 
             return viewModel;
@@ -63,6 +87,9 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         [Required]
         [Range(1, 40000000, ErrorMessage = "Value for {0} must be between {1} and {2}")]
         public decimal PoundsLot { get; set; }
+        [Required]
+        [Display(Name = "Certification Number")]
+        public string SampleFormCertNumber { get; set; }
 
         public int? Class { get; set; }
 
@@ -80,17 +107,17 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         public bool OECDLot { get; set; }
 
         public int? CertYear { get; set; }
-        public int SampleFormCertNumber { get; set; }
+        
         public int? SampleFormRad { get; set; }
  
         [Display(Name = "Variety")]
          public int? SampleFormVarietyId { get; set; }
         
         [Required]
-        [Display(Name = "State Origin")]
+        [Display(Name = "State of Origin")]
         public int OriginState { get; set; }
         [Required]
-        [Display(Name = "Country Origin")]
+        [Display(Name = "Country of Origin")]
         public int OriginCountry { get; set; }
     }
 }

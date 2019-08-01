@@ -13,6 +13,19 @@ namespace CCIA.Models
         public string StateProvinceName { get; set; }
         public DateTime DateModified { get; set; }
 
+        public string StateWithCountry 
+        { 
+            get
+            {
+                if(CountryId==58)
+                {
+                    return $"{StateProvinceName}, USA";            
+                }
+                return StateProvinceName;
+            }
+        
+        }
+
 
        
     }
