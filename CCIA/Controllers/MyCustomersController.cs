@@ -131,14 +131,23 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id });
         }
 
+        // GET: Application/Edit/5
+        public async Task<ActionResult> Delete(int id)
+        {
+            var myCustomerToDelete = await MyCustomerViewModel.Edit(_dbContext, id);
+
+            return View(myCustomerToDelete);
+        }
+
         // POST: Application/Delete/5
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeletePost(int id)
         {
             var myCustomerToDelete = await _dbContext.MyCustomers.Where(m => m.Id == id)
                 .FirstOrDefaultAsync();
-
+                
             if (ModelState.IsValid)
             {
                 _dbContext.Remove(myCustomerToDelete);
