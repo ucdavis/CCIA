@@ -31,33 +31,29 @@ namespace CCIA.Controllers
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
-            var model = new MyCustomers();    
-
-            var stateProvinces = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
-            var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
-            var counties = await _dbContext.County.Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync();
-
-            model.StateProvinceNames = stateProvinces;
-            model.CountryNames = countries;
-            model.CountyNames = counties;
-
+            var model = await MyCustomerViewModel.Create(_dbContext);
             return View(model);
         }
 
         // POST: Application/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(MyCustomers myCustomer)
+        public async Task<ActionResult> Create(MyCustomerViewModel model)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-
+            var myCustomer = new MyCustomers();
             myCustomer.OrganizationId = orgId;
 
-            // These 3 initializations are needed somehow for dbContext.Add() to work
-            // country code can't be null and dates are invalid errors
-            myCustomer.Country.Code = "";
-            myCustomer.County.DateModified = DateTime.Now;
-            myCustomer.State.DateModified = DateTime.Now;
+            myCustomer.Name = model.MyCustomer.Name;
+            myCustomer.Address1 = model.MyCustomer.Address1;
+            myCustomer.Address2 = model.MyCustomer.Address2;
+            myCustomer.City = model.MyCustomer.City;
+            myCustomer.CountyId = model.MyCustomer.CountyId;
+            myCustomer.StateId = model.MyCustomer.StateId;
+            myCustomer.CountryId = model.MyCustomer.CountryId;
+            myCustomer.Zip = model.MyCustomer.Zip;
+            myCustomer.Phone = model.MyCustomer.Phone;
+            myCustomer.Email = model.MyCustomer.Email;
 
             // check ModelState before saving the changes
             if (ModelState.IsValid) {
@@ -88,28 +84,14 @@ namespace CCIA.Controllers
         // GET: Application/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _dbContext.MyCustomers.Where(a => a.Id == id)
-                .Include(e => e.State)
-                .Include(e => e.County)
-                .Include(e => e.Country)
-                .Include(e => e.Organization)
-                .FirstOrDefaultAsync();
-
-            var stateProvinces = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
-            var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
-            var counties = await _dbContext.County.Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync();
-
-            model.StateProvinceNames = stateProvinces;
-            model.CountryNames = countries;
-            model.CountyNames = counties;
-
+            var model = await MyCustomerViewModel.Edit(_dbContext, id);
             return View(model);
         }
 
         // POST: Application/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, MyCustomers myCustomer)
+        public async Task<ActionResult> Edit(int id, MyCustomerViewModel model)
         {
             // get the MyCustomer from database
             var myCustomerToEdit = await _dbContext.MyCustomers.Where(m => m.Id == id)
@@ -126,16 +108,16 @@ namespace CCIA.Controllers
             }
 
             // if MyCustomer does exist in database. then update value
-            myCustomerToEdit.Name = myCustomer.Name;
-            myCustomerToEdit.Address1 = myCustomer.Address1;
-            myCustomerToEdit.Address2 = myCustomer.Address2;
-            myCustomerToEdit.City = myCustomer.City;
-            myCustomerToEdit.County.CountyName = myCustomer.County.CountyName;
-            myCustomerToEdit.State.StateProvinceName = myCustomer.State.StateProvinceName;
-            myCustomerToEdit.Country.Name = myCustomer.Country.Name;
-            myCustomerToEdit.Zip = myCustomer.Zip;
-            myCustomerToEdit.Phone = myCustomer.Phone;
-            myCustomerToEdit.Email = myCustomer.Email;
+            myCustomerToEdit.Name = model.MyCustomer.Name;
+            myCustomerToEdit.Address1 = model.MyCustomer.Address1;
+            myCustomerToEdit.Address2 = model.MyCustomer.Address2;
+            myCustomerToEdit.City = model.MyCustomer.City;
+            myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
+            myCustomerToEdit.StateId = model.MyCustomer.StateId;
+            myCustomerToEdit.CountryId = model.MyCustomer.CountryId;
+            myCustomerToEdit.Zip = model.MyCustomer.Zip;
+            myCustomerToEdit.Phone = model.MyCustomer.Phone;
+            myCustomerToEdit.Email = model.MyCustomer.Email;
 
             // check ModelState before saving the changes
             if(ModelState.IsValid) {
@@ -143,10 +125,10 @@ namespace CCIA.Controllers
                 Message = "Edit Successful";
             } else {
                 ErrorMessage = "Something went wrong.";
-                return View(myCustomer);
+                return View(model);
             }
 
-            return RedirectToAction(nameof(Details), new { id = myCustomer.Id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         // POST: Application/Delete/5

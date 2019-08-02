@@ -34,14 +34,5 @@ namespace CCIA.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-
-        [NotMapped]
-        public List<StateProvince> StateProvinceNames {get; set;}
-
-        [NotMapped]
-        public List<Countries> CountryNames { get; set; }
-
-        [NotMapped]
-        public List<County> CountyNames { get; set; }
     }
 }

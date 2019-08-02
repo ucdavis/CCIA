@@ -1,4 +1,4 @@
-@model CCIA.Models.MyCustomers
+@model CCIA.Models.MyCustomerViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -14,57 +14,57 @@
     <div class="col-md-6">
         <form asp-action="Create" method="post">
                 <div class="form-group required">
-                    <label class="control-label" asp-for="Name"></label>
-                    <input required class="form-control" type="text" asp-for="Name" placeholder="Enter a name">
+                    <label class="control-label" asp-for="MyCustomer.Name"></label>
+                    <input required class="form-control" type="text" asp-for="MyCustomer.Name" placeholder="Enter a name">
                 </div>                
 
                 <div class="form-group required">
-                    <label class="control-label" asp-for="Address1"></label>
-                    <input required class="form-control" type="text" asp-for="Address1" placeholder="Enter an address"/>
+                    <label class="control-label" asp-for="MyCustomer.Address1"></label>
+                    <input required class="form-control" type="text" asp-for="MyCustomer.Address1" placeholder="Enter an address"/>
                 </div>               
 
                 <div class="form-group">
-                    <label class="control-label" asp-for="Address2"></label>
-                    <input class="form-control" type="text" asp-for="Address2" placeholder="Apt/Suite #"/>
+                    <label class="control-label" asp-for="MyCustomer.Address2"></label>
+                    <input class="form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
                 </div>
 
                 <div class="form-group required">
-                    <label class="control-label" asp-for="City"></label>
-                    <input required class="form-control" type="text" asp-for="City" placeholder="Enter a city"/>
+                    <label class="control-label" asp-for="MyCustomer.City"></label>
+                    <input required class="form-control" type="text" asp-for="MyCustomer.City" placeholder="Enter a city"/>
                 </div>
 
                 <div class="form-group required">
-                    <label class="control-label" asp-for="County.CountyName">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
-                    <select required asp-for="County.CountyName" class="form-control" asp-items="@(new SelectList(Model.CountyNames, "CountyName", "CountyName"))"></select>
+                    <label class="control-label" asp-for="MyCustomer.CountyId">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
+                    <select required asp-for="MyCustomer.CountyId" class="form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
                 </div>
 
                 <div class="form-group required">
-                    <label asp-for="State.StateProvinceName">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
-                    <select required asp-for="State.StateProvinceName" class="form-control" asp-items="@(new SelectList(Model.StateProvinceNames, "StateProvinceName", "StateProvinceName"))"></select>
+                    <label asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
+                    <select required asp-for="MyCustomer.StateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
                 </div>
 
                 <div class="form-group required">
-                    <label asp-for="Country.Name">Country</label>
-                    <select required asp-for="Country.Name" class="form-control" asp-items="@(new SelectList(Model.CountryNames, "Name", "Name"))"></select>
+                    <label asp-for="MyCustomer.CountryId">Country</label>
+                    <select required asp-for="MyCustomer.CountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
                 </div>
 
                 <div class="form-group required">
-                    <label asp-for="Zip">Zip</label>
-                    <input required asp-for="Zip" type="text" class="form-control" placeholder="Enter a zip code"/>
+                    <label asp-for="MyCustomer.Zip">Zip</label>
+                    <input required asp-for="MyCustomer.Zip" type="text" class="form-control" placeholder="Enter a zip code"/>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Phone"></label>
-                    <input asp-for="Phone" type="text" class="form-control" placeholder="Enter a phone number"/>
+                    <label asp-for="MyCustomer.Phone"></label>
+                    <input asp-for="MyCustomer.Phone" type="text" class="form-control" placeholder="Enter a phone number"/>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter an email address"/>
+                    <label asp-for="MyCustomer.Email"></label>
+                    <input asp-for="MyCustomer.Email" type="email" class="form-control" placeholder="Enter an email address"/>
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.Id">Add</button>
+                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.MyCustomer.Id">Add</button>
                     <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Cancel</a>
                 </div>
         </form>
