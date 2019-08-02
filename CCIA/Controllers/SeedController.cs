@@ -80,7 +80,7 @@ namespace CCIA.Controllers
             return View(years);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
         {
             if(appId == null || appId.Count() == 0)
@@ -98,17 +98,27 @@ namespace CCIA.Controllers
         public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
         {
             var seed = model.Seed;
+            #region Begin error checking
+            bool error = false;
             
             if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
                 ErrorMessage = "Must Select county";
-                return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
+                error = true;         
             }
             
             if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber.ToString() && s.SampleFormRad == seed.SampleFormRad))
             {
                 ErrorMessage = "SID with same Lot, Cert Year, Cert Number, and Rad found. Duplicates are not allowed.";
-                return RedirectToAction("CreateInState", new {appId = seed.AppId, certYear = seed.CertYear, certNum = seed.SampleFormCertNumber, certRad = seed.SampleFormRad});
-            }            
+                error = true;                
+            }   
+
+            if(error)
+            {
+                var returnModel = await SeedsCreateViewModel.Return(_dbContext, seed);
+                return View("CreateInState", returnModel);
+            }
+
+            #endregion         
             
             var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
                 .Include(a => a.Variety)
@@ -184,20 +194,30 @@ namespace CCIA.Controllers
         {
             var seed = model.Seed;  
             seed.LotNumber = seed.LotNumber.Trim();
-            seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();          
+            seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();   
+
+            #region Begin error checking
+            bool error = false;
             
-            if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
+             if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
                 ErrorMessage = "Must Select county";
-                var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
-                return View(returnModel);
+                error = true;
             }
             
             if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber))
             {
                 ErrorMessage = "SID with same Lot, Cert Year, and Cert Number found. Duplicates are not allowed.";
+                error = true;              
+            }        
+            if(error)
+            {
                 var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
-                return View(returnModel);                
-            }            
+                return View(returnModel); 
+            }
+
+            #endregion         
+            
+               
             
             var newSeed = new Seeds();
             newSeed.SampleFormDate = DateTime.Now;

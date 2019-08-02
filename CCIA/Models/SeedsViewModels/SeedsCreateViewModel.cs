@@ -10,7 +10,7 @@ namespace CCIA.Models.SeedsCreateViewModel
     {
         public Applications Application { get; set; }
 
-        public List<AbbrevClassProduced> ClassProducable { get; set; }
+        public List<AbbrevClassProduced> ClassProducible { get; set; }
 
         public NewSeeds Seed { get; set; }
 
@@ -46,7 +46,34 @@ namespace CCIA.Models.SeedsCreateViewModel
             var viewModel = new SeedsCreateViewModel
             {
                 Application = app,
-                ClassProducable = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                    Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
+                    .ToListAsync(),
+                Seed = seed,
+                Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
+                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+            };
+
+            return viewModel;
+        }
+
+        public static async Task<SeedsCreateViewModel> Return(CCIAContext _dbContext, NewSeeds seed)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
+                .Include(a => a.ApplicantOrganization)
+                .Include(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(a => a.AppTypeTrans)
+                .FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            // TODO : get real org ID!
+            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
+            
+
+            var viewModel = new SeedsCreateViewModel
+            {
+                Application = app,
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
