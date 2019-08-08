@@ -24,12 +24,12 @@ namespace CCIA.Models
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? OtherVarietyPercent { get; set; }
         public string OtherVarietyComments { get; set; }
-        public short? OtherVarietyCount { get; set; }
+        public int? OtherVarietyCount { get; set; }
         [Display(Name = "Other Crop")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? OtherCropPercent { get; set; }
         public string OtherCropComments { get; set; }
-        public short? OtherCropCount { get; set; }
+        public int? OtherCropCount { get; set; }
         [Display(Name = "Purity")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? PurityPercent { get; set; }
@@ -40,13 +40,13 @@ namespace CCIA.Models
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? WeedSeedPercent { get; set; }
         public string WeedSeedComments { get; set; }
-        public short? WeedSeedCount { get; set; }
+        public int? WeedSeedCount { get; set; }
         public decimal? NoxiousGrams { get; set; }
         public string NoxiousComments { get; set; }
         [Display(Name = "Noxious")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? NoxiousPercent { get; set; }
-        public short? NoxiousCount { get; set; }
+        public int? NoxiousCount { get; set; }
         public decimal? BushelWeight { get; set; }
         public decimal? PurityGrams { get; set; }
         public bool? CciaGerm { get; set; }

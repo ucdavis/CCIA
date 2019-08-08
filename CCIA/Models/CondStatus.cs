@@ -7,7 +7,7 @@ namespace CCIA.Models
     {
         public int CondStatusId { get; set; }
         public int OrgId { get; set; }
-        public short CondYear { get; set; }
+        public int CondYear { get; set; }
         public string CondStatus1 { get; set; }
         public DateTime CondUpdate { get; set; }
         public bool? AllowPretag { get; set; }

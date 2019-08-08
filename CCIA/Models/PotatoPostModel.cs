@@ -25,7 +25,7 @@ namespace CCIA.Models
     public int? ClassProduced { get; set; }
 
     [Required]
-    public short? County { get; set; }
+    public int? County { get; set; }
 
     [Required]
     public int? Crop { get; set; }
