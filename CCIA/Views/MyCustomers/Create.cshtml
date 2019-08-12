@@ -39,12 +39,12 @@
                 </div>
 
                 <div class="form-group required">
-                    <label asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
+                    <label class="control-label" asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
                     <select required asp-for="MyCustomer.StateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
                 </div>
 
                 <div class="form-group required">
-                    <label asp-for="MyCustomer.CountryId">Country</label>
+                    <label class="control-label" asp-for="MyCustomer.CountryId">Country</label>
                     <select required asp-for="MyCustomer.CountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
                 </div>
 
@@ -70,3 +70,59 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="application/javascript">
+
+        $(document).ready(function () {
+            $('#MyCustomer_CountryId').change(function () {               
+                var country = $("#MyCustomer_CountryId option:selected");
+                showStates(country.text());
+            });
+        });
+
+        function showStates(country)
+        {               
+            var selectText, indexText;
+
+            if(country === "United States")
+            {   
+                selectText = "Alabama";
+                indexText = "USA";
+            } else if(country === "Canada")
+            {
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";               
+            } else 
+            {
+                selectText = "Outside US";
+                indexText = "Outside US";                   
+            }
+                
+            $("#MyCustomer_StateId option").each(function() {
+                if(indexText === "USA") {
+                    if (~this.text.indexOf(", Canada") || ~this.text.indexOf("Outside US")) 
+                    {
+                        $("#MyCustomer_StateId option[value*='" + this.value + "']").prop('disabled', true);
+                    } else 
+                    {
+                        $("#MyCustomer_StateId option[value*='" + this.value + "']").prop('disabled', false); 
+                    }
+                } else if(~this.text.indexOf(indexText))
+                {
+                    $("#MyCustomer_StateId option[value*='" + this.value + "']").prop('disabled', false);
+                } else 
+                {
+                    $("#MyCustomer_StateId option[value*='" + this.value + "']").prop('disabled', true); 
+                }
+
+                if ($(this).text() === selectText) {
+                    $("#MyCustomer_StateId option[value*='" + this.value + "']").prop('selected', true);
+                }
+            });
+        };
+
+    </script>
+}

@@ -37,7 +37,6 @@ namespace CCIA.Controllers
 
         // POST: Application/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(MyCustomerViewModel model)
         {
             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
@@ -48,9 +47,18 @@ namespace CCIA.Controllers
             myCustomer.Address1 = model.MyCustomer.Address1;
             myCustomer.Address2 = model.MyCustomer.Address2;
             myCustomer.City = model.MyCustomer.City;
-            myCustomer.CountyId = model.MyCustomer.CountyId;
-            myCustomer.StateId = model.MyCustomer.StateId;
             myCustomer.CountryId = model.MyCustomer.CountryId;
+
+            // 10 is Canada
+            // 58 is United States
+            if (myCustomer.CountryId == 10 || myCustomer.CountryId == 58) {
+                myCustomer.CountyId = model.MyCustomer.CountyId;
+                myCustomer.StateId = model.MyCustomer.StateId;
+            } else {
+                myCustomer.CountyId = 0;
+                myCustomer.StateId = 0;
+            }
+
             myCustomer.Zip = model.MyCustomer.Zip;
             myCustomer.Phone = model.MyCustomer.Phone;
             myCustomer.Email = model.MyCustomer.Email;
@@ -59,7 +67,7 @@ namespace CCIA.Controllers
             if (ModelState.IsValid) {
                 _dbContext.Add(myCustomer);
                 await _dbContext.SaveChangesAsync();
-                Message = myCustomer.Name + " has been successfully created.";
+                Message = $"{myCustomer.Name} has been successfully created.";
             } else {
                 ErrorMessage = "Something went wrong.";
                 return View(myCustomer);
@@ -90,7 +98,6 @@ namespace CCIA.Controllers
 
         // POST: Application/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, MyCustomerViewModel model)
         {
             // get the MyCustomer from database
@@ -112,9 +119,19 @@ namespace CCIA.Controllers
             myCustomerToEdit.Address1 = model.MyCustomer.Address1;
             myCustomerToEdit.Address2 = model.MyCustomer.Address2;
             myCustomerToEdit.City = model.MyCustomer.City;
-            myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
-            myCustomerToEdit.StateId = model.MyCustomer.StateId;
+            
             myCustomerToEdit.CountryId = model.MyCustomer.CountryId;
+
+            // 10 is Canada
+            // 58 is United States
+            if (myCustomerToEdit.CountryId == 10 || myCustomerToEdit.CountryId == 58) {
+                myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
+                myCustomerToEdit.StateId = model.MyCustomer.StateId;
+            } else {
+                myCustomerToEdit.CountyId = 0;
+                myCustomerToEdit.StateId = 0;
+            }
+
             myCustomerToEdit.Zip = model.MyCustomer.Zip;
             myCustomerToEdit.Phone = model.MyCustomer.Phone;
             myCustomerToEdit.Email = model.MyCustomer.Email;
@@ -142,7 +159,6 @@ namespace CCIA.Controllers
         // POST: Application/Delete/5
         [HttpPost]
         [ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeletePost(int id)
         {
             var myCustomerToDelete = await _dbContext.MyCustomers.Where(m => m.Id == id)
@@ -152,7 +168,7 @@ namespace CCIA.Controllers
             {
                 _dbContext.Remove(myCustomerToDelete);
                 await _dbContext.SaveChangesAsync();
-                Message = myCustomerToDelete.Name + " has been successfully deleted.";
+                Message =  $"{myCustomerToDelete.Name} has been successfully deleted.";
             }
             else
             {
