@@ -1,0 +1,92 @@
+@{
+    ViewData["Title"] = "Grower Lookup";
+}
+
+<h2>Application to Produce Certified @Model.AppTypeTrans: Grower Lookup</h2>
+
+<div class="form-group">  
+    <label for="account">Name or Account Number:</label>
+    <div class="input-group col">
+        <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+        <span class="input-group-btn">
+            <button class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+        </span>
+    </div>
+</div>
+
+<div id="growersTable"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        function lookupOrgs() {
+            const antiforgery = $("input[name='__RequestVerificationToken']").val();
+            var val = document.getElementById("account").value;
+            if (val === "") {
+                alert("This field cannot be empty");
+                return;
+            }
+            var dataToPost = {lookupVal: val};
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/Application/Lookup",
+                data: dataToPost,
+                success: (response) => {
+                    if (response.length == 0){
+                        document.getElementById("res-warning").innerText = "No records matched your search.";
+                    }
+                    else {
+                        document.getElementById("res-warning").innerText = "";
+                    }
+                    // clear our table before populating it
+                    $("#organizations").empty();
+                    // Get state/province from code                    
+                    var row = "";                   
+                    jQuery.each(response, function(i, data) {
+                        populateOrgsTable(data);
+                    });
+                },
+                error: (e) => {
+                    console.log(e);
+                    alert("An internal error occured...");
+                }
+                });
+        }
+
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
+            getOrgsTable();
+        });
+
+        // Load table of organizations based on ID or name input
+        function getOrgsTable() {
+            /* Get app type id from querystring */
+            const urlParams = new URLSearchParams(window.location.search);
+            const appTypeId = parseInt(urlParams.get('appTypeId'));
+            let lookupVal = document.getElementById("account").value;
+            if (lookupVal === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            /* If something is inside form-remainder div, clear it out */
+            $("#growersTable").empty();
+            $("#growersTable")
+                .load("/Application/Lookup?lookupVal="+lookupVal+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                        if ( status == "error" ) {
+                            var msg = "Sorry, the following error occurred: ";
+                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                        }
+                });
+        }
+
+        window.onkeyup = (e) => {
+            let key = e.keyCode ? e.keyCode : e.which;
+
+            if (key == 13) {
+                getOrgsTable();
+            }
+        }
+
+    </script>
+}

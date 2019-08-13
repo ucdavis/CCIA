@@ -1,0 +1,71 @@
+@model MasterApplicationViewModel
+
+<section class="rounded-section light-blue pos-rel">
+    <button type="button" id="remove-ps2" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this planting stock record">
+        <i id="remove-ps2" class="fas fa-times"></i>
+    </button>    
+    <div class="row" id="second-ps-first-row">
+        <div class="form-group col-md-4">
+            <label for="ps2-variety">Variety<em class="required">•</em></label>
+            <div>
+                <div class="btn-group">
+                    @Html.TextBox("PlantingStocks[1].PsEnteredVariety", "", new { @class="form-control", id="ps2-variety", placeholder="Variety" })
+                    <button class="btn btn-primary dropdown-toggle" id="ps2-variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search"></i>
+                    </button>     
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="ps2-variety-dropdown">
+                        <div class="text-center">
+                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                        </div>
+                    </div> 
+                </div>
+            </div>     
+        </div>
+        @Html.ValidationMessage("PlantingStocks[1].PsEnteredVariety", "", new { @class = "text-danger" })
+        <div class="form-group col-md-4">
+            <label for="cert-lot-num">Certification and Lot Number<em class="required">•</em></label>
+            @Html.TextBox("PlantingStocks[1].PsCertNum", "", new { @class="form-control", id="cert-lot-num", placeholder="Certification and Lot Number" })
+            @Html.ValidationMessage("PlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group col-md-4">
+            <label for="pounds-planted">Pounds Planted<em class="required">•</em></label>
+            @Html.TextBox("PlantingStocks[1].PoundsPlanted", "", new { @class="form-control", id="pounds-planted", placeholder="Pounds Planted" })
+            @Html.ValidationMessage("PlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                @{ ViewBag.name = "PlantingStocks[1].PsClass"; }
+                <label>Class Planted</label><em class="required">•</em>
+                @await Html.PartialAsync("Shared/_ClassRadioButtons", Model.AppViewModel)
+                @Html.ValidationMessage("PlantingStocks[1].PsClass", "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label>State/Country where Planting Stock Tag was issued</label>
+                    @{ViewBag.name = "PlantingStocks[1].StateCountryTagIssued";}
+                    @await Html.PartialAsync("Shared/_StateCountryDropdown")
+                </div>
+            </div>
+            <div class="row">
+                 <div class="form-group col-md-12">
+                    <label>State/Country where Planting Stock was Grown</label>
+                    @{ViewBag.name = "PlantingStocks[1].StateCountryGrown";}
+                    @await Html.PartialAsync("Shared/_StateCountryDropdown")
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="seed-purchased-from">Seed purchased/acquired from</label>
+                    @Html.TextBox("PlantingStocks[1].SeedPurchasedFrom", "", new { @class="form-control", id="seed-purchased-from", placeholder="Seed purchased/acquired from" })
+                    @Html.ValidationMessage("PlantingStocks[1].SeedPurchasedFrom", "", new { @class = "text-danger"})
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.TextBox("PlantingStocks[1].OfficialVarietyId", "", new { type="hidden", id="ps2-variety-id", name="SelectedVarietyId" })
+</section>

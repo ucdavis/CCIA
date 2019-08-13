@@ -1,0 +1,229 @@
+@media screen 
+{.box {border: 1pt solid black;
+		font-family: Sans-Serif;
+		font-size: smaller;
+}
+.nobox {font-family: Sans-Serif;
+		font-size: smaller;
+}
+.box30 {border: 1pt solid black;
+	padding: 0 5px;
+	text-align: center;
+	font-family: Sans-Serif;
+	font-size: smaller;
+}
+.tallLine { line-height: 1.5}
+.title_underline { font-weight:bold;
+	text-decoration: underline}
+.title {font-weight:bold
+}
+.titleoecd {font-weight:bold;
+	font-size: larger;
+}
+body { font-family: Sans-Serif}
+.underline {border-bottom: 1pt solid black	;
+	padding-top: 20px
+}
+.legal {
+    font-size: x-small;
+    text-align: justify;
+}
+.overline { border-top: 1pt solid black ;
+	padding-top: 20px
+}
+.checkbox { border: 1pt solid black;
+	width: 20px;
+	height: 20px;
+	vertical-align:middle;
+	margin:2px;
+	font-weight: bold;
+	text-align: center;
+}
+.topandbottom { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.topandbottompad { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.topbottomvert { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	border-right: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.top { border-top: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.bottom { border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.label { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnopad { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelvertnopad { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnopadtop { border-top: 1pt solid black;	
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelsngl { padding: 10px;
+	border-top: 1pt solid black;	
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelvert { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	border-right: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnoline { font-family: Serif;
+	font-size: smaller;
+}
+.footer { font-size: x-small;
+}
+.sig { margin-bottom: -30px;	
+	position:relative;
+}
+.doublespace { height: 35px
+}
+.page_break { page-break-after: always
+}
+.noprint {display: visible}
+}
+@media print 
+{.box {border: 1pt solid black;
+		font-family: Sans-Serif;
+		font-size: smaller;
+}
+.nobox {font-family: Sans-Serif;
+		font-size: smaller;
+}
+    .tallLine { line-height: 1.5}
+    .legal {
+        font-size: x-small;
+        text-align: justify;
+    }
+.box30 {border: 1pt solid black;
+	padding: 0 5px;
+	text-align: center;
+	font-family: Sans-Serif;
+	font-size: smaller;
+}
+	.title_underline { font-weight:bold;
+	text-decoration: underline}
+.title {font-weight:bold
+}
+.noprint {display:none}	
+
+.title {font-weight:bold
+}
+.titleoecd {font-weight:bold;
+	font-size: larger;
+}
+body { font-family: Sans-Serif}
+.underline {border-bottom: 1pt solid black	;
+	padding-top: 20px
+}
+.overline { border-top: 1pt solid black ;
+	padding-top: 20px
+}
+.checkbox { border: 1pt solid black;
+	width: 20px;
+	height: 20px;
+	vertical-align:middle;
+	margin:2px;
+	font-weight: bold;
+	text-align: center;
+}
+.topandbottom { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.topandbottompad { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.topbottomvert { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	border-right: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.top { border-top: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.label { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnopad { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelvertnopad { border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelsngl { padding: 10px;
+	border-top: 1pt solid black;	
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnopadtop { border-top: 1pt solid black;	
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelvert { padding: 10px;
+	border-top: 1pt solid black;
+	border-bottom: 1pt solid black;
+	border-right: 1pt solid black;
+	font-size: smaller;
+	font-family: Serif;
+}
+.labelnoline { font-family: Serif;
+	font-size: smaller;
+}
+.footer { font-size: x-small;
+}
+.sig { margin-bottom: -30px;	
+	position:relative;
+}
+.doublespace { height: 35px
+}
+.bottom { border-bottom: 1pt solid black;
+	font-size: smaller;
+	font-family: Sans-Serif
+}
+.page_break { page-break-after: always
+}
+}
+
+	

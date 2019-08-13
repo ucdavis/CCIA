@@ -5,7 +5,7 @@ namespace CCIA.Models
 {
     public partial class Districts
     {
-        public short DistId { get; set; }
+        public int DistId { get; set; }
         public string DistCode { get; set; }
         public string DistName { get; set; }
         public int? DistLeader { get; set; }

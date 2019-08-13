@@ -54,5 +54,10 @@ namespace CCIA.Models
         public int? AlfalfaLastYearAgreement { get; set; }
         public int? SweetCornLastYearAgreement { get; set; }
         public int? IdahoVegetableLastYearAgreement { get; set; }
+
+       
+        public string FullName() {
+            return $"{FirstName} {LastName}";
+        }
     }
 }

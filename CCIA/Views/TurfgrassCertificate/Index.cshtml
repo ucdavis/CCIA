@@ -28,8 +28,8 @@
             @foreach (var app in Model.applications)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="TurfgrassCertificate" asp-route-id="@app.AppId">Details</a></td>
-                <td>@app.AppId</td>
+                <td><a asp-action="Details" asp-controller="TurfgrassCertificate" asp-route-id="@app.Id">Details</a></td>
+                <td>@app.Id</td>
                 <td>@app.AppType</td>
                 <td>@app.CertYear</td>
                 <td>@app.ApplicantOrganization.OrgName</td>               

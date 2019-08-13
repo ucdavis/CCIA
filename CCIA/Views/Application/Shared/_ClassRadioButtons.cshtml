@@ -1,0 +1,28 @@
+@model ApplicationViewModel
+
+<style>
+    .top-margin {
+        margin-top: .8rem;
+    }
+
+    .form-check-label {
+        margin-right: 50px;
+    }
+
+    .form-check {
+        padding-left: 0;
+    }
+</style>
+@{ string name = ViewBag.name; }
+<div class="form-check">
+    @foreach (var item in Model.ClassProducedList) 
+    {
+        <div class="top-margin">
+            <label class="form-check-label radio-btn-container" for="@name-@item.ClassProducedId">
+                @Html.RadioButton(name, item.ClassProducedId, new { @class = "form-check-input checkbox", id=name+"-"+item.ClassProducedId } )
+                @item.ClassProducedTrans
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    }
+</div>
