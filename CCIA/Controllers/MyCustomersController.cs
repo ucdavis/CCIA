@@ -51,12 +51,18 @@ namespace CCIA.Controllers
 
             // 10 is Canada
             // 58 is United States
+            // if Canada or United states is selected, then state should be filled
             if (myCustomer.CountryId == 10 || myCustomer.CountryId == 58) {
-                myCustomer.CountyId = model.MyCustomer.CountyId;
                 myCustomer.StateId = model.MyCustomer.StateId;
             } else {
-                myCustomer.CountyId = 0;
                 myCustomer.StateId = 0;
+            }
+
+            // if United States and California are selected, then county should be filled
+            if (myCustomer.CountryId == 58 && myCustomer.StateId == 102) {
+                myCustomer.CountyId = model.MyCustomer.CountyId;
+            } else {
+                myCustomer.CountyId = 0;
             }
 
             myCustomer.Zip = model.MyCustomer.Zip;
@@ -119,17 +125,22 @@ namespace CCIA.Controllers
             myCustomerToEdit.Address1 = model.MyCustomer.Address1;
             myCustomerToEdit.Address2 = model.MyCustomer.Address2;
             myCustomerToEdit.City = model.MyCustomer.City;
-            
             myCustomerToEdit.CountryId = model.MyCustomer.CountryId;
 
             // 10 is Canada
             // 58 is United States
+            // if Canada or United states is selected, then state should be filled
             if (myCustomerToEdit.CountryId == 10 || myCustomerToEdit.CountryId == 58) {
-                myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
                 myCustomerToEdit.StateId = model.MyCustomer.StateId;
             } else {
-                myCustomerToEdit.CountyId = 0;
                 myCustomerToEdit.StateId = 0;
+            }
+
+            // if United States and California are selected, then county should be filled
+            if (myCustomerToEdit.CountryId == 58 && myCustomerToEdit.StateId == 102) {
+                myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
+            } else {
+                 myCustomerToEdit.CountyId = 0;
             }
 
             myCustomerToEdit.Zip = model.MyCustomer.Zip;

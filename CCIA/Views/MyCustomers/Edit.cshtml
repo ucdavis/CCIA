@@ -10,17 +10,19 @@
     </div>
 </div>
 
-<div class="row">
+<div asp-validation-summary="All" class="row">
     <div class="col-md-6">
         <form asp-action="Edit" method="post">
-                <div class="form-group required">
+                <div class="form-group">
                     <label class="control-label" asp-for="MyCustomer.Name"></label>
                     <input required class="form-control" type="text" asp-for="MyCustomer.Name" placeholder="Enter a name">
+                    <span asp-validation-for="MyCustomer.Name" class="text-danger"></span>
                 </div>                
 
-                <div class="form-group required">
+                <div class="form-group">
                     <label class="control-label" asp-for="MyCustomer.Address1"></label>
                     <input required class="form-control" type="text" asp-for="MyCustomer.Address1" placeholder="Enter an address"/>
+                    <span asp-validation-for="MyCustomer.Address1" class="text-danger"></span>
                 </div>               
 
                 <div class="form-group">
@@ -28,29 +30,34 @@
                     <input class="form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
                 </div>
 
-                <div class="form-group required">
+                <div class="form-group">
                     <label class="control-label" asp-for="MyCustomer.City"></label>
                     <input required class="form-control" type="text" asp-for="MyCustomer.City" placeholder="Enter a city"/>
+                    <span asp-validation-for="MyCustomer.City" class="text-danger"></span>
                 </div>
 
-                <div class="form-group required">
+                <div class="form-group">
                     <label class="control-label" asp-for="MyCustomer.CountyId">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
                     <select required asp-for="MyCustomer.CountyId" class="form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
+                    <span asp-validation-for="MyCustomer.CountyId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group required">
-                    <label asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
+                <div class="form-group">
+                    <label class="control-label" asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
                     <select required asp-for="MyCustomer.StateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
+                    <span asp-validation-for="MyCustomer.StateId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group required">
-                    <label asp-for="MyCustomer.CountryId">Country</label>
+                <div class="form-group">
+                    <label class="control-label" asp-for="MyCustomer.CountryId">Country</label>
                     <select required asp-for="MyCustomer.CountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
+                    <span asp-validation-for="MyCustomer.CountryId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group required">
+                <div class="form-group">
                     <label asp-for="MyCustomer.Zip">Zip</label>
                     <input required asp-for="MyCustomer.Zip" type="text" class="form-control" placeholder="Enter a zip code"/>
+                    <span asp-validation-for="MyCustomer.Zip" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

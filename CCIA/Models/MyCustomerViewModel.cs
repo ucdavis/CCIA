@@ -21,6 +21,7 @@ namespace CCIA.Models
             
             var stateProvinces = await _dbContext.StateProvince
                 .OrderBy(s => s.StateProvinceName)
+                .OrderByDescending(s => s.CountryId)
                 .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } )
                 .ToListAsync();
             
