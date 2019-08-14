@@ -1,0 +1,17 @@
+<label>Crop Year</label>
+@if(@ViewBag.name == "CertYear") {
+    <em class="required">•</em>
+}
+
+@{
+    string name = ViewBag.name;
+    var selectListItems = new List<SelectListItem>();
+    @for (int i = 0; i <= ViewBag.endYearOffset; i++)
+    {
+        int year = DateTime.Now.Year + ViewBag.startYearOffset - i;
+        selectListItems.Add(new SelectListItem { Text = year.ToString(), Value = year.ToString() });
+    }
+    var selectList = new SelectList(selectListItems, "Value", "Text"); 
+}
+
+@Html.DropDownList(name, selectList, new { @class="form-control" })

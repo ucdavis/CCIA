@@ -1,0 +1,17 @@
+@{
+    // Populating a SelectList for @Html.DropDownList -- used for closer data binding
+    string name = ViewBag.name;
+    var selectListItems = new List<SelectListItem>();
+    foreach (var state_country in Model.AppViewModel.StateProvince)
+    {
+        var item = new SelectListItem { Text = state_country.StateProvinceName, Value = state_country.StateProvinceId.ToString() };
+        if (state_country.StateProvinceName=="California")
+        {
+            item.Selected = true;
+        }
+        selectListItems.Add(item);
+    }  
+    var selectList = new SelectList(selectListItems, "Value", "Text"); 
+}
+
+@Html.DropDownList(name, selectList, new { @class="form-control" })

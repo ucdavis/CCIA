@@ -10,6 +10,19 @@ namespace CCIA.Models
 {
     public partial class CCIAContext : IdentityDbContext<ApplicationUser>
     {
+
+        [DbFunction("sid_standards_msg","dbo")]
+        public static string GetStandardsMessage(int seed_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [DbFunction("sid_standards_msg_assay","dbo")]
+        public static string GetAssayMessage(int seed_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
@@ -259,6 +272,8 @@ namespace CCIA.Models
                 entity.Property(e => e.AppNumber).HasColumnName("app_num");
 
                 entity.HasOne(d => d.FHCrops);
+
+                //entity.HasOne(d => d.Application);
 
 
             });
@@ -549,7 +564,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BlendId).HasColumnName("bid");
 
-                entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+                entity.Property(e => e.CertProgramAbbreviation).HasColumnName("cert_program");
 
                 entity.Property(e => e.PurchaserName).HasColumnName("purch_name");
 
@@ -601,6 +616,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.AdminEmployee);
 
                 entity.HasMany(e => e.BulkSalesCertificatesShares);
+
+                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificates).HasForeignKey(e => e.CertProgramAbbreviation).HasPrincipalKey(a => a.Abbreviation);
 
             });
 
@@ -986,6 +1003,8 @@ namespace CCIA.Models
                 .HasColumnName("variety_title")
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
@@ -1028,10 +1047,12 @@ namespace CCIA.Models
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Class)
+                entity.Property(e => e.CertClass)
                     .HasColumnName("class_certified_trans")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Program).HasColumnName("program");
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
             });
@@ -1082,18 +1103,22 @@ namespace CCIA.Models
                     .HasColumnName("user_modified")
                     .HasMaxLength(9)
                     .IsUnicode(false);
+
+                entity.HasOne(e => e.County);
+                entity.HasOne(e => e.StateProvince);
+                entity.HasOne(e => e.Countries);
             });
 
             modelBuilder.Entity<Applications>(entity =>
             {
-                entity.HasKey(e => e.AppId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("applications");
 
-                entity.HasIndex(e => new { e.AppId, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.AppCancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.AppSubmitable, e.Status, e.AppApproved, e.Maps, e.CertYear })
+                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.AppCancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.AppSubmitable, e.Status, e.AppApproved, e.Maps, e.CertYear })
                     .HasName("IX_applications_cert_year");
 
-                entity.Property(e => e.AppId).HasColumnName("app_id");
+                entity.Property(e => e.Id).HasColumnName("app_id");
 
                 entity.Property(e => e.AcresApplied)
                     .HasColumnName("acres_applied")
@@ -1379,10 +1404,10 @@ namespace CCIA.Models
                     .WithMany(p => p.AppliedApplications)
                     .HasForeignKey(d => d.ApplicantId);
 
-                entity.HasOne(d => d.TraceNavigation)
-                    .WithMany(p => p.InverseTraceNavigation)
-                    .HasForeignKey(d => d.Trace)
-                    .HasConstraintName("FK_Applications_Applications2");
+                // entity.HasOne(d => d.TraceNavigation)
+                //     .WithMany(p => p.InverseTraceNavigation)
+                //     .HasForeignKey(d => d.Trace)
+                //     .HasConstraintName("FK_Applications_Applications2");
 
                 entity.HasOne(d => d.County);
 
@@ -1485,6 +1510,8 @@ namespace CCIA.Models
                 entity.HasMany(e => e.InDirtBlends);
 
                 entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Conditioner);
             });
 
             modelBuilder.Entity<CertRad>(entity =>
@@ -1739,6 +1766,10 @@ namespace CCIA.Models
                 entity.Property(e => e.OrgName).HasColumnName("org_name");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
+                
+                entity.Property(e => e.Phone).HasColumnName("main_phone");
+
+                entity.Property(e => e.Email).HasColumnName("main_email");
             });
 
             modelBuilder.Entity<Contacts>(entity =>
@@ -2592,6 +2623,7 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);
+                //entity.HasOne(d => d.Application);
 
             });
 

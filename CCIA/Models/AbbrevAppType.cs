@@ -8,6 +8,7 @@ namespace CCIA.Models
         public int AppTypeId { get; set; }
         public string AppTypeTrans { get; set; }
         public string Abbreviation { get; set; }
+        public bool GrowerSameAsApplicant { get; set; }
         public string CertificateTitle { get; set; }
         public string NumberTitle { get; set; }
         public string SirTitle { get; set; }
@@ -19,5 +20,9 @@ namespace CCIA.Models
 
         public ICollection<Applications> Applications { get; set; }
         public ICollection<Seeds> Seeds { get; set; }
+
+        public ICollection<BulkSalesCertificates> BulkSalesCertificates { get; set; }
+
+        
     }
 }

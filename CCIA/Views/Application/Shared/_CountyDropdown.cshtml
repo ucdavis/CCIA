@@ -1,0 +1,13 @@
+@{
+    string name = "FarmCounty";
+    var selectListItems = new List<SelectListItem>();
+    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
+    foreach (var county in Model.Counties)
+    {
+        selectListItems.Add(new SelectListItem { Text = county.CountyName, Value = county.CountyId.ToString() } );
+    }  
+    var selectList = new SelectList(selectListItems, "Value", "Text"); 
+}
+<label>County:</label><em class="required">•</em>
+@Html.DropDownList(name, selectList, new { @class="form-control" })
+@Html.ValidationMessage("County", "", new { @class = "text-danger" })

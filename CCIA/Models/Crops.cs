@@ -17,8 +17,8 @@ namespace CCIA.Models
         public string Species { get; set; }
         public string Crop { get; set; }
         public string CropKind { get; set; }
-        public short? CropRenewYears { get; set; }
-        public short? AppDue { get; set; }
+        public int? CropRenewYears { get; set; }
+        public int? AppDue { get; set; }
         public string UserEntered { get; set; }
         public DateTime? DateEntered { get; set; }
         public string UserModified { get; set; }
@@ -44,7 +44,7 @@ namespace CCIA.Models
         public decimal? IsolationParentR { get; set; }
 
         [StringLength(256)]
-        [Display(Name = "Name")]
+        [Display(Name = "Crop")]
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
 
 

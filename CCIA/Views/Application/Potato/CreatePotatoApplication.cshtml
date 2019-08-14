@@ -1,0 +1,128 @@
+@model CCIA.Models.PotatoApp
+
+@{
+    ViewData["Title"] = "Potato Application";
+}
+
+<section class="app-header">
+    <h2>Application to Produce Certified Potatoes</h2>
+    <h5>@Model.AppViewModel.Organization.OrgName</h5>
+</section>
+
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
+@await Html.PartialAsync("Shared/_GrowerInfoTable")
+
+<!-- Alert dialog modals -->
+@{
+    var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
+    var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+    var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
+}
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
+@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
+
+<form action="/Application/CreatePotatoApplication" method="post" id="potatoApplication">
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-group row">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            @{ViewBag.name = "CropId";}
+            @await Html.PartialAsync("Shared/_CropDropdown")
+            @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="col-lg-4 col-sm-4 col-xs-4">
+            @{
+                ViewBag.name = "CertYear";
+                ViewBag.startYearOffset = 1;
+                ViewBag.endYearOffset = 1;
+            }
+            @await Html.PartialAsync("Shared/_CropYearDropdown")
+        </div> 
+
+        <!-- Initial variety select -->
+        <div class="col-lg-4 col-sm-4 col-xs-4">  
+            <label for="variety">Variety<em class="required">•</em></label>
+            <div>
+                <div class="btn-group">
+                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
+                    <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search"></i>
+                    </button>     
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+                        <div class="text-center">
+                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                        </div>
+                    </div> 
+                </div>
+            </div>     
+            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Class to be Produced</label><em class="required">•</em>
+        @{ ViewBag.name = "ClassProducedId"; }
+        <div>
+            @await Html.PartialAsync("Shared/_HorizClassRadioButtons", Model.AppViewModel)
+        </div>
+        @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="cert-lot-num">Lot # for Certification Number<em class="required">•</em></label><i> - Do not enter year or account number</i>
+            <input type="text" class="form-control" id="cert-lot-num" name="CertNum" placeholder="Lot # for Certification Number">
+            @Html.ValidationMessage("CertNum", "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <section id="planting-stock" class="rounded-section off-white">
+        <h4>Planting Stock</h4>
+        @await Html.PartialAsync("Seed/_PlantingStock")
+
+        <!-- Potato-specific planting stock fields -->
+        <div class="form-group">
+            <label for="winterTest">Winter test results are required for recertification</label><em class="required">•</em>
+            <p><i> - If yes, documentation required</i></p>
+            @{ ViewData["binRadioBtnName"] = "PlantingStocks[0].WinterTest"; }
+            @await Html.PartialAsync("Shared/_BinaryRadioBtns")       
+        </div>
+
+        <div class="form-group">
+            <label for="pvxTested">For prenuclear and nuclear class planted, was this lot PVX tested?</label><em class="required">•</em>
+            <p><i> - If yes, documentation required</i></p>
+            @{ ViewData["binRadioBtnName"] = "PlantingStocks[0].PvxTest"; }
+            @await Html.PartialAsync("Shared/_BinaryRadioBtns")
+        </div>
+    </section>
+
+    <section id="field-info" class="rounded-section off-white">
+        @await Html.PartialAsync("Shared/_FieldInformation")
+    </section>
+
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">Continue with Application</button>
+    </div>
+
+    <!-- Hidden fields -->
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
+    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
+    @Html.TextBox("AppViewModel.Organization.OrgId", "", new { type="hidden", id="orgId" })
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        var orgId = @Model.AppViewModel.Organization.OrgId;
+        var growerId = @Model.AppViewModel.Organization.OrgId;
+    </script>
+    <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/applications/potato.js" asp-append-version="true"></script>
+}

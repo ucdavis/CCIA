@@ -85,9 +85,10 @@ namespace CCIA.Models.IndexViewModels
 
         public static async Task<BulkSalesCertificatesIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
         {
+            var shares = await _dbContext.BulkSalesCertificatesShares.Where(s => s.ShareOrganizationId == orgId).Select(s => s.BulkSalesCertificatesId).ToListAsync();
             var viewModel = new BulkSalesCertificatesIndexViewModel
             {
-                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId && b.Date.Year == certYear)
+                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)) && b.Date.Year == certYear)
                 .Include(b => b.Seeds)
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)

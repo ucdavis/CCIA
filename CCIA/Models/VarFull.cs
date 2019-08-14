@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
+
 
 namespace CCIA.Models
 {
     public class VarFull
     {
         public int Id { get; set; }
+        [DisplayName("Variety")] 
         public string Name { get; set; }
         public string Type { get; set; }
 
