@@ -28,6 +28,7 @@
                 <div class="form-group">
                     <label class="control-label" asp-for="MyCustomer.Address2"></label>
                     <input class="form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
+                    <span asp-validation-for="MyCustomer.Address2" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -63,11 +64,13 @@
                 <div class="form-group">
                     <label asp-for="MyCustomer.Phone"></label>
                     <input asp-for="MyCustomer.Phone" type="text" class="form-control" placeholder="Enter a phone number"/>
+                    <span asp-validation-for="MyCustomer.Phone" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="MyCustomer.Email"></label>
                     <input asp-for="MyCustomer.Email" type="email" class="form-control" placeholder="Enter an email address"/>
+                    <span asp-validation-for="MyCustomer.Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
