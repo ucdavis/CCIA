@@ -1,0 +1,38 @@
+@model CCIA.Models.IndexViewModels.MyCustomersIndexViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>@Model.PageTitle</h2>
+    </div>
+    <div class="panel-body">            
+        <a class="btn btn-primary" asp-action="Create" asp-controller="MyCustomers">Add New Customer</a>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <table id="table" class="table">
+        <thead>
+        <th></th>
+        <th>Name</th>
+        <th>Address 1</th>
+        <th>City</th>     
+        </thead>
+        <tbody>
+            @foreach (var customer in Model.myCustomers)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="MyCustomers" asp-route-id="@customer.Id">Details</a></td>
+                <td>@customer.Name</td>
+                <td>@customer.Address1</td>
+                <td>@customer.City</td>
+                <td></td>                
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
