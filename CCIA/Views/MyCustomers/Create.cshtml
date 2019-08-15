@@ -13,67 +13,67 @@
 <div asp-validation-summary="All" class="row">
     <div class="col-md-6">
         <form asp-action="Create" method="post">
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.Name"></label>
-                    <input required class="form-control" type="text" asp-for="MyCustomer.Name" placeholder="Enter a name">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.Name"></label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="MyCustomer.Name" placeholder="Enter a name">
                     <span asp-validation-for="MyCustomer.Name" class="text-danger"></span>
                 </div>                
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.Address1"></label>
-                    <input required class="form-control" type="text" asp-for="MyCustomer.Address1" placeholder="Enter an address"/>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.Address1"></label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="MyCustomer.Address1" placeholder="Enter an address"/>
                     <span asp-validation-for="MyCustomer.Address1" class="text-danger"></span>
                 </div>               
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.Address2"></label>
-                    <input class="form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.Address2"></label>
+                    <input class="col-sm-9 form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
                     <span asp-validation-for="MyCustomer.Address2" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.City"></label>
-                    <input required class="form-control" type="text" asp-for="MyCustomer.City" placeholder="Enter a city"/>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.City"></label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="MyCustomer.City" placeholder="Enter a city"/>
                     <span asp-validation-for="MyCustomer.City" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.CountyId">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
-                    <select required asp-for="MyCustomer.CountyId" class="form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.CountyId">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
+                    <select required asp-for="MyCustomer.CountyId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
                     <span asp-validation-for="MyCustomer.CountyId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
-                    <select required asp-for="MyCustomer.StateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
+                    <select required asp-for="MyCustomer.StateId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
                     <span asp-validation-for="MyCustomer.StateId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label" asp-for="MyCustomer.CountryId">Country</label>
-                    <select required asp-for="MyCustomer.CountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="MyCustomer.CountryId">Country</label>
+                    <select required asp-for="MyCustomer.CountryId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
                     <span asp-validation-for="MyCustomer.CountryId" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="MyCustomer.Zip">Zip</label>
-                    <input required asp-for="MyCustomer.Zip" type="text" class="form-control" placeholder="Enter a zip code"/>
+                <div class="form-group row">
+                    <label asp-for="MyCustomer.Zip" class="col-sm-3 col-form-label">Zip</label>
+                    <input required asp-for="MyCustomer.Zip" type="text" class="col-sm-9 form-control" placeholder="Enter a zip code"/>
                     <span asp-validation-for="MyCustomer.Zip" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="MyCustomer.Phone"></label>
-                    <input asp-for="MyCustomer.Phone" type="text" class="form-control" placeholder="Enter a phone number"/>
+                <div class="form-group row">
+                    <label asp-for="MyCustomer.Phone" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="MyCustomer.Phone" type="text" class="col-sm-9 form-control" placeholder="Enter a phone number"/>
                     <span asp-validation-for="MyCustomer.Phone" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="MyCustomer.Email"></label>
-                    <input asp-for="MyCustomer.Email" type="email" class="form-control" placeholder="Enter an email address"/>
+                <div class="form-group row">
+                    <label asp-for="MyCustomer.Email" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="MyCustomer.Email" type="email" class="col-sm-9 form-control" placeholder="Enter an email address"/>
                     <span asp-validation-for="MyCustomer.Email" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
+                <div>
                     <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.MyCustomer.Id">Add</button>
                     <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Cancel</a>
                 </div>
