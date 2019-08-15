@@ -20,8 +20,8 @@ namespace CCIA.Models
         public static async Task<MyCustomerViewModel> Create(CCIAContext _dbContext) {
             
             var stateProvinces = await _dbContext.StateProvince
-                .OrderBy(s => s.StateProvinceName)
                 .OrderByDescending(s => s.CountryId)
+                .ThenBy(s => s.StateProvinceName)
                 .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } )
                 .ToListAsync();
             
@@ -60,7 +60,8 @@ namespace CCIA.Models
                 .FirstOrDefaultAsync();
 
             var stateProvinces = await _dbContext.StateProvince
-                .OrderBy(s => s.StateProvinceName)
+                .OrderByDescending(s => s.CountryId)
+                .ThenBy(s => s.StateProvinceName)
                 .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } )
                 .ToListAsync();
             
