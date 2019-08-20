@@ -2049,7 +2049,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OecdMember)
                     .HasColumnName("oecd_member")
-                    .HasDefaultValueSql("((0))");                
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.US).HasColumnName("us").HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<County>(entity =>

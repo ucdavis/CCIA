@@ -45,7 +45,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                 Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
-                Countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                Countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
                 CertYears = Enumerable.Range(2007, seed.CertYear.Value - 2006).ToList(),
             };
 
@@ -69,7 +69,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                 Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
-                Countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                Countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
                 CertYears = Enumerable.Range(2007, currentCertYear - 2006).ToList(),
             };
 

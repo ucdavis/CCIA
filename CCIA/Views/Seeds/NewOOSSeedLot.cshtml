@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.OriginCountry" class="col-sm-3 col-form-label"></label>                    
-                    <select asp-for="Seed.OriginCountry" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.Countries, "Id","Name", 58))"></select>                  
+                    <select asp-for="Seed.OriginCountry" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>                  
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.OriginState" class="col-sm-3 col-form-label"></label>                    
@@ -153,11 +153,8 @@
         };
 
         $(document).ready(function () {
-            if($('#Seed_SampleFormCertNumber').val() != ""){
-                $("#completeForm").show();
-                $("#selectCrop").show();
-            }
-
+            SetStatesForCountry();
+           
             $('#retrieveApplicantButton').click(function () {
                 var searchTerm = $('#ApplicantSearch').val();                
                 $.ajax({
@@ -187,7 +184,14 @@
             });
 
             $('#Seed_OriginCountry').change(function () {                
-                var country = $("#Seed_OriginCountry option:selected");
+                SetStatesForCountry();
+            })
+
+        });
+
+        function SetStatesForCountry() 
+        {
+            var country = $("#Seed_OriginCountry option:selected");
 
                 if(country.text() === "United States")
                 {
@@ -199,9 +203,8 @@
                 {
                     showStates("Outside");
                 }
-            })
 
-        });
+        };
 
         function showStates(country)
         {   
@@ -218,15 +221,19 @@
                 selectText = "Outside US";
                 indexText = "Outside US";                   
             }
-            $("#Seed_OriginState option").filter(function(index) { return $(this).text() === selectText; }).attr('selected', 'selected');             
-                $("#Seed_OriginState > option").each(function() {
-                    if(~this.text.indexOf(indexText))
-                    {
-                       $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', false);
-                    } else {
-                       $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', true); 
-                    }
-                });
+           
+            $("#Seed_OriginState > option").each(function() {
+                if(~this.text.indexOf(indexText))
+                {
+                    $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#Seed_OriginState option[value*='" + this.value + "']").prop('disabled', true); 
+                }
+            });
+             
+            $("#Seed_OriginState option").removeAttr("selected");                         
+            $("#CountryDropDownList option:contains(" + selectText + ")").attr('selected', 'selected');
+            
         };
 
         function selectApplicant(orgId)
