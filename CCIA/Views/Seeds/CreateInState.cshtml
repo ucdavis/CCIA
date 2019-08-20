@@ -9,40 +9,40 @@
 <h4>Certified Seed Lot</h4>
 <hr>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-9">
         <form asp-action="SubmitInState" method="post">            
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group row">
                 <label asp-for="Application.ApplicantOrganization.OrgName" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
+                <div class="col-sm-6 form-control-plaintext">
                     @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgName)
                 </div>
             </div> 
             <div class="form-group row">
                 <label asp-for="Application.ApplicantOrganization.OrgId" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
+                <div class="col-sm-6 form-control-plaintext">
                     @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgId)
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="Application.Variety.Name" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
+                <div class="col-sm-6 form-control-plaintext">
                     @Html.DisplayFor(x => x.Application.Variety.Name)
                 </div>
             </div> 
             <div class="form-group row required">
                 <label asp-for="Seed.Class" class="col-sm-3 col-form-label"></label>                
-                <select asp-for="Seed.Class" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.ClassProducible, "ClassProducedId","ClassProducedTrans"))"></select>
+                <select asp-for="Seed.Class" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.ClassProducible, "ClassProducedId","ClassProducedTrans"))"></select>
                 <span asp-validation-for="Seed.Class" class="text-danger"></span>               
             </div>
             <div class="form-group row required">
                 <label asp-for="Seed.LotNumber" class="col-sm-3 col-form-label"></label>
-                <input asp-for="Seed.LotNumber" class="col-sm-9 form-control"></input>
+                <input asp-for="Seed.LotNumber" class="col-sm-6 form-control"></input>
                 <span asp-validation-for="Seed.LotNumber" class="text-danger"></span>
             </div>
             <div class="form-group row required">
                 <label asp-for="Seed.PoundsLot" class="col-sm-3 col-form-label"></label>
-                <input asp-for="Seed.PoundsLot" class="col-sm-9 form-control"></input>
+                <input asp-for="Seed.PoundsLot" class="col-sm-6 form-control"></input>
                 <span asp-validation-for="Seed.PoundsLot" class="text-danger"></span>
             </div>
             <div class="form-group row required">
@@ -61,19 +61,19 @@
             </div>
             <div class="form-group row">
                 <label asp-for="Seed.OECDLot" class="col-sm-3 col-form-label"></label>
-                <div class="form-check col-sm-9">
+                <div class="form-check col-sm-6">
                     <input asp-for="Seed.OECDLot" class="form-check-input" />
                 </div>
                 <span asp-validation-for="Seed.OECDLot" class="text-danger"></span>               
             </div>
             <div class="form-group row">
                 <label asp-for="Seed.Remarks" class="col-sm-3 col-form-label"></label>
-                <textarea class="col-sm-9 form-control" asp-for="Seed.Remarks" rows="5"></textarea>
+                <textarea class="col-sm-6 form-control" asp-for="Seed.Remarks" rows="5"></textarea>
                 <span asp-validation-for="Seed.Remarks" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="Seed.SampleDrawnBy" class="col-sm-3 col-form-label">Sample Drawn By</label>
-                <select asp-for="Seed.SampleDrawnBy" class="col-sm-9 form-control">
+                <select asp-for="Seed.SampleDrawnBy" class="col-sm-6 form-control">
                     <option value="Seed Conditioner">Seed Conditioner</option>
                     <option value="Ag. Commissioner">Ag. Commissioner</option>
                 </select>
@@ -81,12 +81,17 @@
             </div>
             <div class="form-group row required">
                 <label asp-for="Seed.SamplerName" class="col-sm-3 col-form-label"></label>
-                <input asp-for="Seed.SamplerName" type="text" class="col-sm-9 form-control"></input>
+                <input asp-for="Seed.SamplerName" type="text" class="col-sm-6 form-control"></input>
                 <span asp-validation-for="Seed.SamplerName" class="text-danger"></span>
             </div>
             <div class="form-group row required">
+                <label asp-for="Seed.SamplerId" class="col-sm-3 col-form-label"></label>
+                 <input asp-for="Seed.SamplerId" type="text" class="col-sm-6 form-control"></input>
+                <span asp-validation-for="Seed.SamplerId" class="text-danger"></span>
+            </div>
+            <div class="form-group row required">
                 <label asp-for="Seed.CountyDrawn" class="col-sm-3 col-form-label"></label>                
-                <select asp-for="Seed.CountyDrawn" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","CountyName"))">
+                <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","CountyName"))">
                     <option>Select county....</option>
                 </select>
                 <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               

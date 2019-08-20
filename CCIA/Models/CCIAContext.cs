@@ -215,6 +215,7 @@ namespace CCIA.Models
                 entity.Property(e => e.CCIAAuth).HasColumnName("ccia_auth");
                 entity.Property(e => e.Remarks).HasColumnName("remarks");
                 entity.Property(e => e.SampleDrawnBy).HasColumnName("sx_drawn_by");
+                entity.Property(e => e.SamplerID).HasColumnName("sampler_id");
                 entity.Property(e => e.CertId).HasColumnName("cert_id");
                 entity.Property(e => e.SampleId).HasColumnName("sample_id");
                 entity.Property(e => e.OECDLot).HasColumnName("oecd_lot");

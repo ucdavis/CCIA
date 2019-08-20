@@ -109,6 +109,8 @@ namespace CCIA.Models.SeedsCreateViewModel
         [Display(Name = "Name of Sampler")]
         [Required]
         public string SamplerName { get; set; }
+        [Display(Name = "AASCO Id")]
+        public string SamplerId { get; set; }
         [Display(Name = "OECD Lot?")]
         public bool OECDLot { get; set; }
 

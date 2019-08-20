@@ -158,6 +158,7 @@ namespace CCIA.Controllers
             }
             newSeed.Remarks = seed.Remarks;
             newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.SamplerID = seed.SamplerId;
             newSeed.OECDLot = seed.OECDLot;
             newSeed.Confirmed = false;
             newSeed.Status = "Pending supporting material";
@@ -240,6 +241,7 @@ namespace CCIA.Controllers
             newSeed.Remill = seed.Type == "Remill" ? true : false;            
             newSeed.Remarks = seed.Remarks;
             newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.SamplerID = seed.SamplerId;
             newSeed.OECDLot = seed.OECDLot;
             newSeed.Confirmed = false;
             newSeed.CertProgram = "SD";

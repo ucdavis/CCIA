@@ -60,6 +60,7 @@ namespace CCIA.Models
         public string CCIAAuth { get; set; }
         public string Remarks { get; set; }
         public string SampleDrawnBy { get; set; }
+        public string SamplerID { get; set; }
         public int? CertId { get; set; }
         public int? SampleId { get; set; }
         [Display(Name="OECD Lot?")]
