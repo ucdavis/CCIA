@@ -1,0 +1,46 @@
+@model CCIA.Models.TurfgrassCertificatesViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>Create New Certificate: @Model.application.ApplicantOrganization.OrgName</h2>
+    </div>
+</div>
+
+<div asp-validation-summary="All" class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.Sprigs">Sprigs (bushels)</label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sprigs">
+                    <span asp-validation-for="TurfgrassCertificates.Sprigs" class="text-danger"></span>
+                </div>                
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.Sod">Sod (sq. ft.)</label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sod"/>
+                    <span asp-validation-for="TurfgrassCertificates.Sod" class="text-danger"></span>
+                </div>               
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.BillingInvoice">Billing Invoice</label>
+                    <input class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.BillingInvoice"/>
+                    <span asp-validation-for="TurfgrassCertificates.BillingInvoice" class="text-danger"></span>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.HarvestDate">Harvest Date</label>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.HarvestDate"/>
+                    <span asp-validation-for="TurfgrassCertificates.HarvestDate" class="text-danger"></span>
+                </div>
+
+                 <div> 
+                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.application.Id">Save</button>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.application.Id">Cancel</a>
+                </div>
+        </form>
+    </div>
+</div>

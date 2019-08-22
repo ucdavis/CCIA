@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text.RegularExpressions;
 using System.ComponentModel;
 
 namespace CCIA.Models

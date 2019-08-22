@@ -10,8 +10,6 @@ namespace CCIA.Models
 
         public int AppId { get; set; }
 
-       
-
         public int? Sprigs { get; set; }
 
         public int? Sod { get; set; }
