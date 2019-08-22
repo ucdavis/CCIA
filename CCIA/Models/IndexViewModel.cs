@@ -108,6 +108,27 @@ namespace CCIA.Models.IndexViewModels
         }
     }
 
+    public class MyCustomersIndexViewModel : IndexViewModel
+    {
+        public List<MyCustomers> myCustomers { get; set; }
+
+        public static async Task<MyCustomersIndexViewModel> Create(CCIAContext _dbContext, int orgId)
+        {
+            var viewModel = new MyCustomersIndexViewModel
+            {
+                myCustomers = await _dbContext.MyCustomers.Where(e => e.OrganizationId == orgId)
+                .Include(e => e.State)
+                .Include(e => e.County)
+                .Include(e => e.Country)
+                .Include(e => e.Organization)
+                .ToListAsync(),
+                PageTitle = "My Customers"
+            };
+
+            return viewModel;
+        }
+    }
+
     public class OECDIndexViewModel : IndexViewModel
     {
         public List<OECD> oecd { get; set; }
