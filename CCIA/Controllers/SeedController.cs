@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SeedsViewModels;
 using CCIA.Models.IndexViewModels;
+using CCIA.Models.SeedsCreateViewModel;
 
 
 
@@ -46,9 +47,57 @@ namespace CCIA.Controllers
         }
 
         // GET: Application/Create
-        public ActionResult Create()
+        public ActionResult SelectOrigin()
         {
+            // TODO: Check that logged in user has permission to create seeds.
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult SelectOrigin(string origin)
+        {
+            if(origin == "Ca")
+            {
+                return RedirectToAction("SelectApp");
+            }
+            if(origin == "OOS")
+            {
+                return RedirectToAction("NewOOSSeedLot");
+            }
+            return View();
+        }
+
+        public ActionResult SelectApp()
+        {
+            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2007 + 1).ToArray();
+            return View(years);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
+        {
+            if(appId == null || appId.Count() == 0)
+            {
+                ErrorMessage = "No apps selected";
+                return RedirectToAction(nameof(SelectApp));
+
+            }
+            var model = await SeedsCreateViewModel.Create(_dbContext, appId, certYear, certNum, certRad);
+           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
+        {
+            var seed = model.Seed;
+            var newSeed = new Seeds();
+            
+
+            
+            
+           
+            return View(model);
         }
 
         // POST: Application/Create
@@ -112,6 +161,33 @@ namespace CCIA.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAppsFromCertNumber(int certYear, int? rad, int certNumber)
+        {
+            if(rad.HasValue){
+                var certs = await _dbContext.CertRad.Where(c => c.CertYear == certYear && c.CertNum == certNumber && c.Rad == rad).FirstAsync();
+                var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certs.CertNum)
+                    .Include(a => a.GrowerOrganization)
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .ToListAsync();
+                if(model != null)
+                {
+                    return Json(model);
+                }                
+            } else
+            {
+               var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certNumber)
+                    .Include(a => a.GrowerOrganization)
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .ToListAsync();
+               if(model != null)
+                {
+                    return Json(model);
+                } 
+            }
+            return BadRequest();
         }
     }
 }

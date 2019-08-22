@@ -14,7 +14,7 @@ namespace CCIA.Helpers
             {1, "CreateSeedApplication"},
             {2, "CreatePotatoApplication"},
             {3, "CreateHeritageGrainApplication"},
-            {4, "CreateGemplasmApplication"},
+            {4, "CreatePreVarietyGermplasmApplication"},
             {5, "CreateRiceApplication"},
             {6, "CreateTurfgrassApplication"},
             {7, "CreateHempFromSeedApplication"},
@@ -22,9 +22,154 @@ namespace CCIA.Helpers
         };
 
         /* Assigns all required fields from our cshtml */
-        public static Applications CreateAppRecord(Applications app, int contactId, string appType)
+        public static Applications CreateSeedAppRecord(SeedApp app, int contactId, string appType)
         {
-            var newApp = new Applications()
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                // Maybe eventually move this to a generic method?
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreatePotatoAppRecord(PotatoApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreateHeritageGrainAppRecord(HeritageGrainQAApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreatePreVarietyGermplasmAppRecord(PreVarietyGermplasmApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreateRiceAppRecord(RiceQAApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreateHempFromSeedAppRecord(HempFromSeedApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications AssignCommonAppFields(Applications app, int contactId, string appType)
+        {
+            return new Applications()
             {
                 AcresApplied = app.AcresApplied,
                 ApplicantComments = app.ApplicantComments,
@@ -45,11 +190,8 @@ namespace CCIA.Helpers
                 Status = "Pending supporting material",
                 WarningFlag = false,
 
-                PlantingStocks = app.PlantingStocks,
                 FieldHistories = app.FieldHistories
             };
-
-            return newApp;
         }
 
         public static MasterApplicationViewModel CreateAppByAppType(int appTypeId)
@@ -58,6 +200,14 @@ namespace CCIA.Helpers
             {
                 case 2:
                     return new PotatoApp();
+                case 3:
+                    return new HeritageGrainQAApp();
+                case 4:
+                    return new PreVarietyGermplasmApp();
+                case 5:
+                    return new RiceQAApp();
+                case 6:
+                    return new HempFromSeedApp();
                 default:
                     return new SeedApp();
             }

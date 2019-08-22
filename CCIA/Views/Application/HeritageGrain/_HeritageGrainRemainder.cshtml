@@ -1,0 +1,24 @@
+<!-- Class produced -->
+<div class="form-group">
+    <label>Class to be Produced</label><em class="required">•</em>
+    @{ ViewBag.name = "ClassProducedId"; }
+    <div>
+        @await Html.PartialAsync("Shared/_ClassDropdown")
+    </div>
+    @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+</div>
+
+<!-- Planting Stock -->
+<section id="planting-stock" class="rounded-section off-white">
+    <h4>Planting Stock:</h4>
+    @await Html.PartialAsync("Shared/_PlantingStock")
+</section>
+
+<!-- Field Information -->
+<section id="field-info" class="rounded-section off-white">
+    @await Html.PartialAsync("Shared/_FieldInformation")
+</section>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
+</div>

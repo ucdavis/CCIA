@@ -22,6 +22,8 @@ namespace CCIA.Models
 
         public string NameAndId => OrgId + " " + OrgName;
 
+        public int? CountyId { get; set; }
+
 
 
        

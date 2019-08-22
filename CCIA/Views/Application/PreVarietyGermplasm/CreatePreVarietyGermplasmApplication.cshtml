@@ -2,11 +2,11 @@
 @using CCIA.Helpers
 
 @{
-    ViewData["Title"] = "Hemp Seed (from seed)";
+    ViewData["Title"] = "Pre-Variety Germplasm Application";
 }
 
 <section class="app-header">
-    <h2>Application to Produce Certified Hemp Seed (from seed)</h2>
+    <h2>Application for Pre-Variety Germplasm Program</h2>
     <h5>@Model.AppViewModel.Organization.OrgName</h5>
 </section>
 
@@ -16,18 +16,18 @@
 
 @await Html.PartialAsync("Shared/_GrowerInfoTable")
 
-<form action="/Application/CreateHempFromSeedApplication" method="post" id="hempFromSeedApplication">
+<form action="/Application/CreatePreVarietyGermplasmApplication" method="post" id="preVarietyGermplasmApplication">
     @Html.AntiForgeryToken()
 
     <div class="form-group row">
         <!-- Crop -->
-        <div class="col">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
             @{ViewBag.name = "CropId";}
             @await Html.PartialAsync("Shared/_CropDropdown")
             @Html.ValidationMessage("CropId", "", new { @class = "text-danger" })
         </div>
         <!-- Crop year -->
-        <div class="col">
+        <div class="col-lg-4 col-sm-4 col-xs-4">
             @{
                 ViewBag.name = "CertYear";
                 ViewBag.startYearOffset = 1;
@@ -35,24 +35,53 @@
             }
             @await Html.PartialAsync("Shared/_CropYearDropdown")
         </div> 
-        <div class="col"> 
-            @{ ViewData["varietyName"] = "EnteredVariety"; } 
-            @await Html.PartialAsync("Shared/_VarietySelect")
+        <!-- Germplasm Source -->
+        <div class="col">
+            <label for="germplasmSource">Germplasm Source<em class="required">•</em></label>
+            @{
+                var selectListItems = new List<SelectListItem>();
+                foreach(GermplasmSource source in Enum.GetValues(typeof(GermplasmSource)))
+                {
+                    selectListItems.Add(new SelectListItem { Text = @source.GetDisplayName(), Value = @source.GetDisplayName() } );
+                }
+                SelectList GermplasmSourceList = new SelectList(selectListItems, "Value", "Text");
+            }
+            @Html.DropDownListFor(m => m.PvgSource, 
+                GermplasmSourceList,
+                new { @class="form-control", id="germplasmSource" })
         </div>
         
     </div>
 
-    <div id="form-remainder">
-        @if (@Model.AppViewModel.RenderFormRemainder)
-        {
-            @await Html.PartialAsync("HempFromSeed/_HempFromSeedRemainder")
-        }
+    <div class="form-group row">
+        <div class="col">
+            @{ViewBag.name = "classProduced";}
+            <label>Class to be Produced</label><em class="required">•</em>
+            @await Html.PartialAsync("Shared/_ClassDropdown")
+        </div>
+        <div class="col">
+            <label>Pre-Variety Germplam Selection ID</label><em class="required">•</em>
+            @Html.TextBox("PvgSelectionId", "", new { @class="form-control", placeholder="Pre-Variety Germplam Selection ID" })
+        </div>
     </div>
+
+    <!-- Planting Stock -->
+    <section id="planting-stock" class="rounded-section off-white">
+        <h4>Planting Stock</h4>
+        @await Html.PartialAsync("Shared/_PlantingStock")
+    </section>
+
+    <!-- Field Information -->
+    <section id="field-info" class="rounded-section off-white">
+        @await Html.PartialAsync("Shared/_FieldInformation")
+    </section>
+
+    <button type="submit" class="btn btn-primary">Continue with Application</button>
 
     <!-- Hidden fields -->
     @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
     @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
-    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="HS">
+    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="PV">
 </form>
 
 <!-- Alert dialog modals -->
@@ -71,7 +100,6 @@
         var appTypeId = @Model.AppViewModel.AppTypeId;
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
-        var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
         // The index of the next Field History entry to be added to the form
         let fhEntryId = -1;
         // How many total Field History entries are in the form currently
@@ -82,5 +110,5 @@
     </script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="~/js/applications/applications.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="~/js/applications/hemp-from-seed.js"></script>
+    <script type="text/javascript" src="~/js/applications/prevariety-germplasm.js"></script>
 }

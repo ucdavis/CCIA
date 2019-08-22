@@ -5,13 +5,7 @@ $('#variety-search').on('click', () => {
 
 $("#potatoApplication").submit(function (e) {
     insertHiddenInput("growerId", growerId, "potatoApplication");
+    let fhIndicesStr = JSON.stringify(fhIndices);
+    insertHiddenInput("AppViewModel.FieldHistoryIndices", fhIndicesStr, "potatoApplication");
     return true;
 });
-
-function selectFirstVariety(varietyId, varietyName) {
-    // Original variety
-    fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-    // Planting Stock 1 Variety
-    fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
-    showSpinner("variety-dropdown");
-}

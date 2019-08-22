@@ -109,6 +109,8 @@ namespace CCIA.Models
         [Required]
         public int? FarmCounty { get; set; }
 
+        public virtual string CountyPermit { get; set; }
+
         public int? SelectedVarietyId { get; set; }
 
         [ForeignKey("SelectedVarietyId")]
@@ -126,7 +128,7 @@ namespace CCIA.Models
         public ICollection<AppCertificates> Certificates { get; set; }
 
         [ForeignKey("AppId")]
-        public virtual ICollection<PlantingStocks> PlantingStocks { get; set; }
+        public ICollection<PlantingStocks> PlantingStocks { get; set; }
 
         [ForeignKey("AppId")]
         public ICollection<FieldHistory>  FieldHistories { get; set; }

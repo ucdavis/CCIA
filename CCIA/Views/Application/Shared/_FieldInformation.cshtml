@@ -2,29 +2,61 @@
 
 <h4>Field Information</h4>
 <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col">
         <label for="name-num">Name/No.</label><em class="required">•</em>
-        @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num" })
+        @Html.TextBoxFor(m => m.FieldName, "", new { @class="form-control", id="name-num", placeholder="Name/No." })
         @Html.ValidationMessageFor(m => m.FieldName, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group col-md-6">
-        @await Html.PartialAsync("Shared/_DateTimePicker")
+    <!-- Date Time Picker -->
+    <div class="form-group col">
+        @await Html.PartialAsync("Shared/_DateTimePicker")  
     </div>
 </div>
 <div class="row">
-    <div class="form-group col-md-6">
+    <div class="form-group col">
         @await Html.PartialAsync("Shared/_CountyDropdown", Model.AppViewModel)
     </div>
-    <div class="form-group col-md-6">
-        <label for="acres-applied">Acres Applied</label><em class="required">•</em>
+        @if(Model.AppViewModel.AppTypeId == (int)AppTypes.HEMP)
+        {
+            <div class="form-group col">
+                <label for="county-permit-no">County Permit Number</label><em class="required">•</em>
+                @Html.TextBoxFor(m => m.CountyPermit, "", new { @class="form-control", id="county-permit-no", placeholder="County Permit Number" })
+                @Html.ValidationMessageFor(m => m.CountyPermit, "", new { @class = "text-danger" })
+            </div>            
+        }
+    <div class="form-group col">
+        <label for="acres-applied">Acres Applied
+            <!-- PVG -->
+            @if(Model.AppViewModel.AppTypeId == 4) 
+            {
+                <text>(enter 1 for G0)</text>
+            }
+        </label><em class="required">•</em>
         @Html.TextBoxFor(m => m.AcresApplied, "", new { @class="form-control", id="acres-applied", placeholder="Acres Applied" })
         @Html.ValidationMessage("AcresApplied", "", new { @class = "text-danger" })
     </div>
 </div>
+
+<!-- PVG Fields -->
+@if(Model.AppViewModel.AppTypeId == 4)
+{
+    <div class="row">
+        <div class="col">
+            <label>US EPA Level III Ecoregion</label><em class="required">•</em>
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.Ecoregion, new SelectList(Model.AppViewModel.Ecoregions, "Id", "Name"), new { @class="form-control" })
+            </div>
+        </div>
+        <div class="col">
+            <label>Field Elevation</label>
+            @Html.TextBoxFor(m => m.FieldElevation, new { @class="form-control", placeholder="Field Elevation" })
+        </div>
+    </div>
+}
 
 <div class="form-group">
     <label for="comments">Additional Information/Comments</label>
     @Html.TextAreaFor(m => m.ApplicantComments, new { @class = "form-control", placeholder="Additional Information/Comments", rows="5" }) 
 </div>
 
-<partial name="Shared/_FieldHistory"></partial>
+@await Html.PartialAsync("Shared/_FieldHistory")

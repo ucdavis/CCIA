@@ -1,7 +1,6 @@
 @{
     string name = "FarmCounty";
     var selectListItems = new List<SelectListItem>();
-    selectListItems.Add(new SelectListItem { Text = "", Value = "" } );
     foreach (var county in Model.Counties)
     {
         selectListItems.Add(new SelectListItem { Text = county.CountyName, Value = county.CountyId.ToString() } );
