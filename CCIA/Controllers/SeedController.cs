@@ -11,6 +11,7 @@ using CCIA.Models.SeedsViewModels;
 using CCIA.Models.IndexViewModels;
 using CCIA.Models.SeedsCreateViewModel;
 using CCIA.Models.SeedsCreateOOSViewModel;
+using CCIA.Models.SeedsCreateQAViewModel;
 
 
 
@@ -92,6 +93,25 @@ namespace CCIA.Controllers
             var model = await SeedsCreateViewModel.Create(_dbContext, appId, certYear, certNum, certRad);
            
             return View(model);
+        }
+
+        public async Task<ActionResult> CreateQALot()
+        {
+            var model = await SeedsCreateQAViewModel.Create(_dbContext);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateQALot(SeedsCreateQAViewModel model)
+        {
+            if(model.Seed.LotNumber == null){
+                var returnModel = await SeedsCreateQAViewModel.Return(_dbContext, model.Seed);
+                ModelState.Clear();
+                return View(returnModel);
+            }
+
+            return View();
+
         }
 
         [HttpPost]

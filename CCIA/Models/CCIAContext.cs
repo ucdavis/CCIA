@@ -1024,6 +1024,8 @@ namespace CCIA.Models
                 .IsUnicode(false);
 
             entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
+
+            entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValueSql("((0))");
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>

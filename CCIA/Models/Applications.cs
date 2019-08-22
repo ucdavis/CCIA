@@ -160,7 +160,7 @@ namespace CCIA.Models
             {
                 if(AppType=="PV" || SelectedVarietyId == null)
                 {
-                    return "";
+                    return PvgSelectionId;
                 }
                 if (Variety != null)
                 {
