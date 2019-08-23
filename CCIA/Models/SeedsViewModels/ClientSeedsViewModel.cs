@@ -27,6 +27,8 @@ namespace CCIA.Models.SeedsViewModels
                     .Include(s => s.SeedsApplications)
                     .ThenInclude(sa => sa.Application)
                     .ThenInclude(a => a.GrowerOrganization)
+                    .Include(s => s.Application)
+                    .ThenInclude(a => a.Crop)
                     .FirstOrDefaultAsync(),
                 labResults = await _dbContext.SxLabResults.Where(l => l.SeedsId == sid)                    
                     .Include(r => r.LabOrganization)
