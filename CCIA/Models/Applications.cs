@@ -170,5 +170,29 @@ namespace CCIA.Models
             } 
         }
 
+        public string QACertNumber
+        { 
+            get
+            {
+                string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+                if(AppType=="PV")
+                {
+                    return $"{certYearAbbrev}CA-PVG-{Id}";
+                }
+                if(AppType=="GQ")
+                {
+                    return $"{certYearAbbrev}CA-QA-{Id}";
+                }
+                if(AppType=="RQ")
+                {
+                    return $"{certYearAbbrev}CA-RQA-{Id}";
+                }               
+
+                return "";
+
+            } 
+        }
+        
+
     }
 }

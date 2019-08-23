@@ -21,6 +21,8 @@ namespace CCIA.Models.SeedsCreateQAViewModel
 
         public Applications Application { get; set; }
 
+        public List<AbbrevClassSeeds> Classes { get; set; }
+
 
 
 
@@ -54,7 +56,20 @@ namespace CCIA.Models.SeedsCreateQAViewModel
                     .Include(a => a.ApplicantOrganization)
                     .Include(a => a.Variety)
                     .Include(a => a.ClassProduced)
-                    .FirstOrDefaultAsync(); 
+                    .Include(a => a.AppTypeTrans)
+                    .FirstOrDefaultAsync();
+            var classes = new List<AbbrevClassSeeds>();
+            if(app != null)
+            {
+                if(seed.Class == null)
+                {
+                    seed.Class = app.ClassProducedId; 
+                }
+               classes = await _dbContext.AbbrevClassSeeds
+                    .Where(c => c.Program == app.AppTypeTrans.AppTypeId && c.Id >= app.ClassProducedId)
+                    .Select(c => new AbbrevClassSeeds{ Id = c.Id, CertClass = c.CertClass}).ToListAsync();
+            }
+            
 
             var viewModel = new SeedsCreateQAViewModel
             {                
@@ -65,6 +80,7 @@ namespace CCIA.Models.SeedsCreateQAViewModel
                 CertYears = Enumerable.Range(2016, seed.CertYear.Value - 2015).ToList(),
                 DisplayEntry = app == null ? "display: none !important;" : "",
                 Application = app,
+                Classes = classes,
             };
 
             return viewModel;

@@ -56,13 +56,14 @@
                         @Html.DisplayFor(x => x.Application.ClassProduced.ClassProducedTrans)
                     </div>
                 </div> 
-               @*
-                <div class="form-group row required">
-                    <label asp-for="Seed.Class" class="col-sm-3 col-form-label"></label>                
-                    <select asp-for="Seed.Class" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.ClassProducible, "ClassProducedId","ClassProducedTrans"))"></select>
-                    <span asp-validation-for="Seed.Class" class="text-danger"></span>               
-                </div>
-                *@
+                @if(Model.Application != null)
+                {
+                    <div class="form-group row required">
+                        <label asp-for="Seed.Class" class="col-sm-3 col-form-label"></label>                
+                        <select asp-for="Seed.Class" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Classes, "Id","CertClass"))"></select>
+                        <span asp-validation-for="Seed.Class" class="text-danger"></span>               
+                    </div> 
+                }              
                 <div class="form-group row required">
                     <label asp-for="Seed.LotNumber" class="col-sm-3 col-form-label"></label>
                     <input asp-for="Seed.LotNumber" class="col-sm-6 form-control"></input>

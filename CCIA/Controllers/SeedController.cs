@@ -106,11 +106,115 @@ namespace CCIA.Controllers
         {
             if(model.Seed.LotNumber == null){
                 var returnModel = await SeedsCreateQAViewModel.Return(_dbContext, model.Seed);
+                if(returnModel.Application == null)
+                {
+                    ErrorMessage = "That application was not found. Please check the values entered.";
+                }
                 ModelState.Clear();
                 return View(returnModel);
             }
 
-            return View();
+            var seed = model.Seed;
+            #region Begin error checking
+            bool error = false;
+            
+            if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
+                ErrorMessage = "Must Select county";
+                error = true;         
+            }
+            
+            if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.AppId == seed.AppId))
+            {
+                ErrorMessage = "SID with same Lot, Cert Year, and AppID found. Duplicates are not allowed.";
+                error = true;                
+            } 
+            
+            var appType = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == seed.AppType).Select(a => a.Abbreviation).FirstOrDefaultAsync(); 
+            var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId && a.AppType == appType && a.CertYear == seed.CertYear)
+                .Include(a => a.Variety)
+                .FirstOrDefaultAsync();
+            
+
+            if(app == null)
+            {
+                ErrorMessage = "Application not found. Please check values.";
+                error = true;
+            }
+
+            if(error)
+            {
+                var returnModel = await SeedsCreateQAViewModel.Return(_dbContext, seed);
+                return View(returnModel);
+            }
+
+            #endregion  
+            var state = await _dbContext.County.Where(c => c.CountyId == seed.CountyDrawn).Select(c => c.StateProvinceId).FirstAsync();
+            var country = await _dbContext.Countries.Where(c => c.Code == "USA").Select(c => c.Id).FirstAsync();       
+
+            var newSeed = new Seeds();
+            newSeed.SampleFormDate = DateTime.Now;
+            newSeed.AppId = seed.AppId;
+            newSeed.CertYear = seed.CertYear;
+            newSeed.ApplicantId = app.ApplicantId;
+            // TODO Used logged in user org ID and logged in contact ID
+            newSeed.ConditionerId = 168;
+            newSeed.UserEntered = 1;
+            newSeed.SampleFormVarietyId = app.SelectedVarietyId;
+            if(app.Variety != null)
+            {
+                newSeed.OfficialVarietyId = app.Variety.ParentId;
+            }     
+            newSeed.CertProgram = app.AppType;      
+            newSeed.LotNumber = seed.LotNumber;
+            newSeed.PoundsLot = seed.PoundsLot;
+            newSeed.Class = seed.Class;
+            newSeed.CountyDrawn = seed.CountyDrawn;
+            newSeed.OriginState = state;
+            newSeed.OriginCountry = country;
+            if(seed.Type == "Original Run")
+            {
+                newSeed.OriginalRun = true;
+            } else
+            {
+                newSeed.OriginalRun = false;
+            }
+            if(seed.Type == "Remill")
+            {
+                newSeed.Remill = true;
+            } else
+            {
+                newSeed.Remill = false;
+            }
+            newSeed.Remarks = seed.Remarks;
+            newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.SamplerID = seed.SamplerId;
+            newSeed.OECDLot = false;
+            newSeed.Confirmed = false;
+            newSeed.Status = "Pending supporting material";
+            newSeed.SampleFormCertNumber = app.QACertNumber;
+            var seedapps = new List<SeedsApplications>();
+           
+            newSeed.SeedsApplications = seedapps;
+            
+            if(ModelState.IsValid)
+            {
+                await _dbContext.Seeds.AddAsync(newSeed);
+                await _dbContext.SaveChangesAsync();
+
+                var labresults = new SxLabResults();
+                labresults.SeedsId = newSeed.Id;
+                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+
+                Message = "Certified Seed Lot created";
+            } else
+            {
+                ErrorMessage = "Error encountered saving seed lot";                
+                var returnModel = await SeedsCreateQAViewModel.Return(_dbContext, seed);
+                return View(returnModel);
+            }
+           
+            return RedirectToAction("Details", new { id = newSeed.Id });
 
         }
 
@@ -155,7 +259,7 @@ namespace CCIA.Controllers
             newSeed.ConditionerId = 168;
             newSeed.UserEntered = 1;
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
-            newSeed.OfficialVarietyId = app.Variety.ParendId;
+            newSeed.OfficialVarietyId = app.Variety.ParentId;
             newSeed.LotNumber = seed.LotNumber;
             newSeed.PoundsLot = seed.PoundsLot;
             newSeed.Class = seed.Class;
