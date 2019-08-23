@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace CCIA.Models
 {
@@ -11,10 +14,15 @@ namespace CCIA.Models
         [ForeignKey("OrganizationId")]
         public Organizations Organization { get; set; }
         public string Name { get; set; }
+
+        [DisplayName("Address 1")]
         public string Address1 { get; set; }
+
+        [DisplayName("Address 2")]
         public string Address2 { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
+
         [ForeignKey("StateId")]
         public StateProvince State { get; set; }
         public int CountyId { get; set; }
@@ -26,7 +34,5 @@ namespace CCIA.Models
         public string Zip { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-
-       
     }
 }

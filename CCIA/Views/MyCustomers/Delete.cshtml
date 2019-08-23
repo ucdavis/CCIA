@@ -1,0 +1,19 @@
+@model CCIA.Models.MyCustomerViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div style="text-align: center;">
+    <form asp-action="Delete" method="post">
+        <div>
+            <h3>
+                Are you sure you want to delete <span style="color:red">@Model.MyCustomer.Name</span>?
+            </h3>
+        </div>
+        <div>
+            <button class="btn btn-primary" onclick="return confirm('Delete customer?')" type="submit" asp-action="Delete" asp-controller="MyCustomers" asp-route-id="@Model.MyCustomer.Id">Delete</button>
+            <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.MyCustomer.Id">Cancel</a>
+        </div>
+    </form>
+</div>
