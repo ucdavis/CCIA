@@ -960,7 +960,7 @@ namespace CCIA.Models
 
                 entity.Property(v => v.RiceColor).HasColumnName("rice_qa_color");
 
-                entity.Property(v => v.ParendId).HasColumnName("parent_id");
+                entity.Property(v => v.ParentId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
 
