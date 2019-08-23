@@ -51,7 +51,7 @@ namespace CCIA.Models
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
-
+        public virtual DbSet<SeedsApplications> SeedsApplications { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
         public virtual DbSet<SxLabResults> SxLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
@@ -132,7 +132,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.po_cert_history'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.po_health_cert'. Please see the warning messages.
 
-        // Unable to generate entity type for table 'dbo.seeds_apps'. Please see the warning messages.
+        
         // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
         
         // Unable to generate entity type for table 'dbo.org_address'. Please see the warning messages.
@@ -186,7 +186,7 @@ namespace CCIA.Models
                 entity.ToTable("Seeds");
 
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).HasColumnName("seeds_id");
+                entity.Property(e => e.Id).HasColumnName("seeds_id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CertProgram).HasColumnName("cert_program");
                 entity.Property(e => e.AppId).HasColumnName("app_id");
@@ -216,6 +216,7 @@ namespace CCIA.Models
                 entity.Property(e => e.CCIAAuth).HasColumnName("ccia_auth");
                 entity.Property(e => e.Remarks).HasColumnName("remarks");
                 entity.Property(e => e.SampleDrawnBy).HasColumnName("sx_drawn_by");
+                entity.Property(e => e.SamplerID).HasColumnName("sampler_id");
                 entity.Property(e => e.CertId).HasColumnName("cert_id");
                 entity.Property(e => e.SampleId).HasColumnName("sample_id");
                 entity.Property(e => e.OECDLot).HasColumnName("oecd_lot");
@@ -285,6 +286,24 @@ namespace CCIA.Models
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Name).HasColumnName("name");
+            });
+
+            modelBuilder.Entity<SeedsApplications>(entity =>
+            {
+                entity.ToTable("seeds_apps");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("seed_app_id").UseSqlServerIdentityColumn();
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+
+                entity.HasOne(e => e.Seeds).WithMany(s => s.SeedsApplications).HasForeignKey(e => e.SeedsId);
+
+                entity.HasOne(e => e.Application);
+
             });
 
             modelBuilder.Entity<MyCustomers>(entity =>
@@ -950,7 +969,7 @@ namespace CCIA.Models
 
                 entity.Property(v => v.RiceColor).HasColumnName("rice_qa_color");
 
-                entity.Property(v => v.ParendId).HasColumnName("parent_id");
+                entity.Property(v => v.ParentId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
 
@@ -1014,6 +1033,8 @@ namespace CCIA.Models
                 .IsUnicode(false);
 
             entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
+
+            entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValueSql("((0))");
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
@@ -2044,7 +2065,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OecdMember)
                     .HasColumnName("oecd_member")
-                    .HasDefaultValueSql("((0))");                
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.US).HasColumnName("us").HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<County>(entity =>

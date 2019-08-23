@@ -169,6 +169,8 @@ namespace CCIA.Models.IndexViewModels
                 .Include(s => s.Application)
                 .ThenInclude(a => a.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(s => s.Application)
+                .ThenInclude(a => a.Crop)
                 .Include(c => c.ClassProduced)
                 .Include(l => l.LabResults)
                 .ToListAsync(),

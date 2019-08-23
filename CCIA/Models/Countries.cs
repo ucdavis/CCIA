@@ -12,6 +12,8 @@ namespace CCIA.Models
         [DisplayName("Country")]
         public string Name { get; set; }
         public bool? OecdMember { get; set; }
+
+        public bool US { get; set; }
        
     }
 }

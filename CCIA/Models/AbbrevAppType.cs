@@ -18,6 +18,8 @@ namespace CCIA.Models
         public string VarietyTitle { get; set; }
         public bool? ShowType { get; set; }
 
+        public bool QAProgram { get; set; }
+
         public ICollection<Applications> Applications { get; set; }
         public ICollection<Seeds> Seeds { get; set; }
 

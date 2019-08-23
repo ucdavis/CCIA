@@ -34,8 +34,8 @@
                 <td>@seeds.CertProgram</td>
                 <td>@seeds.CertYear</td>
                 <td>@seeds.ApplicantOrganization.OrgName</td>
-                <td>@seeds.Variety.Crop.Name</td>
-                <td>@seeds.Variety.Name</td>
+                <td>@seeds.GetCropName()</td>
+                <td>@seeds.GetVarietyName()</td>
                 <td>@seeds.ClassProduced.CertClass</td>
                 <td>@seeds.LotNumber</td>
                 <td>@Html.CheckBoxFor(m => @seeds.HasLabs)</td>

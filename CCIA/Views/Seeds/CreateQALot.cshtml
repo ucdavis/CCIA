@@ -1,0 +1,132 @@
+@model CCIA.Models.SeedsCreateQAViewModel.SeedsCreateQAViewModel
+
+@{
+    ViewData["Title"] = "Create New QA Seed Lot";
+}
+
+<h1>Create New QA Seed Lot</h1>
+
+<h4>Certified Seed Lot</h4>
+<hr>
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="CreateQALot" method="post">            
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group row required">
+                <label asp-for="Seed.AppType" class="col-sm-3 col-form-label"></label>
+                <select asp-for="Seed.AppType" class="form-control col-sm-6" asp-items="@(new SelectList(Model.AppTypes, "AppTypeId","CertificateTitle"))"></select>
+            </div>
+            <div class="form-group row required">
+                <label asp-for="Seed.CertYear" class="col-sm-3 col-form-label"></label>
+                <select asp-for="Seed.CertYear" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.CertYears))"></select> 
+            </div>
+            <div class="form-group row required">
+                <label asp-for="Seed.AppId" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Seed.AppId" class="form-control col-sm-6" />
+            </div>
+            @if(Model.Application == null)
+            {
+               <div class="form-group">                
+                    <input type="submit" value="Continue" class="btn btn-primary" />
+                </div> 
+            } 
+
+            <div id="completeForm" style="@Model.DisplayEntry">
+              <div class="form-group row">
+                    <label asp-for="Application.ApplicantOrganization.OrgName" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-6 form-control-plaintext">
+                        @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgName)
+                    </div>
+                </div> 
+                <div class="form-group row">
+                    <label asp-for="Application.ApplicantOrganization.OrgId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-6 form-control-plaintext">
+                        @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgId)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Application.Variety.Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-6 form-control-plaintext">
+                        @Html.DisplayFor(x => x.Application.VarietyName)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Application.ClassProduced" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-6 form-control-plaintext">
+                        @Html.DisplayFor(x => x.Application.ClassProduced.ClassProducedTrans)
+                    </div>
+                </div> 
+                @if(Model.Application != null)
+                {
+                    <div class="form-group row required">
+                        <label asp-for="Seed.Class" class="col-sm-3 col-form-label"></label>                
+                        <select asp-for="Seed.Class" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Classes, "Id","CertClass"))"></select>
+                        <span asp-validation-for="Seed.Class" class="text-danger"></span>               
+                    </div> 
+                }              
+                <div class="form-group row required">
+                    <label asp-for="Seed.LotNumber" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="Seed.LotNumber" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.LotNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="Seed.PoundsLot" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.PoundsLot" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.Type" class="col-sm-3 col-form-label"></label>                
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" asp-for="Seed.Type" value="Original Run" />Original Run
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" asp-for="Seed.Type" value="Remill" />Remill
+                        </label>
+                    </div>   
+                    <span asp-validation-for="Seed.Type" class="text-danger"></span>   
+                </div>            
+                <div class="form-group row">
+                    <label asp-for="Seed.Remarks" class="col-sm-3 col-form-label"></label>
+                    <textarea class="col-sm-6 form-control" asp-for="Seed.Remarks" rows="5"></textarea>
+                    <span asp-validation-for="Seed.Remarks" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Seed.SampleDrawnBy" class="col-sm-3 col-form-label">Sample Drawn By</label>
+                    <select asp-for="Seed.SampleDrawnBy" class="col-sm-6 form-control">
+                        <option value="Seed Conditioner">Seed Conditioner</option>
+                        <option value="Ag. Commissioner">Ag. Commissioner</option>
+                    </select>
+                    <span asp-validation-for="Seed.SampleDrawnBy" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.SamplerName" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="Seed.SamplerName" type="text" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.SamplerName" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.SamplerId" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="Seed.SamplerId" type="text" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="Seed.SamplerId" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="Seed.CountyDrawn" class="col-sm-3 col-form-label"></label>                
+                    <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","CountyName"))">
+                        <option>Select county....</option>
+                    </select>
+                    <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               
+                </div>
+                <div class="form-group">                
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>            
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

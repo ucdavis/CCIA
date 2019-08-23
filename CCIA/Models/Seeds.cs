@@ -60,6 +60,7 @@ namespace CCIA.Models
         public string CCIAAuth { get; set; }
         public string Remarks { get; set; }
         public string SampleDrawnBy { get; set; }
+        public string SamplerID { get; set; }
         public int? CertId { get; set; }
         public int? SampleId { get; set; }
         [Display(Name="OECD Lot?")]
@@ -84,6 +85,8 @@ namespace CCIA.Models
         public string EmployeeModified { get; set; }
         public bool NotFinallyCertified { get; set; }
         public bool ChargeFullFees { get; set; }
+
+        public List<SeedsApplications>   SeedsApplications { get; set; }
 
         [ForeignKey("Id")]
         public SxLabResults LabResults { get; set; }
@@ -115,10 +118,10 @@ namespace CCIA.Models
                 }
                 else
                 {
-                    if (CertYear < 2007)
+                    if (CertYear < 2007 || SampleFormRad == null)
                     {
                         return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
-                    }
+                    }                   
                     return $"{certYearAbbrev}CA-{SampleFormRad}-{SampleFormCertNumber}";
                 }
 

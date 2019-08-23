@@ -25,7 +25,7 @@ namespace CCIA.Models
        
         public bool RiceQa { get; set; }
         public string RiceColor { get; set; }
-        public int ParendId { get; set; }
+        public int ParentId { get; set; }
         public bool Turfgrass { get; set; }
 
        
