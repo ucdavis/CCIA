@@ -15,16 +15,6 @@
 
 <partial name="Shared/_GrowerInfoTable"></partial>
 
-<!-- Alert dialog modals -->
-@{
-    var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
-    var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
-    var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
-}
-@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
-@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
-@await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
-
 <form action="/Application/CreateSeedApplication" method="post" id="seedApplication">
 
     @Html.AntiForgeryToken()
@@ -42,39 +32,36 @@
                 ViewBag.startYearOffset = 1;
                 ViewBag.endYearOffset = 1;
             }
-            <partial name="Shared/_CropYearDropdown"></partial>
+            @await Html.PartialAsync("Shared/_CropYearDropdown")
             @Html.ValidationMessage("CropYear", "", new { @class = "text-danger" })
         </div>
-        <div class="col-lg-4 col-sm-4 col-xs-4">  
-            <label for="variety">Variety<em class="required">•</em></label>
-            <div>
-                <div class="btn-group">
-                    @Html.TextBoxFor(m => m.EnteredVariety, "", new { @class="form-control", id="variety", placeholder="Variety" })
-                    <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search"></i>
-                    </button>     
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
-                        <div class="text-center">
-                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
-                        </div>
-                    </div> 
-                </div>
-            </div>     
-            @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
-            <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+        <div class="col-lg-4 col-sm-4 col-xs-4"> 
+            @{ ViewData["varietyName"] = "EnteredVariety"; } 
+            @await Html.PartialAsync("Shared/_VarietySelect")
         </div>
     </div>
 
     <div id="form-remainder">
         @if (@Model.AppViewModel.RenderFormRemainder)
         {
-            <partial name="Seed/SeedAppPartial"></partial>
+            @await Html.PartialAsync("Seed/SeedAppPartial")
         }
     </div>
 
     <!-- Hidden fields -->
-    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id", name="SelectedVarietyId" })
-    @Html.TextBox("PlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id", name="SelectedVarietyId" })
+    @Html.TextBox("SelectedVarietyId", "", new { type="hidden", id="variety-id" })
+    @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+
+    <!-- Alert dialog modals -->
+    @{
+        var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
+        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+        var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
+    }
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
 </form>
 
 @section Scripts {
@@ -82,7 +69,21 @@
         var orgId = @Model.AppViewModel.Organization.OrgId;
         var growerId = @Model.AppViewModel.Organization.OrgId;
         var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
+        var appTypeId = @Model.AppViewModel.AppTypeId;
+        // How many field history records are possible for this application
+        let maxFieldHistories = @Model.AppViewModel.MaxFieldHistoryRecords;
+        let secondPsRendered = false;
+        let fhEntryId = -1;
+
+        // Converting our fixed-size array of booleans from the model to a JavaScript array
+        // for use with removing/adding field history entries
+        let fhIndices = @Model.AppViewModel.FieldHistoryIndices;
+
+        // Counts the occurrences of used spaces in fhIndices\
+        // Used spaces are indicated by 1s. Free spaces are marked with 0s.
+        let fhEntryCount = countOccurrences(1, fhIndices);
     </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/applications/applications.js" asp-append-version="true"></script>
     <script src="~/js/applications/seed.js" asp-append-version="true"></script>
 }

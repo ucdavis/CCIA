@@ -43,6 +43,7 @@ namespace CCIA.Models
         public virtual DbSet<CropStandards> CropStandards { get; set; }
         public virtual DbSet<DistrictCounty> DistrictCounty { get; set; }
         public virtual DbSet<Districts> Districts { get; set; }
+        public virtual DbSet<Ecoregions> Ecoregions { get; set; }
         public virtual DbSet<Fees> Fees { get; set; }
         public virtual DbSet<FieldInspect> FieldInspect { get; set; }
         public virtual DbSet<FieldMaps> FieldMaps { get; set; }
@@ -277,6 +278,14 @@ namespace CCIA.Models
                 //entity.HasOne(d => d.Application);
 
 
+            });
+
+            modelBuilder.Entity<Ecoregions>(entity => 
+            {
+                entity.ToTable("ecoregions");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<SeedsApplications>(entity =>
@@ -1144,6 +1153,10 @@ namespace CCIA.Models
                 entity.Property(e => e.AcresApplied)
                     .HasColumnName("acres_applied")
                     .HasColumnType("decimal(14, 2)");
+
+                entity.Property(e => e.CountyPermit)
+                    .HasColumnName("county_permit")
+                    .HasColumnType("varchar(50)");
 
                 entity.Property(e => e.AppApproved)
                     .HasColumnName("app_approved")

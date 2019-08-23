@@ -1,0 +1,22 @@
+@{
+    string name = ViewData["varietyName"].ToString(); 
+    string varSearchId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety-search" : "variety-search";
+    string varDropdownId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety-dropdown" : "variety-dropdown";
+    string varInputId = name == "AppSpecificPlantingStocks[1].PsEnteredVariety" ? "ps2-variety" : "variety";
+}
+
+<label for=@varDropdownId>@Model.AppViewModel.ApplicationLabels.Ps1Variety<em class="required">•</em></label>
+<div>
+    <div class="btn-group">
+        @Html.TextBox(name, "", new { @class="form-control", id=varInputId, placeholder=@Model.AppViewModel.ApplicationLabels.Ps1Variety })
+        <button class="btn btn-primary dropdown-toggle" id=@varSearchId data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-search"></i>
+        </button>     
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id=@varDropdownId>
+            <div class="text-center">
+                <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+            </div>
+        </div> 
+    </div>
+</div>     
+@Html.ValidationMessage(name, "", new { @class = "text-danger" })

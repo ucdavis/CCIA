@@ -3,23 +3,10 @@
 //////////////////////
 
 const spinner_div = `<div class="text-center"><div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div></div>`
-var form = document.getElementById("seedApplication")
-let appTypeId = 1;
-// The index of the next Field History entry to be added to the form
-let fhEntryId = 0;
-// How many total Field History entries are in the form currently
-let fhEntryCount = 0;
-let secondPsRendered = false;
-let fhIndices = [0, 0, 0];
 
 ////////////////////
 // Event handlers //
 ////////////////////
-
-/* Adds red outline to invalid text boxes on loading after failed form submission */
-$(document).ready(() => {
-    $('.field-validation-error').parents('.form-group').addClass('has-error');
-});
 
 // Set click listener for button to add second plantingstock
 $('#add-second-ps').on('click', addSecondPs);
@@ -29,13 +16,11 @@ $('#add-fieldhistory').on('click', (e) => {
     addNewFieldHistory(e, appTypeId);
 });
 
-// Click handler for removing the second planting stocks record
-document.getElementById("remove-ps2").onclick = (e) => {
-    secondPsRendered = false;
-    e.preventDefault();
-    removeSecondPSEntry();
-    document.getElementById("add-second-ps").disabled = false;
-}
+// Datepicker
+$("#datepicker").datepicker({
+    format: 'LT',
+    autoclose: "true"
+});
 
 
 ///////////////////////////
@@ -50,18 +35,20 @@ function fillVarietyNameAndId(varietyNameInput, varietyIdInput, varietyId, varie
 }
 
 /* Load the rest of the form after selecting (or entering) a variety*/
-function loadFormRemainder(varietyId, varietyName) {
+function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
     showSpinner("form-remainder");
-    /* If something is inside form-remainder div, clear it out */
     $("#form-remainder")
-        .load("/Application/GetPartial?folder=Seed&partialName=SeedAppPartial&orgId=" + orgId + "&appTypeId=" + appTypeId, (response, status, xhr) => {
+        .load("/Application/GetPartial?folder="+remainderFolder+"&partialName="+remainderName+"&orgId="+orgId+"&appTypeId="+appTypeId, 
+        (response, status, xhr) => {
             if (status == "error") {
                 var msg = "Sorry, the following error occurred while loading the remainder of the form: ";
                 $("#error").html(msg + xhr.status + " " + xhr.statusText);
             }
             else {
-                $('#datetimepicker1').datetimepicker({
-                    format: 'MM/DD/YYYY'
+                // Datepicker
+                $("#datepicker").datepicker({
+                    format: 'LT',
+                    autoclose: "true"
                 });
 
                 // Set click listener for button to add second plantingstock
@@ -74,11 +61,13 @@ function loadFormRemainder(varietyId, varietyName) {
 
                 // Planting Stock 1 Variety
                 fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
+
+                showSpinner("variety-dropdown");
             }
         });
 }
 
-function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
+function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {
     // Display error if user tries to search for variety before selecting crop
     let crop = document.getElementsByName("CropId")[0];
     let cropText = crop.options[crop.selectedIndex].text;
@@ -110,13 +99,13 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
             if (res.length === 0) {
                 $("#varAlert").modal('show');
                 // If this is the first variety, then load the rest of the form.
-                window[selectVarietyCallback](-1, varietyName);
+                window[selectVarietyCallback](-1, varietyName, remainderFolder, remainderName);
             }
             // Populate dropdown with list of varieties
             res.forEach((el) => {
                 vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
                 document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
-                    window[selectVarietyCallback](el.varOffId, el.varOffName);
+                    window[selectVarietyCallback](el.varOffId, el.varOffName, remainderFolder, remainderName);
                 });
             })
         },
@@ -126,12 +115,18 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {
     });
 }
 
-function selectFirstVarietyFormRemainder(varietyId, varietyName) {
+function selectFirstVariety(varietyId, varietyName) {
     // Original variety
     fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-    loadFormRemainder(varietyId, varietyName);
     // Planting Stock 1 Variety
     fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
+    showSpinner("variety-dropdown");
+}
+
+function selectFirstVarietyFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
+    // Original variety
+    fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
+    loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName);
 }
 
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
@@ -173,7 +168,7 @@ function addNewFieldHistory(e, appTypeId) {
                     // Hide the section
                     document.getElementById("fh-entry-" + idToRemove).classList.add("hidden");
                     // Mark this entry as unused
-                    if (fhEntryCount === 3) {
+                    if (fhEntryCount === maxFieldHistories) {
                         // Re-enable button to add new entry
                         document.getElementById("add-fieldhistory").disabled = false;
                     }
@@ -184,8 +179,7 @@ function addNewFieldHistory(e, appTypeId) {
                 }
                 fhEntryCount++;
             }
-            // TODO: change to pull from model's MaxFieldHistoryEntries property instead of using "3"
-            if (fhEntryCount === 3) {
+            if (fhEntryCount === maxFieldHistories) {
                 document.getElementById("add-fieldhistory").disabled = true;
             }
         });
@@ -248,6 +242,10 @@ function addSecondPs(e) {
         });
 }
 
+// Click handler for removing the second planting stocks record
 function removeSecondPSEntry() {
+    secondPsRendered = false;
+    document.getElementById("add-second-ps").disabled = false;
     $("#second-ps").empty();
-}
+    return false;
+};

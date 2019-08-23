@@ -29,6 +29,14 @@ html {
   display: none;
 }
 
+#calendar-btn:hover {
+  cursor: pointer;
+}
+
+.input-validation-error {
+  border-color: #dc3545;
+}
+
 .rounded-section {
   border-radius: .8em;
   background: #dbdbdb;
@@ -109,8 +117,8 @@ button.accept-policy {
 }
 
 .top-right-btn {
-    height: 37px;
-    width: auto;
+    height: 2.5rem;
+    width: 2.5rem;
     position: absolute;
     top: 8px;
     right: 10px;

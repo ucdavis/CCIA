@@ -1,29 +1,27 @@
 @model MasterApplicationViewModel
 
-<section class="rounded-section light-blue pos-rel">
-    <button type="button" id="remove-ps2" onclick="removeSecondPSEntry();" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this planting stock record">
-        <i id="remove-ps2" class="fas fa-times"></i>
-    </button>    
-    <div class="row" id="second-ps-first-row">
+<section class="rounded-section light-grey">
+    <div class="row">
         <div class="form-group col">
-            @{ ViewData["varietyName"] = "AppSpecificPlantingStocks[1].PsEnteredVariety"; } 
-            @await Html.PartialAsync("Shared/_VarietySelect")
+            <label for="ps1-variety">@Model.AppViewModel.ApplicationLabels.Ps1Variety<em class="required">•</em>
+            </label>
+            @Html.TextBox("AppSpecificPlantingStocks[0].PsEnteredVariety", "", new { @class="form-control", id="ps1-variety", placeholder=@Model.AppViewModel.ApplicationLabels.Ps1Variety })
+            @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsEnteredVariety", "", new { @class = "text-danger" })
         </div>
-        @Html.ValidationMessage("AppSpecificPlantingStocks[1].PsEnteredVariety", "", new { @class = "text-danger" })
         <div class="form-group col">
-            <label for="cert-lot-num">Certification and Lot Number<em class="required">•</em></label>
-            @Html.TextBox("AppSpecificPlantingStocks[1].PsCertNum", "", new { @class="form-control", id="cert-lot-num", placeholder="Certification and Lot Number" })
-            @Html.ValidationMessage("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+            <label for="cert-lot-num">@Model.AppViewModel.ApplicationLabels.PsCertNum<em class="required">•</em></label>
+            @Html.TextBox("AppSpecificPlantingStocks[0].PsCertNum", "", new { @class="form-control", id="cert-lot-num", placeholder=@Model.AppViewModel.ApplicationLabels.PsCertNum })
+            @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsCertNum", "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="row">
         <div class="col">
             <div class="form-group">
-                @{ ViewBag.name = "AppSpecificPlantingStocks[1].PsClass"; }
+                @{ ViewBag.name = "AppSpecificPlantingStocks[0].PsClass"; }
                 <label>Class Planted</label><em class="required">•</em>
                 @await Html.PartialAsync("Shared/_ClassDropdown")
-                @Html.ValidationMessage("AppSpecificPlantingStocks[1].PsClass", "", new { @class = "text-danger" })
+                @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsClass", "", new { @class = "text-danger" })
             </div>
         </div>
         <!-- Potato app doesn't have pounds planted field -->
@@ -37,8 +35,8 @@
                     }
                     <em class="required">•</em>
                 </label>
-                @Html.TextBox("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class="form-control", id="pounds-planted", placeholder="Pounds Planted" })
-                @Html.ValidationMessage("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+                @Html.TextBox("AppSpecificPlantingStocks[0].PoundsPlanted", "", new { @class="form-control", id="pounds-planted", placeholder="Pounds Planted" })
+                @Html.ValidationMessage("AppSpecificPlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
             </div>
         }
     </div>
@@ -53,21 +51,21 @@
                         <text>or Breeder Letter</text>
                     }    
                     Was Issued</label>
-                @{ViewBag.name = "AppSpecificPlantingStocks[1].StateCountryTagIssued";}
+                @{ViewBag.name = "AppSpecificPlantingStocks[0].StateCountryTagIssued";}
                 @await Html.PartialAsync("Shared/_StateCountryDropdown")
         </div>
         }
         <div class="form-group col">
             <label>State/Country Where PS Was Grown</label>
-            @{ViewBag.name = "AppSpecificPlantingStocks[1].StateCountryGrown";}
+            @{ViewBag.name = "AppSpecificPlantingStocks[0].StateCountryGrown";}
             @await Html.PartialAsync("Shared/_StateCountryDropdown")
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-12">
+        <div class="form-group col">
             <label for="seed-purchased-from">Seed purchased/acquired from</label>
-            @Html.TextBox("AppSpecificPlantingStocks[1].SeedPurchasedFrom", "", new { @class="form-control", id="seed-purchased-from", placeholder="Seed purchased/acquired from" })
-            @Html.ValidationMessage("AppSpecificPlantingStocks[1].SeedPurchasedFrom", "", new { @class = "text-danger"})
+            @Html.TextBox("AppSpecificPlantingStocks[0].SeedPurchasedFrom", "", new { @class="form-control", id="seed-purchased-from", placeholder="Seed purchased/acquired from" })
+            @Html.ValidationMessage("AppSpecificPlantingStocks[0].SeedPurchasedFrom", "", new { @class = "text-danger"})
         </div>
         <!-- Hemp -->
         @if(Model.AppViewModel.AppTypeId == ApplicationViewModel.HempCropId)
@@ -79,5 +77,4 @@
             </div>
         }
     </div>
-    @Html.TextBox("AppSpecificPlantingStocks[1].OfficialVarietyId", "", new { type="hidden", id="ps2-variety-id", name="SelectedVarietyId" })
 </section>
