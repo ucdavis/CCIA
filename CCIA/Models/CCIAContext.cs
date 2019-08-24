@@ -53,7 +53,7 @@ namespace CCIA.Models
         public virtual DbSet<Rates> Rates { get; set; }
         public virtual DbSet<SeedsApplications> SeedsApplications { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
-        public virtual DbSet<SxLabResults> SxLabResults { get; set; }
+        public virtual DbSet<SampleLabResults> SxLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
@@ -2727,7 +2727,7 @@ namespace CCIA.Models
                     .HasMaxLength(250);
             });
 
-            modelBuilder.Entity<SxLabResults>(entity =>
+            modelBuilder.Entity<SampleLabResults>(entity =>
             {
                 entity.HasKey(e => e.SeedsId)
                     .ForSqlServerIsClustered(false);

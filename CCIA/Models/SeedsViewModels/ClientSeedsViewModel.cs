@@ -10,7 +10,7 @@ namespace CCIA.Models.SeedsViewModels
     public class ClientSeedsViewModel
     {
         public Seeds seed { get; set; }
-        public SxLabResults labResults { get; set; }
+        public SampleLabResults labResults { get; set; }
 
 
         public static async Task<ClientSeedsViewModel> Create(CCIAContext _dbContext, int orgId, int sid)

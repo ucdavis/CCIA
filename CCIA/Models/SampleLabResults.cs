@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
-    public partial class SxLabResults
+    public partial class SampleLabResults
     {
         public int SeedsId { get; set; }
         public DateTime? DateComplete { get; set; }

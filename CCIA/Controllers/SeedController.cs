@@ -201,7 +201,7 @@ namespace CCIA.Controllers
                 await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
 
-                var labresults = new SxLabResults();
+                var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
                 await _dbContext.SxLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
@@ -299,7 +299,7 @@ namespace CCIA.Controllers
                 await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
 
-                var labresults = new SxLabResults();
+                var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
                 await _dbContext.SxLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
@@ -378,7 +378,7 @@ namespace CCIA.Controllers
                 await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
 
-                var labresults = new SxLabResults();
+                var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
                 await _dbContext.SxLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();

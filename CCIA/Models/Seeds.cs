@@ -89,7 +89,7 @@ namespace CCIA.Models
         public List<SeedsApplications>   SeedsApplications { get; set; }
 
         [ForeignKey("Id")]
-        public SxLabResults LabResults { get; set; }
+        public SampleLabResults LabResults { get; set; }
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
