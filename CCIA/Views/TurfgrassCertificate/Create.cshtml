@@ -5,10 +5,17 @@
 }
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>Create New Certificate: @Model.application.ApplicantOrganization.OrgName</h2>
-    </div>
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h2>Turfgrass Certificates: @Model.application.ApplicantOrganization.OrgName</h2>
+        </div>
+        <div class="card-body">
+            <h3>Create New Certificate</h3>
+        </div>
+    </div>  
 </div>
+
+<br>
 
 <div asp-validation-summary="All" class="row">
     <div class="col-md-6">
@@ -33,7 +40,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.HarvestDate">Harvest Date</label>
-                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.HarvestDate"/>
+                    <input required class="col-sm-9 form-control" type="date" asp-for="TurfgrassCertificates.HarvestDate" value=""/>
                     <span asp-validation-for="TurfgrassCertificates.HarvestDate" class="text-danger"></span>
                 </div>
 

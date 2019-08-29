@@ -5,14 +5,16 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card" style="width: 100%;">
+    <div class="card-header">
         <h2>@Model.Name</h2>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Back to My Customers</a>
     </div>
 </div>
+
+<br>
 
 <div class="row">
     <div class="col-md-12">

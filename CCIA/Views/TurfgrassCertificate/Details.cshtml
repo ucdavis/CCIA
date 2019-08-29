@@ -5,13 +5,17 @@
 }
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>Turfgrass Certificates: @Model.application.ApplicantOrganization.OrgName</h2>
-    </div>
-    <div class="panel-body">
-        <a class="btn btn-primary" asp-action="Index" asp-controller="TurfgrassCertificate" asp-route-certYear="@Model.application.CertYear">Back to Turfgrass Certificates</a>
-    </div>
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h2>Turfgrass Certificates: @Model.application.ApplicantOrganization.OrgName</h2>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary" asp-action="Index" asp-controller="TurfgrassCertificate" asp-route-certYear="@Model.application.CertYear">Back to Turfgrass Certificates</a>
+        </div>
+    </div>  
 </div>
+
+<br>
 
 <div class="row">
     <div class="col-md-12">
@@ -93,7 +97,14 @@
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label" asp-for="application.DatePlanted">Date Planted</label>
-                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.DatePlanted">
+
+                    @{
+                        var date = Model.application.DatePlanted.Value;
+                        var dateOnly = date.Month + "/" + date.Day + "/" + date.Year;
+                    }
+
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.DatePlanted" value="@dateOnly">
+
                 </div>
             </div>
 
@@ -119,13 +130,16 @@
         
             @foreach (var app in Model.application.TurfgrassCertificates)
             {
+                var harvestDate = app.HarvestDate;
+                var harvestDateOnly = harvestDate.Month + "/" + harvestDate.Day + "/" + harvestDate.Year;
+
             <tr>
                 <td>@app.Id</td>
                 <td>@app.Sprigs</td>
                 <td>@app.Sod</td>
-                <td>@app.BillingInvoice</td>               
-                <td>@app.HarvestDate</td>
-                <td><a asp-action="Details" asp-controller="TurfgrassCertificate" asp-route-id="@app.Id">Certificate</a></td>
+                <td>@app.BillingInvoice</td>  
+                <td>@harvestDateOnly</td>
+                <td><a asp-action="Certificate" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id" asp-route-certId="@app.Id">Certificate</a></td>
             </tr>
             }
         </tbody>

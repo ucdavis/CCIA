@@ -58,11 +58,44 @@ namespace CCIA.Controllers
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost(int id)
+        public async Task<IActionResult> CreatePost(int id, TurfgrassCertificatesViewModel model)
         {
-            
+            Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)                
+                    .Include(a => a.GrowerOrganization)                
+                    .Include(a => a.County)
+                    .Include(a => a.Variety)
+                    .ThenInclude(v => v.Crop)
+                    .Include(a => a.ClassProduced)
+                    .Include(a => a.TurfgrassCertificates)
+                    .FirstOrDefaultAsync();
 
-            return RedirectToAction(nameof(Index));
+            TurfgrassCertificates turfgrassCertificates = new TurfgrassCertificates();
+            turfgrassCertificates.Id = model.TurfgrassCertificates.Id;
+            turfgrassCertificates.AppId = model.TurfgrassCertificates.AppId;
+            turfgrassCertificates.Sprigs = model.TurfgrassCertificates.Sprigs;
+            turfgrassCertificates.Sod = model.TurfgrassCertificates.Sod;
+            turfgrassCertificates.BillingInvoice = model.TurfgrassCertificates.BillingInvoice;
+            turfgrassCertificates.HarvestDate = model.TurfgrassCertificates.HarvestDate;
+            turfgrassCertificates.HarvestNumber = model.TurfgrassCertificates.HarvestNumber;
+
+            application.TurfgrassCertificates.Add(turfgrassCertificates);
+
+            // check ModelState before saving the changes
+            if(ModelState.IsValid) {
+                await _dbContext.SaveChangesAsync();
+                Message = "Certificate Created Successfully";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        public async Task<IActionResult> Certificate(int id, int certId) {
+            var model = await TurfgrassCertificatesViewModel.Certificate(_dbContext, id, certId);
+
+            return View(model);
         }
 
         // GET: Application/Edit/5
