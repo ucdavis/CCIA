@@ -53,7 +53,7 @@ namespace CCIA.Models
         public virtual DbSet<Rates> Rates { get; set; }
         public virtual DbSet<SeedsApplications> SeedsApplications { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
-        public virtual DbSet<SampleLabResults> SxLabResults { get; set; }
+        public virtual DbSet<SampleLabResults> SampleLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
@@ -2917,7 +2917,7 @@ namespace CCIA.Models
                     .HasColumnName("purity_results")
                     .HasColumnType("char(1)");
 
-                entity.Property(e => e.SampleComments)
+                entity.Property(e => e.Comments)
                     .HasColumnName("sample_comments")
                     .HasMaxLength(500)
                     .IsUnicode(false);

@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CCIA.Helpers;
 using CCIA.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +16,11 @@ namespace CCIA.Controllers
             _dbContext = dbContext;
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _dbContext.SampleLabResults.Where(s => s.SeedsId == id).FirstOrDefaultAsync();
+            return View(model);
+        }       
 
     }
 }

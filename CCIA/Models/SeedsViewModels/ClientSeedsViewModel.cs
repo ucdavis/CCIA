@@ -30,7 +30,7 @@ namespace CCIA.Models.SeedsViewModels
                     .Include(s => s.Application)
                     .ThenInclude(a => a.Crop)
                     .FirstOrDefaultAsync(),
-                labResults = await _dbContext.SxLabResults.Where(l => l.SeedsId == sid)                    
+                labResults = await _dbContext.SampleLabResults.Where(l => l.SeedsId == sid)                    
                     .Include(r => r.LabOrganization)
                     .FirstOrDefaultAsync(),
             };

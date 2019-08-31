@@ -35,19 +35,23 @@ namespace CCIA.Models
         public decimal? PurityPercent { get; set; }
         public string PurityComments { get; set; }
         public string PurityResults { get; set; }
-        public string SampleComments { get; set; }
+        [Display(Name = "Comments")]
+        public string Comments { get; set; }
         [Display(Name = "Weed Seed")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? WeedSeedPercent { get; set; }
         public string WeedSeedComments { get; set; }
         public int? WeedSeedCount { get; set; }
+        [Display(Name = "Noxious Grams")]
         public decimal? NoxiousGrams { get; set; }
         public string NoxiousComments { get; set; }
         [Display(Name = "Noxious")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? NoxiousPercent { get; set; }
         public int? NoxiousCount { get; set; }
+        [Display(Name = "Bushel Weight")]
         public decimal? BushelWeight { get; set; }
+        [Display(Name = "Purity Grams")]
         public decimal? PurityGrams { get; set; }
         public bool? CciaGerm { get; set; }
         [Display(Name = "Hard Seed")]
@@ -65,7 +69,10 @@ namespace CCIA.Models
         public string DataEntryUser { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+        [Display(Name = "Lab Date")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? PrivateLabDate { get; set; }
+        [Display(Name = "Lab Name")]
         public string PrivateLabName { get; set; }
 
         [ForeignKey("PrivateLabId")]
@@ -88,6 +95,27 @@ namespace CCIA.Models
         [Display(Name = "Chewing Insect Damage")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? ChewingInsectDamagePercent { get; set; }
+
+        [Display(Name = "Total Germination")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        public decimal TotalGermination { 
+            get
+            {
+                if(GermHardSeed.HasValue && GermPercent.HasValue)
+                {
+                    return GermHardSeed.Value + GermPercent.Value;
+                }
+                if(GermPercent.HasValue)
+                {
+                    return GermPercent.Value;
+                }
+                if(GermHardSeed.HasValue)
+                {
+                    return GermHardSeed.Value;
+                }
+                return 0;
+            } 
+        }
 
 
     }

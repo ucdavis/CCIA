@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SeedsViewModels;
@@ -203,7 +202,7 @@ namespace CCIA.Controllers
 
                 var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
-                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SampleLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
 
                 Message = "Certified Seed Lot created";
@@ -301,7 +300,7 @@ namespace CCIA.Controllers
 
                 var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
-                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SampleLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
 
                 Message = "Certified Seed Lot created";
@@ -380,7 +379,7 @@ namespace CCIA.Controllers
 
                 var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
-                await _dbContext.SxLabResults.AddAsync(labresults);
+                await _dbContext.SampleLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
 
                 Message = "Certified Seed Lot created";
