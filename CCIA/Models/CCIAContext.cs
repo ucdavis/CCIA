@@ -77,6 +77,8 @@ namespace CCIA.Models
 
         public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
 
+        public virtual DbSet<Standards>  Standards { get; set; }
+
         public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
         public virtual DbSet<MyCustomers> MyCustomers { get; set; }
@@ -124,7 +126,6 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tags_changes'. Please see the warning messages.
         
-        // Unable to generate entity type for table 'dbo.standards'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_beta_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_lists'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.field_results'. Please see the warning messages.
@@ -252,6 +253,37 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
                 
                 entity.HasOne(d => d.Application);
+
+            });
+
+            modelBuilder.Entity<Standards>(entity => {
+                entity.ToTable("standards");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("std_id");
+
+                entity.Property(e => e.Name).HasColumnName("std_name");
+
+                entity.Property(e => e.Category).HasColumnName("std_category");
+
+                entity.Property(e => e.Description).HasColumnName("std_desc");
+
+                entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.Property(e => e.MinValue).HasColumnName("min_value");
+
+                entity.Property(e => e.MaxValue).HasColumnName("max_value");
+
+                entity.Property(e => e.ValueType).HasColumnName("value_type");
+
+                entity.Property(e => e.TextValue).HasColumnName("text_value");
+
+                entity.Property(e => e.NegativeMessage).HasColumnName("neg_msg");
+
+                entity.Property(e => e.PositiveMessage).HasColumnName("pos_msg");
+
+                entity.Property(e => e.Program).HasColumnName("program");
 
             });
 
@@ -2272,6 +2304,9 @@ namespace CCIA.Models
                 entity.Property(e => e.CropId).HasColumnName("crop_id");
 
                 entity.Property(e => e.StdId).HasColumnName("std_id");
+
+                entity.HasOne(e => e.Crops).WithMany(c => c.CropStandards).HasForeignKey(e => e.CropId);
+                entity.HasOne(e => e.Standards).WithMany(s => s.CropStandards).HasForeignKey(e => e.StdId);
             });
 
             modelBuilder.Entity<DistrictCounty>(entity =>
@@ -2950,6 +2985,7 @@ namespace CCIA.Models
 
 
             });
+            
 
             modelBuilder.Entity<VarFamily>(entity =>
             {
