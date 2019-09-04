@@ -1,7 +1,8 @@
 @model CCIA.Models.TurfgrassCertificatesViewModel
 
 @{
-    ViewData["Title"] = "Certificate";
+    Layout = null;
+    ViewData["Title"] = "Turfgrass Certificate";
 }
 
 <form method="post">
@@ -46,7 +47,7 @@
                                             
                         <br />
 
-                        Harvest Date: @Model.TurfgrassCertificates.HarvestDate
+                        Harvest Date: @Model.TurfgrassCertificates.HarvestDate.ToString("MM/dd/yyyy")
                     </td>
                 </tr>
 

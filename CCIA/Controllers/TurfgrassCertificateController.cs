@@ -60,6 +60,18 @@ namespace CCIA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(int id, TurfgrassCertificatesViewModel model)
         {
+
+            if (model.TurfgrassCertificates.Sprigs == null)
+                model.TurfgrassCertificates.Sprigs = 0;
+
+            if (model.TurfgrassCertificates.Sod == null)
+                model.TurfgrassCertificates.Sod = 0;
+
+            if (model.TurfgrassCertificates.Sprigs == 0 && model.TurfgrassCertificates.Sod == 0) {
+                ErrorMessage = "Certificate Sprigs or Sods needs a value.";
+                return RedirectToAction(nameof(Create), new { id });
+            }
+
             Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)                
                     .Include(a => a.GrowerOrganization)                
                     .Include(a => a.County)
@@ -96,52 +108,6 @@ namespace CCIA.Controllers
             var model = await TurfgrassCertificatesViewModel.Certificate(_dbContext, id, certId);
 
             return View(model);
-        }
-
-        // GET: Application/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

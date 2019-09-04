@@ -7,7 +7,7 @@
 <div class="panel panel-default">
     <div class="card" style="width: 100%;">
         <div class="card-header">
-            <h2>Turfgrass Certificates: @Model.application.ApplicantOrganization.OrgName</h2>
+            <h2>Turfgrass Certificates</h2>
         </div>
         <div class="card-body">
             <h3>Create New Certificate</h3>
@@ -22,32 +22,52 @@
         <form asp-action="Create" method="post">
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.Sprigs">Sprigs (bushels)</label>
-                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sprigs">
+                    <input class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sprigs">
                     <span asp-validation-for="TurfgrassCertificates.Sprigs" class="text-danger"></span>
                 </div>                
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.Sod">Sod (sq. ft.)</label>
-                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sod"/>
+                    <input class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.Sod"/>
                     <span asp-validation-for="TurfgrassCertificates.Sod" class="text-danger"></span>
                 </div>               
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.BillingInvoice">Billing Invoice</label>
-                    <input class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.BillingInvoice"/>
+                    <input required class="col-sm-9 form-control" type="text" asp-for="TurfgrassCertificates.BillingInvoice"/>
                     <span asp-validation-for="TurfgrassCertificates.BillingInvoice" class="text-danger"></span>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row has-feedback">
                     <label class="col-sm-3 col-form-label" asp-for="TurfgrassCertificates.HarvestDate">Harvest Date</label>
-                    <input required class="col-sm-9 form-control" type="date" asp-for="TurfgrassCertificates.HarvestDate" value=""/>
+
+                    <div class="input-group col-sm-9">
+                        <input required class="form-control datepicker" type="text" asp-for="TurfgrassCertificates.HarvestDate" placeholder="MM/DD/YYYY" value="@DateTime.Now.ToString("MM/dd/yyyy")"/>
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div>
+
                     <span asp-validation-for="TurfgrassCertificates.HarvestDate" class="text-danger"></span>
                 </div>
 
                  <div> 
-                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.application.Id">Save</button>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.application.Id">Cancel</a>
+                    <button class="btn btn-primary" type="submit" asp-action="Create" asp-route-id="@Model.Id">Save</button>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
                 </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            
+            format: 'LT',
+            autoclose: "true",
+        });
+    </script>
+}

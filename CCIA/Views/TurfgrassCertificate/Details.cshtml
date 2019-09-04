@@ -97,13 +97,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label" asp-for="application.DatePlanted">Date Planted</label>
-
-                    @{
-                        var date = Model.application.DatePlanted.Value;
-                        var dateOnly = date.Month + "/" + date.Day + "/" + date.Year;
-                    }
-
-                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.DatePlanted" value="@dateOnly">
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.DatePlanted" value="@Model.application.DatePlanted.Value.ToString("MM/dd/yyyy")">
 
                 </div>
             </div>
@@ -130,17 +124,14 @@
         
             @foreach (var app in Model.application.TurfgrassCertificates)
             {
-                var harvestDate = app.HarvestDate;
-                var harvestDateOnly = harvestDate.Month + "/" + harvestDate.Day + "/" + harvestDate.Year;
-
-            <tr>
-                <td>@app.Id</td>
-                <td>@app.Sprigs</td>
-                <td>@app.Sod</td>
-                <td>@app.BillingInvoice</td>  
-                <td>@harvestDateOnly</td>
-                <td><a asp-action="Certificate" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id" asp-route-certId="@app.Id">Certificate</a></td>
-            </tr>
+                <tr>
+                    <td>@app.Id</td>
+                    <td>@app.Sprigs</td>
+                    <td>@app.Sod</td>
+                    <td>@app.BillingInvoice</td>  
+                    <td>@app.HarvestDate.ToString("MM/dd/yyyy")</td>
+                    <td><a asp-action="Certificate" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id" asp-route-certId="@app.Id">Certificate</a></td>
+                </tr>
             }
         </tbody>
     </table>
