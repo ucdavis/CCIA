@@ -15,9 +15,11 @@ namespace CCIA.Models.SeedsViewModels
 
         public static async Task<ClientSeedsViewModel> Create(CCIAContext _dbContext, int orgId, int sid)
         {
-            var viewModel = new ClientSeedsViewModel
+
+            return new ClientSeedsViewModel
             {
-                seed = await _dbContext.Seeds.Where(s => s.Id == sid && s.ConditionerId == orgId).Include(a => a.ApplicantOrganization)
+                seed = await _dbContext.Seeds.Where(s => s.Id == sid && s.ConditionerId == orgId)
+                    .Include(a => a.ApplicantOrganization)
                     .Include(c => c.ConditionerOrganization)
                     .Include(c => c.AppTypeTrans)
                     .Include(v => v.Variety)
@@ -30,12 +32,10 @@ namespace CCIA.Models.SeedsViewModels
                     .Include(s => s.Application)
                     .ThenInclude(a => a.Crop)
                     .FirstOrDefaultAsync(),
-                labResults = await _dbContext.SampleLabResults.Where(l => l.SeedsId == sid)                    
+                labResults = await _dbContext.SampleLabResults.Where(l => l.SeedsId == sid)
                     .Include(r => r.LabOrganization)
                     .FirstOrDefaultAsync(),
             };
-
-            return viewModel;
         }
     }
 }

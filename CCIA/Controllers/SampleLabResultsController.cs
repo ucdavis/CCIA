@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CCIA.Models.SampleLabResultsViewModel;
+
 
 namespace CCIA.Controllers
 {
@@ -18,7 +20,7 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _dbContext.SampleLabResults.Where(s => s.SeedsId == id).FirstOrDefaultAsync();
+            var model = await SampleLabResultsViewModel.Create(_dbContext, id);
             return View(model);
         }       
 
