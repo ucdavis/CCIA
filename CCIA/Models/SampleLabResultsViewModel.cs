@@ -12,8 +12,6 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public SampleLabResults LabResults { get; set; }
         public CropStandardsList  StandardsList { get; set; }
 
-
-
         public static async Task<SampleLabResultsViewModel> Create(CCIAContext _dbContext, int sid)
         {   
             var returnList = new CropStandardsList();
@@ -43,8 +41,6 @@ namespace CCIA.Models.SampleLabResultsViewModel
                     .Include(c => c.Standards)
                     .ToListAsync();
 
-
-
                 if(cs.Any(c => c.Standards.Name == "max_foreign_material")){
                     returnList.ShowBeans = true;
                 }
@@ -61,10 +57,7 @@ namespace CCIA.Models.SampleLabResultsViewModel
                        returnList.Assay2Name = stand.Standards.TextValue;
                    }                  
                } 
-            }
-
-
-          
+            }          
 
             return new SampleLabResultsViewModel
             {
