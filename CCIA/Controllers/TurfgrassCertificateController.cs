@@ -56,9 +56,7 @@ namespace CCIA.Controllers
 
         // POST: Application/Create
         [HttpPost]
-        [ActionName("Create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost(int id, TurfgrassCertificatesViewModel model)
+        public async Task<IActionResult> Create(int id, TurfgrassCertificatesViewModel model)
         {
 
             if (model.TurfgrassCertificates.Sprigs == null)
@@ -72,36 +70,42 @@ namespace CCIA.Controllers
                 return RedirectToAction(nameof(Create), new { id });
             }
 
-            Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)                
-                    .Include(a => a.GrowerOrganization)                
-                    .Include(a => a.County)
-                    .Include(a => a.Variety)
-                    .ThenInclude(v => v.Crop)
-                    .Include(a => a.ClassProduced)
+            Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)
                     .Include(a => a.TurfgrassCertificates)
                     .FirstOrDefaultAsync();
 
-            TurfgrassCertificates turfgrassCertificates = new TurfgrassCertificates();
-            turfgrassCertificates.Id = model.TurfgrassCertificates.Id;
-            turfgrassCertificates.AppId = model.TurfgrassCertificates.AppId;
-            turfgrassCertificates.Sprigs = model.TurfgrassCertificates.Sprigs;
-            turfgrassCertificates.Sod = model.TurfgrassCertificates.Sod;
-            turfgrassCertificates.BillingInvoice = model.TurfgrassCertificates.BillingInvoice;
-            turfgrassCertificates.HarvestDate = model.TurfgrassCertificates.HarvestDate;
-            turfgrassCertificates.HarvestNumber = model.TurfgrassCertificates.HarvestNumber;
+            if (application != null) {
 
-            application.TurfgrassCertificates.Add(turfgrassCertificates);
+                TurfgrassCertificates turfgrassCertificates = new TurfgrassCertificates();
+                turfgrassCertificates.Id = model.TurfgrassCertificates.Id;
+                turfgrassCertificates.AppId = model.TurfgrassCertificates.AppId;
+                turfgrassCertificates.Sprigs = model.TurfgrassCertificates.Sprigs;
+                turfgrassCertificates.Sod = model.TurfgrassCertificates.Sod;
+                turfgrassCertificates.BillingInvoice = model.TurfgrassCertificates.BillingInvoice;
+                turfgrassCertificates.HarvestDate = model.TurfgrassCertificates.HarvestDate;
+                turfgrassCertificates.HarvestNumber = model.TurfgrassCertificates.HarvestNumber;
 
-            // check ModelState before saving the changes
-            if(ModelState.IsValid) {
-                await _dbContext.SaveChangesAsync();
-                Message = "Certificate Created Successfully";
+                application.TurfgrassCertificates.Add(turfgrassCertificates);
+
+                // check ModelState before saving the changes
+                if(ModelState.IsValid) {
+                    await _dbContext.SaveChangesAsync();
+                    Message = "Certificate Created Successfully";
+                } else {
+                    ErrorMessage = "Something went wrong.";
+                    return RedirectToAction(nameof(Create), new { id });
+                }
+
+                return RedirectToAction(nameof(Details), new { id });
             } else {
-                ErrorMessage = "Something went wrong.";
-                return View(model);
-            }
+                
+                ErrorMessage = "Application not found.";
 
-            return RedirectToAction(nameof(Details), new { id });
+                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+                var certYear = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();
+            
+                return RedirectToAction(nameof(Index), new { certYear });
+            }
         }
 
         public async Task<IActionResult> Certificate(int id, int certId) {

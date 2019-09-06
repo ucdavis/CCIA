@@ -5,155 +5,167 @@
     ViewData["Title"] = "Turfgrass Certificate";
 }
 
-<form method="post">
-    <div class="row">
-        <div class="col-md-4" style="padding-right: 0%">
-            <table width="100%" border="1">
-                <tr style="border-style: double;">
-                    @{
-                        var imgDisclaimer = "../../images/turfgrass_" + (Model.application.ClassProduced.ClassProducedTrans).ToLower() + "_disclaimer.jpg";
-                    }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CCIA</title>    
+    <link rel="stylesheet" href="~/css/printStyle.css" />    
+</head>
+<body>
+    
+            <table width="100%" cellspacing="0" border="1">
+                <tr>
+                    <td valign="top" width="35%">
+                        <table width="100%" border="1" style="font-size:12px">
+                            <tr style="border-style: double;">
+                                @{
+                                    var imgDisclaimer = "../../images/turfgrass_" + (Model.application.ClassProduced.ClassProducedTrans).ToLower() + "_disclaimer.jpg";
+                                }
 
-                    <td><img width="100%" src="@imgDisclaimer"/></td>             
-                </tr>
+                                <td><img width="100%" src="@imgDisclaimer"/></td>             
+                            </tr>
 
-                <tr style="border-style: double;">
-                    <td style="padding-left:8px">
-                        Kind: @Model.application.Crop.Name
+                            <tr style="border-style: double;">
+                                <td style="padding-left:8px">
+                                    Kind: @Model.application.Crop.Name
 
-                        <br/>
+                                    <br/>
 
-                        Variety/Brand: @Model.application.EnteredVariety
+                                    Variety/Brand: @Model.application.EnteredVariety
 
-                        <br/>
+                                    <br/>
 
-                        Quantity:
+                                    Quantity:
 
-                        <br/>
+                                    <br/>
 
-                        Sprigs (bushels): @Model.TurfgrassCertificates.Sprigs
+                                    Sprigs (bushels): @Model.TurfgrassCertificates.Sprigs
 
-                        <br/>
+                                    <br/>
 
-                        Sod (sq. ft.): @Model.TurfgrassCertificates.Sod                                            
-                        
-                        <br />
+                                    Sod (sq. ft.): @Model.TurfgrassCertificates.Sod                                            
+                                    
+                                    <br />
 
-                        Billing Invoice: @Model.TurfgrassCertificates.BillingInvoice
+                                    Billing Invoice: @Model.TurfgrassCertificates.BillingInvoice
 
-                        <br />
+                                    <br />
 
-                        Field #: @Model.application.FieldName
-                                            
-                        <br />
+                                    Field #: @Model.application.FieldName
+                                                        
+                                    <br />
 
-                        Harvest Date: @Model.TurfgrassCertificates.HarvestDate.ToString("MM/dd/yyyy")
+                                    Harvest Date: @Html.DisplayFor(model => model.TurfgrassCertificates.HarvestDate)
+                                </td>
+                            </tr>
+
+                            <tr style="border-style: double;">
+                                <td style="padding-left:8px">
+                                    Grower Name & Address:
+
+                                    <br/>
+
+                                    @Model.application.GrowerOrganization.OrgName
+
+                                    <br/>
+
+                                    @Model.application.GrowerOrganization.Address.Address1
+
+                                    <br/>
+
+                                    @Model.application.GrowerOrganization.Address.City
+
+                                    <br/>
+
+                                    @(Model.application.GrowerOrganization.Address.StateProvince.StateProvinceCode) @(Model.application.GrowerOrganization.Address.PostalCode)
+                                </td>
+                            </tr>
+                        </table>
                     </td>
-                </tr>
 
-                <tr style="border-style: double;">
-                    <td style="padding-left:8px">
-                        Grower Name & Address:
+                    <td valign="top">
+                        <table width="100%" border="1">
+                            <tr style="border-style: double;">
+                                @{
+                                    var imgHeader = "../../images/turfgrass_" + (Model.application.ClassProduced.ClassProducedTrans).ToLower() + "_header.jpg";
+                                }
 
-                        <br/>
+                                <td><img width="100%" src="@imgHeader"/></td>       
+                            </tr>
 
-                        @Model.application.GrowerOrganization.OrgName
+                            <tr style="border-style: double;">
+                                <td style="padding-left:8px; display:flex;">
+                                    <img src="../../images/ccia-tra.gif" width="18%" align="left"/>
+                                    <span style="font-size: small; height:100%; align-self:center;">
+                                        California Crop Improvement Association, Inc.<br/>
+                                        Parsons Seed Certification Center<br/>
+                                        One Shields Ave.<br/>
+                                        Davis, CA 95616<br/>
+                                        Phone 530-752-0544  Fax 530-752-4735
+                                    </span> 
+                                </td>
+                            </tr>
 
-                        <br/>
+                            <tr style="border-style: double;">
+                                <td style="padding-left:8px">
+                                    <div style="display:flex; flex-direction:row; justify-content:space-around;">
+                                        <b>
+                                            Certification Number: @Model.application.CertNum
+                                        </b>
 
-                        @Model.application.GrowerOrganization.Address.Address1
+                                        <b>
+                                            Harvest #: @Model.TurfgrassCertificates.HarvestNumber
+                                        </b>
 
-                        <br/>
+                                        <b>
+                                            Certificate ID: @Model.TurfgrassCertificates.Id
+                                        </b>
+                                    </div>
+                                </td>
+                            </tr>
 
-                        @Model.application.GrowerOrganization.Address.City
+                            <tr style="border-style: double; font-size:14px" >
+                                <td style="padding-left:8px">
+                                    This grass was grown in accordance with a program designed to promote purity
+                                    by adherence to published standards.<sup>1</sup>
+                                    
+                                    <br/><br/>
 
-                        <br/>
+                                    This certificate must be completed and attached to each bill of lading or invoice
+                                    representing certified sprigs or sod produced in accordance with the California
+                                    Crop Improvement Association rules and regulations for production of
+                                    vegetatively propagated certified turfgrass or Bermuda grass.
+                                    
+                                    <br/><br/>
 
-                        @(Model.application.GrowerOrganization.Address.StateProvince.StateProvinceCode) @(Model.application.GrowerOrganization.Address.PostalCode)
+                                    I certify the information provided is true and meets the California Crop
+                                    Improvement Association requirements for vegetatively/seeded propagated
+                                    turfgrass certification.
+                                    
+                                    <br/><br/>
+
+                                    Authorized Representative of Grower: 
+                                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </u>
+
+                                    <br/><br/>
+                                                                            
+                                    <sup>1</sup>The CCIA Turfgrass Certification Standards are available at http://ccia.ucdavis.edu
+                                </td>
+                            </tr>
+
+                            <tr style="border-style: double;">
+                                <td align="center">
+                                    <b>MEMBER OF ASSOCIATION OF OFFICIAL SEED CERTIFYING AGENCIES</b>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>
-        </div>
-
-        <div class="col-md-8" style="padding-left: 0%">
-            <table width="100%" border="1">
-                <tr style="border-style: double;">
-                    @{
-                        var imgHeader = "../../images/turfgrass_" + (Model.application.ClassProduced.ClassProducedTrans).ToLower() + "_header.jpg";
-                    }
-
-                    <td><img width="100%" src="@imgHeader"/></td>       
-                </tr>
-
-                <tr style="border-style: double;">
-                    <td style="padding-left:8px; display:flex;">
-                        <img src="../../images/ccia-tra.gif" width="18%" align="left"/>
-                        <span style="font-size: small; height:100%; align-self:center;">
-                            California Crop Improvement Association, Inc.<br/>
-                            Parsons Seed Certification Center<br/>
-                            One Shields Ave.<br/>
-                            Davis, CA 95616<br/>
-                            Phone 530-752-0544  Fax 530-752-4735
-                        </span> 
-                    </td>
-                </tr>
-
-                <tr style="border-style: double;">
-                    <td style="padding-left:8px">
-                        <div style="display:flex; flex-direction:row; justify-content:space-around;">
-                            <b>
-                                Certification Number: @Model.application.CertNum
-                            </b>
-
-                            <b>
-                                Harvest #: @Model.TurfgrassCertificates.HarvestNumber
-                            </b>
-
-                            <b>
-                                Certificate ID: @Model.TurfgrassCertificates.Id
-                            </b>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr style="border-style: double;">
-                    <td style="padding-left:8px">
-                        This grass was grown in accordance with a program designed to promote purity
-                        by adherence to published standards.<sup>1</sup>
-                        
-                        <br/><br/>
-
-                        This certificate must be completed and attached to each bill of lading or invoice
-                        representing certified sprigs or sod produced in accordance with the California
-                        Crop Improvement Association rules and regulations for production of
-                        vegetatively propagated certified turfgrass or Bermuda grass.
-                        
-                        <br/><br/>
-
-                        I certify the information provided is true and meets the California Crop
-                        Improvement Association requirements for vegetatively/seeded propagated
-                        turfgrass certification.
-                        
-                        <br/><br/>
-
-                        Authorized Representative of Grower: 
-                        <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </u>
-
-                        <br/><br/>
-                                                                
-                        <sup>1</sup>The CCIA Turfgrass Certification Standards are available at http://ccia.ucdavis.edu
-                    </td>
-                </tr>
-
-                <tr style="border-style: double;">
-                    <td align="center">
-                        <b>MEMBER OF ASSOCIATION OF OFFICIAL SEED CERTIFYING AGENCIES</b>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</form>
+</body>
+</html>

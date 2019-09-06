@@ -17,7 +17,7 @@ namespace CCIA.Models
 
         public string BillingInvoice { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime HarvestDate { get; set; }
 
         public int HarvestNumber { get; set; }
