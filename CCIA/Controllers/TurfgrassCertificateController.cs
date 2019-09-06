@@ -67,7 +67,7 @@ namespace CCIA.Controllers
 
             if (model.TurfgrassCertificates.Sprigs == 0 && model.TurfgrassCertificates.Sod == 0) {
                 ErrorMessage = "Certificate Sprigs or Sods needs a value.";
-                return RedirectToAction(nameof(Create), new { id });
+                return View(model);
             }
 
             Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)
@@ -100,11 +100,7 @@ namespace CCIA.Controllers
             } else {
                 
                 ErrorMessage = "Application not found.";
-
-                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
-                var certYear = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();
-            
-                return RedirectToAction(nameof(Index), new { certYear });
+                return RedirectToAction(nameof(Index));
             }
         }
 
