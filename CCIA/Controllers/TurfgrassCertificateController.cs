@@ -70,6 +70,11 @@ namespace CCIA.Controllers
                 return View(model);
             }
 
+            if (model.TurfgrassCertificates.Sprigs > 0 && model.TurfgrassCertificates.Sod > 0) {
+                ErrorMessage = "Certificate Sprigs and Sods can't both have a value.";
+                return View(model);
+            }
+
             Applications application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)
                     .Include(a => a.TurfgrassCertificates)
                     .FirstOrDefaultAsync();
