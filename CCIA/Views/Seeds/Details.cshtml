@@ -110,6 +110,13 @@
             </div>
         </div> 
         <div class="col-md-5">
+            @if(Model.seed.HasLabs)
+            {
+                <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>                
+            } else
+            {               
+                <a asp-action="Create" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Add Lab Results</a> 
+            }
             @await Html.PartialAsync("../SampleLabResults/_SampleLabResultsDetails.cshtml", Model.labResults)                   
         </div>       
     </div>

@@ -15,20 +15,7 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public static async Task<SampleLabResultsViewModel> Create(CCIAContext _dbContext, int sid)
         {   
             var returnList = new CropStandardsList();
-            var seeds = await _dbContext.Seeds.Where(s => s.Id == sid)
-                    .Include(a => a.ApplicantOrganization)
-                    .Include(c => c.ConditionerOrganization)
-                    .Include(c => c.AppTypeTrans)
-                    .Include(v => v.Variety)
-                    .ThenInclude(v => v.Crop)
-                    .Include(c => c.ClassProduced)
-                    .Include(l => l.LabResults)
-                    .Include(s => s.SeedsApplications)
-                    .ThenInclude(sa => sa.Application)
-                    .ThenInclude(a => a.GrowerOrganization)
-                    .Include(s => s.Application)
-                    .ThenInclude(a => a.Crop)
-                    .FirstOrDefaultAsync();
+            var seeds = await _dbContext.Seeds.Where(s => s.Id == sid).FirstOrDefaultAsync();
             
             if(seeds != null && seeds.OfficialVarietyId != null)
             {
