@@ -4,11 +4,13 @@
     ViewData["Title"] = "Edit";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card" style="width: 100%;">
+    <div class="card-header">
         <h2>@Model.MyCustomer.Name</h2>
     </div>
 </div>
+
+<br>
 
 <div asp-validation-summary="All" class="row">
     <div class="col-md-6">
@@ -28,7 +30,6 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="MyCustomer.Address2"></label>
                     <input class="col-sm-9 form-control" type="text" asp-for="MyCustomer.Address2" placeholder="Apt/Suite #"/>
-                    <span asp-validation-for="MyCustomer.Address2" class="text-danger"></span>
                 </div>
 
                 <div class="form-group row">

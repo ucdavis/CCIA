@@ -63,6 +63,7 @@ namespace CCIA.Models
         public string FieldName { get; set; }
        
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DatePlanted { get; set; }
         [Required]
         public decimal? AcresApplied { get; set; }

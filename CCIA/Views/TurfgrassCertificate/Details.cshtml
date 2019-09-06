@@ -1,0 +1,142 @@
+@model CCIA.Models.TurfgrassCertificatesViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="panel panel-default">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h2>Turfgrass Certificates: @Model.application.ApplicantOrganization.OrgName</h2>
+        </div>
+        <div class="card-body">
+            <a class="btn btn-primary" asp-action="Index" asp-controller="TurfgrassCertificate" asp-route-certYear="@Model.application.CertYear">Back to Turfgrass Certificates</a>
+        </div>
+    </div>  
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div class="col-md-4" style="float:left;">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.Id">App Number</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.Id">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.ApplicantId">Applicant #</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.ApplicantId">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.ApplicantOrganization.OrgName">Applicant</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.ApplicantOrganization.OrgName">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.GrowerId">Grower #</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.ApplicantOrganization.OrgId">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.GrowerOrganization.OrgName">Grower</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.GrowerOrganization.OrgName">
+                </div>
+            </div>
+
+            <div class="col-md-4" style="float:left;"> 
+               <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.Status">Status</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.Status">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.Crop.Name">Crop</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.Crop.Name">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.ClassProduced.ClassProducedTrans">Class Produced</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.ClassProduced.ClassProducedTrans">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.FieldName">Field Name</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.FieldName">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.County.CountyName">County</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.County.CountyName">
+                </div>
+            </div>
+
+            <div class="col-md-4" style="float:left;">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.CertYear">Cert Year</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.CertYear">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.AppType">App Type</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.AppType">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.EnteredVariety">Entered Variety</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.EnteredVariety">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.AcresApplied">Acres Applied</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.AcresApplied">
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label" asp-for="application.DatePlanted">Date Planted</label>
+                    <input disabled class="col-sm-8 form-control-plaintext" type="text" asp-for="application.DatePlanted">
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<br>
+
+<div class="col-lg-12">
+    <h3>Existing Certificates:</h3>
+
+    <table id="table" class="table">
+        <thead>          
+        <th>Certificate #</th>
+        <th>Sprigs</th>
+        <th>Sod</th>
+        <th>Invoice #</th>
+        <th>Harvested</th>
+        <th></th>
+        </thead>
+        <tbody>
+        
+            @foreach (var app in Model.application.TurfgrassCertificates)
+            {
+                <tr>
+                    <td>@app.Id</td>
+                    <td>@app.Sprigs</td>
+                    <td>@app.Sod</td>
+                    <td>@app.BillingInvoice</td>  
+                    <td>@app.HarvestDate.ToString("MM/dd/yyyy")</td>
+                    <td><a asp-action="Certificate" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id" asp-route-certId="@app.Id">Certificate</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <a class="btn btn-primary" asp-action="Create" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id">Create New Certificate</a>
+    </div>
+</div>

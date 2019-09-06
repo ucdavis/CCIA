@@ -5,18 +5,20 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card" style="width: 100%;">
+    <div class="card-header">
         <h2>@Model.Name</h2>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <a class="btn btn-primary" asp-action="Index" asp-controller="MyCustomers">Back to My Customers</a>
     </div>
 </div>
 
+<br>
+
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Delete" method="post">
+        <form method="post">
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="Name"></label>
                     <input disabled class="col-sm-9 form-control-plaintext" type="text" asp-for="Name">
