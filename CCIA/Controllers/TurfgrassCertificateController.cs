@@ -93,7 +93,7 @@ namespace CCIA.Controllers
                     Message = "Certificate Created Successfully";
                 } else {
                     ErrorMessage = "Something went wrong.";
-                    return RedirectToAction(nameof(Create), new { id });
+                    return View(model);
                 }
 
                 return RedirectToAction(nameof(Details), new { id });
