@@ -41,6 +41,7 @@ namespace CCIA.Models
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? WeedSeedPercent { get; set; }
         public string WeedSeedComments { get; set; }
+        [DisplayFormat(DataFormatString = "{0} seed(s)")]
         public int? WeedSeedCount { get; set; }
         [Display(Name = "Noxious Grams")]
         public decimal? NoxiousGrams { get; set; }
@@ -48,6 +49,7 @@ namespace CCIA.Models
         [Display(Name = "Noxious")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? NoxiousPercent { get; set; }
+        [DisplayFormat(DataFormatString = "{0} seed(s)")]
         public int? NoxiousCount { get; set; }
         [Display(Name = "Bushel Weight")]
         public decimal? BushelWeight { get; set; }
@@ -61,6 +63,7 @@ namespace CCIA.Models
         public bool? AssayTest { get; set; }
         public bool? AssayTest2 { get; set; }
         public string AssayResults2 { get; set; }
+        [Display(Name = "Dodder Grams")]
         public decimal? DodderGrams { get; set; }
         public decimal? LbsCanceled { get; set; }
         public decimal? LbsPassed { get; set; }

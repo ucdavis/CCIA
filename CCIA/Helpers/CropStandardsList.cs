@@ -1,13 +1,9 @@
 using CCIA.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CCIA.Helpers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.IndexViewModels;
+
 
 namespace CCIA.Helpers
 {
@@ -21,8 +17,12 @@ namespace CCIA.Helpers
         public bool ShowAssay2 { get; set; }
         public string Assay2Name { get; set; }
         public bool ShowDodderGrams { get; set; }
-
+        public string OtherVarietyType { get; set; }
+        public string OtherCropType { get; set; }
+        public string WeedSeedType { get; set; }
+        public bool ShowBushelWeight { get; set; }
         public bool ShowBeans { get; set; }
+        public bool ShowInert { get; set; }
 
         public CropStandardsList()
         {  
@@ -31,42 +31,77 @@ namespace CCIA.Helpers
             ShowAssay2 = false;
             Assay2Name = "";
             ShowDodderGrams = false;
-            ShowBeans = false;  
+            ShowBeans = false; 
+            OtherVarietyType = null; 
+            OtherCropType = null;
+            WeedSeedType = null;
+            ShowBushelWeight = false;
+            ShowInert = false;
         }
 
         public static async Task<CropStandardsList> GetStandardsFromSeed(CCIAContext _dbContext, int sid)
         {
-             var returnList = new CropStandardsList();
-            var seeds = await _dbContext.Seeds.Where(s => s.Id == sid).FirstOrDefaultAsync();
+            var returnList = new CropStandardsList();
+            var cropId = await _dbContext.Seeds.Where(s => s.Id == sid)
+                .Include(s => s.Variety)
+                .Include(s => s.Application)
+                .Select(s => new Tuple<int, string>(s.GetCropId(), s.CertProgram))
+                .FirstOrDefaultAsync();
             
-            if(seeds != null && seeds.OfficialVarietyId != null)
+                
+            var cs = await _dbContext.CropStandards.Where(c => c.CropId == cropId.Item1 && c.Standards.Program == cropId.Item2)
+                .Include(c => c.Standards)
+                .ToListAsync();
+
+            if(cs.Any(c => c.Standards.Name == "max_foreign_material")){
+                returnList.ShowBeans = true;
+            }
+
+            if(cs.Any(c => c.Standards.Name == "assay_required")){
+                var stand = cs.First(c => c.Standards.Name == "assay_required");
+                returnList.ShowAssay1 = true;
+                returnList.Assay1Name = stand.Standards.TextValue;
+
+                if(cs.Count(c => c.Standards.Name == "assay_required") > 1)
+                {
+                    stand = cs.Last(c => c.Standards.Name == "assay_required");
+                    returnList.ShowAssay2 = true;
+                    returnList.Assay2Name = stand.Standards.TextValue;
+                }                  
+            } 
+
+            if(cs.Any(c => c.Standards.Name == "max_other_varieties"))
             {
-                var variety = await _dbContext.VarFull.Where(v => v.Id == seeds.OfficialVarietyId)
-                    .Include(v => v.Crop)
-                    .Select(v => v.CropId)                                                    
-                    .FirstOrDefaultAsync();
+                var maxOtherVariety = cs.First(c => c.Standards.Name == "max_other_varieties");
+                returnList.OtherVarietyType = maxOtherVariety.Standards.ValueType;
+            }
 
-                var cs = await _dbContext.CropStandards.Where(c => c.CropId == variety)
-                    .Include(c => c.Standards)
-                    .ToListAsync();
+            if(cs.Any(c => c.Standards.Name == "max_other_crop"))
+            {
+                var maxOtherCrop = cs.First(c => c.Standards.Name == "max_other_crop");
+                returnList.OtherCropType = maxOtherCrop.Standards.ValueType;
+            }
 
-                if(cs.Any(c => c.Standards.Name == "max_foreign_material")){
-                    returnList.ShowBeans = true;
-                }
+            if(cs.Any(c => c.Standards.Name == "max_weed_seed"))
+            {
+                var maxWeedSeed = cs.First(c => c.Standards.Name == "max_weed_seed");
+                returnList.WeedSeedType = maxWeedSeed.Standards.ValueType;
+            }
 
-               if(cs.Any(c => c.Standards.Name == "assay_required")){
-                   var stand = cs.First(c => c.Standards.Name == "assay_required");
-                   returnList.ShowAssay1 = true;
-                   returnList.Assay1Name = stand.Standards.TextValue;
+            if(cs.Any(c => c.Standards.Name == "min_bushel_weight"))
+            {                
+                returnList.ShowBushelWeight = true;
+            }
 
-                   if(cs.Count(c => c.Standards.Name == "assay_required") > 1)
-                   {
-                       stand = cs.Last(c => c.Standards.Name == "assay_required");
-                       returnList.ShowAssay2 = true;
-                       returnList.Assay2Name = stand.Standards.TextValue;
-                   }                  
-               } 
-            }    
+             if(cs.Any(c => c.Standards.Name == "max_inert"))
+            {                
+                returnList.ShowInert = true;
+            }
+
+            if(returnList.Assay1Name == "Dodder" || returnList.Assay2Name == "Dodder")
+            {
+                returnList.ShowDodderGrams = true;
+            }                          
 
             return returnList;
         }

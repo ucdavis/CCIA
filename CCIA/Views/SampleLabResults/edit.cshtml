@@ -1,143 +1,220 @@
 @model CCIA.Models.SampleLabResultsViewModel.SampleLabResultsViewModel
 
+
 <div class="row">
-                <div class="col-sm-12">
-                    <h2>Lab Results</h2>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="LabResults.PurityPercent" class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-4 form-control-plaintext col-form">
-                    @Html.DisplayFor(x => x.LabResults.PurityPercent)
-                </div>
-                <div class="col-sm-6 col-form">
-                    @Html.DisplayFor(x => x.LabResults.PurityComments)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.PurityPercent" class="col-sm-2 col-form-label"></label>
-                <div class="col-sm-4 form-control-plaintext col-form">
-                    <input asp-for="LabResults.PurityPercent" >
-                </div>
-                <div class="col-sm-6 col-form">
-                    @Html.DisplayFor(x => x.LabResults.PurityComments)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.InertPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.InertPercent)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.OtherVarietyPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.OtherVarietyPercent) <br>
-                    @Html.DisplayFor(x => x.LabResults.OtherVarietyCount) Seed Count
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.OtherCropPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.OtherCropPercent)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.WeedSeedPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.WeedSeedPercent)
-                </div>
-            </div> 
-            @if(Model.StandardsList.ShowBeans)
+    <div class="col-sm-12">
+        <h2>Lab Results</h2>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Labs.PurityPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext col-form">
+        @Html.DisplayFor(x => x.Labs.PurityPercent)
+    </div>
+    <div class="col-sm-6 col-form">
+        @Html.DisplayFor(x => x.Labs.PurityComments)
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Labs.PurityPercent" class="col-sm-2 col-form-label"></label>
+    <div class="col-sm-4 form-control-plaintext col-form">
+        <input asp-for="Labs.PurityPercent" >
+    </div>
+    <div class="col-sm-6 col-form">
+        @Html.DisplayFor(x => x.Labs.PurityComments)
+    </div>
+</div>
+@if(Model.Standards.ShowInert)
+{ 
+    <div class="form-group row">
+        <label asp-for="Labs.InertPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.InertPercent)
+        </div>
+        <div class="col-sm-6 col-form">
+            @Html.DisplayFor(x => x.Labs.InertComments)
+        </div>
+    </div> 
+}
+@if(Model.Standards.OtherVarietyType != null)
+{
+    <div class="form-group row align-items-start">
+        <label asp-for="Labs.OtherVarietyPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext align-self-start">
+            @if(Model.Standards.OtherVarietyType == "R")
             {
-                <div class="form-group row">
-                    <label asp-for="LabResults.ForeignMaterialPercent" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-7 form-control-plaintext">
-                        @Html.DisplayFor(x => x.LabResults.ForeignMaterialPercent)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="LabResults.SplitsAndCracksPercent" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-7 form-control-plaintext">
-                        @Html.DisplayFor(x => x.LabResults.SplitsAndCracksPercent)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="LabResults.BadlyDiscoloredPercent" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-7 form-control-plaintext">
-                        @Html.DisplayFor(x => x.LabResults.BadlyDiscoloredPercent)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="LabResults.ChewingInsectDamagePercent" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-7 form-control-plaintext">
-                        @Html.DisplayFor(x => x.LabResults.ChewingInsectDamagePercent)
-                    </div>
-                </div> 
+                @Html.DisplayFor(x => x.Labs.OtherVarietyPercent) 
+            } else if(Model.Standards.OtherVarietyType == "C")
+            {
+                @Html.DisplayFor(x => x.Labs.OtherVarietyCount)
             }
-            <div class="form-group row">
-                <label asp-for="LabResults.PurityGrams" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.PurityGrams)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.NoxiousPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.NoxiousPercent) <br>
-                    @Html.DisplayFor(x => x.LabResults.NoxiousCount) Seed Count
-                </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="LabResults.NoxiousGrams" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.NoxiousGrams)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.BushelWeight" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.BushelWeight)
-                </div>
-            </div>  
-            <div class="row">
-                <div class="col-12">
-                    <hr>
-                </div>
-            </div>   
-            <div class="form-group row">
-                <label asp-for="LabResults.GermPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.GermPercent)
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="LabResults.GermHardSeed" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.GermHardSeed)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.PrivateLabDate" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.PrivateLabDate)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.LabOrganization.OrgName" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.LabOrganization.OrgName)
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="LabResults.PrivateLabId" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.PrivateLabNumber)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="LabResults.Comments" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-7 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LabResults.Comments)
-                </div>
-            </div> 
+        </div>
+        <div class="col-sm-6 col-form">
+            @Html.DisplayFor(x => x.Labs.OtherVarietyComments)
+        </div>
+    </div> 
+}
+@if(Model.Standards.OtherCropType != null)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.OtherCropPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @if(Model.Standards.OtherCropType == "R")
+            {
+                @Html.DisplayFor(x => x.Labs.OtherCropPercent)
+            } else if(Model.Standards.OtherCropType == "C")
+            {
+                @Html.DisplayFor(x => x.Labs.OtherCropCount)
+            }
+        </div>
+        <div class="col-sm-6 col-form">
+            @Html.DisplayFor(x => x.Labs.OtherCropComments)
+        </div>
+    </div> 
+}
+@if(Model.Standards.WeedSeedType != null)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.WeedSeedPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @if(Model.Standards.WeedSeedType == "R")
+            {
+                @Html.DisplayFor(x => x.Labs.WeedSeedPercent)
+            } else if(Model.Standards.WeedSeedType == "C")
+            {
+                @Html.DisplayFor(x => x.Labs.WeedSeedCount)
+            }
+        </div>
+        <div class="col-sm-6 col-form">
+            @Html.DisplayFor(x => x.Labs.WeedSeedComments)
+        </div>
+    </div> 
+}
+@if(Model.Standards.ShowBeans)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.ForeignMaterialPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.ForeignMaterialPercent)
+        </div>
+        <div class="col-sm-6 col-form">
+            @Html.DisplayFor(x => x.Labs.ForeignMaterialsComments)
+        </div>
+    </div> 
+    <div class="form-group row">
+        <label asp-for="Labs.SplitsAndCracksPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.SplitsAndCracksPercent)
+        </div>
+    </div> 
+    <div class="form-group row">
+        <label asp-for="Labs.BadlyDiscoloredPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.BadlyDiscoloredPercent)
+        </div>
+    </div> 
+    <div class="form-group row">
+        <label asp-for="Labs.ChewingInsectDamagePercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.ChewingInsectDamagePercent)
+        </div>
+    </div> 
+}
+<div class="form-group row">
+    <label asp-for="Labs.PurityGrams" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.PurityGrams)
+    </div>
+</div> 
+<div class="form-group row">
+    <label asp-for="Labs.NoxiousPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.NoxiousPercent) 
+        @Html.DisplayFor(x => x.Labs.NoxiousCount) 
+    </div>
+    <div class="col-sm-6 col-form">
+        @Html.DisplayFor(x => x.Labs.NoxiousComments)
+    </div>
+</div>  
+<div class="form-group row">
+    <label asp-for="Labs.NoxiousGrams" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.NoxiousGrams)
+    </div>
+</div> 
+@if(Model.Standards.ShowBushelWeight)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.BushelWeight" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.BushelWeight)
+        </div>
+    </div>  
+}
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>   
+<div class="form-group row">
+    <label asp-for="Labs.GermPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.GermPercent)
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Labs.GermHardSeed" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.GermHardSeed)
+    </div>
+</div> 
+<div class="form-group row">
+    <label asp-for="Labs.TotalGermination" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.TotalGermination)
+    </div>
+</div> 
+@if(Model.Standards.ShowAssay1) 
+    {<div class="form-group row">
+        <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name</label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.AssayTest)
+        </div>
+    </div>
+}
+@if(Model.Standards.ShowAssay2)
+{   
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">@Model.Standards.Assay2Name</label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.AssayTest2)
+        </div>
+    </div> 
+}
+@if(Model.Standards.ShowDodderGrams)
+{   
+    <div class="form-group row">
+        <label asp-for="Labs.DodderGrams" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.DodderGrams)
+        </div>
+    </div> 
+}
+<div class="form-group row">
+    <label asp-for="Labs.PrivateLabDate" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.PrivateLabDate)
+    </div>
+</div> 
+<div class="form-group row">
+    <label class="col-sm-3 col-form-label">Lab</label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.PrivateLabNumber) @Html.DisplayFor(x => x.Labs.LabOrganization.OrgName)
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Labs.Comments" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.Comments)
+    </div>
+</div>  

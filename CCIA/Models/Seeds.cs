@@ -141,6 +141,16 @@ namespace CCIA.Models
             return Variety == null ? "" : Variety.Crop.Name;
         }
 
+        public int GetCropId()
+        { 
+            if(AppId.HasValue)
+            {
+                return Application.CropId.Value;
+            }
+            return Variety == null ? 0 : Variety.CropId;
+            
+        }
+
         public string GetVarietyName()
         {
             if (AppId.HasValue)
