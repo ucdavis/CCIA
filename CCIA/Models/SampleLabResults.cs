@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,80 +11,85 @@ namespace CCIA.Models
 
         [Display(Name = "Germination")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? GermPercent { get; set; }
-        public decimal GermValue 
+        public string GermValue 
         { 
             get
             {
                 if(GermPercent.HasValue)
              {
-                 return GermPercent.Value * 100;
+                 return (GermPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
-            }           
+             return "";
+            }        
         }         
         public int? GermDays { get; set; }
         public string GermResults { get; set; }
         public string GermTemp { get; set; }
         [Display(Name = "Inert")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? InertPercent { get; set; }
-        public decimal InertValue 
+        public string InertValue 
         { 
             get
             {
                 if(InertPercent.HasValue)
              {
-                 return InertPercent.Value * 100;
+                 return (InertPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string InertComments { get; set; }
         [Display(Name = "Other Variety")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? OtherVarietyPercent { get; set; }
-        public decimal OtherVarietyValue 
+        public string OtherVarietyValue 
         { 
             get
             {
                 if(OtherVarietyPercent.HasValue)
              {
-                 return OtherVarietyPercent.Value * 100;
+                 return (OtherVarietyPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string OtherVarietyComments { get; set; }
         public int? OtherVarietyCount { get; set; }
         [Display(Name = "Other Crop")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? OtherCropPercent { get; set; }
-        public decimal OtherCropValue 
+        public string OtherCropValue 
         { 
             get
             {
                 if(OtherCropPercent.HasValue)
              {
-                 return OtherCropPercent.Value * 100;
+                 return (OtherCropPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string OtherCropComments { get; set; }
         public int? OtherCropCount { get; set; }
         [Display(Name = "Purity")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? PurityPercent { get; set; }
-        public decimal PurityValue 
+        public string PurityValue 
         { 
             get
             {
                 if(PurityPercent.HasValue)
              {
-                 return PurityPercent.Value * 100;
+                 return (PurityPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }         
         public string PurityComments { get; set; }
@@ -94,22 +98,24 @@ namespace CCIA.Models
         public string Comments { get; set; }
         [Display(Name = "Weed Seed")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? WeedSeedPercent { get; set; }
-        public decimal WeedSeedValue 
+        public string WeedSeedValue 
         { 
             get
             {
                 if(WeedSeedPercent.HasValue)
              {
-                 return WeedSeedPercent.Value * 100;
+                 return (WeedSeedPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string WeedSeedComments { get; set; }
         [DisplayFormat(DataFormatString = "{0} seed(s)")]
         public int? WeedSeedCount { get; set; }
         [Display(Name = "Noxious Grams")]
+        [Range(0.0, 100000)]
         public decimal? NoxiousGrams { get; set; }
         public string NoxiousComments { get; set; }
         [Display(Name = "Noxious Weeds")]        
@@ -118,20 +124,22 @@ namespace CCIA.Models
         [Display(Name = "Bushel Weight")]
         public decimal? BushelWeight { get; set; }
         [Display(Name = "Purity Grams")]
+        [Range(0.0, 100000)]
         public decimal? PurityGrams { get; set; }
         public bool? CciaGerm { get; set; }
         [Display(Name = "Hard Seed")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
-        public decimal? GermHardSeed { get; set; }
-        public decimal GermHardSeedValue 
+        [Range(0.0, 100)]
+        public decimal? HardSeedPercent { get; set; }
+        public string GermHardSeedValue 
         { 
             get
             {
-                if(WeedSeedPercent.HasValue)
+                if(HardSeedPercent.HasValue)
              {
-                 return WeedSeedPercent.Value * 100;
+                 return (HardSeedPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string AssayResults { get; set; }
@@ -139,6 +147,7 @@ namespace CCIA.Models
         public bool? AssayTest2 { get; set; }
         public string AssayResults2 { get; set; }
         [Display(Name = "Dodder Grams")]
+        [Range(0.0, 100000)]
         public decimal? DodderGrams { get; set; }
         public decimal? LbsCanceled { get; set; }
         public decimal? LbsPassed { get; set; }
@@ -162,59 +171,63 @@ namespace CCIA.Models
         public string ConfirmUser { get; set; }
         [Display(Name = "Badly Discolored")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? BadlyDiscoloredPercent { get; set; }
-        public decimal BadlyDiscoloredValue 
+        public string BadlyDiscoloredValue 
         { 
             get
             {
                 if(BadlyDiscoloredPercent.HasValue)
              {
-                 return BadlyDiscoloredPercent.Value * 100;
+                 return (BadlyDiscoloredPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         [Display(Name = "Foreign Material")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? ForeignMaterialPercent { get; set; }
-        public decimal ForeignMaterialValue 
+        public string ForeignMaterialValue 
         { 
             get
             {
                 if(ForeignMaterialPercent.HasValue)
              {
-                 return ForeignMaterialPercent.Value * 100;
+                 return (ForeignMaterialPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         public string ForeignMaterialsComments { get; set; }
         [Display(Name = "Splits&Cracks")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? SplitsAndCracksPercent { get; set; }
-        public decimal SplitsAndCracksValue 
+        public string SplitsAndCracksValue 
         { 
             get
             {
                 if(SplitsAndCracksPercent.HasValue)
              {
-                 return SplitsAndCracksPercent.Value * 100;
+                 return (SplitsAndCracksPercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         }  
         [Display(Name = "Chewing Insect Damage")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
         public decimal? ChewingInsectDamagePercent { get; set; }
-        public decimal ChewingInsectDamageValue 
+        public string ChewingInsectDamageValue 
         { 
             get
             {
                 if(ChewingInsectDamagePercent.HasValue)
              {
-                 return ChewingInsectDamagePercent.Value * 100;
+                 return (ChewingInsectDamagePercent.Value * 100).ToString("0.####");
              } 
-             return 0;
+             return "";
             }           
         } 
 
@@ -223,17 +236,17 @@ namespace CCIA.Models
         public decimal TotalGermination { 
             get
             {
-                if(GermHardSeed.HasValue && GermPercent.HasValue)
+                if(HardSeedPercent.HasValue && GermPercent.HasValue)
                 {
-                    return GermHardSeed.Value + GermPercent.Value;
+                    return HardSeedPercent.Value + GermPercent.Value;
                 }
                 if(GermPercent.HasValue)
                 {
                     return GermPercent.Value;
                 }
-                if(GermHardSeed.HasValue)
+                if(HardSeedPercent.HasValue)
                 {
-                    return GermHardSeed.Value;
+                    return HardSeedPercent.Value;
                 }
                 return 0;
             } 

@@ -30,6 +30,25 @@ namespace CCIA.Models.SampleLabResultsViewModel
             };
         }
 
+        public static async Task<SampleLabResultsViewModel> ReUse(CCIAContext _dbContext, SampleLabResults labs)
+        {
+            var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
+                    .Select(o => new Organizations { OrgId = o.OrgId, OrgName = o.OrgName})
+                    .OrderBy(o => o.OrgName)
+                    .ToListAsync();
+            privateLabs.Insert(0, new Organizations {OrgId = 0, OrgName = "Select lab..."});
+            privateLabs.Add(new Organizations {OrgId= -1, OrgName = "Other...list in comments"});
+
+            return new SampleLabResultsViewModel
+            {
+                Labs = labs,
+                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, labs.SeedsId),
+                PrivateLabs = privateLabs,
+            };
+
+
+        }
+
         
     }
 

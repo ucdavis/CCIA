@@ -2846,7 +2846,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.GermDays).HasColumnName("germ_days");
 
-                entity.Property(e => e.GermHardSeed)
+                entity.Property(e => e.HardSeedPercent)
                     .HasColumnName("germ_hard_seed")
                     .HasColumnType("numeric(8, 7)");
 
