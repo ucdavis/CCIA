@@ -1838,6 +1838,8 @@ namespace CCIA.Models
                 entity.Property(e => e.Email).HasColumnName("main_email");
 
                 entity.Property(e => e.CountyId).HasColumnName("county_id");
+
+                entity.Property(e => e.GermLab).HasColumnName("germination_lab");
             });
 
             modelBuilder.Entity<Contacts>(entity =>
@@ -2891,11 +2893,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.NoxiousGrams)
                     .HasColumnName("noxious_grams")
-                    .HasColumnType("numeric(7, 2)");
-
-                entity.Property(e => e.NoxiousPercent)
-                    .HasColumnName("noxious_percent")
-                    .HasColumnType("numeric(8, 7)");
+                    .HasColumnType("numeric(7, 2)");               
 
                 entity.Property(e => e.OtherCropComments)
                     .HasColumnName("other_crop_comments")
