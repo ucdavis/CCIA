@@ -7,10 +7,10 @@
 </div>
 <div class="form-group row">
     <label asp-for="Labs.PurityPercent" class="col-sm-3 col-form-label"></label>
-    <div class="col-sm-3 form-control-plaintext col-form">
+    <div class="col-sm-3 form-control-plaintext">
         @Html.DisplayFor(x => x.Labs.PurityPercent)
     </div>
-    <div class="col-sm-6 col-form">
+    <div class="col-sm-6 form-control-plaintext">
         @Html.DisplayFor(x => x.Labs.PurityComments)
     </div>
 </div>
@@ -21,7 +21,7 @@
         <div class="col-sm-3 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.InertPercent)
         </div>
-        <div class="col-sm-6 col-form">
+        <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.InertComments)
         </div>
     </div> 
@@ -30,7 +30,7 @@
 {
     <div class="form-group row align-items-start">
         <label asp-for="Labs.OtherVarietyPercent" class="col-sm-3 col-form-label"></label>
-        <div class="col-sm-3 form-control-plaintext align-self-start">
+        <div class="col-sm-3 form-control-plaintext">
             @if(Model.Standards.OtherVarietyType == "R")
             {
                 @Html.DisplayFor(x => x.Labs.OtherVarietyPercent) 
@@ -39,7 +39,7 @@
                 @Html.DisplayFor(x => x.Labs.OtherVarietyCount)
             }
         </div>
-        <div class="col-sm-6 col-form">
+        <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.OtherVarietyComments)
         </div>
     </div> 
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(x => x.Labs.OtherCropCount)
             }
         </div>
-        <div class="col-sm-6 col-form">
+        <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.OtherCropComments)
         </div>
     </div> 
@@ -75,7 +75,7 @@
                 @Html.DisplayFor(x => x.Labs.WeedSeedCount)
             }
         </div>
-        <div class="col-sm-6 col-form">
+        <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.WeedSeedComments)
         </div>
     </div> 
@@ -87,7 +87,7 @@
         <div class="col-sm-3 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.ForeignMaterialPercent)
         </div>
-        <div class="col-sm-6 col-form">
+        <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.ForeignMaterialsComments)
         </div>
     </div> 
@@ -117,12 +117,11 @@
     </div>
 </div> 
 <div class="form-group row">
-    <label asp-for="Labs.NoxiousPercent" class="col-sm-3 col-form-label"></label>
+    <label asp-for="Labs.NoxiousCount" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 form-control-plaintext">
-        @Html.DisplayFor(x => x.Labs.NoxiousPercent) 
         @Html.DisplayFor(x => x.Labs.NoxiousCount) 
     </div>
-    <div class="col-sm-6 col-form">
+    <div class="col-sm-6 form-control-plaintext">
         @Html.DisplayFor(x => x.Labs.NoxiousComments)
     </div>
 </div>  

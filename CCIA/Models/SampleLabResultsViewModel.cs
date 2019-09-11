@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
+using System.Collections.Generic;
 
 namespace CCIA.Models.SampleLabResultsViewModel
 {
@@ -10,14 +11,22 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public SampleLabResults Labs { get; set; }
         public CropStandardsList  Standards { get; set; }
 
+        public List<Organizations> PrivateLabs { get; set; }
+
         public static async Task<SampleLabResultsViewModel> Create(CCIAContext _dbContext, int sid)
-        {               
+        { 
+            var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
+                    .Select(o => new Organizations { OrgId = o.OrgId, OrgName = o.OrgName})
+                    .OrderBy(o => o.OrgName)
+                    .ToListAsync();
+            privateLabs.Insert(0, new Organizations {OrgId = 0, OrgName = "Select lab..."});
+            privateLabs.Add(new Organizations {OrgId= -1, OrgName = "Other...list in comments"});
+
             return new SampleLabResultsViewModel
             {
-                Labs = await _dbContext.SampleLabResults.Where(s => s.SeedsId == sid)
-                    .Include(l => l.LabOrganization)
-                    .FirstOrDefaultAsync(),
+                Labs = await _dbContext.SampleLabResults.Where(s => s.SeedsId == sid).FirstOrDefaultAsync(),
                 Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid),
+                PrivateLabs = privateLabs,
             };
         }
 
