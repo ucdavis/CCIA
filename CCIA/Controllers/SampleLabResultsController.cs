@@ -1,9 +1,8 @@
-using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using CCIA.Models.SampleLabResultsViewModel;
+using CCIA.Helpers;
 
 
 namespace CCIA.Controllers
@@ -39,11 +38,17 @@ namespace CCIA.Controllers
             results.Labs.SplitsAndCracksPercent = results.Labs.SplitsAndCracksPercent / 100;
             results.Labs.ChewingInsectDamagePercent = results.Labs.ChewingInsectDamagePercent / 100;
 
-            if(results.Labs.PurityPercent < 85)
+            var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, results.Labs);
+
+            if(errorList.HasWarnings)
             {
-                 ModelState.AddModelError("results.Labs.PurityPercent", "Purity does not fall withing crop standard");
-                 var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
-                 return View(errorModel);
+                if(errorList.PurityWarning)
+                {
+                    ModelState.AddModelError("Labs.PurityPercent", errorList.PurityError);                    
+                }
+                
+                var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
+                return View(errorModel);
             }
 
             //var resultsToUpdate = await _dbContext.SampleLabResults.Where(s => s.SeedsId == id).FirstOrDefaultAsync();
