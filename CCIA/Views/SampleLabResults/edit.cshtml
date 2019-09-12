@@ -8,8 +8,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    <div class="col-sm-12 text-danger" asp-validation-summary="All"> 
     </div>
 </div>
 <div class="form-group row">
@@ -25,8 +24,7 @@
 <div class="form-group row">
     <label asp-for="Labs.PurityPercent" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 col-form">        
-        <input type="text" data-val="true" data-val-number="The field Purity value must be a number." data-val-range="The field Purity value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Purity value field is required." id="Labs_PurityPercent" name="Labs.PurityPercent" value="@Model.Labs.PurityValue">
-        <span asp-validation-for="Labs.PurityValue" class="text-danger"></span>       
+        <input type="text" data-val="true" data-val-number="The field Purity value must be a number." data-val-range="The field Purity value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Purity value field is required." id="Labs_PurityPercent" name="Labs.PurityPercent" value="@Model.Labs.PurityValue">             
     </div>        
     <div class="col-sm-6 col-form">
         <textarea asp-for="Labs.PurityComments" rows="1" cols="30" ></textarea>

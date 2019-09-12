@@ -42,10 +42,18 @@ namespace CCIA.Controllers
 
             if(errorList.HasWarnings)
             {
-                if(errorList.PurityWarning)
+                
+                if(errorList.InertError != null)
                 {
-                    ModelState.AddModelError("Labs.PurityPercent", errorList.PurityError);                    
+                    ModelState.AddModelError("Labs.InertValue", errorList.InertError);
                 }
+                
+                if(errorList.PurityError != null)
+                {
+                    ModelState.AddModelError("Labs.PurityValue", errorList.PurityError);                    
+                }
+
+                ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot"); 
                 
                 var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
                 return View(errorModel);

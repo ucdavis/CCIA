@@ -9,15 +9,14 @@ namespace CCIA.Helpers
 {
     public class LabResultsCheckStandards
     {
-        public bool HasWarnings { get; set; }
-        public bool PurityWarning { get; set; }
+        public bool HasWarnings { get; set; }        
         public string PurityError { get; set; }
+        public string InertError { get; set; }
 
 
          public LabResultsCheckStandards()
         {  
             HasWarnings = false;
-            PurityWarning = false;
         }
 
          public static async Task<LabResultsCheckStandards> CheckStandardsFromLabs(CCIAContext _dbContext, SampleLabResults labs)
@@ -43,8 +42,16 @@ namespace CCIA.Helpers
                 if(labs.PurityPercent < standard.MinValue || labs.PurityPercent > standard.MaxValue)
                 {
                     returnList.HasWarnings = true;
-                    returnList.PurityWarning = true;
-                    returnList.PurityError = $"Purity does not fall withing crop standard (min: {100 * standard.MinValue}, max: {100 * standard.MaxValue})";
+                    returnList.PurityError = $"Purity does not fall within crop standard (min: {100 * standard.MinValue}, max: {100 * standard.MaxValue})";
+                }                
+            }  
+
+            if(cs.Any(c => c.Name == "max_inert")){
+                standard = cs.First(c => c.Name == "max_inert");
+                if(labs.InertPercent < standard.MinValue || labs.InertPercent > standard.MaxValue)
+                {
+                    returnList.HasWarnings = true;
+                    returnList.InertError = $"Inert does not fall within crop standard (min: {100 * standard.MinValue}, max: {100 * standard.MaxValue})";
                 }                
             }                                    
 
