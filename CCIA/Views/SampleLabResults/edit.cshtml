@@ -1,5 +1,5 @@
 @model CCIA.Models.SampleLabResultsViewModel.SampleLabResultsViewModel
-
+@{string errorClass = "";}
 <form asp-action="Edit">
 @Html.HiddenFor(s => s.Labs.SeedsId)
 <div class="row">
@@ -23,8 +23,15 @@
 </div>
 <div class="form-group row">
     <label asp-for="Labs.PurityPercent" class="col-sm-3 col-form-label"></label>
-    <div class="col-sm-3 col-form">        
-        <input type="text" data-val="true" data-val-number="The field Purity value must be a number." data-val-range="The field Purity value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Purity value field is required." id="Labs_PurityPercent" name="Labs.PurityPercent" value="@Model.Labs.PurityValue">             
+    <div class="col-sm-3 col-form">  
+       @if(ViewData.ModelState.GetFieldValidationState("Labs.PurityPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+       {
+          errorClass = "input-validation-error";
+       } else 
+       {
+           errorClass = "";
+       }      
+        <input class="@errorClass" type="text" data-val="true" data-val-number="The field Purity value must be a number." data-val-range="The field Purity value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Purity value field is required." id="Labs_PurityPercent" name="Labs.PurityPercent" value="@Model.Labs.PurityValue">             
     </div>        
     <div class="col-sm-6 col-form">
         <textarea asp-for="Labs.PurityComments" rows="1" cols="30" ></textarea>
@@ -35,7 +42,14 @@
     <div class="form-group row">
         <label asp-for="Labs.InertPercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
-            <input type="text" data-val="true" data-val-number="The field Inert value must be a number." data-val-range="The field Inert value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Inert value field is required." id="Labs_InertPercent" name="Labs.InertPercent" value="@Model.Labs.InertValue">
+            @if(ViewData.ModelState.GetFieldValidationState("Labs.InertPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            }    
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Inert value must be a number." data-val-range="The field Inert value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Inert value field is required." id="Labs_InertPercent" name="Labs.InertPercent" value="@Model.Labs.InertValue">
         </div>
         <div class="col-sm-6 col-form">
             <textarea asp-for="Labs.InertComments" rows="1" cols="30" ></textarea>
@@ -48,8 +62,15 @@
         <label asp-for="Labs.OtherVarietyPercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
             @if(Model.Standards.OtherVarietyType == "R")
-            {
-                <input type="text" data-val="true" data-val-number="The field Other Variety value must be a number." data-val-range="The field Other Variety value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Variety value field is required." id="Labs_OtherVarietyPercent" name="Labs.OtherVarietyPercent" value="@Model.Labs.OtherVarietyValue">
+            {                
+                @if(ViewData.ModelState.GetFieldValidationState("Labs.OtherVarietyPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                }    
+                <input class="@errorClass" type="text" data-val="true" data-val-number="The field Other Variety value must be a number." data-val-range="The field Other Variety value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Variety value field is required." id="Labs_OtherVarietyPercent" name="Labs.OtherVarietyPercent" value="@Model.Labs.OtherVarietyValue">
             } else if(Model.Standards.OtherVarietyType == "C")
             {
                 <input asp-for="Labs.OtherVarietyCount" >
@@ -67,7 +88,14 @@
         <div class="col-sm-3 col-form">
             @if(Model.Standards.OtherCropType == "R")
             {
-                <input type="text" data-val="true" data-val-number="The field Other Crop value must be a number." data-val-range="The field Other Crop value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Crop value field is required." id="Labs_OtherCropPercent" name="Labs.OtherCropPercent" value="@Model.Labs.OtherCropValue">
+                @if(ViewData.ModelState.GetFieldValidationState("Labs.OtherCropPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                } 
+                <input class="@errorClass" type="text" data-val="true" data-val-number="The field Other Crop value must be a number." data-val-range="The field Other Crop value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Crop value field is required." id="Labs_OtherCropPercent" name="Labs.OtherCropPercent" value="@Model.Labs.OtherCropValue">
             } else if(Model.Standards.OtherCropType == "C")
             {
                 <input asp-for="Labs.OtherCropCount" >
@@ -85,7 +113,14 @@
         <div class="col-sm-3 col-form">
             @if(Model.Standards.WeedSeedType == "R")
             {
-               <input type="text" data-val="true" data-val-number="The field Weed Seed value must be a number." data-val-range="The field Weed Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Weed Seed value field is required." id="Labs_WeedSeedPercent" name="Labs.WeedSeedPercent" value="@Model.Labs.WeedSeedValue">
+                @if(ViewData.ModelState.GetFieldValidationState("Labs.WeedSeedPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                }                 
+               <input class="@errorClass" type="text" data-val="true" data-val-number="The field Weed Seed value must be a number." data-val-range="The field Weed Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Weed Seed value field is required." id="Labs_WeedSeedPercent" name="Labs.WeedSeedPercent" value="@Model.Labs.WeedSeedValue">
             } else if(Model.Standards.WeedSeedType == "C")
             {
                 <input asp-for="Labs.WeedSeedCount" >
@@ -100,8 +135,15 @@
 {
     <div class="form-group row">
         <label asp-for="Labs.ForeignMaterialPercent" class="col-sm-3 col-form-label"></label>
-        <div class="col-sm-3 col-form">           
-            <input type="text" data-val="true" data-val-number="The field Foreign Material value must be a number." data-val-range="The field Foreign Material value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Foreign Material value field is required." id="Labs_ForeignMaterialPercent" name="Labs.ForeignMaterialPercent" value="@Model.Labs.ForeignMaterialValue">
+        <div class="col-sm-3 col-form">
+            @if(ViewData.ModelState.GetFieldValidationState("Labs.ForeignMaterialPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            }             
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Foreign Material value must be a number." data-val-range="The field Foreign Material value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Foreign Material value field is required." id="Labs_ForeignMaterialPercent" name="Labs.ForeignMaterialPercent" value="@Model.Labs.ForeignMaterialValue">
         </div>
         <div class="col-sm-6 col-form">
             <textarea asp-for="Labs.ForeignMaterialsComments" rows="1" cols="30" ></textarea>
@@ -110,19 +152,40 @@
     <div class="form-group row">
         <label asp-for="Labs.SplitsAndCracksPercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
-            <input type="text" data-val="true" data-val-number="The field Splits & Cracks value must be a number." data-val-range="The field Splits & Cracks value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Splits & Cracks value field is required." id="Labs_SplitsAndCracksPercent" name="Labs.SplitsAndCracksPercent" value="@Model.Labs.SplitsAndCracksValue">
+            @if(ViewData.ModelState.GetFieldValidationState("Labs.SplitsAndCracksPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            }   
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Splits & Cracks value must be a number." data-val-range="The field Splits & Cracks value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Splits & Cracks value field is required." id="Labs_SplitsAndCracksPercent" name="Labs.SplitsAndCracksPercent" value="@Model.Labs.SplitsAndCracksValue">
         </div>
     </div> 
     <div class="form-group row">
         <label asp-for="Labs.BadlyDiscoloredPercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
-            <input type="text" data-val="true" data-val-number="The field Badly Discolored value must be a number." data-val-range="The field Badly Discolored value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Badly Discolored value field is required." id="Labs_BadlyDiscoloredPercent" name="Labs.BadlyDiscoloredPercent" value="@Model.Labs.BadlyDiscoloredValue">
+            @if(ViewData.ModelState.GetFieldValidationState("Labs.BadlyDiscoloredPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            } 
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Badly Discolored value must be a number." data-val-range="The field Badly Discolored value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Badly Discolored value field is required." id="Labs_BadlyDiscoloredPercent" name="Labs.BadlyDiscoloredPercent" value="@Model.Labs.BadlyDiscoloredValue">
         </div>
     </div> 
     <div class="form-group row">
         <label asp-for="Labs.ChewingInsectDamagePercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
-            <input type="text" data-val="true" data-val-number="The field Chewing Insect Damage value must be a number." data-val-range="The field Chewing Insect Damage value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Chewing Insect Damage value field is required." id="Labs_ChewingInsectDamagePercent" name="Labs.ChewingInsectDamagePercent" value="@Model.Labs.ChewingInsectDamageValue">
+            @if(ViewData.ModelState.GetFieldValidationState("Labs.ChewingInsectDamagePercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            } 
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Chewing Insect Damage value must be a number." data-val-range="The field Chewing Insect Damage value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Chewing Insect Damage value field is required." id="Labs_ChewingInsectDamagePercent" name="Labs.ChewingInsectDamagePercent" value="@Model.Labs.ChewingInsectDamageValue">
         </div>
     </div> 
 }
@@ -164,13 +227,27 @@
 <div class="form-group row">
     <label asp-for="Labs.GermPercent" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 col-form">
-        <input type="text" data-val="true" data-val-number="The field Germination value must be a number." data-val-range="The field Germination value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Germination value field is required." id="Labs_GermPercent" name="Labs.GermPercent" value="@Model.Labs.GermValue">        
+        @if(ViewData.ModelState.GetFieldValidationState("Labs.GermPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+        {
+            errorClass = "input-validation-error";
+        } else 
+        {
+            errorClass = "";
+        } 
+        <input class="@errorClass" type="text" data-val="true" data-val-number="The field Germination value must be a number." data-val-range="The field Germination value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Germination value field is required." id="Labs_GermPercent" name="Labs.GermPercent" value="@Model.Labs.GermValue">        
     </div>
 </div>
 <div class="form-group row">
     <label asp-for="Labs.HardSeedPercent" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 col-form">
-        <input type="text" data-val="true" data-val-number="The field Hard Seed value must be a number." data-val-range="The field Hard Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Hard Seed value field is required." id="HardSeedPercent" name="Labs.HardSeedPercent" value="@Model.Labs.GermHardSeedValue">
+        @if(ViewData.ModelState.GetFieldValidationState("Labs.HardSeedPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+        {
+            errorClass = "input-validation-error";
+        } else 
+        {
+            errorClass = "";
+        } 
+        <input class="@errorClass" type="text" data-val="true" data-val-number="The field Hard Seed value must be a number." data-val-range="The field Hard Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Hard Seed value field is required." id="HardSeedPercent" name="Labs.HardSeedPercent" value="@Model.Labs.GermHardSeedValue">
     </div>
 </div> 
 @if(Model.Standards.ShowAssay1) 

@@ -42,15 +42,53 @@ namespace CCIA.Controllers
 
             if(errorList.HasWarnings)
             {
-                
-                if(errorList.InertError != null)
-                {
-                    ModelState.AddModelError("Labs.InertValue", errorList.InertError);
-                }
-                
                 if(errorList.PurityError != null)
                 {
-                    ModelState.AddModelError("Labs.PurityValue", errorList.PurityError);                    
+                    ModelState.AddModelError("Labs.PurityPercent", errorList.PurityError);                    
+                }
+                if(errorList.InertError != null)
+                {
+                    ModelState.AddModelError("Labs.InertPercent", errorList.InertError);
+                }
+                if(errorList.OtherCropError != null)
+                {
+                    ModelState.AddModelError("Labs.OtherCropPercent", errorList.OtherCropError);
+                }
+                if(errorList.WeedSeedError != null)
+                {
+                    ModelState.AddModelError("Labs.WeedSeedPercent", errorList.WeedSeedError);
+                }
+                if(errorList.OtherVarietyError != null)
+                {
+                    ModelState.AddModelError("Labs.OtherVarietyPercent", errorList.OtherVarietyError);
+                }
+                if(errorList.ForeignMaterialError != null)
+                {
+                    ModelState.AddModelError("Labs.ForeignMaterialPercent", errorList.ForeignMaterialError);
+                }
+                if(errorList.SplitsAndCracksError != null)
+                {
+                    ModelState.AddModelError("Labs.SplitsAndCracksPercent", errorList.SplitsAndCracksError);
+                }
+                if(errorList.BadlyDiscoloredError != null)
+                {
+                    ModelState.AddModelError("Labs.BadlyDiscoloredPercent", errorList.BadlyDiscoloredError);
+                }
+                if(errorList.ChewingInsectDamageError != null)
+                {
+                    ModelState.AddModelError("Labs.ChewingInsectDamagePercent", errorList.ChewingInsectDamageError);
+                }                
+                if(errorList.NoxiousSeedError != null)
+                {
+                    ModelState.AddModelError("Labs.NoxiousCount", errorList.NoxiousSeedError);
+                }
+                if(errorList.PurityGramsError != null)
+                {
+                    ModelState.AddModelError("Labs.PurityGrams", errorList.PurityGramsError);
+                }
+                if(errorList.NoxiousGramsError != null)
+                {
+                    ModelState.AddModelError("Labs.NoxiousGrams", errorList.NoxiousGramsError);
                 }
 
                 ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot"); 
