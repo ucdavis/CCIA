@@ -21,7 +21,7 @@ namespace CCIA.Controllers
         {
             var model = await SampleLabResultsViewModel.Create(_dbContext, id);
             return View(model);
-        } 
+        }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, SampleLabResultsViewModel results)
@@ -40,69 +40,85 @@ namespace CCIA.Controllers
 
             var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, results.Labs);
 
-            if(errorList.HasWarnings)
+            if (errorList.HasWarnings)
             {
-                if(errorList.PurityError != null)
+                if (errorList.PurityError != null)
                 {
-                    ModelState.AddModelError("Labs.PurityPercent", errorList.PurityError);                    
+                    ModelState.AddModelError("Labs.PurityPercent", errorList.PurityError);
                 }
-                if(errorList.InertError != null)
+                if (errorList.InertError != null)
                 {
                     ModelState.AddModelError("Labs.InertPercent", errorList.InertError);
                 }
-                if(errorList.OtherCropError != null)
+                if (errorList.OtherCropError != null)
                 {
                     ModelState.AddModelError("Labs.OtherCropPercent", errorList.OtherCropError);
                 }
-                if(errorList.WeedSeedError != null)
+                if (errorList.WeedSeedError != null)
                 {
                     ModelState.AddModelError("Labs.WeedSeedPercent", errorList.WeedSeedError);
                 }
-                if(errorList.OtherVarietyError != null)
+                if (errorList.OtherVarietyError != null)
                 {
                     ModelState.AddModelError("Labs.OtherVarietyPercent", errorList.OtherVarietyError);
                 }
-                if(errorList.ForeignMaterialError != null)
+                if (errorList.ForeignMaterialError != null)
                 {
                     ModelState.AddModelError("Labs.ForeignMaterialPercent", errorList.ForeignMaterialError);
                 }
-                if(errorList.SplitsAndCracksError != null)
+                if (errorList.SplitsAndCracksError != null)
                 {
                     ModelState.AddModelError("Labs.SplitsAndCracksPercent", errorList.SplitsAndCracksError);
                 }
-                if(errorList.BadlyDiscoloredError != null)
+                if (errorList.BadlyDiscoloredError != null)
                 {
                     ModelState.AddModelError("Labs.BadlyDiscoloredPercent", errorList.BadlyDiscoloredError);
                 }
-                if(errorList.ChewingInsectDamageError != null)
+                if (errorList.ChewingInsectDamageError != null)
                 {
                     ModelState.AddModelError("Labs.ChewingInsectDamagePercent", errorList.ChewingInsectDamageError);
-                }                
-                if(errorList.NoxiousSeedError != null)
+                }
+                if (errorList.NoxiousSeedError != null)
                 {
                     ModelState.AddModelError("Labs.NoxiousCount", errorList.NoxiousSeedError);
                 }
-                if(errorList.PurityGramsError != null)
+                if (errorList.PurityGramsError != null)
                 {
                     ModelState.AddModelError("Labs.PurityGrams", errorList.PurityGramsError);
                 }
-                if(errorList.NoxiousGramsError != null)
+                if (errorList.NoxiousGramsError != null)
                 {
                     ModelState.AddModelError("Labs.NoxiousGrams", errorList.NoxiousGramsError);
                 }
+                if (errorList.BushelWeightError != null)
+                {
+                    ModelState.AddModelError("Labs.BushelWeight", errorList.BushelWeightError);
+                }
+                if (errorList.GermError != null)
+                {
+                    ModelState.AddModelError("Labs.GermPercent", errorList.GermError);
+                }
+                if (errorList.Assay1Error != null)
+                {
+                    ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
+                }
+                if (errorList.Assay2Error != null)
+                {
+                    ModelState.AddModelError("Labs.AssayTest2", errorList.Assay2Error);
+                }
 
-                ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot"); 
-                
+                ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot");
+
                 var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
                 return View(errorModel);
             }
 
             //var resultsToUpdate = await _dbContext.SampleLabResults.Where(s => s.SeedsId == id).FirstOrDefaultAsync();
 
-            
+
             var model = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
             return View(model);
-        }      
+        }
 
     }
 }
