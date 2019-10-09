@@ -22,6 +22,14 @@ namespace CCIA.Models.SampleLabResultsViewModel
             privateLabs.Insert(0, new Organizations {OrgId = 0, OrgName = "Select lab..."});
             privateLabs.Add(new Organizations {OrgId= -1, OrgName = "Other...list in comments"});
 
+            if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
+            {
+                var labresults = new SampleLabResults();
+                labresults.SeedsId = sid;
+                await _dbContext.SampleLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return new SampleLabResultsViewModel
             {
                 Labs = await _dbContext.SampleLabResults.Where(s => s.SeedsId == sid).FirstOrDefaultAsync(),

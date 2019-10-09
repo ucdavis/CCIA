@@ -138,7 +138,7 @@ namespace CCIA.Models
             {
                 return Application.CropName;
             }
-            return Variety == null ? "" : Variety.Crop.Name;
+            return Variety == null || Variety.Crop == null ? "" : Variety.Crop.Name;
         }
 
         public int GetCropId()

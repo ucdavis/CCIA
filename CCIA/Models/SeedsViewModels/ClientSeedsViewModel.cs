@@ -13,6 +13,14 @@ namespace CCIA.Models.SeedsViewModels
 
         public static async Task<ClientSeedsViewModel> Create(CCIAContext _dbContext, int orgId, int sid)
         {
+            if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
+            {
+                var labresults = new SampleLabResults();
+                labresults.SeedsId = sid;
+                await _dbContext.SampleLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+            }
+            
             var labsAndStandards = new LabsAndStandards();
             labsAndStandards.Labs = await _dbContext.SampleLabResults.Where(l => l.SeedsId == sid)
                     .Include(r => r.LabOrganization)
