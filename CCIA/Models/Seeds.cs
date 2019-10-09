@@ -89,7 +89,7 @@ namespace CCIA.Models
         public List<SeedsApplications>   SeedsApplications { get; set; }
 
         [ForeignKey("Id")]
-        public SxLabResults LabResults { get; set; }
+        public SampleLabResults LabResults { get; set; }
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
@@ -138,7 +138,17 @@ namespace CCIA.Models
             {
                 return Application.CropName;
             }
-            return Variety == null ? "" : Variety.Crop.Name;
+            return Variety == null || Variety.Crop == null ? "" : Variety.Crop.Name;
+        }
+
+        public int GetCropId()
+        { 
+            if(AppId.HasValue)
+            {
+                return Application.CropId.Value;
+            }
+            return Variety == null ? 0 : Variety.CropId;
+            
         }
 
         public string GetVarietyName()

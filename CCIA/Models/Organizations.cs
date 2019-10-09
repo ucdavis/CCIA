@@ -24,6 +24,8 @@ namespace CCIA.Models
 
         public int? CountyId { get; set; }
 
+        public bool GermLab { get; set; }
+
 
 
        

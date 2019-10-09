@@ -53,7 +53,7 @@ namespace CCIA.Models
         public virtual DbSet<Rates> Rates { get; set; }
         public virtual DbSet<SeedsApplications> SeedsApplications { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
-        public virtual DbSet<SxLabResults> SxLabResults { get; set; }
+        public virtual DbSet<SampleLabResults> SampleLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
@@ -76,6 +76,8 @@ namespace CCIA.Models
         public virtual DbSet<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
 
         public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
+
+        public virtual DbSet<Standards>  Standards { get; set; }
 
         public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
@@ -124,7 +126,6 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.tags_changes'. Please see the warning messages.
         
-        // Unable to generate entity type for table 'dbo.standards'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_beta_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_lists'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.field_results'. Please see the warning messages.
@@ -252,6 +253,37 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
                 
                 entity.HasOne(d => d.Application);
+
+            });
+
+            modelBuilder.Entity<Standards>(entity => {
+                entity.ToTable("standards");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("std_id");
+
+                entity.Property(e => e.Name).HasColumnName("std_name");
+
+                entity.Property(e => e.Category).HasColumnName("std_category");
+
+                entity.Property(e => e.Description).HasColumnName("std_desc");
+
+                entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.Property(e => e.MinValue).HasColumnName("min_value");
+
+                entity.Property(e => e.MaxValue).HasColumnName("max_value");
+
+                entity.Property(e => e.ValueType).HasColumnName("value_type");
+
+                entity.Property(e => e.TextValue).HasColumnName("text_value");
+
+                entity.Property(e => e.NegativeMessage).HasColumnName("neg_msg");
+
+                entity.Property(e => e.PositiveMessage).HasColumnName("pos_msg");
+
+                entity.Property(e => e.Program).HasColumnName("program");
 
             });
 
@@ -1806,6 +1838,8 @@ namespace CCIA.Models
                 entity.Property(e => e.Email).HasColumnName("main_email");
 
                 entity.Property(e => e.CountyId).HasColumnName("county_id");
+
+                entity.Property(e => e.GermLab).HasColumnName("germination_lab");
             });
 
             modelBuilder.Entity<Contacts>(entity =>
@@ -2272,6 +2306,9 @@ namespace CCIA.Models
                 entity.Property(e => e.CropId).HasColumnName("crop_id");
 
                 entity.Property(e => e.StdId).HasColumnName("std_id");
+
+                entity.HasOne(e => e.Crops).WithMany(c => c.CropStandards).HasForeignKey(e => e.CropId);
+                entity.HasOne(e => e.Standards).WithMany(s => s.CropStandards).HasForeignKey(e => e.StdId);
             });
 
             modelBuilder.Entity<DistrictCounty>(entity =>
@@ -2727,7 +2764,7 @@ namespace CCIA.Models
                     .HasMaxLength(250);
             });
 
-            modelBuilder.Entity<SxLabResults>(entity =>
+            modelBuilder.Entity<SampleLabResults>(entity =>
             {
                 entity.HasKey(e => e.SeedsId)
                     .ForSqlServerIsClustered(false);
@@ -2809,7 +2846,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.GermDays).HasColumnName("germ_days");
 
-                entity.Property(e => e.GermHardSeed)
+                entity.Property(e => e.HardSeedPercent)
                     .HasColumnName("germ_hard_seed")
                     .HasColumnType("numeric(8, 7)");
 
@@ -2856,11 +2893,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.NoxiousGrams)
                     .HasColumnName("noxious_grams")
-                    .HasColumnType("numeric(7, 2)");
-
-                entity.Property(e => e.NoxiousPercent)
-                    .HasColumnName("noxious_percent")
-                    .HasColumnType("numeric(8, 7)");
+                    .HasColumnType("numeric(7, 2)");               
 
                 entity.Property(e => e.OtherCropComments)
                     .HasColumnName("other_crop_comments")
@@ -2917,7 +2950,7 @@ namespace CCIA.Models
                     .HasColumnName("purity_results")
                     .HasColumnType("char(1)");
 
-                entity.Property(e => e.SampleComments)
+                entity.Property(e => e.Comments)
                     .HasColumnName("sample_comments")
                     .HasMaxLength(500)
                     .IsUnicode(false);
@@ -2950,6 +2983,7 @@ namespace CCIA.Models
 
 
             });
+            
 
             modelBuilder.Entity<VarFamily>(entity =>
             {
