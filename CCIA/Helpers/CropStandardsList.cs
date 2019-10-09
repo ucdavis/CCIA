@@ -62,12 +62,12 @@ namespace CCIA.Helpers
                 returnList.ShowAssay1 = true;
                 returnList.Assay1Name = stand.Standards.TextValue;
 
-                if(cs.Count(c => c.Standards.Name == "assay_required") > 1)
-                {
-                    stand = cs.Last(c => c.Standards.Name == "assay_required");
-                    returnList.ShowAssay2 = true;
-                    returnList.Assay2Name = stand.Standards.TextValue;
-                }                  
+                // if(cs.Count(c => c.Standards.Name == "assay_required") > 1)
+                // {
+                //     stand = cs.Last(c => c.Standards.Name == "assay_required");
+                //     returnList.ShowAssay2 = true;
+                //     returnList.Assay2Name = stand.Standards.TextValue;
+                // }                  
             } 
 
             if(cs.Any(c => c.Standards.Name == "max_other_varieties"))

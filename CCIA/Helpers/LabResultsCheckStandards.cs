@@ -25,7 +25,7 @@ namespace CCIA.Helpers
         public string BushelWeightError { get; set; }
         public string GermError { get; set; }
         public string Assay1Error { get; set; }
-        public string Assay2Error { get; set; }
+        // public string Assay2Error { get; set; }
 
 
         public LabResultsCheckStandards()
@@ -206,16 +206,16 @@ namespace CCIA.Helpers
                     returnList.HasWarnings = true;
                     returnList.Assay1Error = $"{standard.TextValue} does not fall within crop standard";
                 }
-                if (cs.Count(c => c.Name == "assay_required") > 1)
-                {
-                    standard = cs.Last(c => c.Name == "assay_required");
-                    assayResult = labs.AssayTest2.Value ? 1 : 0;
-                    if (assayResult > standard.MaxValue || assayResult < standard.MinValue)
-                    {
-                        returnList.HasWarnings = true;
-                        returnList.Assay2Error = $"{standard.TextValue} does not fall within crop standard";
-                    }
-                }
+                // if (cs.Count(c => c.Name == "assay_required") > 1)
+                // {
+                //     standard = cs.Last(c => c.Name == "assay_required");
+                //     assayResult = labs.AssayTest2.Value ? 1 : 0;
+                //     if (assayResult > standard.MaxValue || assayResult < standard.MinValue)
+                //     {
+                //         returnList.HasWarnings = true;
+                //         returnList.Assay2Error = $"{standard.TextValue} does not fall within crop standard";
+                //     }
+                // }
             }
 
             return returnList;

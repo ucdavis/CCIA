@@ -102,10 +102,10 @@ namespace CCIA.Controllers
                 {
                     ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
                 }
-                if (errorList.Assay2Error != null)
-                {
-                    ModelState.AddModelError("Labs.AssayTest2", errorList.Assay2Error);
-                }
+                // if (errorList.Assay2Error != null)
+                // {
+                //     ModelState.AddModelError("Labs.AssayTest2", errorList.Assay2Error);
+                // }
 
                 ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot");
 
