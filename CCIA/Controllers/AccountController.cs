@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using CCIA.Models;
 using CCIA.Models.AccountViewModels;
 using CCIA.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace CCIA.Controllers
 {
@@ -24,17 +27,68 @@ namespace CCIA.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly CCIAContext _dbContext;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            CCIAContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _dbContext = dbContext;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Test(string returnUrl = null)
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> MakePasswords(int id)
+        {
+            var test = await _dbContext.Contacts.Where(c => c.PasswordHash == null).Take(50).ToListAsync();
+            foreach (Contacts cont in test)
+            {
+                byte[] hashed = KeyDerivation.Pbkdf2(
+                    password: cont.Password,
+                    salt: cont.Salt,
+                    prf: KeyDerivationPrf.HMACSHA1,
+                    iterationCount: 10000,
+                    numBytesRequested: 256 / 8);
+                cont.PasswordHash = hashed;
+                _dbContext.Update(cont);
+            }
+            await _dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        private static bool ByteArraysEqual(byte[] a, byte[] b)
+        {
+            if (a == null && b == null)
+            {
+                return true;
+            }
+            if (a == null || b == null || a.Length != b.Length)
+            {
+                return false;
+            }
+            var areSame = true;
+            for (var i = 0; i < a.Length; i++)
+            {
+                areSame &= (a[i] == b[i]);
+            }
+            return areSame;
         }
 
         [TempData]

@@ -21,6 +21,10 @@ namespace CCIA.Models
         public string PagerNo { get; set; }
         public string EmailAddr { get; set; }
         public string Password { get; set; }
+
+        public Byte[] PasswordHash { get; set; }
+        
+        public Byte[] Salt { get; set; }
         public string ContactType { get; set; }
         public bool CciaMember { get; set; }
         public int? CciaMemberYear { get; set; }

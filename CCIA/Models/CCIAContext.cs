@@ -2033,6 +2033,12 @@ namespace CCIA.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PasswordHash)
+                    .HasColumnName("password_hash");
+
+                entity.Property(e => e.Salt)
+                    .HasColumnName("salt");
+              
                 entity.Property(e => e.Suffix)
                     .HasColumnName("suffix")
                     .HasMaxLength(50);
