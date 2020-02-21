@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CCIA.Data;
 using CCIA.Models;
 using CCIA.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA
 {
@@ -28,9 +29,19 @@ namespace CCIA
         {
             services.AddDbContext<CCIAContext>();
 
+             services.AddAuthentication("Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                });
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<CCIAContext>()
                 .AddDefaultTokenProviders();
+            
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
+            services.AddAuthentication();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -56,7 +67,7 @@ namespace CCIA
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            
 
             app.UseMvc(routes =>
             {
@@ -64,6 +75,8 @@ namespace CCIA
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
+            app.UseAuthentication();            
         }
     }
 }
