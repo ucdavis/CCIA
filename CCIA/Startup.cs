@@ -51,7 +51,6 @@ namespace CCIA
             }                     
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
             
             app.UseAuthentication();
 
