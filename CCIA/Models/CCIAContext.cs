@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging.Console;
 
 namespace CCIA.Models
 {
-    public partial class CCIAContext : IdentityDbContext<ApplicationUser>
+    public partial class CCIAContext : DbContext
     {
 
         [DbFunction("sid_standards_msg","dbo")]

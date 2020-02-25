@@ -30,14 +30,7 @@ namespace CCIA
                     options.AccessDeniedPath = "/account/denied";
                     options.LoginPath = "/account/login";
                 });
-
-            // services.AddIdentity<ApplicationUser, IdentityRole>()
-            //     .AddEntityFrameworkStores<CCIAContext>()
-            //     .AddDefaultTokenProviders();
-            
-            //services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
-            //services.AddAuthentication();
-
+           
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 

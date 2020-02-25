@@ -29,17 +29,8 @@ namespace CCIA.Controllers
         // private readonly ILogger _logger;
         private readonly CCIAContext _dbContext;
 
-        public AccountController(
-            // UserManager<ApplicationUser> userManager,
-            // SignInManager<ApplicationUser> signInManager,
-            // IEmailSender emailSender,
-            // ILogger<AccountController> logger,
-            CCIAContext dbContext)
-        {
-            //_userManager = userManager;
-            //_signInManager = signInManager;
-            //_emailSender = emailSender;
-            //_logger = logger;
+        public AccountController(CCIAContext dbContext)
+        {            
             _dbContext = dbContext;
         }
 
