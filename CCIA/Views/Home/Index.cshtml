@@ -6,14 +6,25 @@
     <h1 class="display-4">Welcome</h1>    
 </div>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <h1>Claims</h1>
-    <dl>
-        @foreach (var claim in User.Claims)
-        {
-            <dt>@claim.Type</dt>
-            <dd>@claim.Value</dd>
-        }
-    </dl>
-}
+@using Microsoft.AspNetCore.Authentication
+<h2>HttpContext.User.Claims</h2>
+
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>AuthenticationProperties</h2>
+
+@* <dl>
+    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+    {
+        <dt>@prop.Key</dt>
+        <dd>@prop.Value</dd>
+    }
+</dl> *@
+
+

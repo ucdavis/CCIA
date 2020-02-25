@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CCIA.Data;
 using CCIA.Models;
 using CCIA.Services;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Hosting;
 
 namespace CCIA
 {
@@ -27,30 +20,32 @@ namespace CCIA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             services.AddDbContext<CCIAContext>();
 
-             services.AddAuthentication("Cookies")
-                .AddCookie("Cookies", options =>
+            services.AddAuthentication( "Cookies") // Sets the default scheme to cookies
+                .AddCookie( "Cookies", options =>
                 {
-                    options.LoginPath = "/Account/Login";
-                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.AccessDeniedPath = "/account/denied";
+                    options.LoginPath = "/account/login";
                 });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<CCIAContext>()
-                .AddDefaultTokenProviders();
+            // services.AddIdentity<ApplicationUser, IdentityRole>()
+            //     .AddEntityFrameworkStores<CCIAContext>()
+            //     .AddDefaultTokenProviders();
             
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
-            services.AddAuthentication();
+            //services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
+            //services.AddAuthentication();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddMvc();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.Extensions.Hosting.IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -60,14 +55,12 @@ namespace CCIA
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseDefaultFiles();
-            
+            }                     
 
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -75,8 +68,6 @@ namespace CCIA
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            
-            app.UseAuthentication();            
         }
     }
 }
