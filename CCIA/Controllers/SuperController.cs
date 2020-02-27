@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CCIA.Controllers
 {
-    [AutoValidateAntiforgeryToken]    
+    [AutoValidateAntiforgeryToken]  
+    [Authorize]  
     public class SuperController : Controller
     {
         private const string TempDataMessageKey = "Message";
