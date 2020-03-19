@@ -16,6 +16,7 @@ using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using AspNetCore.Security.CAS;
 
 namespace CCIA.Controllers
 {
@@ -76,6 +77,13 @@ namespace CCIA.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
+        [AllowAnonymous]
+        public async Task CasLogin(string returnUrl)
+        {
+            var props = new AuthenticationProperties { RedirectUri = returnUrl };
+            await HttpContext.ChallengeAsync(CasDefaults.AuthenticationScheme, props);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -85,7 +93,7 @@ namespace CCIA.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
-        }
+        }        
 
         [HttpPost]
         [AllowAnonymous]
@@ -103,7 +111,9 @@ namespace CCIA.Controllers
                         var claims = new List<Claim>
                         {
                             new Claim("user", email),
-                            new Claim("role", "Member")
+                            new Claim("role", "Member"),
+                            new Claim("role", "conditioner"),
+                            new Claim("contactId", contact.Id.ToString())
                         };
 
                         await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));

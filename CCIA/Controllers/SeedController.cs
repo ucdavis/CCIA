@@ -11,11 +11,13 @@ using CCIA.Models.IndexViewModels;
 using CCIA.Models.SeedsCreateViewModel;
 using CCIA.Models.SeedsCreateOOSViewModel;
 using CCIA.Models.SeedsCreateQAViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 
 
 namespace CCIA.Controllers
 {
+    [Authorize(Roles = "conditioner")]  
     public class SeedsController : SuperController
     {
         private readonly CCIAContext _dbContext;

@@ -5,6 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using CCIA.Models;
 using CCIA.Services;
 using Microsoft.Extensions.Hosting;
+using AspNetCore.Security.CAS;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace CCIA
 {
@@ -29,6 +33,51 @@ namespace CCIA
                 {
                     options.AccessDeniedPath = "/account/denied";
                     options.LoginPath = "/account/login";
+                })                
+                .AddCAS(o =>
+                {
+                    o.CasServerUrlBase = Configuration["CasBaseUrl"];   // Set in `appsettings.json` file.
+                    o.SignInScheme = "Cookies";
+                    o.Events.OnTicketReceived = async context => {
+                        var identity = (ClaimsIdentity) context.Principal.Identity;
+                        if (identity == null)
+                        {
+                            return;
+                        }
+
+                        // kerb comes across in name & name identifier
+                        var kerb = identity?.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                        if (string.IsNullOrWhiteSpace(kerb)) return;
+
+                        // var identityService = services.BuildServiceProvider().GetService<IIdentityService>();
+
+                        // var user = await identityService.GetByKerberos(kerb);
+
+                        // if (user == null)
+                        // {
+                        //     throw new InvalidOperationException("Could not retrieve user information from IAM");
+                        // }
+                        
+
+                        // identity.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
+                        // identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+
+                        // identity.RemoveClaim(identity.FindFirst(ClaimTypes.Name));
+                        // identity.AddClaim(new Claim(ClaimTypes.Name, user.Id));
+
+                        // identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
+                        // identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
+                        // identity.AddClaim(new Claim("name", user.Name));
+                        // identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+                        identity.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
+                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, kerb));
+                        identity.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
+
+                        context.Principal.AddIdentity(identity);
+
+                        await Task.FromResult(0); 
+                    };
                 });
            
             // Add application services.
