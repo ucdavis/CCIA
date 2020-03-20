@@ -73,6 +73,10 @@ namespace CCIA
                         identity.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
                         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, kerb));
                         identity.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
+                        if(!user.SeasonalEmployee)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "AllowEmulate"));
+                        }
 
                         context.Principal.AddIdentity(identity);
 

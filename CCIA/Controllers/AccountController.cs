@@ -170,7 +170,7 @@ namespace CCIA.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Employee")] 
+        [Authorize(Roles = "AllowEmulate")] 
         public async Task<RedirectToActionResult> Emulate(int id /* Login ID*/)
         {
             if (id != 0)
