@@ -33,17 +33,5 @@
     }
 </dl>
             }
-@* @if(await Context.AuthenticateAsync().None())
-{
-<dl>
-    @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
-    {
-        <dt>@prop.Key</dt>
-        <dd>@prop.Value</dd>
-    }
-</dl>
-} else {
-    <div>No authentication properties</div>
-} *@
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -12,6 +13,15 @@ namespace CCIA.Models
         public string FirstName { get; set; }
         public string Mi { get; set; }
         public string LastName { get; set; }
+
+        [StringLength(256)]
+        [Display(Name = "Name")]        
+        public string Name { 
+            get {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public string Suffix { get; set; }
         public string BusPhone { get; set; }
         public string BusPhoneExt { get; set; }

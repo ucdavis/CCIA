@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <section>
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <h4>Use a local account to log in.</h4>
+                <h4>Member/Customer Login</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -35,24 +35,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-action="ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-                    </p>
-                </div>
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>               
             </form>
         </section>
     </div>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Use another service to log in.</h4>
+            <h4>CCIA Staff</h4>
             <hr />
-           <div><a asp-action="CasLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">Cas Login</a></div>
+           <div><a asp-action="CasLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-primary">CAS Login</a></div>
         </section>
     </div>
 </div>

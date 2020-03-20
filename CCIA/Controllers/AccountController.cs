@@ -24,10 +24,11 @@ namespace CCIA.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        // private readonly UserManager<ApplicationUser> _userManager;
-        // private readonly SignInManager<ApplicationUser> _signInManager;
-        // private readonly IEmailSender _emailSender;
-        // private readonly ILogger _logger;
+         public string Message
+        {
+            set { TempData["Message"] = value; }
+        }
+        
         private readonly CCIAContext _dbContext;
 
         public AccountController(CCIAContext dbContext)
@@ -80,7 +81,7 @@ namespace CCIA.Controllers
         [AllowAnonymous]
         public async Task CasLogin(string returnUrl)
         {
-            var props = new AuthenticationProperties { RedirectUri = returnUrl };
+            var props = new AuthenticationProperties { RedirectUri = "/" };
             await HttpContext.ChallengeAsync(CasDefaults.AuthenticationScheme, props);
         }
 
@@ -108,16 +109,7 @@ namespace CCIA.Controllers
                 {
                     if (VerifyPassword(password, contact))
                     {
-                        var claims = new List<Claim>
-                        {
-                            new Claim("user", email),
-                            new Claim("role", "Member"),
-                            new Claim("role", "conditioner"),
-                            new Claim("contactId", contact.Id.ToString())
-                        };
-
-                        await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
-                     
+                        await CompleteSignin(contact);
 
                         if (returnUrl != null)
                         {
@@ -132,6 +124,20 @@ namespace CCIA.Controllers
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Invalid username or password");
             return View();
+        }
+
+        public async Task CompleteSignin(Contacts contact)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim("user", contact.EmailAddr),
+                new Claim("role", "Member"),
+                new Claim("role", "conditioner"),
+                new Claim("contactId", contact.Id.ToString())
+            };
+
+            await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
+
         }
 
         public bool VerifyPassword(string password, Contacts contact)
@@ -156,40 +162,45 @@ namespace CCIA.Controllers
         {
             await HttpContext.SignOutAsync("Cookies");
             return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
-
-
-
-
-
-        [HttpGet]
-        public IActionResult AccessDenied()
+        }      
+        
+        
+         public IActionResult Denied()
         {
             return View();
         }
 
-        #region Helpers
-
-        private void AddErrors(IdentityResult result)
+        [Authorize(Roles = "Employee")] 
+        public async Task<RedirectToActionResult> Emulate(int id /* Login ID*/)
         {
-            foreach (var error in result.Errors)
+            if (id != 0)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
+                var contact = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+                if(contact == null)
+                {
+                    Message = "Contact not found";
+                    return RedirectToAction("Index", "Home");
+                }
+                
+                Message = string.Format("Emulating {0}.  To exit emulation use /Account/EndEmulate", contact.Name);
+                await CompleteSignin(contact);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                Message = "Login ID not provided.  Use /Emulate/login";
             }
+            
+            return RedirectToAction("Index", "Home");
         }
 
-        #endregion
+        public async Task<RedirectToActionResult> EndEmulate()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+
+            return RedirectToAction("CasLogin");
+        }
+
+        
     }
 }
