@@ -28,6 +28,11 @@ namespace CCIA.Controllers
         {
             set { TempData["Message"] = value; }
         }
+
+        public string EmulationMessage 
+        {             
+            set => TempData["EmulationMessage"] = value;
+        }
         
         private readonly CCIAContext _dbContext;
 
@@ -109,7 +114,7 @@ namespace CCIA.Controllers
                 {
                     if (VerifyPassword(password, contact))
                     {
-                        await CompleteSignin(contact);
+                        await CompleteSignin(contact, false);
 
                         if (returnUrl != null)
                         {
@@ -126,15 +131,19 @@ namespace CCIA.Controllers
             return View();
         }
 
-        public async Task CompleteSignin(Contacts contact)
+        public async Task CompleteSignin(Contacts contact, bool isEmulation)
         {
             var claims = new List<Claim>
             {
                 new Claim("user", contact.EmailAddr),
                 new Claim("role", "Member"),
                 new Claim("role", "conditioner"),
-                new Claim("contactId", contact.Id.ToString())
+                new Claim("contactId", contact.Id.ToString())                
             };
+            if(isEmulation)
+            {
+                claims.Add(new Claim("role", "Emulated"));
+            }
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
 
@@ -182,8 +191,8 @@ namespace CCIA.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 
-                Message = string.Format("Emulating {0}.  To exit emulation use /Account/EndEmulate", contact.Name);
-                await CompleteSignin(contact);
+                EmulationMessage = string.Format("Emulating {0}.  To exit emulation use <a href='/Account/EndEmulate'>/Account/EndEmulate", contact.Name);
+                await CompleteSignin(contact, true);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -197,6 +206,7 @@ namespace CCIA.Controllers
         public async Task<RedirectToActionResult> EndEmulate()
         {
             await HttpContext.SignOutAsync("Cookies");
+            EmulationMessage = "";
 
             return RedirectToAction("CasLogin");
         }

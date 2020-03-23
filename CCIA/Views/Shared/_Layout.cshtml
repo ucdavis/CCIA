@@ -109,6 +109,13 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 @TempData["Message"]
             </div>
+        }        
+        @if (!string.IsNullOrWhiteSpace(TempData.Peek("EmulationMessage") as string))
+        {
+            <div class="alert alert-info">
+               Emulation<br/>
+                @Html.Raw(TempData.Peek("EmulationMessage"))
+            </div>
         }
         <div>
             @RenderBody()
