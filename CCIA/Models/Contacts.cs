@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -12,6 +13,15 @@ namespace CCIA.Models
         public string FirstName { get; set; }
         public string Mi { get; set; }
         public string LastName { get; set; }
+
+        [StringLength(256)]
+        [Display(Name = "Name")]        
+        public string Name { 
+            get {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public string Suffix { get; set; }
         public string BusPhone { get; set; }
         public string BusPhoneExt { get; set; }
@@ -21,6 +31,10 @@ namespace CCIA.Models
         public string PagerNo { get; set; }
         public string EmailAddr { get; set; }
         public string Password { get; set; }
+
+        public Byte[] PasswordHash { get; set; }
+        
+        public Byte[] Salt { get; set; }
         public string ContactType { get; set; }
         public bool CciaMember { get; set; }
         public int? CciaMemberYear { get; set; }

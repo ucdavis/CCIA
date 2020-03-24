@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CCIA.Controllers
 {
-    [AutoValidateAntiforgeryToken]
+    [AutoValidateAntiforgeryToken]  
+    [Authorize]  
     public class SuperController : Controller
     {
         private const string TempDataMessageKey = "Message";

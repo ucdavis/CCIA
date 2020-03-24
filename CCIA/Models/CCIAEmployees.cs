@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -7,10 +8,29 @@ namespace CCIA.Models
     {
         public string Id { get; set; }
        
+        [Required]
+        [StringLength(50)]
         public string FirstName { get; set; }
        
+        [Required]
+        [StringLength(50)]
         public string LastName { get; set; }
+
+        [StringLength(256)]
+        [Display(Name = "Name")]        
+        public string Name { 
+            get {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public string UCDMaildID { get; set; }
+
+        public string Email { 
+            get{
+                return UCDMaildID + "@ucdavis.edu";
+            } 
+        }
 
         public string CampusRoom { get; set; }
         public string CampusBuilding { get; set; }
