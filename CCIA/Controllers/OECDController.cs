@@ -13,7 +13,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class OECDController : SuperController
+    public class OECDController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

@@ -11,7 +11,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class MyCustomersController : SuperController
+    public class MyCustomersController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

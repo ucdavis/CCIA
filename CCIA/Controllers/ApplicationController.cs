@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace CCIA.Controllers
 {
 
-    public class ApplicationController : SuperController
+    public class ApplicationController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

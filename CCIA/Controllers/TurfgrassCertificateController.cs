@@ -13,7 +13,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class TurfgrassCertificateController : SuperController
+    public class TurfgrassCertificateController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

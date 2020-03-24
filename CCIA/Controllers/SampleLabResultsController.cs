@@ -7,7 +7,7 @@ using CCIA.Helpers;
 
 namespace CCIA.Controllers
 {
-    public class SampleLabResultsController : SuperController
+    public class SampleLabResultsController : ClientController
     {
 
         private readonly CCIAContext _dbContext;

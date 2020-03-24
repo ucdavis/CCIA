@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CCIA.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA.Controllers
 {
@@ -21,6 +22,12 @@ namespace CCIA.Controllers
         }
 
         public IActionResult CookieView()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Employee")]
+        public IActionResult AdminHome()
         {
             return View();
         }

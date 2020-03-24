@@ -17,7 +17,7 @@ using CCIA.Models.BulkSalesCertificateShareViewModel;
 
 namespace CCIA.Controllers
 {
-    public class BulkSalesCertificatesController : SuperController
+    public class BulkSalesCertificatesController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

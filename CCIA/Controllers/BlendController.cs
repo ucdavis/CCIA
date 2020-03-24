@@ -13,7 +13,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class BlendController : SuperController
+    public class BlendController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

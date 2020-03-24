@@ -13,7 +13,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class TagController : SuperController
+    public class TagController : ClientController
     {
         private readonly CCIAContext _dbContext;
 

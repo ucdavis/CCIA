@@ -13,7 +13,7 @@ using CCIA.Models.IndexViewModels;
 
 namespace CCIA.Controllers
 {
-    public class SeedTransferController : SuperController
+    public class SeedTransferController : ClientController
     {
         private readonly CCIAContext _dbContext;
 
