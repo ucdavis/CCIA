@@ -9,6 +9,7 @@ using AspNetCore.Security.CAS;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System;
 
 namespace CCIA
 {
@@ -34,6 +35,8 @@ namespace CCIA
                 {
                     options.AccessDeniedPath = "/account/denied";
                     options.LoginPath = "/account/login";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.SlidingExpiration = true;                    
                 })                
                 .AddCAS(o =>
                 {
