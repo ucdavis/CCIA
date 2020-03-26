@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ClientController
     {
         public IActionResult Index()
         {
@@ -25,11 +25,6 @@ namespace CCIA.Controllers
         {
             return View();
         }
-
-        [Authorize(Roles = "Employee")]
-        public IActionResult AdminHome()
-        {
-            return View();
-        }
+       
     }
 }

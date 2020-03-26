@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CCIA.Controllers
-{
-    
-    [Authorize(Roles = "conditioner")]  
-    public class ClientController : SuperController
+{    
+     [Area("Admin")]
+    [Authorize(Roles = "Employee")]  
+    public class AdminController : SuperController
     {
     }
 }

@@ -23,75 +23,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CCIA Web App</a>
-            </div>
-        </nav>
-        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a href="/" class="navbar-brand">Members</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbars">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse navbars" id="navbar2">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Field Applications</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Home</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="1">Grow Certified Seed</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="2">Grow Certified Potatoes</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="3">Heritage Grain QA</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="4">Pre-Variety Germplasm</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="5">Rice QA</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="7">Hemp</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="Index">FIR Summary</a>
-                            <a class="dropdown-item" asp-controller="Application" asp-action="Index">Application Renewals</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Certify Seed Lots</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Seeds" asp-action="Index">Seeds Home</a>
-                            <a class="dropdown-item" asp-controller="Seeds" asp-action="SelectOrigin">New Certified Seed Lot</a>
-                            <a class="dropdown-item" asp-controller="Seeds" asp-action="CreateQALot">New QA/PVG Lot</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Tag" asp-action="Index" aria-haspopup="true" aria-expanded="false">Tags</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Tags Home</a>
-                            <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Request New Tag</a>
-                            <a class="dropdown-item" asp-controller="Tag" asp-action="Index">Bulk Tag Request</a>
-                            <a class="dropdown-item" asp-controller="Tag" asp-action="Index">OECD-Gray Tag/Not Finally Certified</a>
-                        </div>
-                    </li>
-                    <a class="nav-link" asp-area="" asp-controller="OECD" asp-action="Index">OECD</a>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="Blend" asp-action="Index" aria-haspopup="true" aria-expanded="false">Blends</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Blend" asp-action="Index">Blends Home</a>
-                            <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Lot Blend</a>
-                            <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New Varietal Blend</a>
-                            <a class="dropdown-item" asp-controller="Blend" asp-action="Index">New InDirt Blend</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Create">New Bulks Sales Certificate</a>
-                            <a class="dropdown-item" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a>
-                            <a class="dropdown-item" asp-controller="SeedTransfers" asp-action="Create">New Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-controller="SeedTransfers" asp-action="Index">Completed Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
-                        </div>
-                    </li>
-                    <a class="nav-link" asp-area="" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a>
-                </ul>
-            </div>
-        </nav>
+        
 
     </header>
     <div class="container-fluid body-content">
