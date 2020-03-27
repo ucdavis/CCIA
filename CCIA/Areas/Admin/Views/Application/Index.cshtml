@@ -13,15 +13,19 @@
             <th></th>
         <th>AppId</th>
         <th>Type</th>
-        <th>Cert Year</th>
+        <th>Applicant ID</th>
+        <th>Applicant Name</th>
+        <th>Grower ID</th>
         <th>Grower</th>
-        <th>Field Name</th>
-        <th>Acres</th>
-        <th>County</th>
         <th>Crop</th>
         <th>Variety</th>
         <th>Class</th>
+        <th>County</th>
+        <th>Field Name</th>
+        <th>Acres</th>
+        <th>Planting Date</th>
         <th>Map</th>
+        <th>PO Lot</th>
         <th>Status</th>
         </thead>
         <tbody>
@@ -32,27 +36,23 @@
                 <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
                 <td>@app.Id</td>
                 <td>@app.AppType</td>
-                <td>@app.CertYear</td>
+                <td>@app.ApplicantId</td>
+                <td>@app.ApplicantName</td>
+                <td>@app.GrowerId</td>
                 <td>@app.GrowerName</td> 
-                <td>@app.FieldName</td>
-                <td>@app.AcresApplied</td>
-                <td>@app.County.CountyName</td>
                 <td>@app.Crop.Name</td>
                 <td>@app.VarietyName</td>
-               @if (app.ClassProduced != null)
-        {
-            <td>@app.ClassProduced.ClassProducedTrans</td>
-        }
-        else
-        {
-            <td>@app.ClassProducedId</td>
-        }
-
-        <td>@app.MapVe</td>
-        <td>@app.Status</td>
+                <td>@app.ClassProducedName</td> 
+                <td>@app.County.CountyName</td>
+                <td>@app.FieldName</td>
+                <td>@app.AcresApplied</td>
+                <td>@app.DatePlanted</td>
+                
+                <td>@app.MapVe</td>
+                <td>@app.PoLotNum</td>
+                <td>@app.Status</td>
             </tr>
             }
-
         </tbody>
     </table>
 </div>

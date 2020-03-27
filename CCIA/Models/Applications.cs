@@ -206,6 +206,28 @@ namespace CCIA.Models
                 return "";
             }
         }
+
+         public string ApplicantName { 
+            get
+            {
+                if(ApplicantOrganization != null)
+                {
+                    return ApplicantOrganization.OrgName;
+                }
+                return "";
+            }
+        }
+
+        public string ClassProducedName { 
+            get
+            {
+                if(ClassProduced != null)
+                {
+                    return ClassProduced.ClassProducedTrans;
+                }
+                return ClassProducedId.ToString();
+            }
+        }
         
 
     }
