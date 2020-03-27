@@ -1,0 +1,58 @@
+@model CCIA.Models.IndexViewModels.ApplicationIndexViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@await Html.PartialAsync("_IndexHeaderPartial", @Model)
+
+<div class="col-lg-1">
+    <table id="table" class="table">
+        <thead>
+            <th></th>
+        <th>AppId</th>
+        <th>Type</th>
+        <th>Cert Year</th>
+        <th>Grower</th>
+        <th>Field Name</th>
+        <th>Acres</th>
+        <th>County</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>
+        <th>Map</th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        
+            @foreach (var app in Model.applications)
+            {
+            <tr>
+                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
+                <td>@app.Id</td>
+                <td>@app.AppType</td>
+                <td>@app.CertYear</td>
+                <td>@app.GrowerName</td> 
+                <td>@app.FieldName</td>
+                <td>@app.AcresApplied</td>
+                <td>@app.County.CountyName</td>
+                <td>@app.Crop.Name</td>
+                <td>@app.VarietyName</td>
+               @if (app.ClassProduced != null)
+        {
+            <td>@app.ClassProduced.ClassProducedTrans</td>
+        }
+        else
+        {
+            <td>@app.ClassProducedId</td>
+        }
+
+        <td>@app.MapVe</td>
+        <td>@app.Status</td>
+            </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

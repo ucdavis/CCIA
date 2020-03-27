@@ -195,6 +195,17 @@ namespace CCIA.Models
 
             } 
         }
+
+        public string GrowerName { 
+            get
+            {
+                if(GrowerOrganization != null)
+                {
+                    return GrowerOrganization.OrgName;
+                }
+                return "";
+            }
+        }
         
 
     }
