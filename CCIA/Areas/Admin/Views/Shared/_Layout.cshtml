@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CCIA</title>
 
-    <environment include="Development">
+   <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.3.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>        
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="//ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/cupertino/jquery-ui.css">
@@ -25,65 +22,75 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CCIA Web App</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CCIA Web App - Admin Home</a>
             </div>
         </nav>
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a asp-area="admin" asp-controller="AdminHome" asp-action="Index" class="navbar-brand">Admin Home</a>
+            <a asp-area="admin" asp-controller="Home" asp-action="Index" class="navbar-brand">Admin Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbars">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse navbars" id="navbar2">
                 <ul class="navbar-nav">
+                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Orgs</a>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" asp-area="admin" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Applications</a>
                         <div class="dropdown-menu">                           
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="1">Process Pending</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="2">Renew</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="3">Accepted</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="4">Field Pinning Map</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="5">Field Inspection Report</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup" asp-route-appTypeId="7">Search</a>                          
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Process Pending</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Renew</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Accepted</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Field Pinning Map</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Field Inspection Report</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Search</a>                          
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Certify Seed Lots</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Seed Lots</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="Index">Seeds Home</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="SelectOrigin">New Certified Seed Lot</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="CreateQALot">New QA/PVG Lot</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="Index">Pending</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="SelectOrigin">Seed Lots</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="CreateQALot">Lab Results</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="CreateQALot">Cert Numbers</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="CreateQALot">Search</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Seeds" asp-action="CreateQALot">Weight log</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Tag" asp-action="Index" aria-haspopup="true" aria-expanded="false">Tags</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Tags Home</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Request New Tag</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Bulk Tag Request</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">OECD-Gray Tag/Not Finally Certified</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Process</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Tags</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Search</a>
                         </div>
                     </li>
-                    <a class="nav-link" asp-area="admin" asp-controller="OECD" asp-action="Index">OECD</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Tag" asp-action="Index" aria-haspopup="true" aria-expanded="false">OECD</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">OECD</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Reporting Sheets</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Search</a>
+                        </div>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Blend" asp-action="Index" aria-haspopup="true" aria-expanded="false">Blends</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">Blends Home</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">New Lot Blend</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">New Varietal Blend</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">New InDirt Blend</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">Process</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">Blends</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">By Status</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Blend" asp-action="Index">Search</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Create">New Bulks Sales Certificate</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Create">New Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Index">Completed Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Create">Bulks Sales Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index">Search Bulk Sales Certificates</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Create">Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Index">Search Seed Transfer Certificate</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
                         </div>
                     </li>
-                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Variety</a>
                 </ul>
             </div>
         </nav>
@@ -124,10 +131,10 @@
     </footer>
 
     <environment include="Development">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     </environment>
@@ -136,14 +143,12 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+                crossorigin="anonymous">
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha256-E/V4cWE4qvAeO5MOhjtGtqDzPndRO1LBk8lJ/PR7CA4=">
+                crossorigin="anonymous">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
