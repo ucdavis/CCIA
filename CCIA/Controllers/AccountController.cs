@@ -170,7 +170,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(RootController.Index), "Home");
         }      
         
         

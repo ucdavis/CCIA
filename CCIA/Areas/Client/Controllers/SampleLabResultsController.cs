@@ -5,7 +5,7 @@ using CCIA.Models.SampleLabResultsViewModel;
 using CCIA.Helpers;
 
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     public class SampleLabResultsController : ClientController
     {

@@ -15,7 +15,7 @@ using CCIA.Models.BulkSalesCertificateShareViewModel;
 
 
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     public class BulkSalesCertificatesController : ClientController
     {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
 
     public class ApplicationController : ClientController

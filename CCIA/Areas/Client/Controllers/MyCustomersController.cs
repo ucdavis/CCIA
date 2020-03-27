@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     public class MyCustomersController : ClientController
     {

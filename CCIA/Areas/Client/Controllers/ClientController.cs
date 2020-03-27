@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     [Area("Client")]
     [Authorize(Roles = "conditioner")]  

@@ -11,7 +11,7 @@ using CCIA.Models.IndexViewModels;
 
 
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     public class TagController : ClientController
     {

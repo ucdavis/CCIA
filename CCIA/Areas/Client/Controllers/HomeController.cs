@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using CCIA.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     public class HomeController : ClientController
     {

@@ -14,7 +14,7 @@ using CCIA.Models.SeedsCreateQAViewModel;
 
 
 
-namespace CCIA.Controllers
+namespace CCIA.Controllers.Client
 {
     
     public class SeedsController : ClientController
