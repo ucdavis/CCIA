@@ -57,6 +57,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
+                .Include(a => a.FieldResults)
                 .ToListAsync(),
                 certYears = await _dbContext.Applications.OrderBy(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
                 CertYear = certYear,

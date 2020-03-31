@@ -46,6 +46,7 @@ namespace CCIA.Models
         public virtual DbSet<Ecoregions> Ecoregions { get; set; }
         public virtual DbSet<Fees> Fees { get; set; }
         public virtual DbSet<FieldInspect> FieldInspect { get; set; }
+        public virtual DbSet<FieldResults> FieldResults { get; set;}
         public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
@@ -284,6 +285,24 @@ namespace CCIA.Models
                 entity.Property(e => e.PositiveMessage).HasColumnName("pos_msg");
 
                 entity.Property(e => e.Program).HasColumnName("program");
+
+            });
+
+            modelBuilder.Entity<FieldResults>(entity => {
+                entity.ToTable("field_results");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("fld_res_id");
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.DateInspected).HasColumnName("date_inspected");
+
+                entity.Property(e => e.InspectorId).HasColumnName("inspector");
+
+                entity.Property(e => e.ApplicantContacted).HasColumnName("applicant_contacted");
+
 
             });
 
@@ -1488,6 +1507,8 @@ namespace CCIA.Models
                 entity.HasMany(d => d.FieldHistories);
 
                 entity.HasMany(d => d.TurfgrassCertificates);
+
+                entity.HasMany(d => d.FieldResults);
 
             });
 

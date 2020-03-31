@@ -8,11 +8,7 @@ namespace CCIA.Models
 {
     public partial class Applications
     {
-        // public Applications()
-        // {
-        //     InverseTraceNavigation = new HashSet<Applications>();
-        // }
-
+       
         public int Id { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
@@ -94,15 +90,15 @@ namespace CCIA.Models
 
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
-
-       // public Applications TraceNavigation { get; set; }
-       // public ICollection<Applications> InverseTraceNavigation { get; set; }
-
+      
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
 
         [ForeignKey("GrowerId")]
         public Organizations GrowerOrganization { get; set; }
+
+        
+
         public int? GrowerId { get; set; }
 
         [ForeignKey("FarmCounty")]
@@ -136,6 +132,9 @@ namespace CCIA.Models
 
         [ForeignKey("AppId")]
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
+
+        [ForeignKey("AppId")]
+        public ICollection<FieldResults> FieldResults { get; set; }
 
         public string CropName 
         { 
@@ -228,6 +227,8 @@ namespace CCIA.Models
                 return ClassProducedId.ToString();
             }
         }
+
+        
         
 
     }
