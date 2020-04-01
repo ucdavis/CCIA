@@ -49,6 +49,12 @@ namespace CCIA.Models.IndexViewModels
 
         public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear)
         {
+            // var queryable = _dbContext.Applications.Where(a => a.CertYear == certYear);
+            // if(status == "Pending")
+            // {
+            //     queryable = _dbContext.Applications.Where(a => a.Status == "Pending acceptance");
+            // }
+            
             var viewModel = new ApplicationIndexViewModel
             {
                 applications = await _dbContext.Applications.Where(a => a.CertYear == certYear)
@@ -63,7 +69,7 @@ namespace CCIA.Models.IndexViewModels
                 CertYear = certYear,
                 PageTitle = "Applications",
                 DropDownText = "Display Apps for Cert Year:"
-            };
+            };           
 
             return viewModel;
         }

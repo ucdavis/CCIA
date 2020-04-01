@@ -33,6 +33,20 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+         public async Task<IActionResult> Pending()
+        {            
+            var model =  await _dbContext.Applications.Where(a => a.Status == "Pending acceptance")
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.County)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.FieldResults)
+                .ToListAsync();                        
+
+            return View(model);
+        }
+
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {
