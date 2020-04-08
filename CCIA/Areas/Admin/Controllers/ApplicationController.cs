@@ -22,7 +22,7 @@ namespace CCIA.Controllers.Admin
             _dbContext = dbContext;
         }
 
-        // GET: Application
+        
         public async Task<IActionResult> Index(int certYear)
         {            
             if (certYear == 0)
@@ -47,12 +47,56 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Renew()
+        {
+            var certYear = CertYearFinder.CertYear;
+            var model = await _dbContext.RenewFields.Where(r => r.Year == certYear)
+                .Include(r => r.Application)
+                .ThenInclude(a => a.GrowerOrganization)
+                .Include(r => r.Application)
+                .ThenInclude(a => a.ApplicantOrganization)
+                .Include(r => r.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(r => r.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(r => r.Application)
+                .ThenInclude(a => a.ClassProduced)
+                .ToListAsync();
+            return View(model);
+        }
+
+        public async Task<IActionResult> Renew_app(int id)
+        {
+            var appToRenew = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
+            var newApp = new Applications();
+            
+            newApp.PaperAppNum = appToRenew.Id;
+            newApp.CertNum = appToRenew.CertNum;
+            newApp.CertYear = CertYearFinder.CertYear;
+            newApp.OriginalCertYear = appToRenew.OriginalCertYear;
+            newApp.AppType = appToRenew.AppType;
+            newApp.ApplicantId = appToRenew.ApplicantId;
+            newApp.GrowerId = appToRenew.GrowerId;
+            newApp.CropId = appToRenew.CropId;
+            newApp.SelectedVarietyId = appToRenew.SelectedVarietyId;
+            newApp.EnteredVariety = appToRenew.EnteredVariety;
+            newApp.ClassProducedId = appToRenew.ClassProducedId;
+            newApp.Received = DateTime.Now;
+            newApp.Postmark = DateTime.Now;
+            newApp.Deadline = DateTime.Now.AddDays(1);
+            newApp.Status = "Pending acceptance";
+            
+		//  acres_applied, renewal (1_),  field_name, farm_county, user_app_dataentry (0),
+		// maps, maps_sub_dt, map_center_lat, map_center_long, map_ve, map_upload_file, text_field, map_zoom,
+		// date_planted, tags, geo_text_field, geo_field)
+
+            return  RedirectToAction(nameof(Renew));;
+        }
+
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
-        {
-            // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
-            var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
+        {   
+            var model = await _dbContext.Applications.Where(a => a.Id == id)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)

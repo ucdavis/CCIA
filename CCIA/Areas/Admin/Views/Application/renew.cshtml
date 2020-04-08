@@ -1,0 +1,56 @@
+@model List<CCIA.Models.RenewFields>
+
+
+@{
+    ViewData["Title"] = "Renewable Applications";
+}
+
+
+@if(Model != null)
+{
+    <div class="col-lg-1">
+        <table id="table" class="table">
+            <thead>
+                <th></th>
+            <th>AppId</th>
+            <th>Type</th>
+            <th>Applicant ID</th>
+            <th>Applicant Name</th>
+            <th>Grower ID</th>
+            <th>Grower</th>
+            <th>Crop</th>
+            <th>Variety</th>
+            <th>Class</th>           
+            <th>Field Name</th>
+            <th>Renew</th>
+            <th>No Crop</th>
+            <th>Cancel</th>
+            </thead>
+            <tbody>
+            
+                @foreach (var renew in Model)
+                {
+                <tr>
+                    <td><a asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@renew.Id">Details</a></td>
+                     <td>@renew.Id</td>
+                    <td>@renew.Application.AppType</td>
+                    <td>@renew.Application.ApplicantId</td>
+                    <td>@renew.Application.ApplicantName</td>
+                    <td>@renew.Application.GrowerId</td>
+                    <td>@renew.Application.GrowerName</td> 
+                    <td>@renew.Application.Crop.Name</td>
+                    <td>@renew.Application.VarietyName</td>
+                    <td>@renew.Application.ClassProducedName</td>                     
+                    <td>@renew.Application.FieldName</td> 
+                    <td><a asp-action="renew_app" asp-area="admin" asp-controller="Application" asp-route-id="@renew.AppId">Renew</a></td>                   
+                    <td>No Crop</td>
+                    <td>C=ancel</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+} else
+{
+     <div class="alert alert-info">No renewable applications at this time.</div>
+}
