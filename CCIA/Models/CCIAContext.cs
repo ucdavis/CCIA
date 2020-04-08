@@ -49,7 +49,7 @@ namespace CCIA.Models
         public virtual DbSet<Fees> Fees { get; set; }
         public virtual DbSet<FieldInspect> FieldInspect { get; set; }
         public virtual DbSet<FieldResults> FieldResults { get; set;}
-        public virtual DbSet<FieldMaps> FieldMaps { get; set; }
+        // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
@@ -2638,24 +2638,24 @@ namespace CCIA.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<FieldMaps>(entity =>
-            {
-                entity.HasKey(e => e.MapptId);
+            // modelBuilder.Entity<FieldMaps>(entity =>
+            // {
+            //     entity.HasKey(e => e.MapptId);
 
-                entity.ToTable("field_maps");
+            //     entity.ToTable("field_maps");
 
-                entity.Property(e => e.MapptId).HasColumnName("mappt_id");
+            //     entity.Property(e => e.MapptId).HasColumnName("mappt_id");
 
-                entity.Property(e => e.AppId).HasColumnName("app_id");
+            //     entity.Property(e => e.AppId).HasColumnName("app_id");
 
-                entity.Property(e => e.Latitude)
-                    .HasColumnName("latitude")
-                    .HasColumnType("numeric(25, 15)");
+            //     entity.Property(e => e.Latitude)
+            //         .HasColumnName("latitude")
+            //         .HasColumnType("numeric(25, 15)");
 
-                entity.Property(e => e.Longitude)
-                    .HasColumnName("longitude")
-                    .HasColumnType("numeric(25, 15)");
-            });
+            //     entity.Property(e => e.Longitude)
+            //         .HasColumnName("longitude")
+            //         .HasColumnType("numeric(25, 15)");
+            // });
 
             modelBuilder.Entity<LotBlends>(entity =>
             {
