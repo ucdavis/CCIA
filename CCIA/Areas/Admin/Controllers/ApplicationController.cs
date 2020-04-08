@@ -67,7 +67,8 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Renew_app(int id)
         {
-            var appToRenew = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+            var appToRenew = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstAsync();
             var newApp = new Applications();
             
             newApp.PaperAppNum = appToRenew.Id;
@@ -101,8 +102,14 @@ namespace CCIA.Controllers.Admin
             newApp.DatePlanted = appToRenew.DatePlanted;
             newApp.Tags = appToRenew.Tags;
 
+            renew.Action = 1;
+            renew.DateRenewed = DateTime.Now;
 
-		
+            _dbContext.Add(newApp);                
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewed. New App ID: {newApp.Id}";		
 		
             return  RedirectToAction(nameof(Renew));;
         }
