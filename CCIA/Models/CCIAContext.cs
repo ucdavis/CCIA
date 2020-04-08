@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
+
+
 namespace CCIA.Models
 {
     public partial class CCIAContext : DbContext
@@ -175,7 +177,7 @@ namespace CCIA.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
@@ -1413,9 +1415,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.MapVe)
                     .HasColumnName("map_ve")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("((0))");  
 
-                entity.Property(e => e.MapZoom).HasColumnName("map_zoom");
+                entity.Property(e => e.GeoField).HasColumnName("geo_field");
 
                 entity.Property(e => e.Maps)
                     .HasColumnName("maps")
@@ -1477,7 +1479,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Trace).HasColumnName("trace");
 
-                entity.Property(e => e.UserAppDataentry).HasColumnName("user_app_dataentry");
+                entity.Property(e => e.UserDataentry).HasColumnName("user_app_dataentry");
 
                 entity.Property(e => e.UserAppModDt)
                     .HasColumnName("user_app_mod_dt")

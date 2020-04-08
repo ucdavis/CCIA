@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using NetTopologySuite.Geometries;
 
 namespace CCIA.Models
 {
@@ -39,7 +40,7 @@ namespace CCIA.Models
         public string LotNo { get; set; }
         
         
-        public int? UserAppDataentry { get; set; }
+        public int? UserDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
                
@@ -72,7 +73,9 @@ namespace CCIA.Models
         public string MapUploadFile { get; set; }
         public string TextField { get; set; }
         public string GeoTextField { get; set; }
-        public int? MapZoom { get; set; }
+
+        public Polygon GeoField { get; set; }
+       
         public bool? Tags { get; set; }
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
