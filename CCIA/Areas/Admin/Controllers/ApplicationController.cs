@@ -97,7 +97,7 @@ namespace CCIA.Controllers.Admin
             newApp.MapUploadFile = appToRenew.MapUploadFile;
             newApp.TextField = appToRenew.TextField;
             newApp.GeoTextField = appToRenew.GeoTextField;
-            //newApp.GeoField = appToRenew.GeoField;
+            newApp.GeoField = appToRenew.GeoField;
             newApp.DatePlanted = appToRenew.DatePlanted;
             newApp.Tags = appToRenew.Tags;
 
