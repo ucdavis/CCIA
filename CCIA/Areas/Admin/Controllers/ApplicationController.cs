@@ -50,7 +50,7 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> Renew()
         {
             var certYear = CertYearFinder.CertYear;
-            var model = await _dbContext.RenewFields.Where(r => r.Year == certYear)
+            var model = await _dbContext.RenewFields.Where(r => r.Year == certYear && r.Action == 0)
                 .Include(r => r.Application)
                 .ThenInclude(a => a.GrowerOrganization)
                 .Include(r => r.Application)
@@ -69,38 +69,7 @@ namespace CCIA.Controllers.Admin
         {
             var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
             var appToRenew = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstAsync();
-            var newApp = new Applications();
-            
-            newApp.PaperAppNum = appToRenew.Id;
-            newApp.CertNum = appToRenew.CertNum;
-            newApp.CertYear = CertYearFinder.CertYear;
-            newApp.OriginalCertYear = appToRenew.OriginalCertYear;
-            newApp.AppType = appToRenew.AppType;
-            newApp.ApplicantId = appToRenew.ApplicantId;
-            newApp.GrowerId = appToRenew.GrowerId;
-            newApp.CropId = appToRenew.CropId;
-            newApp.SelectedVarietyId = appToRenew.SelectedVarietyId;
-            newApp.EnteredVariety = appToRenew.EnteredVariety;
-            newApp.ClassProducedId = appToRenew.ClassProducedId;
-            newApp.Received = DateTime.Now;
-            newApp.Postmark = DateTime.Now;
-            newApp.Deadline = DateTime.Now.AddDays(1);
-            newApp.Status = "Pending acceptance";
-            newApp.AcresApplied = appToRenew.AcresApplied;
-            newApp.Renewal = true;
-            newApp.FieldName = appToRenew.FieldName;
-            newApp.UserDataentry = 0;
-            newApp.Maps = appToRenew.Maps;
-            newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
-            newApp.MapCenterLat = appToRenew.MapCenterLat;
-            newApp.MapCenterLong = appToRenew.MapCenterLong;
-            newApp.MapVe = appToRenew.MapVe;
-            newApp.MapUploadFile = appToRenew.MapUploadFile;
-            newApp.TextField = appToRenew.TextField;
-            newApp.GeoTextField = appToRenew.GeoTextField;
-            newApp.GeoField = appToRenew.GeoField;
-            newApp.DatePlanted = appToRenew.DatePlanted;
-            newApp.Tags = appToRenew.Tags;
+            var newApp =  MapRenewFromApp(appToRenew);   
 
             renew.Action = 1;
             renew.DateRenewed = DateTime.Now;
@@ -110,6 +79,41 @@ namespace CCIA.Controllers.Admin
             await _dbContext.SaveChangesAsync();
 
             Message = $"App renewed. New App ID: {newApp.Id}";		
+		
+            return  RedirectToAction(nameof(Renew));;
+        }
+
+        public async Task<IActionResult> Renew_noseed(int id)
+        {
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+            var appToRenew = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstAsync();
+            var newApp =  MapRenewFromApp(appToRenew);  
+
+            newApp.Comments = "App renew, NO CROP";          
+
+            renew.Action = 3;
+            renew.DateRenewed = DateTime.Now;
+
+            _dbContext.Add(newApp);                
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewed for NO SEED. New App ID: {newApp.Id}";		
+		
+            return  RedirectToAction(nameof(Renew));;
+        }
+
+        public async Task<IActionResult> Renew_cancel(int id)
+        {
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+           
+            renew.Action = 2;
+            renew.DateRenewed = DateTime.Now;
+            
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewal cancelled.";		
 		
             return  RedirectToAction(nameof(Renew));;
         }
@@ -180,6 +184,47 @@ namespace CCIA.Controllers.Admin
             {
                 return View();
             }
+        }
+
+
+        private Applications MapRenewFromApp(Applications appToRenew)
+        {
+            var newApp = new Applications();
+            
+            newApp.PaperAppNum = appToRenew.Id;
+            newApp.CertNum = appToRenew.CertNum;
+            newApp.CertYear = CertYearFinder.CertYear;
+            newApp.OriginalCertYear = appToRenew.OriginalCertYear;
+            newApp.AppType = appToRenew.AppType;
+            newApp.ApplicantId = appToRenew.ApplicantId;
+            newApp.GrowerId = appToRenew.GrowerId;
+            newApp.CropId = appToRenew.CropId;
+            newApp.SelectedVarietyId = appToRenew.SelectedVarietyId;
+            newApp.EnteredVariety = appToRenew.EnteredVariety;
+            newApp.ClassProducedId = appToRenew.ClassProducedId;
+            newApp.Received = DateTime.Now;
+            newApp.Postmark = DateTime.Now;
+            newApp.Deadline = DateTime.Now.AddDays(1);
+            newApp.Status = "Pending acceptance";
+            newApp.AcresApplied = appToRenew.AcresApplied;
+            newApp.Renewal = true;
+            newApp.FieldName = appToRenew.FieldName;
+            newApp.FarmCounty = appToRenew.FarmCounty;
+            newApp.UserDataentry = 0;
+            newApp.Maps = appToRenew.Maps;
+            newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
+            newApp.MapCenterLat = appToRenew.MapCenterLat;
+            newApp.MapCenterLong = appToRenew.MapCenterLong;
+            newApp.MapVe = appToRenew.MapVe;
+            newApp.MapUploadFile = appToRenew.MapUploadFile;
+            newApp.TextField = appToRenew.TextField;
+            newApp.GeoTextField = appToRenew.GeoTextField;
+            newApp.GeoField = appToRenew.GeoField;
+            newApp.DatePlanted = appToRenew.DatePlanted;
+            newApp.Tags = appToRenew.Tags;
+
+            return newApp;
+
         }
 
        
