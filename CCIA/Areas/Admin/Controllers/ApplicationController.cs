@@ -85,11 +85,25 @@ namespace CCIA.Controllers.Admin
             newApp.Postmark = DateTime.Now;
             newApp.Deadline = DateTime.Now.AddDays(1);
             newApp.Status = "Pending acceptance";
-            
-		//  acres_applied, renewal (1_),  field_name, farm_county, user_app_dataentry (0),
-		// maps, maps_sub_dt, map_center_lat, map_center_long, map_ve, map_upload_file, text_field, map_zoom,
-		// date_planted, tags, geo_text_field, geo_field)
+            newApp.AcresApplied = appToRenew.AcresApplied;
+            newApp.Renewal = true;
+            newApp.FieldName = appToRenew.FieldName;
+            newApp.UserDataentry = 0;
+            newApp.Maps = appToRenew.Maps;
+            newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
+            newApp.MapCenterLat = appToRenew.MapCenterLat;
+            newApp.MapCenterLong = appToRenew.MapCenterLong;
+            newApp.MapVe = appToRenew.MapVe;
+            newApp.MapUploadFile = appToRenew.MapUploadFile;
+            newApp.TextField = appToRenew.TextField;
+            newApp.GeoTextField = appToRenew.GeoTextField;
+            //newApp.GeoField = appToRenew.GeoField;
+            newApp.DatePlanted = appToRenew.DatePlanted;
+            newApp.Tags = appToRenew.Tags;
 
+
+		
+		
             return  RedirectToAction(nameof(Renew));;
         }
 

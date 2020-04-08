@@ -32,7 +32,7 @@
                 {
                 <tr>
                     <td><a asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@renew.Id">Details</a></td>
-                     <td>@renew.Id</td>
+                     <td>@renew.Application.Id</td>
                     <td>@renew.Application.AppType</td>
                     <td>@renew.Application.ApplicantId</td>
                     <td>@renew.Application.ApplicantName</td>
@@ -43,8 +43,13 @@
                     <td>@renew.Application.ClassProducedName</td>                     
                     <td>@renew.Application.FieldName</td> 
                     <td><a asp-action="renew_app" asp-area="admin" asp-controller="Application" asp-route-id="@renew.AppId">Renew</a></td>                   
-                    <td>No Crop</td>
-                    <td>C=ancel</td>
+                    <td>@renew.Application.GeoField</td>
+                    <td>
+                        @if(renew.Application.GeoField != null)
+                        {
+                            @renew.Application.GeoField.Area
+                        }
+                        </td>
                 </tr>
                 }
             </tbody>
