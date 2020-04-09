@@ -74,6 +74,8 @@ namespace CCIA.Controllers.Admin
             renew.Action = 1;
             renew.DateRenewed = DateTime.Now;
 
+            // TODO add notifications
+
             _dbContext.Add(newApp);                
             _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
@@ -93,6 +95,8 @@ namespace CCIA.Controllers.Admin
 
             renew.Action = 3;
             renew.DateRenewed = DateTime.Now;
+
+            // TODO add notifications
 
             _dbContext.Add(newApp);                
             _dbContext.Update(renew);
