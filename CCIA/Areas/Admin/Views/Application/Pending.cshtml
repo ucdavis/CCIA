@@ -6,8 +6,19 @@
 }
 
 
+<div class="card">
+    <div class="card-header-access">
+        <div class="card-head">
+            <h2>Applications Pending Acceptance</h2>
+        </div>
+    </div>
+</div>
 
-<div class="col-lg-1">
+ <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+ <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+<div class="col-lg-10">
     <table id="table" class="table">
         <thead>
             <th></th>
@@ -61,3 +72,20 @@
         </tbody>
     </table>
 </div>
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
+}

@@ -29,7 +29,7 @@ namespace CCIA.Controllers.Admin
             {
                 certYear = CertYearFinder.CertYear;
             }
-            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear);
+            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, false);
             return View(model);
         }
 
@@ -45,6 +45,16 @@ namespace CCIA.Controllers.Admin
                 .ToListAsync();                        
 
             return View(model);
+        }
+
+         public async Task<IActionResult> Accepted(int certYear)
+        {            
+            if (certYear == 0)
+            {
+                certYear = CertYearFinder.CertYear;
+            }
+            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, true);
+            return View("Index", model);
         }
 
         public async Task<IActionResult> Renew()

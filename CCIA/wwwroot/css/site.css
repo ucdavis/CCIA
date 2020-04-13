@@ -25,6 +25,10 @@ html {
   right: 8px;
 }
 
+.dataTables_wrapper .dataTables_length {
+  padding-right: 100px;
+}
+
 .hidden {
   display: none;
 }

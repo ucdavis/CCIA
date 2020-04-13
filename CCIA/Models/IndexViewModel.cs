@@ -47,13 +47,13 @@ namespace CCIA.Models.IndexViewModels
     {
         public List<Applications> applications { get; set; }
 
-        public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear)
+        public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear, bool accepted)
         {
-            // var queryable = _dbContext.Applications.Where(a => a.CertYear == certYear);
-            // if(status == "Pending")
-            // {
-            //     queryable = _dbContext.Applications.Where(a => a.Status == "Pending acceptance");
-            // }
+            var queryable = _dbContext.Applications.Where(a => a.CertYear == certYear);
+            if(accepted)
+            {
+                 queryable = _dbContext.Applications.Where(a => a.CertYear == certYear && a.Approved == true);
+            }
             
             var viewModel = new ApplicationIndexViewModel
             {
