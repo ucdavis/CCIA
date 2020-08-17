@@ -108,13 +108,25 @@ namespace CCIA
 
             app.UseStaticFiles();
             
-            app.UseAuthentication();
+            app.UseAuthentication();           
 
             app.UseMvc(routes =>
             {
+               routes.MapAreaRoute(
+                   name: "Client_route",
+                   areaName: "Client",
+                   template:  "client/{controller}/{action=Index}/{id?}"
+               );
+
+               routes.MapAreaRoute(
+                   name: "Admin_route",
+                   areaName: "Admin",
+                   template:  "admin/{controller}/{action=Index}/{id?}"
+               );
+
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Root}/{action=Index}/{id?}");
             });
         }
     }

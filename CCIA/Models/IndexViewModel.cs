@@ -43,6 +43,38 @@ namespace CCIA.Models.IndexViewModels
         }
     }
 
+    public class AdminApplicationIndexViewModel : IndexViewModel
+    {
+        public List<Applications> applications { get; set; }
+
+        public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear, bool accepted)
+        {
+            var queryable = _dbContext.Applications.Where(a => a.CertYear == certYear);
+            if(accepted)
+            {
+                 queryable = _dbContext.Applications.Where(a => a.CertYear == certYear && a.Approved == true);
+            }
+            
+            var viewModel = new ApplicationIndexViewModel
+            {
+                applications = await _dbContext.Applications.Where(a => a.CertYear == certYear)
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.County)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.FieldResults)
+                .ToListAsync(),
+                certYears = await _dbContext.Applications.OrderBy(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                CertYear = certYear,
+                PageTitle = "Applications",
+                DropDownText = "Display Apps for Cert Year:"
+            };           
+
+            return viewModel;
+        }
+    }
+
     public class BlendIndexViewModel : IndexViewModel
     {
         public List<BlendRequests> blends { get; set; }

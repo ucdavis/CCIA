@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
+
+
 namespace CCIA.Models
 {
     public partial class CCIAContext : DbContext
@@ -46,7 +48,8 @@ namespace CCIA.Models
         public virtual DbSet<Ecoregions> Ecoregions { get; set; }
         public virtual DbSet<Fees> Fees { get; set; }
         public virtual DbSet<FieldInspect> FieldInspect { get; set; }
-        public virtual DbSet<FieldMaps> FieldMaps { get; set; }
+        public virtual DbSet<FieldResults> FieldResults { get; set;}
+        // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
@@ -82,6 +85,8 @@ namespace CCIA.Models
         public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
         public virtual DbSet<MyCustomers> MyCustomers { get; set; }
+
+        public virtual DbSet<RenewFields> RenewFields { get; set; }
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -172,7 +177,7 @@ namespace CCIA.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
@@ -284,6 +289,44 @@ namespace CCIA.Models
                 entity.Property(e => e.PositiveMessage).HasColumnName("pos_msg");
 
                 entity.Property(e => e.Program).HasColumnName("program");
+
+            });
+
+            modelBuilder.Entity<FieldResults>(entity => {
+                entity.ToTable("field_results");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("fld_res_id");
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.DateInspected).HasColumnName("date_inspected");
+
+                entity.Property(e => e.InspectorId).HasColumnName("inspector");
+
+                entity.Property(e => e.ApplicantContacted).HasColumnName("applicant_contacted");
+
+
+            });
+
+
+            modelBuilder.Entity<RenewFields>(entity => {
+                entity.ToTable("renew_fields");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("counter");
+
+                entity.Property(e => e.AppId).HasColumnName("app_num");
+
+                entity.Property(e => e.Year).HasColumnName("renew_year");
+
+                entity.Property(e => e.Action).HasColumnName("renew_action");
+
+                entity.Property(e => e.DateRenewed).HasColumnName("action_date");
+
+                entity.HasOne(e => e.Application);
 
             });
 
@@ -1177,7 +1220,7 @@ namespace CCIA.Models
 
                 entity.ToTable("applications");
 
-                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.AppCancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.AppSubmitable, e.Status, e.AppApproved, e.Maps, e.CertYear })
+                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.Cancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.Submitable, e.Status, e.Approved, e.Maps, e.CertYear })
                     .HasName("IX_applications_cert_year");
 
                 entity.Property(e => e.Id).HasColumnName("app_id");
@@ -1190,69 +1233,69 @@ namespace CCIA.Models
                     .HasColumnName("county_permit")
                     .HasColumnType("varchar(50)");
 
-                entity.Property(e => e.AppApproved)
+                entity.Property(e => e.Approved)
                     .HasColumnName("app_approved")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.AppApprover)
+                entity.Property(e => e.Approver)
                     .HasColumnName("app_approver")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.AppCancelled)
+                entity.Property(e => e.Cancelled)
                     .HasColumnName("app_cancelled")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.AppCancelledBy)
+                entity.Property(e => e.CancelledBy)
                     .HasColumnName("app_cancelled_by")
                     .HasMaxLength(9)
                     .IsUnicode(false);
 
-                entity.Property(e => e.AppCompleteDt)
+                entity.Property(e => e.CompleteDate)
                     .HasColumnName("app_complete_dt")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.AppDateAppr)
+                entity.Property(e => e.DateApproved)
                     .HasColumnName("app_date_appr")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.AppDateDenied)
+                entity.Property(e => e.DateDenied)
                     .HasColumnName("app_date_denied")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.AppDeadline)
+                entity.Property(e => e.Deadline)
                     .HasColumnName("app_deadline")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.AppDenied)
+                entity.Property(e => e.Denied)
                     .HasColumnName("app_denied")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.AppFee)
+                entity.Property(e => e.Fee)
                     .HasColumnName("app_fee")
                     .HasColumnType("smallmoney");
 
-                entity.Property(e => e.AppOriginalCertYear).HasColumnName("app_original_cert_year");
+                entity.Property(e => e.OriginalCertYear).HasColumnName("app_original_cert_year");
 
-                entity.Property(e => e.AppPkgComplete)
+                entity.Property(e => e.PackageComplete)
                     .HasColumnName("app_pkg_complete")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.AppPostmark)
+                entity.Property(e => e.Postmark)
                     .HasColumnName("app_postmark")
                     .HasColumnType("smalldatetime");
 
-                entity.Property(e => e.AppReceived)
+                entity.Property(e => e.Received)
                     .HasColumnName("app_received")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.AppRejector)
+                entity.Property(e => e.Rejector)
                     .HasColumnName("app_rejector")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.AppSubmitable)
+                entity.Property(e => e.Submitable)
                     .HasColumnName("app_submitable")
                     .HasDefaultValueSql("((1))");
 
@@ -1372,15 +1415,15 @@ namespace CCIA.Models
 
                 entity.Property(e => e.MapVe)
                     .HasColumnName("map_ve")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("((0))");  
 
-                entity.Property(e => e.MapZoom).HasColumnName("map_zoom");
+                entity.Property(e => e.GeoField).HasColumnName("geo_field");
 
                 entity.Property(e => e.Maps)
                     .HasColumnName("maps")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MapsSubDt)
+                entity.Property(e => e.MapsSubmissionDate)
                     .HasColumnName("maps_sub_dt")
                     .HasColumnType("datetime");                
 
@@ -1436,7 +1479,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Trace).HasColumnName("trace");
 
-                entity.Property(e => e.UserAppDataentry).HasColumnName("user_app_dataentry");
+                entity.Property(e => e.UserDataentry).HasColumnName("user_app_dataentry");
 
                 entity.Property(e => e.UserAppModDt)
                     .HasColumnName("user_app_mod_dt")
@@ -1488,6 +1531,8 @@ namespace CCIA.Models
                 entity.HasMany(d => d.FieldHistories);
 
                 entity.HasMany(d => d.TurfgrassCertificates);
+
+                entity.HasMany(d => d.FieldResults);
 
             });
 
@@ -2593,24 +2638,24 @@ namespace CCIA.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<FieldMaps>(entity =>
-            {
-                entity.HasKey(e => e.MapptId);
+            // modelBuilder.Entity<FieldMaps>(entity =>
+            // {
+            //     entity.HasKey(e => e.MapptId);
 
-                entity.ToTable("field_maps");
+            //     entity.ToTable("field_maps");
 
-                entity.Property(e => e.MapptId).HasColumnName("mappt_id");
+            //     entity.Property(e => e.MapptId).HasColumnName("mappt_id");
 
-                entity.Property(e => e.AppId).HasColumnName("app_id");
+            //     entity.Property(e => e.AppId).HasColumnName("app_id");
 
-                entity.Property(e => e.Latitude)
-                    .HasColumnName("latitude")
-                    .HasColumnType("numeric(25, 15)");
+            //     entity.Property(e => e.Latitude)
+            //         .HasColumnName("latitude")
+            //         .HasColumnType("numeric(25, 15)");
 
-                entity.Property(e => e.Longitude)
-                    .HasColumnName("longitude")
-                    .HasColumnType("numeric(25, 15)");
-            });
+            //     entity.Property(e => e.Longitude)
+            //         .HasColumnName("longitude")
+            //         .HasColumnType("numeric(25, 15)");
+            // });
 
             modelBuilder.Entity<LotBlends>(entity =>
             {
