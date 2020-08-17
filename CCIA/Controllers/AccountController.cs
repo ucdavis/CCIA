@@ -86,7 +86,7 @@ namespace CCIA.Controllers
         [AllowAnonymous]
         public async Task CasLogin(string returnUrl)
         {
-            var props = new AuthenticationProperties { RedirectUri = "/" };
+            var props = new AuthenticationProperties { RedirectUri = "/Admin/AdminHome/Index" };
             await HttpContext.ChallengeAsync(CasDefaults.AuthenticationScheme, props);
         }
 
@@ -120,7 +120,7 @@ namespace CCIA.Controllers
                         {
                             return LocalRedirect(returnUrl);
                         }
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home", new { area = "Client" });
 
                     }
                 }               
