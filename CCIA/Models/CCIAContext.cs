@@ -1533,6 +1533,8 @@ namespace CCIA.Models
                 entity.HasMany(d => d.TurfgrassCertificates);
 
                 entity.HasMany(d => d.FieldResults);
+                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
+                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
 
             });
 

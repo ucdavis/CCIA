@@ -8,5 +8,7 @@ namespace CCIA.Models
         public int CertNum { get; set; }
         public int CertYear { get; set; }
         public int Rad { get; set; }
+
+        public ICollection<Applications> Applications { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace CCIA.Models
         public int Id { get; set; }
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
+
         public int CertYear { get; set; }
         public int? OriginalCertYear { get; set; }
         public string LotNo { get; set; }
@@ -47,9 +48,14 @@ namespace CCIA.Models
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
+        [DisplayName("Date Entered")]
         public DateTime? Received { get; set; }
+        [DisplayName("Date Submitted")]
         public DateTime? Postmark { get; set; }
+        [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
+
+        
         public bool? PackageComplete { get; set; }
         public bool? Submitable { get; set; }
         public DateTime? CompleteDate { get; set; }
@@ -59,7 +65,7 @@ namespace CCIA.Models
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
         public int? Trace { get; set; }
-        public bool? WarningFlag { get; set; }
+        public bool WarningFlag { get; set; }
         public string ApplicantNotes { get; set; }
         public bool? Denied { get; set; }
         public string Rejector { get; set; }
@@ -98,7 +104,7 @@ namespace CCIA.Models
         public decimal? Fee { get; set; }
         public decimal? LateFee { get; set; }
         public decimal? IncompleteFee { get; set; }
-        public bool? OverrideLateFee { get; set; }
+        public bool OverrideLateFee { get; set; }
         public decimal FeeCofactor { get; set; }
         public bool? NotifyNeeded { get; set; }
         public DateTime? NotifyDate { get; set; }
@@ -161,6 +167,9 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<FieldResults> FieldResults { get; set; }
 
+        
+        public CertRad AppCertRad {get; set;}
+
         public string CropName 
         { 
             get
@@ -220,6 +229,45 @@ namespace CCIA.Models
             } 
         }
 
+        public string FullCert 
+        { 
+            get
+            {
+                string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+                int rad = -1;
+                if(AppCertRad != null){
+                    rad = AppCertRad.Rad;
+                }
+                if(AppType == "PO")
+                {
+                    return $"{certYearAbbrev}CA-{ApplicantId}-{PoLotNum}";
+                }
+                if(AppType == "PV")
+                {
+                    return $"{certYearAbbrev}CA-PVG-{Id}";
+                }
+                if(AppType=="GQ")
+                {
+                    return $"{certYearAbbrev}CA-QA-{Id}";
+                }
+                if(AppType=="RQ")
+                {
+                    return $"{certYearAbbrev}CA-RQA-{Id}";
+                }  
+                if(CertYear < 2007)
+                {
+                    return $"{certYearAbbrev}{Crop.Annual}-{CertNum}";
+                }
+                return $"{certYearAbbrev}CA-{rad}-{CertNum}";
+
+            }
+        }       
+		
+		
+		// WHEN applications.app_type = 'RQ' THEN RIGHT(applications.cert_year,2) + 'CA-RQA-'  + cast(applications.app_id as varchar) 
+		// WHEN applications.cert_year < 2007 THEN RIGHT(applications.cert_year,2) + annual + '-' + cast(applications.cert_num as varchar)
+		// ELSE RIGHT(applications.cert_year,2) + 'CA-' + cast(rad as varchar) + '-' + cast(applications.cert_num as varchar)
+
         public string GrowerName { 
             get
             {
@@ -250,6 +298,17 @@ namespace CCIA.Models
                     return ClassProduced.ClassProducedTrans;
                 }
                 return ClassProducedId.ToString();
+            }
+        }
+
+        public bool AppLate { 
+            get 
+            {
+                if(Postmark.Value.Date > Deadline.Value.Date) 
+                {
+                    return true;
+                }
+                return false;
             }
         }
 
