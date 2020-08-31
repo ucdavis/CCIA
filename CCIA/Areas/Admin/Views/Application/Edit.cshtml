@@ -7,6 +7,8 @@
 }
 
 <h2>Application Details</h2> 
+<form asp-action="Edit">
+    @Html.HiddenFor(x => x.Id)
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
@@ -17,36 +19,11 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="FullCert" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.FullCert)
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label asp-for="Status" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.Status)
                     </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="Received" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Received)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="DatePlanted" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.DatePlanted)
-                    </div>
-                </div>  
-                <div class="form-group row">
-                    <label asp-for="WarningFlag" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.WarningFlag)
-                        @Html.DisplayFor(x => x.ApplicantNotes)
-                    </div>
-                </div>             
+                </div>                
                 <div class="form-group row">
                     <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
                     <div class="col-sm-10 form-control-plaintext">
@@ -74,41 +51,15 @@
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
-                    <label asp-for="AppType" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppType)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="CertYear" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.CertYear)
-                    </div>
+                    <label class="col-sm-2 col-form-label" asp-for="CertYear"></label>
+                    <input asp-for="CertYear" class="col-sm-2 col-form-label"></input>
                 </div>
                 <div class="form-group row">
                     <label asp-for="AppType" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.AppTypeTrans.AppTypeTrans)
                     </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="Postmark" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Postmark)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="Deadline" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Deadline) 
-                    </div>
-                </div>                   
-                <div class="form-group row">
-                    <label asp-for="AppLate" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppLate) <label asp-for="OverrideLateFee" class="col-form-label"></label> @Html.DisplayFor(x => x.OverrideLateFee)
-                    </div>
-                </div>           
+                </div>               
                 <div class="form-group row">
                     <label asp-for="GrowerOrganization.NameAndId" class="col-sm-2 col-form-label">Grower</label>
                     <div class="col-sm-10 form-control-plaintext">
@@ -262,3 +213,4 @@
         </table>
     </div>  
 </div>
+</form>

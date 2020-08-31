@@ -148,6 +148,7 @@ namespace CCIA.Controllers.Admin
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
+                .Include(a => a.AppCertRad)
                 .FirstOrDefaultAsync();
             return View(model);
         }
@@ -155,9 +156,23 @@ namespace CCIA.Controllers.Admin
         // GET: Application/CreateSeedApplication
       
         // GET: Application/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+           var model = await _dbContext.Applications.Where(a => a.Id == id)
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.County)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.AppTypeTrans)
+                .Include(a => a.Certificates)
+                .Include(a => a.PlantingStocks)
+                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
+                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
+                .FirstOrDefaultAsync();
+            return View(model);
         }
 
         // POST: Application/Edit/5
