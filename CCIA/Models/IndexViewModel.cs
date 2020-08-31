@@ -57,7 +57,7 @@ namespace CCIA.Models.IndexViewModels
             
             var viewModel = new ApplicationIndexViewModel
             {
-                applications = await _dbContext.Applications.Where(a => a.CertYear == certYear)
+                applications = await queryable
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
