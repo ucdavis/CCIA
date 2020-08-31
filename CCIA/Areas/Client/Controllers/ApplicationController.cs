@@ -73,9 +73,15 @@ namespace CCIA.Controllers.Client
             {
                 // Get contact id associated with growerid
                 var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
+                var days = await _dbContext.Crops.Where(c => c.CropId == seedApp.CropId).Select(c => c.AppDue).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateSeedAppRecord(seedApp, contactId, "SD");
+                if (app.DatePlanted.HasValue && days.HasValue)
+                {
+                    app.Deadline = app.DatePlanted.Value.AddDays(days.Value); 
+                }
+                
                 _dbContext.Add(app);
 
                 // Adds to database and populates AppId.
