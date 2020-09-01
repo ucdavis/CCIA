@@ -29,6 +29,7 @@ namespace CCIA.Models.DetailsViewModels
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .Include(a => a.AppCertRad)
+                .Include(a => a.Changes)
                 .FirstOrDefaultAsync();  
             var viewModel = new DetailsViewModel
             {

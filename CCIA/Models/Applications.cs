@@ -57,7 +57,7 @@ namespace CCIA.Models
         [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
 
-        
+        [DisplayName("Complete?")]
         public bool? PackageComplete { get; set; }
         public bool? Submitable { get; set; }
         public DateTime? CompleteDate { get; set; }
@@ -171,6 +171,9 @@ namespace CCIA.Models
 
         
         public CertRad AppCertRad {get; set;}
+
+        [ForeignKey("AppId")]
+        public ICollection<AppChanges> Changes { get; set; }
 
         public string CropName 
         { 

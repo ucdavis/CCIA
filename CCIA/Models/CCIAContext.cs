@@ -26,7 +26,7 @@ namespace CCIA.Models
         }
 
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
-        
+
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
@@ -89,6 +89,8 @@ namespace CCIA.Models
         public virtual DbSet<MyCustomers> MyCustomers { get; set; }
 
         public virtual DbSet<RenewFields> RenewFields { get; set; }
+
+        public virtual DbSet<AppChanges> AppChanges { get; set; }
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -310,6 +312,26 @@ namespace CCIA.Models
                 entity.Property(e => e.ApplicantContacted).HasColumnName("applicant_contacted");
 
 
+            });
+
+            modelBuilder.Entity<AppChanges>(entity => {
+                entity.ToTable("application_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
             });
 
 
@@ -1539,6 +1561,7 @@ namespace CCIA.Models
                 entity.HasMany(d => d.FieldResults);
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
+                entity.HasMany(d => d.Changes);
 
             });
 

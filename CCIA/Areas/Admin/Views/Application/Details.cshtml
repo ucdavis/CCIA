@@ -179,7 +179,7 @@
         </div>
     </div>
     <div class="row">
-        <label class="col-form-label">Historic Overlaps</label>
+        <h3>Historic Overlaps</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -217,8 +217,8 @@
     </div>
 </div>
 <div class="container">
-    <div class="col-lg-1 row">
-        <label class="col-form-label">Certificates/Tags</label>
+    <div class="row">
+        <h3>Certificates/Tags</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -242,7 +242,7 @@
         <hr />
     </div>
     <div class="row">
-        <label class="col-form-label">Planting Stock Info</label>
+        <h3>Planting Stock Info</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -324,7 +324,7 @@
         <hr />
     </div>  
     <div class="row">
-        <label class="col-form-label">Field History</label>
+        <h3>Field History</h3>
         <table class="table">
             <thead>
             <tr>
@@ -346,5 +346,31 @@
             }
             </tbody>
         </table>
-    </div>  
+    </div> 
+    <div class="row">
+        <h3>Changes made to this application:</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>column</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Date</th>
+                <th>Person</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in Model.application.Changes)
+            {
+                <tr>
+                    <td>@row.ColumnChange</td>
+                    <td>@row.OldValue</td>
+                    <td>@row.NewValue</td>
+                    <td>@row.DateChanged</td>
+                    <td>@row.UserChange</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>   
 </div>
