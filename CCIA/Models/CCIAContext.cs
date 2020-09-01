@@ -26,6 +26,8 @@ namespace CCIA.Models
         }
 
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
+        
+        public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }
@@ -1486,6 +1488,8 @@ namespace CCIA.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.UserAppModifed).HasColumnName("user_app_modifed");
+
+                entity.Property(e => e.AreaAcres).HasColumnName("geo_field_area_sq_m");
 
                 entity.Property(e => e.UserEmpDateMod)
                     .HasColumnName("user_emp_date_mod")

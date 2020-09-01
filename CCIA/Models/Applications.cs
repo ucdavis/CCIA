@@ -37,6 +37,8 @@ namespace CCIA.Models
         public int? CertNum { get; set; }
 
         public int CertYear { get; set; }
+        
+        [DisplayName("Orig Year")]
         public int? OriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
@@ -44,13 +46,13 @@ namespace CCIA.Models
         public int? UserDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-               
+         [DisplayName("Entered Variety")]      
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
-        [DisplayName("Date Entered")]
+        [DisplayName("Entered")]
         public DateTime? Received { get; set; }
-        [DisplayName("Date Submitted")]
+        [DisplayName("Submitted")]
         public DateTime? Postmark { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
@@ -60,7 +62,7 @@ namespace CCIA.Models
         public bool? Submitable { get; set; }
         public DateTime? CompleteDate { get; set; }
         public string Status { get; set; }
-        public bool? Renewal { get; set; }
+        public bool Renewal { get; set; }
         public bool? Approved { get; set; }
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
@@ -261,12 +263,11 @@ namespace CCIA.Models
                 return $"{certYearAbbrev}CA-{rad}-{CertNum}";
 
             }
-        }       
+        }   
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public double? AreaAcres {  get; private set; }  
 		
-		
-		// WHEN applications.app_type = 'RQ' THEN RIGHT(applications.cert_year,2) + 'CA-RQA-'  + cast(applications.app_id as varchar) 
-		// WHEN applications.cert_year < 2007 THEN RIGHT(applications.cert_year,2) + annual + '-' + cast(applications.cert_num as varchar)
-		// ELSE RIGHT(applications.cert_year,2) + 'CA-' + cast(rad as varchar) + '-' + cast(applications.cert_num as varchar)
 
         public string GrowerName { 
             get

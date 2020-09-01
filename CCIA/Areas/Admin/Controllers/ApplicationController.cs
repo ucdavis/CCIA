@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using CCIA.Models.DetailsViewModels;
 
 namespace CCIA.Controllers.Admin
 {
@@ -135,22 +136,8 @@ namespace CCIA.Controllers.Admin
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {   
-            var model = await _dbContext.Applications.Where(a => a.Id == id)
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
-                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
-                .Include(a => a.AppCertRad)
-                .FirstOrDefaultAsync();
-            return View(model);
+             var model = await DetailsViewModel.Create(_dbContext, id);
+            return View(model);  
         }
 
         // GET: Application/CreateSeedApplication
