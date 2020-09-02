@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -16,7 +17,7 @@ namespace CCIA.Models
         public string UserChange { get; set; }
         public DateTime DateChanged { get; set; }
 
-        //TODO add employees
-
+        [ForeignKey("UserChange")]
+        public CCIAEmployees Employee { get; set; }
     }
 }

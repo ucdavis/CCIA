@@ -332,6 +332,8 @@ namespace CCIA.Models
                 entity.Property(e => e.UserChange).HasColumnName("user_change");
 
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
             });
 
 
