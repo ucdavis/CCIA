@@ -158,6 +158,7 @@ namespace CCIA.Controllers.Admin
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
+                .Include(a => a.Changes).ThenInclude(c => c.Employee)
                 .FirstOrDefaultAsync();
             return View(model);
         }

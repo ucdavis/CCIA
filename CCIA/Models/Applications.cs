@@ -92,6 +92,7 @@ namespace CCIA.Models
         public string FieldName { get; set; }
        
         [Required]
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DatePlanted { get; set; }
         [Required]
