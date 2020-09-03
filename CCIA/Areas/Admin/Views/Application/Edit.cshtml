@@ -1,4 +1,4 @@
-@model CCIA.Models.Applications
+@model CCIA.Models.DetailsViewModels.AdminViewModel
 @{
     bool showPurchasedFrom = false;
     bool showPounds = false;
@@ -6,9 +6,37 @@
     bool showTHC = false;
 }
 
-<h2>Application Details</h2> 
+<!-- Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Look Up Org</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Name or Account Number:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <div id="OrgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>Edit Application Details</h2> 
 <form asp-action="Edit">
-    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.application.Id)
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -17,173 +45,175 @@
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
-                    <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Id)
+                        @Html.DisplayFor(x => x.application.Id)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="FullCert" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.FullCert)
+                        @Html.DisplayFor(x => x.application.FullCert)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Status" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Status)
+                        @Html.DisplayFor(x => x.application.Status)
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="Received" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Received" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Received)
+                        @Html.DisplayFor(x => x.application.Received)
                     </div>
                 </div> 
                 <div class="form-group row required">
-                    <label asp-for="DatePlanted" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.DatePlanted" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 input-group">
-                        <input type="text" asp-for="DatePlanted" class="datepicker form-control"></input>
+                        <input type="text" asp-for="application.DatePlanted" class="datepicker form-control"></input>
                         <div class="input-group-append" onclick="$('.datepicker').focus();">             
                             <i class="fa fa-calendar input-group-text"></i>
                         </div>                        
                     </div>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="DatePlanted" data-valmsg-replace="true"></span>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="application.DatePlanted" data-valmsg-replace="true"></span>
                 </div>                                  
                 <div class="form-group row">
-                    <label asp-for="WarningFlag" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.WarningFlag)
-                        @Html.DisplayFor(x => x.ApplicantNotes)
+                        @Html.DisplayFor(x => x.application.WarningFlag)
+                        @Html.DisplayFor(x => x.application.ApplicantNotes)
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="Renewal" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Renewal)
+                        @Html.DisplayFor(x => x.application.Renewal)
                     </div>
                 </div>                  
                 <div class="form-group row">
-                    <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>
+                    <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>                    
+                    <input type="text" asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" disabled>
+                    <div class="input-group-append"> 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Applicant"><i class="fa fa-exchange-alt"></i></button>                            
+                    </div>                                
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
+                    <select required asp-for="application.CropId" class="col-sm-9 col-form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.ApplicantOrganization.NameAndId)
+                        @Html.DisplayFor(x => x.application.ClassProduced.ClassProducedTrans)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Crop.Name)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.ClassProduced.ClassProducedTrans)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="MapVe" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.MapVe ?? false, new {@disabled = true})
+                        @Html.CheckBox("MapsVe", Model.application.MapVe ?? false, new {@disabled = true})
                     </div>
                 </div>
                  <div class="form-group row">
-                    <label asp-for="FieldName" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.FieldName)
+                        @Html.DisplayFor(x => x.application.FieldName)
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="County.CountyName" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.County.CountyName" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.County.CountyName)
+                        @Html.DisplayFor(x => x.application.County.CountyName)
                     </div>
                 </div>   
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
-                    <label asp-for="AppType" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppType)
-                    </div>
-                </div>
+                    <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>                    
+                    <select required asp-for="application.AppType" class="col-sm-9 col-form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
+                </div>                
                 <div class="form-group row required">
-                    <label class="col-sm-3 col-form-label" asp-for="CertYear"></label>
-                    <input asp-for="CertYear" class="col-sm-3 col-form-label"></input>
+                    <label class="col-sm-3 col-form-label" asp-for="application.CertYear"></label>
+                    <input asp-for="application.CertYear" class="col-sm-3 col-form-label"></input>
                     <span class="field-validation-valid text-danger" data-valmsg-for="CertYear" data-valmsg-replace="true"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="AppType" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppTypeTrans.AppTypeTrans)
+                        @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
                     </div>
                 </div>   
-                <div class="form-group row">
-                    <label asp-for="Postmark" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Postmark)
+                <div class="form-group row required">
+                    <label asp-for="application.Postmark" class="col-sm-3 col-form-label"></label>
+                     <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="application.Postmark" class="datepicker form-control" data-val="true" data-val-required="The Submitted Date field is required."></input>
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>                        
                     </div>
-                </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="application.Postmark" data-valmsg-replace="true"></span>                    
+                </div>                 
                 <div class="form-group row">
-                    <label asp-for="Deadline" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Deadline) 
+                        @Html.DisplayFor(x => x.application.Deadline) 
                     </div>
                 </div>                   
                 <div class="form-group row">
-                    <label asp-for="AppLate" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppLate) Override? @Html.DisplayFor(x => x.OverrideLateFee)
+                        @Html.DisplayFor(x => x.application.AppLate) Override? <input asp-for="application.OverrideLateFee" class="col-form-control">
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="OriginalCertYear" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.OriginalCertYear) Prev App: @Html.DisplayFor(x => x.PaperAppNum)
+                        @Html.DisplayFor(x => x.application.OriginalCertYear) Prev App: @Html.DisplayFor(x => x.application.PaperAppNum)
                     </div>
                 </div>                      
                 <div class="form-group row">
-                    <label asp-for="GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>
+                    <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>                   
+                    <input type="text" asp-for="application.GrowerOrganization.NameAndId" class="col-sm-8 form-control" disabled>
+                    <div class="input-group-append"> 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-exchange-alt"></i></button>                            
+                    </div> 
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.GrowerOrganization.NameAndId)
+                        @Html.DisplayFor(x => x.application.EnteredVariety)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="EnteredVariety" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.EnteredVariety)
+                        @Html.DisplayFor(x => x.application.Variety.Name)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Variety.Name" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Variety.Name)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="AcresApplied" class="col-sm-3 col-form-label">Acres</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AcresApplied)
+                        @Html.DisplayFor(x => x.application.AcresApplied)
                     </div>
                 </div>
                  <div class="form-group row">
-                    <label asp-for="PackageComplete" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.PackageComplete)
+                        @Html.DisplayFor(x => x.application.PackageComplete)
                     </div>
                 </div>
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="ApplicantComments" class="col-sm-3 col-form-label"></label>
+        <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-9 form-control-plaintext">
-            @Html.DisplayFor(x => x.ApplicantComments)
+            @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
         <div class="form-group row">
-        <label asp-for="Comments" class="col-sm-3 col-form-label"></label>
+        <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-9 form-control-plaintext">
-            @Html.DisplayFor(x => x.Comments)
+            @Html.DisplayFor(x => x.application.Comments)
         </div>
     </div>
 </div>
@@ -197,7 +227,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.Certificates)
+                @foreach (var row in Model.application.Certificates)
                 {
                     <tr>
                         <td>
@@ -219,12 +249,12 @@
                 <tr>
                     <th>Cert#</th>
                     <th>Variety</th>
-                    @if(Model.PlantingStocks.First().PoundsPlanted != null || Model.PlantingStocks.Last().PoundsPlanted != null)
+                    @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
                     {
                         showPounds = true;
                         <th>Pounds Planted</th>
                     } 
-                    @if(Model.PlantingStocks.First().PlantsPerAcre != null || Model.PlantingStocks.Last().PlantsPerAcre != null)
+                    @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
                     { 
                         showPlantsPerAcre = true;                       
                         <th>Plants/Acre</th>
@@ -232,17 +262,17 @@
                     <th>Class</th>
                     <th>Tag Issued</th>
                     <th>Grown</th>
-                    @if(Model.PlantingStocks.First().SeedPurchasedFrom != null || Model.PlantingStocks.Last().SeedPurchasedFrom != null)
+                    @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
                     {
                         showPurchasedFrom = true;
                         <th>Purchased From</th>
                     } 
-                    @if(Model.AppType == "PO")
+                    @if(Model.application.AppType == "PO")
                     {
                         <th>Winter test?</th>
                         <th>PVX test?</th>
                     }
-                    @if(Model.PlantingStocks.First().ThcPercent != null || Model.PlantingStocks.Last().ThcPercent != null)
+                    @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
                     {
                         showTHC = true;
                         <th>THC%</th>
@@ -250,7 +280,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.PlantingStocks)
+                @foreach (var row in Model.application.PlantingStocks)
                 {
                     <tr>
                         <td>
@@ -277,7 +307,7 @@
                         }                      
                         <td>@row.GrownStateProvince.StateProvinceName</td>
                         <td>@row.SeedPurchasedFrom</td>
-                        @if(Model.AppType == "PO")
+                        @if(Model.application.AppType == "PO")
                         {
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
@@ -306,7 +336,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.FieldHistories)
+            @foreach (var row in Model.application.FieldHistories)
             {
                 <tr>
                     <td>@row.Year</td>
@@ -331,7 +361,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.Changes)
+            @foreach (var row in Model.application.Changes)
             {
                 <tr>
                     <td>@row.ColumnChange</td>
@@ -348,11 +378,21 @@
 </form>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
     
      <script type="text/javascript">
         $(document).ready(function () {
-        $('.datepicker').datepicker();
-    });
+            $('.datepicker').datepicker();
+        });
+
+        $('#lookupOrgModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.           
+            var modal = $(this)
+            modal.find('.modal-title').text('Look Up ' + recipient + ' Org')
+            //modal.find('.modal-body input').val(recipient) 
+        })
     </script>
 }

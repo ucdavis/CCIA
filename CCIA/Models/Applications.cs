@@ -53,6 +53,7 @@ namespace CCIA.Models
         [DisplayName("Entered")]
         public DateTime? Received { get; set; }
         [DisplayName("Submitted")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? Postmark { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
