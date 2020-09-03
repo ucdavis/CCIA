@@ -136,7 +136,7 @@ namespace CCIA.Controllers.Admin
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {   
-             var model = await DetailsViewModel.Create(_dbContext, id);
+            var model = await AdminViewModel.CreateDetails(_dbContext, id);
             return View(model);  
         }
 
@@ -145,22 +145,8 @@ namespace CCIA.Controllers.Admin
         // GET: Application/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-           var model = await _dbContext.Applications.Where(a => a.Id == id)
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
-                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
-                .Include(a => a.Changes).ThenInclude(c => c.Employee)
-                .FirstOrDefaultAsync();
-            return View(model);
+            var model = await AdminViewModel.CreateEdit(_dbContext, id);
+            return View(model);            
         }
 
         // POST: Application/Edit/5

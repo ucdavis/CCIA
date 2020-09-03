@@ -1,4 +1,4 @@
-@model CCIA.Models.DetailsViewModels.DetailsViewModel
+@model CCIA.Models.DetailsViewModels.AdminViewModel
 
 @{
     bool showPurchasedFrom = false;
@@ -11,6 +11,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
+            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
                 <div class="form-group row">
                     <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
@@ -372,5 +373,6 @@
             }
             </tbody>
         </table>
+        <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
     </div>   
 </div>
