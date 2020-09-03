@@ -72,7 +72,7 @@
             /* If something is inside form-remainder div, clear it out */
             $("#growersTable").empty();
             $("#growersTable")
-                .load("/Application/Lookup?lookupVal="+lookupVal+"&appTypeId="+appTypeId, (response, status, xhr) => {
+                .load("/client/Application/Lookup?lookupVal="+lookupVal+"&appTypeId="+appTypeId, (response, status, xhr) => {
                         if ( status == "error" ) {
                             var msg = "Sorry, the following error occurred: ";
                             $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
