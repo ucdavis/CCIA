@@ -17,6 +17,8 @@ namespace CCIA.Models.DetailsViewModels
 
         public List<Crops> Crops { get; set; }
 
+        public List<County> Counties { get; set; }
+
         public static async Task<AdminViewModel> CreateDetails(CCIAContext _dbContext, int id)
         {
            var app = await _dbContext.Applications.Where(a => a.Id == id)
@@ -48,7 +50,6 @@ namespace CCIA.Models.DetailsViewModels
         {                   
             var app = await _dbContext.Applications.Where(a => a.Id == id)
                 .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
@@ -66,7 +67,8 @@ namespace CCIA.Models.DetailsViewModels
             {
                 application = app,
                 AppTypes = await _dbContext.AbbrevAppType.Select(a => a.Abbreviation).ToListAsync(),
-                Crops = await _dbContext.Crops.ToListAsync(),        
+                Crops = await _dbContext.Crops.ToListAsync(),   
+                Counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync(),     
             };           
 
             return viewModel;

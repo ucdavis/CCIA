@@ -89,7 +89,7 @@
         <div class="col-lg-12">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="submit" value="Update" class="btn btn-primary"></input>            
-        </div>
+        </div>        
         <div class="col-lg-6">
                 <div class="form-group row">
                     <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
@@ -140,7 +140,7 @@
                 </div>                  
                 <div class="form-group row">
                     <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>                    
-                    <input type="text" asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" disabled>
+                    <input type="text" asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" readonly>
                     <div class="input-group-append"> 
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Applicant"><i class="fa fa-exchange-alt"></i></button>                            
                     </div>  
@@ -148,11 +148,11 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
-                    <select required asp-for="application.CropId" class="col-sm-9 col-form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
+                    <select required asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
-                    <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" disabled>
+                    <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" readonly>
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupClassModal"><i class="fa fa-exchange-alt"></i></button></button>
                     </div>
@@ -161,26 +161,22 @@
                 <div class="form-group row">
                     <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.application.MapVe ?? false, new {@disabled = true})
+                        @Html.CheckBox("MapsVe", Model.application.MapVe ?? false, new {@readonly = true})
                     </div>
                 </div>
                  <div class="form-group row">
                     <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.FieldName)
-                    </div>
+                    <input asp-for="application.FieldName" class="col-sm-9 form-control">
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="application.County.CountyName" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.County.CountyName)
-                    </div>
+                    <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>
+                    <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
                 </div>   
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
                     <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>                    
-                    <select required asp-for="application.AppType" class="col-sm-9 col-form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
+                    <select required asp-for="application.AppType" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
                 </div>                
                 <div class="form-group row required">
                     <label class="col-sm-3 col-form-label" asp-for="application.CertYear"></label>
@@ -212,7 +208,7 @@
                 <div class="form-group row">
                     <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.AppLate) Override? <input asp-for="application.OverrideLateFee" class="col-form-control">
+                        @Html.DisplayFor(x => x.application.AppLate) Override? <input asp-for="application.OverrideLateFee" class="form-control">
                     </div>
                 </div> 
                 <div class="form-group row">
@@ -223,7 +219,7 @@
                 </div>                      
                 <div class="form-group row">
                     <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>                   
-                    <input type="text" asp-for="application.GrowerOrganization.NameAndId" class="col-sm-8 form-control" disabled>
+                    <input type="text" asp-for="application.GrowerOrganization.NameAndId" class="col-sm-8 form-control" readonly>
                     <div class="input-group-append"> 
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-exchange-alt"></i></button>                            
                     </div> 
@@ -235,7 +231,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
-                    <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" disabled>
+                    <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" readonly>
                     <div class="input-group-append">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
                     </div>  
@@ -243,29 +239,23 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.AcresApplied)
-                    </div>
+                    <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" >
                 </div>
                  <div class="form-group row">
                     <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.PackageComplete)
-                    </div>
+                    <input type="checkbox" asp-for="application.PackageComplete" class="col-sm-9 form-control">
                 </div>
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>
+        <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>        
         <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
         <div class="form-group row">
         <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
-        <div class="col-sm-9 form-control-plaintext">
-            @Html.DisplayFor(x => x.application.Comments)
-        </div>
+        <textarea rows="5"  asp-for="application.Comments" class="col-sm-9 form-control"></textarea>
     </div>
 </div>
 <div class="container">
@@ -350,14 +340,19 @@
                         @if(@row.TaggedStateProvince == null)
                         {
                             <td>@row.StateCountryTagIssued</td>
-                        } else if(@row.GrownStateProvince.StateProvinceName != null)
+                        } else {
+                            <td>???</td>
+                        }
+                        @if(@row.GrownStateProvince.StateProvinceName != null)
                         {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
+                            <td>@row.GrownStateProvince.StateProvinceName</td>
                         }  else {
                             <td>&nbsp;</td>
-                        }                      
-                        <td>@row.GrownStateProvince.StateProvinceName</td>
-                        <td>@row.SeedPurchasedFrom</td>
+                        }                                              
+                        @if(showPurchasedFrom)
+                        {
+                            <td>@row.SeedPurchasedFrom</td>
+                        }                        
                         @if(Model.application.AppType == "PO")
                         {
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
