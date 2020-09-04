@@ -206,6 +206,19 @@ namespace CCIA.Controllers.Admin
 
         }
 
+        public async Task<IActionResult> LookupVariety (string lookup, int cropId) 
+        {
+            var varieties = await _dbContext.VarFull.Where(v => v.CropId == cropId && v.Name.Contains(lookup)).ToListAsync();
+            return PartialView("_LookupVariety", varieties);
+        }
+
+        public async Task<IActionResult> LookupClass(string appType)
+        {
+            int appId = await _dbContext.AbbrevAppType.Where(a => a.Abbreviation == appType).Select(a => a.AppTypeId).FirstAsync();
+            var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == appId).OrderBy(c => c.SortOrder).ToListAsync();
+            return PartialView("_LookupClass", classes);
+        }
+
 
         private Applications MapRenewFromApp(Applications appToRenew)
         {

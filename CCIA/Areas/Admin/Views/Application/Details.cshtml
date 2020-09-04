@@ -299,14 +299,19 @@
                         @if(@row.TaggedStateProvince == null)
                         {
                             <td>@row.StateCountryTagIssued</td>
-                        } else if(@row.GrownStateProvince.StateProvinceName != null)
+                        } else {
+                            <td>???</td>
+                        }
+                        @if(@row.GrownStateProvince.StateProvinceName != null)
                         {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
+                            <td>@row.GrownStateProvince.StateProvinceName</td>
                         }  else {
                             <td>&nbsp;</td>
-                        }                      
-                        <td>@row.GrownStateProvince.StateProvinceName</td>
-                        <td>@row.SeedPurchasedFrom</td>
+                        }                                              
+                        @if(showPurchasedFrom)
+                        {
+                            <td>@row.SeedPurchasedFrom</td>
+                        }                        
                         @if(Model.application.AppType == "PO")
                         {
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>

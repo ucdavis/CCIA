@@ -6,12 +6,12 @@
     bool showTHC = false;
 }
 
-<!-- Modal -->
-<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Org Lookup Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Orgs" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Look Up Org</h5>
+        <h5 class="modal-title">Look Up Org</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="fa fa-window-close"></i>
         </button>
@@ -21,11 +21,58 @@
         <div class="input-group col">
             <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
             <span class="input-group-btn">
-                <button class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+                <button type="button" class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
             </span>
         </div>
         <input type="hidden" id="lookupType" value=""/>
         <div id="orgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Variety Lookup Modal -->
+<div class="modal fade" id="lookupVarietyModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Variety" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Variety</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Variety Name:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="variety" placeholder="Enter the varieties name (partial accepted)">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="variety-lookup-btn"><i class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <div id="varietyTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Variety Lookup Modal -->
+<div class="modal fade" id="lookupClassModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Class" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Class</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">         
+        <div id="classTable"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
@@ -41,7 +88,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="submit"></input>            
+            <input type="submit" value="Update" class="btn btn-primary"></input>            
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
@@ -105,9 +152,11 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.ClassProduced.ClassProducedTrans)
+                    <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" disabled>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupClassModal"><i class="fa fa-exchange-alt"></i></button></button>
                     </div>
+                    @Html.HiddenFor(x => x.application.ClassProducedId)
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
@@ -182,15 +231,15 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.EnteredVariety)
-                    </div>
+                    <input type="text" class="col-sm-9 form-control" asp-for="application.EnteredVariety">
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Variety.Name)
-                    </div>
+                    <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" disabled>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
+                    </div>  
+                    @Html.HiddenFor(x => x.application.SelectedVarietyId)                  
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
@@ -389,15 +438,24 @@
 
         $('#lookupOrgModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
-            var recipient = button.data('whatever') // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.           
+            var recipient = button.data('whatever')          
             var modal = $(this)
             modal.find('.modal-title').text('Look Up ' + recipient + ' Org');
             modal.find('#lookupType').val(recipient);
             modal.find("#account").val("");
-            modal.find("#orgTable").empty();
-            //modal.find('.modal-body input').val(recipient) 
+            modal.find("#orgTable").empty();            
+        })
+
+        $('#lookupClassModal').on('show.bs.modal', function (event) {              
+            var modal = $(this)
+            var lookup = $("#application_AppType").val(); 
+            modal.find("#classTable").empty(); 
+            $("#classTable").load("/admin/Application/LookupClass?appType="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });           
         })
 
         $('#account-lookup-btn').click(function(e){
@@ -409,19 +467,53 @@
             }
             $("#orgTable").empty();
             $("#orgTable").load("/admin/Application/LookupOrg?lookup="+lookup, (response, status, xhr) => {
-                        if ( status == "error" ) {
-                            var msg = "Sorry, the following error occurred: ";
-                            $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                        }
-                });
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        $("#variety-lookup-btn").click(function(e){
+            e.preventDefault();
+            var lookup = $("#variety").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            var crop = $("#application_CropId").val();            
+            $("#varietyTable").empty();
+            $("#varietyTable").load("/admin/Application/LookupVariety?lookup="+lookup+"&cropId="+crop, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        $("#variety").keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                e.preventDefault();
+                $(':focus').blur();
+                $("#variety-lookup-btn").click();
+            }
+        });
+
+
+        $("#account").keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                e.preventDefault();
+                $(':focus').blur();
+                $("#account-lookup-btn").click();
+            }
         });
 
         function useOrg(e,orgId, orgNameAndId)
         {
             e.preventDefault();
             var lookupType = $("#lookupType").val();
-            //console.log(lookupType);
-            //alert(orgName);
             if(lookupType === "Applicant")
             {
                 $("#application_ApplicantId").val(orgId);
@@ -432,8 +524,27 @@
                 $("#application_GrowerId").val(orgId);
                 $("#application_GrowerOrganization_NameAndId").val(orgNameAndId);
             }
+            $("#orgTable").empty();
             $("#lookupOrgModal").modal('hide');                       
+        }
 
+        function useVariety(e, varId, varName)
+        {
+            e.preventDefault();
+            $("#application_SelectedVarietyId").val(varId);
+            $("#application_Variety_Name").val(varName);
+            $("#varietyTable").empty();            
+            $("#variety").val("");
+            $("#lookupVarietyModal").modal('hide');
+        }
+
+        function useClass(e, classId, className)
+        {
+            e.preventDefault();
+            $("#application_ClassProducedId").val(classId);
+            $("#application_ClassProduced_ClassProducedTrans").val(className);
+            $("#classTable").empty(); 
+            $("#lookupClassModal").modal('hide');
         }
     </script>
 }
