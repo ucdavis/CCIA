@@ -148,7 +148,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
-                    <select required asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
+                    <select asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>

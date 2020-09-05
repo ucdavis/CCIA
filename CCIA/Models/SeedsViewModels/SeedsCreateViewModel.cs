@@ -46,7 +46,7 @@ namespace CCIA.Models.SeedsCreateViewModel
             var viewModel = new SeedsCreateViewModel
             {
                 Application = app,
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
@@ -73,7 +73,7 @@ namespace CCIA.Models.SeedsCreateViewModel
             var viewModel = new SeedsCreateViewModel
             {
                 Application = app,
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,

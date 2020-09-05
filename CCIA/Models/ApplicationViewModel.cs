@@ -30,7 +30,7 @@ namespace CCIA.Models
         public static async Task<ApplicationViewModel> Create(CCIAContext dbContext, int orgId, int appType, int fhEntryId = -1)
         {
             var appLabels = ApplicationLabels.Create(appType);
-            var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppType == appType).ToListAsync();
+            var classToProduce = await dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType).ToListAsync();
             var crops = await dbContext.Crops.ToListAsync();
             var maxFieldHistoryRecords = 4;            
             // Make a string representation of field history indices for use in JavaScript files

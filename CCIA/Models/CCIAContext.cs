@@ -1148,7 +1148,7 @@ namespace CCIA.Models
                     .HasColumnName("class_produced_id")
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.AppType).HasColumnName("app_type");
+                entity.Property(e => e.AppTypeId).HasColumnName("app_type");
 
                 entity.Property(e => e.ClassAbbrv)
                     .HasColumnName("class_abbrv")
@@ -1161,6 +1161,8 @@ namespace CCIA.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
+                
+                entity.HasOne(e => e.AppType);
             });
 
             modelBuilder.Entity<AbbrevClassSeeds>(entity =>

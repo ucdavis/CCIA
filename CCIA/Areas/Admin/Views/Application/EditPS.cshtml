@@ -31,8 +31,8 @@
             </div>
         }
         <div class="form-group row">
-            <label asp-for="plantingStocks.PsClassNavigation.ClassProducedTrans" class="col-sm-3 col-form-label"></label>
-            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsClassNavigation.ClassProducedTrans">
+            <label asp-for="plantingStocks.PsClass" class="col-sm-3 col-form-label"></label>            
+            <select asp-for="plantingStocks.PsClass" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.psClass, "ClassProducedId", "NameAndAppType"))"></select> 
         </div>        
     </div>
 </form>

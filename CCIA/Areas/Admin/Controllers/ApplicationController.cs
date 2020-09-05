@@ -221,7 +221,7 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> LookupClass(string appType)
         {
             int appId = await _dbContext.AbbrevAppType.Where(a => a.Abbreviation == appType).Select(a => a.AppTypeId).FirstAsync();
-            var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == appId).OrderBy(c => c.SortOrder).ToListAsync();
+            var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appId).OrderBy(c => c.SortOrder).ToListAsync();
             return PartialView("_LookupClass", classes);
         }
 

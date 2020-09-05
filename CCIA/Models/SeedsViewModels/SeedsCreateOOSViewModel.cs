@@ -38,7 +38,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
             var viewModel = new SeedsCreateOOSViewModel
             {
                 States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
@@ -62,7 +62,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
             var viewModel = new SeedsCreateOOSViewModel
             {
                 States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,

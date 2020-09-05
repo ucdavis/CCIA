@@ -22,7 +22,7 @@ namespace CCIA.Models.DetailsViewModels
             var viewModel = new AdminPSViewModel
             {
                 plantingStocks = ps,
-                psClass = await _dbContext.AbbrevClassProduced.ToListAsync(),
+                psClass = await _dbContext.AbbrevClassProduced.Include(c => c.AppType).OrderBy(c => c.AppType.AppTypeTrans).ThenBy(c => c.SortOrder).ToListAsync(),
             };           
 
             return viewModel;
