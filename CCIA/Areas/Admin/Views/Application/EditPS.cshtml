@@ -1,0 +1,38 @@
+@model CCIA.Models.DetailsViewModels.AdminPSViewModel
+
+
+<h2>Edit Planting Stock for AppId @Model.plantingStocks.AppId</h2> 
+
+<form asp-action="Edit">
+    @Html.HiddenFor(x => x.plantingStocks.PsId)
+    <div class="container">
+        <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="submit" value="Update" class="btn btn-primary"></input>            
+        </div> 
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsCertNum" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsCertNum">
+        </div>
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsEnteredVariety" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsEnteredVariety">
+        </div>
+        @if(Model.plantingStocks.PoundsPlanted != null){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.PoundsPlanted" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PoundsPlanted">
+            </div>
+        }
+        @if(Model.plantingStocks.PlantsPerAcre != null){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.PlantsPerAcre" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PlantsPerAcre">
+            </div>
+        }
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsClassNavigation.ClassProducedTrans" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsClassNavigation.ClassProducedTrans">
+        </div>        
+    </div>
+</form>

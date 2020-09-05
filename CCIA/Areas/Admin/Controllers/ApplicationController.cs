@@ -166,6 +166,12 @@ namespace CCIA.Controllers.Admin
             }
         }
 
+        public async Task<IActionResult> EditPS(int id)
+        {
+             var model = await AdminPSViewModel.Create(_dbContext, id);
+            return View(model);  
+        }
+
         // GET: Application/Delete/5
         public ActionResult Delete(int id)
         {
