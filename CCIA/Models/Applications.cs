@@ -13,7 +13,7 @@ namespace CCIA.Models
         public Applications()
         {
            PackageComplete = false;
-           Submitable = false;
+           Submitable = true;
            Status = "Pending supporting material";
            Renewal = false;
            Approved = false;
@@ -59,33 +59,33 @@ namespace CCIA.Models
         public DateTime? Deadline { get; set; }
 
         [DisplayName("Complete?")]
-        public bool? PackageComplete { get; set; }
-        public bool? Submitable { get; set; }
+        public bool PackageComplete { get; set; }
+        public bool Submitable { get; set; }
         public DateTime? CompleteDate { get; set; }
         public string Status { get; set; }
         public bool Renewal { get; set; }
-        public bool? Approved { get; set; }
+        public bool Approved { get; set; }
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
         public int? Trace { get; set; }
         public bool WarningFlag { get; set; }
         public string ApplicantNotes { get; set; }
-        public bool? Denied { get; set; }
+        public bool Denied { get; set; }
         public string Rejector { get; set; }
         public DateTime? DateDenied { get; set; }
-        public bool? Maps { get; set; }
+        public bool Maps { get; set; }
         public DateTime? MapsSubmissionDate { get; set; }
         public decimal? MapCenterLat { get; set; }
         public decimal? MapCenterLong { get; set; }
         [DisplayName("Map?")] 
-        public bool? MapVe { get; set; }
+        public bool MapVe { get; set; }
         public string MapUploadFile { get; set; }
         public string TextField { get; set; }
         public string GeoTextField { get; set; }
 
         public Polygon GeoField { get; set; }
        
-        public bool? Tags { get; set; }
+        public bool Tags { get; set; }
         public string PoLotNum { get; set; }
         public int? FieldId { get; set; }
 
@@ -98,11 +98,11 @@ namespace CCIA.Models
         public DateTime? DatePlanted { get; set; }
         [Required]
         public decimal? AcresApplied { get; set; }
-        public bool? Billable { get; set; }
-        public bool? Charged { get; set; }
+        public bool Billable { get; set; }
+        public bool Charged { get; set; }
         public string UserEmpModified { get; set; }
         public DateTime? UserEmpDateMod { get; set; }
-        public bool? Cancelled { get; set; }
+        public bool Cancelled { get; set; }
         public string CancelledBy { get; set; }
         public string Comments { get; set; }
         public decimal? Fee { get; set; }
@@ -110,7 +110,7 @@ namespace CCIA.Models
         public decimal? IncompleteFee { get; set; }
         public bool OverrideLateFee { get; set; }
         public decimal FeeCofactor { get; set; }
-        public bool? NotifyNeeded { get; set; }
+        public bool NotifyNeeded { get; set; }
         public DateTime? NotifyDate { get; set; }
         public DateTime? DateNotified { get; set; }
         public string ApplicantComments { get; set; }

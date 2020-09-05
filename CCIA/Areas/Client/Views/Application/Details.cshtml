@@ -43,7 +43,7 @@
                 <div class="form-group row">
                     <label asp-for="MapVe" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.MapVe ?? false, new {@disabled = true})
+                        @Html.CheckBox("MapsVe", Model.MapVe, new {@disabled = true})
                     </div>
                 </div>
         </div>
@@ -176,7 +176,7 @@
                         {
                             <td>@row.SeedPurchasedFrom</td>
                         }                        
-                        @if(Model.application.AppType == "PO")
+                        @if(Model.AppType == "PO")
                         {
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
                             <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
