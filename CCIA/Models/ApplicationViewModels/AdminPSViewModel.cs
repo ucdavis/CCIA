@@ -12,6 +12,7 @@ namespace CCIA.Models.DetailsViewModels
     {
         public PlantingStocks plantingStocks { get; set; }
         public List<AbbrevClassProduced> psClass { get; set; }
+        public List<StateProvince> states { get; set; }
 
         public bool potatoApp { get; set; }
         public static async Task<AdminPSViewModel> Create(CCIAContext _dbContext, int psId)
@@ -19,10 +20,14 @@ namespace CCIA.Models.DetailsViewModels
            var ps = await _dbContext.PlantingStocks.Where(p => p.PsId == psId)                
                 .Include(p => p.PsClassNavigation)
                 .FirstAsync();  
+            var statesWNull = await _dbContext.StateProvince.OrderBy(s => s.StateProvinceName).ToListAsync();
+            statesWNull.Insert(0, new StateProvince{ StateProvinceId = 0, StateProvinceName = "Select State/Country"});
             var viewModel = new AdminPSViewModel
             {
                 plantingStocks = ps,
                 psClass = await _dbContext.AbbrevClassProduced.Include(c => c.AppType).OrderBy(c => c.AppType.AppTypeTrans).ThenBy(c => c.SortOrder).ToListAsync(),
+                states = statesWNull,
+                potatoApp = await _dbContext.Applications.Where(a => a.Id == ps.AppId).AnyAsync(a => a.AppType == "PO"),
             };           
 
             return viewModel;

@@ -168,8 +168,48 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> EditPS(int id)
         {
-             var model = await AdminPSViewModel.Create(_dbContext, id);
+            var model = await AdminPSViewModel.Create(_dbContext, id);
             return View(model);  
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPS(int id, AdminPSViewModel psEditVM)
+        {
+            var ps = psEditVM.plantingStocks;
+            var PSToUpdate = await _dbContext.PlantingStocks.Where(p => p.PsId == id).FirstAsync();
+            PSToUpdate.PsCertNum = ps.PsCertNum;
+            PSToUpdate.PsEnteredVariety = ps.PsEnteredVariety;
+            if(ps.PoundsPlanted != null){
+                PSToUpdate.PoundsPlanted = ps.PoundsPlanted;
+            }
+            if(ps.PlantsPerAcre != null) {
+                PSToUpdate.PlantsPerAcre = ps.PlantsPerAcre;
+            }
+            PSToUpdate.PsClass = ps.PsClass;
+            PSToUpdate.StateCountryTagIssued = ps.StateCountryTagIssued;
+            PSToUpdate.StateCountryGrown = ps.StateCountryGrown;
+            if(ps.SeedPurchasedFrom != null){
+                PSToUpdate.SeedPurchasedFrom = ps.SeedPurchasedFrom;
+            }
+            if(await _dbContext.Applications.Where(a => a.Id == PSToUpdate.AppId).AnyAsync(a => a.AppType == "PO")){
+                PSToUpdate.WinterTest = ps.WinterTest;
+                PSToUpdate.PvxTest = ps.PvxTest;
+            }
+            if(ps.ThcPercent != null){
+                PSToUpdate.ThcPercent = ps.ThcPercent;
+            }
+
+            if(ModelState.IsValid) {
+                await _dbContext.SaveChangesAsync();
+                Message = "Planting Stock Edit Successful";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminPSViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Edit), new { PSToUpdate.AppId });                       
         }
 
         // GET: Application/Delete/5
