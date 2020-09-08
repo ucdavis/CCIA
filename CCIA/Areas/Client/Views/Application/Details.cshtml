@@ -159,7 +159,11 @@
                         {
                             <td>@row.PlantsPerAcre</td>
                         }                        
-                        <td>@row.PsClassNavigation.ClassProducedTrans</td>
+                        <td>@row.PsClassNavigation.ClassProducedTrans
+                            @if(row.PsAccession != null){
+                                <span>- @row.PsAccession</span>
+                            }
+                        </td>
                         @if(@row.TaggedStateProvince == null)
                         {
                             <td>@row.StateCountryTagIssued</td>
