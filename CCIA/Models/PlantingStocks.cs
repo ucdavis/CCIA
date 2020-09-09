@@ -36,6 +36,8 @@ namespace CCIA.Models
         public string ThcPercent { get; set; }
         public decimal? PlantsPerAcre { get; set; }
 
+        public string UserEmpModified { get; set; }
+
     //    [ForeignKey("AppId")]
     //    public Applications Application { get; set; }
         

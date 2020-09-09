@@ -2767,6 +2767,8 @@ namespace CCIA.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.UserEmpModified).HasColumnName("user_emp_modified");
+
                 entity.Property(e => e.WinterTest)
                     .HasColumnName("winter_test")
                     .HasDefaultValueSql("((0))");

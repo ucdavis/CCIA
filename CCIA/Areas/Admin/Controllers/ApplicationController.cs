@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
+using System.Security.Claims;
 
 namespace CCIA.Controllers.Admin
 {
@@ -199,6 +200,8 @@ namespace CCIA.Controllers.Admin
             if(ps.ThcPercent != null){
                 PSToUpdate.ThcPercent = ps.ThcPercent;
             }
+            PSToUpdate.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            PSToUpdate.DateModified = DateTime.Now;
 
             if(ModelState.IsValid) {
                 await _dbContext.SaveChangesAsync();
@@ -209,7 +212,7 @@ namespace CCIA.Controllers.Admin
                 return View(model); 
             }
 
-            return RedirectToAction(nameof(Edit), new { PSToUpdate.AppId });                       
+            return RedirectToAction(nameof(Edit), new { id = PSToUpdate.AppId });                       
         }
 
         // GET: Application/Delete/5
