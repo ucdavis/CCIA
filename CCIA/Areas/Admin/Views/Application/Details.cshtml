@@ -280,7 +280,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.application.PlantingStocks)
+                @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
                 {
                     <tr>
                         <td>
@@ -300,9 +300,9 @@
                                 <span>- @row.PsAccession</span>
                             }
                         </td>
-                        @if(@row.TaggedStateProvince == null)
+                        @if(@row.TaggedStateProvince != null)
                         {
-                            <td>@row.StateCountryTagIssued</td>
+                            <td>@row.TaggedStateProvince.StateProvinceName</td>
                         } else {
                             <td>???</td>
                         }
@@ -310,8 +310,8 @@
                         {
                             <td>@row.GrownStateProvince.StateProvinceName</td>
                         }  else {
-                            <td>&nbsp;</td>
-                        }                                              
+                            <td>???</td>
+                        }                                           
                         @if(showPurchasedFrom)
                         {
                             <td>@row.SeedPurchasedFrom</td>
@@ -345,7 +345,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.application.FieldHistories)
+            @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
             {
                 <tr>
                     <td>@row.Year</td>
@@ -359,7 +359,7 @@
     </div> 
     <div class="row">
         <h3>Changes made to this application:</h3>
-        <table class="table">
+        <table class="table table-sm">
             <thead>
             <tr>
                 <th>column</th>
@@ -370,7 +370,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.application.Changes)
+            @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
             {
                 <tr>
                     <td>@row.ColumnChange</td>

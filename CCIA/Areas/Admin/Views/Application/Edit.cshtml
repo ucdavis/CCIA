@@ -88,7 +88,8 @@
     <div class="row">
         <div class="col-lg-12">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <input type="submit" value="Update" class="btn btn-primary"></input>            
+            <input type="submit" value="Update" class="btn btn-primary"></input>   
+            <a class="btn btn-dark" asp-action="Details" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.application.Id">Cancel</a>
         </div>        
         <div class="col-lg-6">
                 <div class="form-group row">
@@ -160,9 +161,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.application.MapVe, new {@readonly = true})
-                    </div>
+                    <input type="checkbox" asp-for="application.MapVe" class="col-sm-9 form-check-input" disabled="disabled">                   
                 </div>
                  <div class="form-group row">
                     <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
@@ -322,7 +321,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.application.PlantingStocks)
+                @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
                 {
                     <tr>
                         <td>
@@ -345,9 +344,9 @@
                                 <span>- @row.PsAccession</span>
                             }
                         </td>
-                        @if(@row.TaggedStateProvince == null)
+                        @if(@row.TaggedStateProvince != null)
                         {
-                            <td>@row.StateCountryTagIssued</td>
+                            <td>@row.TaggedStateProvince.StateProvinceName</td>
                         } else {
                             <td>???</td>
                         }
@@ -355,7 +354,7 @@
                         {
                             <td>@row.GrownStateProvince.StateProvinceName</td>
                         }  else {
-                            <td>&nbsp;</td>
+                            <td>???</td>
                         }                                              
                         @if(showPurchasedFrom)
                         {
@@ -390,7 +389,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.application.FieldHistories)
+            @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
             {
                 <tr>
                     <td>@row.Year</td>
@@ -404,7 +403,7 @@
     </div>
     <div class="row">
         <h3>Changes made to this application:</h3>
-        <table class="table">
+        <table class="table table-sm">
             <thead>
             <tr>
                 <th>column</th>
@@ -415,7 +414,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.application.Changes)
+            @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
             {
                 <tr>
                     <td>@row.ColumnChange</td>
