@@ -63,9 +63,6 @@ namespace CCIA
                             return;
                         }                        
 
-                        identity.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
-                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-
                         identity.RemoveClaim(identity.FindFirst(ClaimTypes.Name));
                         identity.AddClaim(new Claim(ClaimTypes.Name, user.Id));
 
