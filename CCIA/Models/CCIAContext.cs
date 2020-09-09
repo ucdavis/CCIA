@@ -70,6 +70,8 @@ namespace CCIA.Models
 
         public virtual DbSet<AbbrevTagType>  AbbrevTagType { get; set; }
 
+        public virtual DbSet<FieldHistory> FieldHistory { get; set; }
+
         public virtual DbSet<OECD> OECD { get; set; }
 
         public virtual DbSet<AbbrevOECDClass> AbbrevOECDClass { get; set; }
@@ -373,6 +375,10 @@ namespace CCIA.Models
                 entity.Property(e => e.Variety).HasColumnName("entered_variety");
 
                 entity.Property(e => e.AppNumber).HasColumnName("app_num");
+
+                entity.Property(e => e.UserEmpModified).HasColumnName("user_emp_modified");
+
+                entity.Property(e => e.DateModified).HasColumnName("date_modified");
 
                 entity.HasOne(d => d.FHCrops);
 

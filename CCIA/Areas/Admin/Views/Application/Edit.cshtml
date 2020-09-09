@@ -382,6 +382,7 @@
         <table class="table">
             <thead>
             <tr>
+                <th></th>
                 <th>Year</th>
                 <th>Crop</th>
                 <th>Variety</th>
@@ -392,6 +393,9 @@
             @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
             {
                 <tr>
+                    <td>
+                        <a class="btn btn-primary" asp-action="EditHistory" asp-area="admin" asp-controller="Application" asp-route-id="@row.Id">Edit</a>
+                    </td>
                     <td>@row.Year</td>
                     <td>@row.FHCrops.Name</td>
                     <td>@row.Variety</td>

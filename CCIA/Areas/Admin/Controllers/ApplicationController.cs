@@ -167,10 +167,40 @@ namespace CCIA.Controllers.Admin
             }
         }
 
+        public async Task<IActionResult> EditHistory(int id)
+        {
+            var model = await AdminHistoryViewModel.Create(_dbContext, id);
+            return View(model);
+        }
+
         public async Task<IActionResult> EditPS(int id)
         {
             var model = await AdminPSViewModel.Create(_dbContext, id);
             return View(model);  
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
+        {
+            var history = historyVm.history;
+            var historyToUpdate = await _dbContext.FieldHistory.Where(f => f.Id == id).FirstAsync();
+            historyToUpdate.Year = history.Year;
+            historyToUpdate.Crop = history.Crop;
+            historyToUpdate.Variety = history.Variety;
+            historyToUpdate.AppNumber = history.AppNumber;
+            historyToUpdate.DateModified = DateTime.Now;
+            historyToUpdate.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Field History Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminPSViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = historyToUpdate.AppId });              
         }
 
         [HttpPost]
