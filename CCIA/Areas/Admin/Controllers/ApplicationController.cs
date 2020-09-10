@@ -153,18 +153,50 @@ namespace CCIA.Controllers.Admin
         // POST: Application/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, AdminViewModel vm)
         {
-            try
+            var appToUpdate = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
+            var edit = vm.application;
+            appToUpdate.UserEmpDateMod = DateTime.Now;
+            appToUpdate.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            appToUpdate.AppType = edit.AppType;
+            appToUpdate.CertYear = edit.CertYear;
+            if(appToUpdate.Postmark.HasValue && edit.Postmark.HasValue)
             {
-                // TODO: Add update logic here
+                if(appToUpdate.Postmark.Value.Date != edit.Postmark.Value.Date)
+                {
+                    appToUpdate.Postmark = edit.Postmark;
+                }
+            }
+            appToUpdate.DatePlanted = edit.DatePlanted;
+            appToUpdate.OverrideLateFee = edit.OverrideLateFee;
+            appToUpdate.ApplicantId = edit.ApplicantId;
+            appToUpdate.GrowerId = edit.GrowerId;
+            appToUpdate.CropId = edit.CropId;
+            appToUpdate.EnteredVariety = edit.EnteredVariety;
+            appToUpdate.SelectedVarietyId = edit.SelectedVarietyId;
+            appToUpdate.ClassProducedId = edit.ClassProducedId;
+            appToUpdate.AcresApplied = edit.AcresApplied;
+            appToUpdate.FieldName = edit.FieldName;
+            if(edit.PackageComplete && !appToUpdate.PackageComplete){
+                appToUpdate.CompleteDate = DateTime.Now;                
+            }
+            appToUpdate.PackageComplete = edit.PackageComplete;
+            
+            appToUpdate.FarmCounty = edit.FarmCounty;
+            appToUpdate.Comments = edit.Comments;
 
-                return RedirectToAction(nameof(Index));
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Application Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminViewModel.CreateEdit(_dbContext, id);
+                return View(model); 
             }
-            catch
-            {
-                return View();
-            }
+
+            return RedirectToAction(nameof(Details), new { id = appToUpdate.Id });  
+
         }
 
         public async Task<IActionResult> EditHistory(int id)

@@ -181,7 +181,7 @@ namespace CCIA.Models
         { 
             get
             {
-                if (CropId == null && SelectedVarietyId == null)
+                if (CropId == null)
                 {
                     return "";
                 }
@@ -189,7 +189,12 @@ namespace CCIA.Models
                 {
                     return Crop.Name;
                 }
-                if (Variety != null)
+                if(Crop != null) 
+                {
+                    return Crop.Name;
+
+                }
+                if (Variety != null && Variety.Crop != null)
                 {
                     return Variety.Crop.Name;
                 }
@@ -310,10 +315,13 @@ namespace CCIA.Models
         public bool AppLate { 
             get 
             {
-                if(Postmark.Value.Date > Deadline.Value.Date) 
+                if(Postmark.HasValue && Deadline.HasValue)
                 {
-                    return true;
-                }
+                    if(Postmark.Value.Date > Deadline.Value.Date) 
+                    {
+                        return true;
+                    }
+                }                
                 return false;
             }
         }

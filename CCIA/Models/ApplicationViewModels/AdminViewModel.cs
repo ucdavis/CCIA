@@ -23,6 +23,7 @@ namespace CCIA.Models.DetailsViewModels
         {
            var app = await _dbContext.Applications.Where(a => a.Id == id)
                 .Include(a => a.GrowerOrganization)
+                .Include(a => a.ApplicantOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
@@ -50,6 +51,7 @@ namespace CCIA.Models.DetailsViewModels
         {                   
             var app = await _dbContext.Applications.Where(a => a.Id == id)
                 .Include(a => a.GrowerOrganization)
+                .Include(a => a.ApplicantOrganization)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
