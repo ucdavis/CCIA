@@ -84,7 +84,7 @@
 <h2>Edit Application Details</h2> 
 <form asp-action="Edit">
     @Html.HiddenFor(x => x.application.Id)
-<div class="container">
+<div class="container col-sm-10">
     <div class="row">
          <div class="col-sm-12">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -92,174 +92,208 @@
             <a class="btn btn-dark" asp-action="Details" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.application.Id">Cancel</a>
         </div>  
     </div>
-    <div class="row">             
-        <div class="col-lg-6">
-                <div class="form-group row">
-                    <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Id)
-                    </div>
+    <div class="row">
+        <div class="col-lg-4">@* First column*@
+             <div class="form-group row">
+                <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Id)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.FullCert)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FullCert)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Status)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="application.Received" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Received)
-                    </div>
-                </div> 
-                <div class="form-group row required">
-                    <label asp-for="application.DatePlanted" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 input-group">
-                        <input type="text" asp-for="application.DatePlanted" class="datepicker form-control"></input>
-                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
-                            <i class="fa fa-calendar input-group-text"></i>
-                        </div>                        
-                    </div>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="application.DatePlanted" data-valmsg-replace="true"></span>
-                </div>                                  
-                <div class="form-group row">
-                    <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.WarningFlag)
-                        @Html.DisplayFor(x => x.application.ApplicantNotes)
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Renewal)
-                    </div>
-                </div>                  
-                <div class="form-group row">
-                    <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>                    
-                    <input type="text" asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" readonly>
-                    <div class="input-group-append"> 
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Applicant"><i class="fa fa-exchange-alt"></i></button>                            
-                    </div>  
-                    @Html.HiddenFor(x => x.application.ApplicantId)                              
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.Received" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Received)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
-                    <select asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
+            </div> 
+            <div class="form-group row required">
+                <label asp-for="application.DatePlanted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 input-group">
+                    <input type="text" asp-for="application.DatePlanted" class="datepicker form-control"></input>
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>                        
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
-                    <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" readonly>
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupClassModal"><i class="fa fa-exchange-alt"></i></button></button>
-                    </div>
-                    @Html.HiddenFor(x => x.application.ClassProducedId)
+                <span class="field-validation-valid text-danger" data-valmsg-for="application.DatePlanted" data-valmsg-replace="true"></span>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Renewal)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="application.MapVe" class="col-sm-9 form-check-input" disabled="disabled">                   
-                </div>
-                 <div class="form-group row">
-                    <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
-                    <input asp-for="application.FieldName" class="col-sm-9 form-control">
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>
-                    <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
-                </div>   
+            </div>  
         </div>
-        <div class="col-lg-6">
-                <div class="form-group row">
-                    <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>                    
-                    <select required asp-for="application.AppType" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
-                </div>                
-                <div class="form-group row required">
-                    <label class="col-sm-3 col-form-label" asp-for="application.CertYear"></label>
-                    <input asp-for="application.CertYear" class="col-sm-3 col-form-label"></input>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="CertYear" data-valmsg-replace="true"></span>
+        <div class="col-lg-4">@* Second column*@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>                    
+                <select required asp-for="application.AppType" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
+            </div> 
+            <div class="form-group row required">
+                <label class="col-sm-3 col-form-label" asp-for="application.CertYear"></label>
+                <input asp-for="application.CertYear" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="CertYear" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row required">
+                <label asp-for="application.Postmark" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 input-group">
+                    <input type="text" asp-for="application.Postmark" class="datepicker form-control" data-val="true" data-val-required="The Submitted Date field is required."></input>
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>                        
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
-                    </div>
-                </div>   
-                <div class="form-group row required">
-                    <label asp-for="application.Postmark" class="col-sm-3 col-form-label"></label>
-                     <div class="col-sm-9 input-group">
-                        <input type="text" asp-for="application.Postmark" class="datepicker form-control" data-val="true" data-val-required="The Submitted Date field is required."></input>
-                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
-                            <i class="fa fa-calendar input-group-text"></i>
-                        </div>                        
-                    </div>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="application.Postmark" data-valmsg-replace="true"></span>                    
-                </div>                 
-                <div class="form-group row">
-                    <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.Deadline) 
-                    </div>
-                </div>                   
-                <div class="form-group row">
-                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.AppLate) &nbsp;&nbsp;| Override? <input asp-for="application.OverrideLateFee" >
-                    </div>
-                </div> 
-                <div class="form-group row">
-                    <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.OriginalCertYear) Prev App: @Html.DisplayFor(x => x.application.PaperAppNum)
-                    </div>
-                </div>                      
-                <div class="form-group row">
-                    <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>                   
-                    <input type="text" asp-for="application.GrowerOrganization.NameAndId" class="col-sm-8 form-control" readonly>
-                    <div class="input-group-append"> 
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-exchange-alt"></i></button>                            
-                    </div> 
-                    @Html.HiddenFor(x => x.application.GrowerId)
+                <span class="field-validation-valid text-danger" data-valmsg-for="application.Postmark" data-valmsg-replace="true"></span>                    
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppLate)  
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
-                    <input type="text" class="col-sm-9 form-control" asp-for="application.EnteredVariety">
+            </div>               
+        </div>
+        <div class="col-lg-4">@* Third column*@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
-                    <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" readonly>
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
-                    </div>  
-                    @Html.HiddenFor(x => x.application.SelectedVarietyId)                  
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Status)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
-                    <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" >
+            </div> 
+            <div class="form-group row">
+                <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Deadline) 
                 </div>
-                 <div class="form-group row">
-                    <label asp-for="application.PackageComplete" class="col-sm-3 form-check-label"></label>
-                    <input type="checkbox" asp-for="application.PackageComplete" class="col-sm-9 form-check-input">
+            </div>
+            <div class="form-group row">
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="application.OverrideLateFee" class="col-form-label col-sm-3"> </label> 
+                    <input asp-for="application.OverrideLateFee" >
+                </div>         
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.OriginalCertYear) Prev App: @Html.DisplayFor(x => x.application.PaperAppNum)
                 </div>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.WarningFlag)
+                </div>
+            </div> 
+        </div>
+        <div class="col-lg-8">
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-2 col-form-label">Warning:</label>
+                <div class="col-sm-10 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ApplicantNotes)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">                                      
+            <div class="form-group row">
+                <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>                    
+                <input type="text" asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Applicant"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                @Html.HiddenFor(x => x.application.ApplicantId)                              
+            </div>
+        </div>
+        <div class="col-lg-6">             
+            <div class="form-group row">
+                <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>                   
+                <input type="text" asp-for="application.GrowerOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-exchange-alt"></i></button>                            
+                </div> 
+                @Html.HiddenFor(x => x.application.GrowerId)
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-lg-4">@* Column 1*@
+            <div class="form-group row">
+                <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
+                <select asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
+                <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupClassModal"><i class="fa fa-exchange-alt"></i></button></button>
+                </div>
+                @Html.HiddenFor(x => x.application.ClassProducedId)
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
+                <input asp-for="application.FieldName" class="col-sm-9 form-control">
+            </div> 
+        </div>
+        <div class="col-lg-4">@* Column 2*@
+            <div class="form-group row">
+                <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="application.EnteredVariety">
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
+                <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" >
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>
+                <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
+            </div>   
+        </div>
+        <div class="col-lg-4">@* Column 3*@
+            <div class="form-group row">
+                <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
+                <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
+                </div>  
+                @Html.HiddenFor(x => x.application.SelectedVarietyId)                  
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.PackageComplete" class="col-sm-3 form-check-label"></label>
+                <input type="checkbox" asp-for="application.PackageComplete" class="col-sm-9 form-check-input">
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="application.MapVe" class="col-sm-9 form-check-input" disabled="disabled">                   
+            </div>
+        </div>
+    </div>    
     <div class="form-group row">
-        <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>        
-        <div class="col-sm-9 form-control-plaintext">
+        <label asp-for="application.ApplicantComments" class="col-sm-1 col-form-label"></label>        
+        <div class="col-sm-11 form-control-plaintext">
             @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
         <div class="form-group row">
-        <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
-        <textarea rows="5"  asp-for="application.Comments" class="col-sm-9 form-control"></textarea>
+        <label asp-for="application.Comments" class="col-sm-1 col-form-label"></label>
+        <textarea rows="5"  asp-for="application.Comments" class="col-sm-11 form-control"></textarea>
     </div>
 </div>
-<div class="container">    
+<div class="container col-sm-10">    
      <div class="row">
         <hr />
     </div>
