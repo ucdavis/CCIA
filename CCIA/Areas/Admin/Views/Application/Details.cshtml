@@ -10,8 +10,31 @@
 <h2>Application Details</h2> 
 <div class="container">
     <div class="row">
-        <div class="col-lg-6">
-            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>            
+        </div>
+    </div>
+    @if(Model.application.Status == "Pending acceptance")
+        {
+            <div class="row">
+                <div class="col-sm-12"><hr></div>
+                <div class="col-sm-6">            
+                    <form asp-action="AcceptApplication">
+                        @Html.HiddenFor(x => x.application.Id)
+                        <input type="submit" class="btn btn-primary" value="Accept Application" onClick="return check_accept();">
+                    </form>
+                </div>
+                <div class="col-sm-6">
+                    <form asp-action="CancelApplication">
+                        @Html.HiddenFor(x => x.application.Id)
+                        <input type="submit" class="btn btn-primary" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                    </form>
+                </div>
+                <div class="col-sm-12"><hr></div>
+            </div>
+        }
+    <div class="row">
+        <div class="col-lg-6">            
                 <div class="form-group row">
                     <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
@@ -123,11 +146,11 @@
                         @Html.DisplayFor(x => x.application.Deadline) 
                     </div>
                 </div>                   
-                <div class="form-group row">
-                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.AppLate) Override? @Html.DisplayFor(x => x.application.OverrideLateFee)
-                    </div>
+                <div class="form-group row">                    
+                    <div class="form-check-inline col-sm-9">
+                        <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input" disabled asp-for="application.AppLate">
+                        <label asp-for="application.OverrideLateFee" class="col-form-label"> </label>  <input type="checkbox" class="form-check-input" disabled asp-for="application.OverrideLateFee"> 
+                    </div>                
                 </div> 
                 <div class="form-group row">
                     <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
@@ -161,9 +184,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.application.PackageComplete)
-                    </div>
+                    <input type="checkbox" class="col-sm-9 form-check-input" disabled asp-for="application.PackageComplete">
                 </div>
         </div>
     </div>
@@ -179,209 +200,258 @@
             @Html.DisplayFor(x => x.application.Comments)
         </div>
     </div>
-    <div class="row">
-        <h3>Historic Overlaps</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Origin</th>
-                    <th>ID</th>
-                    <th>Year</th>
-                    <th>Renewal Of</th>
-                    <th>Crop</th>
-                    <th>Variety</th>
-                    <th>Status</th>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.conflicts)
-                {
+    @if(Model.conflicts.Any())
+    {
+        <div class="row">
+            <h3>Historic Overlaps</h3>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@row.Origin</td>
-                        <td>@row.Id</td>
-                        <td>@row.CertYear</td>
-                        <td>@row.RenewedFrom</td>
-                        <td>@row.Crop</td>
-                        <td>@row.Variety</td>
-                        <td>@row.Status</td>
-                        <td><a href="@row.Url">link</a></td>
-                    </tr>                    
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="8"> For applications, this is a direct link. For isolation mapping, use the "Find pin by #" function.</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+                        <th>Origin</th>
+                        <th>ID</th>
+                        <th>Year</th>
+                        <th>Renewal Of</th>
+                        <th>Crop</th>
+                        <th>Variety</th>
+                        <th>Status</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.conflicts)
+                    {
+                        <tr>
+                            <td>@row.Origin</td>
+                            <td>@row.Id</td>
+                            <td>@row.CertYear</td>
+                            <td>@row.RenewedFrom</td>
+                            <td>@row.Crop</td>
+                            <td>@row.Variety</td>
+                            <td>@row.Status</td>
+                            <td><a href="@row.Url">link</a></td>
+                        </tr>                    
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8"> For applications, this is a direct link. For isolation mapping, use the "Find pin by #" function.</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
 </div>
 <div class="container">
-    <div class="row">
-        <h3>Certificates/Tags</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.application.Certificates)
-                {
+    @if(Model.application.Certificates.Any())
+    {    
+        <div class="row">
+            <h3>Certificates/Tags</h3>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            Filedownload -
-                            @row.Link
-                        </td>
+                        <th>Link</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-     <div class="row">
-        <hr />
-    </div>
-    <div class="row">
-        <h3>Planting Stock Info</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Cert#</th>
-                    <th>Variety</th>
-                    @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.Certificates)
                     {
-                        showPounds = true;
-                        <th>Pounds Planted</th>
-                    } 
-                    @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
-                    { 
-                        showPlantsPerAcre = true;                       
-                        <th>Plants/Acre</th>
-                    }                 
-                    <th>Class</th>
-                    <th>Tag Issued</th>
-                    <th>Grown</th>
-                    @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
-                    {
-                        showPurchasedFrom = true;
-                        <th>Purchased From</th>
-                    } 
-                    @if(Model.application.AppType == "PO")
-                    {
-                        <th>Winter test?</th>
-                        <th>PVX test?</th>
+                        <tr>
+                            <td>
+                                Filedownload -
+                                @row.Link
+                            </td>
+                        </tr>
                     }
-                    @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
-                    {
-                        showTHC = true;
-                        <th>THC%</th>
-                    } 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
-                {
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <hr />
+        </div>
+    }
+    @if(Model.application.PlantingStocks.Any())
+    {    
+        <div class="row">
+            <h3>Planting Stock Info</h3>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @row.PsCertNum
-                        </td>
-                        <td>@row.PsEnteredVariety</td>
-                        @if(showPounds)
+                        <th>Cert#</th>
+                        <th>Variety</th>
+                        @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
                         {
-                            <td>@row.PoundsPlanted</td>
-                        }
-                        @if(showPlantsPerAcre)
+                            showPounds = true;
+                            <th>Pounds Planted</th>
+                        } 
+                        @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
+                        { 
+                            showPlantsPerAcre = true;                       
+                            <th>Plants/Acre</th>
+                        }                 
+                        <th>Class</th>
+                        <th>Tag Issued</th>
+                        <th>Grown</th>
+                        @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
                         {
-                            <td>@row.PlantsPerAcre</td>
-                        }                        
-                        <td>@row.PsClassNavigation.ClassProducedTrans
-                            @if(row.PsAccession != null){
-                                <span>- @row.PsAccession</span>
-                            }
-                        </td>
-                        @if(@row.TaggedStateProvince != null)
-                        {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
-                        } else {
-                            <td>???</td>
-                        }
-                        @if(@row.GrownStateProvince.StateProvinceName != null)
-                        {
-                            <td>@row.GrownStateProvince.StateProvinceName</td>
-                        }  else {
-                            <td>???</td>
-                        }                                           
-                        @if(showPurchasedFrom)
-                        {
-                            <td>@row.SeedPurchasedFrom</td>
-                        }                        
+                            showPurchasedFrom = true;
+                            <th>Purchased From</th>
+                        } 
                         @if(Model.application.AppType == "PO")
                         {
-                            <td>@Html.DisplayFor(x => row.WinterTest)</td>
-                            <td>@Html.DisplayFor(x => row.PvxTest)</td>
+                            <th>Winter test?</th>
+                            <th>PVX test?</th>
                         }
-                        @if(showTHC)
+                        @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
                         {
-                            <td>@row.ThcPercent</td>
-                        }
+                            showTHC = true;
+                            <th>THC%</th>
+                        } 
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
+                    {
+                        <tr>
+                            <td>
+                                @row.PsCertNum
+                            </td>
+                            <td>@row.PsEnteredVariety</td>
+                            @if(showPounds)
+                            {
+                                <td>@row.PoundsPlanted</td>
+                            }
+                            @if(showPlantsPerAcre)
+                            {
+                                <td>@row.PlantsPerAcre</td>
+                            }                        
+                            <td>@row.PsClassNavigation.ClassProducedTrans
+                                @if(row.PsAccession != null){
+                                    <span>- @row.PsAccession</span>
+                                }
+                            </td>
+                            @if(@row.TaggedStateProvince != null)
+                            {
+                                <td>@row.TaggedStateProvince.StateProvinceName</td>
+                            } else {
+                                <td>???</td>
+                            }
+                            @if(@row.GrownStateProvince.StateProvinceName != null)
+                            {
+                                <td>@row.GrownStateProvince.StateProvinceName</td>
+                            }  else {
+                                <td>???</td>
+                            }                                           
+                            @if(showPurchasedFrom)
+                            {
+                                <td>@row.SeedPurchasedFrom</td>
+                            }                        
+                            @if(Model.application.AppType == "PO")
+                            {
+                                <td>@Html.DisplayFor(x => row.WinterTest)</td>
+                                <td>@Html.DisplayFor(x => row.PvxTest)</td>
+                            }
+                            @if(showTHC)
+                            {
+                                <td>@row.ThcPercent</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    } else {
+         <div class="row">
+            <h3>Planting Stock Info</h3> <br>
+            None found!
+        </div>
+    }
     <div class="row">
         <hr />
-    </div>  
-    <div class="row">
-        <h3>Field History</h3>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Year</th>
-                <th>Crop</th>
-                <th>Variety</th>
-                <th>Application #</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
-            {
-                <tr>
-                    <td>@row.Year</td>
-                    <td>@row.FHCrops.Name</td>
-                    <td>@row.Variety</td>
-                    <td>@row.AppNumber</td>
-                </tr>
-            }
-            </tbody>
-        </table>
     </div> 
-    <div class="row">
-        <h3>Changes made to this application:</h3>
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th>column</th>
-                <th>Old Value</th>
-                <th>New Value</th>
-                <th>Date</th>
-                <th>Person</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
-            {
+    @if(Model.application.FieldHistories.Any()) 
+    {
+        <div class="row">
+            <h3>Field History</h3>
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>@row.ColumnChange</td>
-                    <td>@row.OldValue</td>
-                    <td>@row.NewValue</td>
-                    <td>@row.DateChanged</td>
-                    <td>@row.Employee.Name</td>
+                    <th>Year</th>
+                    <th>Crop</th>
+                    <th>Variety</th>
+                    <th>Application #</th>
                 </tr>
-            }
-            </tbody>
-        </table>
-        <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
-    </div>   
+                </thead>
+                <tbody>
+                @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
+                {
+                    <tr>
+                        <td>@row.Year</td>
+                        <td>@row.FHCrops.Name</td>
+                        <td>@row.Variety</td>
+                        <td>@row.AppNumber</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div> 
+        <div class="row">
+            <h3>Changes made to this application:</h3>
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
+                {
+                    <tr>
+                        <td>@row.ColumnChange</td>
+                        <td>@row.OldValue</td>
+                        <td>@row.NewValue</td>
+                        <td>@row.DateChanged</td>
+                        <td>@row.Employee.Name</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
+        </div>
+    } else {
+        <div class="row">
+            <h3>Field History</h3><br>
+            None found
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function check_accept () {
+           
+            var complete = $("#application_PackageComplete").is(':checked');
+            var late = $("#application_AppLate").is(':checked');
+            var override = $("#application_OverrideLateFee").is(':checked');
+            var msg = '';
+            var bolCheck = false;
+            
+            if (!complete) {
+                msg = 'Accept application even when incomplete? \n This will add an extra $50 fee.';
+                bolCheck = true;
+            }
+            if (late && !override) {
+                    msg += '\n Application is currently late. Please double check postmark date \n This will add an extra $100 fee.';
+                    bolCheck = true;
+            }
+            if (bolCheck) {
+                    return confirm(msg);
+            }
+            return true;
+            
+        } 
+    </script>
+}

@@ -59,6 +59,45 @@ namespace CCIA.Controllers.Admin
             return View("Index", model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcceptApplication(IFormCollection form)
+        {
+            var id = int.Parse(form["application.Id"].ToString());
+            var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
+            appToAccept.Status = "field inspection in progress";
+            appToAccept.Approved = true;
+            appToAccept.DateApproved = DateTime.Now;            
+            appToAccept.Approver = User.FindFirstValue(ClaimTypes.Name);
+            appToAccept.NotifyNeeded = true;
+            appToAccept.NotifyDate = DateTime.Now;
+            appToAccept.UserEmpDateMod = DateTime.Now;
+            appToAccept.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+
+            await _dbContext.SaveChangesAsync();
+            Message = "Application Accepted";
+
+            await _dbContext.Database.ExecuteSqlCommandAsync("accept_application_updates @p0", id);
+
+            return  RedirectToAction(nameof(Pending));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelApplication(IFormCollection form)
+        {
+            var id = int.Parse(form["application.Id"].ToString());
+            var appToCancel = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
+            appToCancel.Cancelled = true;
+            appToCancel.CancelledBy =  User.FindFirstValue(ClaimTypes.Name);
+            appToCancel.Comments = appToCancel.Comments +  "<br/> Cancelled at 'process pending apps' prior to inspection";
+            appToCancel.Status = "Application cancelled";
+
+            await _dbContext.SaveChangesAsync();
+            Message = "Application Cancelled";
+            return  RedirectToAction(nameof(Pending));
+        }
+
         public async Task<IActionResult> Renew()
         {
             var certYear = CertYearFinder.CertYear;
@@ -94,7 +133,7 @@ namespace CCIA.Controllers.Admin
 
             Message = $"App renewed. New App ID: {newApp.Id}";		
 		
-            return  RedirectToAction(nameof(Renew));;
+            return  RedirectToAction(nameof(Renew));
         }
 
         public async Task<IActionResult> Renew_noseed(int id)

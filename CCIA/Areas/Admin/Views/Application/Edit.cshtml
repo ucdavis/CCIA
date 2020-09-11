@@ -86,11 +86,13 @@
     @Html.HiddenFor(x => x.application.Id)
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
+         <div class="col-sm-12">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="submit" value="Update" class="btn btn-primary"></input>   
             <a class="btn btn-dark" asp-action="Details" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.application.Id">Cancel</a>
-        </div>        
+        </div>  
+    </div>
+    <div class="row">             
         <div class="col-lg-6">
                 <div class="form-group row">
                     <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
@@ -257,128 +259,115 @@
         <textarea rows="5"  asp-for="application.Comments" class="col-sm-9 form-control"></textarea>
     </div>
 </div>
-<div class="container">
-    <div class="col-lg-1 row">
-        <label class="col-form-label">Certificates/Tags</label>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.application.Certificates)
-                {
-                    <tr>
-                        <td>
-                            Filedownload -
-                            @row.Link
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div class="container">    
      <div class="row">
         <hr />
     </div>
-    <div class="row">
-        <label class="col-form-label">Planting Stock Info</label>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Cert#</th>
-                    <th>Variety</th>
-                    @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
-                    {
-                        showPounds = true;
-                        <th>Pounds Planted</th>
-                    } 
-                    @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
-                    { 
-                        showPlantsPerAcre = true;                       
-                        <th>Plants/Acre</th>
-                    }                 
-                    <th>Class</th>
-                    <th>Tag Issued</th>
-                    <th>Grown</th>
-                    @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
-                    {
-                        showPurchasedFrom = true;
-                        <th>Purchased From</th>
-                    } 
-                    @if(Model.application.AppType == "PO")
-                    {
-                        <th>Winter test?</th>
-                        <th>PVX test?</th>
-                    }
-                    @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
-                    {
-                        showTHC = true;
-                        <th>THC%</th>
-                    } 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
-                {
+    @if(Model.application.PlantingStocks.Any())
+    {  
+        <div class="row">
+            <label class="col-form-label">Planting Stock Info</label>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            <a class="btn btn-primary" asp-action="EditPS" asp-area="admin" asp-controller="Application" asp-route-id="@row.PsId">Edit</a></td>
-                        <td>
-                            @row.PsCertNum
-                        </td>
-                        <td>@row.PsEnteredVariety</td>
-                        @if(showPounds)
+                        <th></th>
+                        <th>Cert#</th>
+                        <th>Variety</th>
+                        @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
                         {
-                            <td>@row.PoundsPlanted</td>
-                        }
-                        @if(showPlantsPerAcre)
+                            showPounds = true;
+                            <th>Pounds Planted</th>
+                        } 
+                        @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
+                        { 
+                            showPlantsPerAcre = true;                       
+                            <th>Plants/Acre</th>
+                        }                 
+                        <th>Class</th>
+                        <th>Tag Issued</th>
+                        <th>Grown</th>
+                        @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
                         {
-                            <td>@row.PlantsPerAcre</td>
-                        }                        
-                        <td>
-                            @row.PsClassNavigation.ClassProducedTrans
-                            @if(row.PsAccession != null){
-                                <span>- @row.PsAccession</span>
-                            }
-                        </td>
-                        @if(@row.TaggedStateProvince != null)
-                        {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
-                        } else {
-                            <td>???</td>
-                        }
-                        @if(@row.GrownStateProvince.StateProvinceName != null)
-                        {
-                            <td>@row.GrownStateProvince.StateProvinceName</td>
-                        }  else {
-                            <td>???</td>
-                        }                                              
-                        @if(showPurchasedFrom)
-                        {
-                            <td>@row.SeedPurchasedFrom</td>
-                        }                        
+                            showPurchasedFrom = true;
+                            <th>Purchased From</th>
+                        } 
                         @if(Model.application.AppType == "PO")
                         {
-                            <td>@Html.DisplayFor(x => row.WinterTest)</td>
-                            <td>@Html.DisplayFor(x => row.PvxTest)</td>
+                            <th>Winter test?</th>
+                            <th>PVX test?</th>
                         }
-                        @if(showTHC)
+                        @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
                         {
-                            <td>@row.ThcPercent</td>
-                        }
+                            showTHC = true;
+                            <th>THC%</th>
+                        } 
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
+                    {
+                        <tr>
+                            <td>
+                                <a class="btn btn-primary" asp-action="EditPS" asp-area="admin" asp-controller="Application" asp-route-id="@row.PsId">Edit</a></td>
+                            <td>
+                                @row.PsCertNum
+                            </td>
+                            <td>@row.PsEnteredVariety</td>
+                            @if(showPounds)
+                            {
+                                <td>@row.PoundsPlanted</td>
+                            }
+                            @if(showPlantsPerAcre)
+                            {
+                                <td>@row.PlantsPerAcre</td>
+                            }                        
+                            <td>
+                                @row.PsClassNavigation.ClassProducedTrans
+                                @if(row.PsAccession != null){
+                                    <span>- @row.PsAccession</span>
+                                }
+                            </td>
+                            @if(@row.TaggedStateProvince != null)
+                            {
+                                <td>@row.TaggedStateProvince.StateProvinceName</td>
+                            } else {
+                                <td>???</td>
+                            }
+                            @if(@row.GrownStateProvince.StateProvinceName != null)
+                            {
+                                <td>@row.GrownStateProvince.StateProvinceName</td>
+                            }  else {
+                                <td>???</td>
+                            }                                              
+                            @if(showPurchasedFrom)
+                            {
+                                <td>@row.SeedPurchasedFrom</td>
+                            }                        
+                            @if(Model.application.AppType == "PO")
+                            {
+                                <td>@Html.DisplayFor(x => row.WinterTest)</td>
+                                <td>@Html.DisplayFor(x => row.PvxTest)</td>
+                            }
+                            @if(showTHC)
+                            {
+                                <td>@row.ThcPercent</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    } else {
+        <div class="row">
+            <h3>Planting Stock Info</h3> <br>
+            None found!
+        </div>
+    }
     <div class="row">
         <hr />
     </div>  
     <div class="row">
-        <label class="col-form-label">Field History</label>
+        <h3>Field History</h3>
         <table class="table">
             <thead>
             <tr>
@@ -405,32 +394,35 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <h3>Changes made to this application:</h3>
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th>column</th>
-                <th>Old Value</th>
-                <th>New Value</th>
-                <th>Date</th>
-                <th>Person</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
-            {
+    @if(Model.application.Changes.Any())
+    {
+        <div class="row">
+            <h3>Changes made to this application:</h3>
+            <table class="table table-sm">
+                <thead>
                 <tr>
-                    <td>@row.ColumnChange</td>
-                    <td>@row.OldValue</td>
-                    <td>@row.NewValue</td>
-                    <td>@row.DateChanged</td>
-                    <td>@row.Employee.Name</td>
+                    <th>column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    </div>    
+                </thead>
+                <tbody>
+                @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
+                {
+                    <tr>
+                        <td>@row.ColumnChange</td>
+                        <td>@row.OldValue</td>
+                        <td>@row.NewValue</td>
+                        <td>@row.DateChanged</td>
+                        <td>@row.Employee.Name</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>    
+    }
 </div>
 </form>
 @section Scripts {
