@@ -15,24 +15,34 @@
         </div>
     </div>
     @if(Model.application.Status == "Pending acceptance")
-        {
-            <div class="row">
-                <div class="col-sm-12"><hr></div>
-                <div class="col-sm-6">            
-                    <form asp-action="AcceptApplication">
-                        @Html.HiddenFor(x => x.application.Id)
-                        <input type="submit" class="btn btn-primary" value="Accept Application" onClick="return check_accept();">
-                    </form>
-                </div>
-                <div class="col-sm-6">
-                    <form asp-action="CancelApplication">
-                        @Html.HiddenFor(x => x.application.Id)
-                        <input type="submit" class="btn btn-primary" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
-                    </form>
-                </div>
-                <div class="col-sm-12"><hr></div>
+    {
+        <div class="row">
+            <div class="col-sm-12"><hr></div>
+            <div class="col-sm-6">            
+                <form asp-action="AcceptApplication">
+                    @Html.HiddenFor(x => x.application.Id)
+                    <input type="submit" class="btn btn-primary" value="Accept Application" onClick="return check_accept();">
+                </form>
             </div>
-        }
+            <div class="col-sm-6">
+                <form asp-action="CancelApplication">
+                    @Html.HiddenFor(x => x.application.Id)
+                    <input type="submit" class="btn btn-primary" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>
+            </div>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
+    @if(Model.application.Status == "Field Inspection in Progress")
+    {
+       <div class="row">
+           <div class="col-sm-12"><hr></div>
+            <div class="col-sm-12">
+                <a class="btn btn-primary" asp-action="FIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">FIR</a>            
+            </div>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
     <div class="row">
         <div class="col-lg-6">            
                 <div class="form-group row">

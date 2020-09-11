@@ -75,5 +75,26 @@ namespace CCIA.Models.DetailsViewModels
 
             return viewModel;
         }
+
+        public static async Task<AdminViewModel> CreateFIR(CCIAContext _dbContext, int id)
+        {                   
+            var app = await _dbContext.Applications.Where(a => a.Id == id)
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.ApplicantOrganization)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Include(a => a.AppTypeTrans)
+                .Include(a => a.AppCertRad)
+                .FirstOrDefaultAsync();  
+            var viewModel = new AdminViewModel
+            {
+                application = app                  
+            };           
+
+            return viewModel;
+        }
+
+
     } 
 }

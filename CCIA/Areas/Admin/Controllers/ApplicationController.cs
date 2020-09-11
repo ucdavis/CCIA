@@ -59,13 +59,15 @@ namespace CCIA.Controllers.Admin
             return View("Index", model);
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptApplication(IFormCollection form)
         {
             var id = int.Parse(form["application.Id"].ToString());
             var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
-            appToAccept.Status = "field inspection in progress";
+            appToAccept.Status = "Field Inspection in Progress";
             appToAccept.Approved = true;
             appToAccept.DateApproved = DateTime.Now;            
             appToAccept.Approver = User.FindFirstValue(ClaimTypes.Name);
@@ -187,6 +189,12 @@ namespace CCIA.Controllers.Admin
         {
             var model = await AdminViewModel.CreateEdit(_dbContext, id);
             return View(model);            
+        }
+
+        public async Task<IActionResult> FIR(int id)
+        {
+            var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            return View(model);
         }
 
         // POST: Application/Edit/5
