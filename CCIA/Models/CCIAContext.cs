@@ -1572,6 +1572,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
                 entity.HasMany(d => d.Changes);
+                entity.HasOne(d => d.FieldInspect);
 
             });
 
@@ -2507,14 +2508,9 @@ namespace CCIA.Models
 
             modelBuilder.Entity<FieldInspect>(entity =>
             {
-                entity.HasKey(e => e.FldinspId);
+                entity.HasKey(e => e.AppId);
 
                 entity.ToTable("field_inspect");
-
-                entity.HasIndex(e => new { e.AcresApproved, e.AppId })
-                    .HasName("IX_field_inpect_app_id");
-
-                entity.Property(e => e.FldinspId).HasColumnName("fldinsp_id");
 
                 entity.Property(e => e.AcresApproved)
                     .HasColumnName("acres_approved")
@@ -2522,11 +2518,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AcresCancelled)
                     .HasColumnName("acres_cancelled")
-                    .HasColumnType("decimal(14, 2)");
-
-                entity.Property(e => e.AcresFld)
-                    .HasColumnName("acres_fld")
-                    .HasColumnType("decimal(14, 2)");
+                    .HasColumnType("decimal(14, 2)");            
 
                 entity.Property(e => e.AcresGrowout)
                     .HasColumnName("acres_growout")
@@ -2548,11 +2540,7 @@ namespace CCIA.Models
                     .HasColumnName("acres_rejected")
                     .HasColumnType("decimal(14, 2)");
 
-                entity.Property(e => e.AppId).HasColumnName("app_id");
-
-                entity.Property(e => e.Charged)
-                    .HasColumnName("charged")
-                    .HasDefaultValueSql("((0))");
+                 entity.Property(e => e.AppId).HasColumnName("app_id");
 
                 entity.Property(e => e.Complete)
                     .HasColumnName("complete")
@@ -2567,37 +2555,15 @@ namespace CCIA.Models
                     .HasColumnName("date_complete")
                     .HasColumnType("date");
 
-                entity.Property(e => e.DateEntered)
-                    .HasColumnName("date_entered")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DateFldRpt)
-                    .HasColumnName("date_fld_rpt")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DateModified)
-                    .HasColumnName("date_modified")
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.FldInspectComments)
                     .HasColumnName("fld_inspect_comments")
                     .HasMaxLength(2000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.OldCountyId).HasColumnName("old_county_id");
-
-                entity.Property(e => e.OldFieldName)
-                    .HasColumnName("old_field_name")
-                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.PassClass)
                     .HasColumnName("pass_class")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Passed)
-                    .HasColumnName("passed")
-                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.PathCms)
                     .HasColumnName("path_cms")
@@ -2664,37 +2630,10 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ReportGenerated)
                     .HasColumnName("report_generated")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.UserEntered)
-                    .HasColumnName("user_entered")
-                    .HasMaxLength(9)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UserModified)
-                    .HasColumnName("user_modified")
-                    .HasMaxLength(9)
-                    .IsUnicode(false);
+                    .HasDefaultValueSql("((0))");           
             });
 
-            // modelBuilder.Entity<FieldMaps>(entity =>
-            // {
-            //     entity.HasKey(e => e.MapptId);
-
-            //     entity.ToTable("field_maps");
-
-            //     entity.Property(e => e.MapptId).HasColumnName("mappt_id");
-
-            //     entity.Property(e => e.AppId).HasColumnName("app_id");
-
-            //     entity.Property(e => e.Latitude)
-            //         .HasColumnName("latitude")
-            //         .HasColumnType("numeric(25, 15)");
-
-            //     entity.Property(e => e.Longitude)
-            //         .HasColumnName("longitude")
-            //         .HasColumnType("numeric(25, 15)");
-            // });
+            
 
             modelBuilder.Entity<LotBlends>(entity =>
             {
