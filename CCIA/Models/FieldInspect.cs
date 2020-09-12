@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class FieldInspect
     {
         public int FldinspId { get; set; }
-        public int? AppId { get; set; }
+        public int AppId { get; set; }
         public DateTime? DateFldRpt { get; set; }
         public decimal? AcresFld { get; set; }
         public decimal? AcresInspOnly { get; set; }

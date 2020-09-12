@@ -171,6 +171,7 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<FieldResults> FieldResults { get; set; }
 
+       
         
         public CertRad AppCertRad {get; set;}
 

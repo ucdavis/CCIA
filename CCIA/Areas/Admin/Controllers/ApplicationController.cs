@@ -191,6 +191,11 @@ namespace CCIA.Controllers.Admin
             return View(model);            
         }
 
+         public ActionResult LookupFIR()
+         {
+             return View();
+         }
+
         public async Task<IActionResult> FIR(int id)
         {
             var model = await AdminViewModel.CreateFIR(_dbContext, id);
