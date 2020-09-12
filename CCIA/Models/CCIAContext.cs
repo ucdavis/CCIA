@@ -49,8 +49,8 @@ namespace CCIA.Models
         public virtual DbSet<Districts> Districts { get; set; }
         public virtual DbSet<Ecoregions> Ecoregions { get; set; }
         public virtual DbSet<Fees> Fees { get; set; }
-        public virtual DbSet<FieldInspect> FieldInspect { get; set; }
-        public virtual DbSet<FieldResults> FieldResults { get; set;}
+        public virtual DbSet<FieldInspectionReport> FieldInspect { get; set; }
+        public virtual DbSet<FieldInspection> FieldResults { get; set;}
         // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
@@ -298,7 +298,7 @@ namespace CCIA.Models
 
             });
 
-            modelBuilder.Entity<FieldResults>(entity => {
+            modelBuilder.Entity<FieldInspection>(entity => {
                 entity.ToTable("field_results");
 
                 entity.HasKey(e => e.Id);
@@ -2506,7 +2506,7 @@ namespace CCIA.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<FieldInspect>(entity =>
+            modelBuilder.Entity<FieldInspectionReport>(entity =>
             {
                 entity.HasKey(e => e.AppId);
 

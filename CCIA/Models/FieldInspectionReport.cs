@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
-    public partial class FieldInspect
+    public partial class FieldInspectionReport
     {
         
         public int AppId { get; set; }        
-        public  double? AcresInspOnly { get; set; }
+        public  decimal? AcresInspOnly { get; set; }
         public decimal? AcresApproved { get; set; }
         public decimal? AcresCancelled { get; set; }
         public decimal? AcresGrowout { get; set; }
@@ -18,13 +18,9 @@ namespace CCIA.Models
         public bool? Complete { get; set; }
         public DateTime? DateComplete { get; set; }
         public string CompleteBy { get; set; }
-        //public bool? Passed { get; set; }
         public int PassClass { get; set; }
         public bool? ReportGenerated { get; set; }
         public DateTime? ReportGenDt { get; set; }
-        //public bool? Charged { get; set; }
-        //public string OldFieldName { get; set; }
-        //public int? OldCountyId { get; set; }
         public string FldInspectComments { get; set; }
         public DateTime? PathDate { get; set; }
         public int? PathNumSamples { get; set; }

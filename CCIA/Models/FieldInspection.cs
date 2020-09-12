@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CCIA.Models
 {
-    public partial class FieldResults
+    public partial class FieldInspection
     {
         public int Id { get; set; }
         public int AppId { get; set; }
