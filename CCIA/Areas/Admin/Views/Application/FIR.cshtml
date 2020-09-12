@@ -176,6 +176,34 @@
     </div>
 </div>
 
+<div class="container">
+    @if(Model.application.FieldResults.Any())
+    {
+        <div class="row">
+            <h3>Field Results</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>DateInspected</th>
+                        <th>InspectorId</th>
+                        <th>ApplicantContacted?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.FieldResults)
+                    {
+                        <tr>
+                            <td>@row.DateInspected</td>
+                            <td>@row.InspectorId</td>
+                            <td>@row.ApplicantContacted</td>
+                        </tr>                    
+                    }
+                </tbody>               
+            </table>
+        </div>
+    }
+</div>
+
 @section Scripts {
    
 }
