@@ -49,8 +49,8 @@ namespace CCIA.Models
         public virtual DbSet<Districts> Districts { get; set; }
         public virtual DbSet<Ecoregions> Ecoregions { get; set; }
         public virtual DbSet<Fees> Fees { get; set; }
-        public virtual DbSet<FieldInspectionReport> FieldInspect { get; set; }
-        public virtual DbSet<FieldInspection> FieldResults { get; set;}
+        public virtual DbSet<FieldInspectionReport> FieldInspectionReport { get; set; }
+        public virtual DbSet<FieldInspection> FieldInspection { get; set;}
         // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
@@ -1568,11 +1568,11 @@ namespace CCIA.Models
 
                 entity.HasMany(d => d.TurfgrassCertificates);
 
-                entity.HasMany(d => d.FieldResults);
+                entity.HasMany(d => d.FieldInspection);
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
                 entity.HasMany(d => d.Changes);
-                entity.HasOne(d => d.FieldInspect);
+                entity.HasOne(d => d.FieldInspectionReport);
 
             });
 
@@ -2524,7 +2524,7 @@ namespace CCIA.Models
                     .HasColumnName("acres_growout")
                     .HasColumnType("decimal(14, 2)");
 
-                entity.Property(e => e.AcresInspOnly)
+                entity.Property(e => e.AcresInspectionOnly)
                     .HasColumnName("acres_insp_only")
                     .HasColumnType("decimal(14, 2)");
 
@@ -2555,7 +2555,7 @@ namespace CCIA.Models
                     .HasColumnName("date_complete")
                     .HasColumnType("date");
 
-                entity.Property(e => e.FldInspectComments)
+                entity.Property(e => e.Comments)
                     .HasColumnName("fld_inspect_comments")
                     .HasMaxLength(2000)
                     .IsUnicode(false);
@@ -2630,7 +2630,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ReportGenerated)
                     .HasColumnName("report_generated")
-                    .HasDefaultValueSql("((0))");           
+                    .HasDefaultValueSql("((0))");
+
+                entity.HasOne(e => e.CompleteEmployee);
             });
 
             

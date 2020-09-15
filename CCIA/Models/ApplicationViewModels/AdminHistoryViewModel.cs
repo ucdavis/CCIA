@@ -13,7 +13,7 @@ namespace CCIA.Models.DetailsViewModels
         public FieldHistory  history { get; set; }
         public List<Crops> crops { get; set; }
 
-        public bool potatoApp { get; set; }
+       
         public static async Task<AdminHistoryViewModel> Create(CCIAContext _dbContext, int id)
         {          
             var cropsWNull = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync();

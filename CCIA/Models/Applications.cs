@@ -169,11 +169,11 @@ namespace CCIA.Models
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
         [ForeignKey("AppId")]
-        public ICollection<FieldInspection> FieldResults { get; set; }
+        public ICollection<FieldInspection> FieldInspection { get; set; }
 
         
         [ForeignKey("Id")]
-        public FieldInspectionReport FieldInspect { get; set; }
+        public FieldInspectionReport FieldInspectionReport { get; set; }
         
         public CertRad AppCertRad {get; set;}
 

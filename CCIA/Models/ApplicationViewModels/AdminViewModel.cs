@@ -86,8 +86,8 @@ namespace CCIA.Models.DetailsViewModels
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.AppCertRad)
-                .Include(a => a.FieldResults)
-                .Include(a => a.FieldInspect)
+                .Include(a => a.FieldInspection)
+                .Include(a => a.FieldInspectionReport).ThenInclude(r => r.CompleteEmployee)
                 .FirstOrDefaultAsync();  
             var viewModel = new AdminViewModel
             {

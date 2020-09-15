@@ -1,0 +1,139 @@
+@model CCIA.Models.FieldInspectionReport
+
+
+<h2>Edit FIR for AppId @Model.AppId</h2> 
+
+<form asp-action="EditFIR">
+    @Html.HiddenFor(x => x.AppId)
+    <div class="container col-lg-10">
+        <div class="row">
+             <div class="col-lg-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" id="AcresApplied" value="@ViewBag.AcresApplied">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">@* First column*@
+                <div class="form-group row">
+                    <label asp-for="AcresApproved" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresApproved">
+                    <div class="input-group-append" onclick="fillAcres('approved');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresApproved" data-valmsg-replace="true"></span>                
+                </div>
+                <div class="form-group row">
+                    <label asp-for="AcresInspectionOnly" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresInspectionOnly">
+                    <div class="input-group-append" onclick="fillAcres('inspectionOnly');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresInspOnly" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="AcresNoCrop" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresNoCrop">
+                    <div class="input-group-append" onclick="fillAcres('noCrop');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresNoCrop" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">@* Second*@
+                <div class="form-group row">
+                    <label asp-for="AcresRejected" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresRejected">
+                    <div class="input-group-append" onclick="fillAcres('rejected');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresRejected" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="AcresRefund" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresRefund">
+                    <div class="input-group-append" onclick="fillAcres('refund');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresRefund" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">@* third*@
+                <div class="form-group row">
+                    <label asp-for="AcresGrowout" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresGrowout">
+                    <div class="input-group-append" onclick="fillAcres('growout');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresGrowout" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="AcresCancelled" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-8 form-control" asp-for="AcresCancelled">
+                    <div class="input-group-append" onclick="fillAcres('cancelled');">             
+                        <i class="fa fa-angle-double-left input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="AcresCancelled" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label asp-for="Comments" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <textarea asp-for="Comments" class="form-control border" rows="3" width="400px"></textarea>
+            </div>                
+        </div> 
+        <div class="form-group row">
+            <div class="form-check form-check-inline col-sm-4">
+                <label asp-for="Complete" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="Complete">
+            </div>
+        </div> 
+        <div class="row">
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="FIR" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.AppId">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        function fillAcres(field)
+        {
+            var approve = $("#AcresApproved");
+            var reject =  $("#AcresRejected");
+            var growOut =  $("#AcresGrowout");
+            var inspOnly = $("#AcresInspectionOnly");
+            var refund = $("#AcresRefund");
+            var cancel = $("#AcresCancelled");
+            var noAcres = $("#AcresNoCrop");
+            var acresApplied = $("#AcresApplied");
+            
+            approve.val(0);
+            reject.val(0);
+            growOut.val(0);
+            inspOnly.val(0);
+            refund.val(0);
+            cancel.val(0);
+            noAcres.val(0);
+
+            if (field === 'approved') {
+                approve.val(acresApplied.val());
+            } else if (field == 'growout') {
+                growOut.val(acresApplied.val());
+            } else if (field == 'rejected') {
+                reject.val(acresApplied.val());
+            } else if (field == 'inspectionOnly') {
+                inspOnly.val(acresApplied.val());
+            } else if (field == 'cancelled') {
+                cancel.val(acresApplied.val());
+            } else if (field == 'refund') {
+                refund.val(acresApplied.val());
+            } else if (field == 'noCrop') {
+                noAcres.val(acresApplied.val());
+            }
+        }
+    
+    </script>
+}

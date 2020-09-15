@@ -43,7 +43,7 @@ namespace CCIA.Controllers.Admin
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
-                .Include(a => a.FieldResults)
+                .Include(a => a.FieldInspection)
                 .ToListAsync();                        
 
             return View(model);
@@ -201,6 +201,46 @@ namespace CCIA.Controllers.Admin
             var model = await AdminViewModel.CreateFIR(_dbContext, id);
             return View(model);
         }
+
+        public async Task<IActionResult> EditFIR(int id)
+        {
+            ViewBag.AcresApplied = await _dbContext.Applications.Where(a => a.Id == id).Select(a => a.AcresApplied).SingleAsync();
+            var model = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFIR(int id, FieldInspectionReport fir)
+        {
+            var firToUpdate = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
+            firToUpdate.AcresApproved = fir.AcresApproved;
+            firToUpdate.AcresRejected = fir.AcresRejected;
+            firToUpdate.AcresGrowout = fir.AcresGrowout;
+            firToUpdate.AcresInspectionOnly = fir.AcresInspectionOnly;
+            firToUpdate.AcresRefund = fir.AcresRefund;
+            firToUpdate.AcresCancelled = fir.AcresCancelled;
+            firToUpdate.AcresNoCrop = fir.AcresNoCrop;
+            firToUpdate.Comments = fir.Comments;
+            if(!firToUpdate.Complete && fir.Complete)
+            {
+                firToUpdate.CompleteBy = User.FindFirstValue(ClaimTypes.Name);
+                firToUpdate.DateComplete = DateTime.Now;
+            }
+            firToUpdate.Complete = fir.Complete;
+            
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "FIR Updated";
+            } else {
+                ViewBag.AcresApplied = await _dbContext.Applications.Where(a => a.Id == id).Select(a => a.AcresApplied).SingleAsync();
+                var model = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(FIR), new { id = firToUpdate.AppId });  
+        }
+
 
         // POST: Application/Edit/5
         [HttpPost]
