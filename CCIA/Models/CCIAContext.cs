@@ -2633,6 +2633,8 @@ namespace CCIA.Models
                     .HasDefaultValueSql("((0))");
 
                 entity.HasOne(e => e.CompleteEmployee);
+
+                entity.HasOne(e => e.POPassClass);
             });
 
             

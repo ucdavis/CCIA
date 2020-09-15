@@ -260,12 +260,60 @@
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.PathDate)
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathLab" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathLab)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathCmsValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathCmsValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathErwValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathErwValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPstvdValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPstvdValue)
+                    </div>
+                </div>
             </div>
             <div class="col-lg-4">@* 2nd column*@
                 <div class="form-group row">
                     <label asp-for="application.FieldInspectionReport.PathNumSamples" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.PathNumSamples)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathSentVia" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathSentVia)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvaValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvaValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvmValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvmValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPlrvValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPlrvValue)
                     </div>
                 </div>
             </div>
@@ -276,9 +324,40 @@
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.PathNumPlants)
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PassClassTrans" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PassClassTrans)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvsValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvsValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvxValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvxValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvyValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvyValue)
+                    </div>
+                </div>
             </div>
         </div>
-
+        <div class="row col-lg-6">
+            <div class="form-group row">
+                <label asp-for="application.FieldInspectionReport.PathComments" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldInspectionReport.PathComments)
+                </div>
+            </div>
+        </div>
     }
     <div class="row">
         <div class="col-lg-6">

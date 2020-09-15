@@ -204,8 +204,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> EditFIR(int id)
         {
-            ViewBag.AcresApplied = await _dbContext.Applications.Where(a => a.Id == id).Select(a => a.AcresApplied).SingleAsync();
-            var model = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
+            var model = await AdminFIRViewModel.Create(_dbContext, id);            
             return View(model);
         }
 
