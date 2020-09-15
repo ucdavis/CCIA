@@ -46,6 +46,8 @@ namespace CCIA.Models
         [DisplayName("Date FIR Viewed")]
         public DateTime? ReportGenDt { get; set; }
         public string Comments { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? PathDate { get; set; }
         public int? PathNumSamples { get; set; }
         public int? PathNumPlants { get; set; }

@@ -144,9 +144,6 @@
                     <div class="form-group row">
                         <label asp-for="fir.PassClass" class="col-sm-3 col-form-label"></label>
                         <select asp-for="fir.PassClass" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Classes, "ClassProducedId", "ClassProducedTrans"))"></select>
-                        <div class="col-sm-9 form-control-plaintext">
-                            @Html.DisplayFor(x => x.fir.PassClassTrans)
-                        </div>
                     </div>
                     <div class="form-group row">
                         <label asp-for="fir.PathPvs" class="col-sm-3 col-form-label"></label>

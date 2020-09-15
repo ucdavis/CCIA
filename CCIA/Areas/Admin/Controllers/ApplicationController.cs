@@ -210,16 +210,38 @@ namespace CCIA.Controllers.Admin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditFIR(int id, FieldInspectionReport fir)
+        public async Task<IActionResult> EditFIR(int id, AdminFIRViewModel vm)
         {
+            var fir = vm.fir;
             var firToUpdate = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
-            firToUpdate.AcresApproved = fir.AcresApproved;
-            firToUpdate.AcresRejected = fir.AcresRejected;
-            firToUpdate.AcresGrowout = fir.AcresGrowout;
-            firToUpdate.AcresInspectionOnly = fir.AcresInspectionOnly;
-            firToUpdate.AcresRefund = fir.AcresRefund;
-            firToUpdate.AcresCancelled = fir.AcresCancelled;
-            firToUpdate.AcresNoCrop = fir.AcresNoCrop;
+            var potApp = await _dbContext.Applications.Where(a => a.Id == firToUpdate.AppId).AnyAsync(a => a.AppType == "PO");
+            if(!potApp)
+            {
+                firToUpdate.AcresApproved = fir.AcresApproved;
+                firToUpdate.AcresRejected = fir.AcresRejected;
+                firToUpdate.AcresGrowout = fir.AcresGrowout;
+                firToUpdate.AcresInspectionOnly = fir.AcresInspectionOnly;
+                firToUpdate.AcresRefund = fir.AcresRefund;
+                firToUpdate.AcresCancelled = fir.AcresCancelled;
+                firToUpdate.AcresNoCrop = fir.AcresNoCrop;
+            } else {
+                firToUpdate.PathDate = fir.PathDate;
+                firToUpdate.PathNumSamples = fir.PathNumSamples;
+                firToUpdate.PathNumPlants = fir.PathNumPlants;
+                firToUpdate.PathLab = fir.PathLab;
+                firToUpdate.PathSentVia = fir.PathSentVia;
+                firToUpdate.PassClass = fir.PassClass;
+                firToUpdate.PathCms = fir.PathCms;
+                firToUpdate.PathPva = fir.PathPva;
+                firToUpdate.PathPvs = fir.PathPvs;
+                firToUpdate.PathErw = fir.PathErw;
+                firToUpdate.PathPvm = fir.PathPvm;
+                firToUpdate.PathPvx = fir.PathPvx;
+                firToUpdate.PathPstvd = fir.PathPstvd;
+                firToUpdate.PathPlrv = fir.PathPlrv;
+                firToUpdate.PathPvy = fir.PathPvy;
+                firToUpdate.PathComments = fir.PathComments;
+            }
             firToUpdate.Comments = fir.Comments;
             if(!firToUpdate.Complete && fir.Complete)
             {
