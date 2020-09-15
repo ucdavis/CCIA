@@ -12,9 +12,7 @@ namespace CCIA.Models.DetailsViewModels
         
         public bool potatoApp { get; set; }
 
-        public decimal? AcresApplied { get; set; }
-
-        public List<PotatoFirLabOptions> Options { get; set; }
+        public decimal? AcresApplied { get; set; }        
 
         public List<AbbrevClassProduced> Classes { get; set; }
 
@@ -31,7 +29,6 @@ namespace CCIA.Models.DetailsViewModels
                 fir = await _dbContext.FieldInspectionReport.Where(f => f.AppId == appId).FirstAsync(),
                 potatoApp = await _dbContext.Applications.Where(a => a.Id == appId).AnyAsync(a => a.AppType == "PO"),
                 AcresApplied = _dbContext.Applications.Where(a => a.Id == appId).Select(a => a.AcresApplied).SingleAsync().Result,
-                Options = PotatoFirLabOptions.GetList(),               
                 Classes = classes,
             };           
 
@@ -40,36 +37,5 @@ namespace CCIA.Models.DetailsViewModels
 
         
     } 
-
-    public class PotatoFirLabOptions
-    {
-        public int Value { get; set; }
-        public string Text { get; set; }
-
-        public PotatoFirLabOptions(int value, string text)
-        {
-           Value = value;
-           Text = text;
-        }
-
-        public static List<PotatoFirLabOptions> GetList() 
-        {
-            var list = new List<PotatoFirLabOptions>();
-
-            var value = 0;
-            var text = "Negative";
-            list.Add(new PotatoFirLabOptions(value, text));
-
-            value = 1;
-            text = "Positive";
-            list.Add(new PotatoFirLabOptions(value, text));
-
-            value = 255;
-            text = "Not completed";
-            list.Add(new PotatoFirLabOptions(value, text));
-
-            return list;
-            
-        }
-    }
+    
 }

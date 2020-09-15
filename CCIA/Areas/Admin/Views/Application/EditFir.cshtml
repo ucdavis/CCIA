@@ -87,13 +87,16 @@
                 <div class="col-lg-4">@* First column*@
                     <div class="form-group row">
                         <label asp-for="fir.PathDate" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.PathDate">
+                        <input type="text" class="col-sm-8 form-control datepicker" asp-for="fir.PathDate">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathDate" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
                         <label asp-for="fir.PathLab" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-9 form-control-plaintext">
-                            @Html.DisplayFor(x => x.fir.PathLab)
-                        </div>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathLab">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathLab" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
                         <label asp-for="fir.PathCms" class="col-sm-3 col-form-label"></label>
@@ -111,15 +114,13 @@
                 <div class="col-lg-4">@* 2nd column*@
                     <div class="form-group row">
                         <label asp-for="fir.PathNumSamples" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-9 form-control-plaintext">
-                            @Html.DisplayFor(x => x.fir.PathNumSamples)
-                        </div>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathNumSamples">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathNumSamples" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
                         <label asp-for="fir.PathSentVia" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-9 form-control-plaintext">
-                            @Html.DisplayFor(x => x.fir.PathSentVia)
-                        </div>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathSentVia">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathSentVia" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
                         <label asp-for="fir.PathPva" class="col-sm-3 col-form-label"></label>
@@ -137,12 +138,12 @@
                 <div class="col-lg-4">@* 3rd column*@
                     <div class="form-group row">
                         <label asp-for="fir.PathNumPlants" class="col-sm-3 col-form-label"></label>
-                        <div class="col-sm-9 form-control-plaintext">
-                            @Html.DisplayFor(x => x.fir.PathNumPlants)
-                        </div>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathNumPlants">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathNumPlants" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
-                        <label asp-for="fir.PassClassTrans" class="col-sm-3 col-form-label"></label>
+                        <label asp-for="fir.PassClass" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PassClass" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Classes, "ClassProducedId", "ClassProducedTrans"))"></select>
                         <div class="col-sm-9 form-control-plaintext">
                             @Html.DisplayFor(x => x.fir.PassClassTrans)
                         </div>
@@ -166,8 +167,7 @@
                 <div class="col-sm-10">
                     <textarea asp-for="fir.PathComments" class="form-control border" rows="3" width="400px"></textarea>
                 </div> 
-            </div>
-            
+            </div>            
         }
         <div class="form-group row">
             <label asp-for="fir.Comments" class="col-sm-2 col-form-label"></label>
@@ -191,7 +191,14 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script type="text/javascript">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+    
         function fillAcres(field)
         {            
             var approve = $("#fir_AcresApproved");
