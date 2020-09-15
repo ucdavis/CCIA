@@ -21,13 +21,13 @@
             <div class="col-sm-6">            
                 <form asp-action="AcceptApplication">
                     @Html.HiddenFor(x => x.application.Id)
-                    <input type="submit" class="btn btn-primary" value="Accept Application" onClick="return check_accept();">
+                    <input type="submit" class="btn btn-success" value="Accept Application" onClick="return check_accept();">
                 </form>
             </div>
             <div class="col-sm-6">
                 <form asp-action="CancelApplication">
                     @Html.HiddenFor(x => x.application.Id)
-                    <input type="submit" class="btn btn-primary" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                    <input type="submit" class="btn btn-warning" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
                 </form>
             </div>
             <div class="col-sm-12"><hr></div>

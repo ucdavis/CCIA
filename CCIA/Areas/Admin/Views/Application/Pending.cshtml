@@ -37,7 +37,6 @@
         <th>Planting Date</th>
         <th>Map</th>
         <th>PO Lot</th>
-        <th>#FI</th>
         <th>Status</th>
         </thead>
         <tbody>
@@ -45,7 +44,7 @@
             @foreach (var app in Model)
             {
             <tr>
-                <td><a asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
+                <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
                 <td>@app.Id</td>
                 <td>@app.AppType</td>
                 <td>@app.ApplicantId</td>
@@ -64,8 +63,7 @@
                     }
                 </td>                
                 <td>@app.MapVe</td>
-                <td>@app.PoLotNum</td>               
-                <td>@app.FieldResults.Count()</td>                
+                <td>@app.PoLotNum</td>                
                 <td>@app.Status</td>
             </tr>
             }
