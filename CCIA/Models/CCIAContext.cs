@@ -313,6 +313,44 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ApplicantContacted).HasColumnName("applicant_contacted");
 
+                entity.Property(e => e.ApplicantPresent).HasColumnName("applicant_present");
+
+                entity.Property(e => e.Weeds).HasColumnName("weed_comment");
+
+                entity.Property(e => e.Comments).HasColumnName("insp_comments");
+
+                entity.Property(e => e.TotalPlantsInspected).HasColumnName("total_plants_insp");
+
+                entity.Property(e => e.OtherVarieties).HasColumnName("other_varieties");
+
+                entity.Property(e => e.Mosaic).HasColumnName("mosaic");
+
+                entity.Property(e => e.Leafroll).HasColumnName("leafroll");
+
+                entity.Property(e => e.Blackleg).HasColumnName("blackleg");
+
+                entity.Property(e => e.Calico).HasColumnName("calico");
+
+                entity.Property(e => e.OtherDiseases).HasColumnName("other_disease");
+
+                entity.Property(e => e.Insects).HasColumnName("insects");
+
+                entity.Property(e => e.Maturity).HasColumnName("maturity_comment");
+
+                entity.Property(e => e.Isolation).HasColumnName("isolation_comment");
+
+                entity.Property(e => e.EstimatedYield).HasColumnName("estimated_yield_comment");
+
+                entity.Property(e => e.OtherVarietiesComment).HasColumnName("other_varieties_comment");
+
+                entity.Property(e => e.OtherCrop).HasColumnName("other_crops_comment");
+
+                entity.Property(e => e.Disease).HasColumnName("disease_comment");
+
+                entity.Property(e => e.Appearance).HasColumnName("appearance_comment");
+
+                entity.HasOne(e => e.InspectorEmployee);
+
 
             });
 
@@ -1760,16 +1798,16 @@ namespace CCIA.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Batchno)
+                entity.Property(e => e.BatchNumber)
                     .HasColumnName("batchno")
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ChargeAmt)
+                entity.Property(e => e.ChargeAmount)
                     .HasColumnName("charge_amt")
                     .HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.ChgCategory)
+                entity.Property(e => e.ChargeCategory)
                     .IsRequired()
                     .HasColumnName("chg_category")
                     .HasMaxLength(50)
@@ -1787,7 +1825,7 @@ namespace CCIA.Models
                     .HasColumnName("date_entered")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Delcharge)
+                entity.Property(e => e.Deletecharge)
                     .HasColumnName("delcharge")
                     .HasDefaultValueSql("((0))");
 
@@ -1796,11 +1834,11 @@ namespace CCIA.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Holdchk)
+                entity.Property(e => e.HoldCheck)
                     .HasColumnName("holdchk")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Holddt)
+                entity.Property(e => e.HoldDate)
                     .HasColumnName("holddt")
                     .HasColumnType("datetime");
 

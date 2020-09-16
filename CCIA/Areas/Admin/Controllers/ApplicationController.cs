@@ -201,7 +201,7 @@ namespace CCIA.Controllers.Admin
             var model = await AdminViewModel.CreateFIR(_dbContext, id);
             return View(model);
         }
-
+       
         public async Task<IActionResult> EditFIR(int id)
         {
             var model = await AdminFIRViewModel.Create(_dbContext, id);            
@@ -214,8 +214,9 @@ namespace CCIA.Controllers.Admin
         {
             var fir = vm.fir;
             var firToUpdate = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
-            var potApp = await _dbContext.Applications.Where(a => a.Id == firToUpdate.AppId).AnyAsync(a => a.AppType == "PO");
-            if(!potApp)
+            var app = await _dbContext.Applications.Where(a => a.Id == firToUpdate.AppId).FirstAsync();
+            var charges = await _dbContext.Charges.Where(c => c.LinkId == app.Id && c.LinkType == "Applications").FirstAsync();
+            if(app.AppType != "PO")
             {
                 firToUpdate.AcresApproved = fir.AcresApproved;
                 firToUpdate.AcresRejected = fir.AcresRejected;
@@ -243,10 +244,47 @@ namespace CCIA.Controllers.Admin
                 firToUpdate.PathComments = fir.PathComments;
             }
             firToUpdate.Comments = fir.Comments;
+            if(fir.Complete)
+            {
+                if(charges.HoldCheck)
+                {
+                    charges.HoldCheck= false;
+                    charges.DateEntered = DateTime.Now;
+                }
+                if(app.Status != "Field Inspection Report Ready")
+                {
+                    app.Status = "Field Inspection Report Ready";
+                    app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+                    app.UserEmpDateMod = DateTime.Now;
+                }
+                if(app.AppType == "PO")
+                {
+                    if(fir.PassClass != 255)
+                    {
+                        firToUpdate.AcresApproved = app.AcresApplied;
+                        firToUpdate.AcresRejected =0;
+                    } else {
+                        firToUpdate.AcresApproved = 0;
+                        firToUpdate.AcresRejected = app.AcresApplied;
+                    }
+                }
+            } else {
+                charges.HoldCheck = true;
+                app.Status = "Field Inspection in Progress";
+                app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+                app.UserEmpDateMod = DateTime.Now;
+                if(app.AppType == "PO")
+                {
+                    firToUpdate.AcresRejected = 0;
+                    firToUpdate.AcresApproved = 0;
+                }
+            }
             if(!firToUpdate.Complete && fir.Complete)
             {
                 firToUpdate.CompleteBy = User.FindFirstValue(ClaimTypes.Name);
                 firToUpdate.DateComplete = DateTime.Now;
+                app.NotifyNeeded = true;
+                app.DateNotified = DateTime.Now;
             }
             firToUpdate.Complete = fir.Complete;
             
