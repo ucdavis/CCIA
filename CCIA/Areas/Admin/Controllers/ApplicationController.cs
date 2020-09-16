@@ -192,11 +192,8 @@ namespace CCIA.Controllers.Admin
         }
 
         public async Task<IActionResult> EditInspection(int id)
-        {            
-            var model = await _dbContext.FieldInspection.Where(i => i.Id == id)
-                .Include(i => i.InspectorEmployee)
-                .FirstAsync();
-            ViewBag.POApp = await _dbContext.Applications.Where(a => a.Id == model.AppId).AnyAsync(a => a.AppType == "PO");
+        {   
+            var model = await AdminFieldInspectionViewModel.Create(_dbContext, id);          
             return View(model);
         }
 

@@ -407,7 +407,7 @@
 <div class="container col-sm-10">
     <hr/>
     <h3>Field Inspections</h3>
-    <hr/>
+    <hr/>    
     @if(Model.application.FieldInspection.Count > 0)
     {
         <nav>
@@ -496,9 +496,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="@row.OtherVarieties" class="col-sm-3 col-form-label"></label>
+                    <label asp-for="@row.OtherDiseases" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @row.OtherVarieties
+                        @row.OtherDiseases
                     </div>
                 </div>
                 <div class="form-group row">
@@ -586,7 +586,10 @@
     		//Hide all cards
     		$(".card").each(function(index, value){
     			$('.card').hide();
-                $("#@Model.application.FieldInspection.First().Id").show();
+                @if(Model.application.FieldInspection.Count > 0)
+                {
+                    @:{$("#@Model.application.FieldInspection.First().Id").show();}
+                }                
     		})
             
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -8,6 +9,9 @@ namespace CCIA.Models
     {
         public int Id { get; set; }
         public int AppId { get; set; }
+        
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DateInspected { get; set; }
 
         public string InspectorId { get; set; }
