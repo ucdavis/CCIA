@@ -10,7 +10,7 @@ namespace CCIA.Models.DetailsViewModels
     {
         public FieldInspection FI { get; set; }
         
-        public bool POApp { get; set; }            
+        public bool potatoApp { get; set; }            
 
         public List<CCIAEmployees> Employees { get; set; }
 
@@ -21,7 +21,7 @@ namespace CCIA.Models.DetailsViewModels
             var viewModel = new AdminFieldInspectionViewModel
             {
                 FI = fi,
-                POApp = await _dbContext.Applications.Where(a => a.Id == fi.AppId).AnyAsync(a => a.AppType == "PO"),
+                potatoApp = await _dbContext.Applications.Where(a => a.Id == fi.AppId).AnyAsync(a => a.AppType == "PO"),
                 Employees = await _dbContext.CCIAEmployees.Where(e => e.FieldInspector == true).ToListAsync(),
             };           
 

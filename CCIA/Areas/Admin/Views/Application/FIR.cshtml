@@ -588,9 +588,11 @@
     			$('.card').hide();
                 @if(Model.application.FieldInspection.Count > 0)
                 {
-                    @:{$("#@Model.application.FieldInspection.First().Id").show();}
+                    <text>
+                    $("#@Model.application.FieldInspection.First().Id").show();               
+                    </text>
                 }                
-    		})
+    		});
             
 
     		$(".page-link").on('click', function(){

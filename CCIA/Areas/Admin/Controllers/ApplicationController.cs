@@ -197,6 +197,52 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInspection(int id, AdminFieldInspectionViewModel vm)
+        {
+            var fi = vm.FI;
+            var fiToUpdate = await _dbContext.FieldInspection.Where(f => f.Id == id).FirstAsync();
+            var poApp = await _dbContext.Applications.Where(a => a.Id == fiToUpdate.AppId).AnyAsync(a => a.AppType == "PO");
+            fiToUpdate.DateInspected = fi.DateInspected;
+            fiToUpdate.InspectorId = fi.InspectorId;
+            fiToUpdate.ApplicantContacted = fi.ApplicantContacted;
+            fiToUpdate.ApplicantPresent = fi.ApplicantPresent;
+            fiToUpdate.Weeds = fi.Weeds;
+            fiToUpdate.Comments = fi.Comments;
+            if(poApp)
+            {
+                fiToUpdate.TotalPlantsInspected = fi.TotalPlantsInspected;
+                fiToUpdate.OtherVarieties = fi.OtherVarieties;
+                fiToUpdate.Mosaic = fi.Mosaic;
+                fiToUpdate.Leafroll = fi.Leafroll;
+                fiToUpdate.Blackleg = fi.Blackleg;
+                fiToUpdate.Calico = fi.Calico;
+                fiToUpdate.OtherDiseases = fi.OtherDiseases;
+                fiToUpdate.Insects = fi.Insects;
+            } else
+            {
+                fiToUpdate.Maturity = fi.Maturity;
+                fiToUpdate.Isolation = fi.Isolation;
+                fiToUpdate.EstimatedYield = fi.EstimatedYield;
+                fiToUpdate.OtherVarietiesComment = fi.OtherVarietiesComment;
+                fiToUpdate.OtherCrop = fi.OtherCrop;
+                fiToUpdate.Disease = fi.Disease;
+                fiToUpdate.Appearance = fi.Appearance;
+            }
+
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Field Inspection Updated";
+            } else {
+                var model = await AdminFieldInspectionViewModel.Create(_dbContext, id);          
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(FIR), new { id = fiToUpdate.AppId }); 
+
+        }
+
          public ActionResult LookupFIR()
          {
              return View();
