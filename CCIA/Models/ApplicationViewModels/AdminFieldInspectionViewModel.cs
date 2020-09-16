@@ -28,6 +28,18 @@ namespace CCIA.Models.DetailsViewModels
             return viewModel;
         }
 
+        public static async Task<AdminFieldInspectionViewModel> CreateNew(CCIAContext _dbContext, int appId)
+        {               
+            var viewModel = new AdminFieldInspectionViewModel
+            {
+                FI = new FieldInspection(appId),
+                potatoApp = await _dbContext.Applications.Where(a => a.Id == appId).AnyAsync(a => a.AppType == "PO"),
+                Employees = await _dbContext.CCIAEmployees.Where(e => e.FieldInspector == true).ToListAsync(),
+            };           
+
+            return viewModel;
+        }
+
         
     } 
     

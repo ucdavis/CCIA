@@ -7,6 +7,12 @@ namespace CCIA.Models
 {
     public partial class FieldInspection
     {
+        public FieldInspection() {}
+        public FieldInspection(int appId)
+        {
+            AppId = appId;
+        }
+
         public int Id { get; set; }
         public int AppId { get; set; }
         

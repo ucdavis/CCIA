@@ -175,16 +175,14 @@ namespace CCIA.Controllers.Admin
             return  RedirectToAction(nameof(Renew));;
         }
 
-        // GET: Application/Details/5
+        
         public async Task<IActionResult> Details(int id)
         {   
             var model = await AdminViewModel.CreateDetails(_dbContext, id);
             return View(model);  
         }
 
-        // GET: Application/CreateSeedApplication
-      
-        // GET: Application/Edit/5
+       
         public async Task<IActionResult> Edit(int id)
         {
             var model = await AdminViewModel.CreateEdit(_dbContext, id);
@@ -195,6 +193,59 @@ namespace CCIA.Controllers.Admin
         {   
             var model = await AdminFieldInspectionViewModel.Create(_dbContext, id);          
             return View(model);
+        }
+
+        public async Task<IActionResult> CreateInspection(int id)
+        {
+            var model = await AdminFieldInspectionViewModel.CreateNew(_dbContext, id);          
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInspection(int id, AdminFieldInspectionViewModel vm)
+        {
+            var fi = vm.FI;
+            var fiToUpdate = new FieldInspection(id);
+            var poApp = await _dbContext.Applications.Where(a => a.Id == id).AnyAsync(a => a.AppType == "PO");
+            fiToUpdate.DateInspected = fi.DateInspected;
+            fiToUpdate.InspectorId = fi.InspectorId;
+            fiToUpdate.ApplicantContacted = fi.ApplicantContacted;
+            fiToUpdate.ApplicantPresent = fi.ApplicantPresent;
+            fiToUpdate.Weeds = fi.Weeds;
+            fiToUpdate.Comments = fi.Comments;
+            if(poApp)
+            {
+                fiToUpdate.TotalPlantsInspected = fi.TotalPlantsInspected;
+                fiToUpdate.OtherVarieties = fi.OtherVarieties;
+                fiToUpdate.Mosaic = fi.Mosaic;
+                fiToUpdate.Leafroll = fi.Leafroll;
+                fiToUpdate.Blackleg = fi.Blackleg;
+                fiToUpdate.Calico = fi.Calico;
+                fiToUpdate.OtherDiseases = fi.OtherDiseases;
+                fiToUpdate.Insects = fi.Insects;
+            } else
+            {
+                fiToUpdate.Maturity = fi.Maturity;
+                fiToUpdate.Isolation = fi.Isolation;
+                fiToUpdate.EstimatedYield = fi.EstimatedYield;
+                fiToUpdate.OtherVarietiesComment = fi.OtherVarietiesComment;
+                fiToUpdate.OtherCrop = fi.OtherCrop;
+                fiToUpdate.Disease = fi.Disease;
+                fiToUpdate.Appearance = fi.Appearance;
+            }
+
+            if(ModelState.IsValid){
+                 _dbContext.Add(fiToUpdate);
+                    await _dbContext.SaveChangesAsync();
+                Message = "Field Inspection Created";
+            } else {
+                ErrorMessage = "Something went wrong";                         
+                return View(vm);
+            }
+
+            return RedirectToAction(nameof(FIR), new { id = fiToUpdate.AppId }); 
+
         }
 
         [HttpPost]
@@ -235,8 +286,8 @@ namespace CCIA.Controllers.Admin
                 await _dbContext.SaveChangesAsync();
                 Message = "Field Inspection Updated";
             } else {
-                var model = await AdminFieldInspectionViewModel.Create(_dbContext, id);          
-                return View(model);
+                ErrorMessage = "Something went wrong";         
+                return View(vm);
             }
 
             return RedirectToAction(nameof(FIR), new { id = fiToUpdate.AppId }); 
@@ -344,6 +395,7 @@ namespace CCIA.Controllers.Admin
                 await _dbContext.SaveChangesAsync();
                 Message = "FIR Updated";
             } else {
+                ErrorMessage = "Something went wrong";
                 ViewBag.AcresApplied = await _dbContext.Applications.Where(a => a.Id == id).Select(a => a.AcresApplied).SingleAsync();
                 var model = await _dbContext.FieldInspectionReport.Where(f => f.AppId == id).FirstAsync();
                 return View(model); 
