@@ -1,0 +1,168 @@
+@model CCIA.Models.FieldInspection
+
+
+<h2>Edit Inspection for AppId @Model.AppId</h2> 
+
+<form asp-action="EditInspection">
+    @Html.HiddenFor(x => x.Id)
+    <div class="container col-lg-10">
+        <div class="row">
+             <div class="col-lg-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+                    <label asp-for="DateInspected" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @if(@Model.DateInspected.HasValue)
+                        {
+                            @Model.DateInspected.Value.ToShortDateString()
+                        }                        
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="InspectorId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Model.InspectorEmployee.Name
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ApplicantContacted" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        <input type="checkbox" asp-for="ApplicantContacted" disabled>
+                    </div>
+                </div>	
+                <div class="form-group row">
+                    <label asp-for="ApplicantPresent" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        <input type="checkbox" asp-for="ApplicantPresent" disabled>
+                    </div>
+                </div>	    
+            @if(ViewBag.POApp)
+            {
+                <div class="form-group row">
+                    <label asp-for="TotalPlantsInspected" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        TotalPlantsInspected
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="OtherVarieties" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        OtherVarieties
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Mosaic" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Mosaic
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Leafroll" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Leafroll
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Blackleg" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Blackleg
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Calico" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Calico
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="OtherVarieties" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        OtherVarieties
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Insects" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Insects
+                    </div>
+                </div>
+            } else {
+                <div class="form-group row">
+                    <label asp-for="Maturity" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Maturity
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Isolation" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Isolation
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="EstimatedYield" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        EstimatedYield
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="OtherVarietiesComment" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        OtherVarietiesComment
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="OtherCrop" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        OtherCrop
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Disease" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Disease
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Appearance" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Appearance
+                    </div>
+                </div>
+            }
+                <div class="form-group row">
+                    <label asp-for="Weeds" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Weeds
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Comments" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        Comments
+                    </div>
+                </div>
+        <div class="row">
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="FIR" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.AppId">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+    
+        
+    
+    </script>
+}

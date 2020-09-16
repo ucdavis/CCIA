@@ -191,6 +191,15 @@ namespace CCIA.Controllers.Admin
             return View(model);            
         }
 
+        public async Task<IActionResult> EditInspection(int id)
+        {            
+            var model = await _dbContext.FieldInspection.Where(i => i.Id == id)
+                .Include(i => i.InspectorEmployee)
+                .FirstAsync();
+            ViewBag.POApp = await _dbContext.Applications.Where(a => a.Id == model.AppId).AnyAsync(a => a.AppType == "PO");
+            return View(model);
+        }
+
          public ActionResult LookupFIR()
          {
              return View();
