@@ -22,8 +22,7 @@ namespace CCIA.Models
         public string Description { get; set; }
         public DateTime? DateEntered { get; set; }
         public DateTime? DateApplied { get; set; }
-        public bool HoldCheck { get; set; }
-        public string Holdinit { get; set; }
+        public bool HoldCheck { get; set; }        
         public DateTime? HoldDate { get; set; }
         public int Deletecharge { get; set; }
         public bool Correction { get; set; }

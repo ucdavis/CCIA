@@ -1842,11 +1842,7 @@ namespace CCIA.Models
                     .HasColumnName("holddt")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Holdinit)
-                    .HasColumnName("holdinit")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
+               
                 entity.Property(e => e.LinkId).HasColumnName("link_id");
 
                 entity.Property(e => e.LinkType)
