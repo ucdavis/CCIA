@@ -1445,7 +1445,6 @@ namespace CCIA.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FieldId).HasColumnName("field_id");
 
                 entity.Property(e => e.FieldName)
                     .HasColumnName("field_name")
@@ -1587,11 +1586,7 @@ namespace CCIA.Models
                     .WithMany(p => p.AppliedApplications)
                     .HasForeignKey(d => d.ApplicantId);
 
-                // entity.HasOne(d => d.TraceNavigation)
-                //     .WithMany(p => p.InverseTraceNavigation)
-                //     .HasForeignKey(d => d.Trace)
-                //     .HasConstraintName("FK_Applications_Applications2");
-
+                
                 entity.HasOne(d => d.County);
 
                 entity.HasOne(d => d.Variety);
