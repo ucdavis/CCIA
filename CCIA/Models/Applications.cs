@@ -7,6 +7,24 @@ using NetTopologySuite.Geometries;
 
 namespace CCIA.Models
 {
+     public enum ApplicationStatus
+    { 
+        [Display(Name="Pending supporting material")]
+        PendingSupportingMaterial,
+        [Display(Name="Pending Final Submission")]
+        PendingFinalSubmission,
+        [Display(Name="Pending acceptance")]
+        PendingAcceptance,
+        [Display(Name="Field Inspection in Progress")]
+        FieldInspectionInProgress,
+         [Display(Name="Field Inspection Report Ready")]
+        FieldInspectionReportReady,
+        [Display(Name="Pre-app")]
+        PreApp,
+        
+        [Display(Name="Application cancelled")]
+        ApplicationCancelled,        
+    }    
     public partial class Applications
     {
 
@@ -87,7 +105,7 @@ namespace CCIA.Models
        
         public bool Tags { get; set; }
         public string PoLotNum { get; set; }
-        public int? FieldId { get; set; }
+        
 
         [Required]
         public string FieldName { get; set; }
@@ -139,7 +157,7 @@ namespace CCIA.Models
         [ForeignKey("FarmCounty")]
         public County County { get; set; }
         [Required]
-        public int? FarmCounty { get; set; }
+        public int FarmCounty { get; set; }
 
         public virtual string CountyPermit { get; set; }
 

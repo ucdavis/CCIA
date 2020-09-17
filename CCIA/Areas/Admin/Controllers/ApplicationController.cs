@@ -37,7 +37,7 @@ namespace CCIA.Controllers.Admin
 
          public async Task<IActionResult> Pending()
         {            
-            var model =  await _dbContext.Applications.Where(a => a.Status == "Pending acceptance")
+            var model =  await _dbContext.Applications.Where(a => a.Status == ApplicationStatus.PendingAcceptance.GetDisplayName())
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
@@ -67,7 +67,7 @@ namespace CCIA.Controllers.Admin
         {
             var id = int.Parse(form["application.Id"].ToString());
             var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
-            appToAccept.Status = "Field Inspection in Progress";
+            appToAccept.Status = ApplicationStatus.FieldInspectionInProgress.GetDisplayName();
             appToAccept.Approved = true;
             appToAccept.DateApproved = DateTime.Now;            
             appToAccept.Approver = User.FindFirstValue(ClaimTypes.Name);
@@ -174,6 +174,16 @@ namespace CCIA.Controllers.Admin
 		
             return  RedirectToAction(nameof(Renew));;
         }
+
+        public async Task<IActionResult> Search(int id, AdminSearchViewModel vm)
+        {
+            if(!vm.Search){
+                var freshmodel = await AdminSearchViewModel.Create(_dbContext, null);
+                return View(freshmodel);  
+            }
+                var model = await AdminSearchViewModel.Create(_dbContext, vm);
+                return View(model);            
+        }      
 
         
         public async Task<IActionResult> Details(int id)
@@ -354,9 +364,9 @@ namespace CCIA.Controllers.Admin
                     charges.HoldCheck= false;
                     charges.DateEntered = DateTime.Now;
                 }
-                if(app.Status != "Field Inspection Report Ready")
+                if(app.Status != ApplicationStatus.FieldInspectionReportReady.GetDisplayName())
                 {
-                    app.Status = "Field Inspection Report Ready";
+                    app.Status = ApplicationStatus.FieldInspectionReportReady.GetDisplayName();
                     app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
                     app.UserEmpDateMod = DateTime.Now;
                 }
@@ -373,7 +383,7 @@ namespace CCIA.Controllers.Admin
                 }
             } else {
                 charges.HoldCheck = true;
-                app.Status = "Field Inspection in Progress";
+                app.Status = ApplicationStatus.FieldInspectionInProgress.GetDisplayName();
                 app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
                 app.UserEmpDateMod = DateTime.Now;
                 if(app.AppType == "PO")
@@ -604,7 +614,7 @@ namespace CCIA.Controllers.Admin
             newApp.Received = DateTime.Now;
             newApp.Postmark = DateTime.Now;
             newApp.Deadline = DateTime.Now.AddDays(1);
-            newApp.Status = "Pending acceptance";
+            newApp.Status = ApplicationStatus.PendingAcceptance.GetDisplayName();
             newApp.AcresApplied = appToRenew.AcresApplied;
             newApp.Renewal = true;
             newApp.FieldName = appToRenew.FieldName;
