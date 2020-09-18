@@ -30,11 +30,11 @@ namespace CCIA.Models
             var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
 
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                .OrderBy(c => c.CountyName)
-                .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName.ToUpper() })
+                .OrderBy(c => c.Name)
+                .Select(c => new County { CountyId = c.CountyId, Name = c.Name.ToUpper() })
                 .ToListAsync();
 
-            counties.Insert(0, new County { CountyId = 0, CountyName = "Select a county" });
+            counties.Insert(0, new County { CountyId = 0, Name = "Select a county" });
             
             var viewModel = new MyCustomerViewModel()
             {
@@ -70,11 +70,11 @@ namespace CCIA.Models
             var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
 
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                .OrderBy(c => c.CountyName)
-                .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName.ToUpper() })
+                .OrderBy(c => c.Name)
+                .Select(c => new County { CountyId = c.CountyId, Name = c.Name.ToUpper() })
                 .ToListAsync();
 
-            counties.Insert(0, new County { CountyId = 0, CountyName = "Select a county" });
+            counties.Insert(0, new County { CountyId = 0, Name = "Select a county" });
             
             var viewModel = new MyCustomerViewModel()
             {

@@ -38,7 +38,7 @@ namespace CCIA.Models.SeedsCreateQAViewModel
             {                
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
                 AppTypes = await _dbContext.AbbrevAppType.Where(a => a.QAProgram == true).Select(a => new AbbrevAppType{ AppTypeId =a.AppTypeId, CertificateTitle = a.CertificateTitle}).ToListAsync(),
                 CertYears = Enumerable.Range(2016, seed.CertYear.Value - 2015).ToList(),
                 DisplayEntry = "display: none !important;",
@@ -75,7 +75,7 @@ namespace CCIA.Models.SeedsCreateQAViewModel
             {                
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
                 AppTypes = await _dbContext.AbbrevAppType.Where(a => a.QAProgram == true).Select(a => new AbbrevAppType{ AppTypeId =a.AppTypeId, CertificateTitle = a.CertificateTitle}).ToListAsync(),
                 CertYears = Enumerable.Range(2016, seed.CertYear.Value - 2015).ToList(),
                 DisplayEntry = app == null ? "display: none !important;" : "",

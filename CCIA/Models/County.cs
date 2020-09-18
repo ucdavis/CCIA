@@ -8,7 +8,7 @@ namespace CCIA.Models
     {
         public int CountyId { get; set; }
         [DisplayName("County")]
-        public string CountyName { get; set; }
+        public string Name { get; set; }
         public string District { get; set; }
         public int StateProvinceId { get; set; }
         public DateTime? DateModified { get; set; }

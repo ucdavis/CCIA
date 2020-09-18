@@ -51,7 +51,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                     .ToListAsync(),
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
             };
 
             return viewModel;
@@ -78,7 +78,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                     .ToListAsync(),
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
             };
 
             return viewModel;
