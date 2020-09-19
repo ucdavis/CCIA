@@ -44,7 +44,8 @@ namespace CCIA.Controllers.Admin
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .Include(a => a.FieldInspection)
-                .ToListAsync();                        
+                .ToListAsync(); 
+            ViewBag.HideFI = "True";
 
             return View(model);
         }

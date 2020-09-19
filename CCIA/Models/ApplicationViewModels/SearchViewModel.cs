@@ -5,10 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
+using System.ComponentModel.DataAnnotations;
 
-
-namespace CCIA.Models.DetailsViewModels
+namespace CCIA.Models
 {   
+     public enum SearchOptions
+    { 
+        No,
+        Yes,
+        Both        
+    }    
     public class AdminSearchViewModel
     {
         public List<Applications> apps { get; set; }
@@ -31,8 +37,14 @@ namespace CCIA.Models.DetailsViewModels
         [DisplayName("Crop(s)")]
         public List<int> searchCrops { get; set; }
 
+        public List<County> counties { get; set; }
+
+        [DisplayName("County(ies)")]
+        public List<int> searchCounties { get; set; }
+
         public List<string> statusOptions { get; set; } 
 
+        [DisplayName("Status")]
         public List<string> searchStatus { get; set; }       
 
         [DisplayName("Applicant")]
@@ -42,11 +54,30 @@ namespace CCIA.Models.DetailsViewModels
         public string growerName { get; set; }
 
         
-        [DisplayName("Variety (official)")]
+        [DisplayName("Variety")]
         public string variety { get; set; }
 
-        [DisplayName("Cert Number")]
+        [DisplayName("Cert#")]
         public int? certNumber { get; set; }
+
+        [DisplayName("Accepted?")]
+        public int accepted { get; set; }
+
+        [DisplayName("Cancelled?")]
+        public int cancelled { get; set; }
+
+        [DisplayName("VE Map?")]
+        public int veMap { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Planted Before")]
+        public DateTime? plantedBefore { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayName("Planted After")]
+        public DateTime? plantedAfter { get; set; }
+
+        
 
         public AdminSearchViewModel() {
             Search = false;
@@ -63,6 +94,10 @@ namespace CCIA.Models.DetailsViewModels
                     .Include(a => a.ApplicantOrganization)
                     .Include(a => a.GrowerOrganization)
                     .Include(a => a.Variety)
+                    .Include(a => a.County)
+                    .Include(a => a.Crop)
+                    .Include(a => a.ClassProduced)
+                    .Include(a => a.FieldInspection)
                     .AsQueryable(); 
                 if(vm.appId.HasValue)
                 {
@@ -88,6 +123,10 @@ namespace CCIA.Models.DetailsViewModels
                 {
                     appsToFind = appsToFind.Where(a => vm.searchCrops.Contains(a.CropId.Value));
                 }
+                if(vm.searchCounties != null && vm.searchCounties.Count > 0)
+                {
+                    appsToFind = appsToFind.Where(a => vm.searchCounties.Contains(a.FarmCounty));
+                }
                 if(!string.IsNullOrWhiteSpace(vm.variety))
                 {
                     appsToFind = appsToFind.Where(a => EF.Functions.Like(a.Variety.Name, "%" + vm.variety + "%"));
@@ -100,12 +139,34 @@ namespace CCIA.Models.DetailsViewModels
                 {                    
                     appsToFind = appsToFind.Where(a => vm.searchStatus.Contains(a.Status));
                 }
+                if(vm.accepted != 2)
+                {
+                    appsToFind = appsToFind.Where(a => (a.Approved && vm.accepted == 1) || (!a.Approved && vm.accepted == 0));
+                }
+                if(vm.cancelled != 2)
+                {
+                    appsToFind = appsToFind.Where(a => (a.Cancelled && vm.cancelled == 1) || (!a.Cancelled && vm.cancelled == 0));
+                }
+                if(vm.veMap != 2)
+                {
+                    appsToFind = appsToFind.Where(a => (a.MapVe && vm.veMap == 1) || (!a.MapVe && vm.veMap == 0));
+                }
+                if(vm.plantedAfter != null)
+                {
+                    appsToFind = appsToFind.Where(a => a.DatePlanted >= vm.plantedAfter);
+                }
+                if(vm.plantedBefore != null)
+                {
+                    appsToFind = appsToFind.Where(a => a.DatePlanted <= vm.plantedBefore);
+                }
+                
                 var viewModel = new AdminSearchViewModel
                 {
                     apps = await appsToFind.ToListAsync(),                   
                     appTypes = appTypes,
                     crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
-                    statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),                    
+                    statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
+                    counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),                    
                 };  
                 return viewModel;
 
@@ -117,6 +178,11 @@ namespace CCIA.Models.DetailsViewModels
                 appTypes = appTypes,
                 crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
+                CertYear = CertYearFinder.CertYear,
+                accepted = 2,
+                cancelled = 0,
+                veMap = 2,                
+                counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),
             };           
 
             return freshModel;

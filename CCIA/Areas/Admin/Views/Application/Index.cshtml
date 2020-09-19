@@ -4,66 +4,12 @@
 @{
     ViewData["Title"] = "Index";
 }
- <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
- <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+ 
 
 
 @await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
-<div class="col-lg-12">
-    <table id="table" class="table datatable">
-        <thead>
-            <th></th>
-        <th>AppId</th>
-        <th>Type</th>
-        <th>Applicant ID</th>
-        <th>Applicant Name</th>
-        <th>Grower ID</th>
-        <th>Grower</th>
-        <th>Crop</th>
-        <th>Variety</th>
-        <th>Class</th>
-        <th>County</th>
-        <th>Field Name</th>
-        <th>Acres</th>
-        <th>Planting Date</th>
-        <th>Map</th>
-        <th>PO Lot</th>
-        <th>#FI</th>
-        <th>Status</th>
-        </thead>
-        <tbody>
-        
-            @foreach (var app in Model.applications)
-            {
-            <tr>
-                <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
-                <td>@app.Id</td>
-                <td>@app.AppType</td>
-                <td>@app.ApplicantId</td>
-                <td>@app.ApplicantName</td>
-                <td>@app.GrowerId</td>
-                <td>@app.GrowerName</td> 
-                <td>@app.Crop.Name</td>
-                <td>@app.VarietyName</td>
-                <td>@app.ClassProducedName</td> 
-                <td>@app.County.Name</td>
-                <td>@app.FieldName</td>
-                <td>@app.AcresApplied</td>
-                <td>@if(app.DatePlanted.HasValue)
-                    {
-                        @app.DatePlanted.Value.ToShortDateString()
-                    }
-                </td>                
-                <td>@app.MapVe</td>
-                <td>@app.PoLotNum</td>               
-                <td>@app.FieldInspection.Count()</td>                
-                <td>@app.Status</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
+@await Html.PartialAsync("_ApplicationTable", @Model.applications)
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>

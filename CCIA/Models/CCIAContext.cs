@@ -2232,7 +2232,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AgCommOrg).HasColumnName("ag_comm_org");
 
-                entity.Property(e => e.CountyName)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("county_name")
                     .HasMaxLength(50)
