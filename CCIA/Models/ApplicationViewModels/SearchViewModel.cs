@@ -77,6 +77,9 @@ namespace CCIA.Models
         [DisplayName("Planted After")]
         public DateTime? plantedAfter { get; set; }
 
+        [DisplayName("Include Map Options?")]
+        public bool includeMapOptions { get; set; }
+
         
 
         public AdminSearchViewModel() {
@@ -166,7 +169,8 @@ namespace CCIA.Models
                     appTypes = appTypes,
                     crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
-                    counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),                    
+                    counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(), 
+                    includeMapOptions = vm.includeMapOptions,                   
                 };  
                 return viewModel;
 
@@ -181,7 +185,8 @@ namespace CCIA.Models
                 CertYear = CertYearFinder.CertYear,
                 accepted = 2,
                 cancelled = 0,
-                veMap = 2,                
+                veMap = 2, 
+                includeMapOptions = false,               
                 counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),
             };           
 

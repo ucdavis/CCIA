@@ -183,8 +183,17 @@ namespace CCIA.Controllers.Admin
                 return View(freshmodel);  
             }
                 var model = await AdminSearchViewModel.Create(_dbContext, vm);
+                if(model.includeMapOptions)
+                {
+                    ViewBag.IncludeMapOptions = "Yes";
+                }
                 return View(model);            
-        }      
+        }  
+
+        public async Task<IActionResult> MapFields(IFormCollection collection)   
+        {
+            return View();
+        }
 
         
         public async Task<IActionResult> Details(int id)

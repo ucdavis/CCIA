@@ -1,12 +1,36 @@
 @model List<CCIA.Models.Applications>
 
+@{
+    var i = 0;
+}
+
 <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
- <div class="col-lg-12">
+@if(ViewBag.IncludeMapOptions != null){    
+    <div class="col-lg-12">
+        <div class="row">  
+            <form id="MapForm" asp-action="MapFields">
+                Map selected Fields:        
+                <select id="ddlType" name="ddlType">
+                    <option value="Fields">Fields</option>
+                    <option value="Pins">Pins</option>
+                </select> | 
+                <input type="button" id="SelectAllButton" class="btn btn-info" value="Select All"> | 
+                <button type="submit" class="btn btn-primary">Map 'em'</button>
+            </form>
+        </div>
+        <div>&nbsp;</div>
+    </div>
+}
     <table id="table" class="table datatable">
         <thead>
             <th></th>
+            @if(ViewBag.IncludeMapOptions != null)
+            {
+               <th></th>  
+            }
+           
         <th>AppId</th>
         <th>Type</th>
         <th>Applicant ID</th>
@@ -29,11 +53,17 @@
         <th>Status</th>
         </thead>
         <tbody>
-        
             @foreach (var app in Model)
             {
             <tr>
                 <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
+                @if(ViewBag.IncludeMapOptions != null)
+                {
+                <td> 
+                    <input name="checkMap" type="checkbox" class="mapCheckbox" value="@app.Id" />
+                    @{i =+ 1; }
+                </td>
+                }
                 <td>@app.Id</td>
                 <td>@app.AppType</td>
                 <td>@app.ApplicantId</td>

@@ -3,7 +3,13 @@
 <h3>Application Search</h3>
 <form asp-action="Search" method="POST">
 <input type="hidden" id="Search" name="Search" value="True">
-<div class="container col-sm-10">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
     <div class="row">
         <div class="col-lg-4">@* First column*@
             <div class="form-group row">
@@ -33,6 +39,15 @@
                 <select multiple="multiple" asp-for="searchCrops" class="col-sm-4 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
                 <div class="col-sm-6">
                     (Leave blank to returns all crops;<br>press "ctrl" to select multiple items)
+                </div>
+            </div>
+            <div class="form-group row form-checkbox-inline">
+
+            </div> 
+            <div class="form-group row">
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="includeMapOptions" class="col-sm-4 col-form-label"></label>
+                    <input type="checkbox" asp-for="includeMapOptions">
                 </div>
             </div>   
         </div>
@@ -108,13 +123,13 @@
     </div>
 </div>
 <hr>
-
+</form>
 @if(Model.apps.Any())
 {
     @await Html.PartialAsync("_ApplicationTable", @Model.apps)
 }
 
-</form>
+
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -124,15 +139,27 @@
     
 
     <script>
+        var oTable;
+
         $(document).ready( function () {
-            $('#table').DataTable({
-                dom: 'lBfrtip',
+            $('#MapForm').submit( function(e) {
+                var sData = oTable.$('input').serialize(); 
+                $('#MapForm').append('<input type="hidden" id="ids" name="ids" value="'+sData+'" />');                       
+            } );
+            
+            oTable = $('#table').dataTable({
+                 dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
                 "pageLength": 50
             });
 
             $(document).ready(function () {
                 $('.datepicker').datepicker();
+            });
+
+            $("#SelectAllButton").click(function() {
+                alert( "Only the visible Apps will be selected." );
+                $(".mapCheckbox").prop( "checked", true );
             });
         } );
     </script>
