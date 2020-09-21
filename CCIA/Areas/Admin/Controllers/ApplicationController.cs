@@ -192,7 +192,9 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> MapFields(IFormCollection collection)   
         {
-            return View();
+            List<string> appIds = collection["ids"].ToString().Split("&").ToList();
+            List<int> app = appIds.Select(s => int.Parse(s.Substring(s.IndexOf("=") + 1, s.Length - s.IndexOf("=") -1))).ToList();            
+            return View(app);
         }
 
         
