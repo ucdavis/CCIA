@@ -200,8 +200,8 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> FieldMap(int id)
         {
-            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
-            return View(app);
+             var model = await AdminMapFieldsViewModel.SingleMap(_dbContext, id);
+            return View(model);  
         }
 
         
