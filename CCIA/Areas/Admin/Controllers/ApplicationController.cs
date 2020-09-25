@@ -333,6 +333,12 @@ namespace CCIA.Controllers.Admin
             var model = await AdminViewModel.CreateFIR(_dbContext, id);
             return View(model);
         }
+
+        public async Task<IActionResult> BasicFir(int id)
+        {
+             var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            return View(model);
+        }
        
         public async Task<IActionResult> EditFIR(int id)
         {

@@ -86,6 +86,7 @@ namespace CCIA.Models.DetailsViewModels
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.AppCertRad)
+                .Include(a => a.County)
                 .Include(a => a.FieldInspection).ThenInclude(i => i.InspectorEmployee)
                 .Include(a => a.FieldInspectionReport).ThenInclude(r => r.CompleteEmployee)
                 .Include(a => a.FieldInspectionReport).ThenInclude(r => r.POPassClass)
