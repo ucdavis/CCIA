@@ -1,6 +1,25 @@
-@model List<int>
+@model CCIA.Models.AdminMapFieldsViewModel
 
-@foreach (var item in Model)
-{
-    @item<br>
+<h3>Field Maps</h3>
+<div class="container">
+    
+    <div id="MapDiv" style="position:relative;width:800px;height:600px;float:left; z-index: 1">
+        <div id="myMap" style="position:relative; width:800px;height:600px;"></div>
+        <input type="hidden" ID="showDrawingTools" Value="0" />
+    </div> &nbsp;<br/>
+    The following apps did not map: 
+    <div id="lblIDs">
+        @foreach (var item in Model.app)
+            {
+                @item<br> 
+            }
+    </div>     
+</div>
+
+<input type="hidden" id="data" value="@Model.data">
+
+@section Scripts {
+    <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+    <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
 }
+

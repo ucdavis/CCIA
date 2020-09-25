@@ -192,8 +192,15 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> MapFields(IFormCollection collection)   
         {
-            List<string> appIds = collection["ids"].ToString().Split("&").ToList();
-            List<int> app = appIds.Select(s => int.Parse(s.Substring(s.IndexOf("=") + 1, s.Length - s.IndexOf("=") -1))).ToList();            
+            // List<string> ids = new List<string> {"checkmap=6478","checkmap=6479"};
+            // var model = await AdminMapFieldsViewModel.Create(_dbContext, ids, "Point"); 
+            var model = await AdminMapFieldsViewModel.Create(_dbContext, collection["ids"].ToString().Split("&").ToList(), collection["ddlType"].ToString()); 
+            return View(model);
+        }
+
+        public async Task<IActionResult> FieldMap(int id)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
             return View(app);
         }
 
