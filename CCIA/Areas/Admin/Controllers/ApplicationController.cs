@@ -336,7 +336,13 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> BasicFir(int id)
         {
-             var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            return View(model);
+        }
+
+        public async Task<ActionResult> FIRCertificate(int id)
+        {
+            var model = await AdminViewModel.CreateFIR(_dbContext, id);
             return View(model);
         }
        

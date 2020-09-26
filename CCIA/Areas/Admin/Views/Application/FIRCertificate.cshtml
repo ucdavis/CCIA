@@ -1,0 +1,319 @@
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+</head>
+<body style="font-size: smaller">
+
+    <table border="0" width="100%" height="100">
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td align="right" class="titleoecd">
+                App @Model.application.Id</td>
+        </tr>
+        <tr>
+            <td align="center" colspan="5" rowspan="2">
+                <img src="/images/ccia-tra.GIF" align="left" width="150px"/>
+                <span class="titleoecd"> Field Inspection Report <br/>
+                <%# Eval("certificate_title") %></span><br/>
+                California Crop Improvement Association<br />
+                Frank G. Parsons Seed Certification Center<br />
+                University of California<br />
+                One Shields Avenue<br />
+                Davis, California 95616-8541
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                Name:</td>
+            <td colspan="3">
+                <asp:Label ID="applicant_nameLabel" runat="server" Text='<%# Bind("applicant_name") %>'></asp:Label>
+                <br/>(Acct #
+                <asp:Label ID="applicant_idLabel" runat="server" Text='<%# Eval("applicant_id") %>'></asp:Label>)</td>
+            <td align="right" nowrap="nowrap">
+                Date:
+                <asp:Label ID="print_dateLabel" runat="server" Text='<%# Bind("print_date", "{0:d}") %>'></asp:Label></td>
+        </tr>
+        <tr>
+            <td valign="top">
+                Address:</td>
+            <td colspan="2">
+                <asp:Label ID="address1Label" runat="server" Text='<%# Bind("address1") %>'></asp:Label>
+                <asp:Label ID="add2Label" runat="server" Text='<%# Bind("add2") %>'></asp:Label><br />
+                <asp:Label ID="cityLabel" runat="server" Text='<%# Bind("city") %>'></asp:Label>,&nbsp;
+                <asp:Label ID="stateprovinceCodeLabel" runat="server" Text='<%# Bind("stateprovinceCode") %>'></asp:Label>&nbsp;
+                <asp:Label ID="postal_codeLabel" runat="server" Text='<%# Bind("postal_code") %>'></asp:Label></td>
+            <td colspan="1">
+            </td>
+            <td colspan="1">
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                The <%# Eval("number_title") %> numbers below, assigned for acres passed, are to be used to identify
+                the seed harvested and must be stenciled on all containers of seed from the corresponding
+                fields. Field inspection is only a preliminary step in the process of <%# Eval("process_title") %>
+                which shall be determined by tests on officially drawn samples of seed. Before harvest,
+                the county agricultural commissioner must be notified for supervision of harvesting,
+                cleaning, and any intercounty movement of this seed.<br />
+                <br />
+                Results below are for your
+                <asp:Label ID="Label2" runat="server" Text='<%# Bind("cert_year") %>'></asp:Label> 
+                <i><asp:Label ID="Label10" runat="server" Text='<%# Bind("genus_species") %>'></asp:Label></i> &nbsp;&nbsp;
+                <asp:Label ID="Label3" runat="server" Text='<%# Bind("crop_name") %>'></asp:Label>
+                field located in
+                <asp:Label ID="county_nameLabel" runat="server" Text='<%# Bind("county_name") %>'></asp:Label>.</td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title_underline">
+                Appl Number</td>
+            <td class="title_underline">
+                Grower</td>
+            <td>
+            </td>
+            <td class="title_underline">
+                <%# Eval("species_or_crop") %></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title">
+                <asp:Label ID="app_id_numbLabel" runat="server" Text='<%# Eval("app_id_numb","App{0}") %>'></asp:Label></td>
+            <td colspan="2" nowrap="nowrap" class="title">
+                <asp:Label ID="grower_nameLabel" runat="server" Text='<%# Bind("grower_name") %>'></asp:Label>
+                (Acct #
+                <asp:Label ID="grower_idLabel" runat="server" Text='<%# Eval("grower_id") %>'></asp:Label>)</td>
+            <td class="title">
+                <i><asp:Label ID="Label4" runat="server" Text='<%# Bind("genus_species") %>'></asp:Label></i> &nbsp;&nbsp;
+                <asp:Label ID="crop_nameLabel" runat="server" Text='<%# Bind("crop_name") %>'></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title_underline" nowrap>
+                <%# Eval("produced_title") %></td>
+            <td class="title_underline">
+                <%# Eval("variety_title") %></td>
+            <td class="title_underline">
+                <asp:Label ID="Label9" runat="server" Text="Germplasm Type" Visible='<%# Eval("show_germplasm_type") %>'/></td>
+            <td class="title_underline">
+                <asp:Label ID="Label8" runat="server" Text="Variety Status" Visible='<%# Eval("var_statement") %>'></asp:Label></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title">
+                <asp:Label ID="class_produced_transLabel" runat="server" Text='<%# Bind("class_produced_trans") %>'></asp:Label></td>
+            <td class="title">
+                <asp:Label ID="var_nameLabel" runat="server" Text='<%# Bind("var_name") %>'></asp:Label></td>
+            <td class="title">
+                <asp:Label ID="var_categoryLabel" runat="server" Text='<%# Bind("pvg_source") %>' Visible='<%# Eval("show_germplasm_type") %>'></asp:Label></td>
+            <td class="title">
+                <asp:Label ID="var_statusLabel" runat="server" Text='<%# Bind("var_status") %>' Visible='<%# Eval("var_statement") %>'></asp:Label></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                <%--<asp:Label ID="Label4" runat="server" Text='<%# Eval("cert_num_sent", "Use certification number {0} production") %>'
+                    Visible='<%# Eval("complete") %>'></asp:Label>--%>
+                    <asp:Label ID="Label40" runat="server" Text='<%# String.Format("Use {0} number {1} production", Eval("number_title"), Eval("cert_num_sent")) %>'
+                    Visible='<%# Eval("complete") %>'>
+                </asp:Label></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <span style="text-decoration: underline">Field Name</span></td>
+            <td>
+                <span style="text-decoration: underline">Comments</span></td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+    <asp:Label ID="field_nameLabel" runat="server" Text='<%# Bind("field_name") %>'></asp:Label></td>
+            <td colspan="3">
+    <asp:Label ID="fld_inspect_commentsLabel" runat="server" Text='<%# Bind("fld_inspect_comments") %>'></asp:Label></td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            Acres:</td>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                            Approved</td>
+                        <td>
+                            Rejected</td>
+                        <td>
+                            FIO</td>
+                        <td>
+                            Growout</td>
+                        <td>
+                            No Crop</td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+    <asp:Label ID="acres_approvedLabel" runat="server" Text='<%# Bind("acres_approved", "{0:N2}") %>'></asp:Label></td>
+                        <td>
+    <asp:Label ID="acres_rejectedLabel" runat="server" Text='<%# Bind("acres_rejected", "{0:N2}") %>'></asp:Label></td>
+                        <td>
+    <asp:Label ID="acres_insp_onlyLabel" runat="server" Text='<%# Bind("acres_insp_only", "{0:N2}") %>'></asp:Label></td>
+                        <td>
+    <asp:Label ID="acres_growoutLabel" runat="server" Text='<%# Bind("acres_growout", "{0:N2}") %>'></asp:Label></td>
+                        <td>
+    <asp:Label ID="acres_no_cropLabel" runat="server" Text='<%# Bind("acres_no_crop", "{0:N2}") %>'></asp:Label></td>
+                    </tr>
+                </table>
+                <br />
+                <asp:Label ID="Label5" runat="server" Text="*This variety has not been approved by the CCIA Board of Directors. Certification tags cannot be issued until variety approval is complete."
+                    Visible='<%# Eval("var_statement") %>'></asp:Label></td>
+        </tr>
+        <tr height="100%">
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">Approved by: <%# Eval("approved_by") %>,<br/> CCIA Certification Representative </td>
+            
+            <td>
+            </td>
+            <td colspan="2" align="right">
+                <img width="300px" src="palmer_signature.jpg" alt="Palmer Signature" /></td>
+        </tr>
+        
+    </table>           
+</body>
+</html>
