@@ -1,0 +1,11 @@
+@model CCIA.Models.AdminMapFieldsViewModel
+
+<h3>Field Maps</h3>
+
+@{await Html.RenderPartialAsync("_Map", Model);}
+
+@section Scripts {
+    <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+    <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
+}
+

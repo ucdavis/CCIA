@@ -1,0 +1,354 @@
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+</head>
+<body style="font-size: smaller">
+
+    <table border="0" width="100%" height="100">
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td align="right" class="titleoecd">
+                App @Model.application.Id</td>
+        </tr>
+        <tr>
+            <td align="center" colspan="5" rowspan="2">
+                <img src="/images/ccia-tra.GIF" align="left" width="150px"/>
+                <span class="titleoecd"> Field Inspection Report <br/>
+                @Model.application.AppTypeTrans.CertificateTitle</span><br/>
+                California Crop Improvement Association<br />
+                Frank G. Parsons Seed Certification Center<br />
+                University of California<br />
+                One Shields Avenue<br />
+                Davis, California 95616-8541
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                Name:</td>
+            <td colspan="3">
+                @Model.application.ApplicantOrganization.OrgName
+                <br/>(Acct #
+                @Model.application.ApplicantId)</td>
+            <td align="right" nowrap="nowrap">
+                Date:
+                @DateTime.Now.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td valign="top">
+                Address:</td>
+            <td colspan="2">
+               @Model.application.ApplicantOrganization.Address.Address1<br>
+               @if(Model.application.ApplicantOrganization.Address.Address2 != null)
+               {
+                   @Model.application.ApplicantOrganization.Address.Address2<br>
+               }
+               @Model.application.ApplicantOrganization.Address.City,&nbsp; @Model.application.ApplicantOrganization.Address.StateProvince.StateProvinceCode 
+                @Model.application.ApplicantOrganization.Address.PostalCode
+            </td>
+            <td colspan="1">
+            </td>
+            <td colspan="1">
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                The @Model.application.AppTypeTrans.NumberTitle numbers below, assigned for acres passed, are to be used to identify
+                the seed harvested and must be stenciled on all containers of seed from the corresponding
+                fields. Field inspection is only a preliminary step in the process of @Model.application.AppTypeTrans.ProcessTitle
+                which shall be determined by tests on officially drawn samples of seed. Before harvest,
+                the county agricultural commissioner must be notified for supervision of harvesting,
+                cleaning, and any intercounty movement of this seed.<br />
+                <br />
+                Results below are for your
+                @Model.application.CertYear                
+                <i>@Model.application.Crop.GenusSpecies</i>
+                @Model.application.Crop.Name
+                field located in
+                @Model.application.County.Name.</td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title_underline">
+                Appl Number</td>
+            <td class="title_underline">
+                Grower</td>
+            <td>
+            </td>
+            <td class="title_underline">
+                @Model.application.AppTypeTrans.SpeciesOrCrop
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title">
+                App @Model.application.Id
+            </td>
+            <td colspan="2" nowrap="nowrap" class="title">
+                @Model.application.GrowerOrganization.OrgName                
+                (Acct # @Model.application.GrowerId)
+            </td>
+            <td class="title">
+                 <i>@Model.application.Crop.GenusSpecies</i>
+                @Model.application.Crop.Name               
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title_underline" nowrap>
+                @Model.application.AppTypeTrans.ProducedTitle
+            </td>
+            <td class="title_underline">
+                @Model.application.AppTypeTrans.VarietyTitle
+            </td>
+            <td class="title_underline">
+                @if(@Model.application.AppTypeTrans.ShowType.Value)
+                {
+                    <span>Germplasm Type</span>
+                }
+                <asp:Label ID="Label9" runat="server" Text="Germplasm Type" Visible='<%# Eval("show_germplasm_type") %>'/></td>
+            <td class="title_underline">
+                @if(@Model.application.VarietyStatement)
+                {
+                    <span>Variety Status</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td class="title">
+                @Model.application.ClassProduced.ClassProducedTrans
+            </td>
+            <td class="title">
+                @Model.application.Variety.Name
+            </td>
+            <td class="title">
+                 @if(@Model.application.AppTypeTrans.ShowType.Value)
+                {
+                    @Model.application.PvgSource
+                }
+                <asp:Label ID="Label9" runat="server" Text="Germplasm Type" Visible='<%# Eval("show_germplasm_type") %>'/></td>
+            <td class="title_underline">
+                @if(@Model.application.VarietyStatement)
+                {
+                    @Model.application.Variety.Status
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                @if(Model.application.FieldInspectionReport.Complete)
+                {
+                    <span>Use @Model.application.AppTypeTrans.NumberTitle number @Model.application.CertNumberSent production.</span>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <span style="text-decoration: underline">Field Name</span></td>
+            <td>
+                <span style="text-decoration: underline">Comments</span></td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                @Model.application.FieldName
+            </td>
+            <td colspan="3">
+                @Model.application.FieldInspectionReport.Comments
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="4">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            Acres:</td>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                            Approved</td>
+                        <td>
+                            Rejected</td>
+                        <td>
+                            FIO</td>
+                        <td>
+                            Growout</td>
+                        <td>
+                            No Crop</td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @Model.application.FieldInspectionReport.AcresApproved
+                        </td>
+                        <td>
+                            @Model.application.FieldInspectionReport.AcresRejected
+                        </td>
+                        <td>
+                            @Model.application.FieldInspectionReport.AcresInspectionOnly
+                        </td>
+                        <td>
+                            @Model.application.FieldInspectionReport.AcresGrowout
+                        </td>
+                        <td>
+                            @Model.application.FieldInspectionReport.AcresNoCrop
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                @if(Model.application.VarietyStatement)
+                {
+                    <span>This variety has not been approved by the CCIA Board of Directors. Certification tags cannot be issued until variety approval is complete.</span>
+                }
+                </td>
+        </tr>
+        <tr height="100%">
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">Approved by: @Model.application.FieldInspectionReport.CompleteEmployee.Name,<br/> CCIA Certification Representative </td>
+            
+            <td>
+            </td>
+            <td colspan="2" align="right">
+                <img width="300px" src="/images/palmer_signature.jpg" alt="Palmer Signature" /></td>
+        </tr>
+        
+    </table>           
+</body>
+</html>

@@ -33,10 +33,17 @@
                 <td>@app.Id</td>
                 <td>@app.AppType</td>
                 <td>@app.CertYear</td>
-                <td>@app.GrowerOrganization.OrgName</td>
+                 @if (app.GrowerOrganization == null)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>@app.GrowerOrganization.OrgName</td>
+                }               
                 <td>@app.FieldName</td>
                 <td>@app.AcresApplied</td>
-                <td>@app.County.CountyName</td>
+                <td>@app.County.Name</td>
                 <td>@app.Crop.Name</td>
                 @if (app.AppType == "PV" || app.SelectedVarietyId==null)
                 {
@@ -44,7 +51,7 @@
                 }
                 else
                 {
-                    <td>@app.Variety.Name</td>
+                    <td>@app.VarietyName</td>
                 }
                @if (app.ClassProduced != null)
         {

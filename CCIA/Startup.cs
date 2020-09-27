@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
+using Newtonsoft.Json.Serialization;
 
 namespace CCIA
 {
@@ -26,7 +27,8 @@ namespace CCIA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityService, IdentityService>();
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddDbContext<CCIAContext>();
 
@@ -62,9 +64,6 @@ namespace CCIA
                         {
                             return;
                         }                        
-
-                        identity.RemoveClaim(identity.FindFirst(ClaimTypes.NameIdentifier));
-                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
                         identity.RemoveClaim(identity.FindFirst(ClaimTypes.Name));
                         identity.AddClaim(new Claim(ClaimTypes.Name, user.Id));

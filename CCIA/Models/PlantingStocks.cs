@@ -7,6 +7,11 @@ namespace CCIA.Models
 {
     public partial class PlantingStocks
     {
+        public PlantingStocks()
+        {
+            WinterTest = false;
+            PvxTest = false;
+        }
         public int PsId { get; set; }
         public int? AppId { get; set; }
 
@@ -21,8 +26,8 @@ namespace CCIA.Models
         public int? StateCountryTagIssued { get; set; }
         public int? StateCountryGrown { get; set; }
         public virtual string SeedPurchasedFrom { get; set; }
-        public virtual bool? WinterTest { get; set; }
-        public virtual bool? PvxTest { get; set; }
+        public virtual bool WinterTest { get; set; }
+        public virtual bool PvxTest { get; set; }
         public DateTime? DateModified { get; set; }
         public string UserModified { get; set; }
         public DateTime? DateEntered { get; set; }
@@ -30,6 +35,8 @@ namespace CCIA.Models
 
         public string ThcPercent { get; set; }
         public decimal? PlantsPerAcre { get; set; }
+
+        public string UserEmpModified { get; set; }
 
     //    [ForeignKey("AppId")]
     //    public Applications Application { get; set; }

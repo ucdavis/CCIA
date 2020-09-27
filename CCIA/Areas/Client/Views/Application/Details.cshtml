@@ -43,7 +43,7 @@
                 <div class="form-group row">
                     <label asp-for="MapVe" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.MapVe ?? false, new {@disabled = true})
+                        @Html.CheckBox("MapsVe", Model.MapVe, new {@disabled = true})
                     </div>
                 </div>
         </div>
@@ -144,7 +144,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.PlantingStocks)
+                @foreach (var row in Model.PlantingStocks.OrderBy(p => p.PsId))
                 {
                     <tr>
                         <td>
@@ -159,22 +159,31 @@
                         {
                             <td>@row.PlantsPerAcre</td>
                         }                        
-                        <td>@row.PsClassNavigation.ClassProducedTrans</td>
-                        @if(@row.TaggedStateProvince == null)
+                        <td>@row.PsClassNavigation.ClassProducedTrans
+                            @if(row.PsAccession != null){
+                                <span>- @row.PsAccession</span>
+                            }
+                        </td>
+                         @if(@row.TaggedStateProvince != null)
                         {
-                            <td>@row.StateCountryTagIssued</td>
-                        } else if(@row.GrownStateProvince.StateProvinceName != null)
+                            <td>@row.TaggedStateProvince.Name</td>
+                        } else {
+                            <td>???</td>
+                        }
+                        @if(@row.GrownStateProvince.Name != null)
                         {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
+                            <td>@row.GrownStateProvince.Name</td>
                         }  else {
-                            <td>&nbsp;</td>
-                        }                      
-                        <td>@row.GrownStateProvince.StateProvinceName</td>
-                        <td>@row.SeedPurchasedFrom</td>
+                            <td>???</td>
+                        }                                            
+                        @if(showPurchasedFrom)
+                        {
+                            <td>@row.SeedPurchasedFrom</td>
+                        }                        
                         @if(Model.AppType == "PO")
                         {
-                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
-                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
+                            <td>@Html.DisplayFor(x => row.WinterTest)</td>
+                            <td>@Html.DisplayFor(x => row.PvxTest)</td>
                         }
                         @if(showTHC)
                         {
@@ -200,7 +209,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var row in Model.FieldHistories)
+            @foreach (var row in Model.FieldHistories.OrderBy(h => h.Year))
             {
                 <tr>
                     <td>@row.Year</td>

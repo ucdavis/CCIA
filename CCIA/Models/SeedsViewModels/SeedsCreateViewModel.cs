@@ -27,7 +27,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                 .ThenInclude(v => v.Crop)
                 .Include(a => a.AppTypeTrans)
                 .FirstAsync();
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
             // TODO : get real org ID!
             var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewSeeds();
@@ -46,12 +46,12 @@ namespace CCIA.Models.SeedsCreateViewModel
             var viewModel = new SeedsCreateViewModel
             {
                 Application = app,
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
             };
 
             return viewModel;
@@ -65,7 +65,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                 .ThenInclude(v => v.Crop)
                 .Include(a => a.AppTypeTrans)
                 .FirstAsync();
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
             // TODO : get real org ID!
             var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
             
@@ -73,12 +73,12 @@ namespace CCIA.Models.SeedsCreateViewModel
             var viewModel = new SeedsCreateViewModel
             {
                 Application = app,
-                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppType == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
+                ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId && c.ClassProducedTrans != "Inspection Only").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
                 Seed = seed,
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
-                    .Select(c => new County { CountyId = c.CountyId, CountyName = c.CountyName }).ToListAsync(),
+                    .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
             };
 
             return viewModel;

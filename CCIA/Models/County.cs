@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace CCIA.Models
 {
     public partial class County
     {
         public int CountyId { get; set; }
-        public string CountyName { get; set; }
+        [DisplayName("County")]
+        public string Name { get; set; }
         public string District { get; set; }
         public int StateProvinceId { get; set; }
         public DateTime? DateModified { get; set; }

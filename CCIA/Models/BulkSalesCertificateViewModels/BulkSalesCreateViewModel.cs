@@ -30,7 +30,7 @@ namespace CCIA.Models.BulkSalesCreateViewModel
                     .Select(m => new MyCustomers { Id = m.Id, Name = m.Name})
                     .ToListAsync();
             customers.Insert(0, new MyCustomers { Id = 0, Name = "Select Customer"});
-            var stateProvince = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } ).ToListAsync();
+            var stateProvince = await _dbContext.StateProvince.Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, Name = s.Name } ).ToListAsync();
             var countries = await _dbContext.Countries.Select(c => new Countries { Id = c.Id, Name = c.Name }).ToListAsync();
             var viewModel = new BulkSalesCreateViewModel
             {

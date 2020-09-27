@@ -1,0 +1,618 @@
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
+
+<h2>Field Inspection Report</h2> 
+<div class="container col-sm-10">
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Full Details</a> | 
+            <a class="btn btn-info" asp-action="BasicFir" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Basic Fir Form</a>           
+        </div>
+    </div>   
+     <div class="row">
+         <div class="col-lg-4">@*First column *@
+            <div class="form-group row">
+                <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FullCert)
+                </div>
+            </div>
+             <div class="form-group row">
+                <label asp-for="application.DatePlanted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.DatePlanted)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Renewal)
+                </div>
+            </div>                 
+        </div>
+        <div class="col-lg-4">@*Second column *@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppType)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="application.CertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.CertYear)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.OriginalCertYear) 
+                </div>
+            </div>                    
+        </div>
+        <div class="col-lg-4">@*Third column *@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
+                </div>
+            </div>             
+            <div class="form-group row">
+                <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Status)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.PaperAppNum" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.PaperAppNum)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4"> 
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.WarningFlag)
+                </div>
+            </div>   
+        </div>
+        <div class="col-lg-8">
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-2 col-form-label">Warning:</label>
+                <div class="col-sm-10 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ApplicantNotes)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">                                      
+            <div class="form-group row">
+                <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
+                <div class="col-sm-10 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ApplicantOrganization.NameAndId)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">             
+            <div class="form-group row">
+                <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.GrowerOrganization.NameAndId)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">@* Column 1*@
+            <div class="form-group row">
+                <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Crop.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ClassProduced.ClassProducedTrans)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldName)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">@* Column 2*@
+            <div class="form-group row">
+                <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.EnteredVariety)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AcresApplied)  (Mapped: @Html.DisplayFor(x => x.application.AreaAcres) )
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.County.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.County.Name)
+                </div>
+            </div>  
+        </div>
+        <div class="col-lg-4">@* Column 3*@
+            <div class="form-group row">
+                <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Variety.Name)
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="application.ApplicantComments" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-11 form-control-plaintext">
+            @Html.DisplayFor(x => x.application.ApplicantComments)
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="application.Comments" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-11 form-control-plaintext">
+            @Html.DisplayFor(x => x.application.Comments)
+        </div>
+    </div>
+</div>
+<div class="container col-sm-10">
+    <div class="row">
+        <h3>Field Inspection Report</h3>        
+    </div>
+    <div class="row">
+        <a class="btn btn-primary" asp-action="EditFIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit FIR</a>   
+    </div>
+    @if(Model.application.FieldInspectionReport.Complete)
+    {
+        <div class="row">
+            <div class="col-sm-12"><hr></div>
+            <a class="btn btn-info" asp-action="FIRCertificate" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">View FIR</a>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
+    @if(Model.application.AppType != "PO")
+    {
+        <div class="row">
+            <div class="col-lg-4">@* First column*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresApproved" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresApproved)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresInspectionOnly" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresInspectionOnly)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresNoCrop" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresNoCrop)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">@* Second*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresRejected" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresRejected)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresRefund" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresRefund)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">@* third*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresGrowout" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresGrowout)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresCancelled" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresCancelled)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.AcresTotalEntered" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresTotalEntered)
+                    </div>
+                </div>
+            </div>
+        </div>
+    } else {
+        <div class="row">
+            <h5>Pathogen Testing:</h5>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">@* First column*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathDate" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathDate)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathLab" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathLab)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathCmsValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathCmsValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathErwValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathErwValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPstvdValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPstvdValue)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">@* 2nd column*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathNumSamples" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathNumSamples)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathSentVia" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathSentVia)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvaValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvaValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvmValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvmValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPlrvValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPlrvValue)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">@* 3rd column*@
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathNumPlants" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathNumPlants)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PassClassTrans" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PassClassTrans)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvsValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvsValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvxValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvxValue)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PathPvyValue" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PathPvyValue)
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label asp-for="application.FieldInspectionReport.PathComments" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10 form-control-plaintext">
+                @Html.DisplayFor(x => x.application.FieldInspectionReport.PathComments)
+            </div>
+        </div>        
+    }
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group row">
+                <label asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldInspectionReport.ReportGenerated)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group row">
+                <label asp-for="application.FieldInspectionReport.ReportGenDt" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldInspectionReport.ReportGenDt)
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <div class="form-group row">
+            <label asp-for="application.FieldInspectionReport.Comments" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10 form-control-plaintext">
+                @Html.DisplayFor(x => x.application.FieldInspectionReport.Comments)
+            </div>
+        </div>
+    
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group row">
+                <label asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldInspectionReport.Complete)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group row">
+                <label asp-for="application.FieldInspectionReport.CompleteText" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldInspectionReport.CompleteText)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container col-sm-10">
+    <hr/>
+    <h3>Field Inspections</h3>
+    <hr/>    
+    @if(Model.application.FieldInspection.Count > 0)
+    {
+        <nav>
+            <ul class="pagination pg-red">
+                @{
+                    int i = 1;
+                }
+                @foreach (var row in Model.application.FieldInspection)
+                {
+                    <li class="page-item"><a class="page-link" name="@row.Id">@i</a></li>  
+                    i += 1;                  
+                }
+            </ul>
+        </nav>
+    }	
+    @{ var j = 1;}    
+    @foreach (var row in Model.application.FieldInspection.OrderBy(f => f.DateInspected))
+    {
+        <div id="@row.Id" class="card col-sm-5">
+		    <div class="card-block">
+                <h4 class="card-title">Inspection @j</h4>
+                
+                <div class="form-group row">
+                    <label asp-for="@row.DateInspected" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @if(row.DateInspected.HasValue)
+                        {
+                            @row.DateInspected.Value.ToShortDateString()
+                        }                        
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.InspectorId" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.InspectorEmployee.Name
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.ApplicantContacted" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        <input type="checkbox" asp-for="@row.ApplicantContacted" disabled>
+                    </div>
+                </div>	
+                <div class="form-group row">
+                    <label asp-for="@row.ApplicantPresent" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        <input type="checkbox" asp-for="@row.ApplicantPresent" disabled>
+                    </div>
+                </div>	    
+            @if(Model.application.AppType == "PO")
+            {
+                <div class="form-group row">
+                    <label asp-for="@row.TotalPlantsInspected" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.TotalPlantsInspected
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.OtherVarieties" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.OtherVarieties
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Mosaic" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Mosaic
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Leafroll" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Leafroll
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Blackleg" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Blackleg
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Calico" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Calico
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.OtherDiseases" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.OtherDiseases
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Insects" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Insects
+                    </div>
+                </div>
+            } else {
+                <div class="form-group row">
+                    <label asp-for="@row.Maturity" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Maturity
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Isolation" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Isolation
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.EstimatedYield" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.EstimatedYield
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.OtherVarietiesComment" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.OtherVarietiesComment
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.OtherCrop" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.OtherCrop
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Disease" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Disease
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Appearance" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Appearance
+                    </div>
+                </div>
+            }
+                <div class="form-group row">
+                    <label asp-for="@row.Weeds" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Weeds
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Comments" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Comments
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a class="btn btn-primary" asp-action="EditInspection" asp-area="admin" asp-controller="Application" asp-route-id="@row.Id">Edit Inspection</a> 
+            </div>
+		</div>  
+        j += 1;      
+    }
+    <div>
+        <hr>
+    </div>
+     <div>
+                <a class="btn btn-primary" asp-action="CreateInspection" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Add New Inspection</a> 
+    </div>		
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+    	$(document).ready(function(){
+            
+    		//Hide all cards
+    		$(".card").each(function(index, value){
+    			$('.card').hide();
+                @if(Model.application.FieldInspection.Count > 0)
+                {
+                    <text>
+                    $("#@Model.application.FieldInspection.First().Id").show();               
+                    </text>
+                }                
+    		});
+            
+
+    		$(".page-link").on('click', function(){
+                
+    			$(".page-link").each(function(index, value){
+    				$(value).parent().removeClass("active");
+    			});
+
+    			//Hide all cards
+	    		$(".card").each(function(index, value){
+	    			$('.card').hide();
+	    		})
+  
+    			$(this).parent().addClass("active");
+    			var cardId = "#" + $(this).attr("name");
+    			$(cardId).show();
+    		});
+
+    	});
+    </script>
+   
+}

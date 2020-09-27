@@ -16,12 +16,12 @@ namespace CCIA.Models
             set { base.PsClass = value; } 
         }
         [Required]
-        public override bool? WinterTest { 
+        public override bool WinterTest {
             get { return base.WinterTest; }
-            set { base.WinterTest = value; } 
-        }
+            set { base.WinterTest = value; }}
+        
         [Required]
-        public override bool? PvxTest { 
+        public override bool PvxTest { 
             get { return base.PvxTest; }
             set { base.PvxTest = value; } 
         }

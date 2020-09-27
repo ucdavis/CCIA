@@ -1,0 +1,223 @@
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>  
+    <meta http-equiv="content-style-type" content="text/css" />    
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+</head>
+<body>
+    <table width="100%">
+        <tr>
+            <td colspan="3" align="center">
+                <strong>
+                California Crop Improvement Association -- @Model.application.CertYear Field Inspection Report</strong></td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <table>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Applicant:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.ApplicantOrganization.NameAndId
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Grower:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.GrowerOrganization.NameAndId
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Variety:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.VarietyName
+                            &nbsp;
+                            @Model.application.CropName
+                        </td>
+                    </tr>                               
+                    <tr>
+                        <td nowrap="nowrap">
+                            Class to Produce:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.ClassProducedName
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Field Name:
+                        </td>
+                        <td nowrap="nowrap">
+                            @Model.application.FieldName
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+            </td>
+            <td align="right" valign="top">
+                <table>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Application No.:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.Id
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            County:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.County.Name
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            Date Planted:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.DatePlanted.Value.ToShortDateString()
+                        </td>
+                        <td>
+                        </td>
+                    </tr>                   
+                    <tr>
+                        <td nowrap="nowrap">
+                            Acres Applied:</td>
+                        <td nowrap="nowrap">
+                            @Model.application.AcresApplied
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>                
+    <table border="1" width="100%">
+        <tr>
+            <td width="10%" align="center" height="50">
+                Maturity</td>
+            <td height="50">
+                &nbsp;</td>
+            <td rowspan="8" valign="top" width="20%">
+                Additional Notes:</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Isolation</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Estimated Yield</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Other Varieties</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Other Crops</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Weeds</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Diseases</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center" height="50">
+                Appearance</td>
+            <td height="50">
+                &nbsp;</td>
+        </tr>
+    </table>
+    Remarks and Recommendations:<br />
+    <br />
+    <table cellpadding="0" cellspacing="0" width="100%" border="0" >
+        <tr>
+            <td class="top" colspan="6" height="20" style="height: 25px">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="top" colspan="6" style="height: 25px">
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td class="top" colspan="6" style="height: 5px">
+                &nbsp;</td>
+        </tr>
+        <tr style="height: 25px">
+            <td nowrap="nowrap" valign="bottom" width="1%">
+                Date PreBloom Inspection:&nbsp;
+            </td>
+            <td class="bottom" nowrap="nowrap" valign="bottom" width="25%">
+                &nbsp;
+            </td>
+            <td nowrap="nowrap" valign="bottom" width="1%">
+                &nbsp;&nbsp; Date 1<sup>st</sup> Bloom Inspection:&nbsp;
+            </td>
+            <td class="bottom" nowrap="nowrap" valign="bottom" width="25%">
+                &nbsp;
+            </td>
+            <td align="right" nowrap="nowrap" valign="bottom" width="1%">
+                &nbsp; &nbsp;Date 2<sup>nd</sup> Bloom Inspection:&nbsp;
+            </td>
+            <td class="bottom" nowrap="nowrap" valign="bottom" width="25%">
+                &nbsp;
+            </td>          
+        </tr>
+        <tr style="height: 25px">
+            <td nowrap="nowrap" valign="bottom" width="1%">
+                Date PreBloom Inspection:&nbsp;
+            </td>
+            <td class="bottom" colspan="5" nowrap="nowrap" valign="bottom" width="100%">
+                &nbsp;
+            </td>
+        </tr>
+        <tr style="height: 25px">
+            <td nowrap="nowrap" valign="bottom" width="1%">
+                Date 1<sup>st</sup> Inspection:&nbsp;
+            </td>
+            <td class="bottom" colspan="5" nowrap="nowrap" valign="bottom" width="100%">
+                &nbsp;
+            </td>
+        </tr>
+        <tr style="height: 25px">
+            <td nowrap="nowrap" valign="bottom" width="1%">
+                Date 2<sup>nd</sup> Inspection:&nbsp;
+            </td>
+            <td class="bottom" colspan="5" nowrap="nowrap" valign="bottom" width="100%">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

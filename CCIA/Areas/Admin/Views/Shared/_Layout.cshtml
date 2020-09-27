@@ -26,7 +26,7 @@
             </div>
         </nav>
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a asp-area="admin" asp-controller="Home" asp-action="Index" class="navbar-brand">Admin Home</a>
+            <a asp-area="admin" asp-controller="AdminHome" asp-action="Index" class="navbar-brand">Admin Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbars">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -39,9 +39,8 @@
                             <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="Pending">Process Pending</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="Renew">Renew</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="Accepted">Accepted</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Field Pinning Map</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Field Inspection Report</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="GrowerLookup">Search</a>                          
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="LookupFIR">Field Inspection Report</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Application" asp-action="Search">Search/Field Pinning</a>                          
                         </div>
                     </li>
                     <li class="nav-item dropdown">

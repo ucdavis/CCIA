@@ -1,0 +1,235 @@
+@model CCIA.Models.DetailsViewModels.AdminFIRViewModel 
+
+
+<h2>Edit FIR for AppId @Model.fir.AppId</h2> 
+
+<form asp-action="EditFIR">
+    @Html.HiddenFor(x => x.fir.AppId)
+    <div class="container col-lg-10">
+        <div class="row">
+             <div class="col-lg-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" id="AcresApplied" value="@Model.AcresApplied">
+            </div>
+        </div>
+        @if(!Model.potatoApp)
+            {
+            <div class="row">
+                <div class="col-lg-4">@* First column*@
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresApproved" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresApproved">
+                        <div class="input-group-append" onclick="fillAcres('approved');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresApproved" data-valmsg-replace="true"></span>                
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresInspectionOnly" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresInspectionOnly">
+                        <div class="input-group-append" onclick="fillAcres('inspectionOnly');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresInspectionOnly" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresNoCrop" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresNoCrop">
+                        <div class="input-group-append" onclick="fillAcres('noCrop');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresNoCrop" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">@* Second*@
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresRejected" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresRejected">
+                        <div class="input-group-append" onclick="fillAcres('rejected');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresRejected" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresRefund" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresRefund">
+                        <div class="input-group-append" onclick="fillAcres('refund');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresRefund" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4">@* third*@
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresGrowout" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresGrowout">
+                        <div class="input-group-append" onclick="fillAcres('growout');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresGrowout" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.AcresCancelled" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresCancelled">
+                        <div class="input-group-append" onclick="fillAcres('cancelled');">             
+                            <i class="fa fa-angle-double-left input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresCancelled" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>        
+        } else {
+            <div class="row">
+            <h5>Pathogen Testing:</h5>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">@* First column*@
+                    <div class="form-group row">
+                        <label asp-for="fir.PathDate" class="col-sm-3 col-form-label"></label>
+                        <input type="text" class="col-sm-8 form-control datepicker" asp-for="fir.PathDate">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathDate" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathLab" class="col-sm-3 col-form-label"></label>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathLab">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathLab" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathCms" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathCms" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathErw" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathErw" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPstvd" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPstvd" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">@* 2nd column*@
+                    <div class="form-group row">
+                        <label asp-for="fir.PathNumSamples" class="col-sm-3 col-form-label"></label>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathNumSamples">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathNumSamples" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathSentVia" class="col-sm-3 col-form-label"></label>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathSentVia">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathSentVia" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPva" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPva" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPvm" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPvm" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPlrv" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPlrv" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                </div>
+                <div class="col-lg-4">@* 3rd column*@
+                    <div class="form-group row">
+                        <label asp-for="fir.PathNumPlants" class="col-sm-3 col-form-label"></label>
+                        <input class="col-sm-9 form-control" asp-for="fir.PathNumPlants">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="fir.PathNumPlants" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PassClass" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PassClass" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Classes, "ClassProducedId", "ClassProducedTrans"))"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPvs" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPvs" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPvx" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPvx" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="fir.PathPvy" class="col-sm-3 col-form-label"></label>
+                        <select asp-for="fir.PathPvy" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<FIRPOTestValues>()"></select>
+                    </div>
+                </div>
+            </div>            
+            <div class="form-group row">
+                <label asp-for="fir.PathComments" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <textarea asp-for="fir.PathComments" class="form-control border" rows="3" width="400px"></textarea>
+                </div> 
+            </div>            
+        }
+        <div class="form-group row">
+            <label asp-for="fir.Comments" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <textarea asp-for="fir.Comments" class="form-control border" rows="3" width="400px"></textarea>
+            </div>                
+        </div> 
+        <div class="form-group row">
+            <div class="form-check form-check-inline col-sm-4">
+                <label asp-for="fir.Complete" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="fir.Complete">
+            </div>
+        </div> 
+        <div class="row">
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="FIR" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.fir.AppId">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+    
+        function fillAcres(field)
+        {            
+            var approve = $("#fir_AcresApproved");
+            var reject =  $("#fir_AcresRejected");
+            var growOut =  $("#fir_AcresGrowout");
+            var inspOnly = $("#fir_AcresInspectionOnly");
+            var refund = $("#fir_AcresRefund");
+            var cancel = $("#fir_AcresCancelled");
+            var noAcres = $("#fir_AcresNoCrop");
+            var acresApplied = $("#AcresApplied");
+
+            approve.val(0);
+            reject.val(0);
+            growOut.val(0);
+            inspOnly.val(0);
+            refund.val(0);
+            cancel.val(0);
+            noAcres.val(0);
+
+            if (field === 'approved') {
+                approve.val(acresApplied.val());
+            } else if (field == 'growout') {
+                growOut.val(acresApplied.val());
+            } else if (field == 'rejected') {
+                reject.val(acresApplied.val());
+            } else if (field == 'inspectionOnly') {
+                inspOnly.val(acresApplied.val());
+            } else if (field == 'cancelled') {
+                cancel.val(acresApplied.val());
+            } else if (field == 'refund') {
+                refund.val(acresApplied.val());
+            } else if (field == 'noCrop') {
+                noAcres.val(acresApplied.val());
+            }
+        }
+    
+    </script>
+}

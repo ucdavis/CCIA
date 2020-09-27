@@ -1,4 +1,5 @@
-@model CCIA.Models.Applications
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
 @{
     bool showPurchasedFrom = false;
     bool showPounds = false;
@@ -7,209 +8,499 @@
 }
 
 <h2>Application Details</h2> 
-<div class="container">
+<div class="container col-sm-10">
     <div class="row">
-        <div class="col-lg-6">
-                <div class="form-group row">
-                    <label asp-for="Id" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Id)
-                    </div>
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>            
+        </div>
+    </div>
+    @if(Model.application.Status == "Pending acceptance")
+    {
+        <div class="row">
+            <div class="col-sm-12"><hr></div>
+            <div class="col-sm-6">            
+                <form asp-action="AcceptApplication">
+                    @Html.HiddenFor(x => x.application.Id)
+                    <input type="submit" class="btn btn-success" value="Accept Application" onClick="return check_accept();">
+                </form>
+            </div>
+            <div class="col-sm-6">
+                <form asp-action="CancelApplication">
+                    @Html.HiddenFor(x => x.application.Id)
+                    <input type="submit" class="btn btn-warning" value="Cancel Application" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>
+            </div>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
+    @if(Model.application.Status == "Field Inspection in Progress" || Model.application.Status == "Field Inspection Report Ready")
+    {
+       <div class="row">
+           <div class="col-sm-12"><hr></div>
+            <div class="col-sm-12">
+                <a class="btn btn-primary" asp-action="FIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">FIR</a>            
+            </div>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
+    <div class="row">
+         <div class="col-lg-4">@*First column *@
+            <div class="form-group row">
+                <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Id)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Status" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Status)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FullCert)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="application.Received" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Received)
+                </div>
+            </div>  
+             <div class="form-group row">
+                <label asp-for="application.DatePlanted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.DatePlanted)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Renewal)
+                </div>
+            </div>                 
+        </div>
+        <div class="col-lg-4">@*Second column *@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppType)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="application.CertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.CertYear)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="application.Postmark" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Postmark)
+                </div>
+            </div>  
+            <div class="form-group row">                    
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " disabled asp-for="application.AppLate">
                 </div>                
-                <div class="form-group row">
-                    <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.ApplicantOrganization.NameAndId)
-                    </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.OriginalCertYear) 
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Crop.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Crop.Name)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-2 col-form-label">Class</label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.ClassProduced.ClassProducedTrans)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="MapVe" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.CheckBox("MapsVe", Model.MapVe ?? false, new {@disabled = true})
-                    </div>
-                </div>
+            </div>                    
         </div>
-        <div class="col-lg-6">
-                <div class="form-group row">
-                    <label asp-for="CertYear" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.CertYear)
-                    </div>
+        <div class="col-lg-4">@*Third column *@
+            <div class="form-group row">
+                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="AppType" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AppTypeTrans.AppTypeTrans)
-                    </div>
-                </div>               
-                <div class="form-group row">
-                    <label asp-for="GrowerOrganization.NameAndId" class="col-sm-2 col-form-label">Grower</label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.GrowerOrganization.NameAndId)
-                    </div>
+            </div>             
+            <div class="form-group row">
+                <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Status)
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Variety.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Variety.Name)
-                    </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Deadline) 
                 </div>
-                <div class="form-group row">
-                    <label asp-for="AcresApplied" class="col-sm-2 col-form-label">Acres</label>
-                    <div class="col-sm-10 form-control-plaintext">
-                        @Html.DisplayFor(x => x.AcresApplied)
-                    </div>
+            </div> 
+            <div class="form-group row">
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="application.OverrideLateFee" class="col-form-label col-sm-3"> </label>  <input type="checkbox" class="form-check-input col-sm-1" disabled asp-for="application.OverrideLateFee">    
+                </div>         
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.PaperAppNum" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.PaperAppNum)
                 </div>
+            </div>
         </div>
-    </div>
-</div>
-<div class="container">
-    <div class="col-lg-1 row">
-        <label class="col-form-label">Certificates/Tags</label>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.Certificates)
-                {
-                    <tr>
-                        <td>
-                            Filedownload -
-                            @row.Link
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-     <div class="row">
-        <hr />
     </div>
     <div class="row">
-        <label class="col-form-label">Planting Stock Info</label>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Cert#</th>
-                    <th>Variety</th>
-                    @if(Model.PlantingStocks.First().PoundsPlanted != null || Model.PlantingStocks.Last().PoundsPlanted != null)
+        <div class="col-lg-4"> 
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.WarningFlag)
+                </div>
+            </div>   
+        </div>
+        <div class="col-lg-8">
+            <div class="form-group row">
+                <label asp-for="application.WarningFlag" class="col-sm-2 col-form-label">Warning:</label>
+                <div class="col-sm-10 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ApplicantNotes)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">                                      
+            <div class="form-group row">
+                <label asp-for="application.ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
+                <div class="col-sm-10 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ApplicantOrganization.NameAndId)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">             
+            <div class="form-group row">
+                <label asp-for="application.GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.GrowerOrganization.NameAndId)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">@* Column 1*@
+            <div class="form-group row">
+                <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Crop.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.ClassProduced.ClassProducedTrans)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.FieldName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.FieldName)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">@* Column 2*@
+            <div class="form-group row">
+                <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.EnteredVariety)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.AcresApplied)  (Mapped: @Html.DisplayFor(x => x.application.AreaAcres) )
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="application.County.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.County.Name)
+                </div>
+            </div>  
+        </div>
+        <div class="col-lg-4">@* Column 3*@
+            <div class="form-group row">
+                <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.application.Variety.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" class="col-sm-1 form-check-input form-check-inline" disabled asp-for="application.PackageComplete">
+                </div>                
+            </div>
+             <div class="form-group row">
+                <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.CheckBox("MapsVe", Model.application.MapVe, new {@disabled = true})
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="application.ApplicantComments" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-11 form-control-plaintext">
+            @Html.DisplayFor(x => x.application.ApplicantComments)
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="application.Comments" class="col-sm-1 col-form-label"></label>
+        <div class="col-sm-11 form-control-plaintext">
+            @Html.DisplayFor(x => x.application.Comments)
+        </div>
+    </div>
+    @if(Model.conflicts.Any())
+    {
+        <div class="row">
+            <h3>Historic Overlaps</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Origin</th>
+                        <th>ID</th>
+                        <th>Year</th>
+                        <th>Renewal Of</th>
+                        <th>Crop</th>
+                        <th>Variety</th>
+                        <th>Status</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.conflicts)
                     {
-                        showPounds = true;
-                        <th>Pounds Planted</th>
-                    } 
-                    @if(Model.PlantingStocks.First().PlantsPerAcre != null || Model.PlantingStocks.Last().PlantsPerAcre != null)
-                    { 
-                        showPlantsPerAcre = true;                       
-                        <th>Plants/Acre</th>
-                    }                 
-                    <th>Class</th>
-                    <th>Tag Issued</th>
-                    <th>Grown</th>
-                    @if(Model.PlantingStocks.First().SeedPurchasedFrom != null || Model.PlantingStocks.Last().SeedPurchasedFrom != null)
-                    {
-                        showPurchasedFrom = true;
-                        <th>Purchased From</th>
-                    } 
-                    @if(Model.AppType == "PO")
-                    {
-                        <th>Winter test?</th>
-                        <th>PVX test?</th>
+                        <tr>
+                            <td>@row.Origin</td>
+                            <td>@row.Id</td>
+                            <td>@row.CertYear</td>
+                            <td>@row.RenewedFrom</td>
+                            <td>@row.Crop</td>
+                            <td>@row.Variety</td>
+                            <td>@row.Status</td>
+                            <td><a href="@row.Url">link</a></td>
+                        </tr>                    
                     }
-                    @if(Model.PlantingStocks.First().ThcPercent != null || Model.PlantingStocks.Last().ThcPercent != null)
-                    {
-                        showTHC = true;
-                        <th>THC%</th>
-                    } 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.PlantingStocks)
-                {
+                </tbody>
+                <tfoot>
                     <tr>
-                        <td>
-                            @row.PsCertNum
-                        </td>
-                        <td>@row.PsEnteredVariety</td>
-                        @if(showPounds)
-                        {
-                            <td>@row.PoundsPlanted</td>
-                        }
-                        @if(showPlantsPerAcre)
-                        {
-                            <td>@row.PlantsPerAcre</td>
-                        }                        
-                        <td>@row.PsClassNavigation.ClassProducedTrans</td>
-                        @if(@row.TaggedStateProvince == null)
-                        {
-                            <td>@row.StateCountryTagIssued</td>
-                        } else if(@row.GrownStateProvince.StateProvinceName != null)
-                        {
-                            <td>@row.TaggedStateProvince.StateProvinceName</td>
-                        }  else {
-                            <td>&nbsp;</td>
-                        }                      
-                        <td>@row.GrownStateProvince.StateProvinceName</td>
-                        <td>@row.SeedPurchasedFrom</td>
-                        @if(Model.AppType == "PO")
-                        {
-                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
-                            <td>@Html.DisplayFor(x => row.PvxTest.Value)</td>
-                        }
-                        @if(showTHC)
-                        {
-                            <td>@row.ThcPercent</td>
-                        }
+                        <td colspan="8"> For applications, this is a direct link. For isolation mapping, use the "Find pin by #" function.</td>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </tfoot>
+            </table>
+        </div>
+    }
+</div>
+<div class="container  col-sm-10">
+    @if(Model.application.Certificates.Any())
+    {    
+        <div class="row">
+            <h3>Certificates/Tags</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.Certificates)
+                    {
+                        <tr>
+                            <td>
+                                Filedownload -
+                                @row.Link
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <hr />
+        </div>
+    }
+    @if(Model.application.PlantingStocks.Any())
+    {    
+        <div class="row">
+            <h3>Planting Stock Info</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cert#</th>
+                        <th>Variety</th>
+                        @if(Model.application.PlantingStocks.First().PoundsPlanted != null || Model.application.PlantingStocks.Last().PoundsPlanted != null)
+                        {
+                            showPounds = true;
+                            <th>Pounds Planted</th>
+                        } 
+                        @if(Model.application.PlantingStocks.First().PlantsPerAcre != null || Model.application.PlantingStocks.Last().PlantsPerAcre != null)
+                        { 
+                            showPlantsPerAcre = true;                       
+                            <th>Plants/Acre</th>
+                        }                 
+                        <th>Class</th>
+                        <th>Tag Issued</th>
+                        <th>Grown</th>
+                        @if(Model.application.PlantingStocks.First().SeedPurchasedFrom != null || Model.application.PlantingStocks.Last().SeedPurchasedFrom != null)
+                        {
+                            showPurchasedFrom = true;
+                            <th>Purchased From</th>
+                        } 
+                        @if(Model.application.AppType == "PO")
+                        {
+                            <th>Winter test?</th>
+                            <th>PVX test?</th>
+                        }
+                        @if(Model.application.PlantingStocks.First().ThcPercent != null || Model.application.PlantingStocks.Last().ThcPercent != null)
+                        {
+                            showTHC = true;
+                            <th>THC%</th>
+                        } 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.PlantingStocks.OrderBy(p => p.PsId))
+                    {
+                        <tr>
+                            <td>
+                                @row.PsCertNum
+                            </td>
+                            <td>@row.PsEnteredVariety</td>
+                            @if(showPounds)
+                            {
+                                <td>@row.PoundsPlanted</td>
+                            }
+                            @if(showPlantsPerAcre)
+                            {
+                                <td>@row.PlantsPerAcre</td>
+                            }                        
+                            <td>@row.PsClassNavigation.ClassProducedTrans
+                                @if(row.PsAccession != null){
+                                    <span>- @row.PsAccession</span>
+                                }
+                            </td>
+                            @if(@row.TaggedStateProvince != null)
+                            {
+                                <td>@row.TaggedStateProvince.Name</td>
+                            } else {
+                                <td>???</td>
+                            }
+                            @if(@row.GrownStateProvince.Name != null)
+                            {
+                                <td>@row.GrownStateProvince.Name</td>
+                            }  else {
+                                <td>???</td>
+                            }                                           
+                            @if(showPurchasedFrom)
+                            {
+                                <td>@row.SeedPurchasedFrom</td>
+                            }                        
+                            @if(Model.application.AppType == "PO")
+                            {
+                                <td>@Html.DisplayFor(x => row.WinterTest)</td>
+                                <td>@Html.DisplayFor(x => row.PvxTest)</td>
+                            }
+                            @if(showTHC)
+                            {
+                                <td>@row.ThcPercent</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    } else {
+         <div class="row">
+            <h3>Planting Stock Info</h3> <br>
+            None found!
+        </div>
+    }
     <div class="row">
         <hr />
-    </div>  
-    <div class="row">
-        <label class="col-form-label">Field History</label>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Year</th>
-                <th>Crop</th>
-                <th>Variety</th>
-                <th>Application #</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.FieldHistories)
-            {
+    </div> 
+    @if(Model.application.FieldHistories.Any()) 
+    {
+        <div class="row">
+            <h3>Field History</h3>
+            <table class="table">
+                <thead>
                 <tr>
-                    <td>@row.Year</td>
-                    <td>@row.FHCrops.Name</td>
-                    <td>@row.Variety</td>
-                    <td>@row.AppNumber</td>
+                    <th>Year</th>
+                    <th>Crop</th>
+                    <th>Variety</th>
+                    <th>Application #</th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    </div>  
+                </thead>
+                <tbody>
+                @foreach (var row in Model.application.FieldHistories.OrderBy(h => h.Year))
+                {
+                    <tr>
+                        <td>@row.Year</td>
+                        <td>@row.FHCrops.Name</td>
+                        <td>@row.Variety</td>
+                        <td>@row.AppNumber</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div> 
+        <div class="row">
+            <h3>Changes made to this application:</h3>
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
+                {
+                    <tr>
+                        <td>@row.ColumnChange</td>
+                        <td>@row.OldValue</td>
+                        <td>@row.NewValue</td>
+                        <td>@row.DateChanged</td>
+                        <td>@row.Employee.Name</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
+        </div>
+    } else {
+        <div class="row">
+            <h3>Field History</h3><br>
+            None found
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        function check_accept () {
+           
+            var complete = $("#application_PackageComplete").is(':checked');
+            var late = $("#application_AppLate").is(':checked');
+            var override = $("#application_OverrideLateFee").is(':checked');
+            var msg = '';
+            var bolCheck = false;
+            
+            if (!complete) {
+                msg = 'Accept application even when incomplete? \n This will add an extra $50 fee.';
+                bolCheck = true;
+            }
+            if (late && !override) {
+                    msg += '\n Application is currently late. Please double check postmark date \n This will add an extra $100 fee.';
+                    bolCheck = true;
+            }
+            if (bolCheck) {
+                    return confirm(msg);
+            }
+            return true;
+            
+        } 
+    </script>
+}

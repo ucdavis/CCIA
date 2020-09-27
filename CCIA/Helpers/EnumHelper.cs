@@ -16,5 +16,11 @@ namespace CCIA.Helpers
                             .GetCustomAttribute<DisplayAttribute>()
                             .GetName();
         }
+
+        public static List<string> GetListOfDisplayNames<T>() where T : struct
+        {
+            Type t = typeof(T);
+            return !t.IsEnum ? null : Enum.GetValues(t).Cast<Enum>().Select(x => x.GetDisplayName()).ToList();
+        }
     }
 }

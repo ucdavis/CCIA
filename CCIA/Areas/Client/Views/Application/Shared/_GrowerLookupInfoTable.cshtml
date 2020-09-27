@@ -19,7 +19,7 @@
         @foreach (var org in Model.Orgs)
         {
             <tr>
-                <td><a class="btn btn-primary" href="/Application/@Model.ActionType/?orgId=@org.OrgId&appTypeId=@Model.AppTypeId">Select</a>
+                <td><a class="btn btn-primary" href="/Client/Application/@Model.ActionType/?orgId=@org.OrgId&appTypeId=@Model.AppTypeId">Select</a>
                 <td>@org.OrgId</td>
                 <td>@org.OrgName</td>
                 @if (org.Address != null)
@@ -28,7 +28,7 @@
                     <td>@org.Address.City</td>
                     @if (org.Address.StateProvince != null)
                     {
-                        <td>@org.Address.StateProvince.StateProvinceName</td>
+                        <td>@org.Address.StateProvince.Name</td>
                     }                
                 }
             </tr>

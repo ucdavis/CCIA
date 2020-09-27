@@ -1,0 +1,140 @@
+@model CCIA.Models.DetailsViewModels.AdminFieldInspectionViewModel
+
+
+<h2>Edit Inspection for AppId @Model.FI.AppId</h2> 
+
+<form asp-action="EditInspection">
+    @Html.HiddenFor(x => x.FI.Id)
+    <div class="container col-lg-5">
+        <div class="row">
+             <div class="col-lg-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+                    <label asp-for="FI.DateInspected" class="col-sm-3 col-form-label"></label>
+                    <input type="text" class="col-sm-3 form-control datepicker" asp-for="FI.DateInspected">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="FI.DateInspected" data-valmsg-replace="true"></span>                   
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.InspectorId" class="col-sm-3 col-form-label"></label>
+                    <select asp-for="FI.InspectorId" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.Employees, "Id", "Name"))"></select>
+                </div>                
+                <div class="form-group row">
+                    <div class="form-check form-check-inline col-sm-12">
+                        <label asp-for="FI.ApplicantContacted" class="col-sm-3 col-form-label"></label>
+                        <input type="checkbox" asp-for="FI.ApplicantContacted">
+                    </div>
+                </div> 
+                <div class="form-group row">
+                    <div class="form-check form-check-inline col-sm-12">
+                        <label asp-for="FI.ApplicantPresent" class="col-sm-3 col-form-label"></label>
+                        <input type="checkbox" asp-for="FI.ApplicantPresent">
+                    </div>
+                </div> 
+                  
+            @if(Model.potatoApp)
+            {
+                <div class="form-group row">
+                    <label asp-for="FI.TotalPlantsInspected" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.TotalPlantsInspected" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.TotalPlantsInspected" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.OtherVarieties" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.OtherVarieties" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.OtherVarieties" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Mosaic" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.Mosaic" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.Mosaic" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Leafroll" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.Leafroll" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.Leafroll" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Blackleg" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.Blackleg" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.Blackleg" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Calico" class="col-sm-3 col-form-label"></label>
+                   <input asp-for="FI.Calico" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.Calico" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.OtherDiseases" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.OtherDiseases" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.OtherDiseases" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Insects" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="FI.Insects" class="col-sm-2 form-control">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.Insects" data-valmsg-replace="true"></span>
+                </div>
+            } else {
+                <div class="form-group row">
+                    <label asp-for="FI.Maturity" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Maturity" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Isolation" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Isolation" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.EstimatedYield" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.EstimatedYield" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.OtherVarietiesComment" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.OtherVarietiesComment" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.OtherCrop" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.OtherCrop" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Disease" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Disease" rows="3" class="col-sm-6"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Appearance" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Appearance" rows="3" class="col-sm-6"></textarea>
+                </div>
+            }
+                <div class="form-group row">
+                    <label asp-for="FI.Weeds" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Weeds" rows="3" class="col-sm-6"></textarea>                    
+                </div>
+                <div class="form-group row">
+                    <label asp-for="FI.Comments" class="col-sm-3 col-form-label"></label>
+                    <textarea asp-for="FI.Comments" rows="3" class="col-sm-6"></textarea>
+                </div> 
+        <div class="row">
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="FIR" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.FI.AppId">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+    
+        
+    
+    </script>
+}

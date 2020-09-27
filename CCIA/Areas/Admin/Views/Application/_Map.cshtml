@@ -1,0 +1,18 @@
+@model CCIA.Models.AdminMapFieldsViewModel
+
+<div class="container">
+    
+    <div id="MapDiv" style="position:relative;width:800px;height:600px;float:left; z-index: 1">
+        <div id="myMap" style="position:relative; width:800px;height:600px;"></div>
+        <input type="hidden" ID="showDrawingTools" Value="0" />
+    </div> &nbsp;<br/>
+    The following apps did not map: 
+    <div id="lblIDs">
+        @foreach (var item in Model.app)
+            {
+                @item<br> 
+            }
+    </div>     
+</div>
+
+<input type="hidden" id="data" value="@Model.data">

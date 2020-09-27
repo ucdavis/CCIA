@@ -187,7 +187,7 @@ namespace CCIA.Helpers
                 GrowerId = app.GrowerId,
                 MapVe = false,
                 SelectedVarietyId = app.SelectedVarietyId,
-                Status = "Pending supporting material",
+                Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName(),
                 WarningFlag = false,
 
                 FieldHistories = app.FieldHistories

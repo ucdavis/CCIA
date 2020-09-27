@@ -1,0 +1,88 @@
+@model CCIA.Models.DetailsViewModels.AdminPSViewModel
+
+
+<h2>Edit Planting Stock for AppId @Model.plantingStocks.AppId</h2> 
+
+<form asp-action="EditPS">
+    @Html.HiddenFor(x => x.plantingStocks.PsId)
+    <div class="container">
+        <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div> 
+        <div class="form-group row required">
+            <label asp-for="plantingStocks.PsCertNum" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsCertNum">
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.PsCertNum" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsEnteredVariety" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsEnteredVariety">
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.PsEnteredVariety" data-valmsg-replace="true"></span>
+        </div>
+        @if(Model.plantingStocks.PoundsPlanted != null){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.PoundsPlanted" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PoundsPlanted">
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.PoundsPlanted" data-valmsg-replace="true"></span>
+            </div>
+        }
+        @if(Model.plantingStocks.PlantsPerAcre != null){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.PlantsPerAcre" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PlantsPerAcre">
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.PlantsPerAcre" data-valmsg-replace="true"></span>
+            </div>
+        }
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsClass" class="col-sm-3 col-form-label"></label>            
+            <select asp-for="plantingStocks.PsClass" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.psClass, "ClassProducedId", "NameAndAppType"))"></select> 
+        </div>
+        <div class="form-group row">
+            <label asp-for="plantingStocks.PsAccession" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.PsAccession">
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.PsAccession" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="plantingStocks.StateCountryTagIssued" class="col-sm-3 col-form-label"></label>            
+            <select asp-for="plantingStocks.StateCountryTagIssued" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "StateProvinceName"))"></select> 
+        </div>
+        <div class="form-group row">
+            <label asp-for="plantingStocks.StateCountryGrown" class="col-sm-3 col-form-label"></label>            
+            <select asp-for="plantingStocks.StateCountryGrown" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "StateProvinceName"))"></select> 
+        </div>
+        @if(Model.plantingStocks.SeedPurchasedFrom != null){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.SeedPurchasedFrom" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.SeedPurchasedFrom">
+                
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.SeedsPurchasedFrom" data-valmsg-replace="true"></span>
+            </div>
+        }
+        @if(Model.potatoApp){
+            <div class="form-group row">
+                <label asp-for="plantingStocks.WinterTest" class="col-sm-3 col-form-label"></label>            
+                <input type="checkbox" class="col-sm-9 form-control" asp-for="plantingStocks.WinterTest">
+            </div>
+            <div class="form-group row">
+                <label asp-for="plantingStocks.PvxTest" class="col-sm-3 col-form-label"></label>            
+                <input type="checkbox" class="col-sm-9 form-control" asp-for="plantingStocks.PvxTest">
+            </div>
+        } 
+        @if(Model.plantingStocks.ThcPercent != null){
+             <div class="form-group row">
+                <label asp-for="plantingStocks.ThcPercent" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-9 form-control" asp-for="plantingStocks.ThcPercent">
+                
+            <span class="field-validation-valid text-danger" data-valmsg-for="plantingStocks.ThdPercent" data-valmsg-replace="true"></span>
+            </div>
+        }
+        <div class="col-lg-12">            
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="Edit" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.plantingStocks.AppId">Cancel</a>                     
+        </div> 
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
