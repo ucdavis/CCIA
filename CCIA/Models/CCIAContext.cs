@@ -2823,7 +2823,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.StateProvinceCode).HasMaxLength(2);
 
-                entity.Property(e => e.StateProvinceName)
+                entity.Property(e => e.Name).HasColumnName("StateProvinceName")
                     .IsRequired()
                     .HasMaxLength(250);
             });

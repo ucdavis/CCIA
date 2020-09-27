@@ -32,12 +32,12 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
             var seed = new NewOOSSeeds();
             seed.CountyDrawn = countyId; 
             seed.CertYear = CertYearFinder.CertYear;
-            var cal = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();           
+            var cal = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();           
            
 
             var viewModel = new SeedsCreateOOSViewModel
             {
-                States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
                 ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
@@ -56,12 +56,12 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         {   
             // TODO : get real org ID!
             var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync(); 
-            var cal = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();           
+            var cal = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();           
             var currentCertYear =  CertYearFinder.CertYear;
 
             var viewModel = new SeedsCreateOOSViewModel
             {
-                States =  await _dbContext.StateProvince.Where(s => s.StateProvinceName != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.StateProvinceName).ToListAsync(),
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
                 ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),

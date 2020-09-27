@@ -18,8 +18,8 @@ namespace CCIA.Models
             
             var stateProvinces = await _dbContext.StateProvince
                 .OrderByDescending(s => s.CountryId)
-                .ThenBy(s => s.StateProvinceName)
-                .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } )
+                .ThenBy(s => s.Name)
+                .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, Name = s.Name } )
                 .ToListAsync();
             
             var countries = await _dbContext.Countries
@@ -27,7 +27,7 @@ namespace CCIA.Models
                 .Select(c => new Countries { Id = c.Id, Name = c.Name })
                 .ToListAsync();
             
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
 
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
                 .OrderBy(c => c.Name)
@@ -58,8 +58,8 @@ namespace CCIA.Models
 
             var stateProvinces = await _dbContext.StateProvince
                 .OrderByDescending(s => s.CountryId)
-                .ThenBy(s => s.StateProvinceName)
-                .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, StateProvinceName = s.StateProvinceName } )
+                .ThenBy(s => s.Name)
+                .Select(s => new StateProvince { StateProvinceId = s.StateProvinceId, Name = s.Name } )
                 .ToListAsync();
             
             var countries = await _dbContext.Countries
@@ -67,7 +67,7 @@ namespace CCIA.Models
                 .Select(c => new Countries { Id = c.Id, Name = c.Name })
                 .ToListAsync();
             
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
 
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == state)
                 .OrderBy(c => c.Name)

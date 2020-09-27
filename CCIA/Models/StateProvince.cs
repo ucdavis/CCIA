@@ -10,7 +10,7 @@ namespace CCIA.Models
         public string StateProvinceCode { get; set; }
         public int CountryId { get; set; }
         [DisplayName("State")]        
-        public string StateProvinceName { get; set; }
+        public string Name { get; set; }
         public DateTime DateModified { get; set; }
 
         public string StateWithCountry 
@@ -19,9 +19,9 @@ namespace CCIA.Models
             {
                 if(CountryId==58)
                 {
-                    return $"{StateProvinceName}, USA";            
+                    return $"{Name}, USA";            
                 }
-                return StateProvinceName;
+                return Name;
             }
         
         }

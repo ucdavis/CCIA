@@ -27,7 +27,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                 .ThenInclude(v => v.Crop)
                 .Include(a => a.AppTypeTrans)
                 .FirstAsync();
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
             // TODO : get real org ID!
             var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewSeeds();
@@ -65,7 +65,7 @@ namespace CCIA.Models.SeedsCreateViewModel
                 .ThenInclude(v => v.Crop)
                 .Include(a => a.AppTypeTrans)
                 .FirstAsync();
-            var state = await _dbContext.StateProvince.Where(s => s.StateProvinceName == "California").Select(s => s.StateProvinceId).FirstAsync();
+            var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
             // TODO : get real org ID!
             var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
             

@@ -20,8 +20,8 @@ namespace CCIA.Models.DetailsViewModels
            var ps = await _dbContext.PlantingStocks.Where(p => p.PsId == psId)                
                 .Include(p => p.PsClassNavigation)
                 .FirstAsync();  
-            var statesWNull = await _dbContext.StateProvince.OrderBy(s => s.StateProvinceName).ToListAsync();
-            statesWNull.Insert(0, new StateProvince{ StateProvinceId = 0, StateProvinceName = "Select State/Country"});
+            var statesWNull = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
+            statesWNull.Insert(0, new StateProvince{ StateProvinceId = 0, Name = "Select State/Country"});
             var viewModel = new AdminPSViewModel
             {
                 plantingStocks = ps,

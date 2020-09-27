@@ -54,7 +54,7 @@
                         <td>&nbsp;</td>
                         <td>City, State Zip:</td>
                         <td nowrap="true">
-                            @Model.BulkSalesCertificate.PurchaserCity, @Model.BulkSalesCertificate.PurchaserState.StateProvinceName @Model.BulkSalesCertificate.PurchaserZip                           
+                            @Model.BulkSalesCertificate.PurchaserCity, @Model.BulkSalesCertificate.PurchaserState.Name @Model.BulkSalesCertificate.PurchaserZip                           
                            <br/>@Model.BulkSalesCertificate.PurchaserCountry.Name                            
                         </td>
                     </tr>
@@ -131,7 +131,7 @@
                         <td>City, State, Zip:</td>
                         <td nowrap="true">
                             @Model.BulkSalesCertificate.ConditionerOrganization.Address.City, 
-                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.StateProvince.StateProvinceName
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.StateProvince.Name
                              @Model.BulkSalesCertificate.ConditionerOrganization.Address.PostalCode<br/>
                         @Model.BulkSalesCertificate.ConditionerOrganization.Address.Countries.Name</td>
                     </tr>
