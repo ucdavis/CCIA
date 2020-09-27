@@ -79,17 +79,17 @@ namespace CCIA.Models.DetailsViewModels
         public static async Task<AdminViewModel> CreateFIR(CCIAContext _dbContext, int id)
         {                   
             var app = await _dbContext.Applications.Where(a => a.Id == id)
+                .Include(a => a.AppTypeTrans)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.ApplicantOrganization)
+                .ThenInclude(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
                 .Include(a => a.AppCertRad)
-                .Include(a => a.County)
-                .Include(a => a.FieldInspection).ThenInclude(i => i.InspectorEmployee)
-                .Include(a => a.FieldInspectionReport).ThenInclude(r => r.CompleteEmployee)
-                .Include(a => a.FieldInspectionReport).ThenInclude(r => r.POPassClass)
+                .Include(a => a.County)               
+                .Include(a => a.FieldInspectionReport).ThenInclude(r => r.CompleteEmployee)                
                 .FirstOrDefaultAsync();  
             var viewModel = new AdminViewModel
             {

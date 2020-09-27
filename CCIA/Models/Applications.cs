@@ -262,6 +262,10 @@ namespace CCIA.Models
             } 
         }
 
+
+
+
+
         public string FullCert 
         { 
             get
@@ -295,6 +299,49 @@ namespace CCIA.Models
 
             }
         }   
+
+         public string CertNumberSent 
+        { 
+            get
+            {
+                if(FieldInspectionReport == null || ClassProduced == null)
+                {
+                    return "";
+                }
+                if(FieldInspectionReport.AcresApproved == 0 && FieldInspectionReport.AcresGrowout == 0)
+                {
+                    return "";
+                }
+                string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+                int rad = -1;
+                if(AppCertRad != null){
+                    rad = AppCertRad.Rad;
+                }
+                if(AppType == "PO")
+                {
+                    return "";
+                }
+                if(AppType == "PV")
+                {
+                    return $"{certYearAbbrev}CA-PVG-{Id} for {ClassProduced.ClassProducedTrans}";
+                }
+                if(AppType=="GQ")
+                {
+                    return $"{certYearAbbrev}CA-QA-{Id} for {ClassProduced.ClassProducedTrans}";
+                }
+                if(AppType=="RQ")
+                {
+                    return $"{certYearAbbrev}CA-RQA-{Id} for {ClassProduced.ClassProducedTrans}";
+                }  
+                if(CertYear < 2007)
+                {
+                    return $"{certYearAbbrev}{Crop.Annual}-{CertNum} for {ClassProduced.ClassProducedTrans}";
+                }
+                return $"{certYearAbbrev}CA-{rad}-{CertNum} for {ClassProduced.ClassProducedTrans}";
+
+            }
+        }       
+	
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public double? AreaAcres {  get; private set; }  
@@ -345,6 +392,22 @@ namespace CCIA.Models
                 }                
                 return false;
             }
+        }
+
+        public bool VarietyStatement 
+        {
+             get
+             {
+                 if(Variety != null)
+                 {
+                     if(Variety.Status == "Certified" || AppType == "GQ" || AppType == "PV" || AppType == "RQ")
+                     {
+                         return false;
+                     }
+                     return true;
+                 }
+                 return false;
+             }
         }
 
         

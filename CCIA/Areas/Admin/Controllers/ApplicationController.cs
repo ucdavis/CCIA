@@ -345,7 +345,7 @@ namespace CCIA.Controllers.Admin
             var model = await AdminViewModel.CreateFIR(_dbContext, id);
             return View(model);
         }
-       
+       // Add ability to upload documentation for FIR
         public async Task<IActionResult> EditFIR(int id)
         {
             var model = await AdminFIRViewModel.Create(_dbContext, id);            

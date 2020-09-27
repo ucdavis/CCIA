@@ -43,6 +43,15 @@ namespace CCIA.Models
         public decimal? IsolationParentB { get; set; }
         public decimal? IsolationParentR { get; set; }
 
+        public string GenusSpecies 
+        { 
+            get
+            {
+                return $"{Genus} {Species}";
+
+            }
+        }
+
         [StringLength(256)]
         [Display(Name = "Crop")]
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
