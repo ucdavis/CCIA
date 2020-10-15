@@ -130,7 +130,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(b => b.AdminEmployee)
                 .Include(b => b.BulkSalesCertificatesShares)
                 .ToListAsync(),
-                certYears = await _dbContext.BulkSalesCertificates.Where(a => a.ConditionerOrganizationId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.Date.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.BulkSalesCertificates.Where(a => a.ConditionerOrganizationId == orgId).OrderByDescending(a => a.Date.Year).Select(a => a.Date.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Bulk Sales Certificates",
                 DropDownText = "Display Sales Certificates for Year:"
@@ -176,7 +176,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(o => o.Class)
                 .Include(o => o.Country)
                 .ToListAsync(),
-                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.DataEntryYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.DataEntryYear).Select(a => a.DataEntryYear).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "OECD",
                 DropDownText = "Display OECD Forms for Data Entry Year:"
@@ -230,7 +230,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(st => st.Application)
                 .ThenInclude(a => a.ClassProduced)
                 .ToListAsync(),
-                certYears = await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertificateDate.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).OrderByDescending(a => a.CertificateDate.Year).Select(a => a.CertificateDate.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Seed Transfer Certificates",
                 DropDownText = "Display Seed Transfer Certificates for Creation Year:"
@@ -285,7 +285,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(t => t.TagAbbrevClass)
                 .Include(t => t.AbbrevTagType)
                 .ToListAsync(),
-                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId).OrderByDescending(a => a.CertYear).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
                 DropDownText = "Display Tags Requested in Calendar Year:"

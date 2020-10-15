@@ -66,7 +66,7 @@ namespace CCIA.Models
         [DisplayName("Cancelled?")]
         public int cancelled { get; set; }
 
-        [DisplayName("VE Map?")]
+        [DisplayName("CCIA Map?")]
         public int veMap { get; set; }
 
         [DataType(DataType.Date)]
