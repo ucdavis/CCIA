@@ -29,7 +29,7 @@ namespace CCIA.Controllers.Admin
         {            
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
+                certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
             }
             var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, false);
             return View(model);
@@ -54,7 +54,7 @@ namespace CCIA.Controllers.Admin
         {            
             if (certYear == 0)
             {
-                certYear = CertYearFinder.CertYear;
+                certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
             }
             var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, true);
             return View("Index", model);
