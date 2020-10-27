@@ -255,7 +255,11 @@ namespace CCIA.Models
                 if(AppType=="RQ")
                 {
                     return $"{certYearAbbrev}CA-RQA-{Id}";
-                }               
+                }   
+                if(AppType=="LT")
+                {
+                    return $"{certYearAbbrev}CA-LT-{Id}";
+                }                
 
                 return "";
 
@@ -290,6 +294,14 @@ namespace CCIA.Models
                 if(AppType=="RQ")
                 {
                     return $"{certYearAbbrev}CA-RQA-{Id}";
+                }  
+                if(AppType=="LT")
+                {
+                    return $"{certYearAbbrev}CA-LT-{Id}";
+                }  
+                if(AppType=="HP")
+                {
+                    return $"{certYearAbbrev}CA-HP-{rad}-{CertNum}";
                 }  
                 if(CertYear < 2007)
                 {
