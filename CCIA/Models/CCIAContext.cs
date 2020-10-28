@@ -265,6 +265,10 @@ namespace CCIA.Models
                 
                 entity.HasOne(d => d.Application);
 
+                entity.HasOne(d => d.StateOfOrigin);
+
+                entity.HasOne(d => d.CountryOfOrigin);
+
             });
 
             modelBuilder.Entity<Standards>(entity => {

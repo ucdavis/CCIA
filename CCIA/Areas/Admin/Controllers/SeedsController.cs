@@ -7,7 +7,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.IndexViewModels;
+using CCIA.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
@@ -38,14 +38,15 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         
-        public async Task<IActionResult> Index(int certYear)
-        {            
-            if (certYear == 0)
-            {
-                certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
-            }
-            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, false);
+        public async Task<IActionResult> Details(int id)
+        {  
+            var model = await AdminSeedsViewModel.CreateDetails(_dbContext, id);
             return View(model);
         }
     }

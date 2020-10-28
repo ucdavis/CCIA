@@ -17,6 +17,8 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public Applications Application { get; set; }
         public int? SampleFormNumber { get; set; }
+        [Display(Name = "Sample Form Date")] 
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
@@ -50,7 +52,11 @@ namespace CCIA.Models
         [Display(Name="County Drawn")]
         public int? CountyDrawn { get; set; }
         public int? OriginState { get; set; }
+        [ForeignKey("OriginState")]
+        public StateProvince StateOfOrigin { get; set; }
         public int? OriginCountry { get; set; }
+        [ForeignKey("OriginCountry")]
+        public Countries CountryOfOrigin { get; set; }
         public bool Bulk { get; set; }
         public bool OriginalRun { get; set; }
         public bool Remill { get; set; }
