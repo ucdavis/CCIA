@@ -269,6 +269,10 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.CountryOfOrigin);
 
+                entity.HasOne(d => d.CountySampleDrawn);
+
+                entity.HasOne(d => d.ContactEntered);
+
             });
 
             modelBuilder.Entity<Standards>(entity => {

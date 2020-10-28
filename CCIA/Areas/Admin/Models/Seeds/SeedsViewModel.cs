@@ -32,7 +32,8 @@ namespace CCIA.Models.ViewModels
             labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid);
 
            var seed = await _dbContext.Seeds.Where(s => s.Id == sid)
-                .Include(a => a.ApplicantOrganization)
+                .Include(s => s.ApplicantOrganization)
+                .Include(s => s.ConditionerOrganization)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(s => s.Application)
@@ -45,6 +46,8 @@ namespace CCIA.Models.ViewModels
                 .Include(l => l.LabResults)
                 .Include(s => s.CountryOfOrigin)
                 .Include(s => s.StateOfOrigin)
+                .Include(s => s.CountySampleDrawn)
+                .Include(s => s.ContactEntered)
                 .FirstOrDefaultAsync();
             var viewModel = new AdminSeedsViewModel
             {

@@ -51,6 +51,8 @@ namespace CCIA.Models
         public string Status { get; set; }
         [Display(Name="County Drawn")]
         public int? CountyDrawn { get; set; }
+        [ForeignKey("CountyDrawn")]
+        public County CountySampleDrawn { get; set; }
         public int? OriginState { get; set; }
         [ForeignKey("OriginState")]
         public StateProvince StateOfOrigin { get; set; }
@@ -81,7 +83,10 @@ namespace CCIA.Models
         public decimal? MinimumFee { get; set; }
         public bool BillTable { get; set; }
         public bool LotCertOk { get; set; }
+        [Display(Name="Entered By")]
         public int? UserEntered { get; set; }
+        [ForeignKey("UserEntered")]
+        public Contacts ContactEntered { get; set; }
         public bool Submitted { get; set; }
         public bool Confirmed { get; set; }
         public DateTime? ConfirmedAt { get; set; }

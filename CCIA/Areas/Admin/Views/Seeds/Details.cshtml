@@ -45,6 +45,24 @@
                         <div class="col-sm-9 form-control-plaintext">
                             @Model.seed.GetVarietyName()
                         </div>
+                    </div>  
+                    <div class="form-group row">
+                        <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
+                        </div>
+                    </div>                  
+                    <div class="form-group row">
+                        <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.SampleDrawnBy)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.UserEntered" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ContactEntered.Name)
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Seed Origin</label>
@@ -90,13 +108,32 @@
                         <div class="col-sm-9 form-control-plaintext">
                             @Model.seed.GetCropName()
                         </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.NotFinallyCertified)
+                        </div>
                     </div>                    
                     <div class="form-group row">
                         <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
                         <div class="col-sm-9 form-control-plaintext">
                             @Html.DisplayFor(x => x.seed.Status)
                         </div>
-                    </div>        
+                    </div> 
+                    <div class="form-group row">
+                        <label asp-for="seed.CountyDrawn" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.CountySampleDrawn.Name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Lot Type</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            Original Run @Html.DisplayFor(x => x.seed.OriginalRun) | Remill  @Html.DisplayFor(x => x.seed.Remill) | 
+                            OECD  @Html.DisplayFor(x => x.seed.OECDLot)
+                        </div>
+                    </div>       
                 </div>
             </div>
             <div class="col-sm-12">
