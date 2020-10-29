@@ -7,7 +7,7 @@ namespace CCIA.Models
     public partial class SampleLabResults
     {
         public int SeedsId { get; set; }
-        public DateTime? DateComplete { get; set; }
+        
 
         [Display(Name = "Germination")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
@@ -24,9 +24,9 @@ namespace CCIA.Models
              return "";
             }        
         }         
-        public int? GermDays { get; set; }
+       
         public string GermResults { get; set; }
-        public string GermTemp { get; set; }
+       
         [Display(Name = "Inert")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         [Range(0.0, 100)]
@@ -60,6 +60,22 @@ namespace CCIA.Models
         }  
         public string OtherVarietyComments { get; set; }
         public int? OtherVarietyCount { get; set; }
+        [Display(Name = "Other Kind")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? OtherKindPercent { get; set; }
+        public string OtherKindComments { get; set; }
+        public string OtherKindValue 
+        { 
+            get
+            {
+                if(OtherKindPercent.HasValue)
+             {
+                 return (OtherKindPercent.Value * 100).ToString("0.####");
+             } 
+             return "";
+            }           
+        }  
         [Display(Name = "Other Crop")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         [Range(0.0, 100)]
@@ -126,7 +142,7 @@ namespace CCIA.Models
         [Display(Name = "Purity Grams")]
         [Range(0.0, 100000)]
         public decimal? PurityGrams { get; set; }
-        public bool? CciaGerm { get; set; }
+        
         [Display(Name = "Hard Seed")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         [Range(0.0, 100)]
@@ -149,9 +165,7 @@ namespace CCIA.Models
         [Display(Name = "Dodder Grams")]
         [Range(0.0, 100000)]
         public decimal? DodderGrams { get; set; }
-        public decimal? LbsCanceled { get; set; }
-        public decimal? LbsPassed { get; set; }
-        public decimal? LbsRejected { get; set; }
+        
         public DateTime? DataEntryDate { get; set; }
         public string DataEntryUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -166,7 +180,7 @@ namespace CCIA.Models
         public Organizations LabOrganization { get; set; }
         public int? PrivateLabId { get; set; }
         public string PrivateLabNumber { get; set; }
-        public bool? CciaConfirmed { get; set; }
+        public bool CciaConfirmed { get; set; }
         public DateTime? ConfirmDate { get; set; }
         public string ConfirmUser { get; set; }
         [Display(Name = "Badly Discolored")]

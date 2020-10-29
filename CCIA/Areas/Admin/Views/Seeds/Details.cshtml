@@ -169,7 +169,7 @@
                 <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
         
         
-                @await Html.PartialAsync("_SampleLabResultsDetails.cshtml", Model.LabsAndStandards)
+                @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
                 <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
             </div>
         </div>

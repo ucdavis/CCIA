@@ -2874,9 +2874,7 @@ namespace CCIA.Models
                 entity.Property(e => e.CciaConfirmed)
                     .HasColumnName("ccia_confirmed")
                     .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CciaGerm).HasColumnName("ccia_germ");
-
+                
                 entity.Property(e => e.ChewingInsectDamagePercent)
                     .HasColumnName("chewing_insect_damage_percent")
                     .HasColumnType("numeric(8, 7)");
@@ -2897,11 +2895,7 @@ namespace CCIA.Models
                 entity.Property(e => e.DataEntryUser)
                     .HasColumnName("data_entry_user")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateComplete)
-                    .HasColumnName("date_complete")
-                    .HasColumnType("datetime");
+                    .IsUnicode(false);                
 
                 entity.Property(e => e.DodderGrams)
                     .HasColumnName("dodder_grams")
@@ -2914,9 +2908,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ForeignMaterialsComments)
                     .HasColumnName("foreign_materials_comments")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GermDays).HasColumnName("germ_days");
+                    .IsUnicode(false);              
 
                 entity.Property(e => e.HardSeedPercent)
                     .HasColumnName("germ_hard_seed")
@@ -2928,12 +2920,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.GermResults)
                     .HasColumnName("germ_results")
-                    .HasColumnType("char(1)");
-
-                entity.Property(e => e.GermTemp)
-                    .HasColumnName("germ_temp")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasColumnType("char(1)");                
 
                 entity.Property(e => e.InertComments)
                     .HasColumnName("inert_comments")
@@ -2942,19 +2929,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.InertPercent)
                     .HasColumnName("inert_percent")
-                    .HasColumnType("numeric(8, 7)");
-
-                entity.Property(e => e.LbsCanceled)
-                    .HasColumnName("lbs_canceled")
-                    .HasColumnType("numeric(16, 2)");
-
-                entity.Property(e => e.LbsPassed)
-                    .HasColumnName("lbs_passed")
-                    .HasColumnType("numeric(16, 2)");
-
-                entity.Property(e => e.LbsRejected)
-                    .HasColumnName("lbs_rejected")
-                    .HasColumnType("numeric(16, 2)");
+                    .HasColumnType("numeric(8, 7)");                
 
                 entity.Property(e => e.NoxiousComments)
                     .HasColumnName("noxious_comments")
@@ -3050,6 +3025,10 @@ namespace CCIA.Models
                 entity.Property(e => e.WeedSeedPercent)
                     .HasColumnName("weed_seed_percent")
                     .HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.OtherKindPercent).HasColumnName("other_kind_percent").HasColumnType("numberic(8, 7)");
+
+                entity.Property(e => e.OtherKindComments).HasColumnName("other_kind_comments");
 
                 entity.HasOne(d => d.LabOrganization);
 

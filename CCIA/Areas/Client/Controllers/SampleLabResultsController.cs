@@ -101,20 +101,12 @@ namespace CCIA.Controllers.Client
                 if (errorList.Assay1Error != null)
                 {
                     ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
-                }
-                // if (errorList.Assay2Error != null)
-                // {
-                //     ModelState.AddModelError("Labs.AssayTest2", errorList.Assay2Error);
-                // }
-
+                }               
                 ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot");
 
                 var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
                 return View(errorModel);
             }
-
-            //var resultsToUpdate = await _dbContext.SampleLabResults.Where(s => s.SeedsId == id).FirstOrDefaultAsync();
-
 
             var model = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
             return View(model);

@@ -6,6 +6,23 @@
     </div>
 </div>
 <div class="form-group row">
+    <label asp-for="Labs.CciaConfirmed" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-9 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.CciaConfirmed)
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div> 
+<div class="form-group row">
+    <label asp-for="Labs.PurityResults" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-9 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.PurityResults)
+    </div>
+</div>
+<div class="form-group row">
     <label asp-for="Labs.PurityPercent" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 form-control-plaintext">
         @Html.DisplayFor(x => x.Labs.PurityPercent)
@@ -41,6 +58,18 @@
         </div>
         <div class="col-sm-6 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.OtherVarietyComments)
+        </div>
+    </div> 
+}
+@if(Model.Standards.ShowOtherKind)
+{
+    <div class="form-group row align-items-start">
+        <label asp-for="Labs.OtherKindPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.OtherKindPercent)
+        </div>
+        <div class="col-sm-6 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.OtherKindComments)
         </div>
     </div> 
 }
@@ -144,7 +173,13 @@
     <div class="col-12">
         <hr>
     </div>
-</div>   
+</div> 
+<div class="form-group row">
+    <label asp-for="Labs.GermResults" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-9 form-control-plaintext">
+        @Html.DisplayFor(x => x.Labs.GermResults)
+    </div>
+</div> 
 <div class="form-group row">
     <label asp-for="Labs.GermPercent" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 form-control-plaintext">
@@ -164,7 +199,19 @@
     </div>
 </div> 
 @if(Model.Standards.ShowAssay1) 
-    {<div class="form-group row">
+{
+    <div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+    </div> 
+    <div class="form-group row">
+        <label asp-for="Labs.AssayResults" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.AssayResults)
+        </div>
+    </div>
+    <div class="form-group row">
         <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name</label>
         <div class="col-sm-3 form-control-plaintext">
             @Html.DisplayFor(x => x.Labs.AssayTest)
@@ -172,7 +219,18 @@
     </div>
 }
 @if(Model.Standards.ShowAssay2)
-{   
+{ 
+    <div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+    </div> 
+    <div class="form-group row">
+        <label asp-for="Labs.AssayResults2" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.AssayResults2)
+        </div>
+    </div>  
     <div class="form-group row">
         <label class="col-sm-3 col-form-label">@Model.Standards.Assay2Name</label>
         <div class="col-sm-3 form-control-plaintext">
