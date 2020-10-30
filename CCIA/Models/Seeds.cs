@@ -99,6 +99,8 @@ namespace CCIA.Models
 
         public List<SeedsApplications>   SeedsApplications { get; set; }
 
+        public List<SeedDocuments> Documents { get; set; }
+
         [ForeignKey("Id")]
         public SampleLabResults LabResults { get; set; }
 

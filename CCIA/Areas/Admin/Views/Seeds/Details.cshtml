@@ -151,30 +151,68 @@
                     <table class="table">
                         <tr>
                             <th>AppID</th>
+                            <th>Applicant</th>
                             <th>Grower</th>
-                            <th>Acres</th>
+                            <th>Cert Year</th>
+                            <th>Crop</th>
+                            <th>Variety</th>
+                            <th>Class</th>
+                            <th>Status</th>
                         </tr>
                         @foreach(var app in Model.seed.SeedsApplications)
                         {
                             <tr>
-                                <td>@app.Application.Id</td>
-                                <td>@app.Application.GrowerOrganization.OrgName</td>
-                                <td>@app.Application.AcresApplied</td>
+                                <td>@app.AppId</td>
+                                <td>@app.Application.ApplicantOrganization.NameAndId</td>
+                                <td>@app.Application.GrowerOrganization.NameAndId</td>
+                                <td>@app.Application.CertYear</td>
+                                <td>@app.Application.CropName</td>
+                                <td>@app.Application.VarietyName</td>
+                                <td>@app.Application.ClassProducedName</td>
+                                <td>@app.Application.Status</td>
                             </tr>
                         }
                     </table>
                 }
             </div>
-            <div class="col-sm-12">
-                <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
-        
-        
-                @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
-                <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
+            <div class="col-sm-12 row">
+                <div class="col-sm-6">
+                    <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
+            
+            
+                    @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
+                    <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
+                </div>
+                <div class="col-sm-6">
+                    <table style="height: 1000px;">
+                        <tr>
+                            <td class="align-middle">
+                                @if(Model.seed.Documents.Any())
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <th>Link</th>
+                                            <th>Type</th>
+                                            <th>Download</th>
+                                        </tr>
+                                        @foreach (var document in Model.seed.Documents)
+                                        {
+                                            <tr>
+                                                <td>@document.Link</td>
+                                                <td>@document.DocumentType.Name</td>
+                                                <td>download</td>
+                                            </tr>                                
+                                        }
+                                    </table>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="col-sm-4 border">
-            Ifram
+            Iframe
         </div>
     </div>
 </div>

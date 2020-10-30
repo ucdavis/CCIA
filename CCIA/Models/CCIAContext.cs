@@ -64,6 +64,10 @@ namespace CCIA.Models
         public virtual DbSet<VarFull> VarFull { get; set; }
         public virtual DbSet<Seeds> Seeds { get; set; }
 
+        public virtual DbSet<SeedDocuments> SeedDocuments { get; set; }
+
+        public virtual DbSet<SeedsDocumentTypes> SeedsDocumentTypes { get; set; }
+
         public virtual DbSet<AbbrevClassSeeds> AbbrevClassSeeds { get; set; }
 
         public virtual DbSet<Tags> Tags { get; set; }
@@ -272,6 +276,8 @@ namespace CCIA.Models
                 entity.HasOne(d => d.CountySampleDrawn);
 
                 entity.HasOne(d => d.ContactEntered);
+
+                entity.HasMany(d => d.Documents);
 
             });
 
@@ -2834,6 +2840,38 @@ namespace CCIA.Models
                 entity.Property(e => e.Name).HasColumnName("StateProvinceName")
                     .IsRequired()
                     .HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<SeedDocuments>(entity =>
+            {
+                entity.ToTable("seed_docs");
+
+                entity.Property(e => e.Id).HasColumnName("seed_cert_id").UseSqlServerIdentityColumn();
+
+                entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+
+                entity.Property(e => e.Name).HasColumnName("doc_name");
+
+                entity.Property(e => e.Link).HasColumnName("doc_link");
+
+                entity.Property(e => e.DocType).HasColumnName("doc_type");
+
+                entity.HasOne(e => e.DocumentType);
+
+            });
+
+            modelBuilder.Entity<SeedsDocumentTypes>(entity => 
+            {
+                entity.ToTable("seed_doc_types");
+
+                entity.Property(e => e.Id).HasColumnName("doc_type");
+
+                entity.Property(e => e.Name).HasColumnName("type_trans");
+
+                entity.Property(e => e.Order).HasColumnName("type_order");
+
+                entity.Property(e =>e.Folder).HasColumnName("folder_name");
+
             });
 
             modelBuilder.Entity<SampleLabResults>(entity =>
