@@ -5,6 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
+
+     public enum SeedsStatus
+    { 
+        [Display(Name="Pending supporting material")]
+        PendingSupportingMaterial,
+        [Display(Name="Pending Lab Results")]
+        PendingLabResults,
+        [Display(Name="Pending documentation upload")]
+        PendingDocumentation,
+        [Display(Name="Pending Final Submission")]
+        PendingFinalSubmission,
+        [Display(Name="Pending acceptance")]
+        PendingAcceptance,
+        [Display(Name="SIR ready")]
+        SIRReady,        
+        [Display(Name="Cancelled by organization")]
+        CancelledByOrganization,        
+        [Display(Name="Cancelled by CCIA")]
+        CancelledByCCIA,
+    } 
     public partial class Seeds
     {
 

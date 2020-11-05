@@ -38,6 +38,24 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AcceptSeed(IFormCollection form)
+        {
+            // ToDo set up notifications; 
+            var id = int.Parse(form["seed.Id"].ToString());
+            var seedToAccept = await _dbContext.Seeds.Where(s => s.Id == id).FirstAsync();
+            seedToAccept.Confirmed = true;
+            seedToAccept.ConfirmedAt = DateTime.Now;
+            seedToAccept.Status = SeedsStatus.SIRReady.GetDisplayName();
+            
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed Accepted";
+
+            await _dbContext.Database.ExecuteSqlCommandAsync("accept_seeds_post_action @p0", id);
+
+            return  RedirectToAction(nameof(Pending));
+        }
+
         public ActionResult Index()
         {
             return View();
