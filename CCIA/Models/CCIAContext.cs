@@ -1754,6 +1754,12 @@ namespace CCIA.Models
                 entity.Property(e => e.OfficialVarietyId).HasColumnName("official_variety_id");
 
                 entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Class);
+
+                entity.HasOne(e => e.ApplicantOrganization);
             });
 
             modelBuilder.Entity<ChangeRequests>(entity =>

@@ -82,7 +82,12 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Certs(IFormCollection form)
         {
-            var certs =  _dbContext.Certs.AsQueryable();
+            var certs =  _dbContext.Certs
+                .Include(c => c.Class)
+                .Include(c => c.ApplicantOrganization)
+                .Include(c => c.Variety)
+                .ThenInclude(v => v.Crop)
+                .AsQueryable();
             var entry = form["id"];
             var how = form["searchHow"];
             switch (how)

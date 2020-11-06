@@ -41,6 +41,30 @@
 @if(Model != null)
 {
 <div class="container">
-    @Model.Count
+    <table class="table">
+        <tr>
+            <th>Cert</th>
+            <th>Variety ID</th>
+            <th>Variety</th>
+            <th>Org Id</th>
+            <th>Org</th>
+            <th>Class</th>
+            <th>Crop</th>
+            <th>Kind</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CertNum</td>
+                <td>@item.OfficialVarietyId</td>
+                <td>@item.Variety.Name</td>
+                <td>@item.OrgId</td>
+                <td>@item.ApplicantOrganization.OrgName</td>
+                <td>@item.Class.ClassProducedTrans</td>
+                <td>@item.Variety.Crop.Crop</td>
+                <td>@item.Variety.Crop.CropKind</td>
+            </tr>            
+        }
+    </table>
 </div>
 }
