@@ -67,5 +67,47 @@ namespace CCIA.Controllers.Admin
             var model = await AdminSeedsViewModel.CreateDetails(_dbContext, id);
             return View(model);
         }
+
+        public ActionResult Seeds()
+        {
+            return View();
+        }
+
+        public ActionResult Certs()
+        {
+           
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Certs(IFormCollection form)
+        {
+            var certs =  _dbContext.Certs.AsQueryable();
+            var entry = form["id"];
+            var how = form["searchHow"];
+            switch (how)
+            {
+                case "Exact":
+                    certs = certs.Where(c => c.CertNum == int.Parse(entry));
+                    break;
+                case "Begin" :
+                    certs = certs.Where(c => c.CertNum.ToString().StartsWith(entry));
+                    break;
+                case "End" :
+                    certs = certs.Where(c => c.CertNum.ToString().EndsWith(entry));
+                    break;
+                case "Contain" :
+                    certs = certs.Where(c => c.CertNum.ToString().Contains(entry));
+                    break;
+                default:
+                    certs = certs.Where(c => c.CertNum == -1);
+                    break;
+            }
+            
+            
+            var model = await certs.ToListAsync();
+
+            return View(model);
+        }
     }
 }
