@@ -229,11 +229,9 @@ namespace CCIA.Models
                 entity.Property(e => e.Treated).HasColumnName("treated");
                 entity.Property(e => e.OECDTestRequired).HasColumnName("oecd_test_req");
                 entity.Property(e => e.Resampled).HasColumnName("resample");
-                entity.Property(e => e.CCIAAuth).HasColumnName("ccia_auth");
                 entity.Property(e => e.Remarks).HasColumnName("remarks");
                 entity.Property(e => e.SampleDrawnBy).HasColumnName("sx_drawn_by");
                 entity.Property(e => e.SamplerID).HasColumnName("sampler_id");
-                entity.Property(e => e.CertId).HasColumnName("cert_id");
                 entity.Property(e => e.SampleId).HasColumnName("sample_id");
                 entity.Property(e => e.OECDLot).HasColumnName("oecd_lot");
                 entity.Property(e => e.Rush).HasColumnName("rush");
@@ -244,7 +242,6 @@ namespace CCIA.Models
                 entity.Property(e => e.CertFee).HasColumnName("cert_fee");
                 entity.Property(e => e.ResearchFee).HasColumnName("research_fee");
                 entity.Property(e => e.MinimumFee).HasColumnName("min_fee");
-                entity.Property(e => e.BillTable).HasColumnName("bill_tbl");
                 entity.Property(e => e.LotCertOk).HasColumnName("lot_cert_cert_ok");
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
                 entity.Property(e => e.Submitted).HasColumnName("submitted");

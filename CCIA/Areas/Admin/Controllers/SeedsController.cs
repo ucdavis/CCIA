@@ -74,8 +74,7 @@ namespace CCIA.Controllers.Admin
         }
 
         public ActionResult Certs()
-        {
-           
+        {           
             return View();
         }
 
@@ -107,12 +106,23 @@ namespace CCIA.Controllers.Admin
                 default:
                     certs = certs.Where(c => c.CertNum == -1);
                     break;
-            }
-            
+            }            
             
             var model = await certs.ToListAsync();
 
             return View(model);
+        }
+
+        public async Task<IActionResult> WeightLog(int year)
+        {
+            if(year == 0)
+            {
+                year = CertYearFinder.CertYear;
+            }
+
+            var model = await WeightLogViewModel.Create(_dbContext, year);
+            return View(model);
+
         }
     }
 }

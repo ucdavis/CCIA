@@ -1,0 +1,71 @@
+@model CCIA.Models.ViewModels.WeightLogViewModel
+
+<form method="get" class="form-inline">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h2>Weight Log</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+            <div class="form-group">
+                <label for="Year">Year Confirmed</label>
+                <select asp-for="Year" class="form-control" asp-items="@(new SelectList(Model.Years, Model.Year))"></select>
+            </div>
+            <div class="form-group"> 
+                <i class="fa fa-refresh"></i><input type="submit" value="Update Table" class="btn btn-primary">                                           
+            </div> 
+            </div>
+        </div>
+    </div>    
+</form>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+<table id="table" class="table datatable">
+    <thead>        
+    <th>AppId</th>
+    <th>Type</th>
+    <th>Applicant ID</th>
+    <th>Applicant Name</th>
+    <th>Grower ID</th>
+    <th>Grower</th>
+    <th>Crop</th>
+    <th>Variety</th>
+    <th>Class</th>
+    <th>County</th>
+    <th>Field Name</th>
+    <th>Acres</th>
+    <th>Planting Date</th>
+    <th>Map</th>
+    <th>PO Lot</th>    
+    </thead>
+    <tbody>
+        @foreach (var seed in Model.seeds)
+        {
+        <tr>
+            <td></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
+}

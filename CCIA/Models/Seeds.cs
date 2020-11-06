@@ -85,11 +85,11 @@ namespace CCIA.Models
         public bool Treated { get; set; }
         public bool OECDTestRequired { get; set; }
         public bool Resampled { get; set; }
-        public string CCIAAuth { get; set; }
+        
         public string Remarks { get; set; }
         public string SampleDrawnBy { get; set; }
         public string SamplerID { get; set; }
-        public int? CertId { get; set; }
+     
         public int? SampleId { get; set; }
         [Display(Name="OECD Lot?")]
         public bool OECDLot { get; set; }
@@ -101,7 +101,7 @@ namespace CCIA.Models
         public decimal? CertFee { get; set; }
         public decimal? ResearchFee { get; set; }
         public decimal? MinimumFee { get; set; }
-        public bool BillTable { get; set; }
+        
         public bool LotCertOk { get; set; }
         [Display(Name="Entered By")]
         public int? UserEntered { get; set; }
