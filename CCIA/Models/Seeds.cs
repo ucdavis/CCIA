@@ -111,7 +111,9 @@ namespace CCIA.Models
         public bool Confirmed { get; set; }
         public DateTime? ConfirmedAt { get; set; }
 
-        public int? YearConfirmed => ConfirmedAt != null ? ConfirmedAt.Value.Year : 0;
+        //public int? YearConfirmed => ConfirmedAt != null ? ConfirmedAt.Value.Year : 0;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int YearConfirmed { get; set; }
         public bool Docs { get; set; }
         public string EmployeeModified { get; set; }
         public bool NotFinallyCertified { get; set; }
@@ -123,6 +125,10 @@ namespace CCIA.Models
 
         [ForeignKey("Id")]
         public SampleLabResults LabResults { get; set; }
+
+        [ForeignKey("Id")]
+        public List<OECD> OECDForm { get; set; }
+       
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 

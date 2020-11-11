@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Thinktecture;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+
 
 
 
@@ -187,7 +189,13 @@ namespace CCIA.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());
+                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqlOptions =>
+                {                       
+                        sqlOptions.UseNetTopologySuite();
+                        sqlOptions.AddRowNumberSupport();
+                });
+                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());                
+                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqloptions => sqloptions.AddRowNumberSupport());
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
@@ -211,6 +219,7 @@ namespace CCIA.Models
                 entity.Property(e => e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
                 entity.Property(e => e.SampleFormRad).HasColumnName("sx_form_rad");
                 entity.Property(e => e.CertYear).HasColumnName("cert_year");
+                entity.Property(e => e.YearConfirmed).HasColumnName("year_confirmed");
                 entity.Property(e => e.ApplicantId).HasColumnName("applicant_id");
                 entity.Property(e => e.ConditionerId).HasColumnName("conditioner_id");
                 entity.Property(e => e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
@@ -275,6 +284,8 @@ namespace CCIA.Models
                 entity.HasOne(d => d.ContactEntered);
 
                 entity.HasMany(d => d.Documents);
+
+                entity.HasMany(d => d.OECDForm).WithOne(o => o.Seeds).HasForeignKey(o => o.SeedsId).HasPrincipalKey(s => s.Id);
 
             });
 
