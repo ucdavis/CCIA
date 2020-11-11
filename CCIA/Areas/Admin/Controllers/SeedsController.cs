@@ -124,5 +124,15 @@ namespace CCIA.Controllers.Admin
             return View(model);
 
         }
+
+         public async Task<IActionResult> Search(int id, AdminSeedSearchViewModel vm)
+        {
+            if(!vm.Search){
+                var freshmodel = await AdminSeedSearchViewModel.Create(_dbContext, null);
+                return View(freshmodel);  
+            }
+                var model = await AdminSeedSearchViewModel.Create(_dbContext, vm);                
+                return View(model);            
+        }  
     }
 }
