@@ -15,107 +15,77 @@
             <div class="form-group row">
                 <label asp-for="sid" class="col-sm-2 col-form-label"></label>
                 <input asp-for="sid" class="col-sm-2 form-control">
-            </div> 
-            @* <div class="form-group row">
-                <label asp-for="applicantName" class="col-sm-2 col-form-label"></label>
-                <input asp-for="applicantName" class="col-sm-4 form-control">
-                <div class="col-sm-6">
-                    (partial name or Id)
-                </div>        
             </div>  
             <div class="form-group row">
-                <label asp-for="accepted" class="col-sm-2 col-form-label"></label>
-                <select asp-for="accepted" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
+                <label asp-for="variety" class="col-sm-2 col-form-label"></label>
+                <input asp-for="variety" class="col-sm-2 form-control">
+                <div class="col-sm-6">
+                    (accepts partials)
+                </div>
             </div>
+            <div class="form-group row">
+                <label asp-for="submittedYearsToSearch" class="col-sm-2 col-form-label"></label>
+                <select asp-for="submittedYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
+                <div class="col-sm-6">
+                    (leave blank to search all submitted years; press "ctrl"/"control" to select multiple items, or toggle any single item)
+                </div>
+            </div>
+            
+           
             <div class="form-group row">
                 <label asp-for="certNumber" class="col-sm-2 col-form-label"></label>
-                <input asp-for="certNumber" class="col-sm-2 form-control">
-                <div class="col-sm-6">
-                    (just the end, so 11CA-320-56698 => "56698")
-                </div>
+                <input asp-for="certNumber" class="col-sm-2 form-control">                
             </div>
-            <div class="form-group row">
-                <label asp-for="searchCrops" class="col-sm-2 col-form-label"></label>
-                <select multiple="multiple" asp-for="searchCrops" class="col-sm-4 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
-                <div class="col-sm-6">
-                    (Leave blank to returns all crops;<br>press "ctrl" to select multiple items)
-                </div>
-            </div>
-            <div class="form-group row form-checkbox-inline">
-
-            </div> 
-            <div class="form-group row">
-                <div class="form-check form-check-inline col-sm-12">
-                    <label asp-for="includeMapOptions" class="col-sm-4 col-form-label"></label>
-                    <input type="checkbox" asp-for="includeMapOptions">
-                </div>
-            </div>    *@
-        </div>
-        <div class="col-lg-4">@* 2nd column*@ 
-            @* <div class="form-group row">
-                <label asp-for="CertYear" class="col-sm-2 col-form-label">Cert Year</label>
-                <input asp-for="CertYear" class="col-sm-2 form-control">
-                <div class="col-sm-6">
-                    (can be left blank)
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="growerName" class="col-sm-2 col-form-label"></label>
-                <input asp-for="growerName" class="col-sm-4 form-control">
-                <div class="col-sm-6">
-                    (partial name or Id)
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="cancelled" class="col-sm-2 col-form-label"></label>
-                <select asp-for="cancelled" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
-            </div>
-            <div class="form-group row">
-                <label asp-for="plantedAfter" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-6 input-group">
-                    <input type="text" asp-for="plantedAfter" class="datepicker form-control"></input>
-                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
-                        <i class="fa fa-calendar input-group-text"></i>
-                    </div>                        
-                </div>
-            </div> 
             <div class="form-group row">
                 <label asp-for="searchStatus" class="col-sm-2 col-form-label"></label>
                 <select asp-for="searchStatus" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
                 <div class="col-sm-5">
                     (Leave blank to returns any status; press "ctrl" to select multiple items)
                 </div>
-            </div> *@
+            </div>
+        </div>
+        <div class="col-lg-4">@* 2nd column*@ 
+            <div class="form-group row">
+                <label asp-for="applicantName" class="col-sm-2 col-form-label"></label>
+                <input asp-for="applicantName" class="col-sm-4 form-control">
+                <div class="col-sm-6">
+                    (partial name or Id)
+                </div>        
+            </div>
+            <div class="form-group row">
+                <label asp-for="lotNumber" class="col-sm-2 col-form-label"></label>
+                <input asp-for="lotNumber" class="col-sm-2 form-control">
+                <div class="col-sm-6">
+                    (accepts partials)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="certYearsToSearch" class="col-sm-2 col-form-label"></label>
+                <select asp-for="certYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
+                <div class="col-sm-6">
+                    (leave blank to search all cert years; press "ctrl"/"control" to select multiple items, or toggle any single item)
+                </div>
+            </div>
         </div>
         <div class="col-lg-4">@* 3rd column*@ 
-            @* <div class="form-group row">
-                <label asp-for="appType" class="col-sm-2 col-form-label"></label>
-                <select asp-for="appType" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.appTypes, "Abbreviation", "AppTypeTrans"))"></select>
-            </div>
             <div class="form-group row">
-                <label asp-for="variety" class="col-sm-2 col-form-label"></label>
-                <input asp-for="variety" class="col-sm-2 form-control">
-            </div>
-            <div class="form-group row">
-                <label asp-for="veMap" class="col-sm-2 col-form-label"></label>
-                <select asp-for="veMap" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
-            </div>
-             <div class="form-group row">
-                <label asp-for="plantedBefore" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-6 input-group">
-                    <input type="text" asp-for="plantedBefore" class="datepicker form-control"></input>
-                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
-                        <i class="fa fa-calendar input-group-text"></i>
-                    </div>                        
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="searchCounties" class="col-sm-2 col-form-label"></label>
-                <select multiple="multiple" asp-for="searchCounties" class="col-sm-3 form-control multi-select" size="10" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
+                <label asp-for="conditionerName" class="col-sm-2 col-form-label"></label>
+                <input asp-for="conditionerName" class="col-sm-4 form-control">
                 <div class="col-sm-6">
-                    (Leave blank to returns all counties;<br>press "ctrl" to select multiple items)
+                    (partial name or Id)
+                </div>        
+            </div>
+            <div class="form-group row">
+                <label asp-for="appId" class="col-sm-2 col-form-label"></label>
+                <input asp-for="appId" class="col-sm-2 form-control">                
+            </div>  
+             <div class="form-group row">
+                <label asp-for="searchCrops" class="col-sm-2 col-form-label"></label>
+                <select multiple="multiple" asp-for="searchCrops" class="col-sm-4 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+                <div class="col-sm-6">
+                    (Leave blank to returns all crops;<br>press "ctrl" to select multiple items)
                 </div>
-            </div> *@
+            </div>            
         </div>
     </div>
     <div>
@@ -126,8 +96,7 @@
 </form>
 @if(Model.seeds.Any())
 {
-    //@await Html.PartialAsync("_ApplicationTable", @Model.apps)
-    @Model.seeds.Count()
+    @await Html.PartialAsync("_SeedsTable", @Model.seeds)
 }
 
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.ComponentModel.DataAnnotations;
+using CCIA.Helpers;
 
 namespace CCIA.Models
 {   
@@ -25,7 +26,7 @@ namespace CCIA.Models
         [DisplayName("Cert Year")]
         public List<int> certYearsToSearch { get; set; }
 
-        public List<int> certYearsToSelectFrom { get; set; }
+        public List<int> yearsToSelectFrom { get; set; }
        
         
         public List<Crops> crops { get; set; }
@@ -34,9 +35,10 @@ namespace CCIA.Models
         public List<int> searchCrops { get; set; }
         
 
+        [DisplayName("Lot Number")]
         public string lotNumber { get; set; }
 
-        public int AppId { get; set; }              
+        public string appId { get; set; }              
 
         public List<string> statusOptions { get; set; } 
 
@@ -54,7 +56,7 @@ namespace CCIA.Models
         public string variety { get; set; }
 
         [DisplayName("Cert#")]
-        public int? certNumber { get; set; }       
+        public string certNumber { get; set; }       
         
 
         public AdminSeedSearchViewModel() {
@@ -69,86 +71,68 @@ namespace CCIA.Models
             if(vm != null)
             {
                 var seedToFind = _dbContext.Seeds
-                    .Include(c => c.ConditionerOrganization)
-                    .Include(c => c.AppTypeTrans)
-                    .Include(v => v.Variety)
+                    .Include(s => s.ConditionerOrganization)
+                    .Include(s => s.ApplicantOrganization)
+                    .Include(s => s.AppTypeTrans)
+                    .Include(s => s.Variety)
                     .ThenInclude(v => v.Crop)
-                    .Include(c => c.ClassProduced)
-                    .Include(l => l.LabResults) 
+                    .Include(s => s.ClassProduced)
+                    .Include(s => s.LabResults) 
                     .ThenInclude(l => l.LabOrganization)                   
                     .Include(s => s.Application)
                     .ThenInclude(a => a.Crop)
-                    .Include(s => s.OECDForm)
                     .AsQueryable(); 
                 if(vm.sid.HasValue)
                 {
-                    seedToFind = seedToFind.Where(s => s.Id == vm.sid);
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.Id.ToString(), "%" +  vm.sid.ToString() + "%"));
                 }
-                // if(vm.submittedYearsToSearch.Any())
-                // {
-                //     seedToFind = seedToFind.Where(s => vm.submittedYearsToSearch.Contains(s.YearConfirmed));
-                // }
-
-                // if(!string.IsNullOrWhiteSpace(vm.appType))
-                // {
-                //     seedToFind = seedToFind.Where(a => a.AppType == vm.appType || vm.appType == "Any");
-                // }
-                // if(!string.IsNullOrWhiteSpace(vm.applicantName))
-                // {
-                //     seedToFind = seedToFind.Where(a => EF.Functions.Like(a.ApplicantOrganization.NameAndId, "%" + vm.applicantName + "%"));
-                // }
-                // if(!string.IsNullOrWhiteSpace(vm.growerName))
-                // {
-                //     seedToFind = seedToFind.Where(a => EF.Functions.Like(a.GrowerOrganization.NameAndId, "%" + vm.growerName + "%"));
-                // }
-                // if(vm.searchCrops != null && vm.searchCrops.Count > 0)
-                // {
-                //     seedToFind = seedToFind.Where(a => vm.searchCrops.Contains(a.CropId.Value));
-                // }
-                // if(vm.searchCounties != null && vm.searchCounties.Count > 0)
-                // {
-                //     seedToFind = seedToFind.Where(a => vm.searchCounties.Contains(a.FarmCounty));
-                // }
-                // if(!string.IsNullOrWhiteSpace(vm.variety))
-                // {
-                //     seedToFind = seedToFind.Where(a => EF.Functions.Like(a.Variety.Name, "%" + vm.variety + "%"));
-                // }
-                // if(vm.certNumber.HasValue)
-                // {
-                //     seedToFind = seedToFind.Where(a => a.CertNum == vm.certNumber);
-                // }
-                // if(vm.searchStatus != null && vm.searchStatus.Count > 0)
-                // {                    
-                //     seedToFind = seedToFind.Where(a => vm.searchStatus.Contains(a.Status));
-                // }
-                // if(vm.accepted != 2)
-                // {
-                //     seedToFind = seedToFind.Where(a => (a.Approved && vm.accepted == 1) || (!a.Approved && vm.accepted == 0));
-                // }
-                // if(vm.cancelled != 2)
-                // {
-                //     seedToFind = seedToFind.Where(a => (a.Cancelled && vm.cancelled == 1) || (!a.Cancelled && vm.cancelled == 0));
-                // }
-                // if(vm.veMap != 2)
-                // {
-                //     seedToFind = seedToFind.Where(a => (a.MapVe && vm.veMap == 1) || (!a.MapVe && vm.veMap == 0));
-                // }
-                // if(vm.plantedAfter != null)
-                // {
-                //     seedToFind = seedToFind.Where(a => a.DatePlanted >= vm.plantedAfter);
-                // }
-                // if(vm.plantedBefore != null)
-                // {
-                //     seedToFind = seedToFind.Where(a => a.DatePlanted <= vm.plantedBefore);
-                // }
+                if(vm.submittedYearsToSearch != null && vm.submittedYearsToSearch.Any())
+                {
+                    seedToFind = seedToFind.Where(s => vm.submittedYearsToSearch.Contains(s.YearConfirmed));
+                }
+                if(vm.certYearsToSearch != null && vm.certYearsToSearch.Any())
+                {
+                    seedToFind = seedToFind.Where(s => vm.certYearsToSearch.Contains(s.CertYear.Value));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.conditionerName))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.NameAndId, "%" + vm.conditionerName + "%"));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.applicantName))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ApplicantOrganization.NameAndId, "%" + vm.applicantName + "%"));
+                }
+                if(vm.searchCrops != null && vm.searchCrops.Any())
+                {
+                    seedToFind = seedToFind.Where(s => vm.searchCrops.Contains(s.Variety.CropId) || vm.searchCrops.Contains(s.Application.CropId.Value));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.variety))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety + "%"));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.lotNumber))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.LotNumber, "%" + vm.lotNumber + "%"));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.appId))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId + "%"));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.certNumber))
+                {
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.CertNumber, "%" + vm.certNumber + "%"));
+                } 
+                if(vm.searchStatus != null && vm.searchStatus.Any())              
+                {
+                    seedToFind = seedToFind.Where(s => vm.searchStatus.Contains(s.Status));
+                }
                 
                 var viewModel = new AdminSeedSearchViewModel
                 {
-                    seeds = await seedToFind.ToListAsync(),                   
-                   
-                    //crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
-                    //statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
-                    //counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(), 
+                    seeds = await seedToFind.ToListAsync(),  
+                    yearsToSelectFrom = CertYearFinder.certYearList, 
+                    crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                    statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                     
                 };  
                 return viewModel;
@@ -157,7 +141,10 @@ namespace CCIA.Models
             }
             var freshModel = new AdminSeedSearchViewModel
             {
-                seeds = new List<Seeds>(),               
+                seeds = new List<Seeds>(), 
+                yearsToSelectFrom = CertYearFinder.certYearList,              
+                crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
             };           
 
             return freshModel;

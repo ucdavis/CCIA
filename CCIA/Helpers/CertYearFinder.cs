@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CCIA.Helpers
 {
@@ -22,6 +24,13 @@ namespace CCIA.Helpers
                     }
                 }
                 return _certYear;
+            }
+        }
+
+        public static List<int> certYearList
+        {
+            get{
+                return Enumerable.Range(2007, CertYear - 2006).ToList();
             }
         }
     }
