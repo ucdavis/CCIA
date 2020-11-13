@@ -24,6 +24,8 @@ namespace CCIA.Helpers
         public bool ShowBeans { get; set; }
         public bool ShowInert { get; set; }
 
+        public bool ShowOtherKind { get; set; }
+
         public CropStandardsList()
         {  
             ShowAssay1 = false;
@@ -37,6 +39,7 @@ namespace CCIA.Helpers
             WeedSeedType = null;
             ShowBushelWeight = false;
             ShowInert = false;
+            ShowOtherKind = false;
         }
 
         public static async Task<CropStandardsList> GetStandardsFromSeed(CCIAContext _dbContext, int sid)
@@ -55,6 +58,10 @@ namespace CCIA.Helpers
 
             if(cs.Any(c => c.Standards.Name == "max_foreign_material")){
                 returnList.ShowBeans = true;
+            }
+
+             if(cs.Any(c => c.Standards.Name == "max_other_kind")){
+                returnList.ShowOtherKind = true;
             }
 
             if(cs.Any(c => c.Standards.Name == "assay_required")){

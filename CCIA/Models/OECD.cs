@@ -103,6 +103,8 @@ namespace CCIA.Models
 
         public bool ClientNotified { get; set; }
 
+       
+
         public string LotReferenceNumber { 
             get
             {

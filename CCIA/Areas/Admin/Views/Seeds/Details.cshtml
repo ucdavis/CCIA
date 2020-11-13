@@ -1,0 +1,231 @@
+@using CCIA.Helpers;
+@model  CCIA.Models.ViewModels.AdminSeedsViewModel
+
+<div class="container col-sm-12">
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Seed Lot Details</h2> 
+                </div>            
+            </div>
+            @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && Model.LabsAndStandards.Labs.CciaConfirmed)
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                         <form asp-action="AcceptSeed">
+                            @Html.HiddenFor(x => x.seed.Id)
+                            <input type="submit" class="btn btn-success" value="Accept Seed">
+                        </form>                    
+                    </div>            
+                </div>
+            }
+            <div class="row">
+                <div class="col-sm-6"> @* First column *@
+                    <div class="form-group row">
+                        <label asp-for="seed.Id" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.Id)
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <label asp-for="seed.CertProgram" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.CertProgram)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.CertYear" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.CertYear)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ConditionerOrganization.NameAndId)
+                        </div>
+                    </div>  
+                    <div class="form-group row">
+                        <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ApplicantOrganization.NameAndId)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Variety</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Model.seed.GetVarietyName()
+                        </div>
+                    </div>  
+                    <div class="form-group row">
+                        <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
+                        </div>
+                    </div>                  
+                    <div class="form-group row">
+                        <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.SampleDrawnBy)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.UserEntered" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ContactEntered.Name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Seed Origin</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            Country: @Html.DisplayFor(x => x.seed.CountryOfOrigin.Name) <br>
+                            State: @Html.DisplayFor(x => x.seed.StateOfOrigin.Name)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6"> @* Second column *@
+                    <div class="form-group row">
+                        <label asp-for="seed.SampleFormDate" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.SampleFormDate)
+                        </div>
+                    </div>  
+                    <div class="form-group row">
+                        <label asp-for="seed.CertNumber"  class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Model.seed.CertNumber
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.LotNumber)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.PoundsLot)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Crop</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Model.seed.GetCropName()
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.NotFinallyCertified)
+                        </div>
+                    </div>                    
+                    <div class="form-group row">
+                        <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.Status)
+                        </div>
+                    </div> 
+                    <div class="form-group row">
+                        <label asp-for="seed.CountyDrawn" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.CountySampleDrawn.Name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Lot Type</label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            Original Run @Html.DisplayFor(x => x.seed.OriginalRun) | Remill  @Html.DisplayFor(x => x.seed.Remill) | 
+                            OECD  @Html.DisplayFor(x => x.seed.OECDLot)
+                        </div>
+                    </div>       
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group row">
+                    <label asp-for="seed.Remarks" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.Remarks)
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                @if(Model.seed.SeedsApplications.Count > 0)
+                {
+                    @:Apps in this lot:
+                    <table class="table">
+                        <tr>
+                            <th>AppID</th>
+                            <th>Applicant</th>
+                            <th>Grower</th>
+                            <th>Cert Year</th>
+                            <th>Crop</th>
+                            <th>Variety</th>
+                            <th>Class</th>
+                            <th>Status</th>
+                        </tr>
+                        @foreach(var app in Model.seed.SeedsApplications)
+                        {
+                            <tr>
+                                <td>@app.AppId</td>
+                                <td>@app.Application.ApplicantOrganization.NameAndId</td>
+                                <td>@app.Application.GrowerOrganization.NameAndId</td>
+                                <td>@app.Application.CertYear</td>
+                                <td>@app.Application.CropName</td>
+                                <td>@app.Application.VarietyName</td>
+                                <td>@app.Application.ClassProducedName</td>
+                                <td>@app.Application.Status</td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+            <div class="col-sm-12 row">
+                <div class="col-sm-6">
+                    <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
+            
+            
+                    @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
+                    <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
+                </div>
+                <div class="col-sm-6">
+                    <table style="height: 1000px;">
+                        <tr>
+                            <td class="align-middle">
+                                @if(Model.seed.Documents.Any())
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <th>Link</th>
+                                            <th>Type</th>
+                                            <th>Download</th>
+                                        </tr>
+                                        @foreach (var document in Model.seed.Documents)
+                                        {
+                                            <tr>
+                                                <td>@document.Link</td>
+                                                <td>@document.DocumentType.Name</td>
+                                                <td>download</td>
+                                            </tr>                                
+                                        }
+                                    </table>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 border">
+            Iframe
+        </div>
+    </div>
+</div>
+

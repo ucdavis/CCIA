@@ -5,6 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
+
+     public enum SeedsStatus
+    { 
+        [Display(Name="Pending supporting material")]
+        PendingSupportingMaterial,
+        [Display(Name="Pending Lab Results")]
+        PendingLabResults,
+        [Display(Name="Pending documentation upload")]
+        PendingDocumentation,
+        [Display(Name="Pending Final Submission")]
+        PendingFinalSubmission,
+        [Display(Name="Pending acceptance")]
+        PendingAcceptance,
+        [Display(Name="SIR ready")]
+        SIRReady,        
+        [Display(Name="Cancelled by organization")]
+        CancelledByOrganization,        
+        [Display(Name="Cancelled by CCIA")]
+        CancelledByCCIA,
+    } 
     public partial class Seeds
     {
 
@@ -17,6 +37,8 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public Applications Application { get; set; }
         public int? SampleFormNumber { get; set; }
+        [Display(Name = "Sample Form Date")] 
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
@@ -49,19 +71,25 @@ namespace CCIA.Models
         public string Status { get; set; }
         [Display(Name="County Drawn")]
         public int? CountyDrawn { get; set; }
+        [ForeignKey("CountyDrawn")]
+        public County CountySampleDrawn { get; set; }
         public int? OriginState { get; set; }
+        [ForeignKey("OriginState")]
+        public StateProvince StateOfOrigin { get; set; }
         public int? OriginCountry { get; set; }
+        [ForeignKey("OriginCountry")]
+        public Countries CountryOfOrigin { get; set; }
         public bool Bulk { get; set; }
         public bool OriginalRun { get; set; }
         public bool Remill { get; set; }
         public bool Treated { get; set; }
         public bool OECDTestRequired { get; set; }
         public bool Resampled { get; set; }
-        public string CCIAAuth { get; set; }
+        
         public string Remarks { get; set; }
         public string SampleDrawnBy { get; set; }
         public string SamplerID { get; set; }
-        public int? CertId { get; set; }
+     
         public int? SampleId { get; set; }
         [Display(Name="OECD Lot?")]
         public bool OECDLot { get; set; }
@@ -73,14 +101,19 @@ namespace CCIA.Models
         public decimal? CertFee { get; set; }
         public decimal? ResearchFee { get; set; }
         public decimal? MinimumFee { get; set; }
-        public bool BillTable { get; set; }
+        
         public bool LotCertOk { get; set; }
+        [Display(Name="Entered By")]
         public int? UserEntered { get; set; }
+        [ForeignKey("UserEntered")]
+        public Contacts ContactEntered { get; set; }
         public bool Submitted { get; set; }
         public bool Confirmed { get; set; }
         public DateTime? ConfirmedAt { get; set; }
 
-        public int? YearConfirmed => ConfirmedAt != null ? ConfirmedAt.Value.Year : 0;
+        //public int? YearConfirmed => ConfirmedAt != null ? ConfirmedAt.Value.Year : 0;
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int YearConfirmed { get; set; }
         public bool Docs { get; set; }
         public string EmployeeModified { get; set; }
         public bool NotFinallyCertified { get; set; }
@@ -88,8 +121,14 @@ namespace CCIA.Models
 
         public List<SeedsApplications>   SeedsApplications { get; set; }
 
+        public List<SeedDocuments> Documents { get; set; }
+
         [ForeignKey("Id")]
         public SampleLabResults LabResults { get; set; }
+
+        [ForeignKey("Id")]
+        public List<OECD> OECDForm { get; set; }
+       
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 

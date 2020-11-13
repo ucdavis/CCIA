@@ -1,0 +1,99 @@
+@model CCIA.Models.ViewModels.WeightLogViewModel
+
+<form method="get" class="form-inline">
+    <div class="card" style="width: 100%;">
+        <div class="card-header">
+            <h2>Weight Log</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+            <div class="form-group">
+                <label for="Year">Year Confirmed</label>
+                <select asp-for="Year" class="form-control" asp-items="@(new SelectList(Model.Years, Model.Year))"></select>
+            </div>
+            <div class="form-group"> 
+                <i class="fa fa-refresh"></i><input type="submit" value="Update Table" class="btn btn-primary">                                           
+            </div> 
+            </div>
+        </div>
+    </div>    
+</form>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+<table id="table" class="table datatable">
+    <thead>        
+        <th>Sample #</th>
+        <th>ConditionerID</th>
+        <th>Date Certified</th>
+        <th>Date submitted</th>
+        <th>SID</th>
+        <th>OECD (completed OECD)</th>
+        <th>OECD (from sample form)</th>
+        <th>Class</th>
+        <th>Year Produced</th>
+        <th>Cert#</th>
+        <th>Lot#</th>
+        <th>Conditioner</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Lbs</th>    
+        <th>Lab</th>
+        <th>Lab Date</th>
+        <th>Lab/Test#</th>
+        <th>Rejected</th>        
+    </thead>
+    <tbody>
+        @foreach (var seed in Model.seeds)
+        {
+        <tr>
+            <td>@seed.RowNumber</td>
+            <td>@seed.ConditionerId</td>
+            @if(seed.ConfirmedAt.HasValue)
+            {
+                <td>@seed.ConfirmedAt.Value</td>
+            } else
+            {
+                <td></td>
+            }            
+            <td>@seed.SampleFormDate</td>
+            <td>@seed.Id</td>
+            <td><input type="checkbox" checked=@seed.HasOECDForm></td>
+            <td><input type="checkbox" checked=@seed.OECDLot></td>
+            <th>@seed.ClassName</th>
+            <th>@seed.CertYear</th>
+            <th>@seed.CertNumber</th>
+            <th>@seed.LotNumber</th>
+            <th>@seed.ConditionerName</th>
+            <th>@seed.CropName</th>
+            <th>@seed.VarietyName</th>
+            <th>@seed.PoundsLot</th>
+            <th>@seed.LabName</th>
+            <th>@seed.PrivateLabDate</th>
+            <th>@seed.PrivateLabNumber</th>
+            <th><input type="checkbox" checked=@seed.Rejected></th>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
+}

@@ -1,0 +1,35 @@
+@model List<CCIA.Models.Seeds>
+
+
+@{
+    ViewData["Title"] = "Seeds Pending Acceptance";
+}
+
+
+<div class="card">
+    <div class="card-header-access">
+        <div class="card-head">
+            <h2>Seeds Pending Acceptance</h2>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_SeedsTable", @Model)
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
+}

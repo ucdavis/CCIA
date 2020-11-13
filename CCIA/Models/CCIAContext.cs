@@ -1,10 +1,12 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Thinktecture;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+
 
 
 
@@ -63,6 +65,10 @@ namespace CCIA.Models
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
         public virtual DbSet<Seeds> Seeds { get; set; }
+
+        public virtual DbSet<SeedDocuments> SeedDocuments { get; set; }
+
+        public virtual DbSet<SeedsDocumentTypes> SeedsDocumentTypes { get; set; }
 
         public virtual DbSet<AbbrevClassSeeds> AbbrevClassSeeds { get; set; }
 
@@ -183,7 +189,13 @@ namespace CCIA.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());
+                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqlOptions =>
+                {                       
+                        sqlOptions.UseNetTopologySuite();
+                        sqlOptions.AddRowNumberSupport();
+                });
+                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());                
+                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqloptions => sqloptions.AddRowNumberSupport());
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
@@ -207,6 +219,7 @@ namespace CCIA.Models
                 entity.Property(e => e.SampleFormCertNumber).HasColumnName("sx_form_cert_no");
                 entity.Property(e => e.SampleFormRad).HasColumnName("sx_form_rad");
                 entity.Property(e => e.CertYear).HasColumnName("cert_year");
+                entity.Property(e => e.YearConfirmed).HasColumnName("year_confirmed");
                 entity.Property(e => e.ApplicantId).HasColumnName("applicant_id");
                 entity.Property(e => e.ConditionerId).HasColumnName("conditioner_id");
                 entity.Property(e => e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
@@ -225,11 +238,9 @@ namespace CCIA.Models
                 entity.Property(e => e.Treated).HasColumnName("treated");
                 entity.Property(e => e.OECDTestRequired).HasColumnName("oecd_test_req");
                 entity.Property(e => e.Resampled).HasColumnName("resample");
-                entity.Property(e => e.CCIAAuth).HasColumnName("ccia_auth");
                 entity.Property(e => e.Remarks).HasColumnName("remarks");
                 entity.Property(e => e.SampleDrawnBy).HasColumnName("sx_drawn_by");
                 entity.Property(e => e.SamplerID).HasColumnName("sampler_id");
-                entity.Property(e => e.CertId).HasColumnName("cert_id");
                 entity.Property(e => e.SampleId).HasColumnName("sample_id");
                 entity.Property(e => e.OECDLot).HasColumnName("oecd_lot");
                 entity.Property(e => e.Rush).HasColumnName("rush");
@@ -240,7 +251,6 @@ namespace CCIA.Models
                 entity.Property(e => e.CertFee).HasColumnName("cert_fee");
                 entity.Property(e => e.ResearchFee).HasColumnName("research_fee");
                 entity.Property(e => e.MinimumFee).HasColumnName("min_fee");
-                entity.Property(e => e.BillTable).HasColumnName("bill_tbl");
                 entity.Property(e => e.LotCertOk).HasColumnName("lot_cert_cert_ok");
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
                 entity.Property(e => e.Submitted).HasColumnName("submitted");
@@ -264,6 +274,18 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
                 
                 entity.HasOne(d => d.Application);
+
+                entity.HasOne(d => d.StateOfOrigin);
+
+                entity.HasOne(d => d.CountryOfOrigin);
+
+                entity.HasOne(d => d.CountySampleDrawn);
+
+                entity.HasOne(d => d.ContactEntered);
+
+                entity.HasMany(d => d.Documents);
+
+                entity.HasMany(d => d.OECDForm).WithOne(o => o.Seeds).HasForeignKey(o => o.SeedsId).HasPrincipalKey(s => s.Id);
 
             });
 
@@ -1740,6 +1762,12 @@ namespace CCIA.Models
                 entity.Property(e => e.OfficialVarietyId).HasColumnName("official_variety_id");
 
                 entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.HasOne(e => e.Variety);
+
+                entity.HasOne(e => e.Class);
+
+                entity.HasOne(e => e.ApplicantOrganization);
             });
 
             modelBuilder.Entity<ChangeRequests>(entity =>
@@ -2828,6 +2856,38 @@ namespace CCIA.Models
                     .HasMaxLength(250);
             });
 
+            modelBuilder.Entity<SeedDocuments>(entity =>
+            {
+                entity.ToTable("seed_docs");
+
+                entity.Property(e => e.Id).HasColumnName("seed_cert_id").UseSqlServerIdentityColumn();
+
+                entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+
+                entity.Property(e => e.Name).HasColumnName("doc_name");
+
+                entity.Property(e => e.Link).HasColumnName("doc_link");
+
+                entity.Property(e => e.DocType).HasColumnName("doc_type");
+
+                entity.HasOne(e => e.DocumentType);
+
+            });
+
+            modelBuilder.Entity<SeedsDocumentTypes>(entity => 
+            {
+                entity.ToTable("seed_doc_types");
+
+                entity.Property(e => e.Id).HasColumnName("doc_type");
+
+                entity.Property(e => e.Name).HasColumnName("type_trans");
+
+                entity.Property(e => e.Order).HasColumnName("type_order");
+
+                entity.Property(e =>e.Folder).HasColumnName("folder_name");
+
+            });
+
             modelBuilder.Entity<SampleLabResults>(entity =>
             {
                 entity.HasKey(e => e.SeedsId)
@@ -2866,9 +2926,7 @@ namespace CCIA.Models
                 entity.Property(e => e.CciaConfirmed)
                     .HasColumnName("ccia_confirmed")
                     .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CciaGerm).HasColumnName("ccia_germ");
-
+                
                 entity.Property(e => e.ChewingInsectDamagePercent)
                     .HasColumnName("chewing_insect_damage_percent")
                     .HasColumnType("numeric(8, 7)");
@@ -2889,11 +2947,7 @@ namespace CCIA.Models
                 entity.Property(e => e.DataEntryUser)
                     .HasColumnName("data_entry_user")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateComplete)
-                    .HasColumnName("date_complete")
-                    .HasColumnType("datetime");
+                    .IsUnicode(false);                
 
                 entity.Property(e => e.DodderGrams)
                     .HasColumnName("dodder_grams")
@@ -2906,9 +2960,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ForeignMaterialsComments)
                     .HasColumnName("foreign_materials_comments")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GermDays).HasColumnName("germ_days");
+                    .IsUnicode(false);              
 
                 entity.Property(e => e.HardSeedPercent)
                     .HasColumnName("germ_hard_seed")
@@ -2920,12 +2972,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.GermResults)
                     .HasColumnName("germ_results")
-                    .HasColumnType("char(1)");
-
-                entity.Property(e => e.GermTemp)
-                    .HasColumnName("germ_temp")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasColumnType("char(1)");                
 
                 entity.Property(e => e.InertComments)
                     .HasColumnName("inert_comments")
@@ -2934,19 +2981,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.InertPercent)
                     .HasColumnName("inert_percent")
-                    .HasColumnType("numeric(8, 7)");
-
-                entity.Property(e => e.LbsCanceled)
-                    .HasColumnName("lbs_canceled")
-                    .HasColumnType("numeric(16, 2)");
-
-                entity.Property(e => e.LbsPassed)
-                    .HasColumnName("lbs_passed")
-                    .HasColumnType("numeric(16, 2)");
-
-                entity.Property(e => e.LbsRejected)
-                    .HasColumnName("lbs_rejected")
-                    .HasColumnType("numeric(16, 2)");
+                    .HasColumnType("numeric(8, 7)");                
 
                 entity.Property(e => e.NoxiousComments)
                     .HasColumnName("noxious_comments")
@@ -3042,6 +3077,10 @@ namespace CCIA.Models
                 entity.Property(e => e.WeedSeedPercent)
                     .HasColumnName("weed_seed_percent")
                     .HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.OtherKindPercent).HasColumnName("other_kind_percent").HasColumnType("numberic(8, 7)");
+
+                entity.Property(e => e.OtherKindComments).HasColumnName("other_kind_comments");
 
                 entity.HasOne(d => d.LabOrganization);
 

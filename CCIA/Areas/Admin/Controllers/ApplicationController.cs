@@ -66,6 +66,7 @@ namespace CCIA.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptApplication(IFormCollection form)
         {
+            // TODO set up notifications
             var id = int.Parse(form["application.Id"].ToString());
             var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             appToAccept.Status = ApplicationStatus.FieldInspectionInProgress.GetDisplayName();
