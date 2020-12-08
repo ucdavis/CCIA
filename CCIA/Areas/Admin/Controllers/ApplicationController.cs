@@ -40,8 +40,7 @@ namespace CCIA.Controllers.Admin
         }
 
          public async Task<IActionResult> Pending()
-        {   var app = _helper.OverviewApplications();
-            var model = await app.Where(a => a.Status == ApplicationStatus.PendingAcceptance.GetDisplayName()).ToListAsync();
+        {   var model = await _helper.OverviewApplications().Where(a => a.Status == ApplicationStatus.PendingAcceptance.GetDisplayName()).ToListAsync();
             ViewBag.HideFI = "True";
 
             return View(model);
@@ -102,8 +101,7 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> Renew()
         {
             var certYear = CertYearFinder.CertYear;
-            var renew = _helper.FullRenewFields();
-            var model = await renew.Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
+            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
             return View(model);
         }
 

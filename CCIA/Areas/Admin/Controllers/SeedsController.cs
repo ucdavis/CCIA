@@ -11,6 +11,7 @@ using CCIA.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
+using CCIA.Services;
 
 namespace CCIA.Controllers.Admin
 {
@@ -19,22 +20,17 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
 
-        public SeedsController(CCIAContext dbContext)
+        private readonly IFullCallService _helper;
+
+        public SeedsController(CCIAContext dbContext, IFullCallService helper)
         {
             _dbContext = dbContext;
+            _helper = helper;
         }
 
         public async Task<IActionResult> Pending()
         {
-            var model = await _dbContext.Seeds.Where(s => s.Status == "Pending Acceptance")
-                .Include(s => s.ApplicantOrganization)
-                .Include(s => s.ConditionerOrganization)
-                .Include(s => s.Application)
-                .ThenInclude(a => a.Crop)
-                .Include(s => s.Application)
-                .Include(a => a.Variety)
-                .Include(s => s.Variety)
-                .ToListAsync();
+            var model = await _helper.OverviewSeeds().Where(s => s.Status == "Pending Acceptance").ToListAsync();
             return View(model);
         }
 
@@ -64,7 +60,7 @@ namespace CCIA.Controllers.Admin
         
         public async Task<IActionResult> Details(int id)
         {  
-            var model = await AdminSeedsViewModel.CreateDetails(_dbContext, id);
+            var model = await AdminSeedsViewModel.CreateDetails(_dbContext, id, _helper);
             return View(model);
         }
 
@@ -81,12 +77,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Certs(IFormCollection form)
         {
-            var certs =  _dbContext.Certs
-                .Include(c => c.Class)
-                .Include(c => c.ApplicantOrganization)
-                .Include(c => c.Variety)
-                .ThenInclude(v => v.Crop)
-                .AsQueryable();
+            var certs = _helper.FullCerts();
             var entry = form["id"];
             var how = form["searchHow"];
             switch (how)

@@ -15,6 +15,10 @@ namespace CCIA.Services
         IQueryable<Applications> FIRApplications();
 
         IQueryable<RenewFields> FullRenewFields();
+
+        IQueryable<Seeds> FullSeeds();
+
+        IQueryable<Seeds> OverviewSeeds();
     }
 
      public class FullCallService : IFullCallService
@@ -25,6 +29,61 @@ namespace CCIA.Services
         public FullCallService(CCIAContext context)
         {           
             _context = context;            
+        }
+
+        public IQueryable<Seeds> FullSeeds()
+        {
+            var seed = _context.Seeds
+                .Include(s => s.ApplicantOrganization)
+                .Include(s => s.ConditionerOrganization)
+                .Include(v => v.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(s => s.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(s => s.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(c => c.ClassProduced)
+                .Include(l => l.LabResults)
+                .Include(s => s.CountryOfOrigin)
+                .Include(s => s.StateOfOrigin)
+                .Include(s => s.CountySampleDrawn)
+                .Include(s => s.ContactEntered)
+                .Include(s => s.Documents)
+                .ThenInclude(d => d.DocumentType)                
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.GrowerOrganization)
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.ApplicantOrganization)
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.ClassProduced)
+                .AsQueryable();
+            return seed;
+
+        }
+
+        public IQueryable<Seeds> OverviewSeeds()
+        {
+            var seed = _context.Seeds
+                .Include(s => s.ApplicantOrganization)
+                .Include(s => s.ConditionerOrganization)
+                .Include(s => s.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(s => s.Application)
+                .Include(a => a.Variety)
+                .Include(s => s.Variety)
+                .AsQueryable();
+            return seed;
+
         }
 
         public IQueryable<Applications> OverviewApplications()
