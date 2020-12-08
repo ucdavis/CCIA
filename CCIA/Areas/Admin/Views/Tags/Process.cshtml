@@ -1,0 +1,76 @@
+@model List<CCIA.Models.Tags>
+
+<h2>Tags</h2> 
+<form asp-action="Process" method="Post">
+<div class="container">        
+    <div class="form-group row">
+        <label for="Stage" class="col-sm-3 col-form-label">Limit by Status</label>
+        <select id="Stage" name="Stage" class="col-sm-9 form-control">
+            <option>Requested</option>
+            <option>Printing</option>
+            <option>Pending File</option>
+            <option>Complete</option>
+        </select>
+    </div>
+    <div class="row">
+         <input type="submit" value="Apply Filter" id="submit" class="btn btn-primary"></input>
+    </div>
+</div>
+</form>
+
+@if(Model != null)
+{
+    <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+    <table id="table" class="table datatable">
+        <thead>
+            <tr>            
+                    <th>TID</th>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Crop</th>
+                    <th>Variety</th>
+                    <th>SID Class</th>
+                    <th>Lot#</th>
+                    <th>Tag Class</th>
+                    <th>Lot weight</th>
+                    <th>Tag Type</th>            
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.LinkId</td>
+                <td>@item.IdType</td>
+                <td>@item.CropName</td>
+                <td>@item.VarietyName</td>
+                <td>@item.SIDClass</td>
+                <td>@item.LotNumber</td>
+                <td>@item.TaggedClass</td>
+                <td>@item.LotWeightRequested</td>
+                <td>@item.AbbrevTagType.TagTypeTrans</td>
+            </tr>            
+        }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            console.log("go");
+            $('.datatable').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
+}

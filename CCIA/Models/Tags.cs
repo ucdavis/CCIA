@@ -5,6 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
+    public enum TagStages
+    { 
+        [Display(Name="Requested")]
+        Requested,
+        [Display(Name="Printing")]
+        Printing,
+        [Display(Name="Pending file")]
+        PendingFile,
+        [Display(Name="Complete")]
+        Complete,
+    } 
     public partial class Tags
     {
         [Display(Name = "TagID")]
@@ -44,7 +55,7 @@ namespace CCIA.Models
             }
         }
 
-        public string TaggedCass
+        public string TaggedClass
         {
             get
             {
@@ -253,7 +264,7 @@ namespace CCIA.Models
 
         public DateTime? DateModified { get; set; }
 
-        public int TaggingOrg { get; set; }
+        public int? TaggingOrg { get; set; }
 
         public bool Bulk { get; set; }
 
