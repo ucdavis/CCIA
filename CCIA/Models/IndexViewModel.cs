@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,24 +48,17 @@ namespace CCIA.Models.IndexViewModels
     {
         public List<Applications> applications { get; set; }
 
-        public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear, bool accepted)
+        public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int certYear, bool accepted, IFullCallService _helper)
         {
-            var queryable = _dbContext.Applications.Where(a => a.CertYear == certYear);
+            var queryable = _helper.OverviewApplications().Where(a => a.CertYear == certYear);
             if(accepted)
             {
-                 queryable = _dbContext.Applications.Where(a => a.CertYear == certYear && a.Approved == true);
+                 queryable = _helper.OverviewApplications().Where(a => a.CertYear == certYear && a.Approved == true);
             }
             
             var viewModel = new ApplicationIndexViewModel
             {
-                applications = await queryable
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.FieldInspection)
-                .ToListAsync(),
+                applications = await queryable.ToListAsync(),
                 certYears = await _dbContext.Applications.OrderBy(a => a.CertYear).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Applications",

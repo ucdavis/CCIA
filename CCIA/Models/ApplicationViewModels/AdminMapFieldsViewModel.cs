@@ -8,6 +8,7 @@ using CCIA.Helpers;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using CCIA.Models.DetailsViewModels;
+using CCIA.Services;
 
 namespace CCIA.Models
 {       
@@ -42,7 +43,7 @@ namespace CCIA.Models
             return viewModal;
         }
 
-         public static async Task<AdminMapFieldsViewModel> SingleMap(CCIAContext _dbContext, int appId)
+         public static async Task<AdminMapFieldsViewModel> SingleMap(CCIAContext _dbContext, int appId, IFullCallService _helper)
         { 
                        
             var pins = await _dbContext.Applications.Where(a => a.Id == appId & a.MapVe)
@@ -59,7 +60,7 @@ namespace CCIA.Models
             {
                 app = new List<int> {appId},
                 data = JsonConvert.SerializeObject(pins),
-                details = await AdminViewModel.CreateDetails(_dbContext, appId),
+                details = await AdminViewModel.CreateDetails(_dbContext, appId, _helper),
             };
 
             return viewModal;

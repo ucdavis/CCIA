@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.ComponentModel.DataAnnotations;
+using CCIA.Services;
 
 namespace CCIA.Models
 {   
@@ -86,22 +87,14 @@ namespace CCIA.Models
             Search = false;
         }
         
-        public static async Task<AdminSearchViewModel> Create(CCIAContext _dbContext, AdminSearchViewModel vm)
+        public static async Task<AdminSearchViewModel> Create(CCIAContext _dbContext, AdminSearchViewModel vm, IFullCallService _helper)
         {   
             var appTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeId).ToListAsync();
             appTypes.Add(new AbbrevAppType { AppTypeId = 0, AppTypeTrans = "Any", Abbreviation = "Any"});
                               
             if(vm != null)
             {
-                var appsToFind = _dbContext.Applications
-                    .Include(a => a.ApplicantOrganization)
-                    .Include(a => a.GrowerOrganization)
-                    .Include(a => a.Variety)
-                    .Include(a => a.County)
-                    .Include(a => a.Crop)
-                    .Include(a => a.ClassProduced)
-                    .Include(a => a.FieldInspection)
-                    .AsQueryable(); 
+                var appsToFind = _helper.OverviewApplications();
                 if(vm.appId.HasValue)
                 {
                     appsToFind = appsToFind.Where(a => a.Id == vm.appId);
