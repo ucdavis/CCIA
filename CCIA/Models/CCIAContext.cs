@@ -1091,6 +1091,9 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.AbbrevTagType);
 
+                entity.HasOne(e => e.TaggingOrganization);
+                entity.HasOne(e => e.ContactEntered);
+
 
             });
 

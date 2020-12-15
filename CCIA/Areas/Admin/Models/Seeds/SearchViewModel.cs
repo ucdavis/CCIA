@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.ComponentModel.DataAnnotations;
-using CCIA.Helpers;
 
 namespace CCIA.Models
 {   

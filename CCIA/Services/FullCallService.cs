@@ -19,6 +19,8 @@ namespace CCIA.Services
         IQueryable<Seeds> FullSeeds();
 
         IQueryable<Seeds> OverviewSeeds();
+
+        IQueryable<Certs> FullCerts();
     }
 
      public class FullCallService : IFullCallService
@@ -29,6 +31,17 @@ namespace CCIA.Services
         public FullCallService(CCIAContext context)
         {           
             _context = context;            
+        }
+
+        public IQueryable<Certs> FullCerts()
+        {
+            var certs =  _context.Certs
+                .Include(c => c.Class)
+                .Include(c => c.ApplicantOrganization)
+                .Include(c => c.Variety)
+                .ThenInclude(v => v.Crop)
+                .AsQueryable();
+            return certs;
         }
 
         public IQueryable<Seeds> FullSeeds()
@@ -79,7 +92,7 @@ namespace CCIA.Services
                 .Include(s => s.Application)
                 .ThenInclude(a => a.Crop)
                 .Include(s => s.Application)
-                .Include(a => a.Variety)
+                .ThenInclude(a => a.Variety)
                 .Include(s => s.Variety)
                 .AsQueryable();
             return seed;
@@ -182,7 +195,7 @@ namespace CCIA.Services
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.Blend)
-                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => variety
                 .ThenInclude(i => i.Application)
                 .ThenInclude(a => a.Variety)
                 .Include(t => t.Blend)
@@ -200,6 +213,10 @@ namespace CCIA.Services
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.TagAbbrevClass)
                 .Include(t => t.AbbrevTagType)
+                .Include(t => t.BulkCrop)
+                .Include(t => t.BulkVariety)
+                .Include(t => t.TaggingOrganization)
+                .Include(t => t.ContactEntered)
                 .AsQueryable();
             return tag;
         }

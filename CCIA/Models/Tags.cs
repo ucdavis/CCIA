@@ -27,6 +27,8 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public BlendRequests Blend { get; set; }
         public int? PotatoAppId { get; set; }
+        [ForeignKey("PotatoAppId")]
+        public Applications Application {get; set;}
 
         public string IdType
         {
@@ -51,6 +53,29 @@ namespace CCIA.Models
                 else
                 {
                     return "";
+                }
+            }
+        }
+
+        public int CertYear
+        {
+            get
+            {
+                if(SeedsID.HasValue)
+                {
+                    return Seeds.CertYear.Value;
+                }
+                if(BlendId.HasValue)
+                {
+                    return Blend.CertYear;
+                }
+                if(PotatoAppId.HasValue)
+                {
+                    return Application.CertYear;
+                }
+                else 
+                {
+                    return 0;
                 }
             }
         }
@@ -150,6 +175,26 @@ namespace CCIA.Models
                 else if (BlendId.HasValue)
                 {
                     return "Certified Blend";
+                }
+                return "";
+            }
+        }
+
+        public string ClassProduced
+        {
+            get
+            {
+                if(SeedsID.HasValue && Seeds.ClassProduced != null)
+                {
+                    return Seeds.ClassProduced.CertClass;
+                }
+                else if (BlendId.HasValue)
+                {
+                    return "Certified Blend";
+                }
+                else if(PotatoAppId.HasValue)
+                {
+                    return Application.ClassProducedName;
                 }
                 return "";
             }
@@ -257,7 +302,9 @@ namespace CCIA.Models
         public string Comments { get; set; }
         public int? Contact { get; set; }
         public string UserPrinted { get; set; }
-        public string UserEntered { get; set; }
+        public int UserEntered { get; set; }
+        [ForeignKey("UserEntered")]
+        public Contacts ContactEntered { get; set; }
         public DateTime? DateEntered { get; set; }
 
         public string UserModified { get; set; }
@@ -265,6 +312,9 @@ namespace CCIA.Models
         public DateTime? DateModified { get; set; }
 
         public int? TaggingOrg { get; set; }
+
+        [ForeignKey("TaggingOrg")]
+        public Organizations TaggingOrganization {get; set;}
 
         public bool Bulk { get; set; }
 

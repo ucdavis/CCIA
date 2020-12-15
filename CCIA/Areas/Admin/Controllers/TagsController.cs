@@ -26,11 +26,29 @@ namespace CCIA.Controllers.Admin
             _helper = helper;
         }
 
+        public ActionResult Index ()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Process(string stage = "Requested")
         {
             var tag = _helper.FullTag();
             var model = await tag.Where(t => t.Stage == stage).ToListAsync();            
             return View(model);
-        }       
+        }   
+
+        public async Task<IActionResult> Details(int id)    
+        {
+            var tag = _helper.FullTag();
+            var model = await tag.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
     }
 }
