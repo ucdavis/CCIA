@@ -100,6 +100,8 @@ namespace CCIA.Models
 
         public virtual DbSet<AppChanges> AppChanges { get; set; }
 
+        public virtual DbSet<TagBagging> TagBagging { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -286,6 +288,17 @@ namespace CCIA.Models
                 entity.HasMany(d => d.Documents);
 
                 entity.HasMany(d => d.OECDForm).WithOne(o => o.Seeds).HasForeignKey(o => o.SeedsId).HasPrincipalKey(s => s.Id);
+
+            });
+
+            modelBuilder.Entity<TagBagging>(entity => {
+                entity.ToTable("tag_bagging");
+
+                entity.HasKey(e => e.TagId);
+
+                entity.Property(e => e.TagId).HasColumnName("tag_id");
+
+                entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
 
             });
 
@@ -1093,6 +1106,8 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.TaggingOrganization);
                 entity.HasOne(e => e.ContactEntered);
+                entity.HasOne(e => e.TagBagging);
+                entity.HasOne(e => e.EmployeePrinted);
 
 
             });

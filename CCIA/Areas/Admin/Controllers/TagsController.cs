@@ -41,7 +41,10 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> Details(int id)    
         {
             var tag = _helper.FullTag();
-            var model = await tag.Where(t => t.Id == id).FirstOrDefaultAsync();
+            var model = await tag
+                .Include(t => t.TagBagging)
+                .Include(t => t.EmployeePrinted)
+                .Where(t => t.Id == id).FirstOrDefaultAsync();
             if(model == null)
             {
                 ErrorMessage = "Tag ID not found!";

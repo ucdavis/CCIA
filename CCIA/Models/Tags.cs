@@ -29,7 +29,9 @@ namespace CCIA.Models
         public int? PotatoAppId { get; set; }
         [ForeignKey("PotatoAppId")]
         public Applications Application {get; set;}
-
+        
+        [ForeignKey("Id")]
+        public TagBagging TagBagging { get; set; }
         public string IdType
         {
             get
@@ -96,7 +98,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue )
+                if (SeedsID.HasValue && Seeds != null)
                 {
                     return Seeds.GetCropName();
                 }
@@ -108,6 +110,10 @@ namespace CCIA.Models
                 {
                     return BulkCrop.Name;
                 }
+                if(PotatoAppId.HasValue && Application != null)
+                {
+                    return Application.CropName;
+                }
                 return "Unknown";
             }
         }
@@ -116,7 +122,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue)
+                if (SeedsID.HasValue && Seeds != null)
                 {
                     return Seeds.GetVarietyName();
                 }
@@ -128,7 +134,44 @@ namespace CCIA.Models
                 {
                     return BulkVariety.Name;
                 }
+                if(PotatoAppId.HasValue && Application != null)
+                {
+                    return Application.VarietyName;
+                }
                 return "Unknown";
+            }
+        }
+
+        public int VarietyId
+        {
+            get
+            {
+                if(SeedsID.HasValue && Seeds != null && Seeds.OfficialVarietyId.HasValue)
+                {
+                    return Seeds.OfficialVarietyId.Value;
+                }
+                if(BlendId.HasValue && Blend != null && Blend.VarietyId.HasValue)
+                {
+                    return Blend.VarietyId.Value;
+                }
+                if(BulkVariety != null)
+                {
+                    return BulkVariety.Id;
+                }
+                if(PotatoAppId.HasValue && Application != null && Application.SelectedVarietyId.HasValue)
+                {
+                    return Application.SelectedVarietyId.Value;
+                }
+                return -1;
+            }
+        }
+
+        [Display(Name = "Variety")]
+        public string VarietyIdandName
+        {
+            get
+            {
+                return $"{VarietyId.ToString()} {VarietyName}";
             }
         }
 
@@ -229,6 +272,24 @@ namespace CCIA.Models
                 }
             }
         }
+
+        public decimal SourceLotWeight
+        {
+            get
+            {
+                if(SeedsID.HasValue && Seeds != null)
+                {
+                    return Seeds.PoundsLot;
+                }
+                if(BlendId.HasValue && Blend != null && Blend.LbsLot.HasValue)
+                {
+                    return Blend.LbsLot.Value;
+                }
+                return 0;
+            }
+        }
+
+        
         public int? OECDId { get; set; }
         public int? TagClass { get; set; }
 
@@ -240,7 +301,7 @@ namespace CCIA.Models
 
         public int YearRequested { get { return DateRequested.HasValue ? DateRequested.Value.Year : 0; } }
 
-
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DateNeeded { get; set; }
         public DateTime? DateRun { get; set; }
         public decimal? LotWeightBagged { get; set; }
@@ -302,6 +363,8 @@ namespace CCIA.Models
         public string Comments { get; set; }
         public int? Contact { get; set; }
         public string UserPrinted { get; set; }
+        [ForeignKey("UserPrinted")]
+        public CCIAEmployees EmployeePrinted { get; set; }
         public int UserEntered { get; set; }
         [ForeignKey("UserEntered")]
         public Contacts ContactEntered { get; set; }
