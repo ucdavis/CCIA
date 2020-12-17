@@ -317,7 +317,47 @@
                     <hr/>
                 </div>                
             </div>
-        }        
+        }  
+        @if(Model.AnalysisRequested)      
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr>
+                    <h3>Analysis Request Values</h3> 
+                </div>            
+            </div>
+            <div class="col-sm-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Purity %</td>
+                            <td>Inert %</td>
+                            <td>Other Crop %</td>
+                            <td>Weed Seed %</td>
+                            <td>Noxious</td>
+                            <td>Germ %</td>
+                            <td>Test Date</td>
+                        </tr>
+                    </thead>
+                    <tbody>                        
+                        <tr>
+                            <td>@Model.Seeds.LabResults.PurityValue</td>
+                            <td>@Model.Seeds.LabResults.InertValue</td>
+                            <td>@Model.Seeds.LabResults.OtherCropValue</td>
+                            <td>@Model.Seeds.LabResults.WeedSeedValue</td>
+                            <td>@Model.Seeds.LabResults.NoxiousCount</td>
+                            <td>@Model.Seeds.LabResults.GermValue</td>
+                            <td>@Html.DisplayFor(x => x.Seeds.LabResults.PrivateLabDate)
+                        </tr>                            
+                    </tbody>
+                </table>
+            </div>            
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr/>
+                </div>                
+            </div>
+        }
         <div class="form-group row">
             <label asp-for="Statement" class="col-sm-1 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
@@ -328,7 +368,7 @@
             <label asp-for="HowDeliver" class="col-sm-1 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
                 @Html.DisplayFor(x => x.HowDeliver)
-                <a target="_blank" href=@("https://wwwapps.ups.com/WebTracking/processInputRequest?sort_by=status&error_carried=true&tracknums_displayed=1&TypeOfInquiryNumber=T&loc=en-us&InquiryNumber1=" + @Model.TrackingNumber+ "&AgreeToTermsAndConditions=yes")">@Model.TrackingNumber</a>
+                <a target="_blank" href="@Model.TrackingLink">@Model.TrackingNumber</a>
             </div>
         </div>
         <div class="form-group row">
@@ -350,7 +390,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label asp-for=TaggingOrganization.NameAndId" class="col-sm-3 col-form-label"></label>
+            <label asp-for="TaggingOrganization.NameAndId" class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
                 @Html.DisplayFor(x => x.TaggingOrganization.NameAndId)
             </div>
@@ -364,7 +404,26 @@
                 @Model.TaggingOrganization.Address.City, @Model.TaggingOrganization.Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Address.PostalCode
             </div>
         </div>
-        
+        <form asp-action="UpdateAdminComments" asp-area="Admin" asp-controller="Tags">
+            <input type="hidden" asp-for="Id">
+            <div class="form-group row">
+                <label asp-for="AdminComments" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    <textarea asp-for="AdminComments" rows="3" class="col-sm-9"></textarea>
+                     <input type="submit" value="Update Comments" class="btn btn-info">
+                </div>
+                
+            </div>
+        </form>
+        <form asp-action="UpdateTrackingNumber" asp-area="Admin" asp-controller="Tags">
+            <input type="hidden" asp-for="Id">
+            <div class="form-group row">
+                <label for="TrackingNumber" class="col-sm-3 col-form-label">Tracking Number</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    <input id="TrackingNumber" name="TrackingNumber" value=""> <input type="submit" value="Update Tracking Number" class="btn btn-info">
+                </div>                
+            </div>
+        </form>
     </div>        
 
 </div>

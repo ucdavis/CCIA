@@ -183,6 +183,8 @@ namespace CCIA.Services
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.ClassProduced)
+                .Include(s => s.Seeds)
+                .ThenInclude(s => s.LabResults)
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.Application)
                 .ThenInclude(a => a.Ecoregion)

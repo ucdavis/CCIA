@@ -48,10 +48,36 @@ namespace CCIA.Controllers.Admin
             if(model == null)
             {
                 ErrorMessage = "Tag ID not found!";
-                RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> UpdateAdminComments(int Id, string AdminComments)
+        {
+            var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();
+            if(tag == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            tag.AdminComments = AdminComments;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = Id});
+        }
+
+        public async Task<IActionResult> UpdateTrackingNumber(int Id, string TrackingNumber)
+        {
+            var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();
+            if(tag == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            tag.TrackingNumber = TrackingNumber;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = Id});
         }
     }
 }
