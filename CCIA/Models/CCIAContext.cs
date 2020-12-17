@@ -1082,7 +1082,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.DateSealed).HasColumnName("date_sealed");
 
-                entity.Property(e => e.OECDCountry).HasColumnName("oecd_country");
+                entity.Property(e => e.OECDCountryId).HasColumnName("oecd_country");
 
                 entity.Property(e => e.AdminComments).HasColumnName("admin_comments");
 
@@ -1108,6 +1108,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.ContactEntered);
                 entity.HasOne(e => e.TagBagging);
                 entity.HasOne(e => e.EmployeePrinted);
+                entity.HasOne(e => e.OECDClass);
+                entity.HasOne(e => e.OECDCountry);
 
 
             });
@@ -1157,8 +1159,14 @@ namespace CCIA.Models
                 entity.Property(v => v.ParentId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
+                entity.Property(v => v.EcoregionId).HasColumnName("ecoregion");
+                entity.Property(v => v.CountyHarvestId).HasColumnName("county_harvested");
+                entity.Property(v => v.Elevation).HasColumnName("elevation");
+                entity.Property(v => v.NumberOfGenerationsPermitted).HasColumnName("number_of_generations_permitted");
 
                 entity.HasOne(v => v.Crop);
+                entity.HasOne(v => v.CountyHarvested);
+                entity.HasOne(v => v.Ecoregion);
 
 
             });
@@ -1459,7 +1467,7 @@ namespace CCIA.Models
                     .HasColumnName("date_planted")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Ecoregion)
+                entity.Property(e => e.EcoregionId)
                     .HasColumnName("ecoregion")
                     .HasDefaultValueSql("((0))");
 
@@ -1646,6 +1654,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
                 entity.HasMany(d => d.Changes);
                 entity.HasOne(d => d.FieldInspectionReport);
+                entity.HasOne(d => d.Ecoregion);
 
             });
 

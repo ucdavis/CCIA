@@ -291,6 +291,7 @@ namespace CCIA.Models
 
         
         public int? OECDId { get; set; }
+       
         public int? TagClass { get; set; }
 
         [ForeignKey("TagClass")]
@@ -418,10 +419,16 @@ namespace CCIA.Models
         public string PlantingStockNumber { get; set; }
 
         public int? OECDTagType { get; set; }
+        [ForeignKey("OECDTagType")]
+        public AbbrevOECDClass OECDClass { get; set; }
 
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DateSealed { get; set; }
 
-        public int? OECDCountry { get; set; }
+        public int? OECDCountryId { get; set; }
+        [ForeignKey("OECDCountryId")]
+        public Countries OECDCountry {get; set;}
 
         public string AdminComments { get; set; }
 

@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
     public class VarFull
     {
-        public int Id { get; set; }
-        [DisplayName("Variety")] 
+        public int Id { get; set; }        
+        [Display(Name="Variety")]
         public string Name { get; set; }
         public string Type { get; set; }
 
@@ -27,6 +27,32 @@ namespace CCIA.Models
         public string RiceColor { get; set; }
         public int ParentId { get; set; }
         public bool Turfgrass { get; set; }
+
+        public int EcoregionId { get; set; }
+        [ForeignKey("EcoregionId")]
+        public Ecoregions Ecoregion { get; set; }
+
+        public int CountyHarvestId { get; set; }
+        [ForeignKey("CountyHarvestId")]
+        public County CountyHarvested { get; set; }
+
+        public string Elevation { get; set; }
+
+        [Display(Name="Permitted number of generations")]
+        public int? NumberOfGenerationsPermitted { get; set; }
+
+        public string G0CollectionInfo
+        {
+            get
+            {
+                if(EcoregionId != 0 && Ecoregion != null && CountyHarvestId != 0 && CountyHarvested != null)
+                {
+                    return $"{EcoregionId.ToString()}-{Ecoregion.Name}, {Elevation} {CountyHarvested.Name}";
+                }
+                return "";
+
+            }
+        }
 
        
 
