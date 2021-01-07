@@ -1,16 +1,11 @@
-@model List<CCIA.Models.Tags>
+@model CCIA.Models.ProcessViewModel
 
 <h2>Tags</h2> 
 <form asp-action="Process" method="Post">
 <div class="container">        
     <div class="form-group row">
-        <label for="Stage" class="col-sm-3 col-form-label">Limit by Status</label>
-        <select id="Stage" name="Stage" class="col-sm-9 form-control">
-            <option>Requested</option>
-            <option>Printing</option>
-            <option>Pending File</option>
-            <option>Complete</option>
-        </select>
+        <label for="Stage" class="col-sm-3 col-form-label">Limit by Status</label>       
+        <select asp-for="SelectedSearch" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<TagStages>()"></select>                    
     </div>
     <div class="row">
          <input type="submit" value="Apply Filter" id="submit" class="btn btn-primary"></input>
@@ -40,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Tags)
         {
             <tr>
                 <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Tags" asp-route-id="@item.Id">Details</a></td>

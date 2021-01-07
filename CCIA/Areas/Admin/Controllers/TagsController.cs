@@ -31,10 +31,9 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
-        public async Task<IActionResult> Process(string stage = "Requested")
+        public async Task<IActionResult> Process(ProcessViewModel vm)
         {
-            var tag = _helper.FullTag();
-            var model = await tag.Where(t => t.Stage == stage).ToListAsync();            
+            var model = await ProcessViewModel.Create(_dbContext, vm, _helper);         
             return View(model);
         }   
 
