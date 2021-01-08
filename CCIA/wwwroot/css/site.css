@@ -311,5 +311,8 @@ div.required label.col-form-label:after {
   background: white;
 }
 
+.dropdown:hover>.dropdown-menu {
+  display: block;
+}
 
 
