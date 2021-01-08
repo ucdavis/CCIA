@@ -102,6 +102,8 @@ namespace CCIA.Models
 
         public virtual DbSet<TagBagging> TagBagging { get; set; }
 
+        public virtual DbSet<TagSeries> TagSeries { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -299,6 +301,21 @@ namespace CCIA.Models
                 entity.Property(e => e.TagId).HasColumnName("tag_id");
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+
+            });
+
+            modelBuilder.Entity<TagSeries>(entity => {
+                entity.ToTable("tag_series");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("seriesID");
+                entity.Property(e => e.TagId).HasColumnName("tag_id");
+                entity.Property(d => d.Letter).HasColumnName("letter");
+                entity.Property(d => d.Start).HasColumnName("start_value");
+                entity.Property(d => d.End).HasColumnName("end_value");
+                entity.Property(d => d.Void).HasColumnName("void");
+                entity.Property(d => d.Count).HasColumnName("row_count");
 
             });
 

@@ -178,6 +178,7 @@ namespace CCIA.Services
          public IQueryable<Tags> FullTag() 
         {
             var tag = _context.Tags
+                .Include(t => t.TagSeries)
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.Variety)                
                 .ThenInclude(v => v.Crop)

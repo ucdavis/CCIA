@@ -447,7 +447,35 @@
                 </div>                
             </div>
         </form>
-    </div>        
+    </div> 
+    @if(Model.TagSeries.Count > 0)
+    {
+    <div class="col-sm-12"> @* full width *@
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Letter</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Void?</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tagSeries in Model.TagSeries)
+                {
+                    <tr>
+                        <td>@tagSeries.Letter</td>
+                        <td>@tagSeries.Start</td>
+                        <td>@tagSeries.End</td>
+                        <td>@tagSeries.Void</td>
+                        <td>@tagSeries.Count</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
 
 </div>
 

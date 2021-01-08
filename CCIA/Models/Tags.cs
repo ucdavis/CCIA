@@ -32,6 +32,10 @@ namespace CCIA.Models
         
         [ForeignKey("Id")]
         public TagBagging TagBagging { get; set; }
+
+        [ForeignKey("TagId")]
+        public ICollection<TagSeries> TagSeries { get; set; }
+        
         public string IdType
         {
             get
