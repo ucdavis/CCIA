@@ -11,6 +11,7 @@ using CCIA.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
+using CCIA.Helpers;
 
 namespace CCIA.Controllers.Admin
 {
@@ -77,6 +78,105 @@ namespace CCIA.Controllers.Admin
             tag.TrackingNumber = TrackingNumber;
             await _dbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Details), new {id = Id});
+        }
+
+        public async Task<IActionResult> PrintedTag(int id)
+        {
+            var tag = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(tag == null)
+            {
+                ErrorMessage = "Tag ID Not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            tag.Stage = TagStages.PendingFile.GetDisplayName();
+            tag.UserPrinted = User.FindFirstValue(ClaimTypes.Name);
+            tag.PrintedDate = DateTime.Now;
+            await _dbContext.SaveChangesAsync();
+
+            Message = "Tag marked printed";
+            return RedirectToAction(nameof(Details), new {id = id}); 
+        }
+
+
+        public async Task<IActionResult> FileTag(int id)
+        {
+            var tag = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(tag == null)
+            {
+                ErrorMessage = "Tag ID Not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            tag.Stage = TagStages.Complete.GetDisplayName();
+
+            await _dbContext.SaveChangesAsync();
+
+            Message = "Tag marked complete";
+            return RedirectToAction(nameof(Details), new {id = id}); 
+        }
+
+        public async Task<IActionResult> AcceptTag(int id)
+        {
+            var tag = await _dbContext.Tags
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.StateOfOrigin)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(tag == null)
+            {
+                ErrorMessage = "Tag ID Not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            tag.Stage = TagStages.Printing.GetDisplayName();
+            tag.UserApproved = User.FindFirstValue(ClaimTypes.Name);
+            tag.ApprovedDate = DateTime.Now;
+
+            Message = "Tag Accepted";
+
+            var oecd = new OECD();
+            if(tag.OECD)
+            {
+                
+                oecd.SeedsId = tag.SeedsID;
+                oecd.VarietyId = tag.Seeds.OfficialVarietyId;
+                oecd.Pounds = Convert.ToInt32(tag.LotWeightRequested.Value);
+                oecd.CertNumber = tag.Seeds.CertNumber;
+                oecd.ClassId = tag.OECDTagType;
+                oecd.CloseDate = tag.DateSealed.Value;
+                oecd.ConditionerId = tag.Seeds.ConditionerId;
+                oecd.CountryId = tag.OECDCountryId;
+                oecd.LotNumber = tag.Seeds.LotNumber;
+                oecd.ShipperId = tag.TaggingOrg;
+                oecd.DateRequested = tag.DateEntered;
+                oecd.NotCertified = tag.OECDTagType == 5;
+                oecd.DataEntryDate = DateTime.Now;
+                oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
+                oecd.DomesticOrigin = tag.Seeds.OriginCountry == 58;
+                oecd.ReferenceNumber = tag.PlantingStockNumber;
+                oecd.Canceled = false;
+                oecd.TagsRequested = tag.CountRequested.Value;
+                oecd.AdminComments = tag.AdminComments;
+                oecd.OECDNumber = tag.Seeds.OriginCountry == 102 ? $"USA-CA-{tag.Seeds.CertNumber}" : $"USA-{tag.Seeds.StateOfOrigin.StateProvinceCode}/CA-{tag.Seeds.CertNumber}-{tag.Seeds.LotNumber}";
+                oecd.TagId = tag.Id;
+
+                _dbContext.Add(oecd);
+
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            if(tag.OECD)
+            {
+                var msg = $"; OECD File {oecd.Id}";
+                tag.AdminComments = $"{tag.AdminComments}{msg}";
+                tag.OECDId = oecd.Id;
+                tag.Seeds.Remarks = $"{tag.Seeds.Remarks}{msg}";
+                await _dbContext.SaveChangesAsync(); 
+                Message = "Tag Accepted & OECD File saved";               
+            }
+
+            return RedirectToAction(nameof(Details), new {id = id});            
         }
     }
 }

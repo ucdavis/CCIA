@@ -1,4 +1,5 @@
 @model  CCIA.Models.Tags
+@using CCIA.Helpers
 
 <div class="container col-sm-12">    
     <div class="row">
@@ -6,17 +7,39 @@
             <h2>Tag Details</h2> 
         </div>            
     </div>
-    @* @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && Model.LabsAndStandards.Labs.CciaConfirmed)
+    @if(Model.Stage == TagStages.Requested.GetDisplayName())
     {
         <div class="row">
             <div class="col-sm-12">
-                    <form asp-action="AcceptSeed">
-                    @Html.HiddenFor(x => x.seed.Id)
-                    <input type="submit" class="btn btn-success" value="Accept Seed">
+                    <form asp-action="AcceptTag">
+                    @Html.HiddenFor(x => x.Id)
+                    <input type="submit" class="btn btn-success" value="Approve Request">
                 </form>                    
             </div>            
         </div>
-    } *@
+    }
+    @if(Model.Stage == TagStages.Printing.GetDisplayName())
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                    <form asp-action="PrintedTag">
+                    @Html.HiddenFor(x => x.Id)
+                    <input type="submit" class="btn btn-success" value="Mark as Printed & Shipped">
+                </form>                    
+            </div>            
+        </div>
+    }
+    @if(Model.Stage == TagStages.PendingFile.GetDisplayName())
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                    <form asp-action="FileTag">
+                    @Html.HiddenFor(x => x.Id)
+                    <input type="submit" class="btn btn-success" value="Mark as file uploaded and order complete">
+                </form>                    
+            </div>            
+        </div>
+    }
     <div class="row">
         <div class="col-sm-4"> @* First column *@
             <div class="form-group row">
