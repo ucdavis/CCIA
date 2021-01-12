@@ -478,6 +478,7 @@
                         <th>End</th>
                         <th>Void?</th>
                         <th>Count</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -487,8 +488,15 @@
                             <td>@tagSeries.Letter</td>
                             <td>@tagSeries.Start</td>
                             <td>@tagSeries.End</td>
-                            <td>@tagSeries.Void</td>
-                            <td>@tagSeries.Count</td>
+                            <td>@Html.CheckBoxFor(x => tagSeries.Void)</td>
+                            <td>@tagSeries.Count </td>
+                            <td>
+                                <form asp-action="DeleteSeries">
+                                    <input type="hidden" value="@tagSeries.Id" name="id" id="id">
+                                    <input type="submit" value="Delete entry" onclick="return confirm('Are you sure you want to delete this entry?')">
+                                </form>
+                            </td>
+
                         </tr>
                     }
                 </tbody>

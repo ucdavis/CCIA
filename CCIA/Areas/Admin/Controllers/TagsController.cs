@@ -76,6 +76,16 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = id});
         }
 
+        public async Task<IActionResult> DeleteSeries(int id)
+        {            
+            var series = await _dbContext.TagSeries.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var tag = series.TagId;
+            _dbContext.Remove(series);
+            await _dbContext.SaveChangesAsync();
+            Message = "Series entry deleted";
+            return RedirectToAction(nameof(Details), new {id = tag});
+        }
+
         public async Task<IActionResult> UpdateAdminComments(int Id, string AdminComments)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();
