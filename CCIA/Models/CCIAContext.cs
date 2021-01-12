@@ -317,6 +317,8 @@ namespace CCIA.Models
                 entity.Property(d => d.Void).HasColumnName("void");
                 entity.Property(d => d.Count).HasColumnName("row_count");
 
+                entity.HasOne(d => d.Tag).WithMany(t => t.TagSeries).HasForeignKey(s => s.TagId).HasPrincipalKey(t => t.Id);
+
             });
 
             modelBuilder.Entity<Standards>(entity => {

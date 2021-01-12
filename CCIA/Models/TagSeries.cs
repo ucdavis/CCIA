@@ -7,8 +7,6 @@ namespace CCIA.Models
 {
     public partial class TagSeries
     {
-
-        [Display(Name = "TagID")]
         public int Id { get; set; }
 
         public int TagId { get; set; }
@@ -22,7 +20,10 @@ namespace CCIA.Models
         public bool Void { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public int Count { get; set; }    
+        public int Count { get; set; }  
+
+        
+        public Tags Tag { get; set; }  
 
 
     }

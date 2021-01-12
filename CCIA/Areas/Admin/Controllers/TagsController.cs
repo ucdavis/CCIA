@@ -54,6 +54,28 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> RecordSeries(int id, string Letter, int Start, int End, bool Void)
+        {
+            var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
+            if(test)
+            {
+                ErrorMessage = "Tag Series already exists with that Letter & range";
+                return RedirectToAction(nameof(Details), new {id = id});
+            }
+            var series = new TagSeries();
+            series.TagId = id;
+            series.Letter = Letter;
+            series.Start = Start;
+            series.End = End;
+            series.Void = Void;
+
+            _dbContext.Add(series);
+            await _dbContext.SaveChangesAsync();
+            Message = "New Series Recorded";
+
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         public async Task<IActionResult> UpdateAdminComments(int Id, string AdminComments)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();

@@ -457,13 +457,13 @@
             <form asp-action="RecordSeries" class="form-inline">
                 @Html.HiddenFor(x => x.Id)                
                <label for="Letter">Letter</label> 
-               <input type="text" id="Letter" class="form-control mb-2 mr-sm-2 ml-sm-2" width="15px" />
+               <input type="text" id="Letter" name="Letter" class="form-control mb-2 mr-sm-2 ml-sm-2" width="15px" />
                <label for="Start">Series Start Number</label>
-               <input type="text" id="Start" class="form-control mb-2 mr-sm-2 ml-sm-2">
+               <input type="text" id="Start" name="Start" class="form-control mb-2 mr-sm-2 ml-sm-2">
                <label for="End">Series End Number</label>
-               <input type="text" id="End" class="form-control mb-2 mr-sm-2 ml-sm-2">    
+               <input type="text" id="End" name="End" class="form-control mb-2 mr-sm-2 ml-sm-2">    
                <label for="Start">Void</label>
-               <input type="checkbox" id="Start" class="form-control mb-2 mr-sm-2 ml-sm-2">           
+               <input type="checkbox" id="Void" name="Void" value="true" class="form-control mb-2 mr-sm-2 ml-sm-2">           
                <input type="submit" class="btn btn-info" value="Record Line">
             </form>                  
         </div>
