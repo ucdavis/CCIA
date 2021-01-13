@@ -170,6 +170,19 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> SearchSeries()
+        {
+            var model = await AdminTagsSeriesSearchViewModel.Create(_dbContext, null);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchSeries(AdminTagsSeriesSearchViewModel vm)
+        {
+            var model = await AdminTagsSeriesSearchViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AcceptTag(int id)
         {
