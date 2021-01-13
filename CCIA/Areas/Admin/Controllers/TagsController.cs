@@ -32,6 +32,11 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
+        public ActionResult Lookup()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Process(ProcessViewModel vm)
         {
             var model = await ProcessViewModel.Create(_dbContext, vm, _helper);         
@@ -54,6 +59,7 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> RecordSeries(int id, string Letter, int Start, int End, bool Void)
         {
             var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
@@ -76,6 +82,7 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = id});
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteSeries(int id)
         {            
             var series = await _dbContext.TagSeries.Where(s => s.Id == id).FirstOrDefaultAsync();
@@ -86,6 +93,7 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = tag});
         }
 
+        [HttpPost]
         public async Task<IActionResult> UpdateAdminComments(int Id, string AdminComments)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();
@@ -99,6 +107,7 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = Id});
         }
 
+        [HttpPost]
         public async Task<IActionResult> UpdateTrackingNumber(int Id, string TrackingNumber)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == Id).FirstOrDefaultAsync();
@@ -112,6 +121,7 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = Id});
         }
 
+        [HttpPost]
         public async Task<IActionResult> PrintedTag(int id)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
@@ -130,6 +140,7 @@ namespace CCIA.Controllers.Admin
         }
 
 
+        [HttpPost]
         public async Task<IActionResult> FileTag(int id)
         {
             var tag = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
@@ -146,6 +157,20 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = id}); 
         }
 
+        public async Task<IActionResult> Search()
+        {
+            var model = await AdminTagsSearchViewModel.Create(_dbContext, null, _helper);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(AdminTagsSearchViewModel vm)
+        {
+            var model = await AdminTagsSearchViewModel.Create(_dbContext, vm, _helper);
+            return View(model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AcceptTag(int id)
         {
             var tag = await _dbContext.Tags
