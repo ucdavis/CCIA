@@ -88,6 +88,7 @@ namespace CCIA
            
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<IFullCallService, FullCallService>();
 
             
         }

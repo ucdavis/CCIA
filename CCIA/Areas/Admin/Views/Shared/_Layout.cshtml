@@ -56,9 +56,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Tag" asp-action="Index" aria-haspopup="true" aria-expanded="false">Tags</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Process</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Tags</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="Tag" asp-action="Index">Search</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tags" asp-action="Process">Process</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tags" asp-action="Lookup">Tags</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tags" asp-action="Search">Search</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Tags" asp-action="SearchSeries">Tag Series Search</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -88,7 +89,8 @@
                             <a class="dropdown-item" asp-area="admin" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
                         </div>
                     </li>
-                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Variety</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certificates</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Variety</a>
                     <a class="nav-link" asp-controller="Account" asp-action="Login">Logout</a>
                 </ul>
             </div>

@@ -1,0 +1,51 @@
+@model CCIA.Models.AdminTagsSearchViewModel
+
+<h3>Tags Search</h3>
+<form asp-action="Search" method="POST">
+<input type="hidden" id="Search" name="Search" value="True">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row form-inline"> 
+        <label asp-for="searchTerm"></label>            
+        <input asp-for="searchTerm" class="form-control mb-2 mr-sm-2 ml-sm-2">
+        <label asp-for="searchWhat"></label>
+        <select asp-for="searchWhat" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.searchOptions))"></select>
+        <input type="submit" class="btn btn-primary" value="Search">          
+    </div>    
+</div>
+<hr>
+</form>
+@if(Model.tags.Any())
+{
+    @await Html.PartialAsync("_TagTable", @Model.tags)   
+}
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+
+        $(document).ready( function () {            
+            
+            oTable = $('#table').dataTable({
+                 dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50
+            });           
+            
+        } );
+    </script>
+}
+
+

@@ -11,6 +11,7 @@ using CCIA.Models.IndexViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
+using CCIA.Services;
 
 namespace CCIA.Controllers.Admin
 {
@@ -19,9 +20,12 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
 
-        public ApplicationController(CCIAContext dbContext)
+        private readonly IFullCallService _helper;
+
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper)
         {
             _dbContext = dbContext;
+            _helper = helper;
         }
 
         
@@ -31,20 +35,12 @@ namespace CCIA.Controllers.Admin
             {
                 certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
             }
-            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, false);
+            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, false, _helper);
             return View(model);
         }
 
          public async Task<IActionResult> Pending()
-        {            
-            var model =  await _dbContext.Applications.Where(a => a.Status == ApplicationStatus.PendingAcceptance.GetDisplayName())
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.FieldInspection)
-                .ToListAsync(); 
+        {   var model = await _helper.OverviewApplications().Where(a => a.Status == ApplicationStatus.PendingAcceptance.GetDisplayName()).ToListAsync();
             ViewBag.HideFI = "True";
 
             return View(model);
@@ -56,7 +52,7 @@ namespace CCIA.Controllers.Admin
             {
                 certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
             }
-            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, true);
+            var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, true, _helper);
             return View("Index", model);
         }
 
@@ -105,18 +101,7 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> Renew()
         {
             var certYear = CertYearFinder.CertYear;
-            var model = await _dbContext.RenewFields.Where(r => r.Year == certYear && r.Action == 0)
-                .Include(r => r.Application)
-                .ThenInclude(a => a.GrowerOrganization)
-                .Include(r => r.Application)
-                .ThenInclude(a => a.ApplicantOrganization)
-                .Include(r => r.Application)
-                .ThenInclude(a => a.Crop)
-                .Include(r => r.Application)
-                .ThenInclude(a => a.Variety)
-                .Include(r => r.Application)
-                .ThenInclude(a => a.ClassProduced)
-                .ToListAsync();
+            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
             return View(model);
         }
 
@@ -180,10 +165,10 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> Search(int id, AdminSearchViewModel vm)
         {
             if(!vm.Search){
-                var freshmodel = await AdminSearchViewModel.Create(_dbContext, null);
+                var freshmodel = await AdminSearchViewModel.Create(_dbContext, null, _helper);
                 return View(freshmodel);  
             }
-                var model = await AdminSearchViewModel.Create(_dbContext, vm);
+                var model = await AdminSearchViewModel.Create(_dbContext, vm, _helper);
                 if(model.includeMapOptions)
                 {
                     ViewBag.IncludeMapOptions = "Yes";
@@ -201,21 +186,21 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> FieldMap(int id)
         {
-             var model = await AdminMapFieldsViewModel.SingleMap(_dbContext, id);
+             var model = await AdminMapFieldsViewModel.SingleMap(_dbContext, id, _helper);
             return View(model);  
         }
 
         
         public async Task<IActionResult> Details(int id)
         {   
-            var model = await AdminViewModel.CreateDetails(_dbContext, id);
+            var model = await AdminViewModel.CreateDetails(_dbContext, id, _helper);
             return View(model);  
         }
 
        
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await AdminViewModel.CreateEdit(_dbContext, id);
+            var model = await AdminViewModel.CreateEdit(_dbContext, id, _helper);
             return View(model);            
         }
 
@@ -331,19 +316,19 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> FIR(int id)
         {
-            var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             return View(model);
         }
 
         public async Task<IActionResult> BasicFir(int id)
         {
-            var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             return View(model);
         }
 
         public async Task<ActionResult> FIRCertificate(int id)
         {
-            var model = await AdminViewModel.CreateFIR(_dbContext, id);
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             return View(model);
         }
        // Add ability to upload documentation for FIR
@@ -488,7 +473,7 @@ namespace CCIA.Controllers.Admin
                 Message = "Application Updated";
             } else {
                 ErrorMessage = "Something went wrong.";
-                var model = await AdminViewModel.CreateEdit(_dbContext, id);
+                var model = await AdminViewModel.CreateEdit(_dbContext, id, _helper);
                 return View(model); 
             }
 

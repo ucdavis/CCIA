@@ -136,7 +136,9 @@ namespace CCIA.Models
         public string PvgSelectionId { get; set; }
         public string FieldHardiness { get; set; }
         public int? FieldElevation { get; set; }
-        public int Ecoregion { get; set; }
+        public int EcoregionId { get; set; }
+        [ForeignKey("EcoregionId")]
+        public Ecoregions Ecoregion { get; set; }
        
        [Required]
         public int? CropId { get; set; }
@@ -420,6 +422,18 @@ namespace CCIA.Models
                  }
                  return false;
              }
+        }
+
+        public string PVGFieldInfo
+        {
+            get
+            {
+                if(EcoregionId != 0 && Ecoregion != null && FarmCounty != 0 && County != null)
+                {
+                    return $"{EcoregionId.ToString()}-{Ecoregion.Name}, {FieldElevation}', {County.Name}";
+                }
+                return "";
+            }
         }
 
         

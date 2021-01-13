@@ -100,6 +100,10 @@ namespace CCIA.Models
 
         public virtual DbSet<AppChanges> AppChanges { get; set; }
 
+        public virtual DbSet<TagBagging> TagBagging { get; set; }
+
+        public virtual DbSet<TagSeries> TagSeries { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -286,6 +290,34 @@ namespace CCIA.Models
                 entity.HasMany(d => d.Documents);
 
                 entity.HasMany(d => d.OECDForm).WithOne(o => o.Seeds).HasForeignKey(o => o.SeedsId).HasPrincipalKey(s => s.Id);
+
+            });
+
+            modelBuilder.Entity<TagBagging>(entity => {
+                entity.ToTable("tag_bagging");
+
+                entity.HasKey(e => e.TagId);
+
+                entity.Property(e => e.TagId).HasColumnName("tag_id");
+
+                entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+
+            });
+
+            modelBuilder.Entity<TagSeries>(entity => {
+                entity.ToTable("tag_series");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("seriesID");
+                entity.Property(e => e.TagId).HasColumnName("tag_id");
+                entity.Property(d => d.Letter).HasColumnName("letter");
+                entity.Property(d => d.Start).HasColumnName("start_value");
+                entity.Property(d => d.End).HasColumnName("end_value");
+                entity.Property(d => d.Void).HasColumnName("void");
+                entity.Property(d => d.Count).HasColumnName("row_count");
+
+                entity.HasOne(d => d.Tag).WithMany(t => t.TagSeries).HasForeignKey(s => s.TagId).HasPrincipalKey(t => t.Id);
 
             });
 
@@ -1069,7 +1101,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.DateSealed).HasColumnName("date_sealed");
 
-                entity.Property(e => e.OECDCountry).HasColumnName("oecd_country");
+                entity.Property(e => e.OECDCountryId).HasColumnName("oecd_country");
 
                 entity.Property(e => e.AdminComments).HasColumnName("admin_comments");
 
@@ -1090,6 +1122,13 @@ namespace CCIA.Models
                 entity.HasOne(e => e.TagAbbrevClass);
 
                 entity.HasOne(e => e.AbbrevTagType);
+
+                entity.HasOne(e => e.TaggingOrganization);
+                entity.HasOne(e => e.ContactEntered);
+                entity.HasOne(e => e.TagBagging);
+                entity.HasOne(e => e.EmployeePrinted);
+                entity.HasOne(e => e.OECDClass);
+                entity.HasOne(e => e.OECDCountry);
 
 
             });
@@ -1139,8 +1178,14 @@ namespace CCIA.Models
                 entity.Property(v => v.ParentId).HasColumnName("parent_id");
 
                 entity.Property(v => v.Turfgrass).HasColumnName("turfgrass");
+                entity.Property(v => v.EcoregionId).HasColumnName("ecoregion");
+                entity.Property(v => v.CountyHarvestId).HasColumnName("county_harvested");
+                entity.Property(v => v.Elevation).HasColumnName("elevation");
+                entity.Property(v => v.NumberOfGenerationsPermitted).HasColumnName("number_of_generations_permitted");
 
                 entity.HasOne(v => v.Crop);
+                entity.HasOne(v => v.CountyHarvested);
+                entity.HasOne(v => v.Ecoregion);
 
 
             });
@@ -1441,7 +1486,7 @@ namespace CCIA.Models
                     .HasColumnName("date_planted")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Ecoregion)
+                entity.Property(e => e.EcoregionId)
                     .HasColumnName("ecoregion")
                     .HasDefaultValueSql("((0))");
 
@@ -1628,6 +1673,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
                 entity.HasMany(d => d.Changes);
                 entity.HasOne(d => d.FieldInspectionReport);
+                entity.HasOne(d => d.Ecoregion);
 
             });
 

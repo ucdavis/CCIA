@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,55 +20,22 @@ namespace CCIA.Models.DetailsViewModels
 
         public List<County> Counties { get; set; }
 
-        public static async Task<AdminViewModel> CreateDetails(CCIAContext _dbContext, int id)
+        public static async Task<AdminViewModel> CreateDetails(CCIAContext _dbContext, int id, IFullCallService _helper)
         {
-           var app = await _dbContext.Applications.Where(a => a.Id == id)
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.ApplicantOrganization)
-                .Include(a => a.County)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
-                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
-                .Include(a => a.AppCertRad)
-                .Include(a => a.Changes).ThenInclude(c => c.Employee)
-                .FirstOrDefaultAsync();  
             var viewModel = new AdminViewModel
             {
-                application = app, 
+                application =  await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync(), 
                 conflicts = await _dbContext.IsolationConflicts.FromSql("dbo.check_for_isolation_in_apps_mvc @p0", id).ToListAsync()          
             };           
 
             return viewModel;
         }
 
-        public static async Task<AdminViewModel> CreateEdit(CCIAContext _dbContext, int id)
-        {                   
-            var app = await _dbContext.Applications.Where(a => a.Id == id)
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.ApplicantOrganization)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
-                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
-                .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
-                .Include(a => a.AppCertRad)
-                .Include(a => a.Changes).ThenInclude(c => c.Employee)
-                .FirstOrDefaultAsync();  
+        public static async Task<AdminViewModel> CreateEdit(CCIAContext _dbContext, int id, IFullCallService _helper)
+        {    
             var viewModel = new AdminViewModel
             {
-                application = app,
+                application =  await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync(),
                 AppTypes = await _dbContext.AbbrevAppType.Select(a => a.Abbreviation).ToListAsync(),
                 Crops = await _dbContext.Crops.ToListAsync(),   
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync(),     
@@ -76,22 +44,9 @@ namespace CCIA.Models.DetailsViewModels
             return viewModel;
         }
 
-        public static async Task<AdminViewModel> CreateFIR(CCIAContext _dbContext, int id)
+        public static async Task<AdminViewModel> CreateFIR(CCIAContext _dbContext, int id, IFullCallService _helper)
         {                   
-            var app = await _dbContext.Applications.Where(a => a.Id == id)
-                .Include(a => a.AppTypeTrans)
-                .Include(a => a.GrowerOrganization)
-                .Include(a => a.ApplicantOrganization)
-                .ThenInclude(o => o.Address)
-                .ThenInclude(a => a.StateProvince)
-                .Include(a => a.Crop)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Include(a => a.AppCertRad)
-                .Include(a => a.County)               
-                .Include(a => a.FieldInspectionReport).ThenInclude(r => r.CompleteEmployee) 
-                .Include(a => a.FieldInspection).ThenInclude(i => i.InspectorEmployee)               
-                .FirstOrDefaultAsync();  
+            var app = await _helper.FIRApplications().Where(a => a.Id == id).FirstOrDefaultAsync();  
             var viewModel = new AdminViewModel
             {
                 application = app                  

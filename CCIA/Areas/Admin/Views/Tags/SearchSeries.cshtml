@@ -1,0 +1,44 @@
+@model CCIA.Models.AdminTagsSeriesSearchViewModel
+
+<h3>Tag Series Search</h3>
+<form asp-action="SearchSeries" method="POST">
+<div class="container col-sm-10">    
+    <div class="row form-inline"> 
+        <label asp-for="searchLetter" >Search Letter</label> 
+        <input type="text" asp-for="searchLetter" class="form-control mb-2 mr-sm-2 ml-sm-2" width="15px" /> (use % to find all letters) 
+        <label asp-for="searchNumber" >Search Number</label>
+        <input type="text" asp-for="searchNumber" class="form-control mb-2 mr-sm-2 ml-sm-2">                  
+        <input type="submit" class="btn btn-info" value="Search"> 
+    </div>    
+</div>
+<hr>
+</form>
+
+@if(Model.tags.Any())
+{
+     @await Html.PartialAsync("_TagTable", @Model.tags)  
+}
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+
+        $(document).ready( function () {            
+            
+            oTable = $('#table').dataTable({
+                 dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50
+            });           
+            
+        } );
+    </script>
+}
+
