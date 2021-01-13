@@ -1,0 +1,39 @@
+@model List<CCIA.Models.Tags>
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+    <table id="table" class="table datatable">
+        <thead> 
+            <th>&nbsp;</th>            
+            <th>TID</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Crop</th>
+            <th>Variety</th>
+            <th>SID Class</th>
+            <th>Lot#</th>
+            <th>Tag Class</th>
+            <th>Lot weight</th>
+            <th>Tag Type</th>           
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Tags" asp-route-id="@item.Id">Details</a></td>
+                <td>@item.Id</td>
+                <td>@item.LinkId</td>
+                <td>@item.IdType</td>
+                <td>@item.CropName</td>
+                <td>@item.VarietyName</td>
+                <td>@item.SIDClass</td>
+                <td>@item.LotNumber</td>
+                <td>@item.TaggedClass</td>
+                <td>@item.LotWeightRequested</td>
+                <td>@item.AbbrevTagType.TagTypeTrans</td>
+            </tr>
+            }
+        </tbody>
+    </table>

@@ -15,44 +15,7 @@
 
 @if(Model != null)
 {
-    <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
-
-    <table id="table" class="table datatable">
-        <thead>
-            <tr>
-                    <th>&nbsp;</th>            
-                    <th>TID</th>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Crop</th>
-                    <th>Variety</th>
-                    <th>SID Class</th>
-                    <th>Lot#</th>
-                    <th>Tag Class</th>
-                    <th>Lot weight</th>
-                    <th>Tag Type</th>            
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model.Tags)
-        {
-            <tr>
-                <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Tags" asp-route-id="@item.Id">Details</a></td>
-                <td>@item.Id</td>
-                <td>@item.LinkId</td>
-                <td>@item.IdType</td>
-                <td>@item.CropName</td>
-                <td>@item.VarietyName</td>
-                <td>@item.SIDClass</td>
-                <td>@item.LotNumber</td>
-                <td>@item.TaggedClass</td>
-                <td>@item.LotWeightRequested</td>
-                <td>@item.AbbrevTagType.TagTypeTrans</td>
-            </tr>            
-        }
-        </tbody>
-    </table>
+    @await Html.PartialAsync("_TagTable", @Model.Tags)
 }
 
 @section Scripts {
@@ -66,7 +29,8 @@
             console.log("go");
             $('.datatable').DataTable({
                 dom: 'lBfrtip',
-                buttons: ['copyHtml5', 'csvHtml5']
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50
             });
         } );
     </script>
