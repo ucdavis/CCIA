@@ -21,6 +21,8 @@ namespace CCIA.Services
         IQueryable<Seeds> OverviewSeeds();
 
         IQueryable<Certs> FullCerts();
+
+        IQueryable<OECD> FullOECD();
     }
 
      public class FullCallService : IFullCallService
@@ -96,6 +98,15 @@ namespace CCIA.Services
                 .Include(s => s.Variety)
                 .AsQueryable();
             return seed;
+
+        }
+
+        public IQueryable<OECD> FullOECD()
+        {
+            var oecd = _context.OECD
+                .Include(o => o.Seeds)
+                .AsQueryable();
+            return oecd;
 
         }
 
