@@ -15,6 +15,8 @@ namespace CCIA.Models
         public Seeds Seeds { get; set; }
 
         public int? VarietyId { get; set; }
+        [ForeignKey("VarietyId")]
+        public VarFull Variety { get; set; }
 
         public int? TagId { get; set; }
 
@@ -34,6 +36,9 @@ namespace CCIA.Models
 
         public int? ConditionerId { get; set; }
 
+        [ForeignKey("ConditionerId")]
+        public Organizations ConditionerOrganization { get; set; }
+
         public int? CountryId { get; set; }
 
         public Countries Country { get; set; }
@@ -43,6 +48,8 @@ namespace CCIA.Models
         public string LotNumber { get; set; }
 
         public int? ShipperId { get; set; }
+        [ForeignKey("ShipperId")]
+        public Organizations ShipperOrganization { get; set; }
 
         public DateTime? DateRequested { get; set; }
 

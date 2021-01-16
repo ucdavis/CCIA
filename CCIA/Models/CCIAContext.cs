@@ -942,6 +942,12 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Country);
 
+                entity.HasOne(e => e.ShipperOrganization);
+
+                entity.HasOne(e => e.ConditionerOrganization);
+
+                entity.HasOne(e => e.Variety);
+
 
             });
 

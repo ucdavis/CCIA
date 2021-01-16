@@ -105,6 +105,13 @@ namespace CCIA.Services
         {
             var oecd = _context.OECD
                 .Include(o => o.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .Include(o => o.Class)
+                .Include(o => o.ShipperOrganization)
+                .Include(o => o.ConditionerOrganization)
+                .Include(o => o.Country)
+                .Include(o => o.Variety)
+                .ThenInclude(v => v.Crop)
                 .AsQueryable();
             return oecd;
 
