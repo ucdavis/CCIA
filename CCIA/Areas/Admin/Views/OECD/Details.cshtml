@@ -73,7 +73,37 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Class.Class)
                 </div>
-            </div>       
+            </div>   
+            <div class="form-group row">
+                <label asp-for="Seeds.Variety.NameAndId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Seeds.Variety.NameAndId)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="TotalFee" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TotalFee)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="NotCertified" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.NotCertified)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="DataEntryDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DataEntryDate)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="UpdateDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.UpdateDate)
+                </div>
+            </div>
         </div>
         <div class="col-sm-4"> @* Second column *@
             <div class="form-group row">
@@ -106,8 +136,36 @@
                     @Html.DisplayFor(x => x.Seeds.ClassProduced.CertClass)
                 </div>
             </div>
-           
-                                                          
+           <div class="form-group row">
+               <label asp-for="Seeds.Variety.Crop.Name" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Seeds.Variety.Crop.Name)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="Country.Name" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Country.Name)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="Canceled" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Canceled)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="DataEntryUser" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.DataEntryUser)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="UpdateUser" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.UpdateUser)
+               </div>
+           </div>                                                          
         </div>
         <div class="col-sm-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -139,10 +197,33 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Pounds)
                 </div>
-            </div>                              
+            </div> 
+            <div class="form-group row">
+                <label asp-for="ReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ReferenceNumber)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="DomesticOrigin" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DomesticOrigin)
+                </div>
+            </div>                         
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@        
-        <div>Full width stuff</div>
+        <div class="form-group row">
+            <label asp-for="Comments" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.Comments)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AdminComments" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AdminComments)
+            </div>
+        </div>
     </div>     
 </div>
