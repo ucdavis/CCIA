@@ -110,6 +110,9 @@ namespace CCIA.Models
 
         public bool ClientNotified { get; set; }
 
+        [ForeignKey("OECDId")]
+        public ICollection<OECDChanges> Changes { get; set; }
+
        
 
         public string LotReferenceNumber { 

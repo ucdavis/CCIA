@@ -503,6 +503,32 @@
             </table>
         </div>    
     }
+        <div class="row">
+            <h3>Changes made to this tag:</h3>
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.Changes.OrderBy(c => c.Id))
+                {
+                    <tr>
+                        <td>@row.ColumnChange</td>
+                        <td>@row.OldValue</td>
+                        <td>@row.NewValue</td>
+                        <td>@row.DateChanged</td>
+                        <td>@row.Employee.Name</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

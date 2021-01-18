@@ -35,6 +35,9 @@ namespace CCIA.Models
 
         [ForeignKey("TagId")]
         public ICollection<TagSeries> TagSeries { get; set; }
+
+        [ForeignKey("TagId")]
+        public ICollection<TagChanges> Changes { get; set; }
         
         public string IdType
         {

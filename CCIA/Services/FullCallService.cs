@@ -112,6 +112,8 @@ namespace CCIA.Services
                 .Include(o => o.Country)
                 .Include(o => o.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(o => o.Changes)
+                .ThenInclude(c => c.Employee)
                 .AsQueryable();
             return oecd;
 
@@ -255,6 +257,8 @@ namespace CCIA.Services
                 .Include(t => t.ContactEntered)
                 .Include(t => t.OECDClass)
                 .Include(t => t.OECDCountry)
+                .Include(t => t.Changes)
+                .ThenInclude(c => c.Employee)
                 .AsQueryable();
             return tag;
         }

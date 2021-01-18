@@ -449,40 +449,40 @@
                 }
                 </tbody>
             </table>
-        </div> 
-        <div class="row">
-            <h3>Changes made to this application:</h3>
-            <table class="table table-sm">
-                <thead>
-                <tr>
-                    <th>column</th>
-                    <th>Old Value</th>
-                    <th>New Value</th>
-                    <th>Date</th>
-                    <th>Person</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
-                {
-                    <tr>
-                        <td>@row.ColumnChange</td>
-                        <td>@row.OldValue</td>
-                        <td>@row.NewValue</td>
-                        <td>@row.DateChanged</td>
-                        <td>@row.Employee.Name</td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-            <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
-        </div>
+        </div>         
     } else {
         <div class="row">
             <h3>Field History</h3><br>
             None found
         </div>
     }
+    <div class="row">
+        <h3>Changes made to this application:</h3>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th>column</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Date</th>
+                <th>Person</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var row in Model.application.Changes.OrderBy(c => c.Id))
+            {
+                <tr>
+                    <td>@row.ColumnChange</td>
+                    <td>@row.OldValue</td>
+                    <td>@row.NewValue</td>
+                    <td>@row.DateChanged</td>
+                    <td>@row.Employee.Name</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>
+    </div>
 </div>
 
 @section Scripts {
