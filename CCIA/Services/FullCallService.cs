@@ -106,6 +106,8 @@ namespace CCIA.Services
             var oecd = _context.OECD
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.ClassProduced)
+                .Include(o => o.Seeds)
+                .ThenInclude(s => s.LabResults)
                 .Include(o => o.Class)
                 .Include(o => o.ShipperOrganization)
                 .Include(o => o.ConditionerOrganization)

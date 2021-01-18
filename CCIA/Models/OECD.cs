@@ -94,6 +94,23 @@ namespace CCIA.Models
 
         public DateTime? DatePrinted { get; set; }
 
+        public int FiscalYearPrinted 
+        { 
+            get
+            {
+                if(!DatePrinted.HasValue)
+                {
+                    return 0;
+                }
+                if(DatePrinted.Value.Month == 7 || DatePrinted.Value.Month == 8 || DatePrinted.Value.Month == 9 || DatePrinted.Value.Month == 10 || DatePrinted.Value.Month == 11 || DatePrinted.Value.Month == 12)
+                {
+                    return DatePrinted.Value.Year;
+                }
+                return DatePrinted.Value.Year - 1;
+
+            }
+        }
+
         public string ReferenceNumber { get; set; }
 
         public bool USDAReported { get; set; }

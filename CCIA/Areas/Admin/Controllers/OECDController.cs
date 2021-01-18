@@ -38,6 +38,13 @@ namespace CCIA.Controllers.Admin
             var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();
             return View(model);
         }
+
+        public async Task<IActionResult> Certificate(int id, bool charge)
+        {
+            var oecd = _helper.FullOECD();
+            var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();
+            return View(model);
+        }
        
     }
 }
