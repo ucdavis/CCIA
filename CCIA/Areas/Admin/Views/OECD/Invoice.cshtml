@@ -1,0 +1,228 @@
+@model CCIA.Models.OECD
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>OECD Invoice</title>
+    <meta http-equiv="content-style-type" content="text/css" />
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <a asp-action="Details" asp-controller="OECD" asp-route-id="@Model.Id" class="noprint">Return to OECD</a>
+    </div>
+    <div>
+        <table width="100%" border="0">
+            <tr>
+                <td align="center" width="100%">
+                    <div align="center" class="title">
+                        @if (!Model.DatePrinted.HasValue)
+                        {
+                            <span class="warning">This OECD Certificate has not been printed, and therefore the charges may
+                                not be finalized!</span><br>
+                        }
+                        OECD Certificate Invoice
+                    </div>
+                    <div align="center">
+                        California Crop Improvement Association<br />Frank G. Parsons Seed Certification
+                        Center<br />University of California<br />One Shields Avenue<br />Davis, California
+                        95616-8541<br />
+                        <br />
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+
+        <table border="0" width="100%">
+            <tr>
+                <td valign="top">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td valign="top">Shipper: </td>
+                            <td class="labelnoline">
+                                @Model.ShipperOrganization.OrgName
+
+                                &nbsp; &nbsp;&nbsp; (ID# @Model.ShipperOrganization.OrgId)
+                            </td>
+                            <td align="right" valign="top" class="labelnoline">
+                                Close Date: @Model.CloseDate.Value.ToShortDateString()
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td colspan="2" class="labelnoline">
+                                @Model.ShipperOrganization.Address.AddressLines<br>
+                                @Model.ShipperOrganization.Address.City,
+                                @Model.ShipperOrganization.Address.StateProvince.StateProvinceCode
+                                @Model.ShipperOrganization.Address.PostalCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Conditioner: </td>
+                            <td class="labelnoline">
+                                @Model.ConditionerOrganization.OrgName
+
+                                &nbsp; &nbsp;&nbsp; (ID# @Model.ConditionerOrganization.OrgId)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> </td>
+                            <td colspan="2" class="labelnoline">
+                                @Model.ConditionerOrganization.Address.AddressLines<br>
+                                @Model.ConditionerOrganization.Address.City,
+                                @Model.ConditionerOrganization.Address.StateProvince.StateProvinceCode
+                                @Model.ConditionerOrganization.Address.PostalCode
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                An OECD Certificate/Tags was requested on the following lots.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                                OECD File Number:&nbsp;</td>
+                            <td colspan="2" class="doublespace">
+                                <span class="lablenoline">@Model.Id</span>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td nowrap="noWrap">
+                                Variety and Crop:&nbsp;</td>
+                            <td colspan="2" class="doublespace">
+                                <span class="labelnoline">@Model.Variety.Name &nbsp; @Model.Variety.Crop.Name</span>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                                OECD Reference Number:</td>
+                            <td class="labelnoline">
+                                @Model.ReferenceNumber
+                            </td>
+                            <td>
+                                Weight of Lot:
+                                <span class="labelnoline">@Model.Pounds</span>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                                OECD Lot Number:</td>
+                            <td class="labelnoline">
+                                @Model.LotReferenceNumber
+                            </td>
+                            <td>
+                                Number of Tags:
+                                <span class="labelnoline">@Model.TagsRequested</span>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                                Class Produced:
+                            </td>
+                            <td class="labelnoline">
+                                @Model.Class.Class
+                            </td>
+                            <td>Seed Lot ID: <span class="labelnoline">@Model.Seeds.Id</span></td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                                Destination Country:
+                            </td>
+                            <td class="labelnoline">
+                                @Model.Country.Name
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td colspan="3">
+                                Remarks: <span class="labelnoline">@Model.Comments</span>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>&nbsp;
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr class="doublespace">
+                            <td>
+                            </td>
+                            <td align="right">
+                                <table>
+                                    <tr align="right">
+                                        <td class="labelnoline">
+                                            @if(Model.CertificateFee.HasValue)
+                                            {
+                                                <span>Certificate Fee = @string.Format("{0:C}", Model.CertificateFee)</span>
+                                            }                                            
+                                        </td>
+                                    </tr>
+                                    <tr align="right">
+                                        <td class="labelnoline">
+                                            @if(Model.OECDFee.HasValue)
+                                            {
+                                                <span>OECD Fee = @string.Format("{0:C}", Model.OECDFee) </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr align="right">
+                                        <td class="labelnoline">
+                                             @if(Model.NotFinallyCertifiedFee.HasValue)
+                                            {
+                                                <span>Not Finally Certified Fee = @string.Format("{0:C}", Model.NotFinallyCertifiedFee)</span>
+                                            }
+                                        </td></span>
+                                    </tr>
+                                    <tr align="right">
+                                        <td class="overline">
+                                             @if(Model.NotFinallyCertifiedFee.HasValue)
+                                            {
+                                                <span class="labelnoline">Total Charges = @string.Format("{0:C}", Model.TotalFee)</span>
+                                            }                                       
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

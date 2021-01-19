@@ -56,6 +56,14 @@ namespace CCIA.Controllers.Admin
             }
             return View(model);
         }
+
+        public async Task<IActionResult> Invoice(int id)
+        {
+            var oecd = _helper.FullOECD();
+            var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();
+
+            return View(model);
+        }
        
     }
 }

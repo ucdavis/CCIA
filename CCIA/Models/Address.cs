@@ -13,6 +13,22 @@ namespace CCIA.Models
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string Address3 { get; set; }
+
+        public string AddressLines
+        {
+            get
+            {
+                if(!string.IsNullOrWhiteSpace(Address3))
+                {
+                    return $"{Address1}<br>{Address2}<br>{Address3}";
+                }
+                if(!string.IsNullOrWhiteSpace(Address2))
+                {
+                    return $"{Address1}<br>{Address2}";
+                }
+                return Address1;
+            }
+        }
         public string City { get; set; }
         public int? CountyId { get; set; }
         [ForeignKey("CountyId")]
