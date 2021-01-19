@@ -43,6 +43,17 @@ namespace CCIA.Controllers.Admin
         {
             var oecd = _helper.FullOECD();
             var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();
+
+            if(charge)
+            {
+                if(model.DatePrinted == null)
+                {
+                    model.DatePrinted = DateTime.Now;
+                    model.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
+                    await _dbContext.SaveChangesAsync();
+                    await _dbContext.Database.ExecuteSqlCommandAsync("charge_OECD @p0", model.Id);
+                }
+            }
             return View(model);
         }
        

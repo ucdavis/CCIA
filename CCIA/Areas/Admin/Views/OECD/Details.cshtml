@@ -224,6 +224,10 @@
                 @Html.DisplayFor(x => x.AdminComments)
             </div>
         </div>
+        <div class="row">
+            <a asp-action="Certificate" asp-controller="OECD" asp-route-id="@Model.Id" asp-route-charge="true" class="btn btn-primary">Print Certificate (enter charge)</a>
+            <a asp-action="Certificate" asp-controller="OECD" asp-route-id="@Model.Id" class="btn btn-info">Review Certificate (no charge)</a>
+        </div>
          <div class="row">
             <h3>Changes made to this File:</h3>
             <table class="table table-sm">
