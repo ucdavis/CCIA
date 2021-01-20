@@ -32,6 +32,11 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
+         public ActionResult Lookup()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var oecd = _helper.FullOECD();
@@ -64,6 +69,20 @@ namespace CCIA.Controllers.Admin
 
             return View(model);
         }
+
+        public async Task<IActionResult> Search()
+        {
+            var model = await AdminOECDSearchViewModel.Create(_dbContext, null);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(AdminOECDSearchViewModel vm)
+        {
+            var model = await AdminOECDSearchViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
        
     }
 }

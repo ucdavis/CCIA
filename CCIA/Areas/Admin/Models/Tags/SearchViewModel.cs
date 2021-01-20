@@ -30,6 +30,8 @@ namespace CCIA.Models
             if(vm != null)
             {
                 var tagsToFind = helper.FullTag().AsQueryable();
+
+                vm.searchTerm = vm.searchTerm.Trim();
                 
                 if(vm.searchWhat == "Tag ID")
                 {
@@ -94,7 +96,7 @@ namespace CCIA.Models
                 
                 if(!string.IsNullOrWhiteSpace(vm.searchLetter))
                 {
-                    tagsSeriesToFind = tagsSeriesToFind.Where(ts => EF.Functions.Like(ts.Letter, "%" +  vm.searchLetter + "%"));
+                    tagsSeriesToFind = tagsSeriesToFind.Where(ts => EF.Functions.Like(ts.Letter, "%" +  vm.searchLetter.Trim() + "%"));
                 }
                 if(vm.searchNumber != null)
                 {
