@@ -120,6 +120,8 @@ namespace CCIA.Services
                 .ThenInclude(v => v.Crop)
                 .Include(o => o.Changes)
                 .ThenInclude(c => c.Employee)
+                .Include(o => o.EntryEmployee)
+                .Include(o => o.UpdateEmployee)
                 .AsQueryable();
             return oecd;
 

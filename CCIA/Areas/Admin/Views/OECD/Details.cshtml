@@ -7,40 +7,7 @@
         <div class="col-sm-12">
             <h2>OECD Details</h2> 
         </div>            
-    </div>
-    @* @if(Model.Stage == TagStages.Requested.GetDisplayName())
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                    <form asp-action="AcceptTag">
-                    @Html.HiddenFor(x => x.Id)
-                    <input type="submit" class="btn btn-primary" value="Approve Request">
-                </form>                    
-            </div>            
-        </div>
-    }
-    @if(Model.Stage == TagStages.Printing.GetDisplayName())
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                    <form asp-action="PrintedTag">
-                    @Html.HiddenFor(x => x.Id)
-                    <input type="submit" class="btn btn-primary" value="Mark as Printed & Shipped">
-                </form>                    
-            </div>            
-        </div>
-    }
-    @if(Model.Stage == TagStages.PendingFile.GetDisplayName())
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                    <form asp-action="FileTag">
-                    @Html.HiddenFor(x => x.Id)
-                    <input type="submit" class="btn btn-primary" value="Mark as file uploaded and order complete">
-                </form>                    
-            </div>            
-        </div>
-    } *@
+    </div>   
     <div class="row">
         <div class="col-sm-4"> @* First column *@
             <div class="form-group row">
@@ -52,7 +19,7 @@
             <div class="form-group row">
                 <label asp-for="DateRequested" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.DateRequested)
+                    @Model.DateRequested.Value.ToShortDateString()
                 </div>
             </div> 
             <div class="form-group row">
@@ -156,13 +123,13 @@
            <div class="form-group row">
                <label asp-for="DataEntryUser" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-9 form-control-plaintext">
-                   @Html.DisplayFor(x => x.DataEntryUser)
+                   @Html.DisplayFor(x => x.EntryEmployee.Name)
                </div>
            </div>
            <div class="form-group row">
                <label asp-for="UpdateUser" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-9 form-control-plaintext">
-                   @Html.DisplayFor(x => x.UpdateUser)
+                   @Html.DisplayFor(x => x.UpdateEmployee.Name)
                </div>
            </div>                                                          
         </div>
@@ -176,7 +143,7 @@
             <div class="form-group row">
                 <label asp-for="CloseDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CloseDate)
+                   @Model.CloseDate.Value.ToShortDateString()
                 </div>
             </div>
             <div class="form-group row">

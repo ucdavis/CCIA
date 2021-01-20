@@ -996,6 +996,8 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Variety);
                 entity.HasMany(e => e.Changes);
+                entity.HasOne(e => e.EntryEmployee);
+                entity.HasOne(e => e.UpdateEmployee);
 
 
             });

@@ -80,9 +80,14 @@ namespace CCIA.Models
 
         public string DataEntryUser { get; set; }
 
+        [ForeignKey("DataEntryUser")]
+        public CCIAEmployees EntryEmployee { get; set; }
+
         public DateTime? UpdateDate { get; set; }
 
         public string UpdateUser { get; set; }
+        [ForeignKey("UpdateUser")]
+        public CCIAEmployees UpdateEmployee { get; set; }
 
         public bool DomesticOrigin { get; set; }
 
