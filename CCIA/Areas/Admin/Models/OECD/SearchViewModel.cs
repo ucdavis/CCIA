@@ -44,7 +44,7 @@ namespace CCIA.Models
 
         public List<AbbrevOECDClass> classOptions { get; set; } 
 
-        [DisplayName("Status")]
+        [DisplayName("Class")]
         public string searchClass { get; set; }       
         
         
