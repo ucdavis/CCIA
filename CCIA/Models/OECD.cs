@@ -135,6 +135,15 @@ namespace CCIA.Models
         [ForeignKey("OECDId")]
         public ICollection<OECDChanges> Changes { get; set; }
 
+        public string USDACertNumber { 
+            get
+            {
+                return $"CA{Seeds.CertYear}-{Id.ToString("D6")}";
+                // 'CA' + cast(cert_year as varchar) + '-' + RIGHT('00000000' + RTRIM(file_num), 6) as certno,
+
+            }
+        }
+
        
 
         public string LotReferenceNumber { 

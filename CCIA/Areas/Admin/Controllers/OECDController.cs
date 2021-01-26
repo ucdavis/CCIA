@@ -83,6 +83,19 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<ActionResult> ReportingSheets()
+        {
+            var model = await AdminOECDReportingViewModel.Create(_dbContext, null);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ReportingSheets(AdminOECDReportingViewModel vm)
+        {
+            var model = await AdminOECDReportingViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
        
     }
 }
