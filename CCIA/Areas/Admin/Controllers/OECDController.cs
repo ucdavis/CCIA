@@ -90,8 +90,13 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<ActionResult> ReportingSheets(AdminOECDReportingViewModel vm)
+        public async Task<ActionResult> ReportingSheets(AdminOECDReportingViewModel vm, string button)
         {
+            if(button == "Mark uploaded")
+            {
+                await _dbContext.Database.ExecuteSqlCommandAsync("usda_mark_certs @p0, @p1", vm.startDate, vm.endDate);
+                Message = "Lots marked as uploaded. Date clicked is recorded in case you need to reverse this. :)";
+            }
             var model = await AdminOECDReportingViewModel.Create(_dbContext, vm);
             return View(model);
         }

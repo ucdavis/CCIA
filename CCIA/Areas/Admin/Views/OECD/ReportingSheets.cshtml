@@ -23,8 +23,13 @@
             </div>                        
         </div>        
     </div>
-    <div>
-        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    <div class="row">
+        <div class="col-lg-9">
+            <input type="submit" name="button" value="Search" class="btn btn-primary"></input> 
+        </div>
+        <div class="col-lg-3">
+            <input type="submit" name="button" value="Mark uploaded" class="btn btn-danger"></input> 
+        </div>        
     </div>
 </div>
 <hr>
@@ -84,7 +89,7 @@
             <th>dormant</th>
             <th>inertmatertype</th>
             <th>otherseedspecies</th>
-            <th>weedseedspecies</th>
+            <th 20>weedseedspecies</th>
             <th>analysisremarks</th>
             <th>printdate</th>
         </thead>
@@ -93,12 +98,27 @@
             {
             <tr>                               
                 <td>@oecd.USDACertNumber</td>
-                <td>@oecd.ConditionerOrganization.OrgName</td>
-                <td>@oecd.Variety.Crop.GenusSpecies</td>
-                <td>@oecd.Variety.Name</td>
-                <td>@oecd.Pounds</td>                 
+                <td>@oecd.LotReferenceNumber</td>
+                <td>@oecd.Pounds</td>
                 <td>@oecd.TagsRequested</td>
-                <td>@oecd.CloseDate.Value.ToShortDateString()</td>
+                <td>@oecd.ClassId</td>                 
+                <td>0</td>
+                <td>Domestic</td>
+                <td></td>
+                <td>@oecd.Seeds.LabResults.LabOrganization.OrgName</td>
+                <td>SID @oecd.SeedsId</td>
+                <td>@oecd.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()</td>
+                <td>@oecd.Seeds.LabResults.PurityValue</td>
+                <td>@oecd.Seeds.LabResults.InertValue</td>
+                <td>@oecd.Seeds.LabResults.OtherCropValue</td>
+                <td>@oecd.Seeds.LabResults.WeedSeedValue</td>
+                <td>@oecd.Seeds.LabResults.GermValue</td>
+                <td>@oecd.Seeds.LabResults.GermHardSeedValue</td>
+                <td>@oecd.Seeds.LabResults.InertComments</td>
+                <td>@oecd.Seeds.LabResults.OtherCropComments</td>
+                <td>@oecd.Seeds.LabResults.WeedSeedComments</td>
+                <td>@oecd.Seeds.LabResults.Comments</td>
+                <td>@oecd.DatePrinted.Value.ToShortDateString()</td>
             </tr>
             }
         </tbody>
@@ -122,7 +142,7 @@
 
         $(document).ready( function () {            
             
-            oTable = $('#table').dataTable({
+            oTable = $('.table').dataTable({
                  dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
                 "pageLength": 50

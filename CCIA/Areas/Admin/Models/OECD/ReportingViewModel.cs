@@ -50,11 +50,12 @@ namespace CCIA.Models
 
 
             }
+            var firstOfThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var freshModel = new AdminOECDReportingViewModel
             {
                 certs = new List<OECD>(),  
-                startDate = DateTime.Now.Date,
-                endDate = DateTime.Now.Date,              
+                startDate = firstOfThisMonth.AddMonths(-3),
+                endDate = firstOfThisMonth.AddDays(-1),              
             };           
 
             return freshModel;
