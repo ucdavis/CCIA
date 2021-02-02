@@ -3,7 +3,7 @@
     var selectListItems = new List<SelectListItem>();
     foreach (var county in Model.Counties)
     {
-        selectListItems.Add(new SelectListItem { Text = county.CountyName, Value = county.CountyId.ToString() } );
+        selectListItems.Add(new SelectListItem { Text = county.Name, Value = county.CountyId.ToString() } );
     }  
     var selectList = new SelectList(selectListItems, "Value", "Text"); 
 }

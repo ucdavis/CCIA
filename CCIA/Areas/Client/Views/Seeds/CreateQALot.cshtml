@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.CountyDrawn" class="col-sm-3 col-form-label"></label>                
-                    <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","CountyName"))">
+                    <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","Name"))">
                         <option>Select county....</option>
                     </select>
                     <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               

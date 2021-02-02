@@ -259,8 +259,8 @@
                 <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" >
             </div>
             <div class="form-group row">
-                <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>
-                <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
+                <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>                 
+                <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "Name"))"></select> 
             </div>   
         </div>
         <div class="col-lg-4">@* Column 3*@
