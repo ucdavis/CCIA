@@ -32,6 +32,7 @@ namespace CCIA.Models
         public AbbrevOECDClass Class { get; set; }
 
 
+         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? CloseDate { get; set; }
 
         public int? ConditionerId { get; set; }

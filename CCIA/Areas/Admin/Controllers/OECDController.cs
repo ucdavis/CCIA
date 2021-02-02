@@ -44,6 +44,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, null, id);
+            return View(model);
+        }
+
         public async Task<IActionResult> Certificate(int id, bool charge)
         {
             var oecd = _helper.FullOECD();
