@@ -93,7 +93,7 @@
         </div>  
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-xl-4">@* First column*@
+        <div class="col-md-6 col-xl-4">@* First column*@
              <div class="form-group row">
                 <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -129,7 +129,7 @@
                 </div>
             </div>  
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">@* Second column*@
+        <div class="col-md-6 col-xl-4">@* Second column*@
             <div class="form-group row">
                 <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>                    
                 <select required asp-for="application.AppType" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.AppTypes))"></select>
@@ -156,7 +156,7 @@
                 </div>
             </div>               
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">@* Third column*@
+        <div class="col-md-6 col-xl-4">@* Third column*@
             <div class="form-group row">
                 <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -231,7 +231,7 @@
         
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-xl-4">@* Column 1*@
+        <div class="col-md-6 col-xl-4">@* Column 1*@
             <div class="form-group row">
                 <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
                 <select asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, "CropId", "Name"))"></select>                   
@@ -249,7 +249,7 @@
                 <input asp-for="application.FieldName" class="col-sm-9 form-control">
             </div> 
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">@* Column 2*@
+        <div class="col-md-6 col-xl-4">@* Column 2*@
             <div class="form-group row">
                 <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
                 <input type="text" class="col-sm-9 form-control" asp-for="application.EnteredVariety">
@@ -263,7 +263,7 @@
                 <select asp-for="application.FarmCounty"  class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "Name"))"></select> 
             </div>   
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">@* Column 3*@
+        <div class="col-md-6 col-xl-4">@* Column 3*@
             <div class="form-group row">
                 <label asp-for="application.Variety.Name" class="col-sm-3 col-form-label"></label>
                 <input type="text" asp-for="application.Variety.Name" class="col-sm-8 form-control" readonly>
