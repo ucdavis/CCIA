@@ -147,6 +147,7 @@ namespace CCIA.Models
 
        
 
+        [Display(Name="USDA Ref#")]
         public string LotReferenceNumber { 
             get
             {
