@@ -235,7 +235,7 @@
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@
-        @if(Model.Seeds.CertProgram == "PV")
+        @if(Model.Seeds != null && Model.Seeds.CertProgram == "PV")
         {
             <div class="row">
                 <div class="col-sm-12">
