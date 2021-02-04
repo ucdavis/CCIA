@@ -139,8 +139,10 @@ namespace CCIA.Models
         public string USDACertNumber { 
             get
             {
+                if(Seeds == null){
+                    return "";
+                }
                 return $"CA{Seeds.CertYear}-{Id.ToString("D6")}";
-                // 'CA' + cast(cert_year as varchar) + '-' + RIGHT('00000000' + RTRIM(file_num), 6) as certno,
 
             }
         }
@@ -155,7 +157,11 @@ namespace CCIA.Models
                 {
                     return OECDNumber;
                 }
-                 string certYearAbbrev = Seeds.CertYear.ToString().Substring(Seeds.CertYear.ToString().Length - 2);
+                if(Seeds == null)
+                {
+                    return "";
+                }
+                string certYearAbbrev = Seeds.CertYear.ToString().Substring(Seeds.CertYear.ToString().Length - 2);
                 var fileList = new List<int>(new int[] {20185,20184,19858,19796,19797,19798,19799,19800,19801,19802,19803,19804,19805,19806,19807,19808,19809,19810,19811,19812,19813,19814,19815,19816,19817,19818,19819,19820,19821,19822,19823,19824,19825,19826,19827,19828,19829,19830,19832,19844,19845,19846,19847,19848,19849,19850,19852,19853,19854,19855,19837,19838,19839,19840,19841,19842,19837,19838,19839,19840,19841,19842,19843,19849,19860});
                 if(fileList.Contains(Id))
                 {

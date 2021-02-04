@@ -50,6 +50,45 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, AdminOECDEditCreateViewModel vm)
+        {   
+            var oecdToUpdate = await _dbContext.OECD.Where(a => a.Id == id).FirstAsync();
+            var edit = vm.oecd;
+            oecdToUpdate.UpdateDate = DateTime.Now;
+            oecdToUpdate.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
+            oecdToUpdate.SeedsId = edit.SeedsId;
+            oecdToUpdate.CloseDate = edit.CloseDate;
+            oecdToUpdate.ShipperId = edit.ShipperId;
+            oecdToUpdate.ConditionerId = edit.ConditionerId;
+            oecdToUpdate.CertNumber = edit.CertNumber;
+            oecdToUpdate.LotNumber = edit.LotNumber;
+            oecdToUpdate.TagsRequested = edit.TagsRequested;
+            oecdToUpdate.ClassId = edit.ClassId;
+            oecdToUpdate.Pounds = edit.Pounds;
+            oecdToUpdate.VarietyId = edit.VarietyId;
+            oecdToUpdate.ReferenceNumber = edit.ReferenceNumber;
+            oecdToUpdate.CountryId = edit.CountryId;
+            oecdToUpdate.DomesticOrigin = edit.DomesticOrigin;
+            oecdToUpdate.NotCertified = edit.NotCertified;
+            oecdToUpdate.Canceled = edit.Canceled;
+            oecdToUpdate.Comments = edit.Comments;
+            oecdToUpdate.AdminComments = edit.AdminComments;
+
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "OECD Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, vm, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = oecdToUpdate.Id });  
+
+        }
+
         public async Task<IActionResult> Certificate(int id, bool charge)
         {
             var oecd = _helper.FullOECD();

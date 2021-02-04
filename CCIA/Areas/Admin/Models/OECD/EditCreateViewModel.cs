@@ -16,6 +16,8 @@ namespace CCIA.Models
         public OECD oecd { get; set; } 
         
        public List<AbbrevOECDClass> classes { get; set; }
+
+       public List<Countries> countries { get; set; }
                
         public static async Task<AdminOECDEditCreateViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , AdminOECDEditCreateViewModel vm, int id)
         {       
@@ -24,7 +26,8 @@ namespace CCIA.Models
             var model = new AdminOECDEditCreateViewModel
             {
                 oecd = thisoecd,
-                classes = await _dbContext.AbbrevOECDClass.ToListAsync(),
+                classes = await _dbContext.AbbrevOECDClass.OrderBy(x => x.SortOrder).ToListAsync(),
+                countries = await _dbContext.Countries.OrderBy(x => x.Name).ToListAsync(),
             };
 
             return model;
