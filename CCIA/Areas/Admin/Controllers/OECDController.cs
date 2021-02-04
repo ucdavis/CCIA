@@ -44,11 +44,65 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Create()
         {
-            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, null, id);
+            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, 0);
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AdminOECDEditCreateViewModel vm)
+        {   
+            var oecdToCreate = new OECD();            
+            var create = vm.oecd;
+            var seed = await _dbContext.Seeds.Include(s => s.Variety).Where(s => s.Id == create.SeedsId).FirstAsync();
+
+            if(seed == null)
+            {
+                ErrorMessage = "SID not found in database";
+                var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, 0);
+                return View(model); 
+            }
+            oecdToCreate.SeedsId = create.SeedsId;
+            oecdToCreate.VarietyId = seed.OfficialVarietyId;            
+            oecdToCreate.Pounds = create.Pounds;
+            oecdToCreate.CertNumber = create.CertNumber; 
+            oecdToCreate.ClassId = create.ClassId;
+            oecdToCreate.CloseDate = create.CloseDate;
+            oecdToCreate.ShipperId = create.ShipperId;
+            oecdToCreate.ConditionerId = create.ConditionerId;
+            oecdToCreate.CountryId = create.CountryId;
+            oecdToCreate.LotNumber = create.LotNumber;
+            oecdToCreate.DateRequested = DateTime.Now;
+            oecdToCreate.NotCertified = create.NotCertified;
+            oecdToCreate.Canceled = false;
+            oecdToCreate.DataEntryDate = DateTime.Now;
+            oecdToCreate.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
+            oecdToCreate.DomesticOrigin = create.DomesticOrigin;
+            oecdToCreate.ReferenceNumber = create.ReferenceNumber;
+            oecdToCreate.USDAReported = false;
+            oecdToCreate.TagsRequested = create.TagsRequested;
+
+            if(ModelState.IsValid){
+                _dbContext.Add(oecdToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "OECD Create";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, 0);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = oecdToCreate.Id });  
+
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
+            return View(model);
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,7 +135,7 @@ namespace CCIA.Controllers.Admin
                 Message = "OECD Updated";
             } else {
                 ErrorMessage = "Something went wrong.";
-                var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, vm, id);
+                var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
                 return View(model); 
             }
 

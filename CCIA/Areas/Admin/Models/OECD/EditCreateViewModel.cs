@@ -19,7 +19,7 @@ namespace CCIA.Models
 
        public List<Countries> countries { get; set; }
                
-        public static async Task<AdminOECDEditCreateViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , AdminOECDEditCreateViewModel vm, int id)
+        public static async Task<AdminOECDEditCreateViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id)
         {       
             var thisoecd = await _helper.FullOECD().Where(o => o.Id == id).FirstOrDefaultAsync();            
                        
