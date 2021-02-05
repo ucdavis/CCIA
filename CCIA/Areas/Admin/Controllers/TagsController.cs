@@ -37,6 +37,14 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await TagCreateEditViewModel.Create(_dbContext, _helper, id);         
+            return View(model);
+        }   
+
+
+
         public async Task<IActionResult> Process(ProcessViewModel vm)
         {
             var model = await ProcessViewModel.Create(_dbContext, vm, _helper);         
