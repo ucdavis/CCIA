@@ -38,10 +38,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="tag.BagSizePounds" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.BagSizePounds)
-                </div>
+                <label asp-for="tag.BagSize" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.BagSize" class="col-sm-2 form-control">
+                <span class="col-sm-1"></span>
+                <select asp-for="tag.WeightUnit" class="col-sm-2 form-control">
+                    <option value="L">Pounds</option>
+                    <option value="K">Kilograms</option>
+                </select>
             </div> 
             <div class="form-group row">
                 <label asp-for="tag.SourceLotWeight" class="col-sm-3 col-form-label"></label>
@@ -55,24 +58,20 @@
                     @Html.DisplayFor(x => x.tag.DateRequested)
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="tag.CountUsed" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.CountUsed)
-                </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="tag.SeriesRequest" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.SeriesRequest)
-                </div>
-            </div>
+             <div class="form-group row">
+                <label asp-for="tag.CountRequested" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.CountRequested" class="col-sm-3 form-control">
+            </div>  
             <div class="form-group row">
                 <label asp-for="tag.CoatingPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.CoatingPercent)
+                <input asp-for="tag.CoatingPercent" class="col-sm-3 form-control">
+            </div>  
+            <div class="form-group row">
+                 <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.SeriesRequest" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.SeriesRequest">
                 </div>
-            </div>
+            </div>            
+           
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@             
             <div class="form-group row">
@@ -95,9 +94,7 @@
             </div> 
             <div class="form-group row">
                 <label asp-for="tag.TaggedClass" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.TaggedClass)
-                </div>
+                <select asp-for="tag.TaggedClass"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.tagClass, "Id", "CertClass"))"></select> 
             </div>
             <div class="form-group row">
                 <label asp-for="tag.TaggingOrganization.NameAndId" class="col-sm-3 col-form-label">Tagging Org</label>
@@ -110,13 +107,17 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.tag.CropName)
                 </div>
-            </div>
+            </div> 
             <div class="form-group row">
-                <label asp-for="tag.CountRequested" class="col-sm-3 col-form-label"></label>
+                <label asp-for="tag.PrintedDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.CountRequested)
+                    @Html.DisplayFor(x => x.tag.PrintedDate)
                 </div>
-            </div>   
+            </div>
+           <div class="form-group row">
+                <label asp-for="tag.CountUsed" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.CountUsed" class="col-sm-3 form-control">
+            </div>
             <div class="form-group row">
                 <label asp-for="tag.TagBagging.TotalBagged" class="col-sm-3 col-form-label">Total Bagged</label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -124,23 +125,10 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="tag.DateNeeded" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.DateNeeded)
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.Bulk">
                 </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="tag.ExtrasOverrun" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.ExtrasOverrun)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.Bulk)
-                </div>
-            </div>                                               
+            </div>                                                  
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -169,9 +157,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="tag.Alias" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.Alias)
-                </div>
+                <input asp-for="tag.Alias" class="col-sm-3 form-control">
             </div>
             <div class="form-group row">
                 <label asp-for="tag.LotWeightRequested" class="col-sm-3 col-form-label"></label>
@@ -184,23 +170,26 @@
                 <div class="col-sm-9 form-control-plaintext @(Model.tag.SourceLotWeight - Model.tag.TagBagging.TotalBagged < 0 ? "text-danger" : "") ">
                     @(Model.tag.SourceLotWeight - Model.tag.TagBagging.TotalBagged)
                 </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="tag.PrintedDate" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.PrintedDate)
-                </div>
-            </div>
+            </div>            
             <div class="form-group row">
                 <label asp-for="tag.EmployeePrinted.Name" class="col-sm-3 col-form-label">Printed By</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.tag.EmployeePrinted.Name)
                 </div>
             </div>  
+             <div class="form-group row">
+                <label asp-for="tag.ExtrasOverrun" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.ExtrasOverrun" class="col-sm-3 form-control">
+            </div> 
             <div class="form-group row">
-                <label asp-for="tag.AnalysisRequested" class="col-sm-3 col-form-label"></label>
+                <label asp-for="tag.DateNeeded" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.AnalysisRequested)
+                    @Html.DisplayFor(x => x.tag.DateNeeded)
+                </div>
+            </div> 
+            <div class="form-group row">
+                 <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.AnalysisRequested" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.AnalysisRequested">
                 </div>
             </div>          
         </div>

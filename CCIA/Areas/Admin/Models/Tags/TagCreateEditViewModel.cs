@@ -20,15 +20,16 @@ namespace CCIA.Models
        public List<AbbrevClassSeeds> tagClass { get; set; }
                
         public static async Task<TagCreateEditViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id)
-        {              
-            var model = new TagCreateEditViewModel
-            {
-                tag = await _helper.FullTag()
+        { 
+            var tagToEdit = await _helper.FullTag()
                     .Include(t => t.TagBagging)
                     .Include(t => t.EmployeePrinted)
-                    .Where(t => t.Id == id).FirstOrDefaultAsync(),
+                    .Where(t => t.Id == id).FirstOrDefaultAsync(); 
+           var model = new TagCreateEditViewModel
+            {
+                tag = tagToEdit,
                 tagTypes = await _dbContext.AbbrevTagType.OrderBy(t => t.SortOrder).ToListAsync(),
-                tagClass = await _dbContext.AbbrevClassSeeds.OrderBy(c => c.SortOrder).ToListAsync(),
+                tagClass = await _dbContext.AbbrevClassSeeds.FromSql("class_seed_pot_labeled").ToListAsync(),
             };
 
             return model;
