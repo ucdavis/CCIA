@@ -91,9 +91,15 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="CountUsed" class="col-sm-3 col-form-label"></label>
+                <label asp-for="CountRequested" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CountUsed)
+                    @Html.DisplayFor(x => x.CountRequested)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="CoatingPercent" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CoatingPercent)
                 </div>
             </div>
             <div class="form-group row">
@@ -101,15 +107,12 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.SeriesRequest)
                 </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="CoatingPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CoatingPercent)
-                </div>
-            </div>
+            </div>            
         </div>
-        <div class="col-md-6 col-xl-4"> @* Second column *@
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">&nbsp;</div>
+            <div class="form-group row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
             <div class="form-group row">
                 <label asp-for="LinkId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -121,7 +124,7 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Seeds.CertProgram)
                 </div>
-            </div> 
+            </div>            
             <div class="form-group row">
                 <label asp-for="TaggedClass" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -141,29 +144,23 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="CountRequested" class="col-sm-3 col-form-label"></label>
+                <label asp-for="PrintedDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CountRequested)
+                    @Html.DisplayFor(x => x.PrintedDate)
                 </div>
-            </div>   
+            </div>            
+            <div class="form-group row">
+                <label asp-for="CountUsed" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CountUsed)
+                </div>
+            </div>              
             <div class="form-group row">
                 <label asp-for="TagBagging.TotalBagged" class="col-sm-3 col-form-label">Total Bagged</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.TagBagging.TotalBagged)
                 </div>
-            </div>
-            <div class="form-group row">
-                <label asp-for="DateNeeded" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.DateNeeded)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="ExtrasOverrun" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.ExtrasOverrun)
-                </div>
-            </div> 
+            </div>           
             <div class="form-group row">
                 <label asp-for="Bulk" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -215,17 +212,23 @@
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="PrintedDate" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PrintedDate)
-                </div>
-            </div>
-            <div class="form-group row">
                 <label asp-for="EmployeePrinted.Name" class="col-sm-3 col-form-label">Printed By</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.EmployeePrinted.Name)
                 </div>
-            </div>  
+            </div>              
+            <div class="form-group row">
+                <label asp-for="ExtrasOverrun" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ExtrasOverrun)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="DateNeeded" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DateNeeded)
+                </div>
+            </div>              
             <div class="form-group row">
                 <label asp-for="AnalysisRequested" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
