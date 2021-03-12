@@ -72,6 +72,7 @@ namespace CCIA.Controllers.Admin
             tagToCreate.Comments =newTag.Comments;
             tagToCreate.DateRequested = DateTime.Now;
             tagToCreate.TagBagging = null;
+            tagToCreate.Stage = TagStages.Printing.GetDisplayName();
             
             if(ModelState.IsValid){
                 _dbContext.Add(tagToCreate);
@@ -81,7 +82,7 @@ namespace CCIA.Controllers.Admin
                 if(!string.IsNullOrWhiteSpace(newTag.PlantingStockNumber))
                 {
                     var oecd = new OECD();
-                    var seed = await _dbContext.Seeds.Where(s => s.Id == newTag.SeedsID).FirstAsync();
+                    var seed = await _helper.FullSeeds().Where(s => s.Id == newTag.SeedsID).FirstAsync();
                      oecd.SeedsId = tagToCreate.SeedsID;
                     oecd.VarietyId = seed.OfficialVarietyId;
                     oecd.Pounds = Convert.ToInt32(tagToCreate.LotWeightRequested.Value);
@@ -107,7 +108,13 @@ namespace CCIA.Controllers.Admin
 
                     _dbContext.Add(oecd);
                     await _dbContext.SaveChangesAsync();
-                    Message = "Tag & OECD created";                    
+                    Message = "Tag & OECD created";     
+
+                    var msg = "; OECD ID:  " + oecd.Id.ToString() + " Tag ID: " + tagToCreate.Id;
+                    tagToCreate.AdminComments += msg;
+                    oecd.AdminComments += msg;
+                    seed.Remarks += msg;
+                    await _dbContext.SaveChangesAsync();
                 }
             } else {
                 ErrorMessage = "Something went wrong.";

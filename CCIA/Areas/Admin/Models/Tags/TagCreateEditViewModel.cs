@@ -26,7 +26,7 @@ namespace CCIA.Models
         public static async Task<TagCreateEditViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id)
         { 
             var tagToEdit = await _helper.FullTag()
-                  //  .Include(t => t.TagBagging)
+                    .Include(t => t.TagBagging)
                     .Include(t => t.EmployeePrinted)
                     .Where(t => t.Id == id).FirstOrDefaultAsync(); 
            var model = new TagCreateEditViewModel
