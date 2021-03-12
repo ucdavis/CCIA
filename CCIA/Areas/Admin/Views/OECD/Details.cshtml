@@ -1,0 +1,235 @@
+@model  CCIA.Models.OECD
+
+
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>OECD Details</h2> 
+        </div>            
+    </div>  
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="Edit" asp-controller="OECD" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> 
+        </div>            
+    </div> 
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="DateRequested" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.DateRequested.Value.ToShortDateString()
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="ShipperOrganization.NameAndId" class="col-sm-3 col-form-label">Shipper</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ShipperOrganization.NameAndId)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ConditionerOrganization.NameAndId)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Class.Class" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Class.Class)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="Variety.NameAndId" class="col-sm-3 col-form-label">Variety</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Variety.NameAndId)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="TotalFee" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TotalFee)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="NotCertified" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.NotCertified)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="DataEntryDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DataEntryDate)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="UpdateDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.UpdateDate)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@
+            <div class="form-group row">
+                <label asp-for="Seeds.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Seeds.Id)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="DatePrinted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DatePrinted)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="CertNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CertNumber)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="LotReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LotReferenceNumber)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Seeds.ClassProduced.CertClass" class="col-sm-3 col-form-label">Seed Class</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Seeds.ClassProduced.CertClass)
+                </div>
+            </div>
+           <div class="form-group row">
+               <label asp-for="Variety.Crop.Name" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Variety.Crop.Name)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="Country.Name" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Country.Name)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="Canceled" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.Canceled)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="DataEntryUser" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.EntryEmployee.Name)
+               </div>
+           </div>
+           <div class="form-group row">
+               <label asp-for="UpdateUser" class="col-sm-3 col-form-label"></label>
+               <div class="col-sm-9 form-control-plaintext">
+                   @Html.DisplayFor(x => x.UpdateEmployee.Name)
+               </div>
+           </div>                                                          
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="Seeds.CertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Seeds.CertYear)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="CloseDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                   @Model.CloseDate.Value.ToShortDateString()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="LotNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LotNumber)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="TagsRequested" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TagsRequested)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Pounds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Pounds)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="ReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ReferenceNumber)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="DomesticOrigin" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.DomesticOrigin)
+                </div>
+            </div>                         
+        </div>
+    </div>
+    <div class="col-sm-12"> @* full width *@        
+        <div class="form-group row">
+            <label asp-for="Comments" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.Comments)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AdminComments" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AdminComments)
+            </div>
+        </div>
+        <div class="row">
+            <a asp-action="Certificate" asp-controller="OECD" asp-route-id="@Model.Id" asp-route-charge="true" class="btn btn-primary">Print Certificate (enter charge)</a>
+            <a asp-action="Certificate" asp-controller="OECD" asp-route-id="@Model.Id" class="btn btn-info">Review Certificate (no charge)</a>
+        </div>
+        <div>
+            <hr>
+            <a asp-action="Invoice" asp-controller="OECD" asp-route-id="@Model.Id" class="btn btn-info">OECD Invoice</a>
+            <hr>
+        </div>
+         <div class="row">
+            <h3>Changes made to this File:</h3>
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th>column</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.Changes.OrderBy(c => c.Id))
+                {
+                    <tr>
+                        <td>@row.ColumnChange</td>
+                        <td>@row.OldValue</td>
+                        <td>@row.NewValue</td>
+                        <td>@row.DateChanged</td>
+                        <td>@row.Employee.Name</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>     
+</div>

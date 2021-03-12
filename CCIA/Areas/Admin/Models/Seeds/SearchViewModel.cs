@@ -111,15 +111,15 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.lotNumber))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.LotNumber, "%" + vm.lotNumber + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.LotNumber, "%" + vm.lotNumber.Trim() + "%"));
                 }
                 if(!string.IsNullOrWhiteSpace(vm.appId))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
                 }
                 if(!string.IsNullOrWhiteSpace(vm.certNumber))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.CertNumber, "%" + vm.certNumber + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.CertNumber, "%" + vm.certNumber.Trim() + "%"));
                 } 
                 if(vm.searchStatus != null && vm.searchStatus.Any())              
                 {

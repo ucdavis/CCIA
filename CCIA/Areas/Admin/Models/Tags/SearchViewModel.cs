@@ -25,11 +25,13 @@ namespace CCIA.Models
                
         public static async Task<AdminTagsSearchViewModel> Create(CCIAContext _dbContext, AdminTagsSearchViewModel vm, IFullCallService helper)
         {               
-            var list = new List<string> { "Tag ID", "SID", "BID" , "Tagging Org ID", "Lot Number"}; 
+            var list = new List<string> { "Tag ID", "SID", "BID", "AppId" , "Tagging Org ID", "Lot Number"}; 
                               
             if(vm != null)
             {
                 var tagsToFind = helper.FullTag().AsQueryable();
+
+                vm.searchTerm = vm.searchTerm.Trim();
                 
                 if(vm.searchWhat == "Tag ID")
                 {
@@ -38,6 +40,10 @@ namespace CCIA.Models
                 if(vm.searchWhat == "SID")
                 {
                     tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.SeedsID.ToString(), '%' + vm.searchTerm + "%"));
+                }
+                 if(vm.searchWhat == "AppId")
+                {
+                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.PotatoAppId.ToString(), '%' + vm.searchTerm + "%"));
                 }
                 if(vm.searchWhat == "BID")
                 {
@@ -94,7 +100,7 @@ namespace CCIA.Models
                 
                 if(!string.IsNullOrWhiteSpace(vm.searchLetter))
                 {
-                    tagsSeriesToFind = tagsSeriesToFind.Where(ts => EF.Functions.Like(ts.Letter, "%" +  vm.searchLetter + "%"));
+                    tagsSeriesToFind = tagsSeriesToFind.Where(ts => EF.Functions.Like(ts.Letter, "%" +  vm.searchLetter.Trim() + "%"));
                 }
                 if(vm.searchNumber != null)
                 {

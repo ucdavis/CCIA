@@ -40,7 +40,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="MyCustomer.CountyId">County <span style="font-weight:normal">(Select "Select a county" if outside California)</span></label>
-                    <select required asp-for="MyCustomer.CountyId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "CountyName"))"></select>
+                    <select required asp-for="MyCustomer.CountyId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId", "Name"))"></select>
                     <span asp-validation-for="MyCustomer.CountyId" class="text-danger"></span>
                 </div>
 

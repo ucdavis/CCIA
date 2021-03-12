@@ -1,0 +1,155 @@
+@model CCIA.Models.AdminOECDReportingViewModel
+
+<h3>OECD Reporting Sheets</h3>
+<form asp-action="ReportingSheets" method="POST">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-lg-6">@* First column*@
+            <div class="form-group row">
+                <label asp-for="startDate" class="col-sm-2 col-form-label"></label>
+                <input type="text" asp-for="startDate" class="col-sm-4 form-control datepicker">
+            </div>  
+        </div>
+        <div class="col-lg-6">@* 2nd column*@ 
+            <div class="form-group row">
+                <label asp-for="endDate" class="col-sm-2 col-form-label"></label>
+                <input type="text" asp-for="endDate" class="col-sm-4 form-control datepicker">
+            </div>                        
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <input type="submit" name="button" value="Search" class="btn btn-primary"></input> 
+        </div>
+        <div class="col-lg-3">
+            <input type="submit" name="button" value="Mark uploaded" class="btn btn-danger"></input> 
+        </div>        
+    </div>
+</div>
+<hr>
+</form>
+@if(Model.certs.Any())
+{
+    <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+    <h3>Lots</h3>
+    <table id="table" class="table datatable">
+        <thead>                     
+            <th>lotno</th>
+            <th>seedco</th>
+            <th>species</th>
+            <th>variety</th>
+            <th>weight</th>           
+            <th>tags</th>
+            <th>closedate</th>
+        </thead>
+        <tbody>
+            @foreach (var oecd in Model.certs)
+            {
+            <tr>                               
+                <td>@oecd.LotReferenceNumber</td>
+                <td>@oecd.ConditionerOrganization.OrgName</td>
+                <td>@oecd.Variety.Crop.GenusSpecies</td>
+                <td>@oecd.Variety.Name</td>
+                <td>@oecd.Pounds</td>                 
+                <td>@oecd.TagsRequested</td>
+                <td>@oecd.CloseDate.Value.ToShortDateString()</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <br>
+    <hr>
+    <h3>Certs</h3>
+    <table id="table" class="table datatable">
+        <thead>                     
+            <th>certno</th>
+            <th>lotno</th>
+            <th>weight</th>
+            <th>containers</th>
+            <th>seedtype</th>           
+            <th>generation</th>
+            <th>parentlotno</th>
+            <th>remarks</th>
+            <th>testlab</th>
+            <th>testno</th>
+            <th>testdate</th>
+            <th>pureseed</th>
+            <th>inertmater</th>
+            <th>otherseed</th>
+            <th>weedseed</th>
+            <th>germ</th>
+            <th>dormant</th>
+            <th>inertmatertype</th>
+            <th>otherseedspecies</th>
+            <th 20>weedseedspecies</th>
+            <th>analysisremarks</th>
+            <th>printdate</th>
+        </thead>
+        <tbody>
+            @foreach (var oecd in Model.certs)
+            {
+            <tr>                               
+                <td>@oecd.USDACertNumber</td>
+                <td>@oecd.LotReferenceNumber</td>
+                <td>@oecd.Pounds</td>
+                <td>@oecd.TagsRequested</td>
+                <td>@oecd.ClassId</td>                 
+                <td>0</td>
+                <td>Domestic</td>
+                <td></td>
+                <td>@oecd.Seeds.LabResults.LabOrganization.OrgName</td>
+                <td>SID @oecd.SeedsId</td>
+                <td>@oecd.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()</td>
+                <td>@oecd.Seeds.LabResults.PurityValue</td>
+                <td>@oecd.Seeds.LabResults.InertValue</td>
+                <td>@oecd.Seeds.LabResults.OtherCropValue</td>
+                <td>@oecd.Seeds.LabResults.WeedSeedValue</td>
+                <td>@oecd.Seeds.LabResults.GermValue</td>
+                <td>@oecd.Seeds.LabResults.GermHardSeedValue</td>
+                <td>@oecd.Seeds.LabResults.InertComments</td>
+                <td>@oecd.Seeds.LabResults.OtherCropComments</td>
+                <td>@oecd.Seeds.LabResults.WeedSeedComments</td>
+                <td>@oecd.Seeds.LabResults.Comments</td>
+                <td>@oecd.DatePrinted.Value.ToShortDateString()</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+        
+
+        $(document).ready( function () {            
+            
+            oTable = $('.table').dataTable({
+                 dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50
+            }); 
+
+            $('.datepicker').datepicker();          
+            
+        } );
+    </script>
+}

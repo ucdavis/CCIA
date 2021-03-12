@@ -3,6 +3,10 @@
 		font-family: Sans-Serif;
 		font-size: smaller;
 }
+.warning {font-weight: bolder;
+	text-decoration: underline overline;
+	color: red;
+}
 .nobox {font-family: Sans-Serif;
 		font-size: smaller;
 }

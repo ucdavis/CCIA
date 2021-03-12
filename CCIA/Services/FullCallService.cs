@@ -21,6 +21,8 @@ namespace CCIA.Services
         IQueryable<Seeds> OverviewSeeds();
 
         IQueryable<Certs> FullCerts();
+
+        IQueryable<OECD> FullOECD();
     }
 
      public class FullCallService : IFullCallService
@@ -96,6 +98,32 @@ namespace CCIA.Services
                 .Include(s => s.Variety)
                 .AsQueryable();
             return seed;
+
+        }
+
+        public IQueryable<OECD> FullOECD()
+        {
+            var oecd = _context.OECD
+                .Include(o => o.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .Include(o => o.Seeds)
+                .ThenInclude(s => s.LabResults)
+                .Include(o => o.Class)
+                .Include(o => o.ShipperOrganization)
+                .ThenInclude(s => s.Address)
+                .ThenInclude(sa => sa.StateProvince)
+                .Include(o => o.ConditionerOrganization)
+                .ThenInclude(c => c.Address)
+                .ThenInclude(ca => ca.StateProvince)
+                .Include(o => o.Country)
+                .Include(o => o.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(o => o.Changes)
+                .ThenInclude(c => c.Employee)
+                .Include(o => o.EntryEmployee)
+                .Include(o => o.UpdateEmployee)
+                .AsQueryable();
+            return oecd;
 
         }
 
@@ -178,6 +206,7 @@ namespace CCIA.Services
          public IQueryable<Tags> FullTag() 
         {
             var tag = _context.Tags
+                .Include(t => t.Application)
                 .Include(t => t.TagSeries)
                 .Include(t => t.Seeds)
                 .ThenInclude(s => s.Variety)                
@@ -237,6 +266,8 @@ namespace CCIA.Services
                 .Include(t => t.ContactEntered)
                 .Include(t => t.OECDClass)
                 .Include(t => t.OECDCountry)
+                .Include(t => t.Changes)
+                .ThenInclude(c => c.Employee)
                 .AsQueryable();
             return tag;
         }

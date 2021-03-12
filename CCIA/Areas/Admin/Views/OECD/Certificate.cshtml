@@ -1,0 +1,305 @@
+@model CCIA.Models.OECD
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>OECD Certificate</title>
+    <meta http-equiv="content-style-type" content="text/css" />
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <a asp-action="Details" asp-controller="OECD" asp-route-id="@Model.Id" class="noprint">Return to OECD</a>
+    </div>
+    <div>
+        <table class="@(Model.DatePrinted == null  ? "noprint" : "")" width="100%" cellpadding="0" cellspacing="0"
+            border="0">
+            <tr>
+                <td colspan="4">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <img height="50px" valign="Middle" src="~/images/OECD.bmp">                                
+                            </td>
+                            <td align="center">
+                                United States Department of Agriculture<br />
+                                <div class="titleoecd">Certificate Issued Under the OECD Schemes for the Varietal
+                                    Certification<br />
+                                    of Seed Moving in International Trade</div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" valign="top" class="topandbottom">Name and Address of Official Certifying Agency</td>
+
+                <td colspan="2" valign="top" class="labelnopad">
+                    California Crop Improvement Association<br />
+                    Frank G. Parsons Seed Certification Center<br />
+                    University of California<br />
+                    One Shields Ave<br />
+                    Davis, California 95616-8541</td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">Species (Latin Name)</td>
+
+                <td valign="top" class="labelvert"><i>
+                        @Model.Variety.Crop.GenusSpecies                        
+                    </i></td>
+                <td valign="top" class="topandbottom">
+                    &nbsp;Variety</td>
+
+                <td valign="top" class="label">
+                    @Model.Variety.Name &nbsp; @Model.Variety.Crop.Name
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom"> Lot Reference Number</td>
+
+                <td valign="top" class="labelvert">
+                    @Model.LotReferenceNumber
+                </td>
+                <td valign="top" class="topandbottom">
+                    &nbsp;Date of Closing</td>
+
+                <td valign="top" class="label">
+                    @Model.CloseDate.Value.ToShortDateString()
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">Weight of Lots (lbs)</td>
+
+                <td valign="top" class="labelvert">
+                    <span class="rt">@Model.Pounds</span>
+                </td>
+                <td valign="top" class="topandbottom">&nbsp;Number of Containers</td>
+                <td valign="top" class="label">
+                    @Model.TagsRequested
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" valign="top" class="topandbottom">
+                    The seed bearing the above lot reference number has been produced in accordance
+                    with the OECD Scheme and is approved as:<br />
+                    <br />
+                    <table width="100%">
+                        <tr>
+                            <td rowspan="2" class="checkbox">
+                                @if(Model.Class.Class == "PreBasic")
+                                {
+                                    <span>X</span>
+                                }
+                            </td>
+                            <td>
+                            </td>
+                            <td rowspan="2" class="checkbox">
+                                @if(Model.Class.Class == "Basic")
+                                {
+                                    <span>X</span>
+                                }                                
+                            </td>
+                            <td>
+                            </td>
+                            <td rowspan="2" class="checkbox">
+                                @if(Model.Class.Class == "Certified First")
+                                {
+                                    <span>X</span>
+                                } 
+                            </td>
+                            <td>
+                            </td>
+                            <td rowspan="2" class="checkbox">
+                                @if(Model.Class.Class == "Certified N Generation")
+                                {
+                                    <span>X</span>
+                                } 
+                            </td>
+                            <td>
+                            </td>
+                            <td rowspan="2" class="checkbox">
+                                @if(Model.Class.Class == "Not Finally Certified")
+                                {
+                                    <span>X</span>
+                                } 
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" valign="top">
+                                Pre-Basic Seed<br />
+                                (White Label/Violet<br />
+                                Diagonal Stripe)</td>
+                            <td rowspan="2" valign="top">
+                                Basic Seed<br />
+                                (White Label)</td>
+                            <td rowspan="2" valign="top">
+                                Certified Seed<br />
+                                1st Generation<br />
+                                (Blue Label)</td>
+                            <td rowspan="2" valign="top">
+                                Certified Seed<br />
+                                ____Generation<br />
+                                (Red Label)</td>
+                            <td rowspan="2" valign="top">
+                                Not Finally<br />
+                                Certified<br />
+                                (Grey Label)</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" valign="top" class="topandbottom">
+                    If Certified Seed, Reference No. of Basic Seed</td>
+                <td colspan="2" valign="top" class="label">
+                    &nbsp; @Model.ReferenceNumber
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Remarks:</td>
+                <td colspan="3" valign="top" class="label" align="center">
+                    Meets EC Norms and Standards<br />
+                    Destination:
+                    @Model.Country.Name
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" valign="top" class="topandbottompad" align="center">
+                    <strong>
+                        Seed Analysis Results</strong>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Testing Laboratory</td>
+                <td colspan="3" valign="top" class="label">
+                    &nbsp;California Crop Improvement Association</td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Test Number</td>
+                <td valign="top" class="labelvert">
+                    SID @Model.Seeds.Id
+                </td>
+                <td valign="top" class="topandbottom">
+                    &nbsp;Date Test Concluded</td>
+                <td valign="top" class="label">
+                    @Model.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" valign="top">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td colspan="4" class="topbottomvert" align="center">
+                                % Weight</td>
+                            <td colspan="2" class="topandbottom" align="center">
+                                % Number</td>
+                        </tr>
+                        <tr>
+                            <td class="topbottomvert" align="center" valign="top">
+                                Pure<br />
+                                seed</td>
+                            <td class="topbottomvert" align="center" valign="top">
+                                Inert<br />
+                                matter</td>
+                            <td class="topbottomvert" align="center" valign="top">
+                                Other crop<br />
+                                seed</td>
+                            <td class="topbottomvert" align="center" valign="top">
+                                Weed<br />
+                                seed</td>
+                            <td class="topbottomvert" align="center" valign="top">
+                                Germination</td>
+                            <td class="topandbottom" align="center" valign="top">
+                                Dormant/Hard<br />
+                                seed</td>
+                        </tr>
+                        <tr>
+                            <td style="height: 21px" class="labelvertnopad " align="center">                                
+                                @string.Format("{0:N}", Model.Seeds.LabResults.PurityPercent * 100) %
+                            </td>
+                            <td style="height: 21px" class="labelvertnopad " align="center">
+                                @string.Format("{0:N}", Model.Seeds.LabResults.InertPercent * 100) %
+                            </td>
+                            <td style="height: 21px" class="labelvertnopad " align="center">
+                                @string.Format("{0:N}", Model.Seeds.LabResults.OtherCropPercent * 100) %
+                            </td>
+                            <td style="height: 21px" class="labelvertnopad " align="center">
+                                @string.Format("{0:N}", Model.Seeds.LabResults.WeedSeedPercent * 100) %
+                            </td>
+                            <td style="height: 21px" class="labelvertnopad " align="center">
+                                @string.Format("{0:N}", Model.Seeds.LabResults.GermPercent * 100) %
+                            </td>
+                            <td style="height: 21px" class="labelnopad" align="center">
+                                0.00 %/@string.Format("{0:N}", Model.Seeds.LabResults.HardSeedPercent * 100) %</td>
+                        </tr>
+                    </table>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Kind of inert matter</td>
+                <td colspan="3" valign="top" class="label">
+                    @Model.Seeds.LabResults.InertComments
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Other crop seed (species)</td>
+                <td colspan="3" valign="top" class="label">
+                    @Model.Seeds.LabResults.OtherCropComments
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="topandbottom">
+                    Weed seed (species)</td>
+                <td class="label" colspan="3" valign="top">
+                    @Model.Seeds.LabResults.WeedSeedComments
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" class="top">
+                    Remarks</td>
+                <td colspan="3" valign="top" class="labelsngl ">
+                    Sampled and analyzed according to AOSA procedures<br />
+                    @Model.Comments
+                </td>
+            </tr>
+            <tr>
+                <td class="topandbottompad" colspan="4" valign="top">
+                    Signature (Official of Certifying Agency) &nbsp;&nbsp;<img alt="Nicole Hostert" align="top"
+                        src="~/images/nicole.gif" />
+                    &nbsp;&nbsp; Nicole Hostert&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Date:
+                    @DateTime.Now.ToShortDateString()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" valign="top" class="footer">
+                    Copy Distribution: U.S. Designated Authority (required): State Seed Certifying Agency:
+                    Grower/Owner</td>
+                <td valign="top" class="footer">
+                    &nbsp; Control Number: CA
+                    @Model.FiscalYearPrinted-@Model.Id
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

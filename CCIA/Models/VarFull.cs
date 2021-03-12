@@ -13,6 +13,9 @@ namespace CCIA.Models
         public int Id { get; set; }        
         [Display(Name="Variety")]
         public string Name { get; set; }
+
+         public string NameAndId => Id + " " + Name;
+
         public string Type { get; set; }
 
         [ForeignKey("CropId")]

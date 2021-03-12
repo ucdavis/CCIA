@@ -1,0 +1,212 @@
+@model  CCIA.Models.AdminOECDEditCreateViewModel
+
+<!-- Org Lookup Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Orgs" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Org</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Name or Account Number:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <input type="hidden" id="lookupType" value=""/>
+        <div id="orgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form asp-action="Create">
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit OECD</h2> 
+            <h6>Variety, crop, SID class, and cert year pulled from SID. Can be updated later.</h6>
+        </div>            
+    </div> 
+     <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="submit" value="Create" class="btn btn-primary"></input> 
+        </div>  
+    </div>      
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@                        
+            <div class="form-group row">
+                <label asp-for="oecd.ShipperOrganization.NameAndId" class="col-sm-3 col-form-label">Shipper</label>                    
+                <input type="text" asp-for="oecd.ShipperOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Shipper"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                @Html.HiddenFor(x => x.oecd.ShipperId)                              
+            </div>           
+            <div class="form-group row">
+                <label asp-for="oecd.ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>                    
+                <input type="text" asp-for="oecd.ConditionerOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Conditioner"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                @Html.HiddenFor(x => x.oecd.ConditionerId)  
+            </div>              
+            <div class="form-group row">                 
+                <label asp-for="oecd.ClassId" class="col-sm-3 col-form-label"></label>                                    
+                <select asp-for="oecd.ClassId"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classes, "Id", "Class"))"></select>            
+            </div>             
+            <div class="form-group row">
+                <label asp-for="oecd.NotCertified" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-check-input">
+            </div>             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@
+            <div class="form-group row">
+                <label asp-for="oecd.SeedsId" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.SeedsId" class="col-sm-3 col-form">
+            </div>             
+            <div class="form-group row">
+                <label asp-for="oecd.CertNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.CertNumber" class="col-sm-3 col-form">
+            </div> 
+           <div class="form-group row">
+               <label asp-for="oecd.Country.Name" class="col-sm-3 col-form-label"></label>
+               <select asp-for="oecd.CountryId"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select> 
+           </div>                                                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@             
+            <div class="form-group row">
+                <label asp-for="oecd.CloseDate" class="col-sm-3 col-form-label"></label>
+                <input class="col-sm-3 col-form datepicker" type="text" asp-for="oecd.CloseDate">
+            </div>
+            <div class="form-group row">
+                <label asp-for="oecd.LotNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.LotNumber" class="col-sm-3 col-form">
+            </div> 
+            <div class="form-group row">
+                <label asp-for="oecd.TagsRequested" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.TagsRequested" class="col-sm-3 col-form">
+            </div>  
+            <div class="form-group row">
+                <label asp-for="oecd.Pounds" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.Pounds" class="col-sm-3 col-form">
+            </div> 
+            <div class="form-group row">
+                <label asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form">
+            </div>    
+            <div class="form-group row">
+                <label asp-for="oecd.DomesticOrigin" class="col-sm-3 col-form-label"></label>                
+                <input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-check-input">
+            </div>                         
+        </div>
+    </div>       
+</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+        $('#lookupOrgModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever')          
+            var modal = $(this)
+            modal.find('.modal-title').text('Look Up ' + recipient + ' Org');
+            modal.find('#lookupType').val(recipient);
+            modal.find("#account").val("");
+            modal.find("#orgTable").empty();            
+        })
+
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
+            var lookup = $("#account").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            $("#orgTable").empty();
+            $("#orgTable").load("/admin/Application/LookupOrg?lookup="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        function useOrg(e,orgId, orgNameAndId)
+        {
+            e.preventDefault();
+            var lookupType = $("#lookupType").val();
+            if(lookupType === "Shipper")
+            {
+                $("#oecd_ShipperId").val(orgId);
+                $("#oecd_ShipperOrganization_NameAndId").val(orgNameAndId);
+            }
+            if(lookupType === "Conditioner")
+            {
+                $("#oecd_ConditionerId").val(orgId);
+                $("#oecd_ConditionerOrganization_NameAndId").val(orgNameAndId);
+            }
+            $("#orgTable").empty();
+            $("#lookupOrgModal").modal('hide');                       
+        }
+
+         $("#variety-lookup-btn").click(function(e){
+            e.preventDefault();
+            var lookup = $("#variety").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            var crop = $("#oecd_Variety_CropId").val();            
+            $("#varietyTable").empty();
+            $("#varietyTable").load("/admin/Application/LookupVariety?lookup="+lookup+"&cropId="+crop, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        $("#variety").keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                e.preventDefault();
+                $(':focus').blur();
+                $("#variety-lookup-btn").click();
+            }
+        });
+
+        function useVariety(e, varId, varName)
+        {
+            e.preventDefault();
+            $("#oecd_VarietyId").val(varId);
+            $("#oecd_Variety_NameAndId").val(varId + " " + varName);
+            $("#varietyTable").empty();            
+            $("#variety").val("");
+            $("#lookupVarietyModal").modal('hide');
+        }
+
+
+    
+        
+    
+    </script>
+}

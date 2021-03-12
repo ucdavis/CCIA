@@ -15,6 +15,8 @@ namespace CCIA.Models
         public Seeds Seeds { get; set; }
 
         public int? VarietyId { get; set; }
+        [ForeignKey("VarietyId")]
+        public VarFull Variety { get; set; }
 
         public int? TagId { get; set; }
 
@@ -30,9 +32,13 @@ namespace CCIA.Models
         public AbbrevOECDClass Class { get; set; }
 
 
+         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? CloseDate { get; set; }
 
         public int? ConditionerId { get; set; }
+
+        [ForeignKey("ConditionerId")]
+        public Organizations ConditionerOrganization { get; set; }
 
         public int? CountryId { get; set; }
 
@@ -43,6 +49,8 @@ namespace CCIA.Models
         public string LotNumber { get; set; }
 
         public int? ShipperId { get; set; }
+        [ForeignKey("ShipperId")]
+        public Organizations ShipperOrganization { get; set; }
 
         public DateTime? DateRequested { get; set; }
 
@@ -73,9 +81,14 @@ namespace CCIA.Models
 
         public string DataEntryUser { get; set; }
 
+        [ForeignKey("DataEntryUser")]
+        public CCIAEmployees EntryEmployee { get; set; }
+
         public DateTime? UpdateDate { get; set; }
 
         public string UpdateUser { get; set; }
+        [ForeignKey("UpdateUser")]
+        public CCIAEmployees UpdateEmployee { get; set; }
 
         public bool DomesticOrigin { get; set; }
 
@@ -86,6 +99,23 @@ namespace CCIA.Models
         public string AdminComments { get; set; }
 
         public DateTime? DatePrinted { get; set; }
+
+        public int FiscalYearPrinted 
+        { 
+            get
+            {
+                if(!DatePrinted.HasValue)
+                {
+                    return 0;
+                }
+                if(DatePrinted.Value.Month == 7 || DatePrinted.Value.Month == 8 || DatePrinted.Value.Month == 9 || DatePrinted.Value.Month == 10 || DatePrinted.Value.Month == 11 || DatePrinted.Value.Month == 12)
+                {
+                    return DatePrinted.Value.Year;
+                }
+                return DatePrinted.Value.Year - 1;
+
+            }
+        }
 
         public string ReferenceNumber { get; set; }
 
@@ -103,8 +133,23 @@ namespace CCIA.Models
 
         public bool ClientNotified { get; set; }
 
+        [ForeignKey("OECDId")]
+        public ICollection<OECDChanges> Changes { get; set; }
+
+        public string USDACertNumber { 
+            get
+            {
+                if(Seeds == null){
+                    return "";
+                }
+                return $"CA{Seeds.CertYear}-{Id.ToString("D6")}";
+
+            }
+        }
+
        
 
+        [Display(Name="USDA Ref#")]
         public string LotReferenceNumber { 
             get
             {
@@ -112,7 +157,11 @@ namespace CCIA.Models
                 {
                     return OECDNumber;
                 }
-                 string certYearAbbrev = Seeds.CertYear.ToString().Substring(Seeds.CertYear.ToString().Length - 2);
+                if(Seeds == null)
+                {
+                    return "";
+                }
+                string certYearAbbrev = Seeds.CertYear.ToString().Substring(Seeds.CertYear.ToString().Length - 2);
                 var fileList = new List<int>(new int[] {20185,20184,19858,19796,19797,19798,19799,19800,19801,19802,19803,19804,19805,19806,19807,19808,19809,19810,19811,19812,19813,19814,19815,19816,19817,19818,19819,19820,19821,19822,19823,19824,19825,19826,19827,19828,19829,19830,19832,19844,19845,19846,19847,19848,19849,19850,19852,19853,19854,19855,19837,19838,19839,19840,19841,19842,19837,19838,19839,19840,19841,19842,19843,19849,19860});
                 if(fileList.Contains(Id))
                 {

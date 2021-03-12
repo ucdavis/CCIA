@@ -1,0 +1,232 @@
+@model  CCIA.Models.TagCreateEditViewModel
+
+<!-- Org Lookup Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Orgs" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Org</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Name or Account Number:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>       
+        <div id="orgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form asp-action="Create">
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Tag</h2> 
+        </div>            
+    </div> 
+    <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="submit" value="Create Tag" class="btn btn-primary"></input>   
+            <a class="btn btn-dark" asp-action="Lookup" asp-controller="Tags" asp-area="Admin">Cancel</a>
+        </div>  
+    </div>     
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@           
+            <div class="form-group row">
+                <label asp-for="tag.ClassProduced" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.tag.ClassProduced)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="tag.TagType" class="col-sm-3 col-form-label"></label>
+                <select asp-for="tag.TagType"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.tagTypes, "Id", "TagTypeTrans"))"></select>                
+            </div>            
+            <div class="form-group row">
+                <label asp-for="tag.BagSize" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.BagSize" class="col-sm-2 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.BagSize" data-valmsg-replace="true"></span>
+                <span class="col-sm-1"></span>
+                <select asp-for="tag.WeightUnit" class="col-sm-2 form-control">
+                    <option value="L">Pounds</option>
+                    <option value="K">Kilograms</option>
+                </select>
+            </div>             
+             <div class="form-group row">
+                <label asp-for="tag.CountRequested" class="col-sm-4 col-form-label"></label>
+                <input asp-for="tag.CountRequested" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CountRequested" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="tag.CoatingPercent" class="col-sm-4 col-form-label"></label>
+                <input asp-for="tag.CoatingPercent" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CoatingPercent" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                 <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.SeriesRequest" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.SeriesRequest">
+                </div>
+            </div>            
+           
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@             
+            <div class="form-group row">
+                <label asp-for="tag.SeedsID" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.SeedsID" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">
+                <label asp-for="tag.BlendId" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.BlendId" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">
+                <label asp-for="tag.PotatoAppId" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.PotatoAppId" class="col-sm-3 form-control">
+            </div>           
+            <div class="form-group row">
+                <label asp-for="tag.TaggedClass" class="col-sm-3 col-form-label"></label>
+                <select asp-for="tag.TaggedClass"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.tagClass, "Id", "CertClass"))"></select> 
+            </div>
+            <div class="form-group row">
+                <label asp-for="tag.TaggingOrganization.NameAndId" class="col-sm-3 col-form-label">Tagging Org</label>
+                <input asp-for="tag.TaggingOrg" class="col-sm-3 form-control">
+                 <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.TaggingOrg" data-valmsg-replace="true"></span>
+            </div>                         
+           <div class="form-group row">
+                <label asp-for="tag.CountUsed" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.CountUsed" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CountUsed" data-valmsg-replace="true"></span>
+            </div>           
+            <div class="form-group row">
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.Bulk">
+                </div>
+            </div>                                                  
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@                        
+            <div class="form-group row">
+                <label asp-for="tag.Alias" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.Alias" class="col-sm-3 form-control">
+            </div>            
+             <div class="form-group row">
+                <label asp-for="tag.ExtrasOverrun" class="col-sm-3 col-form-label"></label>
+                <input asp-for="tag.ExtrasOverrun" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.ExtrasOverrun" data-valmsg-replace="true"></span>
+            </div>             
+            <div class="form-group row">
+                 <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="tag.AnalysisRequested" class="col-sm-4 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " asp-for="tag.AnalysisRequested">
+                </div>
+            </div>          
+        </div>
+    </div>
+    <div class="col-sm-12"> @* full width *@               
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+                <h3>OECD</h3> 
+            </div>
+            <div>Leave blank if no OECD certificate needed</div>            
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.PlantingStockNumber" class="col-sm-3 col-form-label"></label>
+            <input asp-for="tag.PlantingStockNumber" class="col-sm-3 form-control"> (Type "Blend" for blends)
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.DateSealed" class="col-sm-3 col-form-label"></label>
+            <input asp-for="tag.DateSealed" type="text" class="col-sm-3 form-control datepicker">
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.OECDClass.Class" class="col-sm-3 col-form-label"></label>
+            <select asp-for="tag.OECDTagType"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.oecdClass, "Id", "Class"))"></select>
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.OECDCountry.Name" class="col-sm-3 col-form-label"></label>
+            <select asp-for="tag.OECDCountryId"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.oecdCountries, "Id", "Name"))"></select>            
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <hr/>
+            </div>                
+        </div>                
+        <div class="form-group row">
+            <label asp-for="tag.Statement" class="col-sm-2 col-form-label"></label>
+            <input asp-for="tag.Statement" class="col-sm-9 form-control">
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.HowDeliver" class="col-sm-2 col-form-label"></label>
+            <select asp-for="tag.HowDeliver" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<TagHowPickUp>()"></select>            
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.DateNeeded" class="col-sm-3 col-form-label"></label>
+            <input asp-for="tag.DateNeeded" type="text" class="col-sm-3 form-control datepicker">
+        </div>
+        <div class="form-group row">
+            <label asp-for="tag.Comments" class="col-sm-3 col-form-label"></label>
+            <input asp-for="tag.Comments" class="col-sm-9 form-control">
+        </div>        
+    </div>             
+    </div>
+</div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+        $('#lookupOrgModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal           
+            var modal = $(this)
+            modal.find('.modal-title').text('Look Up Tagging Org');
+            modal.find("#account").val("");
+            modal.find("#orgTable").empty();            
+        })
+
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
+            var lookup = $("#account").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            $("#orgTable").empty();
+            $("#orgTable").load("/admin/Application/LookupOrg?lookup="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        function useOrg(e,orgId, orgNameAndId)
+        {
+            e.preventDefault();
+            $("#tag_TaggingOrg").val(orgId);
+                    $("#orgTable").empty();
+            $("#lookupOrgModal").modal('hide');                       
+        }         
+        
+    
+    </script>
+}
+

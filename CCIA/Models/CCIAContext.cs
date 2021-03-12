@@ -100,6 +100,10 @@ namespace CCIA.Models
 
         public virtual DbSet<AppChanges> AppChanges { get; set; }
 
+        public virtual DbSet<OECDChanges> OECDChanges { get; set; }
+
+        public virtual DbSet<TagChanges> TagChanges { get; set; }
+
         public virtual DbSet<TagBagging> TagBagging { get; set; }
 
         public virtual DbSet<TagSeries> TagSeries { get; set; }
@@ -116,7 +120,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.ecoregions'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_objects'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_typelut'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.application_changes'. Please see the warning messages.
+        
        
         // Unable to generate entity type for table 'dbo.map_sweetcorn_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.map_croppts_app_listing'. Please see the warning messages.
@@ -143,9 +147,9 @@ namespace CCIA.Models
       
         // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
        
-        // Unable to generate entity type for table 'dbo.oecd_changes'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.tags_changes'. Please see the warning messages.
+       
         
         // Unable to generate entity type for table 'dbo.idaho_beta_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.idaho_lists'. Please see the warning messages.
@@ -416,6 +420,50 @@ namespace CCIA.Models
                 entity.Property(e => e.Id);
 
                 entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+            });
+
+            modelBuilder.Entity<OECDChanges>(entity => {
+                entity.ToTable("oecd_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.OECDId).HasColumnName("file_num");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+            });
+
+            modelBuilder.Entity<TagChanges>(entity => {
+                entity.ToTable("tags_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.TagId).HasColumnName("tag_id");
 
                 entity.Property(e => e.ColumnChange).HasColumnName("column_change");
 
@@ -942,6 +990,15 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Country);
 
+                entity.HasOne(e => e.ShipperOrganization);
+
+                entity.HasOne(e => e.ConditionerOrganization);
+
+                entity.HasOne(e => e.Variety);
+                entity.HasMany(e => e.Changes);
+                entity.HasOne(e => e.EntryEmployee);
+                entity.HasOne(e => e.UpdateEmployee);
+
 
             });
 
@@ -1125,10 +1182,11 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.TaggingOrganization);
                 entity.HasOne(e => e.ContactEntered);
-                entity.HasOne(e => e.TagBagging);
+                entity.HasOne(e => e.TagBagging).WithOne().HasForeignKey<TagBagging>();;                
                 entity.HasOne(e => e.EmployeePrinted);
                 entity.HasOne(e => e.OECDClass);
                 entity.HasOne(e => e.OECDCountry);
+                entity.HasMany(e => e.Changes);
 
 
             });
