@@ -7,6 +7,11 @@
             <h2>Tag Details</h2> 
         </div>            
     </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="Edit" asp-controller="Tags" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+        </div>            
+    </div> 
     @if(Model.Stage == TagStages.Requested.GetDisplayName())
     {
         <div class="row">

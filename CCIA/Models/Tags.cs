@@ -16,6 +16,18 @@ namespace CCIA.Models
         [Display(Name="Complete")]
         Complete,
     } 
+
+    public enum TagHowPickUp
+    { 
+        [Display(Name="UPS Ground")]
+        UPSGround,
+        [Display(Name="UPS Overnight")]
+        UPSOvernight,
+        [Display(Name="Pick-up at Parsons Building")]
+        PickUp,
+        [Display(Name="Other (see comments)")]
+        Other,
+    } 
     public partial class Tags
     {
         [Display(Name = "TagID")]
@@ -29,8 +41,8 @@ namespace CCIA.Models
         public int? PotatoAppId { get; set; }
         [ForeignKey("PotatoAppId")]
         public Applications Application {get; set;}
+
         
-        [ForeignKey("Id")]
         public TagBagging TagBagging { get; set; }
 
         [ForeignKey("TagId")]
@@ -70,15 +82,15 @@ namespace CCIA.Models
         {
             get
             {
-                if(SeedsID.HasValue)
+                if(SeedsID.HasValue && Seeds != null)
                 {
                     return Seeds.CertYear.Value;
                 }
-                if(BlendId.HasValue)
+                if(BlendId.HasValue && Blend != null)
                 {
                     return Blend.CertYear;
                 }
-                if(PotatoAppId.HasValue)
+                if(PotatoAppId.HasValue && Application != null)
                 {
                     return Application.CertYear;
                 }
@@ -218,7 +230,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.ClassProduced != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
                 {
                     return Seeds.ClassProduced.CertClass;
                 }
@@ -234,7 +246,7 @@ namespace CCIA.Models
         {
             get
             {
-                if(SeedsID.HasValue && Seeds.ClassProduced != null)
+                if(SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
                 {
                     return Seeds.ClassProduced.CertClass;
                 }
@@ -242,7 +254,7 @@ namespace CCIA.Models
                 {
                     return "Certified Blend";
                 }
-                else if(PotatoAppId.HasValue)
+                else if(PotatoAppId.HasValue && Application != null)
                 {
                     return Application.ClassProducedName;
                 }
@@ -373,7 +385,7 @@ namespace CCIA.Models
         public string UserPrinted { get; set; }
         [ForeignKey("UserPrinted")]
         public CCIAEmployees EmployeePrinted { get; set; }
-        public int UserEntered { get; set; }
+        public int? UserEntered { get; set; }
         [ForeignKey("UserEntered")]
         public Contacts ContactEntered { get; set; }
         public DateTime? DateEntered { get; set; }

@@ -37,11 +37,131 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
+        public async Task<IActionResult> Create()
+        {
+            var model = await TagCreateEditViewModel.Create(_dbContext, _helper, 0);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(int id, TagCreateEditViewModel vm)
+        {   
+            var tagToCreate = new Tags();
+            var newTag = vm.tag;
+
+            tagToCreate.SeedsID = newTag.SeedsID;
+            tagToCreate.BlendId = newTag.BlendId;
+            tagToCreate.PotatoAppId = newTag.PotatoAppId;
+            tagToCreate.TagType = newTag.TagType;
+            tagToCreate.BagSize = newTag.BagSize;
+            tagToCreate.WeightUnit = newTag.WeightUnit;
+            tagToCreate.TagClass = newTag.TagClass;
+            tagToCreate.Alias = newTag.Alias;
+            tagToCreate.TaggingOrg = newTag.TaggingOrg;            
+            tagToCreate.CountRequested = newTag.CountRequested;
+            tagToCreate.CountUsed = newTag.CountUsed;
+            tagToCreate.ExtrasOverrun = newTag.ExtrasOverrun;
+            tagToCreate.CoatingPercent = newTag.CoatingPercent;
+            tagToCreate.SeriesRequest = newTag.SeriesRequest;
+            tagToCreate.Bulk = newTag.Bulk;
+            tagToCreate.AnalysisRequested = newTag.AnalysisRequested;
+            tagToCreate.Statement = newTag.Statement;
+            tagToCreate.HowDeliver = newTag.HowDeliver;
+            tagToCreate.DateNeeded = newTag.DateNeeded;
+            tagToCreate.Comments =newTag.Comments;
+            tagToCreate.DateRequested = DateTime.Now;
+            tagToCreate.TagBagging = null;
+            
+            if(ModelState.IsValid){
+                _dbContext.Add(tagToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Tag Created";
+                
+                if(!string.IsNullOrWhiteSpace(newTag.PlantingStockNumber))
+                {
+                    var oecd = new OECD();
+                    var seed = await _dbContext.Seeds.Where(s => s.Id == newTag.SeedsID).FirstAsync();
+                     oecd.SeedsId = tagToCreate.SeedsID;
+                    oecd.VarietyId = seed.OfficialVarietyId;
+                    oecd.Pounds = Convert.ToInt32(tagToCreate.LotWeightRequested.Value);
+                    oecd.CertNumber = seed.CertNumber;
+                    tagToCreate.OECDTagType = newTag.OECDTagType;
+                    oecd.ClassId = newTag.OECDTagType;
+                    oecd.CloseDate = newTag.DateSealed.Value;
+                    oecd.ConditionerId = seed.ConditionerId;
+                    oecd.CountryId = newTag.OECDCountryId;
+                    oecd.LotNumber = seed.LotNumber;
+                    oecd.ShipperId = newTag.TaggingOrg;
+                    oecd.DateRequested = DateTime.Now;
+                    oecd.NotCertified = newTag.OECDTagType == 5;
+                    oecd.DataEntryDate = DateTime.Now;
+                    oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
+                    oecd.DomesticOrigin = seed.OriginCountry == 58;
+                    oecd.ReferenceNumber = newTag.PlantingStockNumber;
+                    oecd.Canceled = false;
+                    oecd.TagsRequested = newTag.CountRequested.Value;
+                    oecd.AdminComments = newTag.AdminComments;
+                    oecd.OECDNumber = seed.OriginCountry == 102 ? $"USA-CA-{seed.CertNumber}" : $"USA-{seed.StateOfOrigin.StateProvinceCode}/CA-{seed.CertNumber}-{seed.LotNumber}";
+                    oecd.TagId = tagToCreate.Id;
+
+                    _dbContext.Add(oecd);
+                    await _dbContext.SaveChangesAsync();
+                    Message = "Tag & OECD created";                    
+                }
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await TagCreateEditViewModel.Create(_dbContext, _helper, id);
+                return View(vm); 
+            }
+            return RedirectToAction(nameof(Details), new { id = tagToCreate.Id });  
+
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
             var model = await TagCreateEditViewModel.Create(_dbContext, _helper, id);         
             return View(model);
-        }   
+        } 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, TagCreateEditViewModel vm)
+        {   
+            var tagToUpdate = await _dbContext.Tags.Where(a => a.Id == id).FirstAsync();
+            var edit = vm.tag;
+            tagToUpdate.SeedsID = edit.SeedsID;
+            tagToUpdate.BlendId = edit.BlendId;
+            tagToUpdate.PotatoAppId = edit.PotatoAppId;
+            tagToUpdate.TagType = edit.TagType;
+            tagToUpdate.TagClass = edit.TagClass;
+            tagToUpdate.Alias = edit.Alias;
+            tagToUpdate.BagSize = edit.BagSize;
+            tagToUpdate.WeightUnit = edit.WeightUnit;
+            tagToUpdate.CountRequested = edit.CountRequested;
+            tagToUpdate.CountUsed = edit.CountUsed;
+            tagToUpdate.ExtrasOverrun = edit.ExtrasOverrun;
+            tagToUpdate.CoatingPercent = edit.CoatingPercent;
+            tagToUpdate.SeriesRequest = edit.SeriesRequest;
+            tagToUpdate.Bulk = edit.Bulk;
+            tagToUpdate.AnalysisRequested = edit.AnalysisRequested;
+            tagToUpdate.Statement = edit.Statement;
+            tagToUpdate.HowDeliver = edit.HowDeliver;
+            tagToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
+            tagToUpdate.DateModified = DateTime.Now;
+
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Tag Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await TagCreateEditViewModel.Create(_dbContext, _helper, id);
+                return View(vm); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = tagToUpdate.Id });  
+
+        }  
 
 
 
@@ -52,7 +172,7 @@ namespace CCIA.Controllers.Admin
         }   
 
         public async Task<IActionResult> Details(int id)    
-        {
+        {            
             var tag = _helper.FullTag();
             var model = await tag
                 .Include(t => t.TagBagging)

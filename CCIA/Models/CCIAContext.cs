@@ -1182,7 +1182,7 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.TaggingOrganization);
                 entity.HasOne(e => e.ContactEntered);
-                entity.HasOne(e => e.TagBagging);
+                entity.HasOne(e => e.TagBagging).WithOne().HasForeignKey<TagBagging>();;                
                 entity.HasOne(e => e.EmployeePrinted);
                 entity.HasOne(e => e.OECDClass);
                 entity.HasOne(e => e.OECDCountry);
