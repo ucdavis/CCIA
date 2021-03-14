@@ -33,7 +33,7 @@ namespace CCIA.Models
             {
                 tag = tagToEdit,
                 tagTypes = await _dbContext.AbbrevTagType.OrderBy(t => t.SortOrder).ToListAsync(),
-                tagClass = await _dbContext.AbbrevClassSeeds.FromSql("class_seed_pot_labeled").ToListAsync(),
+                tagClass = await _dbContext.AbbrevClassSeeds.FromSqlRaw("EXEC class_seed_pot_labeled").ToListAsync(),
             };
 
             if(id != 0){

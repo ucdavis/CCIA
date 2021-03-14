@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Helpers;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Controllers.Admin
 {
@@ -155,7 +156,9 @@ namespace CCIA.Controllers.Admin
                     model.DatePrinted = DateTime.Now;
                     model.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
                     await _dbContext.SaveChangesAsync();
-                    await _dbContext.Database.ExecuteSqlCommandAsync("charge_OECD @p0", model.Id);
+
+                    var p0 = new SqlParameter("@file_num", model.Id);
+                    await _dbContext.Database.ExecuteSqlRawAsync($"EXEC charge_OECD @file_num", p0);
                 }
             }
             return View(model);
@@ -193,7 +196,10 @@ namespace CCIA.Controllers.Admin
         {
             if(button == "Mark uploaded")
             {
-                await _dbContext.Database.ExecuteSqlCommandAsync("usda_mark_certs @p0, @p1", vm.startDate, vm.endDate);
+                // await _dbContext.Database.ExecuteSqlCommandAsync("usda_mark_certs @p0, @p1", vm.startDate, vm.endDate);
+                var p0 = new SqlParameter("@begin_date", vm.startDate);
+                var p1 = new SqlParameter("@end_date", vm.endDate);
+                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC usda_mark_certs @p0 @p1", p0, p1);
                 Message = "Lots marked as uploaded. Date clicked is recorded in case you need to reverse this. :)";
             }
             var model = await AdminOECDReportingViewModel.Create(_dbContext, vm);

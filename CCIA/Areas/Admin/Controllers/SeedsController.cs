@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Controllers.Admin
 {
@@ -47,7 +48,10 @@ namespace CCIA.Controllers.Admin
             await _dbContext.SaveChangesAsync();
             Message = "Seed Accepted";
 
-            await _dbContext.Database.ExecuteSqlCommandAsync("accept_seeds_post_action @p0", id);
+            //await _dbContext.Database.ExecuteSqlCommandAsync("accept_seeds_post_action @p0", id);
+
+            var p0 = new SqlParameter("@seeds_id", id);
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @p0", p0);
 
             return  RedirectToAction(nameof(Pending));
         }
