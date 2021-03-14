@@ -117,16 +117,20 @@ namespace CCIA
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCookiePolicy(new CookiePolicyOptions()
+                {
+                    MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
+                });
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseCookiePolicy();
             }                     
 
             app.UseStaticFiles();
             
-            app.UseAuthentication();  
-            app.UseCookiePolicy();
+            app.UseAuthentication();              
             app.UseRouting();
             app.UseAuthorization();
             
@@ -147,7 +151,7 @@ namespace CCIA
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Root}/{action=Index}/{id?}");
             });
             
         }
