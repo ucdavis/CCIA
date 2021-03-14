@@ -47,9 +47,9 @@ namespace CCIA.Controllers.Client
         }
 
         // GET: Application/Create
-        public async Task<IActionResult> Create(int id)
+        public ActionResult Create(int id)
         {
-            var model = await TurfgrassCertificatesViewModel.Create(_dbContext, id);
+            var model = TurfgrassCertificatesViewModel.Create(_dbContext, id);
            
             return View(model);
         }
