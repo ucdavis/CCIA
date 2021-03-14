@@ -27,7 +27,7 @@ namespace CCIA.Models.DetailsViewModels
             var viewModel = new AdminViewModel
             {
                 application =  await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync(), 
-                conflicts =  await _dbContext.IsolationConflicts.FromSqlRaw($"EXEC check_for_isolation_in_apps_mvc @p0", p0).ToListAsync()
+                conflicts =  await _dbContext.IsolationConflicts.FromSqlRaw($"EXEC check_for_isolation_in_apps_mvc @app_id", p0).ToListAsync()
             };           
 
             return viewModel;

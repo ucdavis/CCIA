@@ -47,11 +47,9 @@ namespace CCIA.Controllers.Admin
             
             await _dbContext.SaveChangesAsync();
             Message = "Seed Accepted";
-
-            //await _dbContext.Database.ExecuteSqlCommandAsync("accept_seeds_post_action @p0", id);
-
+           
             var p0 = new SqlParameter("@seeds_id", id);
-            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @p0", p0);
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @seeds_id", p0);
 
             return  RedirectToAction(nameof(Pending));
         }
