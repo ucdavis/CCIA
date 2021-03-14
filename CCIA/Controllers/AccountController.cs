@@ -16,7 +16,6 @@ using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using AspNetCore.Security.CAS;
 
 namespace CCIA.Controllers
 {
@@ -86,8 +85,9 @@ namespace CCIA.Controllers
         [AllowAnonymous]
         public async Task CasLogin(string returnUrl)
         {
+            // TODO: Check returnURL, use if not blank
             var props = new AuthenticationProperties { RedirectUri = "/Admin/AdminHome/Index" };
-            await HttpContext.ChallengeAsync(CasDefaults.AuthenticationScheme, props);
+            await HttpContext.ChallengeAsync("CAS", props);
         }
 
         [HttpGet]
