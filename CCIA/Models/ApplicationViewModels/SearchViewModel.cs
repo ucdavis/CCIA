@@ -160,7 +160,7 @@ namespace CCIA.Models
                 {
                     apps = await appsToFind.ToListAsync(),                   
                     appTypes = appTypes,
-                    crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
                     counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(), 
                     includeMapOptions = vm.includeMapOptions,                   
@@ -173,7 +173,7 @@ namespace CCIA.Models
             {
                 apps = new List<Applications>(),
                 appTypes = appTypes,
-                crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
                 CertYear = CertYearFinder.CertYear,
                 accepted = 2,

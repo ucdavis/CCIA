@@ -1,14 +1,11 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Thinktecture;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
-
-
-
+using Microsoft.Extensions.Configuration;
 
 namespace CCIA.Models
 {
@@ -192,18 +189,23 @@ namespace CCIA.Models
                     .GetService<ILoggerFactory>();
         }
 
+        public CCIAContext(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqlOptions =>
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
                 {                       
                         sqlOptions.UseNetTopologySuite();
                         sqlOptions.AddRowNumberSupport();
                 });
-                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", x => x.UseNetTopologySuite());                
-                //optionsBuilder.UseSqlServer(@"Server=cherry01;Database=CCIA-Azure-Dev;Trusted_Connection=True;", sqloptions => sqloptions.AddRowNumberSupport());
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
@@ -541,7 +543,7 @@ namespace CCIA.Models
 
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.Id).HasColumnName("seed_app_id").UseSqlServerIdentityColumn();
+                entity.Property(e => e.Id).HasColumnName("seed_app_id");
 
                 entity.Property(e => e.AppId).HasColumnName("app_id");
 
@@ -1417,8 +1419,9 @@ namespace CCIA.Models
 
                 entity.ToTable("applications");
 
-                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.Cancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.Submitable, e.Status, e.Approved, e.Maps, e.CertYear })
-                    .HasName("IX_applications_cert_year");
+                entity.HasIndex(e => new { e.Id, e.AppType, e.ApplicantId, e.GrowerId, e.CropId, e.Cancelled, e.Tags, e.PoLotNum, e.FieldName, e.FarmCounty, e.DatePlanted, e.AcresApplied, e.SelectedVarietyId, e.ClassProducedId, e.Submitable, e.Status, e.Approved, e.Maps, e.CertYear })                    
+                    .HasDatabaseName("IX_applications_cert_year");
+
 
                 entity.Property(e => e.Id).HasColumnName("app_id");
 
@@ -1826,8 +1829,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<CertRad>(entity =>
             {
-                entity.HasKey(e => new { e.CertNum, e.CertYear, e.Rad })
-                    .ForSqlServerIsClustered(false);
+                entity.HasKey(e => new { e.CertNum, e.CertYear, e.Rad });
 
                 entity.ToTable("cert_rad");
 
@@ -1876,8 +1878,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ChangeRequests>(entity =>
             {
-                entity.HasKey(e => e.ChangeId)
-                    .ForSqlServerIsClustered(false);
+                entity.HasKey(e => e.ChangeId);
 
                 entity.ToTable("change_requests");
 
@@ -2900,8 +2901,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Rates>(entity =>
             {
-                entity.HasKey(e => e.RateId)
-                    .ForSqlServerIsClustered(false);
+                entity.HasKey(e => e.RateId);
 
                 entity.ToTable("rates");
 
@@ -2964,7 +2964,7 @@ namespace CCIA.Models
             {
                 entity.ToTable("seed_docs");
 
-                entity.Property(e => e.Id).HasColumnName("seed_cert_id").UseSqlServerIdentityColumn();
+                entity.Property(e => e.Id).HasColumnName("seed_cert_id");
 
                 entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
 
@@ -2994,8 +2994,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<SampleLabResults>(entity =>
             {
-                entity.HasKey(e => e.SeedsId)
-                    .ForSqlServerIsClustered(false);
+                entity.HasKey(e => e.SeedsId);
 
                 entity.ToTable("sx_lab_results");
 

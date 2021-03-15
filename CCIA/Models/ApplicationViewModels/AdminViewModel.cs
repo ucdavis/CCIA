@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Models.DetailsViewModels
@@ -21,11 +22,12 @@ namespace CCIA.Models.DetailsViewModels
         public List<County> Counties { get; set; }
 
         public static async Task<AdminViewModel> CreateDetails(CCIAContext _dbContext, int id, IFullCallService _helper)
-        {
+        {   
+            var p0 = new SqlParameter("@app_id", id);
             var viewModel = new AdminViewModel
             {
                 application =  await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync(), 
-                conflicts = await _dbContext.IsolationConflicts.FromSql("dbo.check_for_isolation_in_apps_mvc @p0", id).ToListAsync()          
+                conflicts =  await _dbContext.IsolationConflicts.FromSqlRaw($"EXEC check_for_isolation_in_apps_mvc @app_id", p0).ToListAsync()
             };           
 
             return viewModel;

@@ -11,7 +11,7 @@ namespace CCIA.Models
         public int Id { get; set; }
         public TurfgrassCertificates TurfgrassCertificates { get; set;}
  
-        public static async Task<TurfgrassCertificatesViewModel> Create(CCIAContext _dbContext, int id) {
+        public static TurfgrassCertificatesViewModel Create(CCIAContext _dbContext, int id) {
             
             var viewModel = new TurfgrassCertificatesViewModel()
             {

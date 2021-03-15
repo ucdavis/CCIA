@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Controllers.Admin
 {
@@ -77,7 +78,8 @@ namespace CCIA.Controllers.Admin
             await _dbContext.SaveChangesAsync();
             Message = "Application Accepted";
 
-            await _dbContext.Database.ExecuteSqlCommandAsync("accept_application_updates @p0", id);
+            var p0 = new SqlParameter("@app_id", id);
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_application_updates @app_id", p0);            
 
             return  RedirectToAction(nameof(Pending));
         }

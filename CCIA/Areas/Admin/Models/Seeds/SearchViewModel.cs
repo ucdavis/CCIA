@@ -130,7 +130,7 @@ namespace CCIA.Models
                 {
                     seeds = await seedToFind.ToListAsync(),  
                     yearsToSelectFrom = CertYearFinder.certYearList, 
-                    crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                     
                 };  
@@ -142,7 +142,7 @@ namespace CCIA.Models
             {
                 seeds = new List<Seeds>(), 
                 yearsToSelectFrom = CertYearFinder.certYearList,              
-                crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
             };           
 
