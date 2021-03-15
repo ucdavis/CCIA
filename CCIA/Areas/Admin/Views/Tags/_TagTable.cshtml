@@ -27,7 +27,13 @@
                 <td>@item.Id</td>
                 <td>@item.LinkId</td>
                 <td>@item.IdType</td>
-                <td>@item.TaggingOrganization.NameAndId</td>
+                @if(item.TaggingOrganization != null)
+                {
+                    <td>@item.TaggingOrganization.NameAndId</td>
+                } else
+                {
+                    <td></td>
+                }                
                 <td>@item.CropName</td>
                 <td>@item.VarietyName</td>
                 <td>@item.SIDClass</td>
