@@ -204,7 +204,7 @@ namespace CCIA.Models
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
                 {                       
                         sqlOptions.UseNetTopologySuite();
-                        //sqlOptions.AddRowNumberSupport();
+                        sqlOptions.AddRowNumberSupport();
                 });
             }
             optionsBuilder.UseLoggerFactory(GetLoggerFactory());

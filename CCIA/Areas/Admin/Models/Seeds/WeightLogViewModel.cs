@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Helpers;
 using Thinktecture;
 
 namespace CCIA.Models.ViewModels
@@ -48,14 +44,11 @@ namespace CCIA.Models.ViewModels
                         LabName = s.LabResults.LabOrganization == null ? s.LabResults.PrivateLabName : s.LabResults.LabOrganization.OrgName,
                         Rejected = s.LabResults.PurityResults == "R" || s.LabResults.GermResults == "R" || s.LabResults.AssayResults == "R" ? true : false,
                         HasOECDForm = s.OECDForm.Any(),
-                        RowNumber = EF.Functions.RowNumber(new {
-                            s.ConditionerId,
-                            s.Variety.CropId
-                        }, s.DateSampleReceived)
+                        RowNumber = EF.Functions.RowNumber(s.ConditionerId, s.Variety.CropId, EF.Functions.OrderBy(s.DateSampleReceived))
                     }
                 
                     ).ToListAsync(),
-                Years = await _dbContext.Seeds.OrderByDescending(s => s.YearConfirmed).Select(s => s.YearConfirmed).Distinct().ToListAsync(),
+                Years = await _dbContext.Seeds.Select(s => s.YearConfirmed).Distinct().OrderBy(id => id).ToListAsync(),
                 Year = year,                
             };
 
