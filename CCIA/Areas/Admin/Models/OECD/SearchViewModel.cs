@@ -110,7 +110,7 @@ namespace CCIA.Models
                 {
                     oecds = await oecdToFind.ToListAsync(),  
                     yearsToSelectFrom = CertYearFinder.certYearList, 
-                    crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c=> c.CropKind).ToListAsync(),
                     classOptions = classList,
                     
                 };  
@@ -122,7 +122,7 @@ namespace CCIA.Models
             {
                 oecds = new List<OECD>(), 
                 yearsToSelectFrom = CertYearFinder.certYearList,              
-                crops = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync(),
+                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 classOptions = classList,
             };           
 
