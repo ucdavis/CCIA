@@ -35,6 +35,8 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        // TODO: Edit seed lots!
+
         [HttpPost]
         public async Task<IActionResult> AcceptSeed(IFormCollection form)
         {

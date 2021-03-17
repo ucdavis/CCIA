@@ -59,7 +59,7 @@ namespace CCIA.Models.IndexViewModels
             var viewModel = new ApplicationIndexViewModel
             {
                 applications = await queryable.ToListAsync(),
-                certYears = await _dbContext.Applications.OrderBy(a => a.CertYear).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.Applications.Select(a => a.CertYear).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Applications",
                 DropDownText = "Display Apps for Cert Year:"
