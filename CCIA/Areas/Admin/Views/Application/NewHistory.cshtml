@@ -1,10 +1,10 @@
 @model CCIA.Models.DetailsViewModels.AdminHistoryViewModel
 
 
-<h2>Edit Crop History for AppId @Model.history.AppId</h2> 
+<h2>Create new Crop History for AppId @Model.appId</h2> 
 
-<form asp-action="EditHistory">
-    @Html.HiddenFor(x => x.history.Id)
+<form asp-action="NewHistory">
+    <input type="hidden" id="history_AppId" name="history.AppId" value="@Model.appId">
     <div class="container">
         <div class="col-lg-12">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -29,8 +29,8 @@
             <span class="field-validation-valid text-danger" data-valmsg-for="history.AppNumber" data-valmsg-replace="true"></span>
         </div>       
         <div class="col-lg-12">            
-            <input type="submit" value="Update" class="btn btn-primary"></input> 
-            <a class="btn btn-dark" asp-action="Edit" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.history.AppId">Cancel</a>                     
+            <input type="submit" value="Create" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="Edit" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.appId">Cancel</a>                     
         </div> 
     </div>
 </form>

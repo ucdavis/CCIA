@@ -495,6 +495,41 @@ namespace CCIA.Controllers.Admin
             return View(model);  
         }
 
+        public async Task<IActionResult> NewHistory(int id)
+        {
+            var model = await AdminHistoryViewModel.Create(_dbContext, 0, id);
+            return View(model);           
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
+        {
+            var history = historyVm.history;
+            var newHistory = new FieldHistory();
+            newHistory.AppId = history.AppId;
+            newHistory.Year = history.Year;
+            if(history.Crop != 0)
+            {
+                newHistory.Crop = history.Crop;
+            }            
+            newHistory.Variety = history.Variety;
+            newHistory.AppNumber = history.AppNumber;
+            newHistory.DateModified = DateTime.Now;
+            newHistory.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            if(ModelState.IsValid){
+                _dbContext.Add(newHistory);
+                await _dbContext.SaveChangesAsync();
+                Message = "Field History Created";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminHistoryViewModel.Create(_dbContext, 0, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = newHistory.AppId });              
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
@@ -512,7 +547,7 @@ namespace CCIA.Controllers.Admin
                 Message = "Field History Updated";
             } else {
                 ErrorMessage = "Something went wrong.";
-                var model = await AdminPSViewModel.Create(_dbContext, id);
+                var model = await AdminHistoryViewModel.Create(_dbContext, id);
                 return View(model); 
             }
 
@@ -559,29 +594,6 @@ namespace CCIA.Controllers.Admin
             }
 
             return RedirectToAction(nameof(Edit), new { id = PSToUpdate.AppId });                       
-        }
-
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         public async Task<IActionResult> LookupOrg (string lookup)
