@@ -319,6 +319,11 @@ namespace CCIA.Controllers.Admin
         public async Task<IActionResult> FIR(int id)
         {
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            if(model.application == null)
+            {
+                ErrorMessage = "Application not found or no FIR ready (not accepted?)";
+                return RedirectToAction(nameof(Pending));
+            }
             return View(model);
         }
 
