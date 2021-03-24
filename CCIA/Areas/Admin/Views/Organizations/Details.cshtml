@@ -1,0 +1,42 @@
+@model CCIA.Models.Organizations
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Organization Details</h2> 
+        </div>            
+    </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="Edit" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+        </div>            
+    </div>     
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>                       
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Name)
+                </div>
+            </div>                                                       
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="Member" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Member)
+                </div>
+            </div>                       
+        </div>
+    </div>
+    <div class="col-sm-12"> @* full width *@        
+    </div> 
+</div>

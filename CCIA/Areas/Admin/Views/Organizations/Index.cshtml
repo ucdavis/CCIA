@@ -39,23 +39,20 @@
             @foreach (var row in Model)
             {
                 <tr>
-                    <td>Details</td>
-                    <td>@row.OrgId</td>
-                    <td>@row.OrgName</td>
+                    <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Organizations" asp-route-id="@row.Id">Details</a></td>
+                    <td>@row.Id</td>
+                    <td>@row.Name</td>
                     <td>@row.Phone</td>
-                    <td>@row.Address.Address1</td>
-                    <td>@row.Address.City</td>
-                    <td>@row.Address.County.Name</td>
-                    <td>@row.Address.StateProvince.Name</td>
-                    <td>@row.Address.County.District</td>
+                    <td>@(row.Address == null ? "" : @row.Address.Address1)</td>
+                    <td>@(row.Address == null ? "" : @row.Address.City)</td>
+                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.Name)</td>
+                    <td>@(row.Address == null || row.Address.StateProvince == null ? "" : @row.Address.StateProvince.Name)</td>
+                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.District)</td>
                 </tr>
                 
             }
         </tbody>
-    </table>
-    <div>
-    @Model.Count()
-    </div>
+    </table> 
 }
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
