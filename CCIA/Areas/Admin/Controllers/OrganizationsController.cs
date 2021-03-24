@@ -23,14 +23,26 @@ namespace CCIA.Controllers
             _helper = helper;
         }
 
+        // TODO: Add Roles - Seasonal Field get nothing in here. View (can edit phone, fax, website). EditOrg has full edit & create. CondStatus allows you to update conditioner status settings.
+
         public async Task<IActionResult> Index(string term = "")
         {
             if(string.IsNullOrWhiteSpace(term))
             {
                 return View(null);
             }
-            var model = await _helper.FullOrg().Where(o => EF.Functions.Like(o.OrgId.ToString(), "%" + term + "%") || EF.Functions.Like(o.OrgName, "%" + term + "%")).ToListAsync();
+            var model = await _helper.FullOrg().Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term + "%") || EF.Functions.Like(o.Name, "%" + term + "%")).ToListAsync();
 
+            return View(model);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _helper.FullOrg().Where(o => o.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                return  RedirectToAction(nameof(Index));
+            }
             return View(model);
         }
 

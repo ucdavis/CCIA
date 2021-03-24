@@ -7,7 +7,7 @@
 
 <section class="app-header">
     <h2>Application for Pre-Variety Germplasm Program</h2>
-    <h5>@Model.AppViewModel.Organization.OrgName</h5>
+    <h5>@Model.AppViewModel.Organization.Name</h5>
 </section>
 
 <div id="errors" class="text-danger">
@@ -98,8 +98,8 @@
     <script type="text/javascript">
         // Global variables, some pulling from viewmodel
         var appTypeId = @Model.AppViewModel.AppTypeId;
-        var orgId = @Model.AppViewModel.Organization.OrgId;
-        var growerId = @Model.AppViewModel.Organization.OrgId;
+        var orgId = @Model.AppViewModel.Organization.Id;
+        var growerId = @Model.AppViewModel.Organization.Id;
         // The index of the next Field History entry to be added to the form
         let fhEntryId = -1;
         // How many total Field History entries are in the form currently

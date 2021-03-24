@@ -29,7 +29,7 @@ namespace CCIA.Models.SeedsCreateQAViewModel
         public static async Task<SeedsCreateQAViewModel> Create(CCIAContext _dbContext)
         {           
             var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();
-            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
+            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewQASeeds();
             seed.CountyDrawn = countyId;
             seed.CertYear = CertYearFinder.CertYear;
@@ -50,7 +50,7 @@ namespace CCIA.Models.SeedsCreateQAViewModel
         public static async Task<SeedsCreateQAViewModel> Return(CCIAContext _dbContext, NewQASeeds seed)
         {            
             var state = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();            
-            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();
+            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();
             var appType = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == seed.AppType).Select(a => a.Abbreviation).FirstOrDefaultAsync();  
             var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId && a.AppType == appType && a.CertYear == seed.CertYear)
                     .Include(a => a.ApplicantOrganization)

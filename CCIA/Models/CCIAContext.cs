@@ -2070,13 +2070,13 @@ namespace CCIA.Models
 
             modelBuilder.Entity<Organizations>(entity =>
             {
-                entity.HasKey(e => e.OrgId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("Organization");
 
-                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                entity.Property(e => e.Id).HasColumnName("org_id");
 
-                entity.Property(e => e.OrgName).HasColumnName("org_name");
+                entity.Property(e => e.Name).HasColumnName("org_name");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
                 
@@ -2087,6 +2087,50 @@ namespace CCIA.Models
                 entity.Property(e => e.CountyId).HasColumnName("county_id");
 
                 entity.Property(e => e.GermLab).HasColumnName("germination_lab");
+
+                entity.Property(e => e.Fax).HasColumnName("main_fax");
+
+                entity.Property(e => e.Website).HasColumnName("website");
+
+                //entity.Property(e => e.FoundationSeedGrower).HasColumnName("foundation_seed_grower");
+
+                entity.Property(e => e.DiagnosticLab).HasColumnName("diagnostic_lab");
+
+                entity.Property(e => e.AgCommissioner).HasColumnName("ag_comm_off");
+
+                entity.Property(e => e.District).HasColumnName("district");
+
+                entity.Property(e => e.Member).HasColumnName("ccia_member");
+
+                entity.Property(e => e.MemberYear).HasColumnName("member_year");
+
+                entity.Property(e => e.MemberType).HasColumnName("member_type");
+
+                entity.Property(e => e.LastMemberAgreement).HasColumnName("last_member_agreement");
+
+                entity.Property(e => e.MemberSince).HasColumnName("member_since");
+
+                entity.Property(e => e.RepresentativeContactId).HasColumnName("member_rep_id");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.UserModified).HasColumnName("user_modified");
+
+                entity.Property(e => e.DateModified).HasColumnName("date_modified");
+
+                entity.Property(e => e.Notes).HasColumnName("notes");
+
+                entity.Property(e => e.AppYearAgree).HasColumnName("app_agree_accept");
+
+               // entity.Property(e => e.LacYearAgree).HasColumnName("lac_agree_accept");
+
+                entity.Property(e => e.AlfalfaGMOPinning).HasColumnName("allow_alfalfa_gmo_pinning");
+                
+                entity.HasOne(e => e.OrgCounty);
+
+                entity.HasOne(e => e.Address);
+
+                
             });
 
             modelBuilder.Entity<Contacts>(entity =>
@@ -2107,7 +2151,7 @@ namespace CCIA.Models
                     .HasMaxLength(25)
                     .IsUnicode(false);
 
-                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                entity.Property(e => e.Id).HasColumnName("org_id");
                 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")

@@ -19,9 +19,9 @@
         @foreach (var org in Model.Orgs)
         {
             <tr>
-                <td><a class="btn btn-primary" href="/Client/Application/@Model.ActionType/?orgId=@org.OrgId&appTypeId=@Model.AppTypeId">Select</a>
-                <td>@org.OrgId</td>
-                <td>@org.OrgName</td>
+                <td><a class="btn btn-primary" href="/Client/Application/@Model.ActionType/?orgId=@org.Id&appTypeId=@Model.AppTypeId">Select</a>
+                <td>@org.Id</td>
+                <td>@org.Name</td>
                 @if (org.Address != null)
                 {
                     <td>@org.Address.Address1</td>

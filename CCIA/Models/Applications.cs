@@ -366,7 +366,7 @@ namespace CCIA.Models
             {
                 if(GrowerOrganization != null)
                 {
-                    return GrowerOrganization.OrgName;
+                    return GrowerOrganization.Name;
                 }
                 return "";
             }
@@ -377,7 +377,7 @@ namespace CCIA.Models
             {
                 if(ApplicantOrganization != null)
                 {
-                    return ApplicantOrganization.OrgName;
+                    return ApplicantOrganization.Name;
                 }
                 return "";
             }

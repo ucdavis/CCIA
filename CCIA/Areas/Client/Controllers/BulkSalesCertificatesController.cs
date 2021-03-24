@@ -31,7 +31,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Index(int certYear)
         {
 
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             if (certYear == 0)
             {
                 certYear = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId).Select(b => b.Date.Year).MaxAsync();
@@ -43,7 +43,7 @@ namespace CCIA.Controllers.Client
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var model = await BulkSalesCreateViewModel.Create(_dbContext, orgId);
             return View(model);
         }
@@ -56,7 +56,7 @@ namespace CCIA.Controllers.Client
             try
             {
                 // TODO Use real contact ID
-                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
                 var newBulkSalesCertificate = new BulkSalesCertificates();
                 newBulkSalesCertificate.ConditionerOrganizationId = orgId;
                 newBulkSalesCertificate.Date = model.BulkSalesCertificate.Date;
@@ -108,14 +108,14 @@ namespace CCIA.Controllers.Client
 
         public async Task<ActionResult> Certificate(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var model = await CertificateViewModel.Create(_dbContext, id, orgId);
             return View(model);
         }
 
         public async Task<ActionResult> Share(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var model = await BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
             if (model.BulkSalesCertificate == null)
             {
@@ -128,7 +128,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> AddShare(int id, int shareOrgId)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var bulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId).SingleOrDefaultAsync();
             if (bulkSalesCertificate == null)
             {
@@ -231,8 +231,8 @@ namespace CCIA.Controllers.Client
                     id = b.BlendId,
                     saleType = "Blend",
                     program = b.BlendType,
-                    applicant = b.ConditionerId + " " + b.Conditioner.OrgName,
-                    conditioner = b.ConditionerId + " " + b.Conditioner.OrgName,
+                    applicant = b.ConditionerId + " " + b.Conditioner.Name,
+                    conditioner = b.ConditionerId + " " + b.Conditioner.Name,
                     crop = b.GetCrop(),
                     variety = b.GetVarietyName(),
                     cert = b.CertNumber,
@@ -256,8 +256,8 @@ namespace CCIA.Controllers.Client
                     id = s.Id,
                     saleType = "SID",
                     program = s.AppTypeTrans.AppTypeTrans,
-                    applicant = s.ApplicantId + " " + s.ApplicantOrganization.OrgName,
-                    conditioner = s.ConditionerId + " " + s.ConditionerOrganization.OrgName,
+                    applicant = s.ApplicantId + " " + s.ApplicantOrganization.Name,
+                    conditioner = s.ConditionerId + " " + s.ConditionerOrganization.Name,
                     crop = s.GetCropName(),
                     variety = s.GetVarietyName(),
                     cert = s.CertNumber,
@@ -271,7 +271,7 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> GetMyCustomerInfo(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var model = await _dbContext.MyCustomers.Where(m => m.Id == id && m.OrganizationId == orgId)
                 .Include(m => m.State)
                 .Include(m => m.Country)
@@ -286,12 +286,12 @@ namespace CCIA.Controllers.Client
             // Parsing was successful (we have an ID number instead of a name)
             if (Int32.TryParse(lookup, out id))
             {
-                var orgs = await _dbContext.Organizations.Where(o => o.OrgId == id).Select(o => new { id = o.OrgId, name = o.OrgName }).ToListAsync();
+                var orgs = await _dbContext.Organizations.Where(o => o.Id == id).Select(o => new { id = o.Id, name = o.Name }).ToListAsync();
                 return Json(orgs);
             }
             else
             {
-                var orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookup.ToLower())).Select(o => new { id = o.OrgId, name = o.OrgName }).ToListAsync();
+                var orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(lookup.ToLower())).Select(o => new { id = o.Id, name = o.Name }).ToListAsync();
                 return Json(orgs);
             }
         }
@@ -299,11 +299,11 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> GetMyCustomerFromOrgId(int id)
         {
-            var model = await _dbContext.Organizations.Where(o => o.OrgId == id)
+            var model = await _dbContext.Organizations.Where(o => o.Id == id)
                 .Include(o => o.Address)
                 .Select(o => new MyCustomers
                 {
-                    Name = o.OrgName,
+                    Name = o.Name,
                     Address1 = o.Address.Address1,
                     Address2 = o.Address.Address2,
                     City = o.Address.City,

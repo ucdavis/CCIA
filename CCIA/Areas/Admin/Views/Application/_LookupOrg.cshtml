@@ -14,9 +14,9 @@
             @foreach (var org in Model)
             {
                 <tr>
-                    <td><a class="btn btn-primary" href="" onclick="useOrg(event,@org.OrgId,'@org.NameAndId');">select</a></td>
-                    <td>@org.OrgId</td>
-                    <td>@org.OrgName</td>
+                    <td><a class="btn btn-primary" href="" onclick="useOrg(event,@org.Id,'@org.NameAndId');">select</a></td>
+                    <td>@org.Id</td>
+                    <td>@org.Name</td>
                 </tr>                
             }
         </tbody>

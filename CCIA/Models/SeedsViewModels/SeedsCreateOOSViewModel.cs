@@ -28,7 +28,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         public static async Task<SeedsCreateOOSViewModel> Create(CCIAContext _dbContext)
         {   
             // TODO : get real org ID!
-            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync();            
+            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewOOSSeeds();
             seed.CountyDrawn = countyId; 
             seed.CertYear = CertYearFinder.CertYear;
@@ -55,7 +55,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         public static async Task<SeedsCreateOOSViewModel> Return(CCIAContext _dbContext, NewOOSSeeds seed )
         {   
             // TODO : get real org ID!
-            var countyId = await _dbContext.Organizations.Where(o => o.OrgId == 168).Select(o => o.CountyId).FirstAsync(); 
+            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync(); 
             var cal = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();           
             var currentCertYear =  CertYearFinder.CertYear;
 

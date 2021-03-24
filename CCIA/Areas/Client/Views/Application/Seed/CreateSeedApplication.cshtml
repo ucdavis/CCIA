@@ -6,7 +6,7 @@
 
 <section class="app-header">
     <h2>Application to Produce Certified Seed</h2>
-    <h5>@Model.AppViewModel.Organization.OrgName</h5>
+    <h5>@Model.AppViewModel.Organization.Name</h5>
 </section>
 
 <div id="errors" class="text-danger">
@@ -66,8 +66,8 @@
 
 @section Scripts {
     <script type="text/javascript">
-        var orgId = @Model.AppViewModel.Organization.OrgId;
-        var growerId = @Model.AppViewModel.Organization.OrgId;
+        var orgId = @Model.AppViewModel.Organization.Id;
+        var growerId = @Model.AppViewModel.Organization.Id;
         var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
         var appTypeId = @Model.AppViewModel.AppTypeId;
         // How many field history records are possible for this application

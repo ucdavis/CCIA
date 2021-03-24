@@ -27,7 +27,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Index(int certYear)
         {
            
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             
             if (certYear == 0)
             {

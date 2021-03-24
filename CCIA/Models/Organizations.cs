@@ -1,26 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace CCIA.Models
 {
     public partial class Organizations
     {
-        public int OrgId { get; set; }
+        public int Id { get; set; }
         [DisplayName("Org Name")] 
-        public string OrgName { get; set; }
+        public string Name { get; set; }
         
         public Address Address { get; set; }
         public int? AddressId { get; set; }
 
         public string Phone { get; set; }
+        public string Fax { get; set; }
 
         public string Email { get; set; }
+        public string Website { get; set; }
 
-        public string NameAndId => OrgId + " " + OrgName;
+        public string NameAndId => Id + " " + Name;
 
         public int? CountyId { get; set; }
+        public County OrgCounty { get; set; }
 
         public bool GermLab { get; set; }
+        //public bool FoundationSeedGrower { get; set; }
+        public bool DiagnosticLab { get; set; }
+        public bool AgCommissioner { get; set; }
+
+        public string District { get; set; }
+        public bool Member { get; set; }
+
+        public int MemberYear { get; set; }
+        public string MemberType { get; set; }
+        public DateTime? LastMemberAgreement { get; set; }
+        public DateTime? MemberSince { get; set; }
+        public int? RepresentativeContactId { get; set; }
+        public bool Active { get; set; }
+        public string UserModified { get; set; }
+        public DateTime? DateModified { get; set; }
+        public string Notes { get; set; }
+        public int? AppYearAgree { get; set; }
+        //public int? LacYearAgree { get; set; }
+        public bool AlfalfaGMOPinning { get; set; }
+        
 
 
 

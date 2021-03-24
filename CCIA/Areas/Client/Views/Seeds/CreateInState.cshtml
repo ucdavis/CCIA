@@ -13,15 +13,15 @@
         <form asp-action="SubmitInState" method="post">            
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group row">
-                <label asp-for="Application.ApplicantOrganization.OrgName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="Application.ApplicantOrganization.Name" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-6 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgName)
+                    @Html.DisplayFor(x => x.Application.ApplicantOrganization.Name)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="Application.ApplicantOrganization.OrgId" class="col-sm-3 col-form-label"></label>
+                <label asp-for="Application.ApplicantOrganization.Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-6 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Application.ApplicantOrganization.OrgId)
+                    @Html.DisplayFor(x => x.Application.ApplicantOrganization.Id)
                 </div>
             </div>
             <div class="form-group row">

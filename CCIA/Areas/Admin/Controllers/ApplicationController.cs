@@ -608,11 +608,11 @@ namespace CCIA.Controllers.Admin
             // Parsing was successful (we have an ID number instead of a name)
             if (Int32.TryParse(lookup, out id))
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgId == id).ToListAsync();
+                orgs = await _dbContext.Organizations.Where(o => o.Id == id).ToListAsync();
             }
             else
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookup.ToLower())).ToListAsync();
+                orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(lookup.ToLower())).ToListAsync();
             }                        
             return PartialView("_LookupOrg", orgs);
 
