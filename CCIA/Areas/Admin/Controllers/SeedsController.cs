@@ -36,6 +36,7 @@ namespace CCIA.Controllers.Admin
         }
 
         // TODO: Edit seed lots!
+        // TODO: Add ability to associate applications with a SID
 
         [HttpPost]
         public async Task<IActionResult> AcceptSeed(IFormCollection form)

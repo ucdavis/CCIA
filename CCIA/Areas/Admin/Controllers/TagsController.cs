@@ -27,6 +27,7 @@ namespace CCIA.Controllers.Admin
             _helper = helper;
         }
 
+        // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes
         public ActionResult Index ()
         {
             return View();
