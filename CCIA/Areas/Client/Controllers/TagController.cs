@@ -22,6 +22,9 @@ namespace CCIA.Controllers.Client
             _dbContext = dbContext;
         }
 
+        // TODO: Add notice when new series is added
+        // TODO: Add notice when new file is added
+
         
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
