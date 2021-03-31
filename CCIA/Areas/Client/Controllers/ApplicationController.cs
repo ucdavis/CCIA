@@ -383,8 +383,8 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
             // Get contact ID -- will correspond to logged-in user
-            var contact = await _dbContext.ContactToOrg
-                                .Where(c => c.ContactId == 1)
+            var contact = await _dbContext.Contacts
+                                .Where(c => c.Id == 1)
                                 .FirstOrDefaultAsync();
 
             // Check if grower is same as applicant
