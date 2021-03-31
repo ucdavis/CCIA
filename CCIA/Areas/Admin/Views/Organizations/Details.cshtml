@@ -18,7 +18,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Id)
                 </div>
-            </div>                       
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Email)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="MemberType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.MemberType)
+                </div>
+            </div>                    
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -26,7 +38,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Name)
                 </div>
-            </div>                                                       
+            </div>
+            <div class="form-group row">
+                <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Phone)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.RepresentativeContact.FirstName)
+                </div>
+            </div>                                                      
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -34,9 +58,25 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Member)
                 </div>
-            </div>                       
+            </div>
+            <div class="form-group row">
+                <label asp-for="Fax" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Fax)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="MemberYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.MemberYear)
+                </div>
+            </div>                      
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@        
     </div> 
+    @foreach (var employee in Model.Employees)
+    {
+        <div>@employee.Name</div>
+    }
 </div>

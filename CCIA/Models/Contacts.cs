@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class Contacts
     {
         public int Id { get; set; }
+        
         public int OrgId { get; set; }
+        
         public string Title { get; set; }
         public string FormOfAddr { get; set; }
         public string FirstName { get; set; }
@@ -68,6 +71,8 @@ namespace CCIA.Models
         public int? AlfalfaLastYearAgreement { get; set; }
         public int? SweetCornLastYearAgreement { get; set; }
         public int? IdahoVegetableLastYearAgreement { get; set; }
+
+        
 
        
         public string FullName() {

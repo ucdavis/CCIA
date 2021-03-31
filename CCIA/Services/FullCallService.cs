@@ -209,10 +209,12 @@ namespace CCIA.Services
         public IQueryable<Organizations> FullOrg()
         {
             var org = _context.Organizations
-                .Include(o => o.Address)
-                .ThenInclude(a => a.County)
-                .Include(o => o.Address)
-                .ThenInclude(a => a.StateProvince)
+               .Include(o => o.Address)
+               .ThenInclude(a => a.County)
+               .Include(o => o.Address)
+               .ThenInclude(a => a.StateProvince)
+               .Include(o => o.RepresentativeContact)
+               .Include(o => o.Employees)
                 .AsQueryable();
             return org;
         }

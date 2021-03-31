@@ -38,7 +38,7 @@ namespace CCIA.Models
         public virtual DbSet<CondStatus> CondStatus { get; set; }
         public virtual DbSet<ContactAddress> ContactAddress { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }
-        public virtual DbSet<ContactToOrg> ContactToOrg { get; set; }
+       
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<County> County { get; set; }
         public virtual DbSet<Crops> Crops { get; set; }
@@ -2130,6 +2130,10 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Address);
 
+                entity.HasOne(e => e.RepresentativeContact);
+
+                entity.HasMany(e => e.Employees);                
+
                 
             });
 
@@ -2151,7 +2155,7 @@ namespace CCIA.Models
                     .HasMaxLength(25)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Id).HasColumnName("org_id");
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
                 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
@@ -2352,28 +2356,10 @@ namespace CCIA.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserModified).HasColumnName("user_modified");
+
             });
 
-            modelBuilder.Entity<ContactToOrg>(entity =>
-            {
-                entity.HasKey(e => e.ContOrgId);
-
-                entity.ToTable("contact_to_org");
-
-                entity.Property(e => e.ContOrgId).HasColumnName("cont_org_id");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContactId).HasColumnName("contact_id");
-
-                entity.Property(e => e.OrgId)
-                    .HasColumnName("org_id")
-                    .HasColumnType("nchar(10)");
-            });
-
+           
             modelBuilder.Entity<Countries>(entity =>
             {
                 entity.HasKey(e => e.Id);

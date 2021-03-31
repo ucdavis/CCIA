@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -36,7 +37,10 @@ namespace CCIA.Models
         public string MemberType { get; set; }
         public DateTime? LastMemberAgreement { get; set; }
         public DateTime? MemberSince { get; set; }
+        [ForeignKey("Id")]
         public int? RepresentativeContactId { get; set; }
+        [ForeignKey("RepresentativeContactId")]
+        public Contacts RepresentativeContact { get; set; }
         public bool Active { get; set; }
         public string UserModified { get; set; }
         public DateTime? DateModified { get; set; }
@@ -50,6 +54,9 @@ namespace CCIA.Models
 
        
         public ICollection<Applications> AppliedApplications { get; set; }
+        
+        [ForeignKey("OrgId")]
+        public ICollection<Contacts> Employees { get; set; }
 
     }
 }
