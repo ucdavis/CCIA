@@ -1,0 +1,67 @@
+@model CCIA.Models.CondStatus
+
+<form asp-action="EditStatus">
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Conditioner Status for Org @Model.OrgId</h2> 
+        </div>            
+    </div>
+    <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>  
+    </div>  
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label asp-for="Year" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.Year)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="Status" class="col-sm-3 col-form-label"></label>
+            <select asp-for="Status">
+                <option value="O">Not</option>
+                <option value="AC">Accredited</option>
+                <option value="AP">Approved</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AllowPretag" class="col-sm-3 col-form-label"></label>
+            <input asp-for="AllowPretag">
+        </div>
+        <div class="form-group row">
+            <label asp-for="PrintSeries" class="col-sm-3 col-form-label"></label>
+            <input asp-for="PrintSeries">
+        </div>
+        <div class="form-group row">
+            <label asp-for="RequestCciaPrintSeries" class="col-sm-3 col-form-label"></label>
+            <input asp-for="RequestCciaPrintSeries">
+        </div>
+        <div class="form-group row">
+            <label asp-for="DatePretagApproved" class="col-sm-3 col-form-label"></label>
+            <input class="datepicker" asp-for="DatePretagApproved" type="text">
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-sm-12">             
+            <input type="submit" value="Update" class="btn btn-primary"></input>   
+            <a class="btn btn-dark" asp-action="Details" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.OrgId">Cancel</a>
+        </div>
+    </div>
+</div>
+</form>
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+    
+}

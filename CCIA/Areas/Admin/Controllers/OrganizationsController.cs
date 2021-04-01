@@ -46,6 +46,46 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> EditStatus(int id)
+        {
+            var model = await _dbContext.CondStatus.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Status entry not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditStatus(int id, CondStatus update)
+        {
+            var statusToUpdate = await _dbContext.CondStatus.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(statusToUpdate == null || update == null || statusToUpdate.Id != update.Id)
+            {
+                ErrorMessage = "Status not found or not able to update";
+                return RedirectToAction(nameof(Index));
+            }
+
+            statusToUpdate.Status = update.Status;
+            statusToUpdate.AllowPretag = update.AllowPretag;
+            statusToUpdate.PrintSeries = update.PrintSeries;
+            statusToUpdate.RequestCciaPrintSeries = update.RequestCciaPrintSeries;
+            statusToUpdate.DatePretagApproved = update.DatePretagApproved;
+            statusToUpdate.DateUpdated = DateTime.Now;
+
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Status Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(update); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = statusToUpdate.OrgId });  
+        }
+
        
        
     }
