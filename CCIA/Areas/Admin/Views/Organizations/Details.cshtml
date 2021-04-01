@@ -24,13 +24,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Email)
                 </div>
-            </div>  
+            </div>
+            <div class="form-group row">
+                <label asp-for="Website" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Website)
+                </div>
+            </div>   
             <div class="form-group row">
                 <label asp-for="MemberType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.MemberType)
                 </div>
-            </div>                    
+            </div>                               
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -46,9 +52,15 @@
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label"></label>
+                <label asp-for="Active" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.RepresentativeContact.FirstName)
+                    @Html.DisplayFor(x => x.Active)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label">Member Representative</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.RepresentativeContact.Name)
                 </div>
             </div>                                                      
         </div>
@@ -70,10 +82,48 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.MemberYear)
                 </div>
-            </div>                      
+            </div> 
+            <div class="form-group row">
+                <label asp-for="MemberSince" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.MemberSince)
+                </div>
+            </div>                     
         </div>
     </div>
-    <div class="col-sm-12"> @* full width *@        
+    <div class="col-sm-6"> @* full width *@ 
+        <h3>Conditioner Status</h3>
+        <a class="btn btn-primary" asp-action="NewStatus" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.Id">Edit</a>
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th>Pretag?</th>
+                    <th>Print Series?</th>
+                    <th>CCIA Print Series?</th>
+                    <th>Date Pretag Approved</th>
+                    <th>Update Date</th>
+                </tr>
+            </thead>
+            <tbody>
+               @foreach (var status in Model.ConditionerStatus.OrderBy(x => x.Year))
+                {
+                    <tr>
+                        <td><a asp-action="EditStatus" asp-area="Admin" asp-controller="Organizations" asp-route-id="@status.Id" class="btn btn-primary">Edit</a></td>
+                        <td>@status.Year</td>
+                        <td>@status.Status</td>
+                        <td>@Html.CheckBoxFor(x => status.AllowPretag)</td>
+                        <td>@Html.CheckBoxFor(x => status.PrintSeries)</td>
+                        <td>@Html.CheckBoxFor(x => status.RequestCciaPrintSeries)</td>
+                        <td>@Html.DisplayFor(x => @status.DatePretagApproved)</td>
+                        <td>@status.DateUpdated</td>
+                    </tr>                    
+                }  
+            </tbody>
+        </table>
+              
     </div> 
     @foreach (var employee in Model.Employees)
     {
