@@ -33,7 +33,7 @@ namespace CCIA.Models
         public string District { get; set; }
         public bool Member { get; set; }
 
-        public int MemberYear { get; set; }
+        public int? MemberYear { get; set; }
         public string MemberType { get; set; }
         public DateTime? LastMemberAgreement { get; set; }
         public DateTime? MemberSince { get; set; }
@@ -57,6 +57,9 @@ namespace CCIA.Models
         
         [ForeignKey("OrgId")]
         public ICollection<Contacts> Employees { get; set; }
+
+        [ForeignKey("OrgId")]
+        public ICollection<CondStatus> ConditionerStatus { get; set; }
 
     }
 }

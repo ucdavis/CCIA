@@ -215,6 +215,7 @@ namespace CCIA.Services
                .ThenInclude(a => a.StateProvince)
                .Include(o => o.RepresentativeContact)
                .Include(o => o.Employees)
+               .Include(o => o.ConditionerStatus)
                 .AsQueryable();
             return org;
         }

@@ -1991,23 +1991,23 @@ namespace CCIA.Models
             {
                 entity.ToTable("cond_status");
 
-                entity.Property(e => e.CondStatusId).HasColumnName("cond_status_id");
+                entity.Property(e => e.Id).HasColumnName("cond_status_id");
 
                 entity.Property(e => e.AllowPretag)
                     .HasColumnName("allow_pretag")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.CondStatus1)
+                entity.Property(e => e.Status)
                     .IsRequired()
                     .HasColumnName("cond_status")
                     .HasMaxLength(2)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CondUpdate)
+                entity.Property(e => e.DateUpdated)
                     .HasColumnName("cond_update")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.CondYear).HasColumnName("cond_year");
+                entity.Property(e => e.Year).HasColumnName("cond_year");
 
                 entity.Property(e => e.DatePretagApproved)
                     .HasColumnName("date_pretag_approved")
@@ -2132,7 +2132,9 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.RepresentativeContact);
 
-                entity.HasMany(e => e.Employees);                
+                entity.HasMany(e => e.Employees); 
+
+                entity.HasMany(e => e.ConditionerStatus);               
 
                 
             });
