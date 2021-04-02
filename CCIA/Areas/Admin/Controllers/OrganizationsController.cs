@@ -120,6 +120,17 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = newStatus.OrgId }); 
         }
 
+        public async Task<IActionResult> EditAddress(int id)
+        {
+            var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
+            if(model.address == null)
+            {
+                ErrorMessage = "Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
        
        
     }
