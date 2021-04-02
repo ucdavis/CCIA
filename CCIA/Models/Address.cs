@@ -7,7 +7,7 @@ namespace CCIA.Models
 {
     public partial class Address
     {
-        public int AddressId { get; set; }
+        public int Id { get; set; }
         public int? ReferenceId { get; set; }
         public int? OcId { get; set; }
         public string Address1 { get; set; }

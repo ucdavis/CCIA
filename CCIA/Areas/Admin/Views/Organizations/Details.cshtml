@@ -145,7 +145,8 @@
     </div> 
     <div class="col-sm-6">
         <hr>
-        <h3>Address</h3>  
+        <h3>Address</h3> 
+        <a asp-action="EditAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.AddressId" class="btn btn-primary">Edit Address</a>
         <div class="form-group row">
             <label asp-for="District" class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
@@ -215,7 +216,6 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Email</th>
-                <th>Active</th>
             </tr>
         </thead>
         <tbody>
@@ -226,8 +226,7 @@
                     <td>@employee.Title</td>
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
-                    <td>@employee.EmailAddr</td>
-                    <td>@employee.Active</td>
+                    <td>@employee.Email</td>
                 </tr>
             }
         </tbody>

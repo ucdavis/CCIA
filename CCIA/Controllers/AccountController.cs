@@ -109,7 +109,7 @@ namespace CCIA.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var test = await _dbContext.Contacts.Where(c => c.EmailAddr == email).ToListAsync();
+                var test = await _dbContext.Contacts.Where(c => c.Email == email).ToListAsync();
                 foreach (Contacts contact in test)
                 {
                     if (VerifyPassword(password, contact))
@@ -135,7 +135,7 @@ namespace CCIA.Controllers
         {
             var claims = new List<Claim>
             {
-                new Claim("user", contact.EmailAddr),
+                new Claim("user", contact.Email),
                 new Claim("role", "Member"),
                 new Claim("role", "conditioner"),
                 new Claim("contactId", contact.Id.ToString())                

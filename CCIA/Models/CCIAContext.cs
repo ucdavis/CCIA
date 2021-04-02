@@ -1365,7 +1365,7 @@ namespace CCIA.Models
             {
                 entity.ToTable("address");
 
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
+                entity.Property(e => e.Id).HasColumnName("address_id");
 
                 entity.Property(e => e.Address1)
                     .IsRequired()
@@ -2163,14 +2163,9 @@ namespace CCIA.Models
                     .HasColumnName("title")
                     .HasMaxLength(50)
                     .IsUnicode(false);
-                   
-                entity.Property(e => e.Active)
-                    .HasColumnName("active")
-                    .HasDefaultValueSql("((0))");
+                                  
 
-                entity.Property(e => e.AgCommissioner)
-                    .HasColumnName("ag_commissioner")
-                    .HasDefaultValueSql("((0))");
+               
 
                 entity.Property(e => e.AlfalfaLastYearAgreement)
                     .HasColumnName("alfalfa_last_year_agreement")
@@ -2186,95 +2181,29 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AllowSeeds)
                     .HasColumnName("allow_seeds")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("((0))");              
 
-                entity.Property(e => e.AuditNotify)
-                    .HasColumnName("audit_notify")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardActive)
-                    .HasColumnName("board_active")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardMember)
-                    .HasColumnName("board_member")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardRepresent)
-                    .HasColumnName("board_represent")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BoardTitle)
-                    .HasColumnName("board_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BusPhone)
+                entity.Property(e => e.BusinessPhone)
                     .HasColumnName("bus_phone")
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.BusPhoneExt)
+                entity.Property(e => e.BusinessPhoneExtension)
                     .HasColumnName("bus_phone_ext")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CciaMember)
-                    .HasColumnName("ccia_member")
-                    .HasDefaultValueSql("((0))");
+              
+               
 
-                entity.Property(e => e.CciaMemberYear).HasColumnName("ccia_member_year");
-
-                entity.Property(e => e.CertifiedSeedSx)
-                    .HasColumnName("certified_seed_sx")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CertifiedSeedSxNo)
-                    .HasColumnName("certified_seed_sx_no")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContactType)
-                    .HasColumnName("contact_type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CreateApps)
-                    .HasColumnName("create_apps")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CurrentYearReview)
-                    .HasColumnName("current_year_review")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.DateAdded)
-                    .HasColumnName("date_added")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DateModified)
-                    .HasColumnName("date_modified")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DeputyCommissioner)
-                    .HasColumnName("deputy_commissioner")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.EmailAddr)
+                entity.Property(e => e.Email)
                     .HasColumnName("email_addr")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FarmAdvisor)
-                    .HasColumnName("farm_advisor")
-                    .HasDefaultValueSql("((0))");
+               
 
-                entity.Property(e => e.FaxNo)
+                entity.Property(e => e.FaxNumber)
                     .HasColumnName("fax_no")
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -2288,26 +2217,14 @@ namespace CCIA.Models
 
                 entity.Property(e => e.IdahoVegetableLastYearAgreement).HasColumnName("idaho_vegetable_last_year_agreement");
 
-                entity.Property(e => e.LabContact)
-                    .HasColumnName("lab_contact")
-                    .HasDefaultValueSql("((0))");
+               
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.MailListGrBook)
-                    .HasColumnName("mail_list_gr_book")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.MailListSeednotes)
-                    .HasColumnName("mail_list_seednotes")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.MemberSince)
-                    .HasColumnName("member_since")
-                    .HasColumnType("datetime");
+               
 
                 entity.Property(e => e.Mi)
                     .HasColumnName("mi")
@@ -2320,7 +2237,7 @@ namespace CCIA.Models
 
                 
 
-                entity.Property(e => e.PagerNo)
+                entity.Property(e => e.PagerNumber)
                     .HasColumnName("pager_no")
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -2342,22 +2259,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.SweetCornLastYearAgreement)
                     .HasColumnName("sweet_corn_last_year_agreement")
-                    .HasDefaultValueSql("((2000))");
+                    .HasDefaultValueSql("((2000))");               
 
-                
-
-                entity.Property(e => e.UserAdding).HasColumnName("user_adding");
-
-                entity.Property(e => e.UserEmpModDt)
-                    .HasColumnName("user_emp_mod_dt")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.UserEmpModified)
-                    .HasColumnName("user_emp_modified")
-                    .HasMaxLength(9)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UserModified).HasColumnName("user_modified");
+               
 
             });
 
