@@ -86,6 +86,40 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = statusToUpdate.OrgId });  
         }
 
+        public ActionResult NewStatus(int id)
+        {
+            var model = new CondStatus();
+            model.OrgId = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewStatus(int id, CondStatus newStatus)
+        {
+            var statusToCreate = new CondStatus();
+            statusToCreate.Year = newStatus.Year;
+            statusToCreate.Status = newStatus.Status;
+            statusToCreate.AllowPretag = newStatus.AllowPretag;
+            statusToCreate.PrintSeries = newStatus.PrintSeries;
+            statusToCreate.RequestCciaPrintSeries = newStatus.RequestCciaPrintSeries;
+            statusToCreate.DatePretagApproved = newStatus.DatePretagApproved;
+            statusToCreate.DateUpdated = DateTime.Now;
+            statusToCreate.OrgId = newStatus.OrgId;
+
+             if(ModelState.IsValid){
+                 _dbContext.Add(statusToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Status Created";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(newStatus); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = newStatus.OrgId }); 
+        }
+
        
        
     }
