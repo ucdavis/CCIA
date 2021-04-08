@@ -143,10 +143,41 @@
             </tbody>
         </table>              
     </div> 
+    <div class="col-sm-3">
+        <hr>
+        <h3>Mapping permissions</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Map Name</th>
+                    <th>Allow?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permission in Model.MapPermissions)
+                {
+                    <tr>
+                        <td>Toggle</td>
+                        <td>@permission.Map</td>
+                        <td>@Html.CheckBoxFor(a => permission.Allow)</td>
+                    </tr>                    
+                }
+            </tbody>
+        </table>
+        
+    </div>
     <div class="col-sm-6">
         <hr>
         <h3>Address</h3> 
-        <a asp-action="EditAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.AddressId" class="btn btn-primary">Edit Address</a>
+        @if(Model.Address == null){
+            <a asp-action="AddAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.Id" class="btn btn-primary">Add Address</a>
+        } 
+        else
+        {
+            <a asp-action="EditAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.AddressId" class="btn btn-primary">Edit Address</a>
+        
+        
         <div class="form-group row">
             <label asp-for="District" class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
@@ -190,11 +221,18 @@
             </div>
         </div>
         <div class="form-group row">
+            <label asp-for="Address.Countries.Name" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.Address.Countries.Name)
+            </div>
+        </div>
+        <div class="form-group row">
             <label asp-for="Address.PostalCode" class="col-sm-3 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
                 @Html.DisplayFor(x => x.Address.PostalCode)
             </div>
         </div>
+        }
         <div class="form-group-row">
             <hr>
         </div>

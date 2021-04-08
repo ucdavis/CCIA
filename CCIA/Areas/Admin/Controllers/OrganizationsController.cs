@@ -8,6 +8,7 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Authorization;
 using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CCIA.Controllers
 {
@@ -120,6 +121,53 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = newStatus.OrgId }); 
         }
 
+        public async Task<IActionResult> AddAddress(int id)
+        {
+            var model = await AdminAddressEditCreateViewModel.Create(_dbContext, 0, id);
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAddress(int id, AdminAddressEditCreateViewModel vm)
+        {
+            var addressToAdd = new Address();
+            var newAddress = vm.address;
+            var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
+
+             if(newAddress.CountyId != 0)
+            {
+                var county = await _dbContext.County.Where(c => c.CountyId == newAddress.CountyId).FirstAsync();
+                org.District = county.District;
+                org.CountyId = county.CountyId;
+                addressToAdd.CountyId = newAddress.CountyId;                
+            } 
+
+            addressToAdd.Address1 = newAddress.Address1;
+            addressToAdd.Address2 = newAddress.Address2;
+            addressToAdd.Address3 = newAddress.Address3;
+            addressToAdd.City = newAddress.City;
+            addressToAdd.CountryId = newAddress.CountryId;
+            addressToAdd.DateModified = DateTime.Now;
+            addressToAdd.PostalCode = newAddress.PostalCode;
+            addressToAdd.StateProvinceId = newAddress.StateProvinceId;
+            addressToAdd.UserModified =  User.FindFirstValue(ClaimTypes.Name);
+
+            if(ModelState.IsValid){    
+                _dbContext.Add(addressToAdd);           
+                await _dbContext.SaveChangesAsync();
+                org.AddressId = addressToAdd.Id;
+                await _dbContext.SaveChangesAsync();
+                Message = "Address added";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+            return RedirectToAction(nameof(Details), new { id = vm.OrgId });
+        }
+
         public async Task<IActionResult> EditAddress(int id)
         {
             var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
@@ -129,6 +177,58 @@ namespace CCIA.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAddress(int id, AdminAddressEditCreateViewModel vm)
+        {
+            var addressToEdit = await _dbContext.Address.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var update = vm.address;
+            if(addressToEdit == null || update == null)
+            {
+                ErrorMessage = "Address not found, no update!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if(addressToEdit.CountyId != update.CountyId)
+            {
+                var county = await _dbContext.County.Where(c => c.CountyId == update.CountyId).FirstAsync();
+                var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
+                if(update.CountyId != 0)
+                {
+                    org.District = county.District;
+                    org.CountyId = county.CountyId;
+                    addressToEdit.CountyId = update.CountyId;
+                } else
+                {
+                    org.District = null;
+                    org.CountyId = null;
+                    addressToEdit.CountyId = null;
+                }                
+            }
+
+            addressToEdit.Address1 = update.Address1;
+            addressToEdit.Address2 = update.Address2;
+            addressToEdit.Address3 = update.Address3;
+            addressToEdit.City = update.City;
+            addressToEdit.CountryId = update.CountryId;
+            addressToEdit.DateModified = DateTime.Now;
+            addressToEdit.PostalCode = update.PostalCode;
+            addressToEdit.StateProvinceId = update.StateProvinceId;
+            addressToEdit.UserModified =  User.FindFirstValue(ClaimTypes.Name);
+
+            if(ModelState.IsValid){               
+                await _dbContext.SaveChangesAsync();
+                Message = "Address Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = vm.OrgId });
+
         }
 
        

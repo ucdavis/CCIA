@@ -213,9 +213,12 @@ namespace CCIA.Services
                .ThenInclude(a => a.County)
                .Include(o => o.Address)
                .ThenInclude(a => a.StateProvince)
+               .Include(o => o.Address)
+               .ThenInclude(a => a.Countries)
                .Include(o => o.RepresentativeContact)
                .Include(o => o.Employees)
                .Include(o => o.ConditionerStatus)
+               .Include(o => o.MapPermissions)
                 .AsQueryable();
             return org;
         }

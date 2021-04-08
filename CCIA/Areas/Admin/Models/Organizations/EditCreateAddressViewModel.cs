@@ -25,7 +25,7 @@ namespace CCIA.Models
 
        public List<StateProvince> states { get; set; }
                
-        public static async Task<AdminAddressEditCreateViewModel> Create(CCIAContext _dbContext, int id)
+        public static async Task<AdminAddressEditCreateViewModel> Create(CCIAContext _dbContext, int id, int orgId = 0)
         {       
              var thisAddress = await _dbContext.Address.Where(a => a.Id == id)
                 .Include(a => a.Countries)
@@ -33,7 +33,12 @@ namespace CCIA.Models
                 .Include(a => a.County)
                 .FirstOrDefaultAsync();
 
-            var org = await _dbContext.Organizations.Where(o => o.AddressId == id).FirstOrDefaultAsync();
+            var orgSearch = _dbContext.Organizations.Where(o => o.AddressId == id).AsQueryable();// .FirstOrDefaultAsync();
+            if(orgId != 0)
+            {
+                orgSearch = _dbContext.Organizations.Where(o => o.Id == orgId).AsQueryable();
+            }
+            var org = await orgSearch.FirstOrDefaultAsync();
             var countyList = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(x => x.Name).ToListAsync();
             countyList.Add(new County{CountyId = 0, Name= "Outside California"});
                        
