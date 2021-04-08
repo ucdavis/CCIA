@@ -39,8 +39,8 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _helper.FullOrg().Where(o => o.Id == id).FirstOrDefaultAsync();
-            if(model == null)
+            var model = await AdminOrgDetailsViewModel.Create(_dbContext, _helper, id);            
+            if(model.org == null)
             {
                 return  RedirectToAction(nameof(Index));
             }
