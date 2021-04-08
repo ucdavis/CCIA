@@ -231,6 +231,80 @@ namespace CCIA.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddMapPermission (int org_Id, string MapName)
+        {
+            var org = await _dbContext.Organizations.Where(o => o.Id == org_Id).AnyAsync();
+            if(!org)
+            {
+                ErrorMessage = "Org not found";
+                return RedirectToAction(nameof(Index));
+            }
+            var permissions = await _dbContext.OrgMaps.Where(p => p.OrgId == org_Id && p.Map == MapName).FirstOrDefaultAsync();
+            if(permissions != null)
+            {
+                permissions.Allow = true; 
+                Message = "Permission updated";              ;
+            } else
+            {
+                permissions = new OrgMaps();
+                permissions.Map = MapName;
+                permissions.OrgId = org_Id;
+                permissions.Allow = true;
+                _dbContext.Add(permissions); 
+                Message = "Permssion created";               
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = org_Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleMapPermissions (int mapPermission)
+        {
+            var permission = await _dbContext.OrgMaps.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
+            permission.Allow = !permission.Allow;
+            await _dbContext.SaveChangesAsync();
+            Message = "Perission toggled";
+            return RedirectToAction(nameof(Details), new { id = permission.OrgId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMapCropPermission (int org_Id, int CropId)
+        {
+            var org = await _dbContext.Organizations.Where(o => o.Id == org_Id).AnyAsync();
+            if(!org)
+            {
+                ErrorMessage = "Org not found";
+                return RedirectToAction(nameof(Index));
+            }
+            var permissions = await _dbContext.OrgMapCrops.Where(p => p.OrgId == org_Id && p.CropId == CropId).FirstOrDefaultAsync();
+            if(permissions != null)
+            {
+                permissions.Allow = true; 
+                Message = "Permission updated";              ;
+            } else
+            {
+                permissions = new OrgMapCrops();
+                permissions.CropId = CropId;
+                permissions.OrgId = org_Id;
+                permissions.Allow = true;
+                _dbContext.Add(permissions); 
+                Message = "Permssion created";               
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = org_Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleMapCropPermissions (int mapPermission)
+        {
+            var permission = await _dbContext.OrgMapCrops.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
+            permission.Allow = !permission.Allow;
+            await _dbContext.SaveChangesAsync();
+            Message = "Perission toggled";
+            return RedirectToAction(nameof(Details), new { id = permission.OrgId });
+        }
+
        
        
     }

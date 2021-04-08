@@ -219,6 +219,8 @@ namespace CCIA.Services
                .Include(o => o.Employees)
                .Include(o => o.ConditionerStatus)
                .Include(o => o.MapPermissions)
+               .Include(o => o.MapCropPermissions)
+               .ThenInclude(p => p.Crop)
                 .AsQueryable();
             return org;
         }

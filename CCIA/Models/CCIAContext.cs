@@ -109,6 +109,8 @@ namespace CCIA.Models
 
         public virtual DbSet<Maps> Maps { get; set; }
 
+        public virtual DbSet<OrgMapCrops> OrgMapCrops {get; set;}
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -325,6 +327,16 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Url).HasColumnName("url");
 
+            });
+
+            modelBuilder.Entity<OrgMapCrops>(entity => {
+                entity.ToTable("map_crop_access");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("access_id");
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                entity.Property(e => e.CropId).HasColumnName("crop_id");
+                entity.Property(e => e.Allow).HasColumnName("access");
             });
 
             modelBuilder.Entity<OrgMaps>(entity => {

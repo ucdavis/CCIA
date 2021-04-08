@@ -6,13 +6,11 @@ using System.ComponentModel;
 
 namespace CCIA.Models
 {
-    public partial class OrgMaps
+    public partial class Maps
     {
         public int Id { get; set; }
-        public int OrgId { get; set; }
+        public string Name { get; set; }
 
-        public string Map { get; set; }
-
-        public bool Allow { get; set; }
+        public string Url { get; set; }
     }
 }

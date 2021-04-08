@@ -64,5 +64,8 @@ namespace CCIA.Models
         [ForeignKey("OrgId")]
         public ICollection<OrgMaps> MapPermissions { get; set; }
 
+        [ForeignKey("OrgId")]
+        public ICollection<OrgMapCrops> MapCropPermissions { get; set; }
+
     }
 }

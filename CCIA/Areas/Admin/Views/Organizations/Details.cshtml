@@ -148,7 +148,7 @@
           <hr>
             <h3>Mapping permissions</h3>  
         </div>       
-        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+        <div class="col-md-6 col-xl-4"> @* First Col *@ 
             <table class="table">
                 <thead>
                     <tr>
@@ -158,10 +158,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var permission in Model.org.MapPermissions)
+                    @foreach (var permission in Model.org.MapPermissions.OrderBy(m => m.Map))
                     {
                         <tr>
-                            <td>Toggle</td>
+                            <td><form asp-action="ToggleMapPermissions"><input type="hidden" id="mapPermission" name="mapPermission" value="@permission.Id"><input type="submit" value="Toggle"></form></td>
                             <td>@permission.Map</td>
                             <td>@Html.CheckBoxFor(a => permission.Allow)</td>
                         </tr>                    
@@ -170,14 +170,40 @@
             </table>
             <div class="row">
                 <form asp-action="AddMapPermission">
-                    @Html.HiddenFor(x => x.org.Id)
-                    <select required name="MapName" id="MapName" class="form-control" asp-items="@(new SelectList(Model.maps, "Id", "Name"))"></select>
+                    <input type="hidden" id="org_id" name="org_id" value="@Model.org.Id">
+                    <select required name="MapName" id="MapName" class="form-control" asp-items="@(new SelectList(Model.maps.OrderBy(m=> m.Name), "Name", "Name"))"></select>
                     <input type="submit" value="Add map permission" class="btn btn-primary">
                 </form>
             </div>
         </div>
-        
-        
+        <div class="col-md-6 col-xl-4"> @* Second Col *@ 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Map Name</th>
+                        <th>Allow?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var permission in Model.org.MapCropPermissions.OrderBy(p => p.Crop.Name))
+                    {
+                        <tr>
+                            <td><form asp-action="ToggleMapCropPermissions"><input type="hidden" id="mapPermission" name="mapPermission" value="@permission.Id"><input type="submit" value="Toggle"></form></td>
+                            <td>@permission.Crop.Name</td>
+                            <td>@Html.CheckBoxFor(a => permission.Allow)</td>
+                        </tr>                    
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <form asp-action="AddMapCropPermission">
+                    <input type="hidden" id="org_id" name="org_id" value="@Model.org.Id">
+                    <select required name="CropId" id="CropId" class="form-control" asp-items="@(new SelectList(Model.crops.OrderBy(c => c.Name), "CropId", "Name"))"></select>
+                    <input type="submit" value="Add map permission" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
     </div>
     <div class="col-sm-6">
         <hr>
