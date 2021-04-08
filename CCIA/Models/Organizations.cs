@@ -61,5 +61,8 @@ namespace CCIA.Models
         [ForeignKey("OrgId")]
         public ICollection<CondStatus> ConditionerStatus { get; set; }
 
+        [ForeignKey("OrgId")]
+        public ICollection<OrgMaps> MapPermissions { get; set; }
+
     }
 }

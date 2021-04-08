@@ -105,6 +105,8 @@ namespace CCIA.Models
 
         public virtual DbSet<TagSeries> TagSeries { get; set; }
 
+        public virtual DbSet<OrgMaps> OrgMaps {get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -307,6 +309,21 @@ namespace CCIA.Models
                 entity.Property(e => e.TagId).HasColumnName("tag_id");
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+
+            });
+
+            modelBuilder.Entity<OrgMaps>(entity => {
+                entity.ToTable("org_map");   
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.Property(e => e.Map).HasColumnName("map_name");
+
+                entity.Property(e => e.Allow).HasColumnName("allow_access");
 
             });
 
@@ -2134,7 +2151,9 @@ namespace CCIA.Models
 
                 entity.HasMany(e => e.Employees); 
 
-                entity.HasMany(e => e.ConditionerStatus);               
+                entity.HasMany(e => e.ConditionerStatus);  
+
+                entity.HasMany(e => e.MapPermissions);             
 
                 
             });
