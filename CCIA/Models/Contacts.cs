@@ -14,7 +14,7 @@ namespace CCIA.Models
         public string Title { get; set; }
         public string FormOfAddr { get; set; }
         public string FirstName { get; set; }
-        public string Mi { get; set; }
+        public string MiddleInitial { get; set; }
         public string LastName { get; set; }
 
         [StringLength(256)]
@@ -46,6 +46,9 @@ namespace CCIA.Models
         public int? AlfalfaLastYearAgreement { get; set; }
         public int? SweetCornLastYearAgreement { get; set; }
         public int? IdahoVegetableLastYearAgreement { get; set; }
+
+        [ForeignKey("ContactId")]
+        public ICollection<ContactAddress> Addresses { get; set; }
 
         
 

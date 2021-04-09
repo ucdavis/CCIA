@@ -2070,7 +2070,8 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ContactAddress>(entity =>
             {
-                entity.HasKey(e => new { e.ContactId, e.AddressId });
+                entity.HasKey(e => e.Id);
+                //entity.HasKey(e => new { e.ContactId, e.AddressId });
 
                 entity.ToTable("contact_address");
 
@@ -2086,7 +2087,7 @@ namespace CCIA.Models
                     .HasColumnName("billing")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.ContaddId)
+                entity.Property(e => e.Id)
                     .HasColumnName("contadd_id")
                     .ValueGeneratedOnAdd();
 
@@ -2272,7 +2273,7 @@ namespace CCIA.Models
 
                
 
-                entity.Property(e => e.Mi)
+                entity.Property(e => e.MiddleInitial)
                     .HasColumnName("mi")
                     .HasColumnType("char(1)");
 
@@ -2307,7 +2308,7 @@ namespace CCIA.Models
                     .HasColumnName("sweet_corn_last_year_agreement")
                     .HasDefaultValueSql("((2000))");               
 
-               
+               entity.HasMany(e => e.Addresses);
 
             });
 

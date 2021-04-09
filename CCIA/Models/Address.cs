@@ -43,5 +43,56 @@ namespace CCIA.Models
         public Countries Countries { get; set; }
         public DateTime? DateModified { get; set; }
         public string UserModified { get; set; }
+
+        public string CountyName 
+        { 
+            get
+            {
+                if (CountyId == null)
+                {
+                    return "";
+                }                
+                if(County != null) 
+                {
+                    return County.Name;
+
+                }                
+                return "";
+            } 
+        }
+
+        public string StateName 
+        { 
+            get
+            {
+                if (StateProvinceId == null)
+                {
+                    return "";
+                }                
+                if(StateProvince != null) 
+                {
+                    return StateProvince.Name;
+
+                }                
+                return "";
+            } 
+        }
+
+        public string CountryName 
+        { 
+            get
+            {
+                if (CountryId == null)
+                {
+                    return "";
+                }                
+                if(Countries != null) 
+                {
+                    return Countries.Name;
+
+                }                
+                return "";
+            } 
+        }
     }
 }

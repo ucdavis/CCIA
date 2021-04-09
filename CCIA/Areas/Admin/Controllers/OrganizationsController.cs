@@ -305,6 +305,17 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = permission.OrgId });
         }
 
+        public async Task<IActionResult> EmployeeDetails (int id)
+        {
+            var employee = await _helper.FullContact().Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(employee == null)
+            {
+                ErrorMessage = "Employee/Contact not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(employee);
+        }
+
        
        
     }

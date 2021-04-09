@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
     public partial class ContactAddress
     {
-        public int ContaddId { get; set; }
+        public int Id { get; set; }
         public int ContactId { get; set; }
         public int AddressId { get; set; }
         public bool? Mailing { get; set; }
@@ -15,5 +16,8 @@ namespace CCIA.Models
         public string UserModified { get; set; }
         public DateTime? DateModified { get; set; }
         public bool? Active { get; set; }
+
+        [ForeignKey("AddressId")]
+        public Address Address { get; set; }
     }
 }

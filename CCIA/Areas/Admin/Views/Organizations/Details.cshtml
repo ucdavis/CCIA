@@ -298,7 +298,7 @@
             @foreach (var employee in Model.org.Employees)
             {
                 <tr>
-                    <td></td>
+                    <td><a asp-action="EmployeeDetails" asp-controller="Organizations" asp-area="Admin" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
                     <td>@employee.Title</td>
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>

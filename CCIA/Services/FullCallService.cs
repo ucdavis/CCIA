@@ -25,6 +25,8 @@ namespace CCIA.Services
         IQueryable<OECD> FullOECD();
 
         IQueryable<Organizations> FullOrg();
+
+        IQueryable<Contacts> FullContact();
     }
 
      public class FullCallService : IFullCallService
@@ -224,6 +226,24 @@ namespace CCIA.Services
                 .AsQueryable();
             return org;
         }
+
+        public IQueryable<Contacts> FullContact()
+        {
+            var contact = _context.Contacts
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.County)
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.Countries)
+                .AsQueryable();
+
+            return contact;
+        }
+
          public IQueryable<Tags> FullTag() 
         {
             var tag = _context.Tags
