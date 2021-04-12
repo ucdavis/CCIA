@@ -316,6 +316,129 @@ namespace CCIA.Controllers
             return View(employee);
         }
 
+        public async Task<IActionResult> EditEmployeeAddress(int id)
+        {
+            var employeeAddress = await AdminContactAddressEditCreateViewModel.Create(_dbContext, id);
+             if(employeeAddress.address == null)
+            {
+                ErrorMessage = "Employee Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(employeeAddress);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployeeAddress(int id, AdminContactAddressEditCreateViewModel vm)
+        {
+            var employeeAddressToUpdate = await _dbContext.ContactAddress.Include(c => c.Address).Where(c => c.Id == id).FirstOrDefaultAsync();
+            var updateAddress = vm.address;
+            if(employeeAddressToUpdate == null)
+            {
+                ErrorMessage = "Employee Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            employeeAddressToUpdate.Mailing = updateAddress.Mailing;
+            employeeAddressToUpdate.Billing = updateAddress.Billing;
+            employeeAddressToUpdate.Delivery = updateAddress.Delivery;
+            employeeAddressToUpdate.PhysicalLoc = updateAddress.PhysicalLoc;
+            employeeAddressToUpdate.Address.Address1 = updateAddress.Address.Address1;
+            employeeAddressToUpdate.Address.Address2 = updateAddress.Address.Address2;
+            employeeAddressToUpdate.Address.Address3 = updateAddress.Address.Address3;
+            employeeAddressToUpdate.Address.City = updateAddress.Address.City;
+            employeeAddressToUpdate.Address.CountryId = updateAddress.Address.CountryId;
+            employeeAddressToUpdate.Address.CountyId = updateAddress.Address.CountyId;
+            employeeAddressToUpdate.Address.StateProvinceId = updateAddress.Address.StateProvinceId;
+            employeeAddressToUpdate.Address.PostalCode = updateAddress.Address.PostalCode;
+            employeeAddressToUpdate.DateModified = DateTime.Now;
+
+            if(ModelState.IsValid){               
+                await _dbContext.SaveChangesAsync();
+                Message = "Address Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminContactAddressEditCreateViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+            return RedirectToAction(nameof(EmployeeDetails), new { id = employeeAddressToUpdate.ContactId });            
+        }
+
+        public async Task<IActionResult> DeleteEmployeeAddress(int id)
+        {
+            var employeeAddress = await _dbContext.ContactAddress.Include(c => c.Address).Where(c => c.Id == id).FirstOrDefaultAsync();
+             if(employeeAddress == null)
+            {
+                ErrorMessage = "Employee Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(employeeAddress);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDeleteEmployeeAddress(int id, string Delete)
+        {   
+            var employeeAddress = await _dbContext.ContactAddress.Where(c => c.Id == id).FirstOrDefaultAsync();
+             if(employeeAddress == null)
+            {
+                ErrorMessage = "Employee Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var contactId = employeeAddress.ContactId;
+            if(Delete == "Delete")
+            {
+                _dbContext.Remove(employeeAddress);
+                await _dbContext.SaveChangesAsync();
+                Message = "Address removed!";               
+            }           
+
+            return RedirectToAction(nameof(EmployeeDetails), new {id = contactId});
+        }
+
+        public async Task<IActionResult> AddEmployeeAddress (int id)
+        {
+            var employeeAddress = await AdminContactAddressEditCreateViewModel.Create(_dbContext, 0, id);            
+            return View(employeeAddress);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployeeAddress(int id, AdminContactAddressEditCreateViewModel vm)
+        {
+            var newContactAddress = new ContactAddress();
+            var newAddress = new Address();
+
+            newContactAddress.ContactId = id;
+            var updateAddress = vm.address;
+            
+            newContactAddress.Mailing = updateAddress.Mailing;
+            newContactAddress.Billing = updateAddress.Billing;
+            newContactAddress.Delivery = updateAddress.Delivery;
+            newContactAddress.PhysicalLoc = updateAddress.PhysicalLoc;
+            newContactAddress.DateModified = DateTime.Now;
+
+            newAddress.Address1 = updateAddress.Address.Address1;
+            newAddress.Address2 = updateAddress.Address.Address2;
+            newAddress.Address3 = updateAddress.Address.Address3;
+            newAddress.City = updateAddress.Address.City;
+            newAddress.CountryId = updateAddress.Address.CountryId;
+            newAddress.CountyId = updateAddress.Address.CountyId;
+            newAddress.StateProvinceId = updateAddress.Address.StateProvinceId;
+            newAddress.PostalCode = updateAddress.Address.PostalCode;
+
+            newContactAddress.Address = newAddress;
+
+            if(ModelState.IsValid){               
+                _dbContext.Add(newContactAddress);
+                await _dbContext.SaveChangesAsync();
+                Message = "Address Added";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminContactAddressEditCreateViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+            return RedirectToAction(nameof(EmployeeDetails), new { id = id });
+        }
+
        
        
     }

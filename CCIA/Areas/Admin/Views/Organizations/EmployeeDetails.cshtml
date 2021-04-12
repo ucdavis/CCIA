@@ -113,6 +113,7 @@
     <div>
         <hr>
         <h3>Address</h3>
+        <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Add New Address</a>
         <table class="table">
             <thead>
                 <tr>
@@ -135,7 +136,7 @@
                 @foreach (var add in Model.Addresses)
                 {
                     <tr>
-                        <th>Edit</th>
+                        <th><a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a></th>
                         <th>@add.Address.Address1</th>
                         <th>@add.Address.Address2</th>
                         <th>@add.Address.City</th>
@@ -143,11 +144,11 @@
                         <th>@add.Address.StateName</th>
                         <th>@add.Address.PostalCode</th>
                         <th>@add.Address.CountryName</th>
-                        <th>@Html.CheckBoxFor(x => add.Mailing.Value)</th>
-                        <td>@Html.CheckBoxFor(x => add.Billing.Value)</td>
-                        <td>@Html.CheckBoxFor(x => add.Delivery.Value)</td>
-                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc.Value)</td>
-                        <th></th>
+                        <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                        <td>@Html.CheckBoxFor(x => add.Billing)</td>
+                        <td>@Html.CheckBoxFor(x => add.Delivery)</td>
+                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc)</td>
+                        <th><a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Delete</a></th>
                     </tr>                    
                 }
             </tbody>
