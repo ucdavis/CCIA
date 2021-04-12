@@ -181,7 +181,7 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Map Name</th>
+                        <th>Crop Name</th>
                         <th>Allow?</th>
                     </tr>
                 </thead>
@@ -284,6 +284,7 @@
     <div class="col-sm-6">
         <hr>
         <h3>Employees</h3>
+        <a class="btn btn-primary" asp-action="NewEmployee" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.org.Id">Add Employee</a>
         <table class="table">
         <thead>
             <tr>

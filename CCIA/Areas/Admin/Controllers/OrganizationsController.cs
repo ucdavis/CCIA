@@ -47,6 +47,90 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        public ActionResult Create ()
+        {
+            var model = new Organizations();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Organizations org)
+        {
+            // TODO Add notification to org created
+             var orgToCreate = new Organizations();            
+
+            orgToCreate.Email = org.Email;
+            orgToCreate.GermLab = org.GermLab;
+            orgToCreate.Name = org.Name;
+            orgToCreate.Phone = org.Phone;
+            orgToCreate.Active = org.Active;
+            orgToCreate.DiagnosticLab = org.DiagnosticLab;
+            orgToCreate.Fax = org.Fax;
+            orgToCreate.Website = org.Website;
+            orgToCreate.AgCommissioner = org.AgCommissioner;
+            orgToCreate.DateModified = DateTime.Now;
+            orgToCreate.UserModified = User.FindFirstValue(ClaimTypes.Name);
+
+             if(ModelState.IsValid){
+                 _dbContext.Add(orgToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Org Created";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(org); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = orgToCreate.Id });  
+
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _dbContext.Organizations.Where(o => o.Id == id).FirstOrDefaultAsync();            
+            if(model == null)
+            {
+                ErrorMessage = "Org not found!";
+                return  RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Organizations org)
+        {
+            var orgToUpdate = await _dbContext.Organizations.Where(o => o.Id == id).FirstOrDefaultAsync();
+            if(orgToUpdate == null || orgToUpdate.Id != org.Id)
+            {
+                ErrorMessage = "Org not found!";
+                return  RedirectToAction(nameof(Index));
+            }
+
+            orgToUpdate.Email = org.Email;
+            orgToUpdate.GermLab = org.GermLab;
+            orgToUpdate.Name = org.Name;
+            orgToUpdate.Phone = org.Phone;
+            orgToUpdate.Active = org.Active;
+            orgToUpdate.DiagnosticLab = org.DiagnosticLab;
+            orgToUpdate.Fax = org.Fax;
+            orgToUpdate.Website = org.Website;
+            orgToUpdate.AgCommissioner = org.AgCommissioner;
+            orgToUpdate.DateModified = DateTime.Now;
+            orgToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
+
+             if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Org Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(org); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = org.Id });  
+
+
+
+        }
+
         public async Task<IActionResult> EditStatus(int id)
         {
             var model = await _dbContext.CondStatus.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -316,6 +400,98 @@ namespace CCIA.Controllers
             return View(employee);
         }
 
+        public IActionResult NewEmployee(int id)
+        {
+            var employee = new Contacts();
+            employee.OrgId = id;
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewEmployee(int id, Contacts employee)
+        {
+            // TODO send email with instructions to set password
+            var employeeToAdd = new Contacts();
+
+            employeeToAdd.OrgId = id;
+            employeeToAdd.FirstName = employee.FirstName;
+            employeeToAdd.Title = employee.Title;
+            employeeToAdd.BusinessPhone = employee.BusinessPhone;
+            employeeToAdd.FaxNumber = employee.FaxNumber;
+            employeeToAdd.Email = employee.Email;
+            employeeToAdd.MiddleInitial = employee.MiddleInitial;
+            employeeToAdd.FormOfAddr = employee.FormOfAddr;
+            employeeToAdd.BusinessPhoneExtension = employee.BusinessPhoneExtension;
+            employeeToAdd.HomePhone = employee.HomePhone;
+            employeeToAdd.AllowApps = employee.AllowApps;
+            employeeToAdd.LastName = employee.LastName;
+            employeeToAdd.Suffix = employee.Suffix;
+            employeeToAdd.MobilePhone = employee.MobilePhone;
+            employeeToAdd.PagerNumber = employee.PagerNumber;
+            employeeToAdd.AllowSeeds = employee.AllowSeeds;
+
+            if(ModelState.IsValid){
+                _dbContext.Add(employeeToAdd);               
+                await _dbContext.SaveChangesAsync();
+                Message = "Employee created";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(employee); 
+            }
+            return RedirectToAction(nameof(EmployeeDetails), new { id = employeeToAdd.Id }); 
+            
+        }
+
+        public async Task<IActionResult> EditEmployee (int id)
+        {
+            var model = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Employee/Contact not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(int id, Contacts employee)
+        {            
+            var employeeToUpdate = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+
+            if(employeeToUpdate == null || employeeToUpdate.Id != employee.Id)
+            {
+                 ErrorMessage = "Employee/Contact not found!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.Title = employee.Title;
+            employeeToUpdate.BusinessPhone = employee.BusinessPhone;
+            employeeToUpdate.FaxNumber = employee.FaxNumber;
+            employeeToUpdate.Email = employee.Email;
+            employeeToUpdate.MiddleInitial = employee.MiddleInitial;
+            employeeToUpdate.FormOfAddr = employee.FormOfAddr;
+            employeeToUpdate.BusinessPhoneExtension = employee.BusinessPhoneExtension;
+            employeeToUpdate.HomePhone = employee.HomePhone;
+            employeeToUpdate.AllowApps = employee.AllowApps;
+            employeeToUpdate.LastName = employee.LastName;
+            employeeToUpdate.Suffix = employee.Suffix;
+            employeeToUpdate.MobilePhone = employee.MobilePhone;
+            employeeToUpdate.PagerNumber = employee.PagerNumber;
+            employeeToUpdate.AllowSeeds = employee.AllowSeeds;
+
+            if(ModelState.IsValid){                               
+                await _dbContext.SaveChangesAsync();
+                Message = "Employee created";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(employee); 
+            }
+            return RedirectToAction(nameof(EmployeeDetails), new { id = employeeToUpdate.Id }); 
+            
+        }
+
         public async Task<IActionResult> EditEmployeeAddress(int id)
         {
             var employeeAddress = await AdminContactAddressEditCreateViewModel.Create(_dbContext, id);
@@ -424,6 +600,8 @@ namespace CCIA.Controllers
             newAddress.CountyId = updateAddress.Address.CountyId;
             newAddress.StateProvinceId = updateAddress.Address.StateProvinceId;
             newAddress.PostalCode = updateAddress.Address.PostalCode;
+            newAddress.DateModified = DateTime.Now;
+            newAddress.UserModified = User.FindFirstValue(ClaimTypes.Name);
 
             newContactAddress.Address = newAddress;
 
