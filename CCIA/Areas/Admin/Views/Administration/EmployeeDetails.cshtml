@@ -1,0 +1,36 @@
+@model CCIA.Models.CCIAEmployees
+
+<h2>Employee Details</h2> 
+<div class="container col-sm-10">
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="EditEmployee" asp-area="admin" asp-controller="Administration" asp-route-id="@Model.Id">Edit</a>            
+        </div>
+    </div>   
+    <div class="row">
+         <div class="col-md-6 col-xl-4">@*First column *@
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FirstName)
+                </div>
+            </div>                          
+        </div>
+        <div class="col-md-6 col-xl-4">@*Second column *@
+            <div class="form-group row">
+                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LastName)
+                </div>
+            </div>                                
+        </div>
+        <div class="col-md-6 col-xl-4">@*Third column *@
+            <div class="form-group row">
+                <label asp-for="KerberosId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.KerberosId)
+                </div>
+            </div>                         
+        </div>
+    </div>
+</div>

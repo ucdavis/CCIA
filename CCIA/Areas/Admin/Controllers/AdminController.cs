@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CCIA.Controllers
 {    
-     [Area("Admin")]
+    [Area("Admin")]
     [Authorize(Roles = "Employee")]  
     public class AdminController : SuperController
     {
