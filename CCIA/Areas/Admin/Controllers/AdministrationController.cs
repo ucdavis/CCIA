@@ -41,6 +41,52 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        public IActionResult NewEmployee()
+        {
+            var model = new CCIAEmployees();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewEmployee(CCIAEmployees employee)
+        {
+            var newEmployee = new CCIAEmployees();
+
+            newEmployee.Id = employee.Id;
+            newEmployee.FirstName = employee.FirstName;
+            newEmployee.LastName = employee.LastName;
+            newEmployee.KerberosId = employee.KerberosId;
+            newEmployee.UCDMaildID = employee.UCDMaildID;
+            newEmployee.CampusPhone = employee.CampusPhone;
+            newEmployee.CellPhone = employee.CellPhone;
+            newEmployee.Current = employee.Current;
+            newEmployee.CCIAAccess = employee.CCIAAccess;
+            newEmployee.CoreStaff = employee.CoreStaff;
+            newEmployee.FieldInspector = employee.FieldInspector;
+            newEmployee.ConditionerStatusUpdate = employee.ConditionerStatusUpdate;
+            newEmployee.Admin = employee.Admin;
+            newEmployee.EditVarieties = employee.EditVarieties;
+            newEmployee.SeedLotInform = employee.SeedLotInform;
+            newEmployee.SeasonalEmployee = employee.SeasonalEmployee;
+            newEmployee.BillingAccess = employee.BillingAccess;
+            newEmployee.NewTag = employee.NewTag;
+            newEmployee.TagPrint = employee.TagPrint;
+            newEmployee.HeritageGrainQA = employee.HeritageGrainQA;
+            newEmployee.PrevarietyGermplasm = employee.PrevarietyGermplasm;
+            newEmployee.OECDInvoicePrinter =employee.OECDInvoicePrinter;
+
+            if(ModelState.IsValid){ 
+                _dbContext.Add(newEmployee);                              
+                await _dbContext.SaveChangesAsync();
+                Message = "Employee Added";
+            } else {
+                ErrorMessage = "Something went wrong.";                
+                return View(employee); 
+            }
+            return RedirectToAction(nameof(EmployeeDetails), new { id = newEmployee.Id });
+
+        }
+
         public async Task<IActionResult> EditEmployee(string id)
         {
             var model = await _dbContext.CCIAEmployees.Where(e => e.Id == id).FirstOrDefaultAsync();
