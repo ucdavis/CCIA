@@ -28,18 +28,18 @@
                 <option value="AP">Approved</option>
             </select>
         </div>
-        <div class="form-group row">
-            <label asp-for="AllowPretag" class="col-sm-3 col-form-label"></label>
-            <input asp-for="AllowPretag">
+        <div class="form-group row">                
+                    <label asp-for="AllowPretag" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="AllowPretag" class="col-sm-1 form-control">
         </div>
-        <div class="form-group row">
-            <label asp-for="PrintSeries" class="col-sm-3 col-form-label"></label>
-            <input asp-for="PrintSeries">
+        <div class="form-group row">                
+                    <label asp-for="PrintSeries" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="PrintSeries" class="col-sm-1 form-control">
         </div>
-        <div class="form-group row">
-            <label asp-for="RequestCciaPrintSeries" class="col-sm-3 col-form-label"></label>
-            <input asp-for="RequestCciaPrintSeries">
-        </div>
+        <div class="form-group row">                
+                    <label asp-for="RequestCciaPrintSeries" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="RequestCciaPrintSeries" class="col-sm-1 form-control">
+        </div>         
         <div class="form-group row">
             <label asp-for="DatePretagApproved" class="col-sm-3 col-form-label"></label>
             <input class="datepicker" asp-for="DatePretagApproved" type="text">

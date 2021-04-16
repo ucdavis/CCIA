@@ -10,22 +10,22 @@
         </div>            
     </div>    
     <div class="col-sm-6">
-        <div class="form-group row">
+        <div class="form-group row">                
             <label asp-for="Mailing" class="col-sm-3 col-form-label"></label>
-            <input type="checkbox" asp-for="Mailing">
+            <input type="checkbox" asp-for="Mailing" class="col-sm-1 form-control">
         </div>
-         <div class="form-group row">
+        <div class="form-group row">                
             <label asp-for="Billing" class="col-sm-3 col-form-label"></label>
-            @Html.CheckBoxFor(x => x.Billing)
+            <input type="checkbox" asp-for="Billing" class="col-sm-1 form-control">
         </div>
-         <div class="form-group row">
+        <div class="form-group row">                
             <label asp-for="Delivery" class="col-sm-3 col-form-label"></label>
-            @Html.CheckBoxFor(x => x.Delivery)
-        </div>
-         <div class="form-group row">
+            <input type="checkbox" asp-for="Delivery" class="col-sm-1 form-control">
+        </div> 
+        <div class="form-group row">                
             <label asp-for="PhysicalLoc" class="col-sm-3 col-form-label"></label>
-            @Html.CheckBoxFor(x => x.PhysicalLoc)
-        </div>
+            <input type="checkbox" asp-for="PhysicalLoc" class="col-sm-1 form-control">
+        </div>   
         <div class="form-group row">
             <label asp-for="Address.Address1" class="col-sm-3 col-form-label"></label>
             <input asp-for="Address.Address1" class="col-sm-3 form-control">

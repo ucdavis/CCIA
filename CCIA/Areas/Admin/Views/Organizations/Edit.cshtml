@@ -26,22 +26,20 @@
                 <input asp-for="Email" class="col-sm-6 form-control">
                 <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
             </div>
-            <div class="form-group row">
-                <label asp-for="Member" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Member)
-                </div>
-            </div>    
+             <div class="form-group row">                
+                    <label asp-for="Member" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="Member" class="col-sm-3 form-control">
+            </div>              
             <div class="form-group row">
                 <label asp-for="MemberType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.MemberType)
                 </div>
+            </div>
+             <div class="form-group row">                
+                    <label asp-for="GermLab" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="GermLab" class="col-sm-3 form-control">
             </div> 
-            <div class="form-group row form-check">                
-                    <label asp-for="GermLab" class="col-sm-3 form-check-label"></label>
-                    <input type="checkbox" asp-for="GermLab" class="form-check-input">
-            </div>                                
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -53,21 +51,21 @@
                 <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
                 <input asp-for="Phone" class="col-sm-6 form-control">
                 <span class="field-validation-valid text-danger" data-valmsg-for="Phone" data-valmsg-replace="true"></span>
-            </div>             
-            <div class="form-group row form-check">                
-                    <label asp-for="Active" class="col-sm-3 form-check-label"></label>
-                    <input type="checkbox" asp-for="Active" class="form-check-input">
-            </div> 
+            </div>    
+             <div class="form-group row">                
+                    <label asp-for="Active" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="Active" class="col-sm-3 form-control">
+            </div>                    
             <div class="form-group row">
                 <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label">Member Representative</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.RepresentativeContact.Name)
                 </div>
             </div>
-            <div class="form-group row form-check">                
-                    <label asp-for="DiagnosticLab" class="col-sm-3 form-check-label"></label>
-                    <input type="checkbox" asp-for="DiagnosticLab" class="form-check-input">
-            </div>                                                                 
+             <div class="form-group row">                
+                    <label asp-for="DiagnosticLab" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="DiagnosticLab" class="col-sm-3 form-control">
+            </div>                  
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -93,10 +91,10 @@
                     @Html.DisplayFor(x => x.MemberSince)
                 </div>
             </div>
-            <div class="form-group row form-check">                
-                    <label asp-for="AgCommissioner" class="col-sm-3 form-check-label"></label>
-                    <input type="checkbox" asp-for="AgCommissioner" class="form-check-input">
-            </div>                               
+             <div class="form-group row">                
+                    <label asp-for="AgCommissioner" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="AgCommissioner" class="col-sm-3 form-control">
+            </div>
         </div>
     </div>
      <div class="row">
