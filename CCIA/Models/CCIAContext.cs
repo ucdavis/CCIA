@@ -829,9 +829,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.UCDMaildID).HasColumnName("ucd_mailid");
 
-                entity.Property(e => e.CampusRoom).HasColumnName("campus_room");
-
-                entity.Property(e => e.CampusBuilding).HasColumnName("campus_bldg");
+                
 
                 entity.Property(e => e.CampusPhone).HasColumnName("campus_phone");
 

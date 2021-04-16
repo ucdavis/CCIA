@@ -40,6 +40,17 @@ namespace CCIA.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> EditEmployee(string id)
+        {
+            var model = await _dbContext.CCIAEmployees.Where(e => e.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Employee not found";
+                return RedirectToAction(nameof(Employees));
+            }
+            return View(model);
+        }
        
     }
 }

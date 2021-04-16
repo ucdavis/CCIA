@@ -32,8 +32,7 @@ namespace CCIA.Models
             } 
         }
 
-        public string CampusRoom { get; set; }
-        public string CampusBuilding { get; set; }
+      
         public string CampusPhone { get; set; }
         public string CellPhone { get; set; }
         public string KerberosId { get; set; }

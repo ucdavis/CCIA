@@ -33,7 +33,7 @@ namespace CCIA.Services
 
         public async Task<CCIAEmployees> GetByKerberos(string kerb)
         {
-            var rtValue = await _context.CCIAEmployees.Where(e => e.KerberosId == kerb).FirstOrDefaultAsync();
+            var rtValue = await _context.CCIAEmployees.Where(e => e.KerberosId == kerb && e.Current).FirstOrDefaultAsync();
             return rtValue;
         }
 
