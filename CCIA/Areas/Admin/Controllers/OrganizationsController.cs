@@ -503,7 +503,7 @@ namespace CCIA.Controllers
 
             if(ModelState.IsValid){                               
                 await _dbContext.SaveChangesAsync();
-                Message = "Employee created";
+                Message = "Employee updated";
             } else {
                 ErrorMessage = "Something went wrong.";                
                 return View(employee); 
