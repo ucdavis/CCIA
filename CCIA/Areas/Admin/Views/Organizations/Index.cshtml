@@ -15,8 +15,11 @@
         <span>Enter Org ID or name fragment</span>
     </div>
     <div class="row">
-         <input type="submit" value="View Org" id="submit" class="btn btn-primary"></input> |
-         <a class="btn btn-dark" asp-action="Create" asp-controller="Organizations" asp-area="Admin">Create new Org</a>
+         <input type="submit" value="View Org" id="submit" class="btn btn-primary"></input> 
+         @if(this.User.IsInRole("Admin"))
+         {
+             <a class="btn btn-dark" asp-action="Create" asp-controller="Organizations" asp-area="Admin">Create new Org</a>
+         }               
     </div>
 </div>
 </form>

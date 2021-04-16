@@ -8,7 +8,10 @@
     </div>
      <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+            @if(this.User.IsInRole("CoreStaff"))
+            {
+                <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+            }            
             <a class="btn btn-info" asp-area="Admin" asp-action="Details" asp-controller="Organizations" asp-route-id="@Model.OrgId">Return to Org Details</a>
         </div>            
     </div>     
@@ -113,7 +116,10 @@
     <div>
         <hr>
         <h3>Address</h3>
-        <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Add New Address</a>
+        @if(this.User.IsInRole("CoreStaff"))
+        {
+            <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Add New Address</a>
+        }        
         <table class="table">
             <thead>
                 <tr>
@@ -136,7 +142,12 @@
                 @foreach (var add in Model.Addresses)
                 {
                     <tr>
-                        <th><a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a></th>
+                        <th>
+                            @if(this.User.IsInRole("CoreStaff"))
+                            {
+                                <a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a>
+                            }
+                        </th>
                         <th>@add.Address.Address1</th>
                         <th>@add.Address.Address2</th>
                         <th>@add.Address.City</th>
@@ -144,11 +155,16 @@
                         <th>@add.Address.StateName</th>
                         <th>@add.Address.PostalCode</th>
                         <th>@add.Address.CountryName</th>
-                        <th>@Html.CheckBoxFor(x => add.Mailing)</th>
-                        <td>@Html.CheckBoxFor(x => add.Billing)</td>
-                        <td>@Html.CheckBoxFor(x => add.Delivery)</td>
-                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc)</td>
-                        <th><a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Delete</a></th>
+                        <th>@Html.CheckBoxFor(x => add.Mailing, new { @disabled = "disabled"})</th>
+                        <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
+                        <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
+                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc, new { @disabled = "disabled"})</td>
+                        <th>
+                            @if(this.User.IsInRole("CoreStaff"))
+                            {
+                                <a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Delete</a>
+                            }
+                        </th>
                     </tr>                    
                 }
             </tbody>

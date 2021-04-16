@@ -867,6 +867,12 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OECDInvoicePrinter).HasColumnName("oecd_invoice_printer");
 
+                entity.Property(e => e.Admin).HasColumnName("admin");
+
+                entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
+
+                entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
+
             });
 
             modelBuilder.Entity<BulkSalesCertificates>(entity => 

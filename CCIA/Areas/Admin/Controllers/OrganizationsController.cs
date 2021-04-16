@@ -47,7 +47,7 @@ namespace CCIA.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create ()
         {
             var model = new Organizations();
@@ -55,7 +55,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Organizations org)
         {
             // TODO Add notification to org created
@@ -86,7 +86,7 @@ namespace CCIA.Controllers
 
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff,Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _dbContext.Organizations.Where(o => o.Id == id).FirstOrDefaultAsync();            
@@ -99,7 +99,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff,Admin")]
         public async Task<IActionResult> Edit(int id, Organizations org)
         {
             var orgToUpdate = await _dbContext.Organizations.Where(o => o.Id == id).FirstOrDefaultAsync();
@@ -135,7 +135,7 @@ namespace CCIA.Controllers
 
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "ConditionerStatusUpdate")]
         public async Task<IActionResult> EditStatus(int id)
         {
             var model = await _dbContext.CondStatus.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -149,7 +149,7 @@ namespace CCIA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "ConditionerStatusUpdate")]
         public async Task<IActionResult> EditStatus(int id, CondStatus update)
         {
             var statusToUpdate = await _dbContext.CondStatus.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -177,7 +177,7 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = statusToUpdate.OrgId });  
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "ConditionerStatusUpdate")]
         public ActionResult NewStatus(int id)
         {
             var model = new CondStatus();
@@ -188,7 +188,7 @@ namespace CCIA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "ConditionerStatusUpdate")]
         public async Task<IActionResult> NewStatus(int id, CondStatus newStatus)
         {
             var statusToCreate = new CondStatus();
@@ -213,7 +213,7 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = newStatus.OrgId }); 
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAddress(int id)
         {
             var model = await AdminAddressEditCreateViewModel.Create(_dbContext, 0, id);
@@ -223,7 +223,7 @@ namespace CCIA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAddress(int id, AdminAddressEditCreateViewModel vm)
         {
             var addressToAdd = new Address();
@@ -262,7 +262,7 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(Details), new { id = vm.OrgId });
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditAddress(int id)
         {
             var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
@@ -276,7 +276,7 @@ namespace CCIA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditAddress(int id, AdminAddressEditCreateViewModel vm)
         {
             var addressToEdit = await _dbContext.Address.Where(a => a.Id == id).FirstOrDefaultAsync();
@@ -328,7 +328,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> AddMapPermission (int org_Id, string MapName)
         {
             var org = await _dbContext.Organizations.Where(o => o.Id == org_Id).AnyAsync();
@@ -356,7 +356,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> ToggleMapPermissions (int mapPermission)
         {
             var permission = await _dbContext.OrgMaps.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
@@ -367,7 +367,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> AddMapCropPermission (int org_Id, int CropId)
         {
             var org = await _dbContext.Organizations.Where(o => o.Id == org_Id).AnyAsync();
@@ -395,7 +395,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> ToggleMapCropPermissions (int mapPermission)
         {
             var permission = await _dbContext.OrgMapCrops.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
@@ -416,7 +416,7 @@ namespace CCIA.Controllers
             return View(employee);
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public IActionResult NewEmployee(int id)
         {
             var employee = new Contacts();
@@ -425,7 +425,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> NewEmployee(int id, Contacts employee)
         {
             // TODO send email with instructions to set password
@@ -460,7 +460,7 @@ namespace CCIA.Controllers
             
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> EditEmployee (int id)
         {
             var model = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -474,7 +474,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> EditEmployee(int id, Contacts employee)
         {            
             var employeeToUpdate = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -512,7 +512,7 @@ namespace CCIA.Controllers
             
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> EditEmployeeAddress(int id)
         {
             var employeeAddress = await AdminContactAddressEditCreateViewModel.Create(_dbContext, id);
@@ -525,7 +525,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> EditEmployeeAddress(int id, AdminContactAddressEditCreateViewModel vm)
         {
             var employeeAddressToUpdate = await _dbContext.ContactAddress.Include(c => c.Address).Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -561,7 +561,7 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(EmployeeDetails), new { id = employeeAddressToUpdate.ContactId });            
         }
 
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> DeleteEmployeeAddress(int id)
         {
             var employeeAddress = await _dbContext.ContactAddress.Include(c => c.Address).Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -575,7 +575,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> ConfirmDeleteEmployeeAddress(int id, string Delete)
         {   
             var employeeAddress = await _dbContext.ContactAddress.Where(c => c.Id == id).FirstOrDefaultAsync();
@@ -596,7 +596,7 @@ namespace CCIA.Controllers
         }
 
         
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> AddEmployeeAddress (int id)
         {
             var employeeAddress = await AdminContactAddressEditCreateViewModel.Create(_dbContext, 0, id);            
@@ -604,7 +604,7 @@ namespace CCIA.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "AllowEmulate")]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> AddEmployeeAddress(int id, AdminContactAddressEditCreateViewModel vm)
         {
             var newContactAddress = new ContactAddress();

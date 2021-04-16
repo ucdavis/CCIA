@@ -64,6 +64,12 @@ namespace CCIA.Models
         public bool PrevarietyGermplasm { get; set; }
 
         public bool OECDInvoicePrinter { get; set; }
+
+        public bool Admin { get; set; }
+
+        public bool ConditionerStatusUpdate { get; set; }
+
+        public bool UpdateMapPermissions { get; set; }
         
     }
 }
