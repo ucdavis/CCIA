@@ -70,7 +70,7 @@ namespace CCIA
 
                         var user = await identityService.GetByKerberos(kerb);
 
-                        if (user == null)
+                        if (user == null || !user.CCIAAccess || !user.Current)
                         {
                             return;
                         }                        
