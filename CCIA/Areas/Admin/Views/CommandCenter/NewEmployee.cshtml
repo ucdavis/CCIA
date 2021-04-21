@@ -1,13 +1,22 @@
 @model CCIA.Models.CCIAEmployees
 
 <h2>Employee Details</h2> 
-<form asp-action="EditEmployee">
+<form asp-action="NewEmployee">
 <div class="container col-sm-10">
     <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-dark" asp-action="EmployeeDetails" asp-area="admin" asp-controller="Administration" asp-route-id="@Model.Id">Cancel</a>            
+            <a class="btn btn-dark" asp-action="Employees">Cancel</a>            
         </div>
     </div>   
+    <div class="row">
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group row">
+                        <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                        <input asp-for="Id" class="col-sm-3 form-control">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Id" data-valmsg-replace="true"></span>
+                </div>
+            </div>        
+    </div>
     <div class="row">
          <div class="col-md-6 col-xl-4">@*First column *@
             <div class="form-group row">
@@ -107,7 +116,7 @@
         </div>
     </div>
     <div>
-            <input type="submit" value="Update" class="btn btn-primary">
+            <input type="submit" value="Create Employee" class="btn btn-primary">
     </div>
 </div>
 </form>

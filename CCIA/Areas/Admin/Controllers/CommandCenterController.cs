@@ -11,10 +11,10 @@ using Microsoft.EntityFrameworkCore;
 namespace CCIA.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdministrationController : AdminController              
+    public class CommandCenterController : AdminController              
     {
         private readonly CCIAContext _dbContext;
-        public AdministrationController(CCIAContext dbContext)
+        public CommandCenterController(CCIAContext dbContext)
         {
             _dbContext = dbContext;
         }

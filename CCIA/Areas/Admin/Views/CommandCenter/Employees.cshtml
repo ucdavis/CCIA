@@ -8,7 +8,7 @@
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="NewEmployee" asp-controller="Administration" asp-area="admin">Add New Employee</a>
+    <a class="btn btn-primary" asp-action="NewEmployee">Add New Employee</a>
 </div>
 <div>
     <table class="table">
@@ -29,7 +29,7 @@
             @foreach (var emp in Model)
             {
                 <tr>
-                    <td><a class="btn btn-info" asp-area="admin" asp-controller="Administration" asp-action="EmployeeDetails" asp-route-id="@emp.Id">Details</a></td>
+                    <td><a class="btn btn-info" asp-action="EmployeeDetails" asp-route-id="@emp.Id">Details</a></td>
                     <td>@emp.FirstName</td>
                     <td>@emp.LastName</td>
                     <td><input type="checkbox" asp-for="@emp.Current"></td>
