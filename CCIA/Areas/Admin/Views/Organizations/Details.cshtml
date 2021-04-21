@@ -6,7 +6,7 @@
             <h2>Organization Details</h2> 
         </div>            
     </div>
-    @if(this.User.IsInRole("Admin"))
+    @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
          {
              <div class="row">
                 <div class="col-sm-12">
