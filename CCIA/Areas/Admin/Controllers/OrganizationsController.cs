@@ -119,6 +119,7 @@ namespace CCIA.Controllers
             orgToUpdate.Website = org.Website;
             orgToUpdate.AgCommissioner = org.AgCommissioner;
             orgToUpdate.DateModified = DateTime.Now;
+            orgToUpdate.Notes = org.Notes;
             orgToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
 
              if(ModelState.IsValid){
