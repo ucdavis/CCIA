@@ -294,7 +294,7 @@ namespace CCIA.Controllers
             var otherAddress = await _dbContext.OrganizationAddress.Where(oa => oa.OrgId == orgAddress.OrgId && oa.Id != id).ToListAsync();
             orgAddress.Active = true;
             otherAddress.ForEach(a => a.Active = false);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new {id = orgAddress.OrgId});
 
@@ -357,6 +357,50 @@ namespace CCIA.Controllers
 
             return RedirectToAction(nameof(Details), new { id = vm.OrgId });
 
+        }
+
+        [Authorize(Roles = "CoreStaff")]
+        public async Task<IActionResult> DeleteAddress(int id)
+        {
+            var orgAddress = await _dbContext.OrganizationAddress.Include(c => c.Address).Where(c => c.Id == id).FirstOrDefaultAsync();
+             if(orgAddress == null)
+            {
+                ErrorMessage = "Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if(orgAddress.Active)
+            {
+                ErrorMessage = "Cannot delete Active Address! Set another address to active first";
+                return RedirectToAction(nameof(Details), new {id = orgAddress.OrgId});
+            }    
+            return View(orgAddress);
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "CoreStaff")]
+        public async Task<IActionResult> ConfirmDeleteAddress(int id, string Delete)
+        {   
+            var orgAddress = await _dbContext.OrganizationAddress.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(orgAddress == null)
+            {
+                ErrorMessage = "Address not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var org = orgAddress.OrgId;
+            if(orgAddress.Active)
+            {
+                ErrorMessage = "Cannot delete Active Address! Set another address to active first";
+                return RedirectToAction(nameof(Details), new {id = org});
+            }            
+            if(Delete == "Delete")
+            {
+                _dbContext.Remove(orgAddress);
+                await _dbContext.SaveChangesAsync();
+                Message = "Address removed!";               
+            }           
+
+            return RedirectToAction(nameof(Details), new {id = org});
         }
 
         [HttpPost]
