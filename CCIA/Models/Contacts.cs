@@ -42,6 +42,14 @@ namespace CCIA.Models
         public bool AllowPinning { get; set; }
         public bool AllowApps { get; set; }
         public bool AllowSeeds { get; set; }
+
+        public bool ApplicationNotices { get; set; }
+        public bool SeedNotices { get; set; }
+        public bool TagNotices { get; set; }
+        public bool OECDNotices { get; set; }
+        public bool BlendNotices { get; set; }
+        public bool BulkSalesNotices { get; set; }
+        public bool TransferNotices { get; set; }
         
         public int? AlfalfaLastYearAgreement { get; set; }
         public int? SweetCornLastYearAgreement { get; set; }

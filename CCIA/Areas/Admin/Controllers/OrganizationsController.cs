@@ -501,6 +501,13 @@ namespace CCIA.Controllers
             employeeToUpdate.MobilePhone = employee.MobilePhone;
             employeeToUpdate.PagerNumber = employee.PagerNumber;
             employeeToUpdate.AllowSeeds = employee.AllowSeeds;
+            employeeToUpdate.ApplicationNotices = employee.ApplicationNotices;
+            employeeToUpdate.SeedNotices = employee.SeedNotices;
+            employeeToUpdate.TagNotices = employee.TagNotices;
+            employeeToUpdate.OECDNotices = employee.OECDNotices;
+            employeeToUpdate.BlendNotices = employee.BlendNotices;
+            employeeToUpdate.BulkSalesNotices = employee.BulkSalesNotices;
+            employeeToUpdate.TransferNotices = employee.TransferNotices;
 
             if(ModelState.IsValid){                               
                 await _dbContext.SaveChangesAsync();
