@@ -401,7 +401,8 @@
         <hr />
     </div>  
     <div class="row">
-        <h3>Field History</h3>
+        <h3>Field History | </h3>
+        <div><a class="btn btn-primary" asp-action="NewHistory" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Create new</a></div>
         <table class="table">
             <thead>
             <tr>
@@ -420,7 +421,7 @@
                         <a class="btn btn-primary" asp-action="EditHistory" asp-area="admin" asp-controller="Application" asp-route-id="@row.Id">Edit</a>
                     </td>
                     <td>@row.Year</td>
-                    <td>@row.FHCrops.Name</td>
+                    <td>@(@row.FHCrops == null ? "" : @row.FHCrops.Name)</td>
                     <td>@row.Variety</td>
                     <td>@row.AppNumber</td>
                 </tr>

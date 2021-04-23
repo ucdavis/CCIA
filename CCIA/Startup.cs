@@ -70,7 +70,7 @@ namespace CCIA
 
                         var user = await identityService.GetByKerberos(kerb);
 
-                        if (user == null)
+                        if (user == null || !user.CCIAAccess)
                         {
                             return;
                         }                        
@@ -93,9 +93,17 @@ namespace CCIA
                         }
                         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, kerb));
                         identity.AddClaim(new Claim(ClaimTypes.Role, "Employee"));
-                        if(!user.SeasonalEmployee)
+                        if(user.CoreStaff)
                         {
-                            identity.AddClaim(new Claim(ClaimTypes.Role, "AllowEmulate"));
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "CoreStaff"));
+                        }                        
+                        if(user.Admin)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                        }
+                        if(user.ConditionerStatusUpdate || user.Admin)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "ConditionerStatusUpdate"));
                         }
 
                         context.Principal.AddIdentity(identity);

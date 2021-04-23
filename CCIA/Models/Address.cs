@@ -7,7 +7,7 @@ namespace CCIA.Models
 {
     public partial class Address
     {
-        public int AddressId { get; set; }
+        public int Id { get; set; }
         public int? ReferenceId { get; set; }
         public int? OcId { get; set; }
         public string Address1 { get; set; }
@@ -43,5 +43,56 @@ namespace CCIA.Models
         public Countries Countries { get; set; }
         public DateTime? DateModified { get; set; }
         public string UserModified { get; set; }
+
+        public string CountyName 
+        { 
+            get
+            {
+                if (CountyId == null)
+                {
+                    return "";
+                }                
+                if(County != null) 
+                {
+                    return County.Name;
+
+                }                
+                return "";
+            } 
+        }
+
+        public string StateName 
+        { 
+            get
+            {
+                if (StateProvinceId == null)
+                {
+                    return "";
+                }                
+                if(StateProvince != null) 
+                {
+                    return StateProvince.Name;
+
+                }                
+                return "";
+            } 
+        }
+
+        public string CountryName 
+        { 
+            get
+            {
+                if (CountryId == null)
+                {
+                    return "";
+                }                
+                if(Countries != null) 
+                {
+                    return Countries.Name;
+
+                }                
+                return "";
+            } 
+        }
     }
 }

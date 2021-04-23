@@ -1,0 +1,147 @@
+@model CCIA.Models.CCIAEmployees
+
+<h2>Employee Details</h2> 
+<div class="container col-sm-10">
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" asp-action="EditEmployee" asp-route-id="@Model.Id">Edit</a>  |
+            <a class="btn btn-info" asp-action="Employees">Return to list</a> 
+        </div>
+    </div>   
+    <div class="row">
+         <div class="col-md-6 col-xl-4">@*First column *@
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FirstName)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="UCDMaildID" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.UCDMaildID)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Current" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Current)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="FieldInspector" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FieldInspector)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="EditVarieties" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.EditVarieties)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="BillingAccess" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BillingAccess)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="HeritageGrainQA" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.HeritageGrainQA)
+                </div>
+            </div>               
+        </div>
+        <div class="col-md-6 col-xl-4">@*Second column *@
+            <div class="form-group row">
+                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LastName)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CampusPhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CampusPhone)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="CCIAAccess" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CCIAAccess)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="ConditionerStatusUpdate" class="col-sm-3 col-form-label">Update Cond. Status</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ConditionerStatusUpdate)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="SeedLotInform" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.SeedLotInform)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="NewTag" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.NewTag)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="PrevarietyGermplasm" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PrevarietyGermplasm)
+                </div>
+            </div>                          
+        </div>
+        <div class="col-md-6 col-xl-4">@*Third column *@
+            <div class="form-group row">
+                <label asp-for="KerberosId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.KerberosId)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="CellPhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CellPhone)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="CoreStaff" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CoreStaff)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Admin" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Admin)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="SeasonalEmployee" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.SeasonalEmployee)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="TagPrint" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TagPrint)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="OECDInvoicePrinter" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OECDInvoicePrinter)
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_RoleExplaination")

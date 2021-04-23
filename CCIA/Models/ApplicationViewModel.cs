@@ -87,7 +87,7 @@ namespace CCIA.Models
                 //     break;
             }
             var stateProvince = await dbContext.StateProvince.ToListAsync();
-            var organization = await dbContext.Organizations.Where(o => o.OrgId == orgId)
+            var organization = await dbContext.Organizations.Where(o => o.Id == orgId)
                 .Include(o => o.Address)
                 .ThenInclude(a => a.Countries)
                 .Include(o => o.Address)

@@ -23,7 +23,7 @@ namespace CCIA.Controllers.Client
         // GET: Application
         public async Task<IActionResult> Index()
         {          
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();        
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();        
             var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId);            
             return View(model);
         }
@@ -39,7 +39,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> Create(MyCustomerViewModel model)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var myCustomer = new MyCustomers();
             myCustomer.OrganizationId = orgId;
 

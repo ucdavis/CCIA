@@ -32,8 +32,7 @@ namespace CCIA.Models
             } 
         }
 
-        public string CampusRoom { get; set; }
-        public string CampusBuilding { get; set; }
+      
         public string CampusPhone { get; set; }
         public string CellPhone { get; set; }
         public string KerberosId { get; set; }
@@ -64,6 +63,12 @@ namespace CCIA.Models
         public bool PrevarietyGermplasm { get; set; }
 
         public bool OECDInvoicePrinter { get; set; }
+
+        public bool Admin { get; set; }
+
+        public bool ConditionerStatusUpdate { get; set; }
+
+        public bool UpdateMapPermissions { get; set; }
         
     }
 }

@@ -175,9 +175,9 @@
                         $.each(data,
                             function(i) {
                                 var item = data[i];
-                                s += '<tr><td><input type="button" value="Select" onClick="selectApplicant(' + item.orgId + ')"></input></td>';
-                                s += '<td>' + item.orgId + '</td>';
-                                s += '<td>' + item.orgName + '</td>';
+                                s += '<tr><td><input type="button" value="Select" onClick="selectApplicant(' + item.Id + ')"></input></td>';
+                                s += '<td>' + item.Id + '</td>';
+                                s += '<td>' + item.Name + '</td>';
                             });
                         s += '</table>';                                                
                     $('#results').html(s);

@@ -22,11 +22,14 @@ namespace CCIA.Controllers.Client
             _dbContext = dbContext;
         }
 
+        // TODO: Add notice when new series is added
+        // TODO: Add notice when new file is added
+
         
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {            
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             if (certYear == 0)
             {
                 certYear = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId).Select(t => t.DateRequested.Value.Year).MaxAsync();;

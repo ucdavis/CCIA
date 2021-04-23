@@ -1,0 +1,215 @@
+@model CCIA.Models.Contacts
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Employee Details</h2> 
+        </div>            
+    </div>
+     <div class="row">
+        <div class="col-sm-12">
+            @if(this.User.IsInRole("CoreStaff"))
+            {
+                <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+            }            
+            <a class="btn btn-info" asp-area="Admin" asp-action="Details" asp-controller="Organizations" asp-route-id="@Model.OrgId">Return to Org Details</a>
+        </div>            
+    </div>     
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FirstName)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Title" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Title)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="BusinessPhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BusinessPhone)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="FaxNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FaxNumber)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Email)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="ApplicationNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ApplicationNotices)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="OECDNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OECDNotices)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TransferNotices)
+                </div>
+            </div>                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="MiddleInitial" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.MiddleInitial)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="FormOfAddr" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.FormOfAddr)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="BusinessPhoneExtension" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BusinessPhoneExtension)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="HomePhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.HomePhone)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="AllowApps" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.AllowApps)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="SeedNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.SeedNotices)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BlendNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BlendNotices)
+                </div>
+            </div>                                                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+             <div class="form-group row">
+                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.LastName)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Suffix" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Suffix)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="MobilePhone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.MobilePhone)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PagerNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PagerNumber)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="AllowSeeds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.AllowSeeds)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="TagNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.TagNotices)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesNotices" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BulkSalesNotices)
+                </div>
+            </div>                 
+        </div>
+    </div>
+    <div>
+        <hr>
+        <h3>Address</h3>
+        @if(this.User.IsInRole("CoreStaff"))
+        {
+            <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Add New Address</a>
+        }        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Address1</th>
+                    <th>Address2</th>
+                    <th>City</th>
+                    <th>County</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Country</th>
+                    <th>Mailing</th>
+                    <th>Billing</th>
+                    <th>Delivery</th>
+                    <th>Physical Location</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var add in Model.Addresses)
+                {
+                    <tr>
+                        <th>
+                            @if(this.User.IsInRole("CoreStaff"))
+                            {
+                                <a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a>
+                            }
+                        </th>
+                        <th>@add.Address.Address1</th>
+                        <th>@add.Address.Address2</th>
+                        <th>@add.Address.City</th>
+                        <th>@add.Address.CountyName</th>
+                        <th>@add.Address.StateName</th>
+                        <th>@add.Address.PostalCode</th>
+                        <th>@add.Address.CountryName</th>
+                        <th>@Html.CheckBoxFor(x => add.Mailing, new { @disabled = "disabled"})</th>
+                        <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
+                        <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
+                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc, new { @disabled = "disabled"})</td>
+                        <th>
+                            @if(this.User.IsInRole("CoreStaff"))
+                            {
+                                <a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Delete</a>
+                            }
+                        </th>
+                    </tr>                    
+                }
+            </tbody>
+        </table>        
+    </div>
+</div>

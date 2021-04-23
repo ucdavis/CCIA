@@ -12,16 +12,17 @@ namespace CCIA.Models.DetailsViewModels
     {
         public FieldHistory  history { get; set; }
         public List<Crops> crops { get; set; }
-
+        public int appId { get; set; }
        
-        public static async Task<AdminHistoryViewModel> Create(CCIAContext _dbContext, int id)
+        public static async Task<AdminHistoryViewModel> Create(CCIAContext _dbContext, int id, int appId = 0)
         {          
-            var cropsWNull = await _dbContext.Crops.OrderBy(c => c.Name).ToListAsync();
+            var cropsWNull = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
             cropsWNull.Insert(0, new Crops{ CropId = 0, Crop = "Select Crop"});
             var viewModel = new AdminHistoryViewModel
             {
-                history = await _dbContext.FieldHistory.Where(h => h.Id == id).FirstAsync(),
+                history = await _dbContext.FieldHistory.Where(h => h.Id == id).FirstOrDefaultAsync(),
                 crops = cropsWNull,
+                appId = appId
             };           
 
             return viewModel;

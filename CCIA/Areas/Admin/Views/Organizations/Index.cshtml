@@ -1,0 +1,62 @@
+@model List<CCIA.Models.Organizations>
+
+<h2>Organizations</h2> 
+<form asp-action="Index" method="Post">
+<div class="container">
+    <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>            
+        </div>  
+    </div>
+    <div class="form-group row required">
+        <label for="term" class="col-sm-3 col-form-label">Search Term</label>
+        <input type="text" id="term" class="col-sm-7 form-control" name="term" data-val="true" data-val-required="Term is required">
+        <span class="field-validation-valid text-danger" for="Id"  data-valmsg-replace="true"></span>
+        <span>Enter Org ID or name fragment</span>
+    </div>
+    <div class="row">
+         <input type="submit" value="View Org" id="submit" class="btn btn-primary"></input> 
+         @if(this.User.IsInRole("Admin"))
+         {
+             <a class="btn btn-dark" asp-action="Create" asp-controller="Organizations" asp-area="Admin">Create new Org</a>
+         }               
+    </div>
+</div>
+</form>
+
+@if(Model != null)
+{
+    <table class="table">
+        <thead>
+            <th></th>
+            <th>OrgId</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address1</th>
+            <th>City</th>
+            <th>County</th>
+            <th>State</th>
+            <th>District</th>
+        </thead>
+        <tbody>
+            @foreach (var row in Model)
+            {
+                <tr>
+                    <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Organizations" asp-route-id="@row.Id">Details</a></td>
+                    <td>@row.Id</td>
+                    <td>@row.Name</td>
+                    <td>@row.Phone</td>
+                    <td>@(row.Address == null ? "" : @row.Address.Address1)</td>
+                    <td>@(row.Address == null ? "" : @row.Address.City)</td>
+                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.Name)</td>
+                    <td>@(row.Address == null || row.Address.StateProvince == null ? "" : @row.Address.StateProvince.Name)</td>
+                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.District)</td>
+                </tr>
+                
+            }
+        </tbody>
+    </table> 
+}
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

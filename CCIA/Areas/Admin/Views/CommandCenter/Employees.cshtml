@@ -1,0 +1,45 @@
+@model List<CCIA.Models.CCIAEmployees>
+
+<div class="card">
+    <div class="card-header-access">
+        <div class="card-head">
+            <h2>CCIA Employees</h2>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="btn btn-primary" asp-action="NewEmployee">Add New Employee</a>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>First</th>
+                <th>Last</th>
+                <th>Current</th>
+                <th>Access</th>
+                <th>Core</th>
+                <th>Fld Insp</th>
+                <th>Admin</th>
+                <th>Update Cond Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td><a class="btn btn-info" asp-action="EmployeeDetails" asp-route-id="@emp.Id">Details</a></td>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td><input type="checkbox" asp-for="@emp.Current"></td>
+                    <td><input type="checkbox" asp-for="@emp.CCIAAccess"></td>
+                    <td><input type="checkbox" asp-for="@emp.CoreStaff"></td>
+                    <td><input type="checkbox" asp-for="@emp.FieldInspector"></td>
+                    <td><input type="checkbox" asp-for="@emp.Admin"></td>
+                    <td><input type="checkbox" asp-for="@emp.ConditionerStatusUpdate"></td>
+                </tr>                
+            }
+        </tbody>
+    </table>
+</div>

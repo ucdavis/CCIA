@@ -1,0 +1,82 @@
+@model CCIA.Models.AdminAddressEditCreateViewModel
+
+<form asp-action="AddAddress">
+@Html.HiddenFor(x => x.OrgId)
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Address for @Model.OrgName</h2> 
+        </div>            
+    </div>
+    <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>  
+    </div>  
+    <div class="col-sm-6">
+        <div class="form-group row">                
+            <label asp-for="orgAddress.Mailing" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="orgAddress.Mailing" class="col-sm-1 form-control">
+        </div>
+        <div class="form-group row">                
+            <label asp-for="orgAddress.Billing" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="orgAddress.Billing" class="col-sm-1 form-control">
+        </div>
+        <div class="form-group row">                
+            <label asp-for="orgAddress.Delivery" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="orgAddress.Delivery" class="col-sm-1 form-control">
+        </div> 
+        <div class="form-group row">                
+            <label asp-for="orgAddress.Physical" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="orgAddress.Physical" class="col-sm-1 form-control">
+        </div> 
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.Address1" class="col-sm-3 col-form-label"></label>
+            <input asp-for="orgAddress.Address.Address1" class="col-sm-3 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="orgAddress.Address.Address1" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.Address2" class="col-sm-3 col-form-label"></label>
+            <input asp-for="orgAddress.Address.Address2" class="col-sm-3 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="orgAddress.Address.Address2" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.Address3" class="col-sm-3 col-form-label"></label>
+            <input asp-for="orgAddress.Address.Address3" class="col-sm-3 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="orgAddress.Address.Address3" data-valmsg-replace="true"></span>
+        </div> 
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.City" class="col-sm-3 col-form-label"></label>
+            <input asp-for="orgAddress.Address.City" class="col-sm-3 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="orgAddress.Address.City" data-valmsg-replace="true"></span>
+        </div>  
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.CountyId" class="col-sm-3 col-form-label">County</label>
+            <select required asp-for="orgAddress.Address.CountyId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
+        </div>
+       <div class="form-group row">
+            <label asp-for="orgAddress.Address.StateProvinceId" class="col-sm-3 col-form-label">State</label>
+            <select required asp-for="orgAddress.Address.StateProvinceId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "Name"))"></select>
+        </div>   
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.CountryId" class="col-sm-3 col-form-label">Country</label>
+            <select required asp-for="orgAddress.Address.CountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+        </div> 
+        <div class="form-group row">
+            <label asp-for="orgAddress.Address.PostalCode" class="col-sm-3 col-form-label"></label>
+            <input asp-for="orgAddress.Address.PostalCode" class="col-sm-3 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="orgAddress.Address.PostalCode" data-valmsg-replace="true"></span>
+        </div>
+        <div class="row">
+         <div class="col-sm-12">             
+            <input type="submit" value="Update" class="btn btn-primary"></input>   
+            <a class="btn btn-dark" asp-action="Details" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.OrgId">Cancel</a>
+        </div>
+    </div>
+</div>
+</form>
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}  
+    
+}

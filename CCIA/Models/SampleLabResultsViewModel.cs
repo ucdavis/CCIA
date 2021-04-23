@@ -16,11 +16,11 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public static async Task<SampleLabResultsViewModel> Create(CCIAContext _dbContext, int sid)
         { 
             var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
-                    .Select(o => new Organizations { OrgId = o.OrgId, OrgName = o.OrgName})
-                    .OrderBy(o => o.OrgName)
+                    .Select(o => new Organizations { Id = o.Id, Name = o.Name})
+                    .OrderBy(o => o.Name)
                     .ToListAsync();
-            privateLabs.Insert(0, new Organizations {OrgId = 0, OrgName = "Select lab..."});
-            privateLabs.Add(new Organizations {OrgId= -1, OrgName = "Other...list in comments"});
+            privateLabs.Insert(0, new Organizations {Id = 0, Name = "Select lab..."});
+            privateLabs.Add(new Organizations {Id= -1, Name = "Other...list in comments"});
 
             if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
             {
@@ -41,11 +41,11 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public static async Task<SampleLabResultsViewModel> ReUse(CCIAContext _dbContext, SampleLabResults labs)
         {
             var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
-                    .Select(o => new Organizations { OrgId = o.OrgId, OrgName = o.OrgName})
-                    .OrderBy(o => o.OrgName)
+                    .Select(o => new Organizations { Id = o.Id, Name = o.Name})
+                    .OrderBy(o => o.Name)
                     .ToListAsync();
-            privateLabs.Insert(0, new Organizations {OrgId = 0, OrgName = "Select lab..."});
-            privateLabs.Add(new Organizations {OrgId= -1, OrgName = "Other...list in comments"});
+            privateLabs.Insert(0, new Organizations {Id = 0, Name = "Select lab..."});
+            privateLabs.Add(new Organizations {Id= -1, Name = "Other...list in comments"});
 
             return new SampleLabResultsViewModel
             {

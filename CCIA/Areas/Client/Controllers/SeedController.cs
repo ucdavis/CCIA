@@ -30,7 +30,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Index(int certYear)
         {
             
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             if (certYear == 0)
             {
                 certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
@@ -43,7 +43,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             return View(model);
         }
@@ -403,7 +403,7 @@ namespace CCIA.Controllers.Client
                 var certs = await _dbContext.CertRad.Where(c => c.CertYear == certYear && c.CertNum == certNumber && c.Rad == rad).FirstAsync();
                 var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certs.CertNum)
                     .Include(a => a.GrowerOrganization)
-                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.Name, acres = a.AcresApplied })
                     .ToListAsync();
                 if(model != null)
                 {
@@ -413,7 +413,7 @@ namespace CCIA.Controllers.Client
             {
                var model = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.CertNum == certNumber)
                     .Include(a => a.GrowerOrganization)
-                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.OrgName, acres = a.AcresApplied })
+                    .Select(a => new { appId = a.Id, grower = a.GrowerOrganization.Name, acres = a.AcresApplied })
                     .ToListAsync();
                if(model != null)
                 {
@@ -431,14 +431,14 @@ namespace CCIA.Controllers.Client
             // Parsing was successful (we have an ID number instead of a name)
             if (Int32.TryParse(search, out id))
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
-                    .Select(o => new Organizations{ OrgId = o.OrgId, OrgName = o.OrgName})
+                orgs = await _dbContext.Organizations.Where(o => o.Id == id)
+                    .Select(o => new Organizations{ Id = o.Id, Name = o.Name})
                     .ToListAsync();
             }
             else
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(search.ToLower()))
-                    .Select(o => new Organizations{ OrgId = o.OrgId, OrgName = o.OrgName})
+                orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(search.ToLower()))
+                    .Select(o => new Organizations{ Id = o.Id, Name = o.Name})
                     .ToListAsync();
             }
             return Json(orgs);

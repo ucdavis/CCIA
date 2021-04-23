@@ -32,7 +32,7 @@
             </button>
             <div class="navbar-collapse collapse navbars" id="navbar2">
                 <ul class="navbar-nav">
-                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Orgs</a>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" asp-area="admin" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Applications</a>
                         <div class="dropdown-menu">                           
@@ -89,8 +89,10 @@
                             <a class="dropdown-item" asp-area="admin" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
                         </div>
                     </li>
+                    <a class="nav-link" asp-area="admin" asp-controller="Organizations" asp-action="Index">Orgs</a>
                     <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certificates</a>
                     <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Variety</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Command Center</a>
                     <a class="nav-link" asp-controller="Account" asp-action="Login">Logout</a>
                 </ul>
             </div>

@@ -23,6 +23,10 @@ namespace CCIA.Services
         IQueryable<Certs> FullCerts();
 
         IQueryable<OECD> FullOECD();
+
+        IQueryable<Organizations> FullOrg();
+
+        IQueryable<Contacts> FullContact();
     }
 
      public class FullCallService : IFullCallService
@@ -203,6 +207,52 @@ namespace CCIA.Services
             return renew;
 
         }
+
+        public IQueryable<Organizations> FullOrg()
+        {
+            var org = _context.Organizations
+               .Include(o => o.Address)
+               .ThenInclude(a => a.County)
+               .Include(o => o.Address)
+               .ThenInclude(a => a.StateProvince)
+               .Include(o => o.Address)
+               .ThenInclude(a => a.Countries)
+               .Include(o => o.RepresentativeContact)
+               .Include(o => o.Employees)
+               .Include(o => o.ConditionerStatus)
+               .Include(o => o.MapPermissions)
+               .Include(o => o.MapCropPermissions)
+               .ThenInclude(p => p.Crop)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.County)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.StateProvince)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.Countries)               
+                .AsQueryable();
+            return org;
+        }
+
+        public IQueryable<Contacts> FullContact()
+        {
+            var contact = _context.Contacts
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.County)
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(c => c.Addresses)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.Countries)
+                .AsQueryable();
+
+            return contact;
+        }
+
          public IQueryable<Tags> FullTag() 
         {
             var tag = _context.Tags

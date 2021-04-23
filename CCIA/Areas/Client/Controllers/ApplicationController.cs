@@ -25,7 +25,7 @@ namespace CCIA.Controllers.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).FirstAsync();
             if (certYear == 0)
             {
                 certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync(); ;
@@ -38,7 +38,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).FirstAsync();
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).FirstAsync();
             var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
@@ -383,8 +383,8 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
             // Get contact ID -- will correspond to logged-in user
-            var contact = await _dbContext.ContactToOrg
-                                .Where(c => c.ContactId == 1)
+            var contact = await _dbContext.Contacts
+                                .Where(c => c.Id == 1)
                                 .FirstOrDefaultAsync();
 
             // Check if grower is same as applicant
@@ -457,13 +457,13 @@ namespace CCIA.Controllers.Client
             // Parsing was successful (we have an ID number instead of a name)
             if (Int32.TryParse(lookupVal, out id))
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgId == id)
+                orgs = await _dbContext.Organizations.Where(o => o.Id == id)
                     .Include(o => o.Address).ThenInclude(a => a.StateProvince)
                     .ToListAsync();
             }
             else
             {
-                orgs = await _dbContext.Organizations.Where(o => o.OrgName.Contains(lookupVal.ToLower()))
+                orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(lookupVal.ToLower()))
                     .Include(o => o.Address).ThenInclude(a => a.StateProvince)
                     .ToListAsync();
             }

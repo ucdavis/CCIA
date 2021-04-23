@@ -37,8 +37,9 @@ namespace CCIA.Models
         public virtual DbSet<Charges> Charges { get; set; }
         public virtual DbSet<CondStatus> CondStatus { get; set; }
         public virtual DbSet<ContactAddress> ContactAddress { get; set; }
+        public virtual DbSet<OrganizationAddress> OrganizationAddress { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }
-        public virtual DbSet<ContactToOrg> ContactToOrg { get; set; }
+       
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<County> County { get; set; }
         public virtual DbSet<Crops> Crops { get; set; }
@@ -104,6 +105,12 @@ namespace CCIA.Models
         public virtual DbSet<TagBagging> TagBagging { get; set; }
 
         public virtual DbSet<TagSeries> TagSeries { get; set; }
+
+        public virtual DbSet<OrgMaps> OrgMaps {get; set; }
+
+        public virtual DbSet<Maps> Maps { get; set; }
+
+        public virtual DbSet<OrgMapCrops> OrgMapCrops {get; set;}
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -307,6 +314,44 @@ namespace CCIA.Models
                 entity.Property(e => e.TagId).HasColumnName("tag_id");
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+
+            });
+
+            modelBuilder.Entity<Maps>(entity => {
+                entity.ToTable("map_croppts_app_listing");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("app_id");
+
+                entity.Property(e => e.Name).HasColumnName("description");
+
+                entity.Property(e => e.Url).HasColumnName("url");
+
+            });
+
+            modelBuilder.Entity<OrgMapCrops>(entity => {
+                entity.ToTable("map_crop_access");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("access_id");
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+                entity.Property(e => e.CropId).HasColumnName("crop_id");
+                entity.Property(e => e.Allow).HasColumnName("access");
+            });
+
+            modelBuilder.Entity<OrgMaps>(entity => {
+                entity.ToTable("org_map");   
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.Property(e => e.Map).HasColumnName("map_name");
+
+                entity.Property(e => e.Allow).HasColumnName("allow_access");
 
             });
 
@@ -785,9 +830,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.UCDMaildID).HasColumnName("ucd_mailid");
 
-                entity.Property(e => e.CampusRoom).HasColumnName("campus_room");
-
-                entity.Property(e => e.CampusBuilding).HasColumnName("campus_bldg");
+                
 
                 entity.Property(e => e.CampusPhone).HasColumnName("campus_phone");
 
@@ -822,6 +865,12 @@ namespace CCIA.Models
                 entity.Property(e => e.PrevarietyGermplasm).HasColumnName("prevariety_germplasm");
 
                 entity.Property(e => e.OECDInvoicePrinter).HasColumnName("oecd_invoice_printer");
+
+                entity.Property(e => e.Admin).HasColumnName("admin");
+
+                entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
+
+                entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
 
             });
 
@@ -1365,7 +1414,7 @@ namespace CCIA.Models
             {
                 entity.ToTable("address");
 
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
+                entity.Property(e => e.Id).HasColumnName("address_id");
 
                 entity.Property(e => e.Address1)
                     .IsRequired()
@@ -1991,23 +2040,23 @@ namespace CCIA.Models
             {
                 entity.ToTable("cond_status");
 
-                entity.Property(e => e.CondStatusId).HasColumnName("cond_status_id");
+                entity.Property(e => e.Id).HasColumnName("cond_status_id");
 
                 entity.Property(e => e.AllowPretag)
                     .HasColumnName("allow_pretag")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.CondStatus1)
+                entity.Property(e => e.Status)
                     .IsRequired()
                     .HasColumnName("cond_status")
                     .HasMaxLength(2)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CondUpdate)
+                entity.Property(e => e.DateUpdated)
                     .HasColumnName("cond_update")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.CondYear).HasColumnName("cond_year");
+                entity.Property(e => e.Year).HasColumnName("cond_year");
 
                 entity.Property(e => e.DatePretagApproved)
                     .HasColumnName("date_pretag_approved")
@@ -2026,7 +2075,8 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ContactAddress>(entity =>
             {
-                entity.HasKey(e => new { e.ContactId, e.AddressId });
+                entity.HasKey(e => e.Id);
+                //entity.HasKey(e => new { e.ContactId, e.AddressId });
 
                 entity.ToTable("contact_address");
 
@@ -2042,7 +2092,7 @@ namespace CCIA.Models
                     .HasColumnName("billing")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.ContaddId)
+                entity.Property(e => e.Id)
                     .HasColumnName("contadd_id")
                     .ValueGeneratedOnAdd();
 
@@ -2068,15 +2118,50 @@ namespace CCIA.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Organizations>(entity =>
+            modelBuilder.Entity<OrganizationAddress>(entity =>
             {
-                entity.HasKey(e => e.OrgId);
+                entity.HasKey(e => e.Id);
 
-                entity.ToTable("Organization");
+                entity.ToTable("organization_address");
 
                 entity.Property(e => e.OrgId).HasColumnName("org_id");
 
-                entity.Property(e => e.OrgName).HasColumnName("org_name");
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
+
+                entity.Property(e => e.Active)
+                    .HasColumnName("active");
+
+                entity.Property(e => e.Billing)
+                    .HasColumnName("billing")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedOnAdd();
+               
+                entity.Property(e => e.Delivery)
+                    .HasColumnName("delivery")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Mailing)
+                    .HasColumnName("mailing")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Physical)
+                    .HasColumnName("physical")
+                    .HasDefaultValueSql("((0))");
+               
+            });
+
+            modelBuilder.Entity<Organizations>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("Organization");
+
+                entity.Property(e => e.Id).HasColumnName("org_id");
+
+                entity.Property(e => e.Name).HasColumnName("org_name");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
                 
@@ -2087,6 +2172,58 @@ namespace CCIA.Models
                 entity.Property(e => e.CountyId).HasColumnName("county_id");
 
                 entity.Property(e => e.GermLab).HasColumnName("germination_lab");
+
+                entity.Property(e => e.Fax).HasColumnName("main_fax");
+
+                entity.Property(e => e.Website).HasColumnName("website");
+
+                //entity.Property(e => e.FoundationSeedGrower).HasColumnName("foundation_seed_grower");
+
+                entity.Property(e => e.DiagnosticLab).HasColumnName("diagnostic_lab");
+
+                entity.Property(e => e.AgCommissioner).HasColumnName("ag_comm_off");
+
+                entity.Property(e => e.District).HasColumnName("district");
+
+                entity.Property(e => e.Member).HasColumnName("ccia_member");
+
+                entity.Property(e => e.MemberYear).HasColumnName("member_year");
+
+                entity.Property(e => e.MemberType).HasColumnName("member_type");
+
+                entity.Property(e => e.LastMemberAgreement).HasColumnName("last_member_agreement");
+
+                entity.Property(e => e.MemberSince).HasColumnName("member_since");
+
+                entity.Property(e => e.RepresentativeContactId).HasColumnName("member_rep_id");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.UserModified).HasColumnName("user_modified");
+
+                entity.Property(e => e.DateModified).HasColumnName("date_modified");
+
+                entity.Property(e => e.Notes).HasColumnName("notes");
+
+                entity.Property(e => e.AppYearAgree).HasColumnName("app_agree_accept");
+
+               // entity.Property(e => e.LacYearAgree).HasColumnName("lac_agree_accept");
+
+                entity.Property(e => e.AlfalfaGMOPinning).HasColumnName("allow_alfalfa_gmo_pinning");
+                
+                entity.HasOne(e => e.OrgCounty);
+
+                entity.HasOne(e => e.Address);
+
+                entity.HasOne(e => e.RepresentativeContact);
+
+                entity.HasMany(e => e.Employees); 
+
+                entity.HasMany(e => e.ConditionerStatus);  
+
+                entity.HasMany(e => e.MapPermissions);             
+
+                
             });
 
             modelBuilder.Entity<Contacts>(entity =>
@@ -2113,14 +2250,9 @@ namespace CCIA.Models
                     .HasColumnName("title")
                     .HasMaxLength(50)
                     .IsUnicode(false);
-                   
-                entity.Property(e => e.Active)
-                    .HasColumnName("active")
-                    .HasDefaultValueSql("((0))");
+                                  
 
-                entity.Property(e => e.AgCommissioner)
-                    .HasColumnName("ag_commissioner")
-                    .HasDefaultValueSql("((0))");
+               
 
                 entity.Property(e => e.AlfalfaLastYearAgreement)
                     .HasColumnName("alfalfa_last_year_agreement")
@@ -2136,95 +2268,29 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AllowSeeds)
                     .HasColumnName("allow_seeds")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("((0))");              
 
-                entity.Property(e => e.AuditNotify)
-                    .HasColumnName("audit_notify")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardActive)
-                    .HasColumnName("board_active")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardMember)
-                    .HasColumnName("board_member")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.BoardRepresent)
-                    .HasColumnName("board_represent")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BoardTitle)
-                    .HasColumnName("board_title")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BusPhone)
+                entity.Property(e => e.BusinessPhone)
                     .HasColumnName("bus_phone")
                     .HasMaxLength(30)
                     .IsUnicode(false);
 
-                entity.Property(e => e.BusPhoneExt)
+                entity.Property(e => e.BusinessPhoneExtension)
                     .HasColumnName("bus_phone_ext")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CciaMember)
-                    .HasColumnName("ccia_member")
-                    .HasDefaultValueSql("((0))");
+              
+               
 
-                entity.Property(e => e.CciaMemberYear).HasColumnName("ccia_member_year");
-
-                entity.Property(e => e.CertifiedSeedSx)
-                    .HasColumnName("certified_seed_sx")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CertifiedSeedSxNo)
-                    .HasColumnName("certified_seed_sx_no")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContactType)
-                    .HasColumnName("contact_type")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CreateApps)
-                    .HasColumnName("create_apps")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.CurrentYearReview)
-                    .HasColumnName("current_year_review")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.DateAdded)
-                    .HasColumnName("date_added")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DateModified)
-                    .HasColumnName("date_modified")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.DeputyCommissioner)
-                    .HasColumnName("deputy_commissioner")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.EmailAddr)
+                entity.Property(e => e.Email)
                     .HasColumnName("email_addr")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FarmAdvisor)
-                    .HasColumnName("farm_advisor")
-                    .HasDefaultValueSql("((0))");
+               
 
-                entity.Property(e => e.FaxNo)
+                entity.Property(e => e.FaxNumber)
                     .HasColumnName("fax_no")
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -2238,28 +2304,16 @@ namespace CCIA.Models
 
                 entity.Property(e => e.IdahoVegetableLastYearAgreement).HasColumnName("idaho_vegetable_last_year_agreement");
 
-                entity.Property(e => e.LabContact)
-                    .HasColumnName("lab_contact")
-                    .HasDefaultValueSql("((0))");
+               
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.MailListGrBook)
-                    .HasColumnName("mail_list_gr_book")
-                    .HasDefaultValueSql("((0))");
+               
 
-                entity.Property(e => e.MailListSeednotes)
-                    .HasColumnName("mail_list_seednotes")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.MemberSince)
-                    .HasColumnName("member_since")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Mi)
+                entity.Property(e => e.MiddleInitial)
                     .HasColumnName("mi")
                     .HasColumnType("char(1)");
 
@@ -2270,7 +2324,7 @@ namespace CCIA.Models
 
                 
 
-                entity.Property(e => e.PagerNo)
+                entity.Property(e => e.PagerNumber)
                     .HasColumnName("pager_no")
                     .HasMaxLength(30)
                     .IsUnicode(false);
@@ -2292,44 +2346,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.SweetCornLastYearAgreement)
                     .HasColumnName("sweet_corn_last_year_agreement")
-                    .HasDefaultValueSql("((2000))");
+                    .HasDefaultValueSql("((2000))");               
 
-                
+               entity.HasMany(e => e.Addresses);
 
-                entity.Property(e => e.UserAdding).HasColumnName("user_adding");
-
-                entity.Property(e => e.UserEmpModDt)
-                    .HasColumnName("user_emp_mod_dt")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.UserEmpModified)
-                    .HasColumnName("user_emp_modified")
-                    .HasMaxLength(9)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UserModified).HasColumnName("user_modified");
             });
 
-            modelBuilder.Entity<ContactToOrg>(entity =>
-            {
-                entity.HasKey(e => e.ContOrgId);
-
-                entity.ToTable("contact_to_org");
-
-                entity.Property(e => e.ContOrgId).HasColumnName("cont_org_id");
-
-                entity.Property(e => e.Comments)
-                    .HasColumnName("comments")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContactId).HasColumnName("contact_id");
-
-                entity.Property(e => e.OrgId)
-                    .HasColumnName("org_id")
-                    .HasColumnType("nchar(10)");
-            });
-
+           
             modelBuilder.Entity<Countries>(entity =>
             {
                 entity.HasKey(e => e.Id);

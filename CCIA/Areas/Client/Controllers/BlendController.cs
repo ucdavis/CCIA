@@ -26,7 +26,7 @@ namespace CCIA.Controllers.Client.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();   
+            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();   
             if (certYear == 0)
             {
                 certYear = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId).Select(b => b.CertYear).MaxAsync();;
@@ -39,7 +39,7 @@ namespace CCIA.Controllers.Client.Client
         public async Task<IActionResult> Details(int id)
         {
             // TODO restrict to logged in user.
-             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.OrgId).SingleAsync();
+             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
             // var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             // return View(model);
             return View();
