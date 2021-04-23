@@ -45,7 +45,13 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.org.GermLab)
                 </div>
-            </div>                            
+            </div> 
+            <div class="form-group row">
+                <label asp-for="org.District" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.org.District)
+                </div>
+            </div>                           
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -113,7 +119,16 @@
             </div>                     
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-12">
+        <div class="form-group row">
+            <label asp-for="org.Notes" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.org.Notes)
+            </div>
+        </div>
+        <div><hr></div>
+    </div>
+    <div class="col-sm-6">         
         <h3>Conditioner Status</h3>
         @if(this.User.IsInRole("ConditionerStatusUpdate"))
         {
@@ -221,83 +236,66 @@
     }
     <div class="col-sm-6">
         <hr>
-        <h3>Address</h3>         
-        @if(Model.org.Address == null){
-            @if(this.User.IsInRole("Admin"))
+        <h3>Address</h3> 
+        <div>
+             @if(this.User.IsInRole("Admin"))
             {
-                <a asp-action="AddAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.org.Id" class="btn btn-primary">Add Address</a>                
-            }            
-        } 
-        else
-        {
-            @if(this.User.IsInRole("Admin"))
-            {
-                <a asp-action="EditAddress" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.org.AddressId" class="btn btn-primary">Edit Address</a>
-            }
-        <div class="form-group row">
-            <label asp-for="org.District" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.District)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.Address1" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.Address1)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.Address2" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.Address2)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.Address3" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.Address3)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.City" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.City)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.County.Name" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.County.Name)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.StateProvince.Name" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.StateProvince.Name)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.Countries.Name" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.Countries.Name)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Address.PostalCode" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Address.PostalCode)
-            </div>
-        </div>
-        }
-        <div class="form-group-row">
-            <hr>
-        </div>
-        <div class="form-group row">
-            <label asp-for="org.Notes" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.org.Notes)
-            </div>
-        </div>
+                <a asp-action="AddAddress" asp-route-id="@Model.org.Id" class="btn btn-primary">Add Address</a>                
+            }   
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Address1</th>
+                        <th>Address2</th>
+                        <th>City</th>
+                        <th>County</th>
+                        <th>State</th>
+                        <th>Zip</th>
+                        <th>Country</th>
+                        <th>Mailing</th>
+                        <th>Billing</th>
+                        <th>Delivery</th>
+                        <th>Physical Location</th>
+                        <th>Active</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var add in Model.org.Addresses)
+                    {
+                        <tr>
+                            <th>
+                                @if(this.User.IsInRole("Admin"))
+                                {
+                                    <a class="btn btn-primary" asp-action="EditAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a>
+                                }
+                            </th>
+                            <th>@add.Address.Address1</th>
+                            <th>@add.Address.Address2</th>
+                            <th>@add.Address.City</th>
+                            <th>@add.Address.CountyName</th>
+                            <th>@add.Address.StateName</th>
+                            <th>@add.Address.PostalCode</th>
+                            <th>@add.Address.CountryName</th>
+                            <th>@Html.CheckBoxFor(x => add.Mailing, new { @disabled = "disabled"})</th>
+                            <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
+                            <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
+                            <td>@Html.CheckBoxFor(x => add.Physical, new { @disabled = "disabled"})</td>
+                            <td>@Html.CheckBoxFor(x => add.Active, new { @disabled = "disabled"})</td>
+                            <th>
+                                @if(this.User.IsInRole("Admin") && !add.Active)
+                                {   
+                                    <a class="btn btn-danger" asp-action="DeleteAddress" asp-route-id="@add.Id">Delete</a>
+                                    <a class="btn btn-primary" asp-action="SetActive" asp-route-id="@add.Id" onclick="return confirm('Set this as Active/Primary Address?');">Set Active</a>
+                                                                        
+                                }
+                            </th>
+                        </tr>                    
+                    }
+                </tbody>
+            </table>
+        </div>        
     </div>
     <div class="col-sm-6">
         <hr>

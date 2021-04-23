@@ -13,7 +13,7 @@ namespace CCIA.Models
      
     public class AdminAddressEditCreateViewModel
     {
-       public Address address { get; set; }
+       public OrganizationAddress orgAddress {get; set;}
 
        public int OrgId { get; set; } 
 
@@ -26,14 +26,17 @@ namespace CCIA.Models
        public List<StateProvince> states { get; set; }
                
         public static async Task<AdminAddressEditCreateViewModel> Create(CCIAContext _dbContext, int id, int orgId = 0)
-        {       
-             var thisAddress = await _dbContext.Address.Where(a => a.Id == id)
-                .Include(a => a.Countries)
-                .Include(a => a.StateProvince)
-                .Include(a => a.County)
-                .FirstOrDefaultAsync();
+        {
+            var thisOrgAddress = await _dbContext.OrganizationAddress.Where(a => a.Id == id)
+                .Include(a => a.Address)       
+                .ThenInclude(a => a.Countries)
+                .Include(oa => oa.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(oa => oa.Address)
+                .ThenInclude(a => a.County)
+                .FirstOrDefaultAsync();                         
 
-            var orgSearch = _dbContext.Organizations.Where(o => o.AddressId == id).AsQueryable();// .FirstOrDefaultAsync();
+            var orgSearch = _dbContext.Organizations.Where(o => o.Id == thisOrgAddress.OrgId).AsQueryable();// .FirstOrDefaultAsync();
             if(orgId != 0)
             {
                 orgSearch = _dbContext.Organizations.Where(o => o.Id == orgId).AsQueryable();
@@ -41,10 +44,16 @@ namespace CCIA.Models
             var org = await orgSearch.FirstOrDefaultAsync();
             var countyList = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(x => x.Name).ToListAsync();
             countyList.Add(new County{CountyId = 0, Name= "Outside California"});
+            if(thisOrgAddress == null && orgId != 0)
+            {
+                thisOrgAddress = new OrganizationAddress();
+                thisOrgAddress.Address = new Address();
+                thisOrgAddress.OrgId = orgId;
+            }
                        
             var model = new AdminAddressEditCreateViewModel
             {
-                address = thisAddress,                
+                orgAddress = thisOrgAddress,                
                 countries = await _dbContext.Countries.OrderBy(x => x.Name).ToListAsync(),
                 counties = countyList,
                 states = await _dbContext.StateProvince.OrderBy(x => x.Name).ToListAsync(),

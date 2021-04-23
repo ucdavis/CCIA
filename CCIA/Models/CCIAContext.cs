@@ -37,6 +37,7 @@ namespace CCIA.Models
         public virtual DbSet<Charges> Charges { get; set; }
         public virtual DbSet<CondStatus> CondStatus { get; set; }
         public virtual DbSet<ContactAddress> ContactAddress { get; set; }
+        public virtual DbSet<OrganizationAddress> OrganizationAddress { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }
        
         public virtual DbSet<Countries> Countries { get; set; }
@@ -2115,6 +2116,41 @@ namespace CCIA.Models
                     .HasColumnName("user_modified")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OrganizationAddress>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.ToTable("organization_address");
+
+                entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.Property(e => e.AddressId).HasColumnName("address_id");
+
+                entity.Property(e => e.Active)
+                    .HasColumnName("active");
+
+                entity.Property(e => e.Billing)
+                    .HasColumnName("billing")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedOnAdd();
+               
+                entity.Property(e => e.Delivery)
+                    .HasColumnName("delivery")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Mailing)
+                    .HasColumnName("mailing")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Physical)
+                    .HasColumnName("physical")
+                    .HasDefaultValueSql("((0))");
+               
             });
 
             modelBuilder.Entity<Organizations>(entity =>

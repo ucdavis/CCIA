@@ -223,6 +223,15 @@ namespace CCIA.Services
                .Include(o => o.MapPermissions)
                .Include(o => o.MapCropPermissions)
                .ThenInclude(p => p.Crop)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.County)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.StateProvince)
+               .Include(o => o.Addresses)
+               .ThenInclude(oa => oa.Address)
+               .ThenInclude(a => a.Countries)               
                 .AsQueryable();
             return org;
         }
