@@ -1789,11 +1789,11 @@ namespace CCIA.Models
 
             modelBuilder.Entity<BlendRequests>(entity =>
             {
-                entity.HasKey(e => e.BlendId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("blend_requests");
 
-                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.Id).HasColumnName("blend_id");
 
                 entity.Property(e => e.ApproveDate)
                     .HasColumnName("approve_date")

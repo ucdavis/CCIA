@@ -6,10 +6,20 @@ using System.Linq;
 
 namespace CCIA.Models
 {
+     public enum BlendStatus
+    { 
+        [Display(Name="Initiated")]
+        Initiated,
+        [Display(Name="Pending acceptance")]
+        PendingAcceptance,
+        [Display(Name="Approved")]
+        Approved,        
+    } 
+
     public partial class BlendRequests
     {
         [Key]
-        public int BlendId { get; set; }
+        public int Id { get; set; }
         public string BlendType { get; set; }
         public DateTime RequestStarted { get; set; }
         public int ConditionerId { get; set; }
@@ -107,11 +117,11 @@ namespace CCIA.Models
                 switch (BlendType)
                 {
                     case "Lot":
-                        return $"CA-L{twoDigitYear}{BlendId}";
+                        return $"CA-L{twoDigitYear}{Id}";
                     case "Varietal":
-                        return $"CA-V{twoDigitYear}{BlendId}";
+                        return $"CA-V{twoDigitYear}{Id}";
                     case "In Dirt":
-                        return $"CA-D{twoDigitYear}{BlendId}";
+                        return $"CA-D{twoDigitYear}{Id}";
                 }
                 return "";
             }

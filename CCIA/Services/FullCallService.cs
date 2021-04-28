@@ -27,6 +27,8 @@ namespace CCIA.Services
         IQueryable<Organizations> FullOrg();
 
         IQueryable<Contacts> FullContact();
+
+        IQueryable<BlendRequests> FullBlendRequest();
     }
 
      public class FullCallService : IFullCallService
@@ -102,6 +104,29 @@ namespace CCIA.Services
                 .Include(s => s.Variety)
                 .AsQueryable();
             return seed;
+
+        }
+
+        public IQueryable<BlendRequests> FullBlendRequest()
+        {
+            var blend = _context.BlendRequests
+                .Include(b => b.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.LotBlends)
+                .ThenInclude(l => l.Seeds)                
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.InDirtBlends)
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(b => b.InDirtBlends)
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(b => b.Conditioner)
+                .AsQueryable();
+            return blend;
 
         }
 
