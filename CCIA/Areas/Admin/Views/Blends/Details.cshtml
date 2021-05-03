@@ -1,0 +1,128 @@
+@model CCIA.Models.BlendRequests
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Blend Request Details</h2> 
+        </div>            
+    </div>
+    @* @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
+         {
+             <div class="row">
+                <div class="col-sm-12">
+                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.org.Id">Edit</a> <br><br>
+                </div>            
+            </div>   
+         }         *@
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Conditioner.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Conditioner.NameAndId)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="RequestStarted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.RequestStarted)
+                </div>
+            </div>                                     
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="BlendType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BlendType)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Status)
+                </div>
+            </div>          
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Variety</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.GetVarietyName()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CertNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CertNumber)
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <h3>Components</h3>
+        @if(Model.BlendType == "Lot" || Model.BlendType == "Varietal")
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Component ID</th>
+                        <th>SID</th>
+                        <th>Lot#</th>
+                        <th>Variety</th>
+                        <th>Weight</th>
+                        <th>Class</th>
+                        <th>Germ</th>
+                        <th>Hard</th>
+                        <th>TotalGerm</th>
+                        <th>Purity</th>
+                        <th>Other Crop</th>
+                        <th>Inert</th>
+                        <th>Weed</th>
+                        <th>Lab Date</th>
+                        <th>Dif. Cond.</th>
+                        <th>Link</th>
+                        <th>Cert Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.LotBlends)
+                    {
+                        <tr>
+                            <td>@row.CompId</td>
+                            <td>@row.Sid</td>
+                            <td>@row.Seeds.LotNumber</td>
+                            <td>@row.Seeds.GetVarietyName()</td>
+                            <td>@row.Weight</td>
+                            <td>@row.Seeds.ClassProduced.CertClass</td>
+                            <td>@row.Seeds.LabResults.GermValue</td>
+                            <td>@row.Seeds.LabResults.GermHardSeedValue</td>
+                            <td>@row.Seeds.LabResults.TotalGermination</td>
+                            <td>@row.Seeds.LabResults.PurityValue</td>
+                            <td>@row.Seeds.LabResults.OtherCropValue</td>
+                            <td>@row.Seeds.LabResults.InertValue</td>
+                            <td>@row.Seeds.LabResults.WeedSeedValue</td>
+                            @if(@row.Seeds.LabResults.PrivateLabDate.HasValue)
+                            {
+                                <td>@row.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()</td>
+                            } else
+                            {
+                                <td></td>
+                            }
+                            <td><input type="checkbox" checked="@row.DifferentConditioner(Model.ConditionerId)"></td>
+                            <td><a asp-action="Details" asp-controller="Seeds" asp-route-id="@row.Sid" class="btn btn-info">SID</a></td>
+                            <td>@row.Seeds.CertResults()</td>                            
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        }
+        </div>
+        <div><hr></div>
+    </div>
+</div>

@@ -15,6 +15,15 @@ namespace CCIA.Models
         [ForeignKey("Sid")]
         public Seeds Seeds { get; set; }
 
+        public bool DifferentConditioner(int OrgID)
+        { 
+            if(Seeds != null)
+            {
+                return Seeds.ConditionerId != OrgID;
+            }
+            return false;            
+        }
+
         
     }
 }
