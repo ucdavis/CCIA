@@ -24,6 +24,8 @@ namespace CCIA.Models
 
        public List<BlendComponentChanges> changes { get; set; }
 
+       public List<BlendDocuments> documents { get; set; }
+
 
                
         public static async Task<AdminBlendsDetailsViewModel> Create(CCIAContext _dbContext, IFullCallService _helper, int id)
@@ -34,6 +36,7 @@ namespace CCIA.Models
                 {
                     blend = thisBlend,
                     changes = await _dbContext.BlendComponentChanges.Include(c => c.Employee).Where(c => c.BlendId == id).ToListAsync(),
+                    documents = await _dbContext.BlendDocuments.Where(d => d.BlendId == id).ToListAsync(),
                 };
 
             if(thisBlend.BlendType == "Lot" || thisBlend.BlendType == "Varietal")

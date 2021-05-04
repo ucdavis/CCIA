@@ -237,5 +237,32 @@
                 </tbody>
             </table>
         </div>
+        <div><hr></div>
+        <div class="col-sm-8">        
+            <h3>Supporting Documentation</h3>
+            <div>Form to upload new documents</div>
+            @if(Model.documents.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Link</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.documents)
+                        {
+                            <tr>
+                                <td>@row.Name</td>
+                                <td>@row.Link</td>
+                                <td>delete</td>
+                            </tr>                        
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
     </div>
 </div>

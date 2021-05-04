@@ -57,6 +57,7 @@ namespace CCIA.Models
         public virtual DbSet<InDirtBlendSummary> InDirtBlendSummary { get; set; }
         public virtual DbSet<VarietyBlendComponents> VarietyBlendComponents { get; set; }
         public virtual DbSet<BlendComponentChanges> BlendComponentChanges { get; set; }
+        public virtual DbSet<BlendDocuments>   BlendDocuments { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
@@ -1137,6 +1138,16 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ComponentPercent).HasColumnName("comp_percent");
 
+            });
+
+            modelBuilder.Entity<BlendDocuments>(entity => 
+            {
+                entity.ToTable("blend_docs");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("blend_doc_id");
+                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.Name).HasColumnName("doc_name");
+                entity.Property(e => e.Link).HasColumnName("doc_link");
             });
 
             modelBuilder.Entity<BlendComponentChanges>(entity =>
