@@ -37,7 +37,9 @@ namespace CCIA.Models
 
         public bool DifferentConditioner { get; set; }
 
-        public string CertificationResults { get; set; }       
+        public string CertificationResults { get; set; }  
+
+        public decimal ComponentPercent { get; set; }     
        
         
     }

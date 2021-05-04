@@ -55,6 +55,8 @@ namespace CCIA.Models
         public virtual DbSet<LotBlends> LotBlends { get; set; }
         public virtual DbSet<LotBlendSummary> LotBlendSummary { get; set; }
         public virtual DbSet<InDirtBlendSummary> InDirtBlendSummary { get; set; }
+        public virtual DbSet<VarietyBlendComponents> VarietyBlendComponents { get; set; }
+        public virtual DbSet<BlendComponentChanges> BlendComponentChanges { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
@@ -1118,6 +1120,44 @@ namespace CCIA.Models
 
                 entity.HasOne(e => e.Crop);
 
+
+            });
+
+            modelBuilder.Entity<VarietyBlendComponents>(entity => 
+            {
+                entity.ToTable("blend_components");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("blend_comp_id");
+
+                entity.Property(e => e.BlendVarietyId).HasColumnName("var_off_id");
+
+                entity.Property(e => e.ComponentVarietyId).HasColumnName("comp_var_id");
+
+                entity.Property(e => e.ComponentPercent).HasColumnName("comp_percent");
+
+            });
+
+            modelBuilder.Entity<BlendComponentChanges>(entity =>
+            {
+                entity.ToTable("blend_components_changes");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.ComponentId).HasColumnName("comp_id");
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
 
             });
             

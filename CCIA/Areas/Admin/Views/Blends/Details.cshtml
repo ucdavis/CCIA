@@ -76,6 +76,10 @@
                         <th>Lot#</th>
                         <th>Variety</th>
                         <th>Weight</th>
+                        @if(Model.blend.BlendType == "Varietal")
+                        {
+                            <th>Percent</th>
+                        }
                         <th>Class</th>
                         <th>Germ</th>
                         <th>Hard</th>
@@ -106,6 +110,10 @@
                             <td>@row.LotNumber</td>
                             <td>@row.VarietyName</td>
                             <td>@row.Weight</td>
+                            @if(Model.blend.BlendType == "Varietal")
+                            {
+                                <td>@row.ComponentPercent</td>
+                            }
                             <td>@row.ClassName</td>
                             <td>@row.GermValue</td>
                             <td>@row.HardValue</td>
@@ -174,5 +182,60 @@
 
         }        
         <div><hr></div>
+        <div class="col-sm-3">
+        @if(Model.blend.BlendType == "Varietal")
+        {
+            <h3>@Model.blend.GetVarietyName() Components</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>VarId</th>
+                        <th>Variety</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.varietalComponents)
+                    {
+                        <tr>
+                            <td>@row.ComponentVarietyId</td>
+                            <td>@row.ComponentVariety.Name</td>
+                            <td>@row.ComponentPercent</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+
+        }
+        </div>
+        <div><hr></div>
+        <div class="col-sm-8">        
+            <h3>Changes to components</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>CompId</th>
+                        <th>Column</th>
+                        <th>Old Value</th>
+                        <th>New Value</th>
+                        <th>By</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.changes)
+                    {
+                        <tr>
+                            <td>@row.ComponentId</td>
+                            <td>@row.ColumnChange</td>
+                            <td>@row.OldValue</td>
+                            <td>@row.NewValue</td>
+                            <td>@row.Employee.Name</td>
+                            <td>@row.DateChanged</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
