@@ -53,6 +53,8 @@ namespace CCIA.Models
         public virtual DbSet<FieldInspection> FieldInspection { get; set;}
         // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
+        public virtual DbSet<LotBlendSummary> LotBlendSummary { get; set; }
+        public virtual DbSet<InDirtBlendSummary> InDirtBlendSummary { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }

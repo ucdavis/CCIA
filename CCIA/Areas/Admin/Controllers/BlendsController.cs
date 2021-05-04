@@ -31,8 +31,8 @@ namespace CCIA.Controllers.Admin
 
        public async Task<IActionResult> Details(int id)
        {
-           var model = await _helper.FullBlendRequest().Where(b => b.Id ==id).FirstOrDefaultAsync();
-           if(model == null)
+           var model = await AdminBlendsDetailsViewModel.Create(_dbContext, _helper, id);           
+           if(model.blend == null)
            {
                ErrorMessage = "Blend Request not found";
                 RedirectToAction(nameof(Process));
