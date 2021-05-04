@@ -1,4 +1,5 @@
 @model CCIA.Models.AdminBlendsDetailsViewModel
+@using CCIA.Helpers
 
 <div class="container col-sm-12">    
     <div class="row">
@@ -6,14 +7,14 @@
             <h2>Blend Request Details</h2> 
         </div>            
     </div>
-    @* @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
+    @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
          {
              <div class="row">
                 <div class="col-sm-12">
-                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.org.Id">Edit</a> <br><br>
+                    <a class="btn btn-primary" asp-action="Approve" asp-route-id="@Model.blend.Id">Approve</a> <br><br>
                 </div>            
             </div>   
-         }         *@
+         }        
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
