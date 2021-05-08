@@ -300,6 +300,7 @@ namespace CCIA.Controllers
 
         }
 
+        // TODO: Create facility or some sort of location for differnt places seed can ship from. Add those to the Seed transfer/bulk sale certificate to make county selection more accurate.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]

@@ -72,6 +72,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Component ID</th>
                         <th>SID</th>
                         <th>Lot#</th>
@@ -93,6 +94,7 @@
                         <th>Dif. Cond.</th>
                         <th>Link</th>
                         <th>Cert Results</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,9 +103,11 @@
                         <tr>
                             @if(row.CompId > 0)
                             {
+                                <td><a asp-action="EditLot" asp-route-id="@row.CompId" class="btn btn-info">Edit</a></td>
                                 <td>@row.CompId</td>
                             } else
                             {
+                                <td></td>
                                 <td></td>
                             }
                             
@@ -138,7 +142,14 @@
                             {
                                 <td></td>
                             }       
-                            <td>@row.CertificationResults</td>                            
+                            <td>@row.CertificationResults</td> 
+                            @if(row.CompId > 0)
+                            {
+                               <td><form asp-action="DeleteLot"><input type="hidden" id="id" name="id" value="@row.CompId"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form></td>
+                            } else
+                            {
+                                <td></td>
+                            }                                                        
                         </tr>                        
                     }
                 </tbody>
@@ -148,6 +159,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Component ID</th>
                         <th>AppId</th>
                         <th>Cert#</th>
@@ -156,12 +168,14 @@
                         <th>Weight</th>                        
                         <th>Percent</th>
                         <th>Link</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var row in Model.dirtComponents)
                     {
                         <tr>
+                            <td><a asp-action="EditDirtLot" asp-route-id="@row.Id" class="btn btn-info">Edit</a></td>
                             <td>@row.Id</td>                                                  
                             <td>@row.AppId</td>
                             <td>@row.CertNumber</td>
@@ -175,7 +189,8 @@
                             } else
                             {
                                 <td></td>
-                            }                          
+                            } 
+                            <td><form asp-action="DeleteDirtLot"><input type="hidden" id="id" name="id" value="@row.Id"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form></td>
                         </tr>                        
                     }
                 </tbody>
