@@ -26,7 +26,11 @@ namespace CCIA.Models
 
         public static async Task<AdminBlendsInDirtEditViewModel> Create(CCIAContext _dbContext, int id)
         {    
-            var thisComp = await _dbContext.BlendInDirtComponents.Where(b => b.Id == id).FirstOrDefaultAsync();  
+            var thisComp = await _dbContext.BlendInDirtComponents.Where(b => b.Id == id).FirstOrDefaultAsync(); 
+            if(thisComp == null) 
+            {
+                thisComp = new BlendInDirtComponents();
+            }
             if(thisComp.StateOfOrigin == null)
             {
                 thisComp.StateOfOrigin = 0;

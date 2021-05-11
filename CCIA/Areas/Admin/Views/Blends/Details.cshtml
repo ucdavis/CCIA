@@ -69,6 +69,7 @@
         <h3>Components</h3>
         @if(Model.blend.BlendType == "Lot" || Model.blend.BlendType == "Varietal")
         {
+            <a asp-action="NewLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
             <table class="table">
                 <thead>
                     <tr>
@@ -156,6 +157,7 @@
             </table>
         } else
         {
+            <a asp-action="NewDirtLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
             <table class="table">
                 <thead>
                     <tr>

@@ -36,9 +36,112 @@ namespace CCIA.Controllers.Admin
            if(model.blend == null)
            {
                ErrorMessage = "Blend Request not found";
-                RedirectToAction(nameof(Process));
+                return RedirectToAction(nameof(Process));
            }
            return View(model);
+       } 
+
+       public IActionResult NewLot(int id)
+       {           
+           var model = new LotBlends();
+           model.BlendId = id;
+           return View(model);
+       }
+       
+       [HttpPost]
+       public async Task<IActionResult> NewLot(int id, LotBlends lot)
+       {
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == id).AnyAsync();
+           if(lot.BlendId != id || !blend)
+           {
+               ErrorMessage = "Something went wrong!";
+               return RedirectToAction(nameof(Process));
+           }
+           var newLot = new LotBlends();
+           newLot.BlendId = id;
+           newLot.Sid = lot.Sid;
+           newLot.Weight = lot.Weight;
+
+           var change = new BlendComponentChanges();
+           change.BlendId = id;
+           change.ComponentId = newLot.CompId;
+            change.ColumnChange = "Component Added";
+            change.UserChange = User.FindFirstValue(ClaimTypes.Name);
+            change.DateChanged = DateTime.Now;
+            change.OldValue = "";
+            change.NewValue = $"SID: {lot.Sid} Weight: {lot.Weight}";
+            
+
+           if(ModelState.IsValid){
+                _dbContext.Add(newLot);  
+                _dbContext.Add(change);              
+                await _dbContext.SaveChangesAsync();
+                Message = "Component added";
+            } else {
+                ErrorMessage = "Something went wrong";                         
+                return View(lot);
+            }
+            return RedirectToAction(nameof(Details), new {id = id});
+       } 
+       public async Task<IActionResult> NewDirtLot(int id)
+       {  
+           var comp = await AdminBlendsInDirtEditViewModel.Create(_dbContext, 0);          
+            comp.comp.BlendId = id;                     
+           return View(comp);
+       }
+       
+       [HttpPost]
+       public async Task<IActionResult> NewDirtLot(int id, AdminBlendsInDirtEditViewModel vm)
+       {
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == id).AnyAsync();
+           var lot = vm.comp;
+           if(lot.BlendId != id || !blend)
+           {
+               ErrorMessage = "Something went wrong!";
+               return RedirectToAction(nameof(Process));
+           }
+           var newLot = new BlendInDirtComponents();
+           newLot.BlendId = id;
+
+           var change = new BlendComponentChanges();
+           change.BlendId = id;
+           change.ComponentId = newLot.Id;
+            change.ColumnChange = "Component Added";
+            change.UserChange = User.FindFirstValue(ClaimTypes.Name);
+            change.DateChanged = DateTime.Now;
+            change.OldValue = "";  
+
+           if(lot.AppId == null)
+           {
+               newLot.ApplicantId = lot.ApplicantId;
+               newLot.CropId = lot.CropId;
+               newLot.OfficialVarietyId = lot.OfficialVarietyId;
+               newLot.CertYear = lot.CertYear;
+               newLot.CountryOfOrigin = lot.CountryOfOrigin;
+               newLot.StateOfOrigin = lot.StateOfOrigin;
+               newLot.CertNumber = lot.CertNumber;
+               newLot.LotNumber = lot.LotNumber;
+               newLot.Class = lot.Class;
+               change.NewValue = $"Applicant Id: {lot.ApplicantId} Weight: {lot.Weight} Crop Id: {lot.CropId} Var Id: {lot.OfficialVarietyId} Cert Year: {lot.CertYear} Country Id: {lot.CountryOfOrigin} State id: {lot.StateOfOrigin} Cert#: {lot.CertYear} Lot#: {lot.CertYear} Class ID: {lot.Class}";
+
+           } else
+           {
+               newLot.AppId = lot.AppId;
+               change.NewValue  = $"AppId: {lot.AppId} Weight: {lot.Weight}";
+           }
+           
+           newLot.Weight = lot.Weight;
+
+           if(ModelState.IsValid){
+                _dbContext.Add(newLot);  
+                _dbContext.Add(change);              
+                await _dbContext.SaveChangesAsync();
+                Message = "Component added";
+            } else {
+                ErrorMessage = "Something went wrong";                         
+                return View(lot);
+            }
+            return RedirectToAction(nameof(Details), new {id = id});
        } 
 
        public async Task<IActionResult> EditLot(int id)
@@ -47,11 +150,11 @@ namespace CCIA.Controllers.Admin
            if(comp == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
            return View(comp);
-       }  
-
+       } 
+       
        [HttpPost]      
        public async Task<IActionResult> EditLot(int id, LotBlends blend)
        {
@@ -59,7 +162,7 @@ namespace CCIA.Controllers.Admin
            if(lotToUpdate == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
 
            if(lotToUpdate.Sid != blend.Sid)
@@ -108,7 +211,7 @@ namespace CCIA.Controllers.Admin
            if(compToDelete == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
            var blendId = compToDelete.BlendId;
             var lotDeleted = new BlendComponentChanges();
@@ -117,7 +220,7 @@ namespace CCIA.Controllers.Admin
             lotDeleted.ColumnChange = "Deleted Component";
             lotDeleted.UserChange = User.FindFirstValue(ClaimTypes.Name);
             lotDeleted.DateChanged = DateTime.Now;
-            lotDeleted.OldValue = "SID: " + compToDelete.Sid.ToString() + " Weight: " + compToDelete.Weight.ToString();
+            lotDeleted.OldValue = $"SID: {compToDelete.Sid} Weight: {compToDelete.Weight}";
             lotDeleted.NewValue = "";
             _dbContext.Add(lotDeleted);
            
@@ -137,7 +240,7 @@ namespace CCIA.Controllers.Admin
            if(comp.comp == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
            return View(comp);
        }  
@@ -149,7 +252,7 @@ namespace CCIA.Controllers.Admin
            if(compToUpdate == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
            
            compToUpdate.AppId = comp.AppId;
@@ -195,7 +298,7 @@ namespace CCIA.Controllers.Admin
            if(compToDelete == null)
            {
                ErrorMessage = "Component not found!";
-               RedirectToAction(nameof(Process));
+               return RedirectToAction(nameof(Process));
            }
            var blendId = compToDelete.BlendId;
             var lotDeleted = new BlendComponentChanges();
@@ -204,7 +307,7 @@ namespace CCIA.Controllers.Admin
             lotDeleted.ColumnChange = "Deleted Component";
             lotDeleted.UserChange = User.FindFirstValue(ClaimTypes.Name);
             lotDeleted.DateChanged = DateTime.Now;
-            lotDeleted.OldValue = "AppID: " + compToDelete.AppId.ToString() + " Weight: " + compToDelete.Weight.ToString() + " Applicant ID: " + compToDelete.ApplicantId.ToString() + " Crop ID: " + compToDelete.CropId.ToString() + " Variety: " + compToDelete.OfficialVarietyId.ToString() + " Class: " + compToDelete.Class.ToString();
+            lotDeleted.OldValue = $"AppID: {compToDelete.AppId} Weight: {compToDelete.Weight} Applicant ID: {compToDelete.ApplicantId} Crop ID: {compToDelete.CropId} Variety: {compToDelete.OfficialVarietyId} Class: {compToDelete.Class}";
             
             lotDeleted.NewValue = "";
             _dbContext.Add(lotDeleted);
