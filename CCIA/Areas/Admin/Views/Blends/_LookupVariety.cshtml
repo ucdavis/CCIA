@@ -1,0 +1,30 @@
+@model List<CCIA.Models.VarFull>
+
+
+<div>
+    <table  class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>type</th>
+                <th>status</th>
+                <th>ParentId</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var var in Model)
+            {
+                <tr>
+                    <td><a class="btn btn-primary" href="" onclick="useVariety(event,@var.ParentId);">select</a></td>
+                    <td>@var.Id</td>
+                    <td>@var.Name</td>
+                    <td>@var.Type</td>
+                    <td>@var.Status</td>
+                    <td>@var.ParentId</td>
+                </tr>                
+            }
+        </tbody>
+    </table>
+</div>

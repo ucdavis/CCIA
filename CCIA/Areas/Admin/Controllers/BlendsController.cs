@@ -41,6 +41,33 @@ namespace CCIA.Controllers.Admin
            return View(model);
        } 
 
+       public async Task<IActionResult> EditVariety(int id)
+       {
+           var model = await _dbContext.BlendRequests.Where(b => b.Id == id).FirstOrDefaultAsync();
+           if(model.BlendType != "Varietal")
+           {
+               ErrorMessage = "Can not change variety on In-Dirt or Lot blends";
+               return RedirectToAction(nameof(Details), new {id = id});
+           }
+           return View(model);
+       }
+
+       public async Task<IActionResult> LookupVariety (string lookup) 
+        {            
+            var varieties = await _dbContext.VarFull.Where(v => (v.Name.Contains(lookup) || EF.Functions.Like(v.Id.ToString(), "%" + lookup + "%")) && v.Blend).ToListAsync();
+            return PartialView("_LookupVariety", varieties);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVariety(int id, int VarietyId)
+        {
+            var blend = await _dbContext.BlendRequests.Where(b => b.Id == id).FirstOrDefaultAsync();
+            blend.VarietyId = VarietyId;
+            await _dbContext.SaveChangesAsync();
+            Message = "Variety updated";
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
        public IActionResult NewLot(int id)
        {           
            var model = new LotBlends();

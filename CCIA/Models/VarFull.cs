@@ -30,6 +30,7 @@ namespace CCIA.Models
         public string RiceColor { get; set; }
         public int ParentId { get; set; }
         public bool Turfgrass { get; set; }
+        public bool Blend { get; set; }
 
         public int EcoregionId { get; set; }
         [ForeignKey("EcoregionId")]

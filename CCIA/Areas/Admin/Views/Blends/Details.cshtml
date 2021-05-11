@@ -53,9 +53,10 @@
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Variety</label>
-                <div class="col-sm-9 form-control-plaintext">
+                <div class="col-sm-7 form-control-plaintext">
                     @Model.blend.GetVarietyName()
                 </div>
+                <a asp-action="EditVariety" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Variety</a>
             </div>
             <div class="form-group row">
                 <label asp-for="blend.CertNumber" class="col-sm-3 col-form-label"></label>
