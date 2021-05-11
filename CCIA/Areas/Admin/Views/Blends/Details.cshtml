@@ -8,10 +8,13 @@
         </div>            
     </div>
     @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
-         {
+         {             
              <div class="row">
-                <div class="col-sm-12">
-                    <a class="btn btn-primary" asp-action="Approve" asp-route-id="@Model.blend.Id">Approve</a> <br><br>
+                <div class="col-sm-12">                   
+                    <form asp-action="Accept">
+                        <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                    <input type="submit" class="btn btn-primary" value="Approve Blend">
+                </form> 
                 </div>            
             </div>   
          }        

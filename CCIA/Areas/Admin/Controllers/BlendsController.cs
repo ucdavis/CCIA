@@ -171,6 +171,25 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = id});
        } 
 
+       public async Task<IActionResult> Accept(int id)
+       {
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == id).FirstOrDefaultAsync();
+           if(blend == null)
+           {
+               ErrorMessage = "Blend not found!!";
+               return RedirectToAction(nameof(Process));
+           }
+           blend.Approved = true;
+           blend.Status = BlendStatus.Approved.GetDisplayName();
+           blend.ApproveDate = DateTime.Now;
+           blend.ApprovedBy = User.FindFirstValue(ClaimTypes.Name);
+
+           await _dbContext.SaveChangesAsync();
+           Message = "Blend Approved";
+           return RedirectToAction(nameof(Details), new {id = blend.Id});
+
+       }
+
        public async Task<IActionResult> EditLot(int id)
        {
            var comp = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();
