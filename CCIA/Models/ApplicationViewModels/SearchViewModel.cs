@@ -109,11 +109,11 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.applicantName))
                 {
-                    appsToFind = appsToFind.Where(a => EF.Functions.Like(a.ApplicantOrganization.NameAndId, "%" + vm.applicantName + "%"));
+                    appsToFind = appsToFind.Where(a => EF.Functions.Like(a.ApplicantOrganization.Name, "%" + vm.applicantName + "%") || a.ApplicantId.ToString() == vm.applicantName);
                 }
                 if(!string.IsNullOrWhiteSpace(vm.growerName))
                 {
-                    appsToFind = appsToFind.Where(a => EF.Functions.Like(a.GrowerOrganization.NameAndId, "%" + vm.growerName + "%"));
+                    appsToFind = appsToFind.Where(a => EF.Functions.Like(a.GrowerOrganization.Name, "%" + vm.growerName + "%") || a.GrowerId.ToString() == vm.growerName);
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Count > 0)
                 {
