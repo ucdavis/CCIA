@@ -54,8 +54,7 @@ namespace CCIA.Models
         [DisplayName("Variety")]
         public string variety { get; set; }
 
-        [DisplayName("Cert#")]
-        public string certNumber { get; set; }       
+           
         
 
         public AdminSeedSearchViewModel() {
@@ -95,11 +94,11 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.NameAndId, "%" + vm.conditionerName + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
                 }
                 if(!string.IsNullOrWhiteSpace(vm.applicantName))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ApplicantOrganization.NameAndId, "%" + vm.applicantName + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ApplicantOrganization.Name, "%" + vm.applicantName + "%") || s.ApplicantId.ToString() == vm.applicantName);
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Any())
                 {
@@ -117,10 +116,7 @@ namespace CCIA.Models
                 {
                     seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
                 }
-                if(!string.IsNullOrWhiteSpace(vm.certNumber))
-                {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.CertNumber, "%" + vm.certNumber.Trim() + "%"));
-                } 
+                
                 if(vm.searchStatus != null && vm.searchStatus.Any())              
                 {
                     seedToFind = seedToFind.Where(s => vm.searchStatus.Contains(s.Status));

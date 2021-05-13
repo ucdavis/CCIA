@@ -21,7 +21,7 @@ namespace CCIA.Models
         [DisplayName("OECD ID")]
         public int? oecdId { get; set; }
 
-        [DisplayName("Fiscal Year Printed")]
+        [DisplayName("Year Printed")]
         public List<int> submittedYearsToSearch { get; set; }
 
         [DisplayName("Cert Year")]
@@ -79,7 +79,7 @@ namespace CCIA.Models
 
                 if(vm.submittedYearsToSearch != null && vm.submittedYearsToSearch.Any())
                 {
-                    oecdToFind = oecdToFind.Where(s => vm.submittedYearsToSearch.Contains(s.FiscalYearPrinted));
+                    oecdToFind = oecdToFind.Where(s => vm.submittedYearsToSearch.Contains(s.DatePrinted.Value.Year));
                 }
                 if(vm.certYearsToSearch != null && vm.certYearsToSearch.Any())
                 {
@@ -87,11 +87,11 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.NameAndId, "%" + vm.conditionerName + "%"));
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
                 }
                 if(!string.IsNullOrWhiteSpace(vm.shipperName))
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ShipperOrganization.NameAndId, "%" + vm.shipperName + "%"));
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ShipperOrganization.Name, "%" + vm.shipperName + "%") || s.ShipperId.ToString() == vm.shipperName);
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Any())
                 {

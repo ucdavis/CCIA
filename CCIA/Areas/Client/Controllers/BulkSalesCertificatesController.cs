@@ -161,7 +161,7 @@ namespace CCIA.Controllers.Client
         {
             if (lookupType == "Blend")
             {
-                int? blendClass = await _dbContext.BlendRequests.Where(b => b.BlendId == id).Select(b => b.Class).FirstAsync();
+                int? blendClass = await _dbContext.BlendRequests.Where(b => b.Id == id).Select(b => b.Class).FirstAsync();
                 if (blendClass.HasValue)
                 {
                     int appType = await _dbContext.AbbrevClassSeeds.Where(a => a.Id == blendClass.Value).Select(a => a.Program).FirstAsync();
@@ -208,7 +208,7 @@ namespace CCIA.Controllers.Client
         {
             if (lookupType == "Blend")
             {
-                var model = await _dbContext.BlendRequests.Where(b => b.BlendId == id)
+                var model = await _dbContext.BlendRequests.Where(b => b.Id == id)
                 .Include(b => b.Conditioner)
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
@@ -228,7 +228,7 @@ namespace CCIA.Controllers.Client
                 .ThenInclude(v => v.Crop)
                 .Select(b => new
                 {
-                    id = b.BlendId,
+                    id = b.Id,
                     saleType = "Blend",
                     program = b.BlendType,
                     applicant = b.ConditionerId + " " + b.Conditioner.Name,

@@ -1,0 +1,87 @@
+@model CCIA.Models.BlendRequests
+
+<div class="container col-sm-12">  
+    <form asp-action="EditVariety">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Change Variety on Varietal Blend</h2> 
+        </div>            
+    </div>       
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>                                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="BlendType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BlendType)
+                </div>
+            </div>                      
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Variety ID</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    <label id="lblVarietyId">@Model.VarietyId</label>
+                    @Html.HiddenFor(x => x.VarietyId)
+                </div>
+            </div>             
+        </div>
+    </div>
+    <div class="row">
+        <div><input type="submit" class="btn btn-primary" value="Update Variety"></div>
+    </div>
+    </form> 
+    <div class="row">
+         <label for="variety">Variety Name or Id:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="variety" placeholder="Enter the variety name or number">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="variety-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>               
+    </div>    
+    <div class="row">
+        <div id="varTable"></div>
+    </div>
+    <div>Note: Only returns blend varieties.</div>
+</div>
+
+
+@section Scripts {
+    
+     <script type="text/javascript">
+
+        $('#variety-lookup-btn').click(function(e){
+            e.preventDefault();
+            var lookup = $("#variety").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            $("#varTable").empty();
+            $("#varTable").load("/admin/Blends/LookupVariety?lookup="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        function useVariety(e,varId)
+        {
+            e.preventDefault();
+            $("#VarietyId").val(varId);
+            $("#lblVarietyId").text(varId);
+            $("#varTable").empty();                             
+        }         
+        
+    
+    </script>
+}

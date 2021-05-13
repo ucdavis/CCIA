@@ -53,6 +53,12 @@ namespace CCIA.Models
         public virtual DbSet<FieldInspection> FieldInspection { get; set;}
         // public virtual DbSet<FieldMaps> FieldMaps { get; set; }
         public virtual DbSet<LotBlends> LotBlends { get; set; }
+        public virtual DbSet<BlendInDirtComponents> BlendInDirtComponents { get; set; }
+        public virtual DbSet<LotBlendSummary> LotBlendSummary { get; set; }
+        public virtual DbSet<InDirtBlendSummary> InDirtBlendSummary { get; set; }
+        public virtual DbSet<VarietyBlendComponents> VarietyBlendComponents { get; set; }
+        public virtual DbSet<BlendComponentChanges> BlendComponentChanges { get; set; }
+        public virtual DbSet<BlendDocuments>   BlendDocuments { get; set; }
         public virtual DbSet<Organizations> Organizations { get; set; }
         public virtual DbSet<PlantingStocks> PlantingStocks { get; set; }
         public virtual DbSet<Rates> Rates { get; set; }
@@ -1118,6 +1124,54 @@ namespace CCIA.Models
 
 
             });
+
+            modelBuilder.Entity<VarietyBlendComponents>(entity => 
+            {
+                entity.ToTable("blend_components");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("blend_comp_id");
+
+                entity.Property(e => e.BlendVarietyId).HasColumnName("var_off_id");
+
+                entity.Property(e => e.ComponentVarietyId).HasColumnName("comp_var_id");
+
+                entity.Property(e => e.ComponentPercent).HasColumnName("comp_percent");
+
+            });
+
+            modelBuilder.Entity<BlendDocuments>(entity => 
+            {
+                entity.ToTable("blend_docs");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("blend_doc_id");
+                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.Name).HasColumnName("doc_name");
+                entity.Property(e => e.Link).HasColumnName("doc_link");
+            });
+
+            modelBuilder.Entity<BlendComponentChanges>(entity =>
+            {
+                entity.ToTable("blend_components_changes");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.ComponentId).HasColumnName("comp_id");
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+
+            });
             
 
 
@@ -1789,11 +1843,11 @@ namespace CCIA.Models
 
             modelBuilder.Entity<BlendRequests>(entity =>
             {
-                entity.HasKey(e => e.BlendId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("blend_requests");
 
-                entity.Property(e => e.BlendId).HasColumnName("blend_id");
+                entity.Property(e => e.Id).HasColumnName("blend_id");
 
                 entity.Property(e => e.ApproveDate)
                     .HasColumnName("approve_date")

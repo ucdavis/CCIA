@@ -1,0 +1,38 @@
+@model List<CCIA.Models.BlendRequests>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+    <table id="table" class="table datatable">
+        <thead> 
+            <th></th>          
+            <th>BID</th>
+            <th>Type</th>
+            <th>Variety</th>
+            <th>Initiated</th>
+            <th>Status</th>
+            <th>Blend Cert#</th>
+            <th>Conditioner ID</th>
+            <th>Conditioner</th>                                 
+        </thead>
+        <tbody>
+            @foreach (var blend in Model)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-route-id="@blend.Id">Details</a></td>                
+                <td>@blend.Id</td>
+                <td>@blend.BlendType</td> 
+                <td>@blend.GetVarietyName()</td>  
+                <td>@blend.RequestStarted</td>            
+                <td>@blend.Status</td>
+                <td>@blend.CertNumber</td>
+                <td>@blend.ConditionerId</td>
+                <td>@blend.Conditioner.Name</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
