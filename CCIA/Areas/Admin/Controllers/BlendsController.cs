@@ -40,8 +40,21 @@ namespace CCIA.Controllers.Admin
             var model = await _helper.FullBlendRequest().Where(b => b.Status == blendStatus.GetDisplayName()).ToListAsync();
             ViewBag.Status = status;
             return View(model);
-
         }
+
+         public async Task<IActionResult> Search()
+        {
+            var model = await AdminBlendsSearchViewModel.Create(_dbContext, null, _helper);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(AdminBlendsSearchViewModel vm)
+        {
+            var model = await AdminBlendsSearchViewModel.Create(_dbContext, vm, _helper);
+            return View(model);
+        }
+
 
        public async Task<IActionResult> Process()
        {

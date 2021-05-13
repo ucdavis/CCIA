@@ -1,0 +1,71 @@
+@model CCIA.Models.AdminBlendsSearchViewModel
+
+<h3>Blend Request Search</h3>
+<form asp-action="Search" method="POST">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-6 col-xl-4">@* First column*@ 
+            <div class="form-group row">
+                <label asp-for="typeSearchValue" class="col-sm-2 col-form-label">Type</label>
+                <select asp-for="typeSearchValue" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.blendTypes))"></select>               
+            </div>        
+        </div>
+        <div class="col-md-6 col-xl-4">@* 2nd column*@            
+             <div class="form-group row">
+                 <label asp-for="searchStatus" class="col-sm-2 col-form-label"></label>
+                <select asp-for="searchStatus" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
+                <div class="col-sm-6">
+                    (leave blank to search all status; press "ctrl"/"control" to select multiple items, or toggle any single item)
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-4">@* 3rd column*@ 
+            <div class="form-group row">
+                <label asp-for="conditionerSearchTerm" class="col-sm-2 col-form-label">Conditioner</label>
+                <input asp-for="conditionerSearchTerm" class="col-sm-5 form-control">
+                <div class="col-sm-5">
+                    (partial name or Id)
+                </div>        
+            </div>           
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+</div>
+<hr>
+</form>
+@if(Model.blends.Any())
+{
+    @await Html.PartialAsync("_BlendsTable", @Model.blends)
+}
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+
+        $(document).ready( function () {            
+            
+            oTable = $('#table').dataTable({
+                 dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50
+            });           
+            
+        } );
+    </script>
+}
