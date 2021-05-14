@@ -21,13 +21,37 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Id)
                 </div>
-            </div>                                       
+            </div> 
+            <div class="form-group row">
+                <label asp-for="OriginatingCounty.Name" class="col-sm-3 col-form-label">Originating County</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OriginatingCounty.Name)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="CertificateDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CertificateDate)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="SubmittedForAnalysis" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.SubmittedForAnalysis)
+                </div>
+            </div>                                    
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@ 
             <div class="form-group row">
                 <label asp-for="Type" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Type)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PurchaserCounty.Name" class="col-sm-3 col-form-label">Destination County</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserCounty.Name)
                 </div>
             </div>
                    
@@ -61,9 +85,44 @@
                        <a asp-action="Details" asp-controller="Application" asp-route-id="@Model.LinkId">AppId</a>
                    }
                 </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CreatedByContact.Name" class="col-sm-3 col-form-label">Created By</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CreatedByContact.Name) on @Html.DisplayFor(x => x.CreatedOn)
+                </div>
             </div>                                 
         </div>
     </div> 
+    <div class="row">
+        <div class="col-sm-12"><hr></div> 
+        
+        <div class="col-md-6 col-xl-6"> @* First column *@
+            <h3>From: Producer/Shipper/Applicant/Grower</h3>
+            <div class="form-group row">
+                <label asp-for="OriginatingOrganizationId" class="col-sm-3 col-form-label">OrgId</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OriginatingOrganizationId)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="OriginatingOrganization.Name" class="col-sm-3 col-form-label">Name</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="OriginatingOrganization.Address.AddressLines" class="col-sm-3 col-form-label">Address</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.AddressLines) 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6"> @* Second column *@
+            <h3>To: Consignee/Conditioner/Storage</h3>
+        </div>
+         <div class="col-sm-12"><hr></div> 
+    </div>
     <div class="col-sm-6">
         <div class="form-group row">
             <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>

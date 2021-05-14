@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,9 @@ namespace CCIA.Models
 
         [ForeignKey("OriginatingCountyId")]
         public County OriginatingCounty { get; set; }
+        
+        [DisplayName("Certificate Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CertificateDate { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]

@@ -378,7 +378,14 @@ namespace CCIA.Services
         {
             var st = _context.SeedTransfers
                 .Include(st => st.OriginatingOrganization)
+                .ThenInclude(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
                 .Include(st => st.DestinationOrganization)
+                .ThenInclude(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(st => st.DestinationOrganization)
+                .ThenInclude(o => o.Address)
+                .ThenInclude(a => a.Countries)
                 .Include(st => st.OriginatingCounty)
                 .Include(st => st.Seeds)
                 .ThenInclude(s => s.ClassProduced)
