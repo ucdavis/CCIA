@@ -129,7 +129,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety.Crop != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.Variety != null && Seeds.Variety.Crop != null)
                 {
                     return Seeds.Variety.Crop.Name;
                 }
@@ -145,7 +145,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.Variety != null)
                 {
                     return Seeds.Variety.Name;
                 }
@@ -190,7 +190,7 @@ namespace CCIA.Models
         { 
             get
             {
-                if (SeedsID.HasValue)
+                if (SeedsID.HasValue && Seeds != null && Seeds.AppTypeTrans != null)
                 {
                     return Seeds.AppTypeTrans.AppTypeTrans;
                 }
@@ -206,7 +206,7 @@ namespace CCIA.Models
         {
             get
             {
-                if(SeedsID.HasValue)
+                if(SeedsID.HasValue && Seeds != null && Seeds.LabResults != null)
                 {
                     return Seeds.CertResults();
                 }
@@ -219,6 +219,9 @@ namespace CCIA.Models
         }
 
         public ICollection<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
+
+        [ForeignKey("BSCId")]
+        public ICollection<BulkSalesCertificateChanges> Changes {get; set;}
 
               
 

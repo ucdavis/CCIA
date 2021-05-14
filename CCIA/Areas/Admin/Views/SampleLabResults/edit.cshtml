@@ -314,7 +314,7 @@
 <div class="form-group row">
     <label class="col-sm-3 col-form-label">Lab</label>
     <div class="col-sm-3 col-form">
-        <select asp-for="Labs.PrivateLabId" class="form-control" asp-items="@(new SelectList(Model.PrivateLabs, "OrgId","OrgName"))"></select>
+        <select asp-for="Labs.PrivateLabId" class="form-control" asp-items="@(new SelectList(Model.PrivateLabs, "Id","Name"))"></select>
     </div>
 </div>
 <div class="form-group row">

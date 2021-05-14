@@ -6,17 +6,14 @@
             <h2>Bulk Sales Certificate Details</h2> 
         </div>            
     </div>
-    @* @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
+    @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
          {             
              <div class="row">
                 <div class="col-sm-12">                   
-                    <form asp-action="Accept">
-                        <input type="hidden" name="id" id="id" value="@Model.blend.Id">
-                    <input type="submit" class="btn btn-primary" value="Approve Blend">
-                </form> 
+                   <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                 </div>            
             </div>   
-         }         *@
+         }        
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -139,5 +136,31 @@
                 @Html.DisplayFor(x => x.PurchaserEmail)
             </div>
         </div>
-    </div>   
+    </div>  
+     <div class="col-sm-8">        
+            <h3>Changes to this Certificate</h3>
+            <table class="table">
+                <thead>
+                    <tr>                        
+                        <th>Column</th>
+                        <th>Old Value</th>
+                        <th>New Value</th>
+                        <th>By</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Changes)
+                    {
+                        <tr>                            
+                            <td>@row.ColumnChange</td>
+                            <td>@row.OldValue</td>
+                            <td>@row.NewValue</td>
+                            <td>@row.Employee.Name</td>
+                            <td>@row.DateChanged</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        </div> 
 </div>

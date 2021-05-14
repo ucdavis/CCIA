@@ -1,0 +1,151 @@
+@model CCIA.Models.AdminBulkSalesCertificatesEditViewModel
+
+<form asp-action="Edit">
+@Html.HiddenFor(x => x.bsc.Id)
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Bulk Sales Certificate</h2> 
+        </div>            
+    </div>    
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="bsc.Id" class="col-sm-3 col-form-label">BSC Id</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="bsc.ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.ConditionerOrganization.NameAndId)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="bsc.Class.CertClass" class="col-sm-3 col-form-label">Class sold</label>
+                <select asp-for="bsc.ClassId"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classSeeds, "Id", "NameAndAppType"))"></select>                 
+            </div>  
+            <div class="form-group row">
+                <label asp-for="bsc.CropName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.CropName)
+                </div>
+            </div>                              
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="bsc.SeedsID" class="col-sm-3 col-form-label">SID</label>
+                <input asp-for="bsc.SeedsID" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.SeedsID" data-valmsg-replace="true"></span>               
+            </div>
+            <div class="form-group row">
+                <label asp-for="bsc.Program" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.Program)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="bsc.Pounds" class="col-sm-3 col-form-label"></label>
+                <input asp-for="bsc.Pounds" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.Pounds" data-valmsg-replace="true"></span> 
+            </div> 
+            <div class="form-group row">
+                <label asp-for="bsc.VarietyName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.VarietyName)
+                </div>
+            </div>                
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="bsc.BlendId" class="col-sm-3 col-form-label">BID</label>
+                <input asp-for="bsc.BlendId" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.BlendId" data-valmsg-replace="true"></span>               
+            </div>
+            
+            <div class="form-group row">
+                <label asp-for="bsc.Date" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-3 input-group">
+                    <input type="text" asp-for="bsc.Date" class="datepicker form-control"></input>
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>                        
+                </div>
+                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.Date" data-valmsg-replace="true"></span>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="bsc.CreatedByContact.Name" class="col-sm-3 col-form-label">Created</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.bsc.CreatedByContact.Name on @Model.bsc.CreatedOn.ToShortDateString()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="bsc.CertNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.bsc.CertNumber)
+                </div>
+            </div>         
+        </div>
+    </div> 
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserName" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserName" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserName" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserAddressLine1" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserAddressLine1" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserAddressLine2" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserAddressLine2" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserAddressLine2" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserCity" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserCity" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserCity" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserStateId" class="col-sm-3 col-form-label">State</label>
+            <select required asp-for="bsc.PurchaserStateId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserCountryId" class="col-sm-3 col-form-label">State</label>
+            <select required asp-for="bsc.PurchaserCountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserZip" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserZip" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserZip" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserPhone" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserPhone" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserPhone" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="bsc.PurchaserEmail" class="col-sm-3 col-form-label"></label>
+            <input asp-for="bsc.PurchaserEmail" class="col-sm-3 col-form-label"></input>
+            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserEmail" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+     <div>
+            <input type="submit" value="Update" class="btn btn-primary"> | <a asp-action="Details" asp-route-id="@Model.bsc.Id" class="btn btn-dark">Cancel</a>
+    </div>  
+</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+}

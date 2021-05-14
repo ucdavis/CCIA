@@ -301,13 +301,16 @@ namespace CCIA.Services
                 .ThenInclude(b => b.LotBlends)
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
                 .Include(b => b.Blend)
                 .ThenInclude(b => b.InDirtBlends)
                 .ThenInclude(d => d.Application)
                 .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
                 .Include(b => b.Blend)
                 .ThenInclude(b => b.InDirtBlends)
                 .ThenInclude(d => d.Variety)
+                .ThenInclude(v => v.Crop)
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)
                 .Include(b => b.Class)
@@ -315,6 +318,8 @@ namespace CCIA.Services
                 .Include(b => b.ConditionerOrganization)
                 .Include(b => b.AdminEmployee)
                 .Include(b => b.BulkSalesCertificatesShares)
+                .Include(b => b.Changes)
+                .ThenInclude(c => c.Employee)
                 .AsQueryable();
 
             return bsc;
