@@ -207,53 +207,8 @@ namespace CCIA.Models
             }
         }
 
-        // public string CropName
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds.Variety.Crop != null)
-        //         {
-        //             return Seeds.Variety.Crop.Name;
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.Crop;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
-
-        // public string VarietyName
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds.Variety != null)
-        //         {
-        //             return Seeds.Variety.Name;
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.VarietyName;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
-
-        // public string CertNumber
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds != null)
-        //         {
-        //             return Seeds.CertNumber();
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.CertNumber;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
+        [ForeignKey("STId")]
+        public ICollection<SeedTransferChanges> Changes {get; set;}        
 
        
 

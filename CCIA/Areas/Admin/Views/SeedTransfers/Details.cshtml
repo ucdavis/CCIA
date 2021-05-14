@@ -1,0 +1,136 @@
+@model CCIA.Models.SeedTransfers
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Seed Transfer Details</h2> 
+        </div>            
+    </div>
+    @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
+         {             
+             <div class="row">
+                <div class="col-sm-12">                   
+                   <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                </div>            
+            </div>   
+         }        
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label">STId</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>                                       
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="Type" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Type)
+                </div>
+            </div>
+                   
+            <div class="form-group row">
+                <label asp-for="Pounds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Pounds)
+                </div>
+            </div>                            
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="IdType" class="col-sm-3 col-form-label">Item</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.LinkId @Model.IdType 
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Details Link</label>
+                <div class="col-sm-9 form-control-plaintext">
+                   @if(Model.IdType == "SID")
+                   {
+                       <a asp-action="Details" asp-controller="Seeds" asp-route-id="@Model.LinkId">SID</a>
+                   }
+                   @if(Model.IdType == "BID")
+                   {
+                       <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.LinkId">BID</a>
+                   }
+                   @if(Model.IdType == "AppID")
+                   {
+                       <a asp-action="Details" asp-controller="Application" asp-route-id="@Model.LinkId">AppId</a>
+                   }
+                </div>
+            </div>                                 
+        </div>
+    </div> 
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserName)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserAddressLine1" class="col-sm-3 col-form-label">Address</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Model.PurchaserAddressLine1
+                @if(!string.IsNullOrWhiteSpace(Model.PurchaserAddressLine2))
+                {
+                    <br>@Model.PurchaserAddressLine2
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Model.PurchaserCity, @Model.PurchaserState.Name @Model.PurchaserCountry.Name @Model.PurchaserZip
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserPhone)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserEmail)
+            </div>
+        </div>
+    </div>  
+     <div class="col-sm-8">        
+            <h3>Changes to this Certificate</h3>
+            <table class="table">
+                <thead>
+                    <tr>                        
+                        <th>Column</th>
+                        <th>Old Value</th>
+                        <th>New Value</th>
+                        <th>By</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Changes)
+                    {
+                        <tr>                            
+                            <td>@row.ColumnChange</td>
+                            <td>@row.OldValue</td>
+                            <td>@row.NewValue</td>
+                            @if(row.userIsAdmin)
+                            {
+                                <td>@row.Employee.Name</td>
+                            } else
+                            {
+                                <td>Contact</td>
+                            }
+                            
+                            <td>@row.DateChanged</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        </div> 
+</div>

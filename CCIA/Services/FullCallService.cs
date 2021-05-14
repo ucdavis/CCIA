@@ -33,6 +33,10 @@ namespace CCIA.Services
         IQueryable<BulkSalesCertificates> FullBulkSalesCertificates();
 
         IQueryable<BulkSalesCertificates> OverviewBulkSalesCertificates();
+
+        IQueryable<SeedTransfers> FullSeedTransfers();
+
+        IQueryable<SeedTransfers> OverviewSeedTransfers();
     }
 
      public class FullCallService : IFullCallService
@@ -357,6 +361,42 @@ namespace CCIA.Services
                 .AsQueryable();
 
             return bsc;
+        }
+
+        public IQueryable<SeedTransfers> OverviewSeedTransfers()
+        {
+            var st = _context.SeedTransfers
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.ClassProduced)      
+                .AsQueryable();
+
+            return st;
+        }
+        public IQueryable<SeedTransfers> FullSeedTransfers()
+        {
+            var st = _context.SeedTransfers
+                .Include(st => st.OriginatingOrganization)
+                .Include(st => st.DestinationOrganization)
+                .Include(st => st.OriginatingCounty)
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.ClassProduced)
+                .Include(st => st.Blend)
+                .Include(b => b.Changes)
+                .ThenInclude(c => c.Employee)
+                .Include(st => st.CreatedByContact)
+                .Include(st => st.SeedClass)
+                .Include(st => st.AppClass)
+                .Include(st => st.PurchaserState)
+                .Include(st => st.PurchaserCounty)
+                .Include(st => st.PurchaserCountry)
+                .Include(st => st.AgricultureCommissionerContactRespond)
+                .AsQueryable();
+
+            return st;
         }
 
          public IQueryable<Tags> FullTag() 

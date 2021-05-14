@@ -96,6 +96,8 @@ namespace CCIA.Models
 
         public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
 
+        public virtual DbSet<SeedTransferChanges> SeedTransferChanges { get; set; }
+
         public virtual DbSet<Standards>  Standards { get; set; }
 
         public virtual DbSet<TurfgrassCertificates> TurfgrassCertificates { get; set; }
@@ -507,6 +509,30 @@ namespace CCIA.Models
                 entity.Property(e => e.UserChange).HasColumnName("user_change");
 
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+            });
+
+            modelBuilder.Entity<SeedTransferChanges>(entity => {
+                entity.ToTable("seed_transfer_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.STId).HasColumnName("stid");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.Property(e => e.userIsAdmin).HasColumnName("user_admin");
 
                 entity.HasOne(e => e.Employee);
             });
