@@ -1,0 +1,143 @@
+@model CCIA.Models.BulkSalesCertificates
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Bulk Sales Certificate Details</h2> 
+        </div>            
+    </div>
+    @* @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
+         {             
+             <div class="row">
+                <div class="col-sm-12">                   
+                    <form asp-action="Accept">
+                        <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                    <input type="submit" class="btn btn-primary" value="Approve Blend">
+                </form> 
+                </div>            
+            </div>   
+         }         *@
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label">BSC Id</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.ConditionerOrganization.NameAndId)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="Class.CertClass" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Class.CertClass)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="CropName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CropName)
+                </div>
+            </div>                              
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="IdType" class="col-sm-3 col-form-label">Item</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.LinkId @Model.IdType 
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Program" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Program)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Pounds" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Pounds)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="VarietyName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.VarietyName)
+                </div>
+            </div>                
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Details Link</label>
+                <div class="col-sm-9 form-control-plaintext">
+                   @if(Model.IdType == "SID")
+                   {
+                       <a asp-action="Details" asp-controller="Seeds" asp-route-id="@Model.LinkId">SID</a>
+                   }
+                   @if(Model.IdType == "BID")
+                   {
+                       <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.LinkId">BID</a>
+                   }
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Date" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Date)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="CreatedByContact.Name" class="col-sm-3 col-form-label">Created</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.CreatedByContact.Name on @Model.CreatedOn.ToShortDateString()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CertNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.CertNumber)
+                </div>
+            </div>         
+        </div>
+    </div> 
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserName)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserAddressLine1" class="col-sm-3 col-form-label">Address</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Model.PurchaserAddressLine1
+                @if(!string.IsNullOrWhiteSpace(Model.PurchaserAddressLine2))
+                {
+                    <br>@Model.PurchaserAddressLine2
+                }
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Model.PurchaserCity, @Model.PurchaserState.Name @Model.PurchaserCountry.Name @Model.PurchaserZip
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserPhone)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.PurchaserEmail)
+            </div>
+        </div>
+    </div>   
+</div>

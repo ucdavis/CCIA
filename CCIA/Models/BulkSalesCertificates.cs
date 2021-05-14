@@ -77,6 +77,7 @@ namespace CCIA.Models
         public Contacts CreatedByContact { get; set; }
 
         [DisplayName("Date Created")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CreatedOn { get; set; }
 
         public string AdminUpdatedId { get; set; }

@@ -29,6 +29,8 @@ namespace CCIA.Services
         IQueryable<Contacts> FullContact();
 
         IQueryable<BlendRequests> FullBlendRequest();
+
+        IQueryable<BulkSalesCertificates> FullBulkSalesCertificates();
     }
 
      public class FullCallService : IFullCallService
@@ -282,6 +284,40 @@ namespace CCIA.Services
                 .AsQueryable();
 
             return contact;
+        }
+
+        public IQueryable<BulkSalesCertificates> FullBulkSalesCertificates()
+        {
+            var bsc = _context.BulkSalesCertificates
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .Include(b => b.Seeds)               
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.LotBlends)
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Variety)
+                .Include(b => b.PurchaserState)
+                .Include(b => b.PurchaserCountry)
+                .Include(b => b.Class)
+                .Include(b => b.CreatedByContact)
+                .Include(b => b.ConditionerOrganization)
+                .Include(b => b.AdminEmployee)
+                .Include(b => b.BulkSalesCertificatesShares)
+                .AsQueryable();
+
+            return bsc;
         }
 
          public IQueryable<Tags> FullTag() 
