@@ -97,6 +97,19 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new { id = bscToUpdate.Id });  
         }
 
+        public async Task<IActionResult> Search()
+        {
+            var model = await AdminBulkSalesCertificateSearchViewModel.Create(_dbContext, null, _helper);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(AdminBulkSalesCertificateSearchViewModel vm)
+        {
+            var model = await AdminBulkSalesCertificateSearchViewModel.Create(_dbContext, vm, _helper);
+            return View(model);
+        }
+
         
        
     }
