@@ -170,6 +170,32 @@ namespace CCIA.Models
             }
         }
 
+        public string GetVariety()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.GetVarietyName();
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.GetVarietyName();
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.Variety.Name;
+            }            
+            return "unknown";
+        }
+
+        public string PurchaserAddressLines
+        {
+            get
+            {
+               return !string.IsNullOrWhiteSpace(PurchaserAddressLine2) ? $"{PurchaserAddressLine1}<br>{PurchaserAddressLine2}" : PurchaserAddressLine1;
+            }
+        }
+
+        
 
         public string IdType
         {
