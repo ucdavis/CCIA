@@ -187,6 +187,71 @@ namespace CCIA.Models
             return "unknown";
         }
 
+        public string GetCrop()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.GetCrop();
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.GetCropName();
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.Variety.Crop.Name;
+            }            
+            return "unknown";
+        }
+
+        public string GetClass()
+        {
+            if (BlendId.HasValue)
+            {
+                return "Blend";
+            }
+            if (SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
+            {
+                return Seeds.ClassProduced.AppType != null ? Seeds.ClassProduced.NameAndAppType : Seeds.ClassProduced.CertClass;
+            }
+            if (ApplicationId.HasValue && Application != null && Application.ClassProduced != null)
+            {
+                return Application.ClassProduced.AppType != null ? Application.ClassProduced.NameAndAppType : Application.ClassProduced.ClassProducedTrans;
+            }            
+            return "unknown";
+        }
+
+        public int GetYearOfProduction()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.RequestStarted.Year;
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.CertYear.Value;
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.CertYear;
+            }            
+            return 1900;
+        }
+
+
+        public string GetStateOfOrigin()
+        {
+            if(ApplicationId.HasValue || BlendId.HasValue)
+            {
+                return "California";
+            }
+            if(SeedsID.HasValue && Seeds != null && Seeds.StateOfOrigin != null)
+            {
+                return Seeds.StateOfOrigin.Name;
+            }
+            return "Unknown";
+        }
+
         public string PurchaserAddressLines
         {
             get
