@@ -42,8 +42,8 @@ namespace CCIA
             services.AddDbContext<CCIAContext>();
            
 
-            services.AddAuthentication( "Cookies") // Sets the default scheme to cookies
-                .AddCookie( "Cookies", options =>
+            services.AddAuthentication("Cookies") // Sets the default scheme to cookies
+                .AddCookie("Cookies", options =>
                 {
                     options.AccessDeniedPath = "/account/denied";
                     options.LoginPath = "/account/login";
