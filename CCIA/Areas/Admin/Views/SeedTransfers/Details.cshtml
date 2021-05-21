@@ -302,7 +302,41 @@
             </tr>
         </table>
     </div>
-     <div class="col-sm-8 row">        
+    <div class="col-sm-12">
+        <div><hr><h2>Ag Commissioner Response:</h2></div>
+        <div class="form-group row">
+            <label asp-for="AgricultureCommissionerAccurate" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AgricultureCommissionerAccurate)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AgricultureCommissionerInaccurate" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AgricultureCommissionerInaccurate)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AgricultureCommissionerApprove" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AgricultureCommissionerApprove)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AgricultureCommissionerContactRespond.Name" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AgricultureCommissionerContactRespond.Name)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="AgricultureCommissionerDateRespond" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.AgricultureCommissionerDateRespond)
+            </div>
+        </div>
+        <div><hr></div>
+    </div>
+     <div class="col-sm-8 row">
             <h3>Changes to this Certificate</h3>
             <table class="table">
                 <thead>
