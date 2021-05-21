@@ -109,13 +109,9 @@
             </div>
         </div>
         <div class="form-group row">
-            <label asp-for="PurchaserAddressLine1" class="col-sm-3 col-form-label">Address</label>
+            <label asp-for="PurchaserAddressLines" class="col-sm-3 col-form-label">Address</label>
             <div class="col-sm-9 form-control-plaintext">
-                @Model.PurchaserAddressLine1
-                @if(!string.IsNullOrWhiteSpace(Model.PurchaserAddressLine2))
-                {
-                    <br>@Model.PurchaserAddressLine2
-                }
+                @Model.PurchaserAddressLines
             </div>
         </div>
         <div class="form-group row">

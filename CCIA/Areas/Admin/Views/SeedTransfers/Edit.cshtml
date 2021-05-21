@@ -109,9 +109,15 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.AddressLines" class="col-sm-3 col-form-label">Address</label>
+                <label asp-for="stc.OriginatingOrganization.Address.Address1" class="col-sm-3 col-form-label">Address Line 1</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.AddressLines) 
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.Address1) 
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.Address2" class="col-sm-3 col-form-label">Address Line 2</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.Address2) 
                 </div>
             </div>
             <div class="form-group row">
@@ -119,6 +125,10 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.City)
                 </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingCountyId" class="col-sm-3 col-form-label"></label>
+                 <select required asp-for="stc.OriginatingCountyId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
             </div>
             <div class="form-group row">
                 <label asp-for="stc.OriginatingOrganization.Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
@@ -178,8 +188,12 @@
                 <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserCity" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
+                <label asp-for="stc.PurchaserCountyId" class="col-sm-3 col-form-label"></label>
+                 <select required asp-for="stc.PurchaserCountyId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
+            </div>
+            <div class="form-group row">
                 <label asp-for="stc.PurchaserState.Name" class="col-sm-3 col-form-label">State</label>
-                <select required asp-for="stc.PurchaserStateId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
+                <select required asp-for="stc.PurchaserStateId" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
             </div>
             <div class="form-group row">
                 <label asp-for="stc.PurchaserZip" class="col-sm-3 col-form-label">Zip</label>
@@ -188,7 +202,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="stc.PurchaserCountry.Name" class="col-sm-3 col-form-label">Country</label>
-                <select required asp-for="stc.PurchaserCountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+                <select required asp-for="stc.PurchaserCountryId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
             </div>
             <div class="form-group row">
                 <label asp-for="stc.PurchaserPhone" class="col-sm-3 col-form-label">Phone</label>

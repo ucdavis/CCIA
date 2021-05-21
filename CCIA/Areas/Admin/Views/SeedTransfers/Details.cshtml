@@ -17,7 +17,7 @@
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
-                <label asp-for="Id" class="col-sm-3 col-form-label">STId</label>
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Id)
                 </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
-                <label asp-for="IdType" class="col-sm-3 col-form-label">Item</label>
+                <label asp-for="IdType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Model.LinkId @Model.IdType 
                 </div>
@@ -124,6 +124,12 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label asp-for="OriginatingCountyId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.OriginatingCounty.Name)
+                </div>
+            </div>
+            <div class="form-group row">
                 <label asp-for="OriginatingOrganization.Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.OriginatingOrganization.Address.StateProvince.Name)
@@ -163,49 +169,55 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserName" class="col-sm-3 col-form-label">Name</label>
+                <label asp-for="PurchaserName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserName)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserAddressLines" class="col-sm-3 col-form-label">Address</label>
+                <label asp-for="PurchaserAddressLines" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserAddressLines) 
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserCity" class="col-sm-3 col-form-label">City</label>
+                <label asp-for="PurchaserCity" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserCity)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserState.Name" class="col-sm-3 col-form-label">State</label>
+                <label asp-for="PurchaserCountyId" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PurchaserCounty.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PurchaserStateId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserState.Name)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserZip" class="col-sm-3 col-form-label">Zip</label>
+                <label asp-for="PurchaserZip" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserZip)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserCountry.Name" class="col-sm-3 col-form-label">Country</label>
+                <label asp-for="PurchaserCountryId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserCountry.Name)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label">Phone</label>
+                <label asp-for="PurchaserPhone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserPhone)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label">Email</label>
+                <label asp-for="PurchaserEmail" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PurchaserEmail)
                 </div>
