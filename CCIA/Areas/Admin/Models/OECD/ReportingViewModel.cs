@@ -15,11 +15,13 @@ namespace CCIA.Models
     {
         public List<OECD> certs { get; set; } 
         
-        [DisplayName("Begining Date")]
+        
+        [Display(Name="Beginning Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime startDate { get; set; }
 
-        [DisplayName("Ending Date")]
+        
+        [Display(Name="Ending Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime endDate { get; set; }
 

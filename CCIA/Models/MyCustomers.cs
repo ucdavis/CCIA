@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -11,10 +12,10 @@ namespace CCIA.Models
         public Organizations Organization { get; set; }
         public string Name { get; set; }
 
-        [DisplayName("Address 1")]
+        [Display(Name="Address 1")]
         public string Address1 { get; set; }
 
-        [DisplayName("Address 2")]
+        [Display(Name="Address 2")]
         public string Address2 { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }

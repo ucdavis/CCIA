@@ -17,7 +17,7 @@ namespace CCIA.Models
         
         public string searchTerm { get; set; }
 
-        [DisplayName("Search How")]
+        [Display(Name="Search How")]
         public string searchWhat { get; set; }
 
         public List<string> searchOptions { get; set; }      

@@ -22,63 +22,63 @@ namespace CCIA.Models
 
         public bool Search { get; set; }
         
-        [DisplayName("App ID")]
+        [Display(Name="App ID")]
         public int? appId { get; set; }
 
-        [DisplayName("Cert Year")]
+        [Display(Name="Cert Year")]
         public int? CertYear { get; set; }
 
         public List<AbbrevAppType> appTypes {get; set; }
 
-        [DisplayName("App Type")]
+        [Display(Name="App Type")]
         public string appType { get; set; }
 
         public List<Crops> crops { get; set; }
 
-        [DisplayName("Crop(s)")]
+        [Display(Name="Crop(s)")]
         public List<int> searchCrops { get; set; }
 
         public List<County> counties { get; set; }
 
-        [DisplayName("County(ies)")]
+        [Display(Name="County(ies)")]
         public List<int> searchCounties { get; set; }
 
         public List<string> statusOptions { get; set; } 
 
-        [DisplayName("Status")]
+        [Display(Name="Status")]
         public List<string> searchStatus { get; set; }       
 
-        [DisplayName("Applicant")]
+        [Display(Name="Applicant")]
         public string applicantName { get; set; }
 
-        [DisplayName("Grower")]
+        [Display(Name="Grower")]
         public string growerName { get; set; }
 
         
-        [DisplayName("Variety")]
+        [Display(Name="Variety")]
         public string variety { get; set; }
 
-        [DisplayName("Cert#")]
+        [Display(Name="Cert#")]
         public int? certNumber { get; set; }
 
-        [DisplayName("Accepted?")]
+        [Display(Name="Accepted?")]
         public int accepted { get; set; }
 
-        [DisplayName("Cancelled?")]
+        [Display(Name="Cancelled?")]
         public int cancelled { get; set; }
 
-        [DisplayName("CCIA Map?")]
+        [Display(Name="CCIA Map?")]
         public int veMap { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayName("Planted Before")]
+        [Display(Name="Planted Before")]
         public DateTime? plantedBefore { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayName("Planted After")]
+        [Display(Name="Planted After")]
         public DateTime? plantedAfter { get; set; }
 
-        [DisplayName("Include Map Options?")]
+        [Display(Name="Include Map Options?")]
         public bool includeMapOptions { get; set; }
 
         

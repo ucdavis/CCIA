@@ -8,6 +8,7 @@ namespace CCIA.Models
 {
     public partial class SeedTransfers
     {
+        [Display(Name="STId")]
         public int Id { get; set; }
 
         public string Type { get; set; }
@@ -16,12 +17,13 @@ namespace CCIA.Models
         [ForeignKey("OriginatingOrganizationId")]
         public Organizations OriginatingOrganization { get; set; }
 
+        [Display(Name="County")]
         public int? OriginatingCountyId { get; set; }
 
         [ForeignKey("OriginatingCountyId")]
         public County OriginatingCounty { get; set; }
-        
-        [DisplayName("Certificate Date")]
+                
+        [Display(Name="Certificate Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CertificateDate { get; set; }
         public int? SeedsID { get; set; }
@@ -52,6 +54,7 @@ namespace CCIA.Models
         [ForeignKey("ClassId")]
         public AbbrevClassProduced AppClass { get; set; }
 
+        [Display(Name="Planting Stock Lot No.")]
         public string SeedstockLotNumbers { get; set; }
 
         public bool SubmittedForAnalysis { get; set; }
@@ -61,32 +64,40 @@ namespace CCIA.Models
         public Organizations DestinationOrganization { get; set; }       
         
         
+        [Display(Name="Name")]
         public string PurchaserName { get; set; }
 
         public string PurchaserAddressLine1 { get; set; }
 
         public string PurchaserAddressLine2 { get; set; }
 
+        [Display(Name="City")]
         public string PurchaserCity { get; set; }
 
+        [Display(Name="State")]
         public int? PurchaserStateId { get; set; }
 
         [ForeignKey("PurchaserStateId")]
         public StateProvince PurchaserState { get; set; }
 
+        [Display(Name="County")]
         public int? PurchaserCountyId { get; set; }
 
         [ForeignKey("PurchaserCountyId")]
         public County PurchaserCounty { get; set; }
 
+        [Display(Name="Country")]
         public int? PurchaserCountryId { get; set; }
 
         public Countries PurchaserCountry { get; set; }
 
+        [Display(Name="Zip")]
         public string PurchaserZip { get; set; }
 
+        [Display(Name="Phone")]
         public string PurchaserPhone { get; set; }
 
+        [Display(Name="Email")]
         public string PurchaserEmail { get; set; }
 
         public bool StageInDirt { get; set; }
@@ -252,6 +263,7 @@ namespace CCIA.Models
             return "Unknown";
         }
 
+        [Display(Name="Address Lines")]
         public string PurchaserAddressLines
         {
             get
@@ -262,6 +274,7 @@ namespace CCIA.Models
 
         
 
+        [Display(Name="Item")]
         public string IdType
         {
             get

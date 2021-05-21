@@ -26,10 +26,12 @@ namespace CCIA.Models
         public int AppId { get; set; }        
         public  decimal? AcresInspectionOnly { get; set; }
         public decimal? AcresApproved { get; set; }
-        [DisplayName("Cancel-Inspected")]
+        
+        [Display(Name="Cancel-Inspected")]
         public decimal? AcresCancelled { get; set; }
         public decimal? AcresGrowout { get; set; }
-        [DisplayName("Cancel-NoInspect")]
+        
+        [Display(Name="Cancel-NoInspect")]
         public decimal? AcresRefund { get; set; }
         public decimal? AcresRejected { get; set; }
         public decimal? AcresNoCrop { get; set; }        
@@ -41,9 +43,11 @@ namespace CCIA.Models
 
         [ForeignKey("PassClass")]
         public AbbrevClassProduced POPassClass { get; set; }
-        [DisplayName("FIR Viewed by applicant?")]
+        
+        [Display(Name="FIR Viewed by applicant?")]
         public bool ReportGenerated { get; set; }
-        [DisplayName("Date FIR Viewed")]
+        
+        [Display(Name="Date FIR Viewed")]
         public DateTime? ReportGenDt { get; set; }
         public string Comments { get; set; }
         [DataType(DataType.Date)]
@@ -53,30 +57,32 @@ namespace CCIA.Models
         public int? PathNumPlants { get; set; }
         public string PathLab { get; set; }
         public string PathSentVia { get; set; }
-        [DisplayName("Bacteria (Cms)")]
+        
+        [Display(Name="Bacteria (Cms")]
         public int PathCms { get; set; }
-        [DisplayName("Bacteria (Erw)")]
+        
+        [Display(Name="Bateria (Erw")]
         public int PathErw { get; set; }
-        [DisplayName("Viroid PSTVd")]
+        [Display(Name="Viroid PSTVd")]
         public int PathPstvd { get; set; }
-        [DisplayName("Virus PVA")]
+        [Display(Name="Virus PVA")]
         public int PathPva { get; set; }
-        [DisplayName("Virus PVM")]
+        [Display(Name="Virus PVM")]
         public int PathPvm { get; set; }
-        [DisplayName("Virus PLRV")]
+        [Display(Name="Virus PLRV")]
         public int PathPlrv { get; set; }
-        [DisplayName("Virus PVS")]
+        [Display(Name="Virus PVS")]
         public int PathPvs { get; set; }
-        [DisplayName("Virus PVX")]
+        [Display(Name="Virus PVX")]
         public int PathPvx { get; set; }
-        [DisplayName("Virus PVY")]
+        [Display(Name="Virus PVY")]
         public int PathPvy { get; set; }
         public string PathComments { get; set; }
 
         [ForeignKey("CompleteBy")]
         public CCIAEmployees CompleteEmployee { get; set; }
 
-        [DisplayName("Total Entered")]
+        [Display(Name="TotalEntered")]
         public decimal AcresTotalEntered { 
             get
             {                
@@ -84,7 +90,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Marked Complete")]
+        [Display(Name="Marked Complete")]
         public string CompleteText
         { 
             get
@@ -117,7 +123,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Bacteria (Cms)")]
+        [Display(Name="Bacteria (Cms)")]
         public FIRPOTestValues PathCmsValue 
         { 
             get
@@ -126,7 +132,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PVA")]
+        [Display(Name="Virus PVA")]
         public FIRPOTestValues PathPvaValue
         {
             get
@@ -135,7 +141,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PVS")]
+        [Display(Name="Virus PVS")]
         public FIRPOTestValues PathPvsValue
         {
             get
@@ -144,7 +150,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Bacteria (Erw)")]
+        [Display(Name="Bacteria (Erw)")]
         public FIRPOTestValues PathErwValue
         {
             get
@@ -153,7 +159,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PVM")]
+        [Display(Name="Virus PVC")]
         public FIRPOTestValues PathPvmValue
         {
             get
@@ -162,7 +168,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PVX")]
+        [Display(Name="Virus PVX")]
         public FIRPOTestValues PathPvxValue
         {
             get
@@ -171,7 +177,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Viroid PSTVd")]
+        [Display(Name="Viroid PSTVd")]
         public FIRPOTestValues PathPstvdValue
         {
             get
@@ -180,7 +186,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PLRV")]
+        [Display(Name="Virus PLRV")]
         public FIRPOTestValues PathPlrvValue
         {
             get
@@ -189,7 +195,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayName("Virus PVY")]
+        [Display(Name="Virus PVY")]
         public FIRPOTestValues PathPvyValue
         {
             get
