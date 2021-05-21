@@ -47,10 +47,10 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await AdminBulkSalesCertificatesEditViewModel.Create(_dbContext, id, _helper);
-            if(model.bsc == null)
+            var model = await AdminBSeedTransfersEditViewModel.Create(_dbContext, id, _helper);
+            if(model.stc == null)
             {
-                ErrorMessage = "Bulk Sales Certificate not found!";
+                ErrorMessage = "Seed Transfer Certificate not found!";
                 return RedirectToAction(nameof(Lookup));
             }
             return View(model);
@@ -58,55 +58,55 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, AdminBulkSalesCertificatesEditViewModel vm)
+        public async Task<IActionResult> Edit(int id, AdminBSeedTransfersEditViewModel vm)
         {
-            var bscToUpdate = await _dbContext.BulkSalesCertificates.Where(b => b.Id ==id).FirstOrDefaultAsync();
-            var update = vm.bsc;
-            if(bscToUpdate == null || bscToUpdate.Id != update.Id)
+            var stcToUpdate = await _dbContext.BulkSalesCertificates.Where(b => b.Id ==id).FirstOrDefaultAsync();
+            var update = vm.stc;
+            if(stcToUpdate == null || stcToUpdate.Id != update.Id)
             {
-                ErrorMessage = "Bulk Sales Certificate not found";
+                ErrorMessage = "Seed Transfer Certificate not found";
                 return RedirectToAction(nameof(Lookup));
             }
 
-            bscToUpdate.SeedsID = update.SeedsID;
-            bscToUpdate.BlendId = update.BlendId;
-            bscToUpdate.Date = update.Date;
-            bscToUpdate.ClassId = update.ClassId;
-            bscToUpdate.Pounds = update.Pounds;
-            bscToUpdate.PurchaserName = update.PurchaserName;
-            bscToUpdate.PurchaserAddressLine1 = update.PurchaserAddressLine1;
-            bscToUpdate.PurchaserAddressLine2 = update.PurchaserAddressLine2;
-            bscToUpdate.PurchaserCity = update.PurchaserCity;
-            bscToUpdate.PurchaserCountryId = update.PurchaserCountryId;
-            bscToUpdate.PurchaserEmail = update.PurchaserEmail;
-            bscToUpdate.PurchaserPhone = update.PurchaserPhone;
-            bscToUpdate.PurchaserStateId = update.PurchaserStateId;
-            bscToUpdate.PurchaserZip = update.PurchaserZip;
-            bscToUpdate.AdminUpdatedDate = DateTime.Now;
-            bscToUpdate.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
+            stcToUpdate.SeedsID = update.SeedsID;
+            stcToUpdate.BlendId = update.BlendId;
+            // stcToUpdate.Date = update.Date;
+            // stcToUpdate.ClassId = update.ClassId;
+            // stcToUpdate.Pounds = update.Pounds;
+            stcToUpdate.PurchaserName = update.PurchaserName;
+            stcToUpdate.PurchaserAddressLine1 = update.PurchaserAddressLine1;
+            stcToUpdate.PurchaserAddressLine2 = update.PurchaserAddressLine2;
+            stcToUpdate.PurchaserCity = update.PurchaserCity;
+            stcToUpdate.PurchaserCountryId = update.PurchaserCountryId;
+            stcToUpdate.PurchaserEmail = update.PurchaserEmail;
+            stcToUpdate.PurchaserPhone = update.PurchaserPhone;
+            stcToUpdate.PurchaserStateId = update.PurchaserStateId;
+            stcToUpdate.PurchaserZip = update.PurchaserZip;
+            stcToUpdate.AdminUpdatedDate = DateTime.Now;
+            stcToUpdate.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Bulk Sales Certificate Updated";
             } else {
                 ErrorMessage = "Something went wrong.";
-                var model = await AdminBulkSalesCertificatesEditViewModel.Create(_dbContext, id, _helper);
+                var model = await AdminBSeedTransfersEditViewModel.Create(_dbContext, id, _helper);
                 return View(model); 
             }
 
-            return RedirectToAction(nameof(Details), new { id = bscToUpdate.Id });  
+            return RedirectToAction(nameof(Details), new { id = stcToUpdate.Id });  
         }
 
         public async Task<IActionResult> Search()
         {
-            var model = await AdminBulkSalesCertificateSearchViewModel.Create(_dbContext, null, _helper);
+            var model = await AdminSeedTransferSearchViewModel.Create(_dbContext, null, _helper);
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search(AdminBulkSalesCertificateSearchViewModel vm)
+        public async Task<IActionResult> Search(AdminSeedTransferSearchViewModel vm)
         {
-            var model = await AdminBulkSalesCertificateSearchViewModel.Create(_dbContext, vm, _helper);
+            var model = await AdminSeedTransferSearchViewModel.Create(_dbContext, vm, _helper);
             return View(model);
         }
 

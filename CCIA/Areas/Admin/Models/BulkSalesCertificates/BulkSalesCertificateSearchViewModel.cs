@@ -58,19 +58,6 @@ namespace CCIA.Models
                     bscToFind = bscToFind.Where(b => vm.searchYearsCreated.Contains(b.Date.Year));
                 }
 
-            //    if(vm.searchStatus != null && vm.searchStatus.Count > 0)
-            //     {                    
-            //         bscToFind = bscToFind.Where(b => vm.searchStatus.Contains(b.Status));
-            //     } 
-            //     if(vm.typeSearchValue != "Any")             
-            //     {
-            //         bscToFind = bscToFind.Where(b => b.BlendType == vm.typeSearchValue);
-            //     }
-            //     if(!string.IsNullOrWhiteSpace(vm.conditionerSearchTerm))
-            //     {
-            //         bscToFind = bscToFind.Where(b => EF.Functions.Like(b.Conditioner.Name, "%" + vm.conditionerSearchTerm + "%") || b.ConditionerId.ToString() == vm.conditionerSearchTerm);
-            //     }
-                
                 
                 var viewModel = new AdminBulkSalesCertificateSearchViewModel
                 {

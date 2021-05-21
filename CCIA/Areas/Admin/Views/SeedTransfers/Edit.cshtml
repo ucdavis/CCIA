@@ -1,143 +1,403 @@
-@model CCIA.Models.AdminBulkSalesCertificatesEditViewModel
+@model CCIA.Models.AdminBSeedTransfersEditViewModel
 
 <form asp-action="Edit">
-@Html.HiddenFor(x => x.bsc.Id)
+@Html.HiddenFor(x => x.stc.Id)
 <div class="container col-sm-12">    
     <div class="row">
         <div class="col-sm-12">
-            <h2>Edit Bulk Sales Certificate</h2> 
+            <h2>Seed Transfer Details</h2> 
         </div>            
-    </div>    
+    </div>        
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
-                <label asp-for="bsc.Id" class="col-sm-3 col-form-label">BSC Id</label>
+                <label asp-for="stc.Id" class="col-sm-3 col-form-label">STId</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.Id)
+                    @Html.DisplayFor(x => x.stc.Id)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="bsc.ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <label asp-for="stc.OriginatingCounty.Name" class="col-sm-3 col-form-label">Originating County</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.ConditionerOrganization.NameAndId)
+                    @Html.DisplayFor(x => x.stc.OriginatingCounty.Name)
                 </div>
-            </div>   
-            <div class="form-group row">
-                <label asp-for="bsc.Class.CertClass" class="col-sm-3 col-form-label">Class sold</label>
-                <select asp-for="bsc.ClassId"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classSeeds, "Id", "NameAndAppType"))"></select>                 
-            </div>  
-            <div class="form-group row">
-                <label asp-for="bsc.CropName" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.CropName)
-                </div>
-            </div>                              
-        </div>
-        <div class="col-md-6 col-xl-4"> @* Second column *@ 
-            <div class="form-group row">
-                <label asp-for="bsc.SeedsID" class="col-sm-3 col-form-label">SID</label>
-                <input asp-for="bsc.SeedsID" class="col-sm-3 col-form-label"></input>
-                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.SeedsID" data-valmsg-replace="true"></span>               
-            </div>
-            <div class="form-group row">
-                <label asp-for="bsc.Program" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.Program)
-                </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="bsc.Pounds" class="col-sm-3 col-form-label"></label>
-                <input asp-for="bsc.Pounds" class="col-sm-3 col-form-label"></input>
-                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.Pounds" data-valmsg-replace="true"></span> 
             </div> 
             <div class="form-group row">
-                <label asp-for="bsc.VarietyName" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.VarietyName)
-                </div>
-            </div>                
-        </div>
-        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
-            <div class="form-group row">
-                <label asp-for="bsc.BlendId" class="col-sm-3 col-form-label">BID</label>
-                <input asp-for="bsc.BlendId" class="col-sm-3 col-form-label"></input>
-                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.BlendId" data-valmsg-replace="true"></span>               
-            </div>
-            
-            <div class="form-group row">
-                <label asp-for="bsc.Date" class="col-sm-3 col-form-label"></label>
+                <label asp-for="stc.CertificateDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-3 input-group">
-                    <input type="text" asp-for="bsc.Date" class="datepicker form-control"></input>
+                    <input type="text" asp-for="stc.CertificateDate" class="datepicker form-control"></input>
                     <div class="input-group-append" onclick="$('.datepicker').focus();">             
                         <i class="fa fa-calendar input-group-text"></i>
                     </div>                        
                 </div>
-                <span class="field-validation-valid text-danger" data-valmsg-for="bsc.Date" data-valmsg-replace="true"></span>
-            </div>   
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.CertificateDate" data-valmsg-replace="true"></span>               
+            </div>             
             <div class="form-group row">
-                <label asp-for="bsc.CreatedByContact.Name" class="col-sm-3 col-form-label">Created</label>
+                <div class="form-check form-check-inline col-sm-12">
+                    <label asp-for="stc.SubmittedForAnalysis" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="stc.SubmittedForAnalysis">
+                </div>
+            </div>                                   
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="stc.Type" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Model.bsc.CreatedByContact.Name on @Model.bsc.CreatedOn.ToShortDateString()
+                    @Html.DisplayFor(x => x.stc.Type)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="bsc.CertNumber" class="col-sm-3 col-form-label"></label>
+                <label asp-for="stc.PurchaserCounty.Name" class="col-sm-3 col-form-label">Destination County</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.bsc.CertNumber)
+                    @Html.DisplayFor(x => x.stc.PurchaserCounty.Name)
                 </div>
-            </div>         
+            </div>
+                   
+            <div class="form-group row">
+                <label asp-for="stc.Pounds" class="col-sm-3 col-form-label"></label>
+                 <input asp-for="stc.Pounds" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.Pounds" data-valmsg-replace="true"></span> 
+            </div>                            
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="stc.IdType" class="col-sm-3 col-form-label">Item</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.LinkId @Model.stc.IdType 
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Details Link</label>
+                <div class="col-sm-9 form-control-plaintext">
+                   @if(Model.stc.IdType == "SID")
+                   {
+                       <a asp-action="Details" asp-controller="Seeds" asp-route-id="@Model.stc.LinkId">SID</a>
+                   }
+                   @if(Model.stc.IdType == "BID")
+                   {
+                       <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.stc.LinkId">BID</a>
+                   }
+                   @if(Model.stc.IdType == "AppID")
+                   {
+                       <a asp-action="Details" asp-controller="Application" asp-route-id="@Model.stc.LinkId">AppId</a>
+                   }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.CreatedByContact.Name" class="col-sm-3 col-form-label">Created By</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.CreatedByContact.Name) on @Html.DisplayFor(x => x.stc.CreatedOn)
+                </div>
+            </div>                                 
         </div>
     </div> 
-    <div class="col-sm-6">
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserName" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserName" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserName" data-valmsg-replace="true"></span>
+    <div class="row">
+        <div class="col-sm-12"><hr></div> 
+        
+        <div class="col-md-6 col-xl-6"> @* First column *@
+            <h3>From: Producer/Shipper/Applicant/Grower</h3>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganizationId" class="col-sm-3 col-form-label">OrgId</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganizationId)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Name" class="col-sm-3 col-form-label">Name</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.AddressLines" class="col-sm-3 col-form-label">Address</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.AddressLines) 
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.City" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.City)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.StateProvince.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.PostalCode" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.PostalCode)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Address.CountryName" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.CountryName)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Phone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Phone)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.OriginatingOrganization.Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Email)
+                </div>
+            </div>
         </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserAddressLine1" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserAddressLine1" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserAddressLine1" data-valmsg-replace="true"></span>
+        <div class="col-md-6 col-xl-6"> @* Second column *@
+            <h3>To: Consignee/Conditioner/Storage</h3>
+            <div class="form-group row">
+                <label asp-for="stc.DestinationOrganizationId" class="col-sm-3 col-form-label">OrgId</label>
+                <input asp-for="stc.DestinationOrganizationId" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.DestinationOrganizationId" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserName" class="col-sm-3 col-form-label">Name</label>
+                <input asp-for="stc.PurchaserName" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserName" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserAddressLine1" class="col-sm-3 col-form-label">Address Line1</label>
+                <input asp-for="stc.PurchaserAddressLine1" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserAddressLine1" data-valmsg-replace="true"></span>
+            </div><div class="form-group row">
+                <label asp-for="stc.PurchaserAddressLine2" class="col-sm-3 col-form-label">Address Line2</label>
+                <input asp-for="stc.PurchaserAddressLine2" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserAddressLine2" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserCity" class="col-sm-3 col-form-label">City</label>
+                <input asp-for="stc.PurchaserCity" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserCity" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserState.Name" class="col-sm-3 col-form-label">State</label>
+                <select required asp-for="stc.PurchaserStateId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserZip" class="col-sm-3 col-form-label">Zip</label>
+                <input asp-for="stc.PurchaserZip" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserZip" data-valmsg-replace="true"></span>  
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserCountry.Name" class="col-sm-3 col-form-label">Country</label>
+                <select required asp-for="stc.PurchaserCountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserPhone" class="col-sm-3 col-form-label">Phone</label>
+                <input asp-for="stc.PurchaserPhone" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserPhone" data-valmsg-replace="true"></span> 
+            </div>
+            <div class="form-group row">
+                <label asp-for="stc.PurchaserEmail" class="col-sm-3 col-form-label">Email</label>
+                <input asp-for="stc.PurchaserEmail" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.PurchaserEmail" data-valmsg-replace="true"></span> 
+            </div>
         </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserAddressLine2" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserAddressLine2" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserAddressLine2" data-valmsg-replace="true"></span>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserCity" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserCity" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserCity" data-valmsg-replace="true"></span>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserStateId" class="col-sm-3 col-form-label">State</label>
-            <select required asp-for="bsc.PurchaserStateId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserCountryId" class="col-sm-3 col-form-label">State</label>
-            <select required asp-for="bsc.PurchaserCountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserZip" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserZip" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserZip" data-valmsg-replace="true"></span>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserPhone" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserPhone" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserPhone" data-valmsg-replace="true"></span>
-        </div>
-        <div class="form-group row">
-            <label asp-for="bsc.PurchaserEmail" class="col-sm-3 col-form-label"></label>
-            <input asp-for="bsc.PurchaserEmail" class="col-sm-3 col-form-label"></input>
-            <span class="field-validation-valid text-danger" data-valmsg-for="bsc.PurchaserEmail" data-valmsg-replace="true"></span>
-        </div>
+         <div class="col-sm-12"><hr></div> 
     </div>
-     <div>
-            <input type="submit" value="Update" class="btn btn-primary"> | <a asp-action="Details" asp-route-id="@Model.bsc.Id" class="btn btn-dark">Cancel</a>
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="stc.ApplicationId" class="col-sm-3 col-form-label"></label>
+                 <input asp-for="stc.ApplicationId" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.ApplicationId" data-valmsg-replace="true"></span> 
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Variety</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.GetVariety()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Year of Production</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.GetYearOfProduction()
+                </div>
+            </div>                                  
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="stc.SeedsID" class="col-sm-3 col-form-label"></label>
+                 <input asp-for="stc.SeedsID" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.SeedsID" data-valmsg-replace="true"></span> 
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Crop</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.GetCrop()
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Class</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.GetClass()
+                </div>
+            </div>                       
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@
+            <div class="form-group row">
+                <label asp-for="stc.BlendId" class="col-sm-3 col-form-label"></label>
+                <input asp-for="stc.BlendId" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.BlendId" data-valmsg-replace="true"></span> 
+            </div> 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">State of Origin</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.stc.GetStateOfOrigin()
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="stc.SeedstockLotNumbers" class="col-sm-3 col-form-label"></label>
+                <input asp-for="stc.SeedstockLotNumbers" class="col-sm-3 col-form-label"></input> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.SeedstockLotNumbers" data-valmsg-replace="true"></span>  (OECD only)                
+            </div>
     </div>  
+    <div class="row col-sm-12">
+        <table border="0">                        
+            <tr>
+                <th colspan="4">Stage of Conditioning:</th>
+                <td rowspan="6">&nbsp;</td>
+                <th colspan="2">Seed Container Information:</th>
+            </tr>
+            <tr>
+                <td colspan="4"><input name="StageInDirt" type="checkbox" asp-for="@Model.stc.StageInDirt" /> Indirt (passed field inspection) for conditioning and final certification</td>
+                <td colspan="2">Type:</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input name="StageFromField" type="checkbox" asp-for="@Model.stc.StageFromField" /> From Field of <input asp-for="stc.StageFromFieldNumberOfAcres" class="col-sm-3 col-form-label"></input> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.StageFromFieldNumberOfAcres" data-valmsg-replace="true"></span> acres</td>
+                <td>&nbsp;</td>
+                <td><input name="TypeRetail" type="checkbox" asp-for="@Model.stc.TypeRetail" /> Retail bags</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input name="StageFromStorage" type="checkbox" asp-for="@Model.stc.StageFromStorage" /> From storage</td>
+                <td>&nbsp;</td>
+                <td><input name="TypeTote" type="checkbox" asp-for="@Model.stc.TypeTote" /> Tote bags</td>
+            </tr>
+            <tr>
+                <td colspan="4"><input name="StageConditioned" type="checkbox" asp-for="@Model.stc.StageConditioned" /> Conditioned (passed field inspection and cleaned)</td>
+                <td>&nbsp;</td>
+                <td><input name="TypeBulk" type="checkbox" asp-for="@Model.stc.TypeBulk" /> Bulk</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input name="StageNotFinallyCertified" type="checkbox" asp-for="@Model.stc.StageNotFinallyCertified" /> Not finally certified (subject to sampling and lab analysis</td>
+                <td>&nbsp;</td>
+                <td>Number of trucks: <input asp-for="stc.NumberOfTrucks" class="col-sm-3 col-form-label"></input> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.NumberOfTrucks" data-valmsg-replace="true"></span></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="6"><input name="StageCertifiedSeed" type="checkbox" asp-for="@Model.stc.StageCertifiedSeed" /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input name="StageTreatment" type="checkbox" asp-for="@Model.stc.StageTreatment" /> Treatment - coating, inoculation, etc.</td>
+                <td colspan="4"><input name="StageBlending" type="checkbox" asp-for="@Model.stc.StageBlending" /> Blending</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input name="StageBagging" type="checkbox" asp-for="@Model.stc.StageBagging" /> Bagging</td>
+                <td colspan="4"><input name="StageStorage" type="checkbox" asp-for="@Model.stc.StageStorage" /> Storage</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input name="StageTagging" type="checkbox" asp-for="@Model.stc.StageTagging" /> Tagging</td>
+                <td colspan="4"><input name="StageOther" type="checkbox" asp-for="@Model.stc.StageOther" />Other: <input asp-for="stc.StageOtherValue" class="col-sm-3 col-form-label"></input> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.StageOtherValue" data-valmsg-replace="true"></span></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-12">
+            <div><hr></div>
+            <input type="submit" value="Update" class="btn btn-primary"> | <a asp-action="Details" asp-route-id="@Model.stc.Id" class="btn btn-dark">Cancel</a>
+            <div><hr></div>
+    </div> 
+    <div class="col-sm-12">
+        <div><hr><h2>Ag Commissioner Response:</h2></div>
+        <div class="form-group row">
+            <label asp-for="stc.AgricultureCommissionerAccurate" class="col-sm-3 col-form-label">Accurate</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.stc.AgricultureCommissionerAccurate)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="stc.AgricultureCommissionerInaccurate" class="col-sm-3 col-form-label">Inaccurate</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.stc.AgricultureCommissionerInaccurate)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="stc.AgricultureCommissionerApprove" class="col-sm-3 col-form-label">Approve</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.stc.AgricultureCommissionerApprove)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="stc.AgricultureCommissionerContactRespond.Name" class="col-sm-3 col-form-label">Who</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.stc.AgricultureCommissionerContactRespond.Name)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="stc.AgricultureCommissionerDateRespond" class="col-sm-3 col-form-label">When</label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.stc.AgricultureCommissionerDateRespond)
+            </div>
+        </div>
+        <div><hr></div>
+    </div>
+     
+    <div class="col-sm-8 row">
+            <h3>Changes to this Certificate</h3>
+            <table class="table">
+                <thead>
+                    <tr>                        
+                        <th>Column</th>
+                        <th>Old Value</th>
+                        <th>New Value</th>
+                        <th>By</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.stc.Changes)
+                    {
+                        <tr>                            
+                            <td>@row.ColumnChange</td>
+                            <td>@row.OldValue</td>
+                            <td>@row.NewValue</td>
+                            @if(row.userIsAdmin)
+                            {
+                                <td>@row.Employee.Name</td>
+                            } else
+                            {
+                                <td>Contact</td>
+                            }
+                            
+                            <td>@row.DateChanged</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        </div> 
 </div>
 </form>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
