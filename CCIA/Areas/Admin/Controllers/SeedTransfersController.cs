@@ -60,7 +60,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Edit(int id, AdminBSeedTransfersEditViewModel vm)
         {
-            var stcToUpdate = await _dbContext.BulkSalesCertificates.Where(b => b.Id ==id).FirstOrDefaultAsync();
+            var stcToUpdate = await _dbContext.SeedTransfers.Where(s => s.Id ==id).FirstOrDefaultAsync();
             var update = vm.stc;
             if(stcToUpdate == null || stcToUpdate.Id != update.Id)
             {
@@ -68,11 +68,20 @@ namespace CCIA.Controllers.Admin
                 return RedirectToAction(nameof(Lookup));
             }
 
+            var errors = SeedTransferValidator.CheckStandards(update);
+
+            if (errors.HasWarnings)
+            {
+                ModelState.AddModelError("stc.StageFromFieldNumberOfAcres", errors.Error);
+                var model = await AdminBSeedTransfersEditViewModel.Create(_dbContext, id, _helper);
+                return View(model);
+            }
+
             stcToUpdate.SeedsID = update.SeedsID;
             stcToUpdate.BlendId = update.BlendId;
-            // stcToUpdate.Date = update.Date;
-            // stcToUpdate.ClassId = update.ClassId;
-            // stcToUpdate.Pounds = update.Pounds;
+            stcToUpdate.ApplicationId = update.ApplicationId;
+            stcToUpdate.CertificateDate = update.CertificateDate;           
+            stcToUpdate.Pounds = update.Pounds;
             stcToUpdate.PurchaserName = update.PurchaserName;
             stcToUpdate.PurchaserAddressLine1 = update.PurchaserAddressLine1;
             stcToUpdate.PurchaserAddressLine2 = update.PurchaserAddressLine2;
@@ -84,6 +93,26 @@ namespace CCIA.Controllers.Admin
             stcToUpdate.PurchaserZip = update.PurchaserZip;
             stcToUpdate.AdminUpdatedDate = DateTime.Now;
             stcToUpdate.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
+            stcToUpdate.SeedstockLotNumbers = update.SeedstockLotNumbers;
+            stcToUpdate.StageInDirt = update.StageInDirt;
+            stcToUpdate.StageFromField = update.StageFromField;
+            stcToUpdate.StageFromStorage = update.StageFromStorage;
+            stcToUpdate.TypeRetail = update.TypeRetail;
+            stcToUpdate.TypeTote = update.TypeTote;
+            stcToUpdate.TypeBulk = update.TypeBulk;
+            stcToUpdate.StageConditioned = update.StageConditioned;
+            stcToUpdate.StageNotFinallyCertified = update.StageNotFinallyCertified;
+            stcToUpdate.NumberOfTrucks  = update.NumberOfTrucks;
+            stcToUpdate.StageCertifiedSeed = update.StageCertifiedSeed;
+            stcToUpdate.StageTreatment = update.StageTreatment;
+            stcToUpdate.StageTagging = update.StageTagging;
+            stcToUpdate.StageBagging = update.StageBagging;
+            stcToUpdate.StageBlending = update.StageBlending;
+            stcToUpdate.StageStorage = update.StageStorage;
+            stcToUpdate.StageOther = update.StageOther;
+            stcToUpdate.StageOtherValue = update.StageOtherValue;
+            stcToUpdate.StageFromFieldNumberOfAcres = update.StageFromFieldNumberOfAcres;
+            stcToUpdate.AdminUpdated = true;
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();

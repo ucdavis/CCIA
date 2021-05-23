@@ -7,7 +7,12 @@
         <div class="col-sm-12">
             <h2>Seed Transfer Details</h2> 
         </div>            
-    </div>        
+    </div> 
+    <div class="row">
+            <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>       
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -282,55 +287,55 @@
                 <th colspan="2">Seed Container Information:</th>
             </tr>
             <tr>
-                <td colspan="4"><input name="StageInDirt" type="checkbox" asp-for="@Model.stc.StageInDirt" /> Indirt (passed field inspection) for conditioning and final certification</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.stc.StageInDirt" /> Indirt (passed field inspection) for conditioning and final certification</td>
                 <td colspan="2">Type:</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageFromField" type="checkbox" asp-for="@Model.stc.StageFromField" /> From Field of <input asp-for="stc.StageFromFieldNumberOfAcres" class="col-sm-3 col-form-label"></input> 
+                <td colspan="3"><input type="checkbox" asp-for="@Model.stc.StageFromField" /> From Field of <input asp-for="stc.StageFromFieldNumberOfAcres" class="col-sm-3 col-form-label"></input> 
                 <span class="field-validation-valid text-danger" data-valmsg-for="stc.StageFromFieldNumberOfAcres" data-valmsg-replace="true"></span> acres</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeRetail" type="checkbox" asp-for="@Model.stc.TypeRetail" /> Retail bags</td>
+                <td><input type="checkbox" asp-for="@Model.stc.TypeRetail" /> Retail bags</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageFromStorage" type="checkbox" asp-for="@Model.stc.StageFromStorage" /> From storage</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.stc.StageFromStorage" /> From storage</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeTote" type="checkbox" asp-for="@Model.stc.TypeTote" /> Tote bags</td>
+                <td><input type="checkbox" asp-for="@Model.stc.TypeTote" /> Tote bags</td>
             </tr>
             <tr>
-                <td colspan="4"><input name="StageConditioned" type="checkbox" asp-for="@Model.stc.StageConditioned" /> Conditioned (passed field inspection and cleaned)</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.stc.StageConditioned" /> Conditioned (passed field inspection and cleaned)</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeBulk" type="checkbox" asp-for="@Model.stc.TypeBulk" /> Bulk</td>
+                <td><input type="checkbox" asp-for="@Model.stc.TypeBulk" /> Bulk</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageNotFinallyCertified" type="checkbox" asp-for="@Model.stc.StageNotFinallyCertified" /> Not finally certified (subject to sampling and lab analysis</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.stc.StageNotFinallyCertified" /> Not finally certified (subject to sampling and lab analysis</td>
                 <td>&nbsp;</td>
                 <td>Number of trucks: <input asp-for="stc.NumberOfTrucks" class="col-sm-3 col-form-label"></input> 
                 <span class="field-validation-valid text-danger" data-valmsg-for="stc.NumberOfTrucks" data-valmsg-replace="true"></span></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="6"><input name="StageCertifiedSeed" type="checkbox" asp-for="@Model.stc.StageCertifiedSeed" /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+                <td colspan="6"><input type="checkbox" asp-for="@Model.stc.StageCertifiedSeed" /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageTreatment" type="checkbox" asp-for="@Model.stc.StageTreatment" /> Treatment - coating, inoculation, etc.</td>
-                <td colspan="4"><input name="StageBlending" type="checkbox" asp-for="@Model.stc.StageBlending" /> Blending</td>
+                <td><input type="checkbox" asp-for="@Model.stc.StageTreatment" /> Treatment - coating, inoculation, etc.</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.stc.StageBlending" /> Blending</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageBagging" type="checkbox" asp-for="@Model.stc.StageBagging" /> Bagging</td>
-                <td colspan="4"><input name="StageStorage" type="checkbox" asp-for="@Model.stc.StageStorage" /> Storage</td>
+                <td><input type="checkbox" asp-for="@Model.stc.StageBagging" /> Bagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.stc.StageStorage" /> Storage</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageTagging" type="checkbox" asp-for="@Model.stc.StageTagging" /> Tagging</td>
-                <td colspan="4"><input name="StageOther" type="checkbox" asp-for="@Model.stc.StageOther" />Other: <input asp-for="stc.StageOtherValue" class="col-sm-3 col-form-label"></input> 
+                <td><input type="checkbox" asp-for="@Model.stc.StageTagging" /> Tagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.stc.StageOther" />Other: <input asp-for="stc.StageOtherValue" class="col-sm-3 col-form-label"></input> 
                 <span class="field-validation-valid text-danger" data-valmsg-for="stc.StageOtherValue" data-valmsg-replace="true"></span></td>
             </tr>
         </table>

@@ -276,53 +276,53 @@
                 <th colspan="2">Seed Container Information:</th>
             </tr>
             <tr>
-                <td colspan="4"><input name="StageInDirt" type="checkbox" asp-for="@Model.StageInDirt" disabled /> Indirt (passed field inspection) for conditioning and final certification</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageInDirt" disabled /> Indirt (passed field inspection) for conditioning and final certification</td>
                 <td colspan="2">Type:</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageFromField" type="checkbox" asp-for="@Model.StageFromField" disabled /> From Field <u>@Model.StageFromFieldNumberOfAcres</u> of acres</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageFromField" disabled /> From Field <u>@Model.StageFromFieldNumberOfAcres</u> of acres</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeRetail" type="checkbox" asp-for="@Model.TypeRetail" disabled /> Retail bags</td>
+                <td><input type="checkbox" asp-for="@Model.TypeRetail" disabled /> Retail bags</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageFromStorage" type="checkbox" asp-for="@Model.StageFromStorage" disabled /> From storage</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageFromStorage" disabled /> From storage</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeTote" type="checkbox" asp-for="@Model.TypeTote" disabled /> Tote bags</td>
+                <td><input type="checkbox" asp-for="@Model.TypeTote" disabled /> Tote bags</td>
             </tr>
             <tr>
-                <td colspan="4"><input name="StageConditioned" type="checkbox" asp-for="@Model.StageConditioned" disabled /> Conditioned (passed field inspection and cleaned)</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageConditioned" disabled /> Conditioned (passed field inspection and cleaned)</td>
                 <td>&nbsp;</td>
-                <td><input name="TypeBulk" type="checkbox" asp-for="@Model.TypeBulk" disabled /> Bulk</td>
+                <td><input type="checkbox" asp-for="@Model.TypeBulk" disabled /> Bulk</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="3"><input name="StageNotFinallyCertified" type="checkbox" asp-for="@Model.StageNotFinallyCertified" disabled /> Not finally certified (subject to sampling and lab analysis</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageNotFinallyCertified" disabled /> Not finally certified (subject to sampling and lab analysis</td>
                 <td>&nbsp;</td>
                 <td>Number of trucks: <u>@Model.NumberOfTrucks</u></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
-                <td colspan="6"><input name="StageCertifiedSeed" type="checkbox" asp-for="@Model.StageCertifiedSeed" disabled /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+                <td colspan="6"><input type="checkbox" asp-for="@Model.StageCertifiedSeed" disabled /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageTreatment" type="checkbox" asp-for="@Model.StageTreatment" disabled /> Treatment - coating, inoculation, etc.</td>
-                <td colspan="4"><input name="StageBlending" type="checkbox" asp-for="@Model.StageBlending" disabled /> Blending</td>
+                <td><input type="checkbox" asp-for="@Model.StageTreatment" disabled /> Treatment - coating, inoculation, etc.</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageBlending" disabled /> Blending</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageBagging" type="checkbox" asp-for="@Model.StageBagging" disabled /> Bagging</td>
-                <td colspan="4"><input name="StageStorage" type="checkbox" asp-for="@Model.StageStorage" disabled /> Storage</td>
+                <td><input ype="checkbox" asp-for="@Model.StageBagging" disabled /> Bagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageStorage" disabled /> Storage</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><input name="StageTagging" type="checkbox" asp-for="@Model.StageTagging" disabled /> Tagging</td>
-                <td colspan="4"><input name="StageOther" type="checkbox" asp-for="@Model.StageOther" disabled />Other: <u>@Model.StageOtherValue</u></td>
+                <td><input type="checkbox" asp-for="@Model.StageTagging" disabled /> Tagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageOther" disabled />Other: <u>@Model.StageOtherValue</u></td>
             </tr>
         </table>
     </div>

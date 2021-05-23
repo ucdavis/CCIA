@@ -299,7 +299,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.ClassProduced != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
                 {
                     return Seeds.ClassProduced.CertClass;
                 }
@@ -307,7 +307,7 @@ namespace CCIA.Models
                 {
                     return "Certified Blend";
                 }
-                if(ApplicationId.HasValue && Application.ClassProduced != null)
+                if(ApplicationId.HasValue && Application != null && Application.ClassProduced != null)
                 {
                     return Application.ClassProduced.ClassProducedTrans;
                 }
