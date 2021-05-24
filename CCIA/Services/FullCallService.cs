@@ -369,7 +369,9 @@ namespace CCIA.Services
                 .Include(st => st.Seeds)
                 .ThenInclude(s => s.ClassProduced)
                 .Include(st => st.Application)
-                .ThenInclude(a => a.ClassProduced)      
+                .ThenInclude(a => a.ClassProduced)  
+                .Include(st => st.OriginatingOrganization)    
+                .Include(st => st.CreatedByContact)
                 .AsQueryable();
 
             return st;

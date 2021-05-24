@@ -46,12 +46,12 @@ namespace CCIA.Models
 
         public Decimal Pounds { get; set; }
         
-         public int? ClassId { get; set; }
+         public int? TransferClassId { get; set; }
 
-        [ForeignKey("ClassId")]
+        [ForeignKey("TransferClassId")]
         public AbbrevClassSeeds SeedClass { get; set; }
 
-        [ForeignKey("ClassId")]
+        [ForeignKey("TransferClassId")]
         public AbbrevClassProduced AppClass { get; set; }
 
         [Display(Name="Planting Stock Lot No.")]
@@ -247,6 +247,24 @@ namespace CCIA.Models
                 return Application.CertYear;
             }            
             return 1900;
+        }
+
+        public string ClassTransferred()
+        {
+            if(BlendId.HasValue)
+            {
+                return "Blend";
+            }
+            if(TransferClassId.HasValue && SeedClass != null )
+            {
+                return SeedClass.CertClass;
+
+            }
+            if(TransferClassId.HasValue && AppClass != null)
+            {
+                return AppClass.ClassProducedTrans;
+            }
+            return "";
         }
 
 

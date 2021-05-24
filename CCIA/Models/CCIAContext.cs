@@ -748,7 +748,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Pounds).HasColumnName("transfer_lbs");
 
-                entity.Property(e => e.ClassId).HasColumnName("transfer_class");
+                entity.Property(e => e.TransferClassId).HasColumnName("transfer_class");
 
                 entity.Property(e => e.SeedstockLotNumbers).HasColumnName("seedstock_lot_numbers");
 

@@ -60,7 +60,13 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Pounds)
                 </div>
-            </div>                            
+            </div>   
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Class Transferred</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.ClassTransferred()
+                </div>
+            </div>                             
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -252,7 +258,7 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Model.GetClass()
                 </div>
-            </div>                       
+            </div>                               
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
