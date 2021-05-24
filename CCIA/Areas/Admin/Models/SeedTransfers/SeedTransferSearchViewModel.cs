@@ -31,6 +31,8 @@ namespace CCIA.Models
 
         public int searchBid { get; set; }
 
+        public int searchAppId { get; set; }
+
 
                
         public static async Task<AdminSeedTransferSearchViewModel> Create(CCIAContext _dbContext, AdminSeedTransferSearchViewModel vm, IFullCallService helper)
@@ -39,24 +41,37 @@ namespace CCIA.Models
 
             if(vm != null)
             {
-                var stcToFind = helper.OverviewSeedTransfers().AsQueryable();
+                var stcToFind = helper.FullSeedTransfers().AsQueryable();
 
                 if(vm.searchSid != 0)
                 {
-                    stcToFind = stcToFind.Where(b => b.SeedsID == vm.searchSid);
+                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.SeedsID.ToString(), "%" + vm.searchSid + '%'));
                 }
                 if(vm.searchBid !=0)
                 {
-                    stcToFind = stcToFind.Where(b => b.BlendId == vm.searchBid);
+                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.BlendId.ToString(), "%" + vm.searchBid + '%'));
                 }
-                // if(!string.IsNullOrWhiteSpace(vm.searchConditioner))
-                // {
-                //     stcToFind = stcToFind.Where(b => EF.Functions.Like(b.ConditionerOrganization.Name, "%" + vm.searchConditioner + "%") || b.ConditionerOrganizationId.ToString() == vm.searchConditioner);
-                // }
-                // if(vm.searchYearsCreated != null && vm.searchYearsCreated.Count > 0)
-                // {
-                //     stcToFind = stcToFind.Where(b => vm.searchYearsCreated.Contains(b.Date.Year));
-                // }
+                if(vm.searchAppId !=0)
+                {
+                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.ApplicationId.ToString(), "%" + vm.searchAppId + '%'));
+                }
+                if(vm.searchId !=0)
+                {
+                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.Id.ToString(), "%" + vm.searchBid + '%'));                    
+                }
+                if(vm.searchYearsCreated != null && vm.searchYearsCreated.Count > 0)
+                {
+                    stcToFind = stcToFind.Where(st => vm.searchYearsCreated.Contains(st.CertificateDate.Year));
+                }
+                if(vm.searchProgramId != null && vm.searchProgramId.Count > 0)
+                {
+                    stcToFind = stcToFind.Where(st => vm.searchProgramId.Contains(st.Seeds.AppTypeTrans.AppTypeId) || vm.searchProgramId.Contains(st.Application.AppTypeTrans.AppTypeId));
+                }
+                if(!string.IsNullOrWhiteSpace(vm.searchConditioner))
+                {
+                    stcToFind = stcToFind.Where(st => EF.Functions.Like(st.OriginatingOrganization.Name, "%" + vm.searchConditioner + "%") || EF.Functions.Like(st.OriginatingOrganizationId.ToString(), "%" + vm.searchConditioner + "%"));
+                }
+               
                 
                 
                 var viewModel = new AdminSeedTransferSearchViewModel
