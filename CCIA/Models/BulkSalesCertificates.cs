@@ -19,7 +19,7 @@ namespace CCIA.Models
 
         [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:d}")]
         
-        [Display(Name="Date Sole")]
+        [Display(Name="Date Sold")]
         public DateTime Date { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]

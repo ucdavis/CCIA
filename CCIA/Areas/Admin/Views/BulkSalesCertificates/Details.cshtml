@@ -73,11 +73,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                    @if(Model.IdType == "SID")
                    {
-                       <a asp-action="Details" asp-controller="Seeds" asp-route-id="@Model.LinkId">SID</a>
+                       <a asp-action="Details" asp-controller="Seeds" asp-route-id="@Model.LinkId" class="btn btn-info">SID</a>
                    }
                    @if(Model.IdType == "BID")
                    {
-                       <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.LinkId">BID</a>
+                       <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.LinkId" class="btn btn-info">BID</a>
                    }
                 </div>
             </div> 
