@@ -267,6 +267,23 @@ namespace CCIA.Models
             return "";
         }
 
+        public string GetCertNumber()
+        {
+            if(BlendId.HasValue && Blend != null)
+            {
+                return Blend.CertNumber;
+            }
+           if(SeedsID.HasValue && Seeds != null)
+           {
+               return Seeds.CertNumber;
+           }
+           if(ApplicationId.HasValue && Application != null)
+           {
+               return Application.FullCert;
+           }
+            return "";
+        }
+
 
         public string GetStateOfOrigin()
         {
@@ -332,6 +349,8 @@ namespace CCIA.Models
                 return "Unknown";
             }
         }
+
+        
 
         [ForeignKey("STId")]
         public ICollection<SeedTransferChanges> Changes {get; set;}        

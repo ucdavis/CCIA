@@ -139,6 +139,17 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Certificate(int id)
+        {
+            var model = await _helper.FullSeedTransfers().Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Seed Transfer not found!";
+                return RedirectToAction(nameof(Lookup));
+            }
+            return View(model);
+        }
+
         
        
     }
