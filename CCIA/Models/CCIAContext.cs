@@ -27,6 +27,8 @@ namespace CCIA.Models
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
 
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
+
+        public virtual DbSet<ProcessTag> ProcessTag { get; set;}
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }

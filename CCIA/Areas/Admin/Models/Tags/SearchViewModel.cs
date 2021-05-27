@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.ComponentModel.DataAnnotations;
 using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Models
 {   
      
     public class AdminTagsSearchViewModel
     {
-        public List<Tags> tags { get; set; }             
+        public List<ProcessTag> tags { get; set; }             
         
         public string searchTerm { get; set; }
 
@@ -29,39 +30,42 @@ namespace CCIA.Models
                               
             if(vm != null)
             {
-                var tagsToFind = helper.FullTag().AsQueryable();
-
                 vm.searchTerm = vm.searchTerm.Trim();
-                
+                var p0 = new SqlParameter("@search_term", vm.searchTerm);
+                var p1 = new SqlParameter("search_what", System.Data.SqlDbType.VarChar);
+
                 if(vm.searchWhat == "Tag ID")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.Id.ToString(), "%" +  vm.searchTerm + "%"));
+                    p1.SqlValue = "tag_id";
                 }
                 if(vm.searchWhat == "SID")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.SeedsID.ToString(), '%' + vm.searchTerm + "%"));
+                    p1.SqlValue = "sid";
                 }
                  if(vm.searchWhat == "AppId")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.PotatoAppId.ToString(), '%' + vm.searchTerm + "%"));
+                    p1.SqlValue = "appid";
                 }
                 if(vm.searchWhat == "BID")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.BlendId.ToString(), '%' + vm.searchTerm + "%"));
+                    p1.SqlValue = "bid";
                 }
                 if(vm.searchWhat == "Tagging Org ID")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.TaggingOrg.ToString(), '%' + vm.searchTerm + "%"));
+                    p1.SqlValue = "conditioner_id";
                 }
                 if(vm.searchWhat == "Lot Number")
                 {
-                    tagsToFind = tagsToFind.Where(t => EF.Functions.Like(t.Seeds.LotNumber, '%' + vm.searchTerm + "%"));
+                    p1.SqlValue = "lot_num";
                 }
+            
+                var tagsToFind = await _dbContext.ProcessTag.FromSqlRaw($"EXEC mvc_search_tags_blends @search_term, @search_what", p0, p1).ToListAsync();
+
                 
                 
                 var viewModel = new AdminTagsSearchViewModel
                 {
-                    tags = await tagsToFind.ToListAsync(),  
+                    tags = tagsToFind,  
                     searchTerm = vm.searchTerm,
                     searchWhat = vm.searchWhat,
                     searchOptions = list,
@@ -72,7 +76,7 @@ namespace CCIA.Models
             }
             var freshModel = new AdminTagsSearchViewModel
             {
-                tags = new List<Tags>(), 
+                tags = new List<ProcessTag>(), 
                 searchOptions = list,
                 searchTerm = "",
                 searchWhat = "Tag ID",
