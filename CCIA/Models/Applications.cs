@@ -56,7 +56,7 @@ namespace CCIA.Models
 
         public int CertYear { get; set; }
         
-        [DisplayName("Orig Year")]
+        [Display(Name="Orig Year")]
         public int? OriginalCertYear { get; set; }
         public string LotNo { get; set; }
         
@@ -64,19 +64,23 @@ namespace CCIA.Models
         public int? UserDataentry { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
-         [DisplayName("Entered Variety")]      
+         
+        [Display(Name="Entered Variety")]    
         public string EnteredVariety { get; set; }
         
         public int? ClassProducedAccession { get; set; }
-        [DisplayName("Entered")]
+
+        [Display(Name="Entered")]
         public DateTime? Received { get; set; }
-        [DisplayName("Submitted")]
+        
+        [Display(Name="Submitted")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? Postmark { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Deadline { get; set; }
 
-        [DisplayName("Complete?")]
+        
+        [Display(Name="Complete?")]
         public bool PackageComplete { get; set; }
         public bool Submitable { get; set; }
         public DateTime? CompleteDate { get; set; }
@@ -95,7 +99,8 @@ namespace CCIA.Models
         public DateTime? MapsSubmissionDate { get; set; }
         public decimal? MapCenterLat { get; set; }
         public decimal? MapCenterLong { get; set; }
-        [DisplayName("Map?")] 
+        
+        [Display(Name="Map?")]
         public bool MapVe { get; set; }
         public string MapUploadFile { get; set; }
         public string TextField { get; set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,7 @@ namespace CCIA.Models
 {
     public partial class SeedTransfers
     {
+        [Display(Name="STId")]
         public int Id { get; set; }
 
         public string Type { get; set; }
@@ -15,10 +17,14 @@ namespace CCIA.Models
         [ForeignKey("OriginatingOrganizationId")]
         public Organizations OriginatingOrganization { get; set; }
 
+        [Display(Name="County")]
         public int? OriginatingCountyId { get; set; }
 
         [ForeignKey("OriginatingCountyId")]
         public County OriginatingCounty { get; set; }
+                
+        [Display(Name="Certificate Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CertificateDate { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]
@@ -40,14 +46,15 @@ namespace CCIA.Models
 
         public Decimal Pounds { get; set; }
         
-         public int? ClassId { get; set; }
+         public int? TransferClassId { get; set; }
 
-        [ForeignKey("ClassId")]
+        [ForeignKey("TransferClassId")]
         public AbbrevClassSeeds SeedClass { get; set; }
 
-        [ForeignKey("ClassId")]
+        [ForeignKey("TransferClassId")]
         public AbbrevClassProduced AppClass { get; set; }
 
+        [Display(Name="Planting Stock Lot No.")]
         public string SeedstockLotNumbers { get; set; }
 
         public bool SubmittedForAnalysis { get; set; }
@@ -57,32 +64,40 @@ namespace CCIA.Models
         public Organizations DestinationOrganization { get; set; }       
         
         
+        [Display(Name="Name")]
         public string PurchaserName { get; set; }
 
         public string PurchaserAddressLine1 { get; set; }
 
         public string PurchaserAddressLine2 { get; set; }
 
+        [Display(Name="City")]
         public string PurchaserCity { get; set; }
 
+        [Display(Name="State")]
         public int? PurchaserStateId { get; set; }
 
         [ForeignKey("PurchaserStateId")]
         public StateProvince PurchaserState { get; set; }
 
+        [Display(Name="County")]
         public int? PurchaserCountyId { get; set; }
 
         [ForeignKey("PurchaserCountyId")]
         public County PurchaserCounty { get; set; }
 
+        [Display(Name="Country")]
         public int? PurchaserCountryId { get; set; }
 
         public Countries PurchaserCountry { get; set; }
 
+        [Display(Name="Zip")]
         public string PurchaserZip { get; set; }
 
+        [Display(Name="Phone")]
         public string PurchaserPhone { get; set; }
 
+        [Display(Name="Email")]
         public string PurchaserEmail { get; set; }
 
         public bool StageInDirt { get; set; }
@@ -166,7 +181,135 @@ namespace CCIA.Models
             }
         }
 
+        public string GetVariety()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.GetVarietyName();
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.GetVarietyName();
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.Variety.Name;
+            }            
+            return "unknown";
+        }
 
+        public string GetCrop()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.GetCrop();
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.GetCropName();
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.Variety.Crop.Name;
+            }            
+            return "unknown";
+        }
+
+        public string GetClass()
+        {
+            if (BlendId.HasValue)
+            {
+                return "Blend";
+            }
+            if (SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
+            {
+                return Seeds.ClassProduced.AppType != null ? Seeds.ClassProduced.NameAndAppType : Seeds.ClassProduced.CertClass;
+            }
+            if (ApplicationId.HasValue && Application != null && Application.ClassProduced != null)
+            {
+                return Application.ClassProduced.AppType != null ? Application.ClassProduced.NameAndAppType : Application.ClassProduced.ClassProducedTrans;
+            }            
+            return "unknown";
+        }
+
+        public int GetYearOfProduction()
+        {
+            if (BlendId.HasValue && Blend != null)
+            {
+                return Blend.RequestStarted.Year;
+            }
+            if (SeedsID.HasValue && Seeds != null)
+            {
+                return Seeds.CertYear.Value;
+            }
+            if (ApplicationId.HasValue && Application != null)
+            {
+                return Application.CertYear;
+            }            
+            return 1900;
+        }
+
+        public string ClassTransferred()
+        {
+            if(BlendId.HasValue)
+            {
+                return "Blend";
+            }
+            if(TransferClassId.HasValue && SeedClass != null )
+            {
+                return SeedClass.CertClass;
+
+            }
+            if(TransferClassId.HasValue && AppClass != null)
+            {
+                return AppClass.ClassProducedTrans;
+            }
+            return "";
+        }
+
+        public string GetCertNumber()
+        {
+            if(BlendId.HasValue && Blend != null)
+            {
+                return Blend.CertNumber;
+            }
+           if(SeedsID.HasValue && Seeds != null)
+           {
+               return Seeds.CertNumber;
+           }
+           if(ApplicationId.HasValue && Application != null)
+           {
+               return Application.FullCert;
+           }
+            return "";
+        }
+
+
+        public string GetStateOfOrigin()
+        {
+            if(ApplicationId.HasValue || BlendId.HasValue)
+            {
+                return "California";
+            }
+            if(SeedsID.HasValue && Seeds != null && Seeds.StateOfOrigin != null)
+            {
+                return Seeds.StateOfOrigin.Name;
+            }
+            return "Unknown";
+        }
+
+        [Display(Name="Address Lines")]
+        public string PurchaserAddressLines
+        {
+            get
+            {
+               return !string.IsNullOrWhiteSpace(PurchaserAddressLine2) ? $"{PurchaserAddressLine1}<br>{PurchaserAddressLine2}" : PurchaserAddressLine1;
+            }
+        }
+
+        
+
+        [Display(Name="Item")]
         public string IdType
         {
             get
@@ -191,7 +334,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.ClassProduced != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.ClassProduced != null)
                 {
                     return Seeds.ClassProduced.CertClass;
                 }
@@ -199,7 +342,7 @@ namespace CCIA.Models
                 {
                     return "Certified Blend";
                 }
-                if(ApplicationId.HasValue && Application.ClassProduced != null)
+                if(ApplicationId.HasValue && Application != null && Application.ClassProduced != null)
                 {
                     return Application.ClassProduced.ClassProducedTrans;
                 }
@@ -207,53 +350,10 @@ namespace CCIA.Models
             }
         }
 
-        // public string CropName
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds.Variety.Crop != null)
-        //         {
-        //             return Seeds.Variety.Crop.Name;
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.Crop;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
+        
 
-        // public string VarietyName
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds.Variety != null)
-        //         {
-        //             return Seeds.Variety.Name;
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.VarietyName;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
-
-        // public string CertNumber
-        // {
-        //     get
-        //     {
-        //         if (SeedsID.HasValue && Seeds != null)
-        //         {
-        //             return Seeds.CertNumber();
-        //         }
-        //         if (BlendId.HasValue && Blend != null)
-        //         {
-        //             return Blend.CertNumber;
-        //         }
-        //         return "Unknown";
-        //     }
-        // }
+        [ForeignKey("STId")]
+        public ICollection<SeedTransferChanges> Changes {get; set;}        
 
        
 

@@ -18,7 +18,8 @@ namespace CCIA.Models
         public Organizations ConditionerOrganization { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode=true, DataFormatString = "{0:d}")]
-        [DisplayName("Date Sold")]
+        
+        [Display(Name="Date Sold")]
         public DateTime Date { get; set; }
         public int? SeedsID { get; set; }
         [ForeignKey("SeedsID")]
@@ -31,41 +32,61 @@ namespace CCIA.Models
         [ForeignKey("CertProgramAbbreviation")]
         public AbbrevAppType CertProgram { get; set; }
 
-        [DisplayName("Purchaser Name")]
+        
+        [Display(Name="Purchaser Name")]
         public string PurchaserName { get; set; }
 
-        [DisplayName("Address Line1")]
+        
+        [Display(Name="Address Line1")]
         public string PurchaserAddressLine1 { get; set; }
 
-        [DisplayName("Address Line2")]
+        
+        [Display(Name="Address Line2")]
         public string PurchaserAddressLine2 { get; set; }
 
-        [DisplayName("City")]
+        [Display(Name="Address Lines")]
+        public string PurchaserAddressLines
+        {
+            get
+            {
+               return !string.IsNullOrWhiteSpace(PurchaserAddressLine2) ? $"{PurchaserAddressLine1}<br>{PurchaserAddressLine2}" : PurchaserAddressLine1;
+            }
+        }
+
+
+        
+        [Display(Name="City")]
         public string PurchaserCity { get; set; }
 
-        [DisplayName("State")]
+        
+        [Display(Name="State")]
         public int? PurchaserStateId { get; set; }
 
         [ForeignKey("PurchaserStateId")]
         public StateProvince PurchaserState { get; set; }
 
-        [DisplayName("Country")]
+        
+        [Display(Name="County")]
         public int? PurchaserCountryId { get; set; }
 
         public Countries PurchaserCountry { get; set; }
 
-         [DisplayName("Zip")]
+         
+         [Display(Name="Zip")]
         public string PurchaserZip { get; set; }
 
-         [DisplayName("Phone")]
+         
+         [Display(Name="Phone")]
         public string PurchaserPhone { get; set; }
 
-         [DisplayName("Email")]
+         
+         [Display(Name="Email")]
         public string PurchaserEmail { get; set; }
 
         public int Pounds { get; set; }
 
-        [DisplayName("Class Sold")]
+        
+        [Display(Name="Class Sold")]
         public int ClassId { get; set; }
 
         [ForeignKey("ClassId")]
@@ -76,7 +97,9 @@ namespace CCIA.Models
         [ForeignKey("CreatedById")]
         public Contacts CreatedByContact { get; set; }
 
-        [DisplayName("Date Created")]
+        
+        [Display(Name="Date Created")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CreatedOn { get; set; }
 
         public string AdminUpdatedId { get; set; }
@@ -128,7 +151,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety.Crop != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.Variety != null && Seeds.Variety.Crop != null)
                 {
                     return Seeds.Variety.Crop.Name;
                 }
@@ -144,7 +167,7 @@ namespace CCIA.Models
         {
             get
             {
-                if (SeedsID.HasValue && Seeds.Variety != null)
+                if (SeedsID.HasValue && Seeds != null && Seeds.Variety != null)
                 {
                     return Seeds.Variety.Name;
                 }
@@ -189,7 +212,7 @@ namespace CCIA.Models
         { 
             get
             {
-                if (SeedsID.HasValue)
+                if (SeedsID.HasValue && Seeds != null && Seeds.AppTypeTrans != null)
                 {
                     return Seeds.AppTypeTrans.AppTypeTrans;
                 }
@@ -205,7 +228,7 @@ namespace CCIA.Models
         {
             get
             {
-                if(SeedsID.HasValue)
+                if(SeedsID.HasValue && Seeds != null && Seeds.LabResults != null)
                 {
                     return Seeds.CertResults();
                 }
@@ -218,6 +241,9 @@ namespace CCIA.Models
         }
 
         public ICollection<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
+
+        [ForeignKey("BSCId")]
+        public ICollection<BulkSalesCertificateChanges> Changes {get; set;}
 
               
 

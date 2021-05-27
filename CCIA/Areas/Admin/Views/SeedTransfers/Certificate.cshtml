@@ -1,0 +1,195 @@
+@model CCIA.Models.SeedTransfers
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+    <style type="text/css">
+table{background-color:transparent}table{border-spacing:0;border-collapse:collapse}*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}*,:after,:before{color:#000!important;text-shadow:none!important;background:0 0!important;-webkit-box-shadow:none!important;box-shadow:none!important}td,th{padding:0}</style>
+</head>
+<body style="font-size: x-small">        
+    <div>        
+        <table width="100%">
+            <tr>
+                <td>
+                    <img align="left" height="108" src="~/images/ccia-tra.gif" />
+                    <h2>SEED TRANSFER CERTIFICATE</h2></td>
+                    <td align="right">
+                    Type: @Model.Type<br/>
+                        Certificate # @Model.Id
+                </td>
+            </tr>
+        </table>
+        <table width="100%" border="0">
+            <tr>
+                <td>
+                    <b><i>California Crop Improvement Association (CCIA)</i></b><br/>
+                    Parson Seeds Certification Center<br/>
+                    One Shields Avenue<br/>
+                    Davis, CA 95616-8541<br/>
+                    Phone: 530-752-0544 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fax: 530-752-4735<br/>
+                    Email: ccia@ucdavis.edu&nbsp;&nbsp;&nbsp;Web: ccia.ucdavis.edu
+                </td>
+                <td valign="top">
+                    Date of seed transfer: @Model.CertificateDate.ToShortDateString()<br/>
+                    Seed sample submitted for analysis? <input type="checkbox" asp-for="SubmittedForAnalysis"><br/>
+                    Total shipment weight: @Model.Pounds pounds
+                </td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td valign="top">
+                    <b>From: PRODUCER/SHIPPER/APPLICANT/GROWER</b><BR />
+                    Name: @Model.OriginatingOrganization.Name<br/>
+                    Address: @Model.OriginatingOrganization.Address.AddressLines<br/>
+                    County: @Model.OriginatingCounty.Name<br/>
+                    City, State Zip: @Model.OriginatingOrganization.Address.City, @Model.OriginatingOrganization.Address.StateProvince.StateProvinceCode @Model.OriginatingOrganization.Address.PostalCode<br/>
+                    Phone: @Model.OriginatingOrganization.Phone<br/>
+                    Email: @Model.OriginatingOrganization.Email<br/>
+                </td>
+                <td valign="top">
+                    <b>To: CONSIGNEE/CONDITIONER/STORAGE</b><br/>
+                    Name: @Model.PurchaserName <br/>
+                    Address: @Model.PurchaserAddressLines<br/>
+                    County: @(Model.PurchaserCounty != null ? @Model.PurchaserCounty.Name : "") <br/>
+                    City, State Zip: @Model.PurchaserCity, @Model.PurchaserState.StateProvinceCode @Model.PurchaserZip<br/>
+                    Phone: @Model.PurchaserPhone<br/>
+                    Email: @Model.PurchaserEmail<br/>
+                </td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td colspan="2">
+                    <table border="1" width="100%">
+                        <tr>
+                            <td style="padding: 2px;">Variety: @Model.GetVariety()</td>
+                            <td style="padding: 2px;">State of Origin: @Model.GetStateOfOrigin()</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 2px;">Crop/Kind: @Model.GetCrop() </td>
+                            <td style="padding: 2px;">Year of production: @Model.GetYearOfProduction()</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 2px;">Class: @Model.GetClass()</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Identification numbers:</b><br/>
+                    ID: @Model.LinkId @Model.IdType<br/>
+                    Cert Number: @Model.GetCertNumber()<br/>
+                    Lot Number: @(Model.Seeds != null ? Model.Seeds.LotNumber : "")<br/>
+                    Field Number: @(Model.Application != null ? Model.Application.FieldName : "")<br/>
+                </td>
+                <td valign="top">
+                    <b>Seedstock lot numbers</b> (required for OECD certification<br/> of seed destined for EC countries):<br/> @Model.SeedstockLotNumbers
+                </td>
+            </tr>
+        </table>
+       <table border="0">                        
+            <tr>
+                <th colspan="4">Stage of Conditioning:</th>
+                <td rowspan="6">&nbsp;</td>
+                <th colspan="2">Seed Container Information:</th>
+            </tr>
+            <tr>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageInDirt" disabled /> Indirt/Field Run (passed field inspection) for conditioning and final certification</td>
+                <td colspan="2">Type:</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageFromField" disabled /> From Field <u>@Model.StageFromFieldNumberOfAcres</u> of acres</td>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" asp-for="@Model.TypeRetail" disabled /> Retail bags</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageFromStorage" disabled /> From storage</td>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" asp-for="@Model.TypeTote" disabled /> Tote bags</td>
+            </tr>
+            <tr>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageConditioned" disabled /> Conditioned (passed field inspection and cleaned)</td>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" asp-for="@Model.TypeBulk" disabled /> Bulk</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="3"><input type="checkbox" asp-for="@Model.StageNotFinallyCertified" disabled /> Not finally certified (subject to sampling and lab analysis</td>
+                <td>&nbsp;</td>
+                <td>Number of trucks: <u>@Model.NumberOfTrucks</u></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="6"><input type="checkbox" asp-for="@Model.StageCertifiedSeed" disabled /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" asp-for="@Model.StageTreatment" disabled /> Treatment - coating, inoculation, etc.</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageBlending" disabled /> Blending</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input ype="checkbox" asp-for="@Model.StageBagging" disabled /> Bagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageStorage" disabled /> Storage</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="checkbox" asp-for="@Model.StageTagging" disabled /> Tagging</td>
+                <td colspan="4"><input type="checkbox" asp-for="@Model.StageOther" disabled />Other: <u>@Model.StageOtherValue</u></td>
+            </tr>
+        </table>
+        <br/>
+        <table border="1">
+            <tr>
+                <td style="padding: 5px;"><b>SHIPPERS DECLARATION:</b><br/>
+                    I hereby declare that the seed described on this transfer was produced for certification and that the fields were inspected by and met the minimum field requirements for certification of the above named Seed Certification Authority.
+                    <br/>
+                    <br/>
+                    @Model.CreatedByContact.Name
+                    @Model.CreatedOn.Value.ToShortDateString()
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <table border="1" width="100%">
+            <tr>
+                <td style="padding: 5px;"><b>SEED CERTIFICATION AUTHORITY DECLARATION:</b>
+                    <table width="100%">
+                        <tr>
+                            <td colspan="2">According to certification records the above information appears to be:</td>
+                            <td>Transfer of seed approved? 
+                               <input type="checkbox" asp-for="@Model.AgricultureCommissionerApprove" disabled /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" asp-for="@Model.AgricultureCommissionerAccurate" disabled />
+                                Accurate</td>
+                            <td>
+                                <input type="checkbox" asp-for="@Model.AgricultureCommissionerInaccurate" disabled />
+                                Inaccurate</td>
+                        </tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr>
+                            <td colspan="2">@Model.AgricultureCommissionerContactRespond.Name<br/>
+                                Approved by Agricultural Commissioner/County
+                            </td>
+                            <td>Date: @Model.AgricultureCommissionerDateRespond.Value.ToShortDateString()</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

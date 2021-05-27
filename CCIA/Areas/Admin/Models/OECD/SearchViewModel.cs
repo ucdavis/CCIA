@@ -14,41 +14,42 @@ namespace CCIA.Models
     public class AdminOECDSearchViewModel
     {
         public List<OECD> oecds { get; set; }             
-        
-        [DisplayName("SID")]
+                
+        [Display(Name="SID")]
         public int? sid { get; set; }
 
-        [DisplayName("OECD ID")]
+        
+        [Display(Name="OECD ID")]
         public int? oecdId { get; set; }
-
-        [DisplayName("Year Printed")]
+        
+        [Display(Name="Year Printed")]
         public List<int> submittedYearsToSearch { get; set; }
-
-        [DisplayName("Cert Year")]
+        
+        [Display(Name="Cert Year")]
         public List<int> certYearsToSearch { get; set; }
 
         public List<int> yearsToSelectFrom { get; set; }
        
         
         public List<Crops> crops { get; set; }
-
-        [DisplayName("Crop(s)")]
-        public List<int> searchCrops { get; set; }
         
-        [DisplayName("Conditioner")]
+        [Display(Name="Crop(s)")]
+        public List<int> searchCrops { get; set; }
+                
+        [Display(Name="Conditioner")]
         public string conditionerName { get; set; }
-
-        [DisplayName("Shipper")]
+        
+        [Display(Name="Shipper")]
         public string shipperName { get; set; }
               
 
         public List<AbbrevOECDClass> classOptions { get; set; } 
 
-        [DisplayName("Class")]
+        [Display(Name="Class")]
         public string searchClass { get; set; }       
         
         
-        [DisplayName("Variety")]
+        [Display(Name="Variety")]
         public string variety { get; set; }
        
 

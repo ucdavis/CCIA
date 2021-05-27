@@ -205,6 +205,10 @@ namespace CCIA.Models
             {
                 return "REJECTED - LOT 'Not Finally Certified'";
             }
+            if(LabResults == null)
+            {
+                return "REJECTED";
+            }
             if(LabResults.PurityResults == "P" && LabResults.GermResults == "P" && (LabResults.AssayResults == "P" || LabResults.AssayResults == "N"))
             {
                 return "PASSED";

@@ -23,7 +23,7 @@ namespace CCIA.Models
 
          public List<string> statusOptions { get; set; } 
 
-        [DisplayName("Status")]
+        [Display(Name="Status")]
         public List<string> searchStatus { get; set; }       
 
 

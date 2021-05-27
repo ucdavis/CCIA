@@ -15,43 +15,40 @@ namespace CCIA.Models
         public List<Seeds> seeds { get; set; }
 
         public bool Search { get; set; }
-        
-        [DisplayName("SID")]
+                
+        [Display(Name="SID")]
         public int? sid { get; set; }
-
-        [DisplayName("Submitted Year")]
+        
+        [Display(Name="Submitted Year")]
         public List<int> submittedYearsToSearch { get; set; }
-
-        [DisplayName("Cert Year")]
+        
+        [Display(Name="Cert Year")]
         public List<int> certYearsToSearch { get; set; }
 
         public List<int> yearsToSelectFrom { get; set; }
-       
         
         public List<Crops> crops { get; set; }
-
-        [DisplayName("Crop(s)")]
+        
+        [Display(Name="Crop(s)")]
         public List<int> searchCrops { get; set; }
         
-
-        [DisplayName("Lot Number")]
+        [Display(Name="Lot Number")]
         public string lotNumber { get; set; }
 
         public string appId { get; set; }              
 
         public List<string> statusOptions { get; set; } 
-
-        [DisplayName("Status")]
+        
+        [Display(Name="Status")]
         public List<string> searchStatus { get; set; }       
 
-        [DisplayName("Applicant")]
+        [Display(Name="Applicant")]
         public string applicantName { get; set; }
-
-        [DisplayName("Conditioner")]
+        
+        [Display(Name="Conditioner")]
         public string conditionerName { get; set; }
 
-        
-        [DisplayName("Variety")]
+        [Display(Name="Variety")]
         public string variety { get; set; }
 
            

@@ -29,6 +29,14 @@ namespace CCIA.Services
         IQueryable<Contacts> FullContact();
 
         IQueryable<BlendRequests> FullBlendRequest();
+
+        IQueryable<BulkSalesCertificates> FullBulkSalesCertificates();
+
+        IQueryable<BulkSalesCertificates> OverviewBulkSalesCertificates();
+
+        IQueryable<SeedTransfers> FullSeedTransfers();
+
+        IQueryable<SeedTransfers> OverviewSeedTransfers();
     }
 
      public class FullCallService : IFullCallService
@@ -282,6 +290,132 @@ namespace CCIA.Services
                 .AsQueryable();
 
             return contact;
+        }
+
+
+        public IQueryable<BulkSalesCertificates> OverviewBulkSalesCertificates()
+        {
+            var bsc = _context.BulkSalesCertificates
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .Include(b => b.Seeds)               
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.LotBlends)
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Variety)
+                .ThenInclude(v => v.Crop)                
+                .Include(b => b.Class)
+                .Include(b => b.CreatedByContact)
+                .Include(b => b.ConditionerOrganization)      
+                .AsQueryable();
+
+            return bsc;
+        }
+        public IQueryable<BulkSalesCertificates> FullBulkSalesCertificates()
+        {
+            var bsc = _context.BulkSalesCertificates
+                .Include(b => b.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .Include(b => b.Seeds)               
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.LotBlends)
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.Blend)
+                .ThenInclude(b => b.InDirtBlends)
+                .ThenInclude(d => d.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(b => b.PurchaserState)
+                .Include(b => b.PurchaserCountry)
+                .Include(b => b.Class)
+                .Include(b => b.CreatedByContact)
+                .Include(b => b.ConditionerOrganization)
+                .Include(b => b.BulkSalesCertificatesShares)
+                .Include(b => b.Changes)
+                .ThenInclude(c => c.Employee)
+                .AsQueryable();
+
+            return bsc;
+        }
+
+        public IQueryable<SeedTransfers> OverviewSeedTransfers()
+        {
+            var st = _context.SeedTransfers
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.ClassProduced)  
+                .Include(st => st.OriginatingOrganization)    
+                .Include(st => st.CreatedByContact)
+                .AsQueryable();
+
+            return st;
+        }
+        public IQueryable<SeedTransfers> FullSeedTransfers()
+        {
+            var st = _context.SeedTransfers
+                .Include(st => st.OriginatingOrganization)
+                .ThenInclude(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(st => st.PurchaserCounty)
+                .Include(st => st.PurchaserState)
+                .Include(st => st.OriginatingCounty)
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.ClassProduced)
+                .ThenInclude(c => c.AppType)
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(st => st.Seeds)
+                .ThenInclude(s => s.StateOfOrigin)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.ClassProduced)
+                .ThenInclude(c => c.AppType)
+                .Include(st => st.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(st => st.Blend)
+                .Include(b => b.Changes)
+                .ThenInclude(c => c.Employee)
+                .Include(st => st.CreatedByContact)
+                .Include(st => st.SeedClass)
+                .Include(st => st.AppClass)
+                .Include(st => st.PurchaserState)
+                .Include(st => st.PurchaserCounty)
+                .Include(st => st.PurchaserCountry)
+                .Include(st => st.AgricultureCommissionerContactRespond)
+                .AsQueryable();
+
+            return st;
         }
 
          public IQueryable<Tags> FullTag() 

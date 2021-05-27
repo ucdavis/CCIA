@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -8,7 +9,7 @@ namespace CCIA.Models
     public partial class Organizations
     {
         public int Id { get; set; }
-        [DisplayName("Org Name")] 
+        [Display(Name="Org Name")] 
         public string Name { get; set; }
         
         public Address Address { get; set; }

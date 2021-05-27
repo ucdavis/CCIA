@@ -27,6 +27,8 @@ namespace CCIA.Models
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
 
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
+
+        public virtual DbSet<ProcessTag> ProcessTag { get; set;}
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }
@@ -88,11 +90,15 @@ namespace CCIA.Models
 
         public virtual DbSet<BulkSalesCertificates> BulkSalesCertificates { get; set; }
 
+        public virtual DbSet<BulkSalesCertificateChanges> BulkSalesCertificateChanges { get; set; }
+
         public virtual DbSet<CCIAEmployees> CCIAEmployees { get; set; }
 
         public virtual DbSet<BulkSalesCertificatesShares> BulkSalesCertificatesShares { get; set; }
 
         public virtual DbSet<SeedTransfers> SeedTransfers { get; set; }
+
+        public virtual DbSet<SeedTransferChanges> SeedTransferChanges { get; set; }
 
         public virtual DbSet<Standards>  Standards { get; set; }
 
@@ -183,7 +189,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.Jobs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.bulk_sales_certificates_changes'. Please see the warning messages.
+      
         // Unable to generate entity type for table 'dbo.notices'. Please see the warning messages.
        
         // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
@@ -487,6 +493,52 @@ namespace CCIA.Models
                 entity.HasOne(e => e.Employee);
             });
 
+            modelBuilder.Entity<BulkSalesCertificateChanges>(entity => {
+                entity.ToTable("bulk_sales_certificates_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.BSCId).HasColumnName("bsc_id");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+            });
+
+            modelBuilder.Entity<SeedTransferChanges>(entity => {
+                entity.ToTable("seed_transfer_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id);
+
+                entity.Property(e => e.STId).HasColumnName("stid");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.Property(e => e.userIsAdmin).HasColumnName("user_admin");
+
+                entity.HasOne(e => e.Employee);
+            });
+
             modelBuilder.Entity<OECDChanges>(entity => {
                 entity.ToTable("oecd_changes");
 
@@ -698,7 +750,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Pounds).HasColumnName("transfer_lbs");
 
-                entity.Property(e => e.ClassId).HasColumnName("transfer_class");
+                entity.Property(e => e.TransferClassId).HasColumnName("transfer_class");
 
                 entity.Property(e => e.SeedstockLotNumbers).HasColumnName("seedstock_lot_numbers");
 

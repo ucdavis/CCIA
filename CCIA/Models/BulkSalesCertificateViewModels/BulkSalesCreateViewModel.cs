@@ -17,7 +17,7 @@ namespace CCIA.Models.BulkSalesCreateViewModel
 
         public List<Countries> Countries { get; set; }
 
-        [DisplayName("Id")]
+        [Display(Name="Id")]
         public int? textId { get; set; }
 
         public string selectType { get; set; }

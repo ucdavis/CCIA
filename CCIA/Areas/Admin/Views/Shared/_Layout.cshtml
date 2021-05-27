@@ -25,8 +25,7 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CCIA Web App - Admin Home</a>
             </div>
         </nav>
-        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-            <a asp-area="admin" asp-controller="AdminHome" asp-action="Index" class="navbar-brand">Admin Home</a>
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">            
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbars">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -82,16 +81,16 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Create">Bulks Sales Certificate</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index">Search Bulk Sales Certificates</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Create">Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Index">Search Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-area="admin" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Lookup">Bulks Sales Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Search">Search Bulk Sales Certificates</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Lookup">Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Search">Search Seed Transfer Certificate</a>
                         </div>
                     </li>
                     <a class="nav-link" asp-area="admin" asp-controller="Organizations" asp-action="Index">Orgs</a>
                     <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certificates</a>
                     <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Variety</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Reports</a>
                     <a class="nav-link" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Command Center</a>
                     <a class="nav-link" asp-controller="Account" asp-action="Login">Logout</a>
                 </ul>
