@@ -21,6 +21,8 @@ namespace CCIA.Models
         public DateTime HarvestDate { get; set; }
 
         public int HarvestNumber { get; set; }
+       
+        public Applications Application { get; set; }
 
        
     }
