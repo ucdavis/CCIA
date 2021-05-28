@@ -204,6 +204,7 @@ namespace CCIA.Services
                 .Include(a => a.AppCertRad)
                 .Include(a => a.FieldInspection)
                 .Include(a => a.Changes).ThenInclude(c => c.Employee)
+                .Include(a => a.TurfgrassCertificates)
                 .AsQueryable();
             return app;
 

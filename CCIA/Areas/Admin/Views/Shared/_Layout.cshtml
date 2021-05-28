@@ -22,7 +22,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CCIA Web App - Admin Home</a>
+                <a class="navbar-brand" asp-area="Admin" asp-controller="AdminHome" asp-action="Index">CCIA Web App - Admin Home</a>
             </div>
         </nav>
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">            
@@ -79,16 +79,16 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Index" aria-haspopup="true" aria-expanded="false">Bulk Sales/Transfers/Turgrass</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Lookup">Bulks Sales Certificate</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="BulkSalesCertificates" asp-action="Search">Search Bulk Sales Certificates</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Lookup">Seed Transfer Certificate</a>
                             <a class="dropdown-item" asp-area="admin" asp-controller="SeedTransfers" asp-action="Search">Search Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Turfgrass" asp-action="Index">Turfgrass Certificate</a>
                         </div>
                     </li>
                     <a class="nav-link" asp-area="admin" asp-controller="Organizations" asp-action="Index">Orgs</a>
-                    <a class="nav-link" asp-area="admin" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certificates</a>
                     <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Variety</a>
                     <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Index">Reports</a>
                     <a class="nav-link" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Command Center</a>

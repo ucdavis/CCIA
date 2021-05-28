@@ -296,6 +296,39 @@
             </table>
         </div>
     }
+    @if(Model.application.TurfgrassCertificates.Any())
+    {
+        <div class="row">
+            <h3>Turfgrass Certificates From this App</h3>
+            <table class="table">
+                <thead>
+                    <tr>                        
+                        <th>ID</th>
+                        <th>Sprigs</th>
+                        <th>Sod</th>
+                        <th>Billing Invoice</th>
+                        <th>Harvest Date</th>
+                        <th>Harvest #</th>
+                        <th>Certificates</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.application.TurfgrassCertificates)
+                    {
+                        <tr>
+                            <td>@row.Id</td>
+                            <td>@row.Sprigs</td>
+                            <td>@row.Sod</td>
+                            <td>@row.BillingInvoice</td>
+                            <td>@row.HarvestDate</td>
+                            <td>@row.HarvestNumber</td>
+                            <td><a asp-action="Certificate" asp-controller="Turfgrass" class="btn btn-info">Cert</a></td>
+                        </tr>                    
+                    }
+                </tbody>                
+            </table>
+        </div>
+    }
 </div>
 <div class="container  col-sm-10">
     @if(Model.application.Certificates.Any())
