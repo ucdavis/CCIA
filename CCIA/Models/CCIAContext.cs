@@ -1380,11 +1380,11 @@ namespace CCIA.Models
 
                 entity.Property(v => v.Status).HasColumnName("var_status");
 
-                //entity.Property(v => v.Table).HasColumnName("tblname");
+                entity.Property(v => v.TableName).HasColumnName("tblname");
 
                 entity.Property(v => v.Certified).HasColumnName("ccia_certified");
 
-                //entity.Property(v => v.DateCertified).HasColumnName("date_certified");
+                entity.Property(v => v.DateCertified).HasColumnName("date_certified");
 
                 entity.Property(v => v.RiceQa).HasColumnName("rice_qa");
 
@@ -1401,6 +1401,7 @@ namespace CCIA.Models
                 entity.HasOne(v => v.Crop);
                 entity.HasOne(v => v.CountyHarvested);
                 entity.HasOne(v => v.Ecoregion);
+                entity.HasOne(v => v.VarietyFamily).WithOne(f => f.VarFull).IsRequired(false);
 
 
             });

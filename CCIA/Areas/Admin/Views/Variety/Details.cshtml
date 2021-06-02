@@ -1,0 +1,130 @@
+@model CCIA.Models.VarFull
+
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Variety Details</h2> 
+        </div>            
+    </div>
+    @* @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
+         {             
+             <div class="row">
+                <div class="col-sm-12">                   
+                   <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                </div>            
+            </div>   
+         }   *@  
+    @if(Model.Type != "official")
+    {  
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>    
+            <div class="form-group row">
+                <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Name)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="VarietyOfficial.VarOffId" class="col-sm-3 col-form-label">Parent ID</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.VarietyOfficial.VarOffId)
+                </div>
+            </div>                                              
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Name)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Crop.Genus" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Genus)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="VarietyOfficial.VarOffName" class="col-sm-3 col-form-label">Parent Name</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.VarietyOfficial.VarOffName)
+                </div>
+            </div>                                         
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Type</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    Family
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Crop.Species" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Species)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="VarietyFamily.InUse" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.VarietyFamily.InUse)
+                </div>
+            </div>                                   
+        </div>
+    </div> 
+    }
+    @if(Model.Type == "official") 
+    {  
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Name)
+                </div>
+            </div>                                                     
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@ 
+            <div class="form-group row">
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Name)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Crop.Genus" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Genus)
+                </div>
+            </div>                                            
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Type</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    Official
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Crop.Species" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Crop.Species)
+                </div>
+            </div>                                    
+        </div>
+    </div> 
+    }
+</div>

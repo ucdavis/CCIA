@@ -24,11 +24,21 @@ namespace CCIA.Models
         public string Category { get; set; }
         public string Status { get; set; }
         public bool Certified { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        public DateTime? DateCertified { get; set; }
+
+        public string TableName { get; set; }
        
        
         public bool RiceQa { get; set; }
         public string RiceColor { get; set; }
         public int ParentId { get; set; }
+
+        [ForeignKey("ParentId")]
+        public VarOfficial VarietyOfficial { get; set; }
+        [ForeignKey("Id")]
+        public VarFamily VarietyFamily { get; set; }
         public bool Turfgrass { get; set; }
         public bool Blend { get; set; }
 

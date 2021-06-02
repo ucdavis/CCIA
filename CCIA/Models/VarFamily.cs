@@ -26,5 +26,6 @@ namespace CCIA.Models
         public string DescHyperlink { get; set; }
 
         public VarOfficial VarOff { get; set; }
+        public VarFull VarFull { get; set; }
     }
 }
