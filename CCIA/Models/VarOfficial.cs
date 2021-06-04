@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -16,10 +17,10 @@ namespace CCIA.Models
         public string VarStatus { get; set; }
         public bool? Experimental { get; set; }
         public bool? PrivateCode { get; set; }
-        public bool? Oecd { get; set; }
-        public bool? CciaCertified { get; set; }
-        public DateTime? CciaCertifiedDate { get; set; }
-        public string CciaCertifier { get; set; }
+        public bool? OECD { get; set; }
+        public bool? CCIACertified { get; set; }
+        public DateTime? CCIACertifiedDate { get; set; }
+        public string CCIACertifier { get; set; }
         public bool? PendingCertification { get; set; }
         public bool? GermplasmEntity { get; set; }
         public bool? DescriptionOnFile { get; set; }
@@ -33,11 +34,10 @@ namespace CCIA.Models
         public bool? Confidential { get; set; }
         public bool? CtcApproved { get; set; }
         public DateTime? CtcDateApproved { get; set; }
-        public string GenBreeder { get; set; }
-        public string GenCertified { get; set; }
-        public string GenFoundation { get; set; }
-        public string GenRegistered { get; set; }
+        
         public int? OwnerId { get; set; }
+        [ForeignKey("OwnerId")]
+        public Organizations OwnerOrganization { get; set; }
         public int? ProducerId { get; set; }
         public bool? PlantPatent { get; set; }
         public int? PlantPatentNum { get; set; }
@@ -51,7 +51,7 @@ namespace CCIA.Models
         public bool? VarReviewBoard { get; set; }
         public DateTime? VarReviewBoardDate { get; set; }
         public string OtherStateCert { get; set; }
-        public string Generation { get; set; }
+       
         public DateTime? DateEntered { get; set; }
         public string UserEntered { get; set; }
         public DateTime? DateUpdated { get; set; }

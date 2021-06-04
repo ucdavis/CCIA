@@ -3360,7 +3360,7 @@ namespace CCIA.Models
                     .HasColumnName("in_use")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Oecd)
+                entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
                     .HasDefaultValueSql("((0))");
 
@@ -3430,15 +3430,15 @@ namespace CCIA.Models
                     .HasMaxLength(1000)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CciaCertified)
+                entity.Property(e => e.CCIACertified)
                     .HasColumnName("ccia_certified")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.CciaCertifiedDate)
+                entity.Property(e => e.CCIACertifiedDate)
                     .HasColumnName("ccia_certified_date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.CciaCertifier)
+                entity.Property(e => e.CCIACertifier)
                     .HasColumnName("ccia_certifier")
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -3483,30 +3483,7 @@ namespace CCIA.Models
                     .HasColumnName("experimental")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.GenBreeder)
-                    .HasColumnName("gen_breeder")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenCertified)
-                    .HasColumnName("gen_certified")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenFoundation)
-                    .HasColumnName("gen_foundation")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenRegistered)
-                    .HasColumnName("gen_registered")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Generation)
-                    .HasColumnName("generation")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
+               
 
                 entity.Property(e => e.GermplasmEntity)
                     .HasColumnName("germplasm_entity")
@@ -3517,7 +3494,7 @@ namespace CCIA.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Oecd)
+                entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
                     .HasDefaultValueSql("((0))");
 

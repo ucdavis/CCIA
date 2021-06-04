@@ -17,7 +17,7 @@ namespace CCIA.Models
         public string UpdateComments { get; set; }
         public bool? Experimental { get; set; }
         public bool? PrivateCode { get; set; }
-        public bool? Oecd { get; set; }
+        public bool? OECD { get; set; }
         public bool? Alias { get; set; }
         public DateTime? DateEntered { get; set; }
         public string UserEntered { get; set; }

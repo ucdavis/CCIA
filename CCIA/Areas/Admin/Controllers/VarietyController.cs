@@ -32,12 +32,9 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _dbContext.VarFull
-                .Include(v => v.Crop)
-                .Include(v => v.VarietyOfficial)
-                .Include(v => v.VarietyFamily)
-                .Where(v => v.Id == id).FirstOrDefaultAsync();
-            if(model == null)
+            var model = await AdminVarietyDetailsViewModel.Create(_dbContext,_helper, id);
+            
+            if(model.variety == null)
             {
                 ErrorMessage = "Variety not found";
                 return RedirectToAction(nameof(Index));
