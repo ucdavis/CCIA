@@ -3601,6 +3601,14 @@ namespace CCIA.Models
                     .WithMany(p => p.VarOfficial)
                     .HasForeignKey(d => d.CropId)
                     .HasConstraintName("FK_Var_Official_Crops");
+
+                entity.Property(e =>e.Ecoregion).HasColumnName("ecoregion");
+
+                entity.Property(e => e.Elevation).HasColumnName("elevation");
+
+                entity.Property(e => e.HarvestCountyId).HasColumnName("county_harvested");
+
+                entity.Property(e => e.StateHarvestedId).HasColumnName("state_harvested");
             });
         }
     }

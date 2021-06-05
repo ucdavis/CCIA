@@ -62,5 +62,17 @@ namespace CCIA.Models
 
         public Crops Crop { get; set; }
         public ICollection<VarFamily> VarFamily { get; set; }
+        public int? Ecoregion { get; set; }
+        [ForeignKey("Ecoregion")]
+        public Ecoregions EcoRegionTranslate { get; set; }
+        public string Elevation { get; set; }
+        public int? HarvestCountyId { get; set; }
+        [ForeignKey("HarvestCountyId")]
+        public County HarvestCounty { get; set; }
+        public int? StateHarvestedId { get; set; }
+        [ForeignKey("StateHarvestedId")]
+        public StateProvince StateHarvested { get; set; }
+
+
     }
 }

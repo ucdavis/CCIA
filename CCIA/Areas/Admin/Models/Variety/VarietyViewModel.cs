@@ -23,6 +23,12 @@ namespace CCIA.Models
                 .Include(v => v.Crop)
                 .Include(v => v.VarietyOfficial)
                 .ThenInclude(o => o.OwnerOrganization)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.EcoRegionTranslate)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.HarvestCounty)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.StateHarvested)
                 .Include(v => v.VarietyFamily)
                 .Where(v => v.Id == id).FirstOrDefaultAsync();           
                        
