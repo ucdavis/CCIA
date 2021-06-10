@@ -68,6 +68,11 @@ namespace CCIA.Models
             }
         }
 
+        [ForeignKey("VarId")]
+        public ICollection<VarCountries> Countries { get; set; }
+
+        
+
        
 
         

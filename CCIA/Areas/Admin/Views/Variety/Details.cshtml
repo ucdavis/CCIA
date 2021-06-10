@@ -288,6 +288,30 @@
             }
         </div>
     </div>
+    
+    <div class="col-sm-12"><hr></div>
+    @if(Model.variety.Countries.Any())
+    {
+    <div class="row col-sm-2">
+        <table class="table">
+            <tr>
+                <th>Countries for Export</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.variety.Countries)
+            {
+                <tr>
+                    <td>@item.Country.Name</td>
+                    <td><a asp-action="RemoveCountry" asp-route-country="@item.CountryId" asp-route-variety="@Model.variety.Id" class="btn btn-danger" onclick="return confirm('Really delete country for export?');" >Remove</a></td>
+                </tr>                                
+            }
+        </table>        
+    </div>    
+    }
+    <div class="col-sm-12">
+        <a asp-action="AddCountry" asp-route-id="@Model.variety.Id" class="btn btn-primary">Add new Country</a>
+    </div>
+    <div class="col-sm-12"><hr></div>
     @if(@Model.variety.Type != "official")
     {
         <div class="row">

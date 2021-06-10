@@ -29,6 +29,7 @@ namespace CCIA.Models
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
 
         public virtual DbSet<ProcessTag> ProcessTag { get; set;}
+        public virtual DbSet<VarCountries> VarCountires { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }
@@ -3119,6 +3120,18 @@ namespace CCIA.Models
                 entity.Property(e => e.Order).HasColumnName("type_order");
 
                 entity.Property(e =>e.Folder).HasColumnName("folder_name");
+
+            });
+
+            modelBuilder.Entity<VarCountries>(entity => 
+            {
+                entity.ToTable("var_countries");
+
+
+                entity.Property(e => e.VarId).HasColumnName("var_id");
+                
+
+                entity.Property(e => e.CountryId).HasColumnName("country_id");
 
             });
 

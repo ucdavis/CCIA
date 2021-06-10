@@ -30,6 +30,8 @@ namespace CCIA.Models
                 .Include(v => v.VarietyOfficial)
                 .ThenInclude(o => o.StateHarvested)
                 .Include(v => v.VarietyFamily)
+                .Include(v => v.Countries.OrderBy(v => v.Country.Name))
+                .ThenInclude(vc => vc.Country)
                 .Where(v => v.Id == id).FirstOrDefaultAsync();           
                        
             var model = new AdminVarietyDetailsViewModel
