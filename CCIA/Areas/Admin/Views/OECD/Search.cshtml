@@ -19,9 +19,7 @@
             <div class="form-group row">
                 <label asp-for="submittedYearsToSearch" class="col-sm-2 col-form-label"></label>
                 <select asp-for="submittedYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
-                <div class="col-sm-6">
-                    (leave blank to search all submitted years; press "ctrl"/"control" to select multiple items, or toggle any single item)
-                </div>
+                <div class="col-sm-1">&dagger;</div>
             </div>
             <div class="form-group row">
                 <label asp-for="searchClass" class="col-sm-2 col-form-label"></label>
@@ -42,9 +40,7 @@
             <div class="form-group row">
                 <label asp-for="certYearsToSearch" class="col-sm-2 col-form-label"></label>
                 <select asp-for="certYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
-                <div class="col-sm-6">
-                    (leave blank to search all cert years; press "ctrl"/"control" to select multiple items, or toggle any single item)
-                </div>
+                <div class="col-sm-1">&dagger;</div>
             </div> 
             <div class="form-group row">
                 <label asp-for="variety" class="col-sm-2 col-form-label"></label>
@@ -110,6 +106,10 @@
         </tbody>
     </table>
 }
+<div class="col-sm-12">
+    <hr>
+    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+</div>
 
 
 
