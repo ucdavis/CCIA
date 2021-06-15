@@ -37,6 +37,8 @@ namespace CCIA.Services
         IQueryable<SeedTransfers> FullSeedTransfers();
 
         IQueryable<SeedTransfers> OverviewSeedTransfers();
+
+        IQueryable<VarFull> FullVariety();
     }
 
      public class FullCallService : IFullCallService
@@ -47,6 +49,24 @@ namespace CCIA.Services
         public FullCallService(CCIAContext context)
         {           
             _context = context;            
+        }
+        public IQueryable<VarFull> FullVariety()
+        {
+           var var = _context.VarFull
+                .Include(v => v.Crop)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.OwnerOrganization)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.EcoRegionTranslate)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.HarvestCounty)
+                .Include(v => v.VarietyOfficial)
+                .ThenInclude(o => o.StateHarvested)
+                .Include(v => v.VarietyFamily)
+                .Include(v => v.Countries.OrderBy(v => v.Country.Name))
+                .ThenInclude(vc => vc.Country)
+                .AsQueryable();
+            return var;
         }
 
         public IQueryable<Certs> FullCerts()

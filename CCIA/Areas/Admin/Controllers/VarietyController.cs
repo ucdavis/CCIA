@@ -42,6 +42,19 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }  
 
+        public async Task<IActionResult> Search()
+        {
+            var model = await AdminVarietySearchViewModel.Create(_dbContext, _helper, null);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Search(AdminVarietySearchViewModel vm)
+        {
+            var model = await AdminVarietySearchViewModel.Create(_dbContext, _helper, vm);
+            return View(model);
+        }
+
         public async Task<IActionResult> RemoveCountry(int variety, int country)    
         {
             var varCountryToRemove = await _dbContext.VarCountires.Where(c => c.VarId == variety && c.CountryId == country).FirstOrDefaultAsync();

@@ -8,6 +8,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
+    public enum VarietyTypes
+    { 
+        
+        [Display(Name ="Official")]
+        official,        
+        [Display(Name ="OECD")]
+        OECD,
+        [Display(Name ="Experimental")]
+        Experimental,
+        [Display(Name ="Alias")]
+        Alias
+    } 
+
     public class VarFull
     {
         public int Id { get; set; }        
