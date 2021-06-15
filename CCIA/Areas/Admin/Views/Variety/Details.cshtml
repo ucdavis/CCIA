@@ -290,12 +290,13 @@
     </div>
     
     <div class="col-sm-12"><hr></div>
+    <div><h4>Countries for Export</h4></div>
     @if(Model.variety.Countries.Any())
     {
     <div class="row col-sm-2">
         <table class="table">
             <tr>
-                <th>Countries for Export</th>
+                <th>Countries</th>
                 <th></th>
             </tr>
             @foreach (var item in Model.variety.Countries)
@@ -370,4 +371,31 @@
             </div>
         </div>  
     }
+    <div class="row">
+        <div class="col-sm-12"><hr></div>
+        <div >
+            <h4>Variety Family info</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Name</td>
+                        <td>Type</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var var in Model.familyInfo)
+                    {
+                        <tr>
+                            <td>@var.Id</td>
+                            <td>@var.Name</td>
+                            <td>@var.Type</td>
+                            <td><a asp-action="Details" asp-route-id="@var.Id" class="btn btn-info">Details</a></td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
