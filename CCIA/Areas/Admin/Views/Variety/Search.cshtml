@@ -33,8 +33,8 @@
                 <input asp-for="varietyNameToSearch" class="form-control col-sm-3">
             </div>            
             <div class="form-group row">
-                 <label asp-for="searchType" class="col-sm-3 col-form-label">Program</label>
-                <select asp-for="searchType" size=5 class="col-sm-3 form-control" asp-items="@(new SelectList(Model.typeOptions))"></select>
+                 <label asp-for="searchType" class="col-sm-3 col-form-label">Type</label>
+                <select asp-for="searchType" size=4 class="col-sm-3 form-control" asp-items="@(new SelectList(Model.typeOptions))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>           
         </div>
@@ -65,7 +65,7 @@
             <th>Type</th>
             <th>Category</th>
             <th>Status</th>
-            <th>CCIA Certified</th>
+            <th>CCIA Cert?</th>
             <th>Crop</th>
             <th>Kind</th>
         </thead>
@@ -74,7 +74,15 @@
             {
             <tr>
                 <td><a class="btn btn-info" asp-action="Details" asp-route-id="@variety.Id">Details</a></td>                
-                <td>@variety.Id</td>               
+                <td>@variety.Id</td>
+                <td>@variety.Name</td>    
+                <td>@variety.ParentId</td>           
+                <td>@variety.Type</td>
+                <td>@variety.Category</td>
+                <td>@variety.Status</td>
+                <td><input type="checkbox" checked="@variety.Certified"></td>
+                <td>@variety.Crop.Crop</td>
+                <td>@variety.Crop.CropKind</td>
             </tr>
             }
         </tbody>
@@ -100,9 +108,13 @@
         $(document).ready( function () {            
             
             oTable = $('#table').dataTable({
-                 dom: 'lBfrtip',
+                dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
-                "pageLength": 50
+                "pageLength": 50,
+                columnDefs: [
+                    { orderable: false, targets: [0,7] }
+                ],
+                order: [[1, 'asc']],
             });           
             
         } );
