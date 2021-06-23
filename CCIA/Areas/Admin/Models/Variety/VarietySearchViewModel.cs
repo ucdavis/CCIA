@@ -36,8 +36,6 @@ namespace CCIA.Models
         public List<string> categoryOptions { get; set;}
 
         public string categoryToSearch { get; set; }
-
-
        
       
                
@@ -76,26 +74,7 @@ namespace CCIA.Models
            } else
            {
                varietySearch = varietySearch.Where(v => v.Id == -1);
-           }
-
-        //   if(vm.searchType != null && vm.searchType > 0)
-        //   {
-              
-        //   }
-
-        //        if(vm.searchStatus != null && vm.searchStatus.Count > 0)
-        //         {                    
-        //             blendsToFind = blendsToFind.Where(b => vm.searchStatus.Contains(b.Status));
-        //         } 
-        //         if(vm.typeSearchValue != "Any")             
-        //         {
-        //             blendsToFind = blendsToFind.Where(b => b.BlendType == vm.typeSearchValue);
-        //         }
-        //         if(!string.IsNullOrWhiteSpace(vm.conditionerSearchTerm))
-        //         {
-        //             blendsToFind = blendsToFind.Where(b => EF.Functions.Like(b.Conditioner.Name, "%" + vm.conditionerSearchTerm + "%") || b.ConditionerId.ToString() == vm.conditionerSearchTerm);
-        //         }
-
+           }       
 
            var typesList =  EnumHelper.GetListOfDisplayNames<VarietyTypes>();
                        

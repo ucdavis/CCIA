@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -19,6 +20,7 @@ namespace CCIA.Models
         public bool? PrivateCode { get; set; }
         public bool? OECD { get; set; }
         public bool? CCIACertified { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? CCIACertifiedDate { get; set; }
         public string CCIACertifier { get; set; }
         public bool? PendingCertification { get; set; }
@@ -33,6 +35,7 @@ namespace CCIA.Models
         public string BriefDescription { get; set; }
         public bool? Confidential { get; set; }
         public bool? CtcApproved { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? CtcDateApproved { get; set; }
         
         public int? OwnerId { get; set; }
@@ -41,14 +44,18 @@ namespace CCIA.Models
         public int? ProducerId { get; set; }
         public bool? PlantPatent { get; set; }
         public int? PlantPatentNum { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? PlantPatentDate { get; set; }
         public bool? Pvp { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? PvpDate { get; set; }
         public int? PvpNumber { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? PvpExpDate { get; set; }
         public int? PvpYears { get; set; }
         public bool? TitleV { get; set; }
         public bool? VarReviewBoard { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? VarReviewBoardDate { get; set; }
         public string OtherStateCert { get; set; }
        

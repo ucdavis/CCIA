@@ -42,6 +42,18 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }  
 
+         public async Task<IActionResult> Edit(int id)
+        {
+            var model = await AdminVarietyDetailsViewModel.Edit(_dbContext,_helper, id);
+            
+            if(model.variety == null)
+            {
+                ErrorMessage = "Variety not found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }  
+
         public async Task<IActionResult> Search()
         {
             var model = await AdminVarietySearchViewModel.Create(_dbContext, _helper, null);
