@@ -20,6 +20,8 @@ namespace CCIA.Models
       public List<Crops> crops { get; set; }
 
       public List<string> categories { get; set; }
+
+      public List<string> statuses { get; set;}
                
         public static async Task<AdminVarietyDetailsViewModel> Create(CCIAContext _dbContext, IFullCallService _helper, int id)
         {      
@@ -70,6 +72,7 @@ namespace CCIA.Models
                 familyInfo = await _dbContext.VarFull.Where(v => v.Id== id || v.ParentId == var.ParentId).ToListAsync(),
                 crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind }).ToListAsync(),
                 categories = new List<string> { "Proprietary", "Public" },
+                statuses = new List<string> {  "Certified", "Pending"}, 
             };
 
             return model;

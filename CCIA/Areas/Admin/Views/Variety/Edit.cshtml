@@ -91,9 +91,8 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.HistoricalName" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.HistoricalName)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.HistoricalName" class="col-sm-8 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.HistoricalName" data-valmsg-replace="true"></span>
                 </div>
             }
         </div>
@@ -134,12 +133,16 @@
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Confidential" class="col-sm-3 col-form-label"></label>
                     <input type="checkbox" asp-for="variety.VarietyOfficial.Confidential.Value" class="col-sm-3 form-control">
-                </div>
+                </div>                
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CCIACertifiedDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.CCIACertifiedDate.Value.ToShortDateString()
-                    </div>
+                    <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="variety.VarietyOfficial.CCIACertifiedDate" class="col-sm-3 form-control datepicker">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.CCIACertifiedDate" data-valmsg-replace="true"></span>                   
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Active" class="col-sm-3 col-form-label"></label>
@@ -151,38 +154,41 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PlantPatentNum" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.PlantPatentNum)
-                    </div>
-                </div>
+                    <input asp-for="variety.VarietyOfficial.PlantPatentNum" class="col-sm-3 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.PlantPatentNum" data-valmsg-replace="true"></span>
+                </div>                
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.PvpDate.Value.ToShortDateString()
-                    </div>
-                </div>
+                    <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="variety.VarietyOfficial.PvpDate" class="col-sm-3 form-control datepicker">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.PvpDate" data-valmsg-replace="true"></span>                   
+                </div>                
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpYears" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.PvpYears)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.PvpYears" class="col-sm-3 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.PvpYears" data-valmsg-replace="true"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.VarReviewBoardDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.VarReviewBoardDate.Value.ToShortDateString()
-                    </div>
+                    <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="variety.VarietyOfficial.VarReviewBoardDate" class="col-sm-3 form-control datepicker">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.VarReviewBoardDate" data-valmsg-replace="true"></span>                   
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.RiceQaColor" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.RiceQaColor)
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.DescriptionOnFile" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.DescriptionOnFile.Value" class="col-sm-3 form-control">
-                </div>
+                    <select required asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-2 form-control">
+                        <option value=""></option>
+                        <option value="Colored">Colored</option>
+                    </select>                   
+                </div>               
             }
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
@@ -227,40 +233,42 @@
                     <input type="checkbox" asp-for="variety.VarietyOfficial.Experimental.Value" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.VarStatus)
-                    </div>
+                    <label asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-3 col-form-label"></label>                    
+                    <select required asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.statuses))"></select>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CCIACertifier" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.CCIACertifier)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.CCIACertifier" class="col-sm-8 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.CCIACertifier" data-valmsg-replace="true"></span>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.ReasonForInactive" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.ReasonForInactive)
-                    </div>
-                </div>
+                 <div class="form-group row">
+                    <label asp-for="variety.VarietyOfficial.DescriptionOnFile" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.DescriptionOnFile.Value" class="col-sm-3 form-control">
+                </div>   
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.CtcDateApproved.Value.ToShortDateString()
-                    </div>
+                    <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-3 form-control datepicker">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.CtcDateApproved" data-valmsg-replace="true"></span>                   
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PlantPatentDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.PlantPatentDate.Value.ToShortDateString()
-                    </div>
-                </div>
+                    <div class="col-sm-9 input-group">
+                        <input type="text" asp-for="variety.VarietyOfficial.PlantPatentDate" class="col-sm-3 form-control datepicker">
+                        <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                            <i class="fa fa-calendar input-group-text"></i>
+                        </div>
+                    </div> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.PlantPatentDate" data-valmsg-replace="true"></span>                   
+                </div>                                            
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpNumber" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.PvpNumber)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.PvpNumber" class="col-sm-3 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.PvpNumber" data-valmsg-replace="true"></span>                    
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.TitleV" class="col-sm-3 col-form-label"></label>
@@ -268,9 +276,8 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.OtherStateCert" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.OtherStateCert)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.OtherStateCert" class="col-sm-8 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.OtherStateCert" data-valmsg-replace="true"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Turfgrass" class="col-sm-3 col-form-label"></label>
@@ -278,9 +285,8 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Owner</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.OwnerOrganization.NameAndId)
-                    </div>
+                     <input asp-for="variety.VarietyOfficial.OwnerId" class="col-sm-3 col-form-label"></input> @(@Model.variety.VarietyOfficial.OwnerOrganization != null ? @Model.variety.VarietyOfficial.OwnerOrganization.Name : "")
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.OwnerId" data-valmsg-replace="true"></span>
                 </div>
             }
         </div>
