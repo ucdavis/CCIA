@@ -76,12 +76,12 @@ namespace CCIA.Models
                varietySearch = varietySearch.Where(v => v.Id == -1);
            }       
 
-           var typesList =  EnumHelper.GetListOfDisplayNames<VarietyTypes>();
+           
                        
             var model = new AdminVarietySearchViewModel
             {
                 varieties = await varietySearch.ToListAsync(), 
-                typeOptions = typesList, 
+                typeOptions = EnumHelper.GetListOfDisplayNames<VarietyTypes>(), 
                 crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                 statusOptions = new List<string> {  "Both", "Certified", "Pending"}, 
                 categoryOptions = new List<string> { "Both","Proprietary", "Public" }, 

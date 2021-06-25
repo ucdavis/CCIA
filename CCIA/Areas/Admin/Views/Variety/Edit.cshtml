@@ -28,10 +28,8 @@
             @if(Model.variety.Type != "official")
             {
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.VarOffId" class="col-sm-3 col-form-label">Parent ID</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        <a asp-action="Details" asp-route-id="@Model.variety.ParentId">@Model.variety.ParentId</a>
-                    </div>
+                    <label asp-for="variety.VarietyFamily.VarOffId" class="col-sm-3 col-form-label">Parent ID</label>
+                    <input asp-for="variety.VarietyFamily.VarOffId" class="col-sm-2 col-form-label"></input> | <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.variety.ParentId">View</a>
                 </div> 
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.OECD" class="col-sm-3 col-form-label"></label>
@@ -222,9 +220,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.VarietyType" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyFamily.VarietyType)
-                    </div>
+                    <select required asp-for="variety.VarietyFamily.VarietyType" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.types))"></select>
                 </div>  
             } else
             {
@@ -284,7 +280,7 @@
                     <input type="checkbox" asp-for="variety.VarietyOfficial.Turfgrass.Value" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Owner</label>
+                    <label class="col-sm-3 col-form-label">Owner (Org ID)</label>
                      <input asp-for="variety.VarietyOfficial.OwnerId" class="col-sm-3 col-form-label"></input> @(@Model.variety.VarietyOfficial.OwnerOrganization != null ? @Model.variety.VarietyOfficial.OwnerOrganization.Name : "")
                     <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.OwnerId" data-valmsg-replace="true"></span>
                 </div>
@@ -322,21 +318,18 @@
             <div class="col-sm-12">
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.DescHyperlink" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyFamily.DescHyperlink)
-                    </div>
+                    <input asp-for="variety.VarietyFamily.DescHyperlink" class="col-sm-4 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyFamily.DescHyperlink" data-valmsg-replace="true"></span>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.VarComments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyFamily.VarComments)
-                    </div>
+                    <textarea asp-for="variety.VarietyFamily.VarComments" class="col-sm-9 col-form-label" rows="5"></textarea>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyFamily.VarComments" data-valmsg-replace="true"></span>
                 </div> 
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.UpdateComments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyFamily.UpdateComments)
-                    </div>
+                    <textarea asp-for="variety.VarietyFamily.UpdateComments" class="col-sm-9 col-form-label" rows="5"></textarea>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyFamily.UpdateComments" data-valmsg-replace="true"></span>
                 </div>
             </div>
         </div>  
@@ -345,62 +338,40 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">PVG G0 collection</label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        EPA Ecoregion: @Model.variety.VarietyOfficial.Ecoregion @(Model.variety.VarietyOfficial.EcoRegionTranslate != null ? Model.variety.VarietyOfficial.EcoRegionTranslate.Name : "") 
-                        Elevation: @Model.variety.VarietyOfficial.Elevation 
-                        County: @(Model.variety.VarietyOfficial.HarvestCounty != null ? @Model.variety.VarietyOfficial.HarvestCounty.Name  : "")
-                        State: @(Model.variety.VarietyOfficial.StateHarvested != null ?  @Model.variety.VarietyOfficial.StateHarvested.Name : "")
-                    </div>
+                    <label asp-for="variety.VarietyOfficial.EcoRegionTranslate.Id" class="col-sm-1 col-form-label">Ecoregion</label>
+                    <select required asp-for="variety.VarietyOfficial.EcoRegionTranslate.Id" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.ecoregions, "Id", "Name"))"></select>
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-1 col-form-label" asp-for="variety.VarietyOfficial.Elevation"></label>
+                    <input asp-for="variety.VarietyOfficial.Elevation" class="col-sm-2 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.Elevation" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="variety.VarietyOfficial.HarvestCountyId" class="col-sm-1 col-form-label">Harvest County</label>
+                    <select required asp-for="variety.VarietyOfficial.HarvestCountyId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
+                </div>
+                 <div class="form-group row">
+                    <label asp-for="variety.VarietyOfficial.StateHarvestedId" class="col-sm-1 col-form-label">Harvest State</label>
+                    <select required asp-for="variety.VarietyOfficial.StateHarvestedId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "Name"))"></select>
+                </div>                
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.DescHyperlink" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.DescHyperlink)
-                    </div>
+                    <input asp-for="variety.VarietyOfficial.DescHyperlink" class="col-sm-4 col-form-label"></input>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.DescHyperlink" data-valmsg-replace="true"></span>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.BriefDescription" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.BriefDescription)
-                    </div>
+                    <label asp-for="variety.VarietyOfficial.BriefDescription" class="col-sm-1 col-form-label"></label>                    
+                    <textarea asp-for="variety.VarietyOfficial.BriefDescription" class="col-sm-9 col-form-label" rows="5"></textarea>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.BriefDescription" data-valmsg-replace="true"></span>
                 </div> 
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Comments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.Comments)
-                    </div>
+                    <textarea asp-for="variety.VarietyOfficial.Comments" class="col-sm-9 col-form-label" rows="5"></textarea>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="variety.VarietyOfficial.Comments" data-valmsg-replace="true"></span>
                 </div>
             </div>
         </div>  
-    }
-    <div class="row">
-        <div class="col-sm-12"><hr></div>
-        <div >
-            <h4>Variety Family info</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Id</td>
-                        <td>Name</td>
-                        <td>Type</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var var in Model.familyInfo)
-                    {
-                        <tr>
-                            <td>@var.Id</td>
-                            <td>@var.Name</td>
-                            <td>@var.Type</td>
-                            <td><a asp-action="Details" asp-route-id="@var.Id" class="btn btn-info">Details</a></td>
-                        </tr>                        
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+    }    
 </div>
 
 
