@@ -1,6 +1,7 @@
 @model CCIA.Models.AdminVarietyDetailsViewModel
 
-
+<form asp-action="Edit">
+    <input asp-for="@Model.variety.Id" type="hidden">
 <div class="container col-sm-12">    
     <div class="row">
         <div class="col-sm-12">
@@ -9,7 +10,8 @@
     </div>              
     <div class="row">
         <div class="col-sm-12">  
-            <div asp-validation-summary="All" class="text-danger"></div>                 
+            <div asp-validation-summary="All" class="text-danger"></div>  
+            <input type="submit" class="btn btn-primary" value="Update">               | 
             <a asp-action="Details" asp-route-id="@Model.variety.Id" class="btn btn-dark">Cancel</a>
         </div>            
     </div>          
@@ -21,53 +23,60 @@
                     @Html.DisplayFor(x => x.variety.Id)
                 </div>
             </div>    
-            <div class="form-group row">
-                <label asp-for="variety.Crop.Name" class="col-sm-3 col-form-label"></label>               
-                <select required asp-for="variety.CropId" class="col-sm-4 form-control" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
-            </div>  
+           
             @if(Model.variety.Type != "official")
             {
+                <div class="form-group row">
+                    <label asp-for="variety.Crop.Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.variety.Crop.Name)
+                    </div>
+                </div>  
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.VarOffId" class="col-sm-3 col-form-label">Parent ID</label>
                     <input asp-for="variety.VarietyFamily.VarOffId" class="col-sm-2 col-form-label"></input> | <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.variety.ParentId">View</a>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.OECD" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.OECD.Value" class="col-sm-3 form-control">
+                    <label asp-for="variety.VarietyFamily.OECD" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="variety.VarietyFamily.OECD" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PrivateCode" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.PrivateCode.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyFamily.PrivateCode" class="col-sm-3 form-control">
                 </div>
             } else
             {
+                 <div class="form-group row">
+                    <label asp-for="variety.Crop.Name" class="col-sm-3 col-form-label"></label>               
+                    <select required asp-for="variety.CropId" class="col-sm-4 form-control" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+                </div>  
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.VarCategory" class="col-sm-3 col-form-label"></label>                    
                     <select required asp-for="variety.VarietyOfficial.VarCategory" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.categories))"></select>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.OECD" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.OECD.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.OECD" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CCIACertified" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.CCIACertified.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.CCIACertified" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PendingCertification" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.PendingCertification.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.PendingCertification" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.GermplasmEntity" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.GermplasmEntity.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.GermplasmEntity" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PlantPatent" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.PlantPatent.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.PlantPatent" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Pvp" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.Pvp.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.Pvp" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpExpDate" class="col-sm-3 col-form-label"></label>
@@ -81,11 +90,11 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.VarReviewBoard" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.VarReviewBoard.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.VarReviewBoard" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.RiceQa" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.RiceQa.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.RiceQa" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.HistoricalName" class="col-sm-3 col-form-label"></label>
@@ -116,21 +125,21 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Experimental" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.Experimental.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyFamily.Experimental" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Confidential" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.Confidential.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyFamily.Confidential" class="col-sm-3 form-control">
                 </div>                
             }  else
             {
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PrivateCode" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.PrivateCode.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.PrivateCode" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Confidential" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.Confidential.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.Confidential" class="col-sm-3 form-control">
                 </div>                
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CCIACertifiedDate" class="col-sm-3 col-form-label"></label>
@@ -144,11 +153,11 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Active" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.Active.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.Active" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CtcApproved" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.CtcApproved.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.CtcApproved" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PlantPatentNum" class="col-sm-3 col-form-label"></label>
@@ -182,7 +191,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.RiceQaColor" class="col-sm-3 col-form-label"></label>
-                    <select required asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-2 form-control">
+                    <select asp-for="variety.VarietyOfficial.RiceQaColor" class="col-sm-2 form-control">
                         <option value=""></option>
                         <option value="Colored">Colored</option>
                     </select>                   
@@ -212,11 +221,11 @@
             {
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.InUse" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.InUse.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyFamily.InUse" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.Alias" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyFamily.Alias.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyFamily.Alias" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyFamily.VarietyType" class="col-sm-3 col-form-label"></label>
@@ -226,7 +235,7 @@
             {
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Experimental" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.Experimental.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.Experimental" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.VarStatus" class="col-sm-3 col-form-label"></label>                    
@@ -239,7 +248,7 @@
                 </div>
                  <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.DescriptionOnFile" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.DescriptionOnFile.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.DescriptionOnFile" class="col-sm-3 form-control">
                 </div>   
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-3 col-form-label"></label>
@@ -268,7 +277,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.TitleV" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.TitleV.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.TitleV" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.OtherStateCert" class="col-sm-3 col-form-label"></label>
@@ -277,7 +286,7 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Turfgrass" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="variety.VarietyOfficial.Turfgrass.Value" class="col-sm-3 form-control">
+                    <input type="checkbox" asp-for="variety.VarietyOfficial.Turfgrass" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Owner (Org ID)</label>
@@ -338,8 +347,8 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.EcoRegionTranslate.Id" class="col-sm-1 col-form-label">Ecoregion</label>
-                    <select required asp-for="variety.VarietyOfficial.EcoRegionTranslate.Id" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.ecoregions, "Id", "Name"))"></select>
+                    <label asp-for="variety.VarietyOfficial.Ecoregion" class="col-sm-1 col-form-label">Ecoregion</label>
+                    <select required asp-for="variety.VarietyOfficial.Ecoregion" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.ecoregions, "Id", "Name"))"></select>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-1 col-form-label" asp-for="variety.VarietyOfficial.Elevation"></label>
@@ -371,9 +380,12 @@
                 </div>
             </div>
         </div>  
-    }    
+    }
+    <div>
+        <input type="submit" class="btn btn-primary" value="Update">
+    </div>    
 </div>
-
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

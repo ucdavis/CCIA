@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
 using CCIA.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
@@ -42,7 +43,8 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }  
 
-         public async Task<IActionResult> Edit(int id)
+        [Authorize(Roles = "EditVarieties")]
+        public async Task<IActionResult> Edit(int id)
         {
             var model = await AdminVarietyDetailsViewModel.Edit(_dbContext,_helper, id);
             
@@ -53,6 +55,91 @@ namespace CCIA.Controllers.Admin
             }
             return View(model);
         }  
+
+        [HttpPost]
+        [Authorize(Roles = "EditVarieties")]
+        public async Task<IActionResult> Edit(int id, AdminVarietyDetailsViewModel vm)
+        {
+            var varFullItem = await _dbContext.VarFull.Where(v => v.Id == id).FirstOrDefaultAsync();
+            if(varFullItem == null || varFullItem.Id != vm.variety.Id)
+            {
+                ErrorMessage = "Variety not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(varFullItem.Type == "official")
+            {
+                var varOffToUpdate = await _dbContext.VarOfficial.Where(v => v.VarOffId == id).FirstOrDefaultAsync();
+                varOffToUpdate.VarOffName = vm.variety.Name;
+                varOffToUpdate.CropId = vm.variety.CropId;
+                varOffToUpdate.VarCategory = vm.variety.VarietyOfficial.VarCategory;
+                varOffToUpdate.OECD = vm.variety.VarietyOfficial.OECD;
+                varOffToUpdate.CCIACertified = vm.variety.VarietyOfficial.CCIACertified;
+                varOffToUpdate.PendingCertification = vm.variety.VarietyOfficial.PendingCertification;
+                varOffToUpdate.GermplasmEntity = vm.variety.VarietyOfficial.GermplasmEntity;
+                varOffToUpdate.PlantPatent = vm.variety.VarietyOfficial.PlantPatent;
+                varOffToUpdate.Pvp = vm.variety.VarietyOfficial.Pvp;
+                varOffToUpdate.PvpExpDate = vm.variety.VarietyOfficial.PvpExpDate;
+                varOffToUpdate.VarReviewBoard = vm.variety.VarietyOfficial.VarReviewBoard;
+                varOffToUpdate.RiceQa = vm.variety.VarietyOfficial.RiceQa;
+                varOffToUpdate.HistoricalName = vm.variety.VarietyOfficial.HistoricalName;
+                varOffToUpdate.PrivateCode = vm.variety.VarietyOfficial.PrivateCode;
+                varOffToUpdate.Confidential = vm.variety.VarietyOfficial.Confidential;
+                varOffToUpdate.CCIACertifiedDate = vm.variety.VarietyOfficial.CCIACertifiedDate;
+                varOffToUpdate.Active = vm.variety.VarietyOfficial.Active;
+                varOffToUpdate.CtcApproved = vm.variety.VarietyOfficial.CtcApproved;
+                varOffToUpdate.PlantPatentNum = vm.variety.VarietyOfficial.PlantPatentNum;
+                varOffToUpdate.PvpDate = vm.variety.VarietyOfficial.PvpDate;
+                varOffToUpdate.PvpYears = vm.variety.VarietyOfficial.PvpYears;
+                varOffToUpdate.VarReviewBoardDate = vm.variety.VarietyOfficial.VarReviewBoardDate;
+                varOffToUpdate.RiceQaColor = vm.variety.VarietyOfficial.RiceQaColor;
+                varOffToUpdate.Experimental = vm.variety.VarietyOfficial.Experimental;
+                varOffToUpdate.VarStatus = vm.variety.VarietyOfficial.VarStatus;
+                varOffToUpdate.CCIACertifier = vm.variety.VarietyOfficial.CCIACertifier;
+                varOffToUpdate.DescriptionOnFile = vm.variety.VarietyOfficial.DescriptionOnFile;
+                varOffToUpdate.CtcDateApproved = vm.variety.VarietyOfficial.CtcDateApproved;
+                varOffToUpdate.PlantPatentDate = vm.variety.VarietyOfficial.PlantPatentDate;
+                varOffToUpdate.PvpNumber = vm.variety.VarietyOfficial.PvpNumber;
+                varOffToUpdate.TitleV = vm.variety.VarietyOfficial.TitleV;
+                varOffToUpdate.OtherStateCert = vm.variety.VarietyOfficial.OtherStateCert;
+                varOffToUpdate.Turfgrass = vm.variety.VarietyOfficial.Turfgrass;
+                varOffToUpdate.OwnerId = vm.variety.VarietyOfficial.OwnerId;
+                varOffToUpdate.Ecoregion = vm.variety.VarietyOfficial.Ecoregion;
+                varOffToUpdate.Elevation = vm.variety.VarietyOfficial.Elevation;
+                varOffToUpdate.HarvestCountyId =  vm.variety.VarietyOfficial.HarvestCountyId;
+                varOffToUpdate.StateHarvestedId = vm.variety.VarietyOfficial.StateHarvestedId;
+                varOffToUpdate.DescHyperlink  = vm.variety.VarietyOfficial.DescHyperlink;
+                varOffToUpdate.BriefDescription  = vm.variety.VarietyOfficial.BriefDescription;
+                varOffToUpdate.Comments = vm.variety.VarietyOfficial.Comments;
+            } else
+            {
+                var varFamToUpdate = await _dbContext.VarFamily.Where(v => v.VarFamId == id).FirstOrDefaultAsync();
+                varFamToUpdate.VarFamName = vm.variety.Name;
+                varFamToUpdate.VarOffId = vm.variety.VarietyFamily.VarOffId;
+                varFamToUpdate.OECD = vm.variety.VarietyFamily.OECD;
+                varFamToUpdate.PrivateCode = vm.variety.VarietyFamily.PrivateCode;
+                varFamToUpdate.Experimental = vm.variety.VarietyFamily.Experimental;
+                varFamToUpdate.Confidential = vm.variety.VarietyFamily.Confidential;
+                varFamToUpdate.InUse = vm.variety.VarietyFamily.InUse;
+                varFamToUpdate.Alias = vm.variety.VarietyFamily.Alias;
+                varFamToUpdate.VarietyType = vm.variety.VarietyFamily.VarietyType;
+                varFamToUpdate.DescHyperlink  = vm.variety.VarietyFamily.DescHyperlink;
+                varFamToUpdate.VarComments = vm.variety.VarietyFamily.VarComments;
+                varFamToUpdate.UpdateComments = vm.variety.VarietyFamily.UpdateComments;
+            }
+
+            if(ModelState.IsValid){                   
+                await _dbContext.SaveChangesAsync();
+                Message = "Variety updated";
+            } else {
+                ErrorMessage = "Something went wrong";                 
+                var model = await AdminVarietyDetailsViewModel.Edit(_dbContext,_helper, id);                        
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new {id = varFullItem.Id});
+        }
+
+
 
         public async Task<IActionResult> Search()
         {

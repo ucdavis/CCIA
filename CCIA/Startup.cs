@@ -105,6 +105,10 @@ namespace CCIA
                         {
                             identity.AddClaim(new Claim(ClaimTypes.Role, "ConditionerStatusUpdate"));
                         }
+                        if(user.EditVarieties)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "EditVarieties"));
+                        }
 
                         context.Principal.AddIdentity(identity);
 
