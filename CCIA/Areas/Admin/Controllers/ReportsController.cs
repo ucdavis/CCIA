@@ -30,9 +30,9 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
-        public async Task<IActionResult> Applications()
+        public async Task<IActionResult> Applications(AdminApplicationReportViewModel vm = null)
         {
-            var model = await AdminApplicationReportViewModel.Create(_dbContext);
+            var model = await AdminApplicationReportViewModel.Create(_dbContext, vm);
             return View(model);
         }
 
