@@ -33,5 +33,12 @@ namespace CCIA.Helpers
                 return Enumerable.Range(2007, CertYear - 2006).ToList();
             }
         }
+
+        public static List<int> certYearListReverse
+        {
+            get{
+                return Enumerable.Range(2007, CertYear - 2006).Reverse().ToList();
+            }
+        }
     }
 }

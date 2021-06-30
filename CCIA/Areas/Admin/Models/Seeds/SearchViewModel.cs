@@ -122,7 +122,7 @@ namespace CCIA.Models
                 var viewModel = new AdminSeedSearchViewModel
                 {
                     seeds = await seedToFind.ToListAsync(),  
-                    yearsToSelectFrom = CertYearFinder.certYearList, 
+                    yearsToSelectFrom = CertYearFinder.certYearListReverse, 
                     crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                     
@@ -134,7 +134,7 @@ namespace CCIA.Models
             var freshModel = new AdminSeedSearchViewModel
             {
                 seeds = new List<Seeds>(), 
-                yearsToSelectFrom = CertYearFinder.certYearList,              
+                yearsToSelectFrom = CertYearFinder.certYearListReverse,              
                 crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
             };           
