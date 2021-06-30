@@ -10,8 +10,7 @@ namespace CCIA.Models
        public string crop { get; set; }
        public string crop_kind { get; set; }
 
-       public string group { get; set; }
-       public int cert_year { get; set; }
+       public string report_group { get; set; }
        public decimal pounds_passed { get; set; }
        
        public int number_certified { get; set; }

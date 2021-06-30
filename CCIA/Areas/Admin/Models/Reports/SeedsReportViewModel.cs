@@ -41,15 +41,16 @@ namespace CCIA.Models
             var model = new AdminSeedsReportViewModel(); 
             if(vm.reportType != null)
             {
-                var p0 = new SqlParameter("@cert_year", string.Join(",", vm.certYearsReport));
-                var p2 = new SqlParameter("@crop_id", "0");
+                var p0 = new SqlParameter("@confirmed_years", string.Join(",", vm.certYearsReport));
+                var p1 = new SqlParameter("@crop_id", "0"); 
+                var p2 = new SqlParameter("@variety_id", "0");
                 var p3 = new SqlParameter("@county", "0");
                 var p4 = new SqlParameter("@report_type", vm.reportType);
-                var p5 = new SqlParameter("@variety_id", "0");
+               
                
                 if(vm.cropsReport != null && vm.cropsReport.Count > 0)
                 {
-                    p2 = new SqlParameter("@crop_id", string.Join(",", vm.cropsReport));
+                    p1 = new SqlParameter("@crop_id", string.Join(",", vm.cropsReport));
                 } 
                 if(vm.countiesReport != null && vm.countiesReport.Count > 0)
                 {
@@ -57,10 +58,10 @@ namespace CCIA.Models
                 }                 
                 if(vm.varietyIdReport != 0)
                 {
-                    p5 = new SqlParameter("@variety_id", vm.varietyIdReport);
+                    p2 = new SqlParameter("@variety_id", vm.varietyIdReport);
                 } 
 
-                reportsFound = await _dbContext.SeedsReport.FromSqlRaw($"EXEC mvc_report_application_summary @cert_year, @crop_id, @county, @report_type, @variety_id", p0, p2, p3, p4, p5).ToListAsync();  
+                reportsFound = await _dbContext.SeedsReport.FromSqlRaw($"EXEC mvc_seeds_report @confirmed_years, @crop_id, @variety_id, @county, @report_type", p0, p1, p2, p3, p4).ToListAsync();  
 
                 model = new AdminSeedsReportViewModel
                 { 

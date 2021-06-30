@@ -3,7 +3,7 @@
 
 
 <h3>Application Acreage Report</h3>
-<form asp-action="Applications" method="POST">
+<form asp-action="Seeds" method="POST">
 <div class="container col-sm-2">
      <div asp-validation-summary="All" class="text-danger"></div>
     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
@@ -67,19 +67,18 @@
             @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
             {
                 <th>County</th>
-            }                    
+            }   
+            @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>Report Group</th>
+            }                   
             @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
             {
                 <th>Crop</th>
                 <th>Kind</th>
             }               
-            <th>Year</th>
-            <th>Acres Applied</th>
-            <th>Acres Approved</th>
-            <th>Acres Cancelled</th>
-            <th>Acres Rejected</th>
-            <th>Acres No Crop</th>
-            <th># Apps</th>
+            <th>Lbs passed</th>
+            <th># certified</th>
         </thead>
         <tbody>
             @foreach (var row in Model.reports)
@@ -88,19 +87,18 @@
                 @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
                 {
                     <td>@row.CountyName</td>
-                }                    
+                } 
+                 @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
+            {
+                <td>@row.report_group</td>
+            }                      
                 @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
                 {
                    <td>@row.crop</td>    
                     <td>@row.crop_kind</td>
-                }          
-                <td>@row.cert_year</td>
-                @* <td>@Html.Raw(row.acres_applied.ToString("##,##0.00"))</td>
-                <td>@Html.Raw(row.acres_approved.ToString("##,##0.00"))</td>
-                <td>@Html.Raw(row.acres_cancelled.ToString("##,##0.00"))</td>
-                <td>@Html.Raw(row.acres_rejected.ToString("##,##0.00"))</td>
-                <td>@Html.Raw(row.acres_no_crop.ToString("##,##0.00"))</td>
-                <td>@row.number_apps</td> *@
+                } 
+                <td>@Html.Raw(row.pounds_passed.ToString("##,##0.00"))</td> 
+                <td>@row.number_certified</td>
             </tr>
             }
         </tbody>
