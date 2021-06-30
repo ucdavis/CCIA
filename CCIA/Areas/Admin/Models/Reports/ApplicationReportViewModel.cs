@@ -26,8 +26,7 @@ namespace CCIA.Models
         public List<int> cropsReport { get; set; }
 
         public List<int> certYears { get; set; }
-
-        [Required]
+       
         public List<int> certYearsReport { get; set; }
 
         public int varietyIdReport { get; set; }
@@ -41,7 +40,12 @@ namespace CCIA.Models
                
         public static async Task<AdminApplicationReportViewModel> Create(CCIAContext _dbContext, AdminApplicationReportViewModel vm )
         { 
-            List<ApplicationReport> reportsFound = new List<ApplicationReport>(); 
+            List<ApplicationReport> reportsFound = new List<ApplicationReport>();              
+            var model = new AdminApplicationReportViewModel(); 
+
+            var apptypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync();
+            apptypes.Insert(0, new AbbrevAppType{ AppTypeId = 0, AppTypeTrans = "Any", Abbreviation = "%"});
+
             if(vm.appTypeReport != null)
             {
                 var p0 = new SqlParameter("@cert_year", string.Join(",", vm.certYearsReport));
@@ -65,48 +69,37 @@ namespace CCIA.Models
                 } 
 
                 reportsFound = await _dbContext.ApplicationReport.FromSqlRaw($"EXEC mvc_report_application_summary @cert_year, @app_type, @crop_id, @county, @report_type, @variety_id", p0, p1, p2, p3, p4, p5).ToListAsync();  
-                
 
-            } else
-            {
-                vm.certYearsReport = new List<int>(new int[] {CertYearFinder.CertYear});
-            }
-            var apptypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync();
-            apptypes.Insert(0, new AbbrevAppType{ AppTypeId = 0, AppTypeTrans = "Any", Abbreviation = "%"});
-           
-            var model = new AdminApplicationReportViewModel();           
-            if(vm.appTypeReport != null)
-            {
                 model = new AdminApplicationReportViewModel
                 { 
                     reports = reportsFound,
                     crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                     appTypes = apptypes,
-                    certYears = CertYearFinder.certYearList,
+                    certYears = CertYearFinder.certYearListReverse,
                     counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),
                     appTypeReport = vm.appTypeReport,
                     cropsReport = vm.cropsReport,
-                    certYearsReport = vm.certYearsReport,
+                    certYearsReport = vm == null ?  new List<int>(new int[] { CertYearFinder.CertYear - 1 }) : vm.certYearsReport,
                     varietyIdReport = vm.varietyIdReport,
                     countiesReport = vm.countiesReport,
                     reportType = vm.reportType,
                 };
 
             } else
-            {
+            {                
                 model = new AdminApplicationReportViewModel
                 { 
                     reports = reportsFound,
                     crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                     appTypes = apptypes,
-                    certYears = CertYearFinder.certYearList,
+                    certYearsReport = new List<int>(new int[] { CertYearFinder.CertYear - 1 }),
+                    certYears = CertYearFinder.certYearListReverse,
                     counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),
                 };
             }
-
+            
             return model;
         }
-
         
     }    
     

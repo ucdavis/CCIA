@@ -64,7 +64,7 @@
 
 @if(Model.reports.Any())
 {
-   <table id="table" class="table datatable">
+   <table id="table" class="table">
         <thead>  
             @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
             {
@@ -97,11 +97,11 @@
                     <td>@row.crop_kind</td>
                 }          
                 <td>@row.cert_year</td>
-                <td>@row.acres_applied</td>
-                <td>@row.acres_approved</td>
-                <td>@row.acres_cancelled</td>
-                <td>@row.acres_rejected</td>
-                <td>@row.acres_no_crop</td>
+                <td>@Html.Raw(row.acres_applied.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_approved.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_cancelled.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_rejected.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_no_crop.ToString("##,##0.00"))</td>
                 <td>@row.number_apps</td>
             </tr>
             }
@@ -114,9 +114,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>       
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}      
      
 }
 
