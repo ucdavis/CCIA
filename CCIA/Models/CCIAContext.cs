@@ -127,6 +127,8 @@ namespace CCIA.Models
 
         public virtual DbSet<ApplicationReport> ApplicationReport { get; set; }
 
+        public virtual DbSet<SeedsReport> SeedsReport { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -334,8 +336,10 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ApplicationReport>(entity => {
                 entity.HasNoKey();
-                //entity.Property(e => e.CountyName).HasColumnName("county_name");
+            });
 
+            modelBuilder.Entity<SeedsReport>(entity => {
+                entity.HasNoKey();
             });
 
             modelBuilder.Entity<Maps>(entity => {
