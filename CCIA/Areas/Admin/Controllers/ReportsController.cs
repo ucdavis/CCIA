@@ -36,9 +36,15 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
-         public async Task<IActionResult> Seeds(AdminSeedsReportViewModel vm = null)
+        public async Task<IActionResult> Seeds(AdminSeedsReportViewModel vm = null)
         {
             var model = await AdminSeedsReportViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
+        public async Task<IActionResult> OECD(AdminOECDReportViewModel vm = null)
+        {
+            var model = await AdminOECDReportViewModel.Create(_dbContext, vm);
             return View(model);
         }
 
