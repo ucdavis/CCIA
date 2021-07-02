@@ -89,8 +89,18 @@
                         </div>
                     </li>
                     <a class="nav-link" asp-area="admin" asp-controller="Organizations" asp-action="Index">Orgs</a>
-                    <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Search">Variety</a>
-                    <a class="nav-link" asp-area="admin" asp-controller="Reports" asp-action="Index">Reports</a>
+                    <a class="nav-link" asp-area="admin" asp-controller="Variety" asp-action="Search">Variety</a>                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="Reports" asp-action="Index" aria-haspopup="true" aria-expanded="false">Reports</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="Applications">Applications</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="Seeds">Seeds</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="OECD">OECD</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="Assignments">Application Review Assignments</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="Members">Member Report</a>
+                        </div>
+                    </li>
+
                     <a class="nav-link" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Command Center</a>
                     <a class="nav-link" asp-controller="Account" asp-action="Login">Logout</a>
                 </ul>
