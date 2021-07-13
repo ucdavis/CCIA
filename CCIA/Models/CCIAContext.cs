@@ -131,6 +131,12 @@ namespace CCIA.Models
 
         public virtual DbSet<OECDReport> OECDReport { get; set; }
 
+        public virtual DbSet<CropAssignmentByLeadBackup> CropAssignmentByLeadBackup { get; set; }
+
+        public virtual DbSet<CropAssignmentByName> CropAssignmentByName { get; set; }
+
+        public virtual DbSet<CropGroups> CropGroups { get; set; }   
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
@@ -345,6 +351,18 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<OECDReport>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropAssignmentByLeadBackup>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropAssignmentByName>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropGroups>(entity => {
                 entity.HasNoKey();
             });
 

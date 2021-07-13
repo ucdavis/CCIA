@@ -48,6 +48,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Assignments()
+        {
+            var model = await AdminCropAssignmentReportViewModel.Create(_dbContext);
+            return View(model);
+        }
+
         
 
         

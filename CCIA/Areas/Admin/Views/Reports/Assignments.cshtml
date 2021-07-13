@@ -1,0 +1,93 @@
+@model CCIA.Models.AdminCropAssignmentReportViewModel
+
+<h3>Application Acreage Report</h3>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Sorted by Lead/Back-up</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Crop Group</th>
+                <th>Lead</th>
+                <th>Backup</th>
+                <th>Backup</th>
+                <th>Backup</th>
+                <th>Seasonal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.AssignmentByLeadBackup)
+            {
+                <tr>
+                    <td>@row.ReportGroup</td>
+                    <td>@row.Lead</td>
+                    <td>@row.Backup1</td>
+                    <td>@row.Backup2</td>
+                    <td>@row.Backup3</td>
+                    <td>@row.Seasonal</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  </div>
+</div>
+<br><br>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Sorted by Name</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Crop Group</th>
+                <th>Blank</th>
+                <th>Hostert</th>
+                <th>Koala</th>
+                <th>Mkandawire</th>
+                <th>Palmer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.CropAssignmentByName)
+            {
+                <tr>
+                    <td>@row.ReportGroup</td>
+                    <td>@row.Blank</td>
+                    <td>@row.Hostert</td>
+                    <td>@row.Koala</td>
+                    <td>@row.Mkandawire</td>
+                    <td>@row.Palmer</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Crops in Groups</h5>
+    (only shows groups with multiple crops)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Crop Group</th>
+                <th>Crop Id</th>
+                <th>Crop</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.CropGroups)
+            {
+                <tr>
+                    <td>@row.ReportGroup</td>
+                    <td>@row.CropId</td>
+                    <td>@row.Crop</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  </div>
+</div>
+
