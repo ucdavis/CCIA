@@ -54,6 +54,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Member(AdminMemberReportViewModel vm = null)
+        {
+            var model = await AdminMemberReportViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
         
 
         
