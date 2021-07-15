@@ -29,6 +29,7 @@ namespace CCIA.Models
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
 
         public virtual DbSet<ProcessTag> ProcessTag { get; set;}
+        public virtual DbSet<VarCountries> VarCountires { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }
@@ -123,6 +124,18 @@ namespace CCIA.Models
         public virtual DbSet<Maps> Maps { get; set; }
 
         public virtual DbSet<OrgMapCrops> OrgMapCrops {get; set;}
+
+        public virtual DbSet<ApplicationReport> ApplicationReport { get; set; }
+
+        public virtual DbSet<SeedsReport> SeedsReport { get; set; }
+
+        public virtual DbSet<OECDReport> OECDReport { get; set; }
+
+        public virtual DbSet<CropAssignmentByLeadBackup> CropAssignmentByLeadBackup { get; set; }
+
+        public virtual DbSet<CropAssignmentByName> CropAssignmentByName { get; set; }
+
+        public virtual DbSet<CropGroups> CropGroups { get; set; }   
 
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
@@ -327,6 +340,30 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
 
+            });
+
+            modelBuilder.Entity<ApplicationReport>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<SeedsReport>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<OECDReport>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropAssignmentByLeadBackup>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropAssignmentByName>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<CropGroups>(entity => {
+                entity.HasNoKey();
             });
 
             modelBuilder.Entity<Maps>(entity => {
@@ -1380,11 +1417,11 @@ namespace CCIA.Models
 
                 entity.Property(v => v.Status).HasColumnName("var_status");
 
-                //entity.Property(v => v.Table).HasColumnName("tblname");
+                entity.Property(v => v.TableName).HasColumnName("tblname");
 
                 entity.Property(v => v.Certified).HasColumnName("ccia_certified");
 
-                //entity.Property(v => v.DateCertified).HasColumnName("date_certified");
+                entity.Property(v => v.DateCertified).HasColumnName("date_certified");
 
                 entity.Property(v => v.RiceQa).HasColumnName("rice_qa");
 
@@ -1401,6 +1438,7 @@ namespace CCIA.Models
                 entity.HasOne(v => v.Crop);
                 entity.HasOne(v => v.CountyHarvested);
                 entity.HasOne(v => v.Ecoregion);
+                entity.HasOne(v => v.VarietyFamily).WithOne(f => f.VarFull).IsRequired(false);
 
 
             });
@@ -3121,6 +3159,18 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<VarCountries>(entity => 
+            {
+                entity.ToTable("var_countries");
+
+
+                entity.Property(e => e.VarId).HasColumnName("var_id");
+                
+
+                entity.Property(e => e.CountryId).HasColumnName("country_id");
+
+            });
+
             modelBuilder.Entity<SampleLabResults>(entity =>
             {
                 entity.HasKey(e => e.SeedsId);
@@ -3359,7 +3409,7 @@ namespace CCIA.Models
                     .HasColumnName("in_use")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Oecd)
+                entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
                     .HasDefaultValueSql("((0))");
 
@@ -3429,15 +3479,15 @@ namespace CCIA.Models
                     .HasMaxLength(1000)
                     .IsUnicode(false);
 
-                entity.Property(e => e.CciaCertified)
+                entity.Property(e => e.CCIACertified)
                     .HasColumnName("ccia_certified")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.CciaCertifiedDate)
+                entity.Property(e => e.CCIACertifiedDate)
                     .HasColumnName("ccia_certified_date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.CciaCertifier)
+                entity.Property(e => e.CCIACertifier)
                     .HasColumnName("ccia_certifier")
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -3482,30 +3532,7 @@ namespace CCIA.Models
                     .HasColumnName("experimental")
                     .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.GenBreeder)
-                    .HasColumnName("gen_breeder")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenCertified)
-                    .HasColumnName("gen_certified")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenFoundation)
-                    .HasColumnName("gen_foundation")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.GenRegistered)
-                    .HasColumnName("gen_registered")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Generation)
-                    .HasColumnName("generation")
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
+               
 
                 entity.Property(e => e.GermplasmEntity)
                     .HasColumnName("germplasm_entity")
@@ -3516,7 +3543,7 @@ namespace CCIA.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Oecd)
+                entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
                     .HasDefaultValueSql("((0))");
 
@@ -3623,6 +3650,14 @@ namespace CCIA.Models
                     .WithMany(p => p.VarOfficial)
                     .HasForeignKey(d => d.CropId)
                     .HasConstraintName("FK_Var_Official_Crops");
+
+                entity.Property(e =>e.Ecoregion).HasColumnName("ecoregion");
+
+                entity.Property(e => e.Elevation).HasColumnName("elevation");
+
+                entity.Property(e => e.HarvestCountyId).HasColumnName("county_harvested");
+
+                entity.Property(e => e.StateHarvestedId).HasColumnName("state_harvested");
             });
         }
     }

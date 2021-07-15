@@ -10,15 +10,15 @@ namespace CCIA.Models
         public int? VarOffId { get; set; }
         public int? OrigOfficialId { get; set; }
         public string VarietyType { get; set; }
-        public bool? InUse { get; set; }
+        public bool InUse { get; set; }
         public int? OecdCountry { get; set; }
-        public bool? Confidential { get; set; }
+        public bool Confidential { get; set; }
         public string VarComments { get; set; }
         public string UpdateComments { get; set; }
-        public bool? Experimental { get; set; }
-        public bool? PrivateCode { get; set; }
-        public bool? Oecd { get; set; }
-        public bool? Alias { get; set; }
+        public bool Experimental { get; set; }
+        public bool PrivateCode { get; set; }
+        public bool OECD { get; set; }
+        public bool Alias { get; set; }
         public DateTime? DateEntered { get; set; }
         public string UserEntered { get; set; }
         public DateTime? DateUpdated { get; set; }
@@ -26,5 +26,6 @@ namespace CCIA.Models
         public string DescHyperlink { get; set; }
 
         public VarOfficial VarOff { get; set; }
+        public VarFull VarFull { get; set; }
     }
 }

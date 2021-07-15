@@ -63,7 +63,7 @@ namespace CCIA.Models
                 {
                     bsc = await bscToFind.ToListAsync(),  
                     programTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync(),
-                    creationYears =  CertYearFinder.certYearList,
+                    creationYears =  CertYearFinder.certYearListReverse,
                 };  
                 return viewModel;
 
@@ -73,7 +73,7 @@ namespace CCIA.Models
             {
                 bsc = new List<BulkSalesCertificates>(),
                 programTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync(),
-                creationYears =  CertYearFinder.certYearList,
+                creationYears =  CertYearFinder.certYearListReverse,
             };           
 
             return freshModel;

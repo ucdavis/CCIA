@@ -20,9 +20,7 @@
              <div class="form-group row">
                  <label asp-for="searchStatus" class="col-sm-2 col-form-label"></label>
                 <select asp-for="searchStatus" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
-                <div class="col-sm-6">
-                    (leave blank to search all status; press "ctrl"/"control" to select multiple items, or toggle any single item)
-                </div>
+                <div class="col-sm-1">&dagger;</div>
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 3rd column*@ 
@@ -45,6 +43,11 @@
 {
     @await Html.PartialAsync("_BlendsTable", @Model.blends)
 }
+
+<div class="col-sm-12">
+    <hr>
+    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+</div>
 
 
 

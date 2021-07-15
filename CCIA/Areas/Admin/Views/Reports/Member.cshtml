@@ -1,0 +1,148 @@
+@model CCIA.Models.AdminMemberReportViewModel
+
+
+
+<h3>Member Report</h3>
+<form asp-action="Member" method="POST">
+<div class="container col-sm-2">
+     <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-6 col-xl-3">@* First column*@
+            <div class="form-group row">
+                <label asp-for="showReport" class="col-sm-3 col-form-label">Members?</label>
+                <select asp-for="showReport" class="col-sm-5 form-control" >
+                    <option>Members</option>
+                    <option>Non-Members</option>
+                    <option>Both</option>
+                </select>   
+            </div>                         
+        </div>
+        <div class="col-md-6 col-xl-3">@* 2nd column *@                                 
+            <div class="form-group row">
+                <label asp-for="memberTypeReport" class="col-sm-3 col-form-label">Member Type</label>
+                 <select asp-for="memberTypeReport" class="col-sm-5 form-control" >
+                    <option value="Voting Member">Voting</option>
+                    <option value="Non-voting Member">Non-voting</option>
+                    <option value="I do not wish to apply for membership">Do not wish to apply</option>
+                    <option value="Any">Any</option>
+                </select>
+            </div>    
+        </div>
+        <div class="col-md-6 col-xl-3">@* 3rd column *@ 
+            <div class="form-group row">
+                <label asp-for="districtReport" class="col-sm-3 col-form-label">District</label>
+                 <select asp-for="districtReport" class="col-sm-5 form-control" >
+                    <option value="Any">Any</option>
+                    <option>I</option>
+                    <option>II</option>
+                    <option>III</option>
+                    <option>IV</option>
+                    <option>V</option>
+                    <option>VI</option>
+                    <option>VII</option>
+                    <option>VIII</option>                    
+                </select>
+            </div>   
+        </div>       
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+</div>
+<hr>
+</form>
+
+@if(Model.reports.Any())
+{
+   <table id="table" class="table">
+        <thead>  
+            <th>OrgId</th>
+            <th>Org Name</th>
+            <th>VR First Name</th>
+            <th>VR Last Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>County</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th>Org Email</th>
+            <th>District</th>
+            <th>Member</th>
+            <th>Type</th>
+            <th>Year</th>
+            <th>Last Agreement Date</th>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.reports)
+            {
+                <tr>
+                    <td>@row.Id</td>
+                    <td>@row.Name</td>
+                    @if(@row.RepresentativeContact != null)
+                    {
+                        <td>@row.RepresentativeContact.FirstName</td>
+                        <td>@row.RepresentativeContact.LastName</td>
+                        <td>@row.RepresentativeContact.Email</td>
+                    } else
+                    {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    }
+                    @if(@row.Address != null)
+                    {
+                        <td>@row.Address.AddressLines</td>
+                        <td>@row.Address.City</td>
+                        @if(@row.Address.County != null)
+                        {
+                            <td>@row.Address.County.Name</td>
+                        } else
+                        {
+                            <td></td>
+                        }
+                        @if(@row.Address.StateProvince != null)
+                        {
+                            <td>@row.Address.StateProvince.Name</td>
+                        } else
+                        {
+                            <td></td>
+                        }
+                        <td>@row.Address.PostalCode</td>
+                    } else
+                    {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    }
+
+                   
+                    
+                    <td>@row.Email</td>
+                    <td>@row.District</td>
+                    <td><input type="checkbox" checked="@row.Member"></td>
+                    <td>@row.MemberType</td>
+                    <td>@row.MemberYear</td>
+                    <td>@row.LastMemberAgreement</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
+     
+}
+
+
+

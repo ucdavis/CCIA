@@ -1,0 +1,122 @@
+@model CCIA.Models.AdminVarietySearchViewModel
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+<h3>Variety Search</h3>
+<form asp-action="Search" method="POST">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-6 col-xl-4">@* First column*@ 
+             <div class="form-group row">
+                <label asp-for="varietyIdToSearch" class="col-sm-3 col-form-label">ID</label>
+                <input asp-for="varietyIdToSearch" class="form-control col-sm-3">
+            </div>             
+            <div class="form-group row">
+                <label asp-for="statusToSearch" class="col-sm-3 col-form-label">Status</label>
+                <select asp-for="statusToSearch" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>               
+            </div> 
+            <div class="form-group row">
+                <label asp-for="categoryToSearch" class="col-sm-3 col-form-label">Category</label>
+                <select asp-for="categoryToSearch" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.categoryOptions))"></select>
+            </div>               
+        </div>
+        <div class="col-md-6 col-xl-4">@* 2nd column *@ 
+            <div class="form-group row">
+                <label asp-for="varietyNameToSearch" class="col-sm-3 col-form-label">Name</label>
+                <input asp-for="varietyNameToSearch" class="form-control col-sm-3">
+            </div>            
+            <div class="form-group row">
+                 <label asp-for="searchType" class="col-sm-3 col-form-label">Type</label>
+                <select asp-for="searchType" size=4 class="col-sm-3 form-control" asp-items="@(new SelectList(Model.typeOptions))"></select>
+                <div class="col-sm-1">&dagger;</div> 
+            </div>           
+        </div>
+        <div class="col-md-6 col-xl-4">@* 3rd column *@  
+            <div class="form-group row">
+                 <label asp-for="searchCrops" class="col-sm-3 col-form-label">Crop</label>
+                <select asp-for="searchCrops" size="8" class="col-sm-4 form-control" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>
+                <div class="col-sm-1">&dagger;</div> 
+            </div>    
+             
+                
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+</div>
+<hr>
+</form>
+@if(Model.varieties.Any())
+{
+   <table id="table" class="table datatable">
+        <thead> 
+            <th></th>          
+            <th>Id</th>
+            <th>Name</th>
+            <th>Parent ID</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>CCIA Cert?</th>
+            <th>Crop</th>
+            <th>Kind</th>
+        </thead>
+        <tbody>
+            @foreach (var variety in Model.varieties)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-route-id="@variety.Id">Details</a></td>                
+                <td>@variety.Id</td>
+                <td>@variety.Name</td>    
+                <td>@variety.ParentId</td>           
+                <td>@variety.Type</td>
+                <td>@variety.Category</td>
+                <td>@variety.Status</td>
+                <td><input type="checkbox" checked="@variety.Certified"></td>
+                <td>@variety.Crop.Crop</td>
+                <td>@variety.Crop.CropKind</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="col-sm-12">
+    <hr>
+    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+</div>
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+
+        $(document).ready( function () {            
+            
+            oTable = $('#table').dataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50,
+                columnDefs: [
+                    { orderable: false, targets: [0,7] }
+                ],
+                order: [[1, 'asc']],
+            });           
+            
+        } );
+    </script>
+}

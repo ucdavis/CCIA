@@ -78,7 +78,7 @@ namespace CCIA.Models
                 {
                     stc = await stcToFind.ToListAsync(),  
                     programTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync(),
-                    creationYears =  CertYearFinder.certYearList,
+                    creationYears =  CertYearFinder.certYearListReverse,
                 };  
                 return viewModel;
 
@@ -88,7 +88,7 @@ namespace CCIA.Models
             {
                 stc = new List<SeedTransfers>(),
                 programTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync(),
-                creationYears =  CertYearFinder.certYearList,
+                creationYears =  CertYearFinder.certYearListReverse,
             };           
 
             return freshModel;

@@ -1,0 +1,45 @@
+@model CCIA.Models.AdminAddCountryVarietyViewModel
+
+<div class="container col-sm-12">    
+    <form asp-action="AddCountry">
+    <input type="hidden" name="id" id="id" value="@Model.variety.Id">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Add Country to Variety</h2> 
+        </div>  
+        <div class="col-sm-6">        
+            <div class="form-group row">
+                <label asp-for="variety.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.variety.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="variety.Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.variety.Name)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Type</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @if(Model.variety.Type != "official")
+                    {
+                        <span>Family</span>
+                    } else
+                    {
+                        <span>Official</span>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Country to add</label>
+                 <select name="CountryId" id="CountryId" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.countryList, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <input type="submit" value="Add Country">
+            </div>
+        </div>         
+    </div>
+    </form>
+</div>

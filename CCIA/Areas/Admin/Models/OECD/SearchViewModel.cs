@@ -110,7 +110,7 @@ namespace CCIA.Models
                 var viewModel = new AdminOECDSearchViewModel
                 {
                     oecds = await oecdToFind.ToListAsync(),  
-                    yearsToSelectFrom = CertYearFinder.certYearList, 
+                    yearsToSelectFrom = CertYearFinder.certYearListReverse, 
                     crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c=> c.CropKind).ToListAsync(),
                     classOptions = classList,
                     
@@ -122,7 +122,7 @@ namespace CCIA.Models
             var freshModel = new AdminOECDSearchViewModel
             {
                 oecds = new List<OECD>(), 
-                yearsToSelectFrom = CertYearFinder.certYearList,              
+                yearsToSelectFrom = CertYearFinder.certYearListReverse,              
                 crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 classOptions = classList,
             };           

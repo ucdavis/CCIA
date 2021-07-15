@@ -8,10 +8,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
+    public enum VarietyTypes
+    { 
+        
+        [Display(Name ="Official")]
+        official,        
+        [Display(Name ="OECD")]
+        OECD,
+        [Display(Name ="Experimental")]
+        Experimental,
+        [Display(Name ="Alias")]
+        Alias
+    } 
+
     public class VarFull
     {
         public int Id { get; set; }        
         [Display(Name="Variety")]
+        [Required]
         public string Name { get; set; }
 
          public string NameAndId => Id + " " + Name;
@@ -24,11 +38,21 @@ namespace CCIA.Models
         public string Category { get; set; }
         public string Status { get; set; }
         public bool Certified { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        public DateTime? DateCertified { get; set; }
+
+        public string TableName { get; set; }
        
        
         public bool RiceQa { get; set; }
         public string RiceColor { get; set; }
         public int ParentId { get; set; }
+
+        [ForeignKey("ParentId")]
+        public VarOfficial VarietyOfficial { get; set; }
+        [ForeignKey("Id")]
+        public VarFamily VarietyFamily { get; set; }
         public bool Turfgrass { get; set; }
         public bool Blend { get; set; }
 
@@ -57,6 +81,11 @@ namespace CCIA.Models
 
             }
         }
+
+        [ForeignKey("VarId")]
+        public ICollection<VarCountries> Countries { get; set; }
+
+        
 
        
 

@@ -1,0 +1,122 @@
+@model CCIA.Models.AdminApplicationReportViewModel
+
+
+
+<h3>Application Acreage Report</h3>
+<form asp-action="Applications" method="POST">
+<div class="container col-sm-2">
+     <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-6 col-xl-3">@* First column*@
+            <div class="form-group row">
+                <label asp-for="cropsReport" class="col-sm-3 col-form-label">Crops</label>
+                <select asp-for="cropsReport" size="8" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>   
+                 <div class="col-sm-1">&dagger;</div>             
+            </div>                         
+        </div>
+        <div class="col-md-6 col-xl-3">@* 2nd column *@                      
+            <div class="form-group row">
+                 <label asp-for="appTypeReport" class="col-sm-3 col-form-label">App Type</label>
+                <select asp-for="appTypeReport" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.appTypes, "Abbreviation", "AppTypeTrans"))"></select>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="varietyIdReport" class="col-sm-3 col-form-label">Variety ID</label>
+                <input asp-for="varietyIdReport" class="form-control col-sm-3">
+            </div>    
+            
+            <div class="form-group row">
+                 <label asp-for="reportType" class="col-sm-3 col-form-label">Report</label>
+                <select asp-for="reportType" class="col-sm-4 form-control">
+                    <option value="Crop/County">By Crop & County</option>
+                    <option value="Crop">By Crop</option>
+                    <option value="County">By County</option>
+                </select>
+            </div>          
+        </div>
+        <div class="col-md-6 col-xl-3">@* 3rd column *@ 
+            <div class="form-group row">
+                <label asp-for="countiesReport" class="col-sm-3 col-form-label">Counties</label>
+                <select asp-for="countiesReport" size="8" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.counties, "CountyId","Name"))"></select>
+                <div class="col-sm-1">&dagger;</div>                
+            </div>   
+        </div>
+        <div class="col-md-6 col-xl-3">@* 4rd column *@ 
+            <div class="form-group row">
+                <label asp-for="certYearsReport" class="col-sm-3 col-form-label">Cert Year</label>
+                <select asp-for="certYearsReport" size="8" class="col-sm-4 form-control" asp-items="@(new SelectList(Model.certYears))"></select>
+                <div class="col-sm-1">&dagger;</div> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="certYearsReport" data-valmsg-replace="true"></span>                  
+            </div> 
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+</div>
+<hr>
+</form>
+
+@if(Model.reports.Any())
+{
+   <table id="table" class="table">
+        <thead>  
+            @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>County</th>
+            }                    
+            @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>Crop</th>
+                <th>Kind</th>
+            }               
+            <th>Year</th>
+            <th>Acres Applied</th>
+            <th>Acres Approved</th>
+            <th>Acres Cancelled</th>
+            <th>Acres Rejected</th>
+            <th>Acres No Crop</th>
+            <th># Apps</th>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.reports)
+            {
+            <tr>
+                @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
+                {
+                    <td>@row.CountyName</td>
+                }                    
+                @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
+                {
+                   <td>@row.crop</td>    
+                    <td>@row.crop_kind</td>
+                }          
+                <td>@row.cert_year</td>
+                <td>@Html.Raw(row.acres_applied.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_approved.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_cancelled.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_rejected.ToString("##,##0.00"))</td>
+                <td>@Html.Raw(row.acres_no_crop.ToString("##,##0.00"))</td>
+                <td>@row.number_apps</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="col-sm-12">
+    <hr>
+    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}      
+     
+}
+
+
+
