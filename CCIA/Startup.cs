@@ -26,6 +26,7 @@ namespace CCIA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<INotificationService, NotificationService>();
                      
             services.AddControllersWithViews(); 
 

@@ -137,6 +137,8 @@ namespace CCIA.Models
 
         public virtual DbSet<CropGroups> CropGroups { get; set; }   
 
+        public virtual DbSet<Notifications> Notifications { get; set; }
+
         // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.

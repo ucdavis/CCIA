@@ -13,6 +13,7 @@ using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
+using CCIA.Services;
 
 namespace CCIA.Controllers.Admin
 {
@@ -23,10 +24,13 @@ namespace CCIA.Controllers.Admin
 
         private readonly IFullCallService _helper;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper)
+        private readonly INotificationService _notificationService;
+
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         // TODO: Add Potato pounds harvested to model & FIR processing
@@ -65,7 +69,6 @@ namespace CCIA.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptApplication(IFormCollection form)
         {
-            // TODO set up notifications
             var id = int.Parse(form["application.Id"].ToString());
             var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             appToAccept.Status = ApplicationStatus.FieldInspectionInProgress.GetDisplayName();
@@ -76,6 +79,8 @@ namespace CCIA.Controllers.Admin
             appToAccept.NotifyDate = DateTime.Now;
             appToAccept.UserEmpDateMod = DateTime.Now;
             appToAccept.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+
+            await _notificationService.ApplicationAccepted(appToAccept);
 
             await _dbContext.SaveChangesAsync();
             Message = "Application Accepted";
@@ -118,7 +123,7 @@ namespace CCIA.Controllers.Admin
             renew.Action = 1;
             renew.DateRenewed = DateTime.Now;
 
-            // TODO add notifications
+            await _notificationService.ApplicationRenewed(newApp);
 
             _dbContext.Add(newApp);                
             _dbContext.Update(renew);
@@ -639,6 +644,7 @@ namespace CCIA.Controllers.Admin
             var newApp = new Applications();
             
             newApp.PaperAppNum = appToRenew.Id;
+            newApp.UserDataentry = appToRenew.UserDataentry;
             newApp.CertNum = appToRenew.CertNum;
             newApp.CertYear = CertYearFinder.CertYear;
             newApp.OriginalCertYear = appToRenew.OriginalCertYear;
