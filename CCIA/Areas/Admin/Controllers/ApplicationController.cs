@@ -122,11 +122,17 @@ namespace CCIA.Controllers.Admin
 
             renew.Action = 1;
             renew.DateRenewed = DateTime.Now;
+           
+            _dbContext.Add(newApp);                            
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
 
             await _notificationService.ApplicationRenewed(newApp);
 
-            _dbContext.Add(newApp);                
-            _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
 
             Message = $"App renewed. New App ID: {newApp.Id}";		
@@ -663,7 +669,6 @@ namespace CCIA.Controllers.Admin
             newApp.Renewal = true;
             newApp.FieldName = appToRenew.FieldName;
             newApp.FarmCounty = appToRenew.FarmCounty;
-            newApp.UserDataentry = 0;
             newApp.Maps = appToRenew.Maps;
             newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
             newApp.MapCenterLat = appToRenew.MapCenterLat;

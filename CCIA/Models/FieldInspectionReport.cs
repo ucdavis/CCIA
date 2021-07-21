@@ -22,8 +22,12 @@ namespace CCIA.Models
            ReportGenerated = false;
         }
 
+        public int Id { get; set; }
+
         
-        public int AppId { get; set; }        
+        public int AppId { get; set; }    
+        [ForeignKey("AppId")]
+        public Applications Application { get; set;}    
         public  decimal? AcresInspectionOnly { get; set; }
         public decimal? AcresApproved { get; set; }
         

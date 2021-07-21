@@ -2839,7 +2839,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<FieldInspectionReport>(entity =>
             {
-                entity.HasKey(e => e.AppId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("field_inspect");
 
