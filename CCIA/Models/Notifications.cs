@@ -15,13 +15,13 @@ namespace CCIA.Models
         public int Id { get; set; }
         
         public string Email { get; set; }
-        public int AppId { get; set; }
+        public int? AppId { get; set; }
 
-        public int SID { get; set; }
+        public int? SID { get; set; }
 
-        public int BlendId { get; set; }
+        public int? BlendId { get; set; }
 
-        public int TagId { get; set; }
+        public int? TagId { get; set; }
 
         public string Message { get; set; }
 
