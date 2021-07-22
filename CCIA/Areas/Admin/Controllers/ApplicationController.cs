@@ -157,6 +157,14 @@ namespace CCIA.Controllers.Admin
             _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
 
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
+
+            await _notificationService.ApplicationRenewNoSeed(newApp);
+
+            await _dbContext.SaveChangesAsync();
+
             Message = $"App renewed for NO SEED. New App ID: {newApp.Id}";		
 		
             return  RedirectToAction(nameof(Renew));;
@@ -170,6 +178,7 @@ namespace CCIA.Controllers.Admin
             renew.DateRenewed = DateTime.Now;
             
             _dbContext.Update(renew);
+            await _notificationService.ApplicationRenewalCancelled(renew);
             await _dbContext.SaveChangesAsync();
 
             Message = $"App renewal cancelled.";		

@@ -11,6 +11,10 @@ namespace CCIA.Services
 
         Task ApplicationRenewed(Applications app);
 
+        Task ApplicationRenewNoSeed(Applications app);
+
+        Task ApplicationRenewalCancelled(RenewFields renew);
+
     }
 
     public class NotificationService : INotificationService
@@ -46,9 +50,9 @@ namespace CCIA.Services
 
         public async Task ApplicationRenewed(Applications app)
         {
-             var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
 
-             foreach (var user in users)
+            foreach (var user in users)
             {                
                 var notification = new Notifications
                 {
@@ -58,6 +62,40 @@ namespace CCIA.Services
                 };
                 _dbContext.Notifications.Add(notification);      
             }
+        }
+
+        public async Task ApplicationRenewNoSeed(Applications app)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    AppId = app.Id,
+                    Message = $"Application {app.PaperAppNum} Renewed (no seed); New AppID: {app.Id}"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task ApplicationRenewalCancelled(RenewFields renew)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstOrDefaultAsync();
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    AppId = app.Id,
+                    Message = $"Application {app.PaperAppNum} Renewal Canceled"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+
         }
     }
 
