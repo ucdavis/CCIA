@@ -340,6 +340,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> FIR(int id)
         {
+            // TODO: Add cancel pre-app (half fee), cancel app (no fee), cancel app (full fee)
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             if(model.application == null)
             {
@@ -415,6 +416,7 @@ namespace CCIA.Controllers.Admin
                     app.Status = ApplicationStatus.FieldInspectionReportReady.GetDisplayName();
                     app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
                     app.UserEmpDateMod = DateTime.Now;
+                    await _notificationService.ApplicationFIRComplete(app);
                 }
                 if(app.AppType == "PO")
                 {

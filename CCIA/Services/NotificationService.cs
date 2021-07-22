@@ -15,6 +15,10 @@ namespace CCIA.Services
 
         Task ApplicationRenewalCancelled(RenewFields renew);
 
+        Task ApplicationFIRComplete(Applications app);
+
+        Task SeedLotAccepted(Seeds seed);
+
     }
 
     public class NotificationService : INotificationService
@@ -96,6 +100,38 @@ namespace CCIA.Services
                 _dbContext.Notifications.Add(notification);      
             }
 
+        }
+
+        public async Task ApplicationFIRComplete(Applications app)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    AppId = app.Id,
+                    Message = "Field Inspection Complete"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task SeedLotAccepted(Seeds seed)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == seed.UserEntered.Value || (c.SeedNotices && c.OrgId == seed.ApplicantId || (c.SeedNotices && c.OrgId == seed.ConditionerId))) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    SID = seed.Id,
+                    Message = "Seed Lot Accepted"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
         }
     }
 
