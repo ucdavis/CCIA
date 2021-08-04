@@ -655,6 +655,30 @@ namespace CCIA.Controllers.Admin
             return PartialView("_LookupClass", classes);
         }
 
+        public IActionResult OpenPotatoHealthCertificate()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PotatoHealthCertificateDetails(int id)
+        {
+            var model = await _dbContext.Applications.Include(a => a.PotatoHealthCertificate).Where(a => a.Id == id && a.AppType == "PO").FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Application not found or not a Potato App";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            if(model.PotatoHealthCertificate == null)
+            {
+                var newHealthCertificate = new PotatoHealthCertificates();
+                newHealthCertificate.AppId = model.Id;
+                _dbContext.Add(newHealthCertificate);
+                await _dbContext.SaveChangesAsync();
+            }
+            return View(model);
+
+        }
+
 
         private Applications MapRenewFromApp(Applications appToRenew)
         {
