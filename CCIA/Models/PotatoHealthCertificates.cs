@@ -59,21 +59,21 @@ namespace CCIA.Models
 
        public bool LotOriginatedFromTissueCulture { get; set; }
 
-       public int YearMicroPropagated { get; set; }
+       public int? YearMicroPropagated { get; set; }
        public string MicropropagatedBy { get; set; }
-       public int NumberOfYearsProduced { get; set; }
+       public int? NumberOfYearsProduced { get; set; }
 
        public string PostHarvestLocation { get; set; }
-       public int PostHarvestLeafroll { get; set; }
-       public int PostHarvestMosaic { get; set; }
-       public int PostHarvestOtherVarieties { get; set; }
+       public int? PostHarvestLeafroll { get; set; }
+       public int? PostHarvestMosaic { get; set; }
+       public int? PostHarvestOtherVarieties { get; set; }
 
-       public int PostHarvestPlantCount { get; set; }
+       public int? PostHarvestPlantCount { get; set; }
 
-       public int PostHarvestSampleNumber { get; set; }
+       public int? PostHarvestSampleNumber { get; set; }
 
-       public decimal PercentPVY { get; set; }
-       public decimal PercentPVX { get; set; }
+       public decimal? PercentPVY { get; set; }
+       public decimal? PercentPVX { get; set; }
 
        public int BacterialRingRot { get; set; }
 
