@@ -46,7 +46,7 @@
                     <td style="width: 3px">
                     </td>
                     <td colspan="4" class="box">
-                        &nbsp;<asp:Label ID="org_nameLabel" runat="server" Text='<%# Bind("org_name") %>'></asp:Label></td>
+                        &nbsp;@Model.application.GrowerOrganization.Name</td>
                 </tr>
                 <tr>
                     <td>
@@ -54,7 +54,7 @@
                     <td style="width: 3px">
                     </td>
                     <td colspan="4" class="box">
-                        &nbsp;<asp:Label ID="city_stateLabel" runat="server" Text='<%# Bind("city_state") %>'></asp:Label></td>
+                        &nbsp; @Model.application.GrowerOrganization.Address.City, @Model.application.GrowerOrganization.Address.StateProvince.Name @Model.application.GrowerOrganization.Address.PostalCode</td>
                 </tr>
                 <tr>
                     <td>
@@ -62,28 +62,14 @@
                     <td style="width: 3px">
                     </td>
                     <td class="box">
-                        &nbsp;<asp:Label ID="var_nameLabel" runat="server" Text='<%# Bind("var_name") %>'></asp:Label></td>
+                        &nbsp;@Model.application.VarietyName</td>
                     <td>
                         &nbsp;</td>
                     <td>
                         &nbsp;Acres</td>
                     <td class="box">
-                        &nbsp;<asp:Label ID="acres_appliedLabel" runat="server" Text='<%# Bind("acres_applied") %>'></asp:Label></td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td style="width: 3px">
-                    </td>
-                    <td class="box">
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td class="box">
-                    </td>
-                </tr>
+                        &nbsp;@Model.application.AcresApplied</td>
+                </tr>                
                 <tr>
                     <td colspan="6">
                         <strong>Lot Certification</strong></td>
@@ -94,7 +80,7 @@
                     <td style="width: 3px">
                     </td>
                     <td class="box" align="center">
-                        <asp:Label ID="cert_numberLabel" runat="server" Text='<%# Bind("cert_number") %>'></asp:Label></td>
+                        @Model.application.FullCert</td>
                         <td colspan="3">
                         </td>
                 </tr>
@@ -103,8 +89,8 @@
                         Seed Class/Gen.</td>
                     <td style="width: 3px">
                     </td>
-                    <td align="center" class="box">
-                        <asp:Label ID="class_abbrvLabel" runat="server" Text='<%# Bind("class_abbrv") %>'></asp:Label></td>
+                    <td align="center" class="box"> @Model.application.ClassProducedName                        
+                    </td>
                     <td colspan="3">
                     </td>
                 </tr>
@@ -167,11 +153,19 @@
                     <td style="width: 3px">
                         &nbsp;No</td>
                     <td class="box30">
-                        &nbsp;<asp:Label ID="lot_orig_noLabel" runat="server" Text='<%# Bind("lot_orig_no") %>'></asp:Label>&nbsp;</td>
+                        @if(!Model.certificate.LotOriginatedFromTissueCulture)
+                        {
+                            <span>X</span>
+                        }
+                    </td>
                     <td>
                         &nbsp;Yes</td>
                     <td class="box30">
-                        &nbsp;<asp:Label ID="lot_orig_yesLabel" runat="server" Text='<%# Bind("lot_orig_yes") %>'></asp:Label></td>
+                         @if(Model.certificate.LotOriginatedFromTissueCulture)
+                        {
+                            <span>X</span>
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td align="right">
@@ -179,13 +173,15 @@
                     <td align="right">
                         Year micropropagated</td>
                     <td class="box" colspan="4">
-                        <asp:Label ID="yr_micropropagatedLabel" runat="server" Text='<%# Bind("yr_micropropagated") %>'></asp:Label>&nbsp;</td>
+                        @Model.certificate.YearMicroPropagated
+                    </td>
                 </tr>
                 <tr>
                     <td align="right">
                         by</td>
                     <td class="box" colspan="5">
-                        <asp:Label ID="micropropagated_byLabel" runat="server" Text='<%# Bind("micropropagated_by") %>'></asp:Label>&nbsp;</td>
+                        @Model.certificate.MicropropagatedBy
+                    </td>
                 </tr>
             </table>
         </td>
@@ -196,7 +192,8 @@
 Production environment pedigree</strong>: Fill 1 column per production year,
 use different initials in Greenhouse and Field boxes for different farms<br />
 (e.g. JSF for John Smith Farms); indicate a tuber-united lot with a "+" after farm
-initials; describe other footnotes in notes below.<asp:DataList ID="dlPedigree" Width="100%" RepeatColumns="9" RepeatDirection="horizontal" runat="server" DataSourceID="sdsHistory">
+initials; describe other footnotes in notes below.
+<asp:DataList ID="dlPedigree" Width="100%" RepeatColumns="9" RepeatDirection="horizontal" runat="server" DataSourceID="sdsHistory">
     <ItemTemplate>
         <asp:Table ID="test" runat="server" CellPadding="3" BorderWidth="1" BorderColor="black">
             <asp:TableRow>
