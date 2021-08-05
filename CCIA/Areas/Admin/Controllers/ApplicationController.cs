@@ -662,7 +662,15 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> PotatoHealthCertificateDetails(int id)
         {
-            var model = await _dbContext.Applications.Include(a => a.PotatoHealthCertificate).Where(a => a.Id == id && a.AppType == "PO").FirstOrDefaultAsync();
+            var model = await _dbContext.Applications
+                .Include(a => a.GrowerOrganization)
+                .ThenInclude(g => g.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(a => a.PotatoHealthCertificate)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Where(a => a.Id == id && a.AppType == "PO")
+                .FirstOrDefaultAsync();
             if(model == null)
             {
                 ErrorMessage = "Application not found or not a Potato App";
@@ -676,7 +684,27 @@ namespace CCIA.Controllers.Admin
                 await _dbContext.SaveChangesAsync();
             }
             return View(model);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> PotatoHealthCertificateDetails(PotatoHealthCertificates cert)
+        {
+            var certToUpdate = await _dbContext.PotatoHealthCertificates.Where(c => c.AppId ==cert.AppId).FirstOrDefaultAsync();
+            if(certToUpdate == null)
+            {
+                ErrorMessage = "Certificate not found";
+                var model = await _dbContext.Applications
+                .Include(a => a.GrowerOrganization)
+                .ThenInclude(g => g.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(a => a.PotatoHealthCertificate)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .Where(a => a.Id == cert.AppId && a.AppType == "PO")
+                .FirstOrDefaultAsync();
+                return View(model);
+            }
+            return View();
         }
 
 

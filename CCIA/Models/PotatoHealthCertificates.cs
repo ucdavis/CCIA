@@ -59,11 +59,16 @@ namespace CCIA.Models
 
        public bool LotOriginatedFromTissueCulture { get; set; }
 
+       [Display(Name="Micropropagate Year")]
        public int? YearMicroPropagated { get; set; }
+       [Display(Name="Micropropagated By")]
        public string MicropropagatedBy { get; set; }
+       [Display(Name="# Years Produced")]
        public int? NumberOfYearsProduced { get; set; }
 
+       [Display(Name="Location")]
        public string PostHarvestLocation { get; set; }
+       [Display(Name="Leafroll")]
        public int? PostHarvestLeafroll { get; set; }
        public int? PostHarvestMosaic { get; set; }
        public int? PostHarvestOtherVarieties { get; set; }
