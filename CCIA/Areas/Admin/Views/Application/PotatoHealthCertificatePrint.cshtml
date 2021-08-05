@@ -1,0 +1,558 @@
+@model CCIA.Models.AdminPotatoHealthCertificateViewModel
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />     
+</head>
+<body>   
+<table width="100%">
+    <tr>
+        <td align="center" colspan="3">
+            <strong>NORTH AMERICAN CERTIFIED SEED POTATO HEALTH CERTIFICATION - CROP YEAR @Model.application.CertYear</strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 3px">
+            &nbsp;</td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <table cellspacing="5" border="0" width="400">
+                <tr>
+                    <td>
+                    </td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4">
+                        <strong>
+                        Grower</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        Name</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4" class="box">
+                        &nbsp;<asp:Label ID="org_nameLabel" runat="server" Text='<%# Bind("org_name") %>'></asp:Label></td>
+                </tr>
+                <tr>
+                    <td>
+                        City, State Zip</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4" class="box">
+                        &nbsp;<asp:Label ID="city_stateLabel" runat="server" Text='<%# Bind("city_state") %>'></asp:Label></td>
+                </tr>
+                <tr>
+                    <td>
+                        Variety</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td class="box">
+                        &nbsp;<asp:Label ID="var_nameLabel" runat="server" Text='<%# Bind("var_name") %>'></asp:Label></td>
+                    <td>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;Acres</td>
+                    <td class="box">
+                        &nbsp;<asp:Label ID="acres_appliedLabel" runat="server" Text='<%# Bind("acres_applied") %>'></asp:Label></td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td style="width: 3px">
+                    </td>
+                    <td class="box">
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td class="box">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <strong>Lot Certification</strong></td>
+                </tr>
+                    <tr>
+                    <td>
+                        Certification #</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td class="box" align="center">
+                        <asp:Label ID="cert_numberLabel" runat="server" Text='<%# Bind("cert_number") %>'></asp:Label></td>
+                        <td colspan="3">
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        Seed Class/Gen.</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td align="center" class="box">
+                        <asp:Label ID="class_abbrvLabel" runat="server" Text='<%# Bind("class_abbrv") %>'></asp:Label></td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Certifying State</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td align="center" class="box">
+                        California</td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 3px">
+        </td>
+        <td valign="top">
+            <table width="400" cellspacing="5">
+                <tr>
+                    <td colspan="1">
+                    </td>
+                    <td colspan="5">
+                        <strong>
+                        Importer</strong></td>
+                </tr>
+                <tr>
+                    <td class="box" colspan="1">
+                    </td>
+                    <td colspan="5" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="box" colspan="1">
+                    </td>
+                    <td colspan="5" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Quantity Shipped</td>
+                    <td colspan="4" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Size</td>
+                    <td colspan="4" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Lot originated from tissue culture</td>
+                    <td style="width: 3px">
+                        &nbsp;No</td>
+                    <td class="box30">
+                        &nbsp;<asp:Label ID="lot_orig_noLabel" runat="server" Text='<%# Bind("lot_orig_no") %>'></asp:Label>&nbsp;</td>
+                    <td>
+                        &nbsp;Yes</td>
+                    <td class="box30">
+                        &nbsp;<asp:Label ID="lot_orig_yesLabel" runat="server" Text='<%# Bind("lot_orig_yes") %>'></asp:Label></td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Year micropropagated</td>
+                    <td class="box" colspan="4">
+                        <asp:Label ID="yr_micropropagatedLabel" runat="server" Text='<%# Bind("yr_micropropagated") %>'></asp:Label>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        by</td>
+                    <td class="box" colspan="5">
+                        <asp:Label ID="micropropagated_byLabel" runat="server" Text='<%# Bind("micropropagated_by") %>'></asp:Label>&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br />
+<strong>
+Production environment pedigree</strong>: Fill 1 column per production year,
+use different initials in Greenhouse and Field boxes for different farms<br />
+(e.g. JSF for John Smith Farms); indicate a tuber-united lot with a "+" after farm
+initials; describe other footnotes in notes below.<asp:DataList ID="dlPedigree" Width="100%" RepeatColumns="9" RepeatDirection="horizontal" runat="server" DataSourceID="sdsHistory">
+    <ItemTemplate>
+        <asp:Table ID="test" runat="server" CellPadding="3" BorderWidth="1" BorderColor="black">
+            <asp:TableRow>
+                <asp:TableCell BorderWidth="0" Text='<%# Eval("p_year") %>'></asp:TableCell>
+            </asp:TableRow>
+                <asp:TableRow>
+                <asp:TableCell CssClass="box" Text='<%# Eval("greenhouse") %>'> &nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell  CssClass="box"  Text='<%# Eval("field") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell  CssClass="box"  Text='<%# Eval("cert_no") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell  CssClass="box"  Text='<%# Eval("cert_state") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+        </asp:Table>                    
+    </ItemTemplate>
+</asp:DataList>Number of years produced in field soil
+<asp:Label CssClass="box30" ID="num_yrs_producedLabel" runat="server" Text='<%# Bind("num_yrs_produced") %>'></asp:Label><br />
+&nbsp;<table class="box" width="100%">
+    <tr>
+        <td>
+            <strong>Summer Field Readings</strong></td>
+        <td colspan="3" valign="top">
+            &nbsp;<strong>Post Harvest Readings</strong></td>
+    </tr>
+    <tr>
+        <td valign="top">
+<asp:DataList ID="dlSummerReadings" Width="100%" RepeatColumns="5" RepeatDirection="horizontal" runat="server" DataSourceID="sdsSummerReadings">
+    <ItemTemplate>
+        <asp:Table ID="test" runat="server" BorderWidth="0" BorderColor="black" >
+            <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center" CssClass="nobox" Text='<%# Eval("inspect_num_text") %>'></asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center"  CssClass="box" Text='<%# Eval("leafroll_per") %>'> &nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("mosiac_per") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("other_var_per") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+            <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("blackleg_per") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+                <asp:TableRow>
+                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("other_disease_per") %>'>&nbsp;</asp:TableCell>
+            </asp:TableRow>
+        </asp:Table>
+    </ItemTemplate>
+</asp:DataList></td>
+        <td valign="top">
+            <table class="">
+                <tr>
+                    <td>
+                        FINAL/WINTER</td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        &nbsp;<asp:Label ID="leafroll_perLabel" runat="server" Text='<%# Bind("leafroll_per") %>'></asp:Label>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        <asp:Label ID="mosaic_perLabel" runat="server" Text='<%# Bind("mosaic_per") %>'></asp:Label>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="box">
+                        &nbsp;<asp:Label ID="other_var_perLabel" runat="server" Text='<%# Bind("other_varieties_per") %>'></asp:Label>&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+        <td valign="top">
+            &nbsp;</td>
+        <td align="center" valign="top">
+            &nbsp;&nbsp;<table>
+                <tr>
+                    <td align="left">
+                        Location</td>
+                    <td align="left">
+<asp:Label ID="ph_locationLabel" runat="server" Text='<%# Bind("ph_location") %>' CssClass="box30"></asp:Label></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                        Sample No.
+<asp:Label ID="ph_sample_noLabel" runat="server" Text='<%# Bind("ph_sample_no") %>' CssClass="box30"></asp:Label></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                        Plant Count
+<asp:Label ID="ph_plant_countLabel" runat="server" Text='<%# Bind("ph_plant_count") %>' CssClass="box30"></asp:Label></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        ELISA TEST RESULTS FOR LATENT<br />
+                        VIRUSES</td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="2">
+                        %PVY
+<asp:Label ID="percent_pvyLabel" runat="server" Text='<%# Bind("percent_pvy") %>' CssClass="box30"></asp:Label>
+                        &nbsp;&nbsp; %PVX
+<asp:Label ID="percent_pvxLabel" runat="server" Text='<%# Bind("percent_pvx") %>' CssClass="box30"></asp:Label></td>
+                </tr>
+            </table>
+            &nbsp; &nbsp;&nbsp;
+        </td>
+    </tr>
+</table>
+<br />
+<table>
+    <tr>
+        <td>
+        </td>
+        <td colspan="6" width="100%">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Other Diseases</td>
+        <td style="width: 3px">
+            &nbsp;</td>
+        <td align="center">
+            Not known to occur<br />
+            in grower's area.</td>
+        <td align="center">
+            &nbsp;</td>
+        <td align="center">
+            No. of years since last found on this<br />
+            grower's farm, or NONE ON RECORD<br />
+            if free &gt;10 years.</td>
+        <td align="center">
+            &nbsp;</td>
+        <td align="center">
+            Not found this year during<br />
+            normal certification field<br />
+            inspections</td>
+    </tr>
+    <tr>
+        <td>
+            Bacterial Ring Rot</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="bact_ring_rot_not_knownLabel" runat="server" Text='<%# Bind("bact_ring_rot_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="bact_ring_rot_yearLabel" runat="server" Text='<%# Bind("bact_ring_rot_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="bact_ring_rot_not_foundLabel" runat="server" Text='<%# Bind("bact_ring_rot_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Golden Nematode</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="golden_nematode_not_knownLabel" runat="server" Text='<%# Bind("golden_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="golden_nematode_yearLabel" runat="server" Text='<%# Bind("golden_nematode_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="golden_nematode_not_foundLabel" runat="server" Text='<%# Bind("golden_nematode_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Late Blight</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="late_blight_not_knownLabel" runat="server" Text='<%# Bind("late_blight_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="late_blight_yearLabel" runat="server" Text='<%# Bind("late_blight_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="late_blight_not_foundLabel" runat="server" Text='<%# Bind("late_blight_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Root-Knot Nematode</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="root_knot_nematode_not_knownLabel" runat="server" Text='<%# Bind("root_knot_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="root_knot_nematode_yearLabel" runat="server" Text='<%# Bind("root_knot_nematode_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="root_knot_nematode_not_foundLabel" runat="server" Text='<%# Bind("root_knot_nematode_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Potato Rot Nematode</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_rot_nematode_not_knownLabel" runat="server" Text='<%# Bind("pot_rot_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_rot_nematode_yearLabel" runat="server" Text='<%# Bind("pot_rot_nematode_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_rot_nematode_not_foundLabel" runat="server" Text='<%# Bind("pot_rot_nematode_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Potato Wart</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_wart_not_knownLabel" runat="server" Text='<%# Bind("pot_wart_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_wart_yearLabel" runat="server" Text='<%# Bind("pot_wart_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_wart_not_foundLabel" runat="server" Text='<%# Bind("pot_wart_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Powdery Scab</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="powder_scab_not_knownLabel" runat="server" Text='<%# Bind("powder_scab_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="powder_scab_yearLabel" runat="server" Text='<%# Bind("powder_scab_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="powder_scab_not_foundLabel" runat="server" Text='<%# Bind("powder_scab_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="white-space: nowrap">
+            Potato Spindle Tuber Viroid</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_spindle_tuber_viroid_not_knownLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_spindle_tuber_viroid_yearLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="pot_spindle_tuber_viroid_not_foundLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            Corky Ring Spots</td>
+        <td style="width: 3px">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="corky_ring_spots_not_knownLabel" runat="server" Text='<%# Bind("corky_ring_spots_not_known") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="corky_ring_spots_yearLabel" runat="server" Text='<%# Bind("corky_ring_spots_year") %>'></asp:Label>&nbsp;</td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+<asp:Label ID="corky_ring_spots_not_foundLabel" runat="server" Text='<%# Bind("corky_ring_spots_not_found") %>'></asp:Label>&nbsp;</td>
+    </tr>
+</table>
+Notes: <br /><div class="box">
+<asp:Label ID="notesLabel" runat="server" Text='<%# Bind("notes") %>' ></asp:Label></div>
+<br />
+<table width="100%">
+    <tr>
+        <td colspan="3">
+            The above information is accurate to the best of our knowledge&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center" style="width: 45%">
+            <br />
+            <br />
+            Alexander B. Mkandawire / Staff Research Associate</td>
+        <td style="width: 10%">
+        </td>
+        <td style="width: 45%">
+        </td>
+    </tr>
+    <tr>
+        <td class="labelnopadtop">
+            Program official / title</td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            Date</td>
+    </tr>
+    <tr>
+        <td align="center">
+            California Crop Improvement Association</td>
+        <td style="width: 15px">
+        </td>
+        <td align="center">
+            (530) 752-0544</td>
+    </tr>
+    <tr>
+        <td class="labelnopadtop">
+            Agency</td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            Telephone</td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 15px">
+        </td>
+        <td align="center">
+            (530) 752-4735</td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            FAX</td>
+    </tr>
+</table>
+<br />
+&nbsp;
+           
+</body>
+</html>
