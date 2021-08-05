@@ -1,9 +1,10 @@
-@model CCIA.Models.Applications
+@model CCIA.Models.AdminPotatoHealthCertificateViewModel
 
 
 <h2>Potato Health Certificate</h2> 
 <form asp-action="PotatoHealthCertificateDetails">
-    <input type="hidden" asp-for="PotatoHealthCertificate.AppId">
+    <a asp-action="PotatoHealthCertificatePrint" asp-route-id="@Model.certificate.AppId" class="btn btn-info">View/Print Certificate</a>
+    <input type="hidden" asp-for="certificate.AppId">
 <div class="container col-sm-12">
     <div class="row">         
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -11,158 +12,158 @@
     <div class="row">
          <div class="col-md-6 col-xl-4">@*First column *@
             <div class="form-group row">
-                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Id)
+                    @Html.DisplayFor(x => x.application.Id)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="VarietyName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.VarietyName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.VarietyName)
+                    @Html.DisplayFor(x => x.application.VarietyName)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
+                <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.ClassProduced.ClassProducedTrans)
+                    @Html.DisplayFor(x => x.application.ClassProduced.ClassProducedTrans)
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.YearMicroPropagated" class="col-sm-3 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.YearMicroPropagated" class="col-sm-2 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.YearMicroPropagated" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.YearMicroPropagated" class="col-sm-3 col-form-label"></label>
+                <input asp-for="certificate.YearMicroPropagated" class="col-sm-2 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.YearMicroPropagated" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.GoldernNematode" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.GoldernNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.GoldenNematode" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.GoldenNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PotatoRotNematode" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.PotatoRotNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.PotatoRotNematode" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.PotatoRotNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>   
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PotatoSpindleTuberViroid" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.PotatoSpindleTuberViroid" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.PotatoSpindleTuberViroid" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.PotatoSpindleTuberViroid" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>  
             <hr>
             <h3>Post Harvest Readings:</h3> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestLocation" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestLocation" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestLocation" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestLocation" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestLocation" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestLocation" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestLeafroll" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestLeafroll" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestLeafroll" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestLeafroll" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestLeafroll" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestLeafroll" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestMosaic" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestMosaic" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestMosaic" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestMosaic" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestMosaic" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestMosaic" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestOtherVarieties" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestOtherVarieties" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestOtherVarieties" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestOtherVarieties" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestOtherVarieties" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestOtherVarieties" data-valmsg-replace="true"></span>
             </div>               
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestPlantCount" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestPlantCount" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestPlantCount" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestPlantCount" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestPlantCount" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestPlantCount" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PostHarvestSampleNumber" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PostHarvestSampleNumber" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PostHarvestSampleNumber" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PostHarvestSampleNumber" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PostHarvestSampleNumber" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PostHarvestSampleNumber" data-valmsg-replace="true"></span>
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
-                <label asp-for="GrowerName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.GrowerName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.GrowerName)
+                    @Html.DisplayFor(x => x.application.GrowerName)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="AcresApplied" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.AcresApplied)
+                    @Html.DisplayFor(x => x.application.AcresApplied)
                 </div>
             </div> 
             <div class="form-group row">                
-                <label asp-for="PotatoHealthCertificate.LotOriginatedFromTissueCulture" class="col-sm-6 col-form-label">Lot originated from tissue culture?</label>
-                <input type="checkbox" asp-for="PotatoHealthCertificate.LotOriginatedFromTissueCulture" class="col-sm-1 form-control">
+                <label asp-for="certificate.LotOriginatedFromTissueCulture" class="col-sm-6 col-form-label">Lot originated from tissue culture?</label>
+                <input type="checkbox" asp-for="certificate.LotOriginatedFromTissueCulture" class="col-sm-1 form-control">
             </div>  
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.MicropropagatedBy" class="col-sm-3 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.MicropropagatedBy" class="col-sm-2 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.MicropropagatedBy" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.MicropropagatedBy" class="col-sm-3 col-form-label"></label>
+                <input asp-for="certificate.MicropropagatedBy" class="col-sm-2 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.MicropropagatedBy" data-valmsg-replace="true"></span>
             </div>  
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.LateBlight" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.LateBlight" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.LateBlight" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.LateBlight" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PotatoWart" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.PotatoWart" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.PotatoWart" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.PotatoWart" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>   
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.CorkyRingSpots" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.CorkyRingSpots" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.CorkyRingSpots" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.CorkyRingSpots" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>  
             <hr>
             <h3>ELISA  test results for Latent viruses:</h3>   
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PercentPVY" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PercentPVY" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PercentPVY" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PercentPVY" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PercentPVY" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PercentPVY" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PercentPVX" class="col-sm-4 col-form-label"></label>
-                <input asp-for="PotatoHealthCertificate.PercentPVX" class="col-sm-4 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.PercentPVX" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.PercentPVX" class="col-sm-4 col-form-label"></label>
+                <input asp-for="certificate.PercentPVX" class="col-sm-4 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.PercentPVX" data-valmsg-replace="true"></span>
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@*Third column *@
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.GrowerOrganization.Address.City), @Html.DisplayFor(x => x.GrowerOrganization.Address.StateProvince.Name) @Html.DisplayFor(x => x.GrowerOrganization.Address.PostalCode)
+                    @Html.DisplayFor(x => x.application.GrowerOrganization.Address.City), @Html.DisplayFor(x => x.application.GrowerOrganization.Address.StateProvince.Name) @Html.DisplayFor(x => x.application.GrowerOrganization.Address.PostalCode)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="FullCert" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.FullCert" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.FullCert)
+                    @Html.DisplayFor(x => x.application.FullCert)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.NumberOfYearsProduced" class="col-sm-6 col-form-label">Number of years produced in field soil</label>
-                <input asp-for="PotatoHealthCertificate.NumberOfYearsProduced" class="col-sm-2 form-control">
-                <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.NumberOfYearsProduced" data-valmsg-replace="true"></span>
+                <label asp-for="certificate.NumberOfYearsProduced" class="col-sm-6 col-form-label">Number of years produced in field soil</label>
+                <input asp-for="certificate.NumberOfYearsProduced" class="col-sm-2 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="certificate.NumberOfYearsProduced" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.BacterialRingRot" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.BacterialRingRot" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.BacterialRingRot" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.BacterialRingRot" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>    
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.RootKnotNematode" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.RootKnotNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.RootKnotNematode" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.RootKnotNematode" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>    
             <div class="form-group row">
-                <label asp-for="PotatoHealthCertificate.PowderScap" class="col-sm-4 col-form-label"></label>
-                <select asp-for="PotatoHealthCertificate.PowderScap" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
+                <label asp-for="certificate.PowderScap" class="col-sm-4 col-form-label"></label>
+                <select asp-for="certificate.PowderScap" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
             </div>                  
         </div>        
     </div>
     <div class="row">
             <div class="col-sm-12">
                 <div class="form-group row">
-                    <label asp-for="PotatoHealthCertificate.Notes" class="col-sm-1 col-form-label"></label>
-                    <textarea asp-for="PotatoHealthCertificate.Notes" class="col-sm-10 form-control" rows="3"></textarea>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="PotatoHealthCertificate.Notes" data-valmsg-replace="true"></span>
+                    <label asp-for="certificate.Notes" class="col-sm-1 col-form-label"></label>
+                    <textarea asp-for="certificate.Notes" class="col-sm-10 form-control" rows="3"></textarea>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="certificate.Notes" data-valmsg-replace="true"></span>
                 </div>
             </div>
         </div>

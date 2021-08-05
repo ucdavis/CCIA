@@ -662,24 +662,16 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> PotatoHealthCertificateDetails(int id)
         {
-            var model = await _dbContext.Applications
-                .Include(a => a.GrowerOrganization)
-                .ThenInclude(g => g.Address)
-                .ThenInclude(a => a.StateProvince)
-                .Include(a => a.PotatoHealthCertificate)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Where(a => a.Id == id && a.AppType == "PO")
-                .FirstOrDefaultAsync();
-            if(model == null)
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
+            if(model.application == null)
             {
                 ErrorMessage = "Application not found or not a Potato App";
                 return RedirectToAction(nameof(OpenPotatoHealthCertificate));
             }
-            if(model.PotatoHealthCertificate == null)
+            if(model.certificate == null)
             {
                 var newHealthCertificate = new PotatoHealthCertificates();
-                newHealthCertificate.AppId = model.Id;
+                newHealthCertificate.AppId = id;
                 _dbContext.Add(newHealthCertificate);
                 await _dbContext.SaveChangesAsync();
             }
@@ -687,24 +679,63 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> PotatoHealthCertificateDetails(PotatoHealthCertificates cert)
+        public async Task<IActionResult> PotatoHealthCertificateDetails(int id,AdminPotatoHealthCertificateViewModel vm)
         {
-            var certToUpdate = await _dbContext.PotatoHealthCertificates.Where(c => c.AppId ==cert.AppId).FirstOrDefaultAsync();
+            var cert = vm.certificate;
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, vm.certificate.AppId);
+            var certToUpdate = model.certificate;
             if(certToUpdate == null)
             {
-                ErrorMessage = "Certificate not found";
-                var model = await _dbContext.Applications
-                .Include(a => a.GrowerOrganization)
-                .ThenInclude(g => g.Address)
-                .ThenInclude(a => a.StateProvince)
-                .Include(a => a.PotatoHealthCertificate)
-                .Include(a => a.Variety)
-                .Include(a => a.ClassProduced)
-                .Where(a => a.Id == cert.AppId && a.AppType == "PO")
-                .FirstOrDefaultAsync();
-                return View(model);
+                ErrorMessage = "Certificate not found";               
             }
-            return View();
+
+            certToUpdate.LotOriginatedFromTissueCulture = cert.LotOriginatedFromTissueCulture;
+            certToUpdate.NumberOfYearsProduced = cert.NumberOfYearsProduced;
+            certToUpdate.YearMicroPropagated = cert.YearMicroPropagated;
+            certToUpdate.MicropropagatedBy = cert.MicropropagatedBy;
+            certToUpdate.BacterialRingRot = cert.BacterialRingRot;
+            certToUpdate.GoldenNematode = cert.GoldenNematode;
+            certToUpdate.LateBlight = cert.LateBlight;
+            certToUpdate.RootKnotNematode = cert.RootKnotNematode;
+            certToUpdate.PotatoRotNematode = cert.PotatoRotNematode;
+            certToUpdate.PotatoWart = cert.PotatoWart;
+            certToUpdate.PowderScap = cert.PowderScap;
+            certToUpdate.PotatoSpindleTuberViroid = cert.PotatoSpindleTuberViroid;
+            certToUpdate.CorkyRingSpots = cert.CorkyRingSpots;
+            certToUpdate.PostHarvestLocation = cert.PostHarvestLocation;
+            certToUpdate.PostHarvestLeafroll = cert.PostHarvestLeafroll;
+            certToUpdate.PostHarvestMosaic = cert.PostHarvestMosaic;
+            certToUpdate.PostHarvestOtherVarieties = cert.PostHarvestOtherVarieties;
+            certToUpdate.PostHarvestPlantCount = cert.PostHarvestPlantCount;
+            certToUpdate.PostHarvestSampleNumber = cert.PostHarvestSampleNumber;
+            certToUpdate.PercentPVX = cert.PercentPVX;
+            certToUpdate.PercentPVY = cert.PercentPVY;
+            certToUpdate.Notes = cert.Notes;
+
+            if(ModelState.IsValid) {
+                await _dbContext.SaveChangesAsync();
+                Message = "Potato Health Certificate Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+            }
+            
+            return View(model);
+        }
+
+        public async Task<IActionResult> PotatoHealthCertificatePrint(int id)
+        {
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
+            if(model.application == null)
+            {
+                ErrorMessage = "Application not found or not a Potato App";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            if(model.certificate == null)
+            {
+                ErrorMessage = "Certificate not complete. Please update.";
+                return RedirectToAction(nameof(PotatoHealthCertificateDetails), new {id = id});
+            }
+            return View(model);
         }
 
 
