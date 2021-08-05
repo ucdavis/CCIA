@@ -42,7 +42,7 @@ namespace CCIA.Models
             LotOriginatedFromTissueCulture = false;
             PostHarvestLocation = "No post harvest test";
             BacterialRingRot = 12;
-            GoldernNematode = 11;
+            GoldenNematode = 11;
             LateBlight = 13;
             RootKnotNematode = 13;
             PotatoRotNematode = 12;
@@ -82,7 +82,7 @@ namespace CCIA.Models
 
        public int BacterialRingRot { get; set; }
 
-       public int GoldernNematode { get; set; }
+       public int GoldenNematode { get; set; }
        public int LateBlight { get; set; }
        public int RootKnotNematode { get; set; }
        public int PotatoRotNematode { get; set; }

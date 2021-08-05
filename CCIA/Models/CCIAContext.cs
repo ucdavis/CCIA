@@ -318,7 +318,7 @@ namespace CCIA.Models
                 entity.Property(e => e.PercentPVY).HasColumnName("percent_pvy");
                 entity.Property(e => e.PercentPVX).HasColumnName("percent_pvx");
                 entity.Property(e => e.BacterialRingRot).HasColumnName("bact_ring_rot");
-                entity.Property(e => e.GoldernNematode).HasColumnName("golden_nematode");
+                entity.Property(e => e.GoldenNematode).HasColumnName("golden_nematode");
                 entity.Property(e => e.LateBlight).HasColumnName("late_blight");
                 entity.Property(e => e.RootKnotNematode).HasColumnName("root_knot_nematode");
                 entity.Property(e => e.PotatoRotNematode).HasColumnName("pot_rot_nematode");
