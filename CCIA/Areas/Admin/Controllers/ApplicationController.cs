@@ -672,6 +672,7 @@ namespace CCIA.Controllers.Admin
                 newHealthCertificate.AppId = id;
                 _dbContext.Add(newHealthCertificate);
                 await _dbContext.SaveChangesAsync();
+                model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
             }
             return View(model);
         }
