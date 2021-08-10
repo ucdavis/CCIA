@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -91,6 +92,9 @@ namespace CCIA.Models
        public int PotatoSpindleTuberViroid { get; set; }
        public int CorkyRingSpots { get; set; }
        public string Notes { get; set; }
+
+       [ForeignKey("AppId")]
+       public ICollection<PotatoHealthCertificateHistory> History { get; set; }
 
     }
 }

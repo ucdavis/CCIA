@@ -155,7 +155,34 @@
             <div class="form-group row">
                 <label asp-for="certificate.PowderScap" class="col-sm-4 col-form-label"></label>
                 <select asp-for="certificate.PowderScap" class="col-sm-4 form-control" asp-items="Html.GetEnumSelectList<PotatoHealthResults>()"></select>            
-            </div>                  
+            </div>
+            <div class="form-group-row">
+                <label class="col-sm-4 col-form-label">&nbsp;</label>                
+            </div>
+            <hr>
+            <h3>Production History:</h3>
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Production Year</th>
+                    <th>Greenhouse</th>
+                    <th>Field</th>
+                    <th>Cert#</th>
+                    <th>Certify State</th>
+                </tr>
+           
+                @foreach (var year in Model.histories)
+                {
+                    <tr>
+                        <td><a asp-action="EditPotatoHealthCertificateHistory" class="btn btn-primary" asp-route-id="@year.Id">Edit</a></td>
+                        <td>@year.ProductionYear</td>
+                        <td>@year.Greenhouse</td>
+                        <td>@year.Field</td>
+                        <td>@year.CertNumber</td>
+                        <td>@year.CertifyingState</td>
+                    </tr>                    
+                }
+            </table>
         </div>        
     </div>
     <div class="row">
@@ -174,3 +201,7 @@
         </div> 
 </div>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

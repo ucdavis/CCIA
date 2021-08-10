@@ -443,7 +443,8 @@
                 <div class="form-group row">
                     <label asp-for="@row.InspectorId" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @row.InspectorEmployee.Name
+                        @if(row.InspectorEmployee != null)
+                        { @row.InspectorEmployee.Name}
                     </div>
                 </div>
                 <div class="form-group row">

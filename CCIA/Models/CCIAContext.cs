@@ -141,6 +141,10 @@ namespace CCIA.Models
 
         public virtual DbSet<PotatoHealthCertificates> PotatoHealthCertificates { get; set; }
 
+        public virtual DbSet<PotatoHealthCertificateHistory> PotatoHealthCertificateHistory { get; set; }
+
+        public virtual DbSet<PotatoHealthCertificateInspections> PotatoHealthCertificateInspections { get; set; }
+
         
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -327,9 +331,26 @@ namespace CCIA.Models
                 entity.Property(e => e.PotatoSpindleTuberViroid).HasColumnName("pot_spindle_tuber_viroid");
                 entity.Property(e => e.CorkyRingSpots).HasColumnName("corky_ring_spots");
                 entity.Property(e => e.Notes).HasColumnName("notes");
+                entity.HasMany(e => e.History);
+            });
 
+            modelBuilder.Entity<PotatoHealthCertificateHistory>(entity => {
+                entity.ToTable("po_cert_history");
 
+                entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+                entity.Property(e => e.ProductionYear).HasColumnName("prod_year");
+                entity.Property(e => e.Greenhouse).HasColumnName("greenhouse");
+                entity.Property(e => e.Field).HasColumnName("field");
+                entity.Property(e => e.CertNumber).HasColumnName("cert_no");
+                entity.Property(e => e.CertifyingState).HasColumnName("cert_state");
+
+            });
+
+            modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
             });
 
             modelBuilder.Entity<ApplicationReport>(entity => {

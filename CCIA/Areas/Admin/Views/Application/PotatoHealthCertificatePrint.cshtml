@@ -13,7 +13,7 @@
     <meta http-equiv="content-style-type" content="text/css" />    
     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />     
 </head>
-<body>   
+<body class="labelnoline">   
 <table width="100%">
     <tr>
         <td align="center" colspan="3">
@@ -193,28 +193,38 @@ Production environment pedigree</strong>: Fill 1 column per production year,
 use different initials in Greenhouse and Field boxes for different farms<br />
 (e.g. JSF for John Smith Farms); indicate a tuber-united lot with a "+" after farm
 initials; describe other footnotes in notes below.
-<asp:DataList ID="dlPedigree" Width="100%" RepeatColumns="9" RepeatDirection="horizontal" runat="server" DataSourceID="sdsHistory">
-    <ItemTemplate>
-        <asp:Table ID="test" runat="server" CellPadding="3" BorderWidth="1" BorderColor="black">
-            <asp:TableRow>
-                <asp:TableCell BorderWidth="0" Text='<%# Eval("p_year") %>'></asp:TableCell>
-            </asp:TableRow>
-                <asp:TableRow>
-                <asp:TableCell CssClass="box" Text='<%# Eval("greenhouse") %>'> &nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell  CssClass="box"  Text='<%# Eval("field") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell  CssClass="box"  Text='<%# Eval("cert_no") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell  CssClass="box"  Text='<%# Eval("cert_state") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-        </asp:Table>                    
-    </ItemTemplate>
-</asp:DataList>Number of years produced in field soil
-<asp:Label CssClass="box30" ID="num_yrs_producedLabel" runat="server" Text='<%# Bind("num_yrs_produced") %>'></asp:Label><br />
+<table id="FormView1_dlPedigree" cellspacing="0" style="width:100%;border-collapse:collapse;">
+    <tr>
+        @foreach (var year in Model.histories)
+        {
+            <td>
+                <table cellpadding="3" style="border-color: Black; border-width: 1px; border-style: solid">
+                    <tr><td style="border-width:0px;">@year.ProductionYear&nbsp;</td></tr>
+                    <tr><td class="box">@year.Greenhouse&nbsp;</td></tr>
+                    <tr><td class="box">@year.Field&nbsp;</td></tr>
+                    <tr><td class="box">@year.CertNumber&nbsp;</td></tr>
+                    <tr><td class="box">@year.CertifyingState&nbsp;</td></tr>
+                </table>
+            </td>            
+        }                          
+            <td>
+                <table id="FormView1_dlPedigree_ctl08_test" cellpadding="3" style="border-color:Black;border-width:1px;border-style:solid;">
+                    <tr>
+                        <td style="border-width:0px;">Year of Production</td>
+                    </tr><tr>
+                        <td class="box">Greenhouse (insect excluding) & sterile soil</td>
+                    </tr><tr>
+                        <td class="box">Field (note special measures below)</td>
+                    </tr><tr>
+                        <td class="box">Certification No.</td>
+                    </tr><tr>
+                        <td class="box">Certifying State</td>
+                    </tr>
+                </table>                    
+            </td>
+    </tr>
+</table>
+Number of years produced in field soil <label class="box30">@Model.certificate.NumberOfYearsProduced</label><br />
 &nbsp;<table class="box" width="100%">
     <tr>
         <td>
@@ -224,49 +234,33 @@ initials; describe other footnotes in notes below.
     </tr>
     <tr>
         <td valign="top">
-<asp:DataList ID="dlSummerReadings" Width="100%" RepeatColumns="5" RepeatDirection="horizontal" runat="server" DataSourceID="sdsSummerReadings">
-    <ItemTemplate>
-        <asp:Table ID="test" runat="server" BorderWidth="0" BorderColor="black" >
-            <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center" CssClass="nobox" Text='<%# Eval("inspect_num_text") %>'></asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center"  CssClass="box" Text='<%# Eval("leafroll_per") %>'> &nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("mosiac_per") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("other_var_per") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-            <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("blackleg_per") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-                <asp:TableRow>
-                <asp:TableCell HorizontalAlign="center" CssClass="box"  Text='<%# Eval("other_disease_per") %>'>&nbsp;</asp:TableCell>
-            </asp:TableRow>
-        </asp:Table>
-    </ItemTemplate>
-</asp:DataList></td>
+            <table><tr>
+            @foreach (var row in Model.inspections)
+            {
+                <td>
+                    <table class="border" style="white-space: nowrap;">
+                        <tr><td class="nobox">@Html.Raw(row.InspectionNumberText)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.LeafrollPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.MosaicPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.OtherVarietyPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.BlacklegPercent)</td></tr>
+                        <tr><td class="box" style="white-space: nowrap;">@Html.Raw(row.OtherDiseasePercent)</td></tr>
+                    </table>
+                </td>
+            }
+            </tr></table>
+        </td>
         <td valign="top">
-            <table class="">
-                <tr>
-                    <td>
-                        FINAL/WINTER</td>
-                </tr>
-                <tr>
-                    <td class="box">
-                        &nbsp;<asp:Label ID="leafroll_perLabel" runat="server" Text='<%# Bind("leafroll_per") %>'></asp:Label>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="box">
-                        <asp:Label ID="mosaic_perLabel" runat="server" Text='<%# Bind("mosaic_per") %>'></asp:Label>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="box">
-                        &nbsp;<asp:Label ID="other_var_perLabel" runat="server" Text='<%# Bind("other_varieties_per") %>'></asp:Label>&nbsp;</td>
-                </tr>
-            </table>
+            <table><tr>
+                <td>
+                    <table>
+                        <tr><td>FINAL/WINTER</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestLeafroll &nbsp;&nbsp;</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestMosaic &nbsp;&nbsp;</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestOtherVarieties &nbsp;&nbsp;</td></tr>
+                    </table>
+                </td>
+            </tr></table>            
         </td>
         <td valign="top">
             &nbsp;</td>
@@ -275,22 +269,19 @@ initials; describe other footnotes in notes below.
                 <tr>
                     <td align="left">
                         Location</td>
-                    <td align="left">
-<asp:Label ID="ph_locationLabel" runat="server" Text='<%# Bind("ph_location") %>' CssClass="box30"></asp:Label></td>
+                    <td align="left"><span class="box30">@Model.certificate.PostHarvestLocation</span></td>
                 </tr>
                 <tr>
                     <td align="left">
                     </td>
                     <td align="left">
-                        Sample No.
-<asp:Label ID="ph_sample_noLabel" runat="server" Text='<%# Bind("ph_sample_no") %>' CssClass="box30"></asp:Label></td>
+                        Sample No. <span class="box30">@Model.certificate.PostHarvestSampleNumber</span></td>
                 </tr>
                 <tr>
                     <td align="left">
                     </td>
                     <td align="left">
-                        Plant Count
-<asp:Label ID="ph_plant_countLabel" runat="server" Text='<%# Bind("ph_plant_count") %>' CssClass="box30"></asp:Label></td>
+                        Plant Count <span class="box30">@Model.certificate.PostHarvestPlantCount</span></td>
                 </tr>
                 <tr>
                     <td align="left">
@@ -305,10 +296,9 @@ initials; describe other footnotes in notes below.
                 </tr>
                 <tr>
                     <td align="left" colspan="2">
-                        %PVY
-<asp:Label ID="percent_pvyLabel" runat="server" Text='<%# Bind("percent_pvy") %>' CssClass="box30"></asp:Label>
-                        &nbsp;&nbsp; %PVX
-<asp:Label ID="percent_pvxLabel" runat="server" Text='<%# Bind("percent_pvx") %>' CssClass="box30"></asp:Label></td>
+                        %PVY <span class="box30">@Model.certificate.PercentPVY</span></asp:Label>
+                        &nbsp;&nbsp; %PVX <span class="box30">@Model.certificate.PercentPVX</span>
+                    </td>
                 </tr>
             </table>
             &nbsp; &nbsp;&nbsp;
@@ -316,7 +306,7 @@ initials; describe other footnotes in notes below.
     </tr>
 </table>
 <br />
-<table>
+<table style="white-space: nowrap;">
     <tr>
         <td>
         </td>
@@ -326,171 +316,293 @@ initials; describe other footnotes in notes below.
     <tr>
         <td>
             Other Diseases</td>
-        <td style="width: 3px">
-            &nbsp;</td>
+        <td>&nbsp;</td>
         <td align="center">
             Not known to occur<br />
             in grower's area.</td>
-        <td align="center">
-            &nbsp;</td>
+        <td align="center">&nbsp;</td>
         <td align="center">
             No. of years since last found on this<br />
             grower's farm, or NONE ON RECORD<br />
             if free &gt;10 years.</td>
-        <td align="center">
-            &nbsp;</td>
+        <td align="center">&nbsp;</td>
         <td align="center">
             Not found this year during<br />
             normal certification field<br />
             inspections</td>
     </tr>
     <tr>
-        <td>
-            Bacterial Ring Rot</td>
-        <td style="width: 3px">
-        </td>
+        <td>Bacterial Ring Rot</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="bact_ring_rot_not_knownLabel" runat="server" Text='<%# Bind("bact_ring_rot_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.BacterialRingRot == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.BacterialRingRot < 11)
+            {
+                <span>@Model.certificate.BacterialRingRot</span>
+            }
+            @if(Model.certificate.BacterialRingRot == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="bact_ring_rot_yearLabel" runat="server" Text='<%# Bind("bact_ring_rot_year") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.BacterialRingRot == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+     <tr>
+        <td>Golden Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.GoldenNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.GoldenNematode < 11)
+            {
+                <span>@Model.certificate.GoldenNematode</span>
+            }
+            @if(Model.certificate.GoldenNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="bact_ring_rot_not_foundLabel" runat="server" Text='<%# Bind("bact_ring_rot_not_found") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.GoldenNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
     </tr>
     <tr>
-        <td>
-            Golden Nematode</td>
-        <td style="width: 3px">
-        </td>
+        <td>Late Blight</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="golden_nematode_not_knownLabel" runat="server" Text='<%# Bind("golden_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.LateBlight == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.LateBlight < 11)
+            {
+                <span>@Model.certificate.LateBlight</span>
+            }
+            @if(Model.certificate.LateBlight == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="golden_nematode_yearLabel" runat="server" Text='<%# Bind("golden_nematode_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.LateBlight == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="golden_nematode_not_foundLabel" runat="server" Text='<%# Bind("golden_nematode_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td>
-            Late Blight</td>
-        <td style="width: 3px">
-        </td>
+        <td>Root-Knot Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="late_blight_not_knownLabel" runat="server" Text='<%# Bind("late_blight_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.RootKnotNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.RootKnotNematode < 11)
+            {
+                <span>@Model.certificate.RootKnotNematode</span>
+            }
+            @if(Model.certificate.RootKnotNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="late_blight_yearLabel" runat="server" Text='<%# Bind("late_blight_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.RootKnotNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="late_blight_not_foundLabel" runat="server" Text='<%# Bind("late_blight_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td>
-            Root-Knot Nematode</td>
-        <td style="width: 3px">
-        </td>
+        <td>Potato Rot Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="root_knot_nematode_not_knownLabel" runat="server" Text='<%# Bind("root_knot_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.PotatoRotNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoRotNematode < 11)
+            {
+                <span>@Model.certificate.PotatoRotNematode</span>
+            }
+            @if(Model.certificate.PotatoRotNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="root_knot_nematode_yearLabel" runat="server" Text='<%# Bind("root_knot_nematode_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.PotatoRotNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="root_knot_nematode_not_foundLabel" runat="server" Text='<%# Bind("root_knot_nematode_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td>
-            Potato Rot Nematode</td>
-        <td style="width: 3px">
-        </td>
+        <td>Potato Wart</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="pot_rot_nematode_not_knownLabel" runat="server" Text='<%# Bind("pot_rot_nematode_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.PotatoWart == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoWart < 11)
+            {
+                <span>@Model.certificate.PotatoWart</span>
+            }
+            @if(Model.certificate.PotatoWart == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="pot_rot_nematode_yearLabel" runat="server" Text='<%# Bind("pot_rot_nematode_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.PotatoWart == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="pot_rot_nematode_not_foundLabel" runat="server" Text='<%# Bind("pot_rot_nematode_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td>
-            Potato Wart</td>
-        <td style="width: 3px">
-        </td>
+        <td>Powdery Scab</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="pot_wart_not_knownLabel" runat="server" Text='<%# Bind("pot_wart_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.PowderScap == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PowderScap < 11)
+            {
+                <span>@Model.certificate.PowderScap</span>
+            }
+            @if(Model.certificate.PowderScap == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="pot_wart_yearLabel" runat="server" Text='<%# Bind("pot_wart_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.PowderScap == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="pot_wart_not_foundLabel" runat="server" Text='<%# Bind("pot_wart_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td>
-            Powdery Scab</td>
-        <td style="width: 3px">
-        </td>
+        <td>Potato Spindle Tuber Viroid</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="powder_scab_not_knownLabel" runat="server" Text='<%# Bind("powder_scab_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.PotatoSpindleTuberViroid == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoSpindleTuberViroid < 11)
+            {
+                <span>@Model.certificate.PotatoSpindleTuberViroid</span>
+            }
+            @if(Model.certificate.PotatoSpindleTuberViroid == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="powder_scab_yearLabel" runat="server" Text='<%# Bind("powder_scab_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.PotatoSpindleTuberViroid == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="powder_scab_not_foundLabel" runat="server" Text='<%# Bind("powder_scab_not_found") %>'></asp:Label>&nbsp;</td>
     </tr>
     <tr>
-        <td style="white-space: nowrap">
-            Potato Spindle Tuber Viroid</td>
-        <td style="width: 3px">
-        </td>
+        <td>Corky Ring Spots</td>
+        <td style="width: 3px">&nbsp;</td>
         <td class="box" align="center">
-<asp:Label ID="pot_spindle_tuber_viroid_not_knownLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_not_known") %>'></asp:Label>&nbsp;</td>
+            @if(Model.certificate.CorkyRingSpots == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.CorkyRingSpots < 11)
+            {
+                <span>@Model.certificate.CorkyRingSpots</span>
+            }
+            @if(Model.certificate.CorkyRingSpots == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
         <td align="center">
         </td>
         <td class="box" align="center">
-<asp:Label ID="pot_spindle_tuber_viroid_yearLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
+            @if(Model.certificate.CorkyRingSpots == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
         </td>
-        <td class="box" align="center">
-<asp:Label ID="pot_spindle_tuber_viroid_not_foundLabel" runat="server" Text='<%# Bind("pot_spindle_tuber_viroid_not_found") %>'></asp:Label>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>
-            Corky Ring Spots</td>
-        <td style="width: 3px">
-        </td>
-        <td class="box" align="center">
-<asp:Label ID="corky_ring_spots_not_knownLabel" runat="server" Text='<%# Bind("corky_ring_spots_not_known") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
-        </td>
-        <td class="box" align="center">
-<asp:Label ID="corky_ring_spots_yearLabel" runat="server" Text='<%# Bind("corky_ring_spots_year") %>'></asp:Label>&nbsp;</td>
-        <td align="center">
-        </td>
-        <td class="box" align="center">
-<asp:Label ID="corky_ring_spots_not_foundLabel" runat="server" Text='<%# Bind("corky_ring_spots_not_found") %>'></asp:Label>&nbsp;</td>
-    </tr>
+    </tr> 
 </table>
-Notes: <br /><div class="box">
-<asp:Label ID="notesLabel" runat="server" Text='<%# Bind("notes") %>' ></asp:Label></div>
+Notes: <br /><div class="box">@Model.certificate.Notes</div>
 <br />
 <table width="100%">
     <tr>

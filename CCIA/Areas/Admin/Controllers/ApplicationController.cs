@@ -8,12 +8,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
-using CCIA.Services;
 
 namespace CCIA.Controllers.Admin
 {
@@ -736,6 +734,42 @@ namespace CCIA.Controllers.Admin
                 return RedirectToAction(nameof(PotatoHealthCertificateDetails), new {id = id});
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> EditPotatoHealthCertificateHistory(int id)
+        {
+            var model = await _dbContext.PotatoHealthCertificateHistory.Where(h => h.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "History not found";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPotatoHealthCertificateHistory(int id, PotatoHealthCertificateHistory history)
+        {
+            var historyToUpdate = await _dbContext.PotatoHealthCertificateHistory.Where(h => h.Id == id).FirstOrDefaultAsync();
+            if(historyToUpdate == null || historyToUpdate.Id != history.Id)
+            {
+                ErrorMessage = "History not found";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            historyToUpdate.Greenhouse = history.Greenhouse;
+            historyToUpdate.Field = history.Field;
+            historyToUpdate.CertNumber = history.CertNumber;
+            historyToUpdate.CertifyingState = history.CertifyingState;
+
+            if(ModelState.IsValid)
+            {
+                await _dbContext.SaveChangesAsync();
+                Message = "Potato Health Certificate History updated";
+            } else {
+                ErrorMessage = "Something went wrong";
+                return View(historyToUpdate);
+            }
+            return RedirectToAction(nameof(PotatoHealthCertificateDetails), new {id = historyToUpdate.AppId});
         }
 
 
