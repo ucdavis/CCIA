@@ -39,7 +39,7 @@
            <div class="col-sm-12"><hr></div>
             <div class="col-sm-12">
                 <a class="btn btn-info" asp-action="FIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">FIR</a> 
-                @if(Model.application.Status == "Field Inspection Report Ready")
+                @if(Model.application.Status == "Field Inspection Report Ready" && Model.application.AppType == "PO")
                 {
                     <span> | <a class="btn btn-info" asp-action="PotatoHealthCertificateDetails" asp-route-id="@Model.application.Id">Potato Health Certificate</a> </span>
                 }
