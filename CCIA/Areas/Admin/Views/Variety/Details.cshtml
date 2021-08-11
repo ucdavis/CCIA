@@ -80,7 +80,10 @@
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpExpDate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.PvpExpDate.Value.ToShortDateString()
+                        @if(Model.variety.VarietyOfficial.PvpExpDate.HasValue)
+                        {
+                            @Model.variety.VarietyOfficial.PvpExpDate.Value.ToShortDateString()
+                        }                        
                     </div>
                 </div>
                 <div class="form-group row">
@@ -161,7 +164,10 @@
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PvpDate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.PvpDate.Value.ToShortDateString()
+                        @if(Model.variety.VarietyOfficial.PvpDate.HasValue)
+                        {
+                            @Model.variety.VarietyOfficial.PvpDate.Value.ToShortDateString()
+                        }
                     </div>
                 </div>
                 <div class="form-group row">
@@ -173,7 +179,10 @@
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.VarReviewBoardDate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.VarReviewBoardDate.Value.ToShortDateString()
+                        @if(Model.variety.VarietyOfficial.VarReviewBoardDate.HasValue)
+                        {
+                            @Model.variety.VarietyOfficial.VarReviewBoardDate.Value.ToShortDateString()
+                        }
                     </div>
                 </div>
                 <div class="form-group row">
@@ -250,13 +259,19 @@
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.CtcDateApproved.Value.ToShortDateString()
+                        @if(Model.variety.VarietyOfficial.CtcDateApproved.HasValue)
+                        {
+                            @Model.variety.VarietyOfficial.CtcDateApproved.Value.ToShortDateString()
+                        }
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.PlantPatentDate" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Model.variety.VarietyOfficial.PlantPatentDate.Value.ToShortDateString()
+                        @if(Model.variety.VarietyOfficial.PlantPatentDate.HasValue)
+                        {
+                            @Model.variety.VarietyOfficial.PlantPatentDate.Value.ToShortDateString()
+                        }
                     </div>
                 </div>
                 <div class="form-group row">

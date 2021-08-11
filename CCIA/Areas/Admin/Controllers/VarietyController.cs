@@ -33,6 +33,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Details(int id)
         {
+            // Todo: Add blend components to this. Allow edit
             var model = await AdminVarietyDetailsViewModel.Create(_dbContext,_helper, id);
             
             if(model.variety == null)
