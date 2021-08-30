@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Thinktecture;
 
 namespace CCIA
 {
@@ -40,7 +42,17 @@ namespace CCIA
             #endif        
        
           
-            services.AddDbContext<CCIAContext>();
+            //services.AddDbContext<CCIAContext>();
+            services.AddDbContextPool<CCIAContext>( o =>
+            {
+                o.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
+                {                       
+                        sqlOptions.UseNetTopologySuite();
+                        sqlOptions.AddRowNumberSupport();
+                });
+                o.UseLoggerFactory(CCIAContext.GetLoggerFactory());
+                
+            });
            
 
             services.AddAuthentication("Cookies") // Sets the default scheme to cookies

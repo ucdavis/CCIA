@@ -11,7 +11,10 @@ namespace CCIA.Models
 {
     public partial class CCIAContext : DbContext
     {
-
+          public CCIAContext(DbContextOptions<CCIAContext> options)
+            : base(options)
+        { }
+       
         [DbFunction("sid_standards_msg","dbo")]
         public static string GetStandardsMessage(int seed_id)
         {
@@ -169,7 +172,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.notices'. Please see the warning messages.
        
 
-        private ILoggerFactory GetLoggerFactory()
+        public static ILoggerFactory GetLoggerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging(builder =>
@@ -179,28 +182,29 @@ namespace CCIA.Models
             return serviceCollection.BuildServiceProvider()
                     .GetService<ILoggerFactory>();
         }
+       
 
-        public CCIAContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        // public CCIAContext(IConfiguration configuration)
+        // {
+        //     Configuration = configuration;
+        // }
 
-        public IConfiguration Configuration { get; }
+        // public IConfiguration Configuration { get; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
-                {                       
-                        sqlOptions.UseNetTopologySuite();
-                        sqlOptions.AddRowNumberSupport();
-                });
-            }
-            optionsBuilder.UseLoggerFactory(GetLoggerFactory());
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     // if (!optionsBuilder.IsConfigured)
+        //     // {
+        //     //     optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
+        //     //     {                       
+        //     //             sqlOptions.UseNetTopologySuite();
+        //     //             sqlOptions.AddRowNumberSupport();
+        //     //     });
+        //     // }
+        //     optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
-        }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
