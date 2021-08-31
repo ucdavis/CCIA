@@ -20,9 +20,8 @@ namespace CCIA.Jobs
             
             
             var provider = ConfigureServices();           
-            Console.WriteLine(Configuration["EmailPassword"]);
-            var emailService = provider.GetService<IEmailService>();
-            //Console.WriteLine(emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]));
+            //Console.WriteLine(Configuration["EmailPassword"]);
+            var emailService = provider.GetService<IEmailService>();            
             emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();            
             Console.WriteLine("End?");
             var test = Console.ReadLine();

@@ -1,10 +1,14 @@
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 using CCIA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using RazorLight;
 
 namespace CCIA.Services
 {
@@ -34,16 +38,38 @@ namespace CCIA.Services
         public  async Task SendWeeklyApplicationNotices(string password)
         {
             ConfigureSMTPClient(password);
-            var recipients =  await _dbContext.Applications.Where(a => a.Id==6486).FirstOrDefaultAsync();
-            recipients.OriginalCertYear = 1922;
-            await _dbContext.SaveChangesAsync();
-            using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "Testing email send"})
+            var notifications =  await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0).ToListAsync();
+            if(notifications.Count == 0)
             {
-                message.To.Add("jscubbage@ucdavis.edu");
-                message.Body = "Test";
-                await _client.SendMailAsync(message);
+                return;
             }
-            
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();           
+
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA application status changes"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    message.Body = "Email: " + address;
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }            
+        }
+
+        private RazorLightEngine GetRazorEngine()
+        {
+            var path = Path.GetFullPath(".");
+
+            var engine = new RazorLightEngineBuilder()
+                .UseFileSystemProject(path)
+                .UseMemoryCachingProvider()
+                .Build();
+
+            return engine;
         }
 
     }
