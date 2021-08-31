@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CCIA.Services;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,12 +16,14 @@ namespace CCIA.Jobs
         static void Main(string[] args)
         {   
             Configure();        
-            Console.WriteLine("Hello World!");  
+            Console.WriteLine("Hello World!");
             
-            var provider = ConfigureServices();
-
+            
+            var provider = ConfigureServices();           
+            Console.WriteLine(Configuration["EmailPassword"]);
             var emailService = provider.GetService<IEmailService>();
-            emailService.SendWeeklyApplicationNotices().GetAwaiter().GetResult();            
+            //Console.WriteLine(emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]));
+            emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();            
             Console.WriteLine("End?");
             var test = Console.ReadLine();
             
@@ -57,6 +59,7 @@ namespace CCIA.Jobs
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             builder.AddEnvironmentVariables();
+            builder.AddUserSecrets<Program>();
             Configuration = builder.Build();
         }
     }
