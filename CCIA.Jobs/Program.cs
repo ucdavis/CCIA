@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models;
 using Microsoft.Extensions.Configuration;
 using Thinktecture;
+using System.Linq;
 
 namespace CCIA.Jobs
 {
@@ -19,12 +20,19 @@ namespace CCIA.Jobs
             Console.WriteLine("Hello World!");
             
             
-            var provider = ConfigureServices();           
-            //Console.WriteLine(Configuration["EmailPassword"]);
-            var emailService = provider.GetService<IEmailService>();            
-            emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();            
+            var provider = ConfigureServices(); 
+            var context = provider.GetService<CCIAContext>();
+            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).AnyAsync().GetAwaiter().GetResult();
+            if(appNotices)
+            {
+                Console.WriteLine("Running weekly app notices");
+                var emailService = provider.GetService<IEmailService>();            
+                emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
+            }
+
+                      
             Console.WriteLine("End?");
-            var test = Console.ReadLine();
+            //var test = Console.ReadLine();
             
 
         }

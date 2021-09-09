@@ -148,6 +148,8 @@ namespace CCIA.Models
 
         public virtual DbSet<PotatoHealthCertificateInspections> PotatoHealthCertificateInspections { get; set; }
 
+        public virtual DbSet<Jobs> Jobs { get; set; }
+
         
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -165,7 +167,6 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
 
         // Unable to generate entity type for table 'dbo.app_certificates'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.Jobs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
@@ -302,6 +303,25 @@ namespace CCIA.Models
                 entity.Property(e => e.TagId).HasColumnName("tag_id");
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+
+            });
+
+            modelBuilder.Entity<Jobs>(entity => {
+                entity.ToTable("jobs");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.JobTitle).HasColumnName("JobTitle");
+
+                entity.Property(e => e.JobInterval).HasColumnName("JobInterval");
+
+                entity.Property(e => e.JobTime).HasColumnName("JobTime").HasColumnType("Time(0)");
+
+                entity.Property(e => e.DateLastJobRan).HasColumnName("DateLastJobRan");
+
+                entity.Property(e => e.DateNextJobStart).HasColumnName("DateNextJobStart");
+
+                entity.Property(e => e.Section).HasColumnName("Section");
 
             });
 
