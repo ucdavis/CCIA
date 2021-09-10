@@ -7,6 +7,7 @@ using CCIA.Models;
 using Microsoft.Extensions.Configuration;
 using Thinktecture;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Jobs
 {
@@ -22,12 +23,15 @@ namespace CCIA.Jobs
             
             var provider = ConfigureServices(); 
             var context = provider.GetService<CCIAContext>();
-            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).AnyAsync().GetAwaiter().GetResult();
-            if(appNotices)
+            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();
+            if(appNotices.Count > 0)
             {
                 Console.WriteLine("Running weekly app notices");
                 var emailService = provider.GetService<IEmailService>();            
                 emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
+                var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
+                Console.WriteLine(appNotices.First().Id);
+                context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);  
             }
 
                       
