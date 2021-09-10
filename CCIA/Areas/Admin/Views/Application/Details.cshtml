@@ -38,7 +38,12 @@
        <div class="row">
            <div class="col-sm-12"><hr></div>
             <div class="col-sm-12">
-                <a class="btn btn-primary" asp-action="FIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">FIR</a>            
+                <a class="btn btn-info" asp-action="FIR" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">FIR</a> 
+                @if(Model.application.Status == "Field Inspection Report Ready" && Model.application.AppType == "PO")
+                {
+                    <span> | <a class="btn btn-info" asp-action="PotatoHealthCertificateDetails" asp-route-id="@Model.application.Id">Potato Health Certificate</a> </span>
+                }
+
             </div>
             <div class="col-sm-12"><hr></div>
         </div>
@@ -424,7 +429,7 @@
                             } else {
                                 <td>???</td>
                             }
-                            @if(@row.GrownStateProvince.Name != null)
+                            @if(@row.GrownStateProvince != null && @row.GrownStateProvince.Name != null)
                             {
                                 <td>@row.GrownStateProvince.Name</td>
                             }  else {

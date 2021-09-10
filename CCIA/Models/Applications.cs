@@ -181,6 +181,9 @@ namespace CCIA.Models
         public AbbrevAppType AppTypeTrans { get; set; }
         public string AppType { get; set; }
 
+        [ForeignKey("Id")]
+        public PotatoHealthCertificates PotatoHealthCertificate { get; set; }
+
         [ForeignKey("AppId")]
         public ICollection<AppCertificates> Certificates { get; set; }
 
@@ -197,7 +200,7 @@ namespace CCIA.Models
         public ICollection<FieldInspection> FieldInspection { get; set; }
 
         
-        [ForeignKey("Id")]
+        
         public FieldInspectionReport FieldInspectionReport { get; set; }
         
         public CertRad AppCertRad {get; set;}

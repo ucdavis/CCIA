@@ -22,11 +22,13 @@ namespace CCIA.Controllers.Admin
         private readonly CCIAContext _dbContext;
 
         private readonly IFullCallService _helper;
+        private readonly INotificationService _notificationService;
 
-        public SeedsController(CCIAContext dbContext, IFullCallService helper)
+        public SeedsController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> Pending()
@@ -40,13 +42,14 @@ namespace CCIA.Controllers.Admin
 
         [HttpPost]
         public async Task<IActionResult> AcceptSeed(IFormCollection form)
-        {
-            // ToDo set up notifications; 
+        {            
             var id = int.Parse(form["seed.Id"].ToString());
             var seedToAccept = await _dbContext.Seeds.Where(s => s.Id == id).FirstAsync();
             seedToAccept.Confirmed = true;
             seedToAccept.ConfirmedAt = DateTime.Now;
             seedToAccept.Status = SeedsStatus.SIRReady.GetDisplayName();
+
+            await _notificationService.SeedLotAccepted(seedToAccept);
             
             await _dbContext.SaveChangesAsync();
             Message = "Seed Accepted";

@@ -1,0 +1,667 @@
+@model CCIA.Models.AdminPotatoHealthCertificateViewModel
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+    <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />     
+</head>
+<body class="labelnoline">   
+<table width="100%">
+    <tr>
+        <td align="center" colspan="3">
+            <strong>NORTH AMERICAN CERTIFIED SEED POTATO HEALTH CERTIFICATION - CROP YEAR @Model.application.CertYear</strong>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 3px">
+            &nbsp;</td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <table cellspacing="5" border="0" width="400">
+                <tr>
+                    <td>
+                    </td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4">
+                        <strong>
+                        Grower</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        Name</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4" class="box">
+                        &nbsp;@Model.application.GrowerOrganization.Name</td>
+                </tr>
+                <tr>
+                    <td>
+                        City, State Zip</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td colspan="4" class="box">
+                        &nbsp; @Model.application.GrowerOrganization.Address.City, @Model.application.GrowerOrganization.Address.StateProvince.Name @Model.application.GrowerOrganization.Address.PostalCode</td>
+                </tr>
+                <tr>
+                    <td>
+                        Variety</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td class="box">
+                        &nbsp;@Model.application.VarietyName</td>
+                    <td>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;Acres</td>
+                    <td class="box">
+                        &nbsp;@Model.application.AcresApplied</td>
+                </tr>                
+                <tr>
+                    <td colspan="6">
+                        <strong>Lot Certification</strong></td>
+                </tr>
+                    <tr>
+                    <td>
+                        Certification #</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td class="box" align="center">
+                        @Model.application.FullCert</td>
+                        <td colspan="3">
+                        </td>
+                </tr>
+                <tr>
+                    <td>
+                        Seed Class/Gen.</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td align="center" class="box"> @Model.application.ClassProducedName                        
+                    </td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Certifying State</td>
+                    <td style="width: 3px">
+                    </td>
+                    <td align="center" class="box">
+                        California</td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 3px">
+        </td>
+        <td valign="top">
+            <table width="400" cellspacing="5">
+                <tr>
+                    <td colspan="1">
+                    </td>
+                    <td colspan="5">
+                        <strong>
+                        Importer</strong></td>
+                </tr>
+                <tr>
+                    <td class="box" colspan="1">
+                    </td>
+                    <td colspan="5" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="box" colspan="1">
+                    </td>
+                    <td colspan="5" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Quantity Shipped</td>
+                    <td colspan="4" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Size</td>
+                    <td colspan="4" class="box">
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Lot originated from tissue culture</td>
+                    <td style="width: 3px">
+                        &nbsp;No</td>
+                    <td class="box30">
+                        @if(!Model.certificate.LotOriginatedFromTissueCulture)
+                        {
+                            <span>X</span>
+                        }
+                    </td>
+                    <td>
+                        &nbsp;Yes</td>
+                    <td class="box30">
+                         @if(Model.certificate.LotOriginatedFromTissueCulture)
+                        {
+                            <span>X</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                    </td>
+                    <td align="right">
+                        Year micropropagated</td>
+                    <td class="box" colspan="4">
+                        @Model.certificate.YearMicroPropagated
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        by</td>
+                    <td class="box" colspan="5">
+                        @Model.certificate.MicropropagatedBy
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br />
+<strong>
+Production environment pedigree</strong>: Fill 1 column per production year,
+use different initials in Greenhouse and Field boxes for different farms<br />
+(e.g. JSF for John Smith Farms); indicate a tuber-united lot with a "+" after farm
+initials; describe other footnotes in notes below.
+<table id="FormView1_dlPedigree" cellspacing="0" style="width:100%;border-collapse:collapse;">
+    <tr>
+        @foreach (var year in Model.histories)
+        {
+            <td>
+                <table cellpadding="3" style="border-color: Black; border-width: 1px; border-style: solid">
+                    <tr><td style="border-width:0px;">@year.ProductionYear&nbsp;</td></tr>
+                    <tr><td class="box">@year.Greenhouse&nbsp;</td></tr>
+                    <tr><td class="box">@year.Field&nbsp;</td></tr>
+                    <tr><td class="box">@year.CertNumber&nbsp;</td></tr>
+                    <tr><td class="box">@year.CertifyingState&nbsp;</td></tr>
+                </table>
+            </td>            
+        }                          
+            <td>
+                <table id="FormView1_dlPedigree_ctl08_test" cellpadding="3" style="border-color:Black;border-width:1px;border-style:solid;">
+                    <tr>
+                        <td style="border-width:0px;">Year of Production</td>
+                    </tr><tr>
+                        <td class="box">Greenhouse (insect excluding) & sterile soil</td>
+                    </tr><tr>
+                        <td class="box">Field (note special measures below)</td>
+                    </tr><tr>
+                        <td class="box">Certification No.</td>
+                    </tr><tr>
+                        <td class="box">Certifying State</td>
+                    </tr>
+                </table>                    
+            </td>
+    </tr>
+</table>
+Number of years produced in field soil <label class="box30">@Model.certificate.NumberOfYearsProduced</label><br />
+&nbsp;<table class="box" width="100%">
+    <tr>
+        <td>
+            <strong>Summer Field Readings</strong></td>
+        <td colspan="3" valign="top">
+            &nbsp;<strong>Post Harvest Readings</strong></td>
+    </tr>
+    <tr>
+        <td valign="top">
+            <table><tr>
+            @foreach (var row in Model.inspections)
+            {
+                <td>
+                    <table class="border" style="white-space: nowrap;">
+                        <tr><td class="nobox">@Html.Raw(row.InspectionNumberText)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.LeafrollPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.MosaicPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.OtherVarietyPercent)</td></tr>
+                        <tr><td class="box">@Html.Raw(row.BlacklegPercent)</td></tr>
+                        <tr><td class="box" style="white-space: nowrap;">@Html.Raw(row.OtherDiseasePercent)</td></tr>
+                    </table>
+                </td>
+            }
+            </tr></table>
+        </td>
+        <td valign="top">
+            <table><tr>
+                <td>
+                    <table>
+                        <tr><td>FINAL/WINTER</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestLeafroll &nbsp;&nbsp;</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestMosaic &nbsp;&nbsp;</td></tr>
+                        <tr><td class="box">&nbsp;&nbsp; @Model.certificate.PostHarvestOtherVarieties &nbsp;&nbsp;</td></tr>
+                    </table>
+                </td>
+            </tr></table>            
+        </td>
+        <td valign="top">
+            &nbsp;</td>
+        <td align="center" valign="top">
+            &nbsp;&nbsp;<table>
+                <tr>
+                    <td align="left">
+                        Location</td>
+                    <td align="left"><span class="box30">@Model.certificate.PostHarvestLocation</span></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                        Sample No. <span class="box30">@Model.certificate.PostHarvestSampleNumber</span></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                        Plant Count <span class="box30">@Model.certificate.PostHarvestPlantCount</span></td>
+                </tr>
+                <tr>
+                    <td align="left">
+                    </td>
+                    <td align="left">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        ELISA TEST RESULTS FOR LATENT<br />
+                        VIRUSES</td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="2">
+                        %PVY <span class="box30">@Model.certificate.PercentPVY</span></asp:Label>
+                        &nbsp;&nbsp; %PVX <span class="box30">@Model.certificate.PercentPVX</span>
+                    </td>
+                </tr>
+            </table>
+            &nbsp; &nbsp;&nbsp;
+        </td>
+    </tr>
+</table>
+<br />
+<table style="white-space: nowrap;">
+    <tr>
+        <td>
+        </td>
+        <td colspan="6" width="100%">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Other Diseases</td>
+        <td>&nbsp;</td>
+        <td align="center">
+            Not known to occur<br />
+            in grower's area.</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">
+            No. of years since last found on this<br />
+            grower's farm, or NONE ON RECORD<br />
+            if free &gt;10 years.</td>
+        <td align="center">&nbsp;</td>
+        <td align="center">
+            Not found this year during<br />
+            normal certification field<br />
+            inspections</td>
+    </tr>
+    <tr>
+        <td>Bacterial Ring Rot</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.BacterialRingRot == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.BacterialRingRot < 11)
+            {
+                <span>@Model.certificate.BacterialRingRot</span>
+            }
+            @if(Model.certificate.BacterialRingRot == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.BacterialRingRot == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+     <tr>
+        <td>Golden Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.GoldenNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.GoldenNematode < 11)
+            {
+                <span>@Model.certificate.GoldenNematode</span>
+            }
+            @if(Model.certificate.GoldenNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.GoldenNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Late Blight</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.LateBlight == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.LateBlight < 11)
+            {
+                <span>@Model.certificate.LateBlight</span>
+            }
+            @if(Model.certificate.LateBlight == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.LateBlight == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Root-Knot Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.RootKnotNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.RootKnotNematode < 11)
+            {
+                <span>@Model.certificate.RootKnotNematode</span>
+            }
+            @if(Model.certificate.RootKnotNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.RootKnotNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Potato Rot Nematode</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoRotNematode == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoRotNematode < 11)
+            {
+                <span>@Model.certificate.PotatoRotNematode</span>
+            }
+            @if(Model.certificate.PotatoRotNematode == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoRotNematode == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Potato Wart</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoWart == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoWart < 11)
+            {
+                <span>@Model.certificate.PotatoWart</span>
+            }
+            @if(Model.certificate.PotatoWart == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoWart == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Powdery Scab</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PowderScap == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PowderScap < 11)
+            {
+                <span>@Model.certificate.PowderScap</span>
+            }
+            @if(Model.certificate.PowderScap == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.PowderScap == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Potato Spindle Tuber Viroid</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoSpindleTuberViroid == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoSpindleTuberViroid < 11)
+            {
+                <span>@Model.certificate.PotatoSpindleTuberViroid</span>
+            }
+            @if(Model.certificate.PotatoSpindleTuberViroid == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.PotatoSpindleTuberViroid == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td>Corky Ring Spots</td>
+        <td style="width: 3px">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.CorkyRingSpots == 11)
+            {
+                <span>X</span>
+            }&nbsp;
+        </td>
+        <td align="center">&nbsp;</td>
+        <td class="box" align="center">
+            @if(Model.certificate.CorkyRingSpots < 11)
+            {
+                <span>@Model.certificate.CorkyRingSpots</span>
+            }
+            @if(Model.certificate.CorkyRingSpots == 12)
+            {
+                <span>NONE ON RECORD</span>
+            }&nbsp;
+        </td>
+        <td align="center">
+        </td>
+        <td class="box" align="center">
+            @if(Model.certificate.CorkyRingSpots == 13)
+            {
+                <span>X</span>
+            }
+            &nbsp;
+        </td>
+    </tr> 
+</table>
+Notes: <br /><div class="box">@Model.certificate.Notes</div>
+<br />
+<table width="100%">
+    <tr>
+        <td colspan="3">
+            The above information is accurate to the best of our knowledge&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center" style="width: 45%">
+            <br />
+            <br />
+            Alexander B. Mkandawire / Staff Research Associate</td>
+        <td style="width: 10%">
+        </td>
+        <td style="width: 45%">
+        </td>
+    </tr>
+    <tr>
+        <td class="labelnopadtop">
+            Program official / title</td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            Date</td>
+    </tr>
+    <tr>
+        <td align="center">
+            California Crop Improvement Association</td>
+        <td style="width: 15px">
+        </td>
+        <td align="center">
+            (530) 752-0544</td>
+    </tr>
+    <tr>
+        <td class="labelnopadtop">
+            Agency</td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            Telephone</td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 15px">
+        </td>
+        <td align="center">
+            (530) 752-4735</td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td style="width: 15px">
+        </td>
+        <td class="labelnopadtop">
+            FAX</td>
+    </tr>
+</table>
+<br />
+&nbsp;
+           
+</body>
+</html>

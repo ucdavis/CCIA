@@ -51,6 +51,14 @@ namespace CCIA.Models
         [Display(Name="Variety")]
         public string variety { get; set; }
 
+      
+        public List<AbbrevAppType> AppTypes { get; set; }
+
+        [Display(Name="Program")]
+        public string ProgramToSearch { get; set; }
+
+
+
            
         
 
@@ -62,6 +70,9 @@ namespace CCIA.Models
         {   
             // var appTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeId).ToListAsync();
             // appTypes.Add(new AbbrevAppType { AppTypeId = 0, AppTypeTrans = "Any", Abbreviation = "Any"});
+
+            var appTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync();
+            appTypes.Insert(0, new AbbrevAppType{AppTypeId = 0, AppTypeTrans="Any", Abbreviation = "%"});
                               
             if(vm != null)
             {
@@ -113,6 +124,10 @@ namespace CCIA.Models
                 {
                     seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
                 }
+                if(vm.ProgramToSearch != "%")
+                {
+                    seedToFind = seedToFind.Where(s => s.CertProgram == vm.ProgramToSearch);
+                }
                 
                 if(vm.searchStatus != null && vm.searchStatus.Any())              
                 {
@@ -125,6 +140,7 @@ namespace CCIA.Models
                     yearsToSelectFrom = CertYearFinder.certYearListReverse, 
                     crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
+                    AppTypes = appTypes,
                     
                 };  
                 return viewModel;
@@ -137,6 +153,7 @@ namespace CCIA.Models
                 yearsToSelectFrom = CertYearFinder.certYearListReverse,              
                 crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
+                AppTypes = appTypes,
             };           
 
             return freshModel;

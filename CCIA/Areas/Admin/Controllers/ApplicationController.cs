@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
@@ -23,10 +22,13 @@ namespace CCIA.Controllers.Admin
 
         private readonly IFullCallService _helper;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper)
+        private readonly INotificationService _notificationService;
+
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         // TODO: Add Potato pounds harvested to model & FIR processing
@@ -65,7 +67,6 @@ namespace CCIA.Controllers.Admin
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AcceptApplication(IFormCollection form)
         {
-            // TODO set up notifications
             var id = int.Parse(form["application.Id"].ToString());
             var appToAccept = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             appToAccept.Status = ApplicationStatus.FieldInspectionInProgress.GetDisplayName();
@@ -76,6 +77,8 @@ namespace CCIA.Controllers.Admin
             appToAccept.NotifyDate = DateTime.Now;
             appToAccept.UserEmpDateMod = DateTime.Now;
             appToAccept.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+
+            await _notificationService.ApplicationAccepted(appToAccept);
 
             await _dbContext.SaveChangesAsync();
             Message = "Application Accepted";
@@ -117,11 +120,17 @@ namespace CCIA.Controllers.Admin
 
             renew.Action = 1;
             renew.DateRenewed = DateTime.Now;
-
-            // TODO add notifications
-
-            _dbContext.Add(newApp);                
+           
+            _dbContext.Add(newApp);                            
             _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
+
+            await _notificationService.ApplicationRenewed(newApp);
+
             await _dbContext.SaveChangesAsync();
 
             Message = $"App renewed. New App ID: {newApp.Id}";		
@@ -146,6 +155,14 @@ namespace CCIA.Controllers.Admin
             _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
 
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
+
+            await _notificationService.ApplicationRenewNoSeed(newApp);
+
+            await _dbContext.SaveChangesAsync();
+
             Message = $"App renewed for NO SEED. New App ID: {newApp.Id}";		
 		
             return  RedirectToAction(nameof(Renew));;
@@ -159,6 +176,7 @@ namespace CCIA.Controllers.Admin
             renew.DateRenewed = DateTime.Now;
             
             _dbContext.Update(renew);
+            await _notificationService.ApplicationRenewalCancelled(renew);
             await _dbContext.SaveChangesAsync();
 
             Message = $"App renewal cancelled.";		
@@ -320,6 +338,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> FIR(int id)
         {
+            // TODO: Add cancel pre-app (half fee), cancel app (no fee), cancel app (full fee)
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             if(model.application == null)
             {
@@ -395,6 +414,7 @@ namespace CCIA.Controllers.Admin
                     app.Status = ApplicationStatus.FieldInspectionReportReady.GetDisplayName();
                     app.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
                     app.UserEmpDateMod = DateTime.Now;
+                    await _notificationService.ApplicationFIRComplete(app);
                 }
                 if(app.AppType == "PO")
                 {
@@ -633,12 +653,133 @@ namespace CCIA.Controllers.Admin
             return PartialView("_LookupClass", classes);
         }
 
+        public IActionResult OpenPotatoHealthCertificate()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> PotatoHealthCertificateDetails(int id)
+        {
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
+            if(model.application == null)
+            {
+                ErrorMessage = "Application not found or not a Potato App";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            if(model.certificate == null)
+            {
+                var newHealthCertificate = new PotatoHealthCertificates();
+                newHealthCertificate.AppId = id;
+                _dbContext.Add(newHealthCertificate);
+                await _dbContext.SaveChangesAsync();
+                model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PotatoHealthCertificateDetails(int id,AdminPotatoHealthCertificateViewModel vm)
+        {
+            var cert = vm.certificate;
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, vm.certificate.AppId);
+            var certToUpdate = model.certificate;
+            if(certToUpdate == null)
+            {
+                ErrorMessage = "Certificate not found";               
+            }
+
+            certToUpdate.LotOriginatedFromTissueCulture = cert.LotOriginatedFromTissueCulture;
+            certToUpdate.NumberOfYearsProduced = cert.NumberOfYearsProduced;
+            certToUpdate.YearMicroPropagated = cert.YearMicroPropagated;
+            certToUpdate.MicropropagatedBy = cert.MicropropagatedBy;
+            certToUpdate.BacterialRingRot = cert.BacterialRingRot;
+            certToUpdate.GoldenNematode = cert.GoldenNematode;
+            certToUpdate.LateBlight = cert.LateBlight;
+            certToUpdate.RootKnotNematode = cert.RootKnotNematode;
+            certToUpdate.PotatoRotNematode = cert.PotatoRotNematode;
+            certToUpdate.PotatoWart = cert.PotatoWart;
+            certToUpdate.PowderScap = cert.PowderScap;
+            certToUpdate.PotatoSpindleTuberViroid = cert.PotatoSpindleTuberViroid;
+            certToUpdate.CorkyRingSpots = cert.CorkyRingSpots;
+            certToUpdate.PostHarvestLocation = cert.PostHarvestLocation;
+            certToUpdate.PostHarvestLeafroll = cert.PostHarvestLeafroll;
+            certToUpdate.PostHarvestMosaic = cert.PostHarvestMosaic;
+            certToUpdate.PostHarvestOtherVarieties = cert.PostHarvestOtherVarieties;
+            certToUpdate.PostHarvestPlantCount = cert.PostHarvestPlantCount;
+            certToUpdate.PostHarvestSampleNumber = cert.PostHarvestSampleNumber;
+            certToUpdate.PercentPVX = cert.PercentPVX;
+            certToUpdate.PercentPVY = cert.PercentPVY;
+            certToUpdate.Notes = cert.Notes;
+
+            if(ModelState.IsValid) {
+                await _dbContext.SaveChangesAsync();
+                Message = "Potato Health Certificate Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+            }
+            
+            return View(model);
+        }
+
+        public async Task<IActionResult> PotatoHealthCertificatePrint(int id)
+        {
+            var model = await AdminPotatoHealthCertificateViewModel.Create(_dbContext, id);
+            if(model.application == null)
+            {
+                ErrorMessage = "Application not found or not a Potato App";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            if(model.certificate == null)
+            {
+                ErrorMessage = "Certificate not complete. Please update.";
+                return RedirectToAction(nameof(PotatoHealthCertificateDetails), new {id = id});
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditPotatoHealthCertificateHistory(int id)
+        {
+            var model = await _dbContext.PotatoHealthCertificateHistory.Where(h => h.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "History not found";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPotatoHealthCertificateHistory(int id, PotatoHealthCertificateHistory history)
+        {
+            var historyToUpdate = await _dbContext.PotatoHealthCertificateHistory.Where(h => h.Id == id).FirstOrDefaultAsync();
+            if(historyToUpdate == null || historyToUpdate.Id != history.Id)
+            {
+                ErrorMessage = "History not found";
+                return RedirectToAction(nameof(OpenPotatoHealthCertificate));
+            }
+            historyToUpdate.Greenhouse = history.Greenhouse;
+            historyToUpdate.Field = history.Field;
+            historyToUpdate.CertNumber = history.CertNumber;
+            historyToUpdate.CertifyingState = history.CertifyingState;
+
+            if(ModelState.IsValid)
+            {
+                await _dbContext.SaveChangesAsync();
+                Message = "Potato Health Certificate History updated";
+            } else {
+                ErrorMessage = "Something went wrong";
+                return View(historyToUpdate);
+            }
+            return RedirectToAction(nameof(PotatoHealthCertificateDetails), new {id = historyToUpdate.AppId});
+        }
+
 
         private Applications MapRenewFromApp(Applications appToRenew)
         {
             var newApp = new Applications();
             
             newApp.PaperAppNum = appToRenew.Id;
+            newApp.UserDataentry = appToRenew.UserDataentry;
             newApp.CertNum = appToRenew.CertNum;
             newApp.CertYear = CertYearFinder.CertYear;
             newApp.OriginalCertYear = appToRenew.OriginalCertYear;
@@ -657,7 +798,6 @@ namespace CCIA.Controllers.Admin
             newApp.Renewal = true;
             newApp.FieldName = appToRenew.FieldName;
             newApp.FarmCounty = appToRenew.FarmCounty;
-            newApp.UserDataentry = 0;
             newApp.Maps = appToRenew.Maps;
             newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
             newApp.MapCenterLat = appToRenew.MapCenterLat;

@@ -11,7 +11,10 @@ namespace CCIA.Models
 {
     public partial class CCIAContext : DbContext
     {
-
+          public CCIAContext(DbContextOptions<CCIAContext> options)
+            : base(options)
+        { }
+       
         [DbFunction("sid_standards_msg","dbo")]
         public static string GetStandardsMessage(int seed_id)
         {
@@ -137,80 +140,40 @@ namespace CCIA.Models
 
         public virtual DbSet<CropGroups> CropGroups { get; set; }   
 
-        // Unable to generate entity type for table 'dbo.map_radish_isolation'. Please see the warning messages.
+        public virtual DbSet<Notifications> Notifications { get; set; }
+
+        public virtual DbSet<PotatoHealthCertificates> PotatoHealthCertificates { get; set; }
+
+        public virtual DbSet<PotatoHealthCertificateHistory> PotatoHealthCertificateHistory { get; set; }
+
+        public virtual DbSet<PotatoHealthCertificateInspections> PotatoHealthCertificateInspections { get; set; }
+
+        public virtual DbSet<Jobs> Jobs { get; set; }
+
+        
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.seed_doc_types'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_cucumber_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_cucurbita_isolation'. Please see the warning messages.
-        
-        
-        // Unable to generate entity type for table 'dbo.idaho_brassica_radish_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.tag_series'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.ecoregions'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_objects'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_typelut'. Please see the warning messages.
-        
-       
-        // Unable to generate entity type for table 'dbo.map_sweetcorn_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_croppts_app_listing'. Please see the warning messages.
-        
-        // Unable to generate entity type for table 'dbo.map_crop_access'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
         
         // Unable to generate entity type for table 'dbo.tag_docs'. Please see the warning messages.
-      
         
-       
-       
-        // Unable to generate entity type for table 'dbo.random_seeds2015'. Please see the warning messages.
+        // Unable to generate entity type for table 'dbo.seeds_changes'. Please see the warning messages.       
         
-        // Unable to generate entity type for table 'dbo.seeds_changes'. Please see the warning messages.
-       
-        // Unable to generate entity type for table 'dbo.map_user_access'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.blend_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
-       
-       
-        // Unable to generate entity type for table 'dbo.map_alfalfa_gefree_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.blend_components_changes'. Please see the warning messages.
       
-        // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.
-       
-       
-        // Unable to generate entity type for table 'dbo.renew_fields'. Please see the warning messages.
-       
+        // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.        
         
-        // Unable to generate entity type for table 'dbo.idaho_beta_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.idaho_lists'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.field_results'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.po_cert_history'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.po_health_cert'. Please see the warning messages.
 
-        
-        // Unable to generate entity type for table 'dbo.map_croppts_app'. Please see the warning messages.
-        
-        // Unable to generate entity type for table 'dbo.org_address'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.idaho_carrot_isolation'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.app_certificates'. Please see the warning messages.
-       
-        // Unable to generate entity type for table 'dbo.map_onion_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.map_carrot_isolation'. Please see the warning messages.
-      
-        // Unable to generate entity type for table 'dbo.map_brassica_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.crop_assign'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.Jobs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
         // Unable to generate entity type for table 'dbo.notices'. Please see the warning messages.
        
-        // Unable to generate entity type for table 'dbo.idaho_onion_isolation'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.seed_transfer_changes'. Please see the warning messages.
 
-       
-
-        private ILoggerFactory GetLoggerFactory()
+        public static ILoggerFactory GetLoggerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging(builder =>
@@ -220,28 +183,29 @@ namespace CCIA.Models
             return serviceCollection.BuildServiceProvider()
                     .GetService<ILoggerFactory>();
         }
+       
 
-        public CCIAContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        // public CCIAContext(IConfiguration configuration)
+        // {
+        //     Configuration = configuration;
+        // }
 
-        public IConfiguration Configuration { get; }
+        // public IConfiguration Configuration { get; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
-                {                       
-                        sqlOptions.UseNetTopologySuite();
-                        sqlOptions.AddRowNumberSupport();
-                });
-            }
-            optionsBuilder.UseLoggerFactory(GetLoggerFactory());
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     // if (!optionsBuilder.IsConfigured)
+        //     // {
+        //     //     optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
+        //     //     {                       
+        //     //             sqlOptions.UseNetTopologySuite();
+        //     //             sqlOptions.AddRowNumberSupport();
+        //     //     });
+        //     // }
+        //     optionsBuilder.UseLoggerFactory(GetLoggerFactory());
 
-        }
+        // }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -340,6 +304,77 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
 
+            });
+
+            modelBuilder.Entity<Jobs>(entity => {
+                entity.ToTable("jobs");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.JobTitle).HasColumnName("JobTitle");
+
+                entity.Property(e => e.JobInterval).HasColumnName("JobInterval");
+
+                entity.Property(e => e.JobTime).HasColumnName("JobTime").HasColumnType("Time(0)");
+
+                entity.Property(e => e.DateLastJobRan).HasColumnName("DateLastJobRan");
+
+                entity.Property(e => e.DateNextJobStart).HasColumnName("DateNextJobStart");
+
+                entity.Property(e => e.Section).HasColumnName("Section");
+
+            });
+
+               modelBuilder.Entity<PotatoHealthCertificates>(entity => {
+                entity.ToTable("po_health_cert");
+
+                entity.HasKey(e => e.AppId);
+
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+
+                entity.Property(e => e.LotOriginatedFromTissueCulture).HasColumnName("lot_orig_cult");
+
+                entity.Property(e => e.YearMicroPropagated).HasColumnName("yr_micropropagated");
+                entity.Property(e => e.MicropropagatedBy).HasColumnName("micropropagated_by");
+                entity.Property(e => e.NumberOfYearsProduced).HasColumnName("num_yrs_produced");
+                entity.Property(e => e.PostHarvestLocation).HasColumnName("ph_location");
+                entity.Property(e => e.PostHarvestLeafroll).HasColumnName("ph_leafroll");
+                entity.Property(e => e.PostHarvestMosaic).HasColumnName("ph_mosaic");
+                entity.Property(e => e.PostHarvestOtherVarieties).HasColumnName("ph_other_varieties");
+                entity.Property(e => e.PostHarvestSampleNumber).HasColumnName("ph_sample_no");
+                entity.Property(e => e.PostHarvestPlantCount).HasColumnName("ph_plant_count");
+                entity.Property(e => e.PercentPVY).HasColumnName("percent_pvy");
+                entity.Property(e => e.PercentPVX).HasColumnName("percent_pvx");
+                entity.Property(e => e.BacterialRingRot).HasColumnName("bact_ring_rot");
+                entity.Property(e => e.GoldenNematode).HasColumnName("golden_nematode");
+                entity.Property(e => e.LateBlight).HasColumnName("late_blight");
+                entity.Property(e => e.RootKnotNematode).HasColumnName("root_knot_nematode");
+                entity.Property(e => e.PotatoRotNematode).HasColumnName("pot_rot_nematode");
+                entity.Property(e => e.PotatoWart).HasColumnName("pot_wart");
+                entity.Property(e => e.PowderScap).HasColumnName("powder_scab");
+                entity.Property(e => e.PotatoSpindleTuberViroid).HasColumnName("pot_spindle_tuber_viroid");
+                entity.Property(e => e.CorkyRingSpots).HasColumnName("corky_ring_spots");
+                entity.Property(e => e.Notes).HasColumnName("notes");
+                entity.HasMany(e => e.History);
+            });
+
+            modelBuilder.Entity<PotatoHealthCertificateHistory>(entity => {
+                entity.ToTable("po_cert_history");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.AppId).HasColumnName("app_id");
+                entity.Property(e => e.ProductionYear).HasColumnName("prod_year");
+                entity.Property(e => e.Greenhouse).HasColumnName("greenhouse");
+                entity.Property(e => e.Field).HasColumnName("field");
+                entity.Property(e => e.CertNumber).HasColumnName("cert_no");
+                entity.Property(e => e.CertifyingState).HasColumnName("cert_state");
+
+            });
+
+            modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
             });
 
             modelBuilder.Entity<ApplicationReport>(entity => {
@@ -1928,6 +1963,7 @@ namespace CCIA.Models
                 entity.HasMany(d => d.Changes);
                 entity.HasOne(d => d.FieldInspectionReport);
                 entity.HasOne(d => d.Ecoregion);
+                entity.HasOne(d => d.PotatoHealthCertificate);
 
             });
 
@@ -2837,7 +2873,7 @@ namespace CCIA.Models
 
             modelBuilder.Entity<FieldInspectionReport>(entity =>
             {
-                entity.HasKey(e => e.AppId);
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("field_inspect");
 
