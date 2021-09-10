@@ -15,6 +15,8 @@ namespace CCIA.Services
     public interface IEmailService
     {
         Task SendWeeklyApplicationNotices(string password);
+
+        Task SendPendingSeedNotices(string password);
     }
     
 
@@ -52,12 +54,42 @@ namespace CCIA.Services
                 using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA application status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
-                    message.Body = "Email: " + address;
+                    message.Body = "An application status has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }
-            }            
+            } 
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();          
+        }
+
+        public async Task SendPendingSeedNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA SID status changes"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "A SID lot has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedClientNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
         }
 
         private RazorLightEngine GetRazorEngine()
