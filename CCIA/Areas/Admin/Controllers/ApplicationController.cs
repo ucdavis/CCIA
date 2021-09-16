@@ -12,6 +12,8 @@ using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace CCIA.Controllers.Admin
 {
@@ -24,11 +26,14 @@ namespace CCIA.Controllers.Admin
 
         private readonly INotificationService _notificationService;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
+        private readonly IConfiguration _configuration;
+
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _helper = helper;
             _notificationService = notificationService;
+            _configuration = configuration;
         }
 
         // TODO: Add Potato pounds harvested to model & FIR processing
@@ -136,6 +141,41 @@ namespace CCIA.Controllers.Admin
             Message = $"App renewed. New App ID: {newApp.Id}";		
 		
             return  RedirectToAction(nameof(Renew));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
+        {
+           var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+           if(app == null)
+           {
+               ErrorMessage = "App not found";
+               return RedirectToAction(nameof(Index));
+           }
+            var permittedExtensions =  _configuration.GetSection("AllowedFileExtensions").Get<string[]>();
+            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+            {
+                ErrorMessage = "File extension not allowed!";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+           var localFolder = $"{_configuration["FilePath"]}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
+           System.IO.Directory.CreateDirectory(localFolder);
+           if(file.Length >0)
+           {
+               var filePath = Path.Combine(localFolder, file.FileName);
+               using (var stream = System.IO.File.Create(filePath))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                var cert = new AppCertificates();
+                cert.AppId = app.Id;
+                cert.Name = certName;
+                cert.Link = file.FileName;
+                _dbContext.Add(cert);
+                await _dbContext.SaveChangesAsync();
+           }
+           return RedirectToAction(nameof(Details), new { id = id }); 
         }
 
         public async Task<IActionResult> Renew_noseed(int id)

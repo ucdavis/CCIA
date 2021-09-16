@@ -343,6 +343,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Title</th>
                         <th>Link</th>
                     </tr>
                 </thead>
@@ -350,6 +351,7 @@
                     @foreach (var row in Model.application.Certificates)
                     {
                         <tr>
+                            <td>@row.Name</td>
                             <td>
                                 Filedownload -
                                 @row.Link
@@ -363,6 +365,19 @@
             <hr />
         </div>
     }
+    <hr>
+    <form enctype="multipart/form-data" method="post" asp-action="UploadCertificate">
+    <h3>Upload new Certificate</h3>
+        <input type="hidden" name="id" id="id" value="@Model.application.Id">
+         <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Certificate Name</label>
+                <input id="certName" name="certName" class="col-form">
+            </div>
+        
+        <input id="file" name="file" type="file">            
+        <input class="btn btn-primary" type="submit" value="Upload" />
+    </form>
+    <hr>
     @if(Model.application.PlantingStocks.Any())
     {    
         <div class="row">
