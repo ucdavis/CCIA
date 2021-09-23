@@ -13,7 +13,6 @@ using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using System.IO;
-using Microsoft.Extensions.Configuration;
 
 namespace CCIA.Controllers.Admin
 {
@@ -26,14 +25,16 @@ namespace CCIA.Controllers.Admin
 
         private readonly INotificationService _notificationService;
 
-        private readonly IConfiguration _configuration;
+              
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService, IConfiguration configuration)
+        private readonly IFileIOService _fileService;
+
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService,IFileIOService fileIOService)
         {
             _dbContext = dbContext;
             _helper = helper;
             _notificationService = notificationService;
-            _configuration = configuration;
+            _fileService = fileIOService;            
         }
 
         // TODO: Add Potato pounds harvested to model & FIR processing
@@ -143,6 +144,13 @@ namespace CCIA.Controllers.Admin
             return  RedirectToAction(nameof(Renew));
         }
 
+        public async Task<IActionResult> GetCertificateFile(int id, string link)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadCertificateFile(app, link), contentType, link);
+        }
+
         [HttpPost]
         public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
         {
@@ -152,22 +160,17 @@ namespace CCIA.Controllers.Admin
                ErrorMessage = "App not found";
                return RedirectToAction(nameof(Index));
            }
-            var permittedExtensions =  _configuration.GetSection("AllowedFileExtensions").Get<string[]>();
-            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-            if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
-            {
-                ErrorMessage = "File extension not allowed!";
-                return RedirectToAction(nameof(Details), new { id = id });
-            }
-           var localFolder = $"{_configuration["FilePath"]}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
-           System.IO.Directory.CreateDirectory(localFolder);
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
            if(file.Length >0)
            {
-               var filePath = Path.Combine(localFolder, file.FileName);
-               using (var stream = System.IO.File.Create(filePath))
-                {
-                    await file.CopyToAsync(stream);
-                }
+               await _fileService.SaveCertificateFile(app, file);               
                 var cert = new AppCertificates();
                 cert.AppId = app.Id;
                 cert.Name = certName;
