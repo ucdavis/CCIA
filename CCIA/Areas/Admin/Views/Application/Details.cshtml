@@ -353,8 +353,7 @@
                         <tr>
                             <td>@row.Name</td>
                             <td>
-                                Filedownload -
-                                @row.Link <a asp-action=GetCertificateFile asp-route-id="@Model.application.Id" asp-route-link="@row.Link">@row.Link</a>
+                               <a asp-action=GetCertificateFile asp-route-id="@Model.application.Id" asp-route-link="@row.Link">@row.Link</a>
                             </td>
                         </tr>
                     }

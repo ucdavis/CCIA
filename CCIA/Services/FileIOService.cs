@@ -21,7 +21,11 @@ namespace CCIA.Services
 
         Task SaveCertificateFile(Applications applications, IFormFile file);
 
-       MemoryStream DownloadCertificateFile(Applications applications, string link);
+        FileStream DownloadCertificateFile(Applications applications, string link);
+
+        Task SaveSeedDocument(Seeds sid, string docType, IFormFile file);
+
+        FileStream DownloadSeedFile(SeedDocuments doc, int certYear);
        
     }
 
@@ -46,6 +50,12 @@ namespace CCIA.Services
             return false;
         }
 
+        public async Task SaveSeedDocument(Seeds sid, string docType, IFormFile file)
+        {
+           var localFolder = $"{GetRoot()}/certyear{sid.CertYear}/sid{sid.Id}/{docType}/";
+           await SaveFile(localFolder, file);
+        }
+
         public async Task SaveCertificateFile(Applications app, IFormFile file)
         {            
            var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
@@ -63,16 +73,24 @@ namespace CCIA.Services
            }
         }
 
-        public MemoryStream DownloadCertificateFile(Applications app, string link)
+        public FileStream DownloadCertificateFile(Applications app, string link)
         {   
             var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
             var filePath =  Path.Combine(localFolder, link);
-            var net = new System.Net.WebClient();
-            var data = net.DownloadData(filePath);
-            var content = new System.IO.MemoryStream(data);
+            return GetFile(filePath);
+        }
+
+        public FileStream DownloadSeedFile(SeedDocuments doc, int certYear)
+        {
+            var localFolder =  $"{GetRoot()}/certyear{certYear}/sid{doc.SeedsId}/{doc.DocumentType.Folder}/";
+            var filePath = Path.Combine(localFolder, doc.Link);   
+            return GetFile(filePath);
+        }
+
+        private FileStream GetFile(string filePath)
+        {
+            var content = new System.IO.FileStream(filePath, FileMode.Open, FileAccess.Read);
             return content;
-            //var contentType = "APPLICATION/octet-stream";
-            //return new Microsoft.AspNetCore.Mvc.FileStreamResult(content, contentType);
         }
 
         private string GetRoot()

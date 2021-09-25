@@ -16,6 +16,10 @@ namespace CCIA.Models.ViewModels
 
         public LabsAndStandards LabsAndStandards { get; set; }
 
+        public List<SeedDocuments> Documents { get; set; }
+
+        public List<SeedsDocumentTypes> documentTypes { get; set; }
+
         public static async Task<AdminSeedsViewModel> CreateDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
              if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
@@ -31,12 +35,13 @@ namespace CCIA.Models.ViewModels
                     .Include(r => r.LabOrganization)
                     .FirstOrDefaultAsync();
             labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid);
-
-           var seed = await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync();
+          
             var viewModel = new AdminSeedsViewModel
             {
-                seed = seed,  
-                LabsAndStandards = labsAndStandards,        
+                seed =  await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync(),  
+                LabsAndStandards = labsAndStandards, 
+                Documents =  await _dbContext.SeedDocuments.Where(d => d.SeedsId == sid).Include(d => d.DocumentType).ToListAsync(),
+                documentTypes = await _dbContext.SeedsDocumentTypes.OrderBy(d => d.Order).ToListAsync(),
             };           
 
             return viewModel;
