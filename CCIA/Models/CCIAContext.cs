@@ -150,6 +150,8 @@ namespace CCIA.Models
 
         public virtual DbSet<Jobs> Jobs { get; set; }
 
+        public virtual DbSet<TagDocuments> TagDocuments { get; set;}
+
         
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -1433,6 +1435,20 @@ namespace CCIA.Models
                entity.Property(e => e.Name).HasColumnName("cert_name");
 
                entity.Property(e => e.Link).HasColumnName("cert_link");
+
+           });
+
+            modelBuilder.Entity<TagDocuments>(entity =>
+           {
+               entity.ToTable("tag_docs");
+
+               entity.HasKey(e => e.Id);
+
+               entity.Property(e => e.Id).HasColumnName("tag_doc_id");
+
+               entity.Property(e => e.TagId).HasColumnName("tag_id");
+
+               entity.Property(e => e.Link).HasColumnName("doc_link");
 
            });
 

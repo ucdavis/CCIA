@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using CCIA.Helpers;
+using System.IO;
 
 namespace CCIA.Controllers.Admin
 {
@@ -20,11 +21,13 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly IFileIOService _fileService;
 
-        public TagsController(CCIAContext dbContext, IFullCallService helper)
+        public TagsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _fileService = fileService;
         }
 
         // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes
@@ -174,6 +177,43 @@ namespace CCIA.Controllers.Admin
 
         }  
 
+        public async Task<IActionResult> GetTagFile(int id, int certYear)
+        {
+            var tagDoc = await _dbContext.TagDocuments.Where(d => d.Id == id).FirstOrDefaultAsync();         
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadTagFile(tagDoc, certYear), contentType, tagDoc.Link);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadTagDocument(int id, int certYear, IFormFile file)
+        {
+           var tag = await _dbContext.Tags.Where(t => t.Id==id).FirstOrDefaultAsync();
+           if(tag == null)
+           {
+               ErrorMessage = "Tag not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveTagDocument(tag.Id, certYear, file); 
+               var tagDoc = new TagDocuments();
+               tagDoc.Link = file.FileName;
+               tagDoc.TagId = tag.Id;
+                _dbContext.Add(tagDoc);
+                await _dbContext.SaveChangesAsync();
+           }
+           return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
+
 
 
         public async Task<IActionResult> Process(ProcessViewModel vm)
@@ -188,6 +228,7 @@ namespace CCIA.Controllers.Admin
             var model = await tag
                 .Include(t => t.TagBagging)
                 .Include(t => t.EmployeePrinted)
+                .Include(t => t.Documents)
                 .Where(t => t.Id == id).FirstOrDefaultAsync();
             if(model == null)
             {

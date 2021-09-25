@@ -456,6 +456,36 @@
             </div>
         </form>
     </div> 
+    <div class="col-sm-12"> @* full width*@
+        <div class="row">
+            <h3>Supporting Documents</h3>
+        </div>
+        <div class="row">
+             @if(Model.Documents.Any())
+                {                            
+                    <table class="table">
+                        <tr>
+                            <th>File</th>
+                        </tr>
+                        @foreach (var document in Model.Documents)
+                        {
+                            <tr>
+                                <td><a asp-action="GetTagFile" asp-route-id="@document.Id" asp-route-certYear="@Model.CertYear">@document.Link</a></td>
+                            </tr>                                
+                        }
+                    </table>
+                }
+        </div>
+        <div class="row">
+            <form enctype="multipart/form-data" method="post" asp-action="UploadTagDocument">
+            <h3>Upload new Document</h3>
+                <input type="hidden" name="id" id="id" value="@Model.Id">  
+                <input type="hidden" name="certYear" id="certYear" value="@Model.CertYear">
+                <input id="file" name="file" type="file">            
+                <input class="btn btn-primary" type="submit" value="Upload" />
+            </form>
+        </div>
+    </div>
     <div class="col-sm-12"> @* full width *@
         <div class="row">
             <h3>Tag Series</h3>

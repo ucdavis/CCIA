@@ -26,6 +26,9 @@ namespace CCIA.Services
         Task SaveSeedDocument(Seeds sid, string docType, IFormFile file);
 
         FileStream DownloadSeedFile(SeedDocuments doc, int certYear);
+        FileStream DownloadTagFile(TagDocuments doc, int certYear);
+
+        Task SaveTagDocument(int tagId, int certYear, IFormFile file);
        
     }
 
@@ -56,6 +59,12 @@ namespace CCIA.Services
            await SaveFile(localFolder, file);
         }
 
+        public async Task SaveTagDocument(int tagId, int certYear, IFormFile file)
+        {
+            var localFolder = $"{GetRoot()}/certyear{certYear}/tagid{tagId}/";
+            await SaveFile(localFolder, file);
+        }
+
         public async Task SaveCertificateFile(Applications app, IFormFile file)
         {            
            var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
@@ -83,6 +92,13 @@ namespace CCIA.Services
         public FileStream DownloadSeedFile(SeedDocuments doc, int certYear)
         {
             var localFolder =  $"{GetRoot()}/certyear{certYear}/sid{doc.SeedsId}/{doc.DocumentType.Folder}/";
+            var filePath = Path.Combine(localFolder, doc.Link);   
+            return GetFile(filePath);
+        }
+
+        public FileStream DownloadTagFile(TagDocuments doc, int certYear)
+        {
+            var localFolder =  $"{GetRoot()}/certyear{certYear}/tagid{doc.TagId}/";
             var filePath = Path.Combine(localFolder, doc.Link);   
             return GetFile(filePath);
         }
