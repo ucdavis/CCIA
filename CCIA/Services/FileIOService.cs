@@ -21,7 +21,11 @@ namespace CCIA.Services
 
         Task SaveCertificateFile(Applications applications, IFormFile file);
 
+        Task SaveFIRDocumentFile(Applications applications, IFormFile file);
+
         FileStream DownloadCertificateFile(Applications applications, string link);
+
+        FileStream DownloadFIRDocumentFile(Applications applications, string link);
 
         Task SaveSeedDocument(Seeds sid, string docType, IFormFile file);
 
@@ -71,6 +75,12 @@ namespace CCIA.Services
            await SaveFile(localFolder, file);
         }
 
+        public async Task SaveFIRDocumentFile(Applications app, IFormFile file)
+        {            
+           var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/fir/";
+           await SaveFile(localFolder, file);
+        }
+
         private async Task SaveFile(string localFolder,IFormFile file)
         {
             System.IO.Directory.CreateDirectory(localFolder);
@@ -85,6 +95,13 @@ namespace CCIA.Services
         public FileStream DownloadCertificateFile(Applications app, string link)
         {   
             var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/cert_tags/";
+            var filePath =  Path.Combine(localFolder, link);
+            return GetFile(filePath);
+        }
+
+        public FileStream DownloadFIRDocumentFile(Applications app, string link)
+        {   
+            var localFolder = $"{GetRoot()}/certyear{app.CertYear}/appId{app.Id}/fir/";
             var filePath =  Path.Combine(localFolder, link);
             return GetFile(filePath);
         }

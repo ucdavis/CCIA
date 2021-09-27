@@ -152,6 +152,9 @@ namespace CCIA.Models
 
         public virtual DbSet<TagDocuments> TagDocuments { get; set;}
 
+        public virtual DbSet<AppCertificates> AppCertificates { get; set; }
+        public virtual DbSet<FIRDocuments> FIRDocuments { get; set; }
+
         
         // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -168,7 +171,7 @@ namespace CCIA.Models
         // Unable to generate entity type for table 'dbo.field_results'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
 
-        // Unable to generate entity type for table 'dbo.app_certificates'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
@@ -1437,6 +1440,23 @@ namespace CCIA.Models
                entity.Property(e => e.Link).HasColumnName("cert_link");
 
            });
+
+            modelBuilder.Entity<FIRDocuments>(entity =>
+           {
+               entity.ToTable("fir_docs");
+
+               entity.HasKey(e => e.Id);
+
+               entity.Property(e => e.Id).HasColumnName("doc_id");
+
+               entity.Property(e => e.AppId).HasColumnName("app_id");
+
+               entity.Property(e => e.Name).HasColumnName("doc_name");
+
+               entity.Property(e => e.Link).HasColumnName("doc_link");
+
+           });
+
 
             modelBuilder.Entity<TagDocuments>(entity =>
            {

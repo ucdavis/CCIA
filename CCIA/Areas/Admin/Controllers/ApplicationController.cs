@@ -151,6 +151,13 @@ namespace CCIA.Controllers.Admin
             return File(_fileService.DownloadCertificateFile(app, link), contentType, link);
         }
 
+        public async Task<IActionResult> GetFIRDocumentFile(int id, string link)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadFIRDocumentFile(app, link), contentType, link);
+        }
+
         [HttpPost]
         public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
         {
@@ -177,8 +184,40 @@ namespace CCIA.Controllers.Admin
                 cert.Link = file.FileName;
                 _dbContext.Add(cert);
                 await _dbContext.SaveChangesAsync();
+                Message = "Certificate added";
            }
            return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFIRDocument(int id, string docName, IFormFile file)
+        {
+           var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+           if(app == null)
+           {
+               ErrorMessage = "App not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveFIRDocumentFile(app, file);               
+                var doc = new FIRDocuments();
+                doc.AppId = app.Id;
+                doc.Name = docName;
+                doc.Link = file.FileName;
+                _dbContext.Add(doc);
+                await _dbContext.SaveChangesAsync();
+                Message = "FIR Document added";
+           }
+           return RedirectToAction(nameof(FIR), new { id = id }); 
         }
 
         public async Task<IActionResult> Renew_noseed(int id)

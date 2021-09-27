@@ -177,6 +177,49 @@
     </div>
 </div>
 <div class="container col-sm-10">
+    @if(Model.documents.Any())
+    {    
+        <div class="row">
+            <h3>FIR Documentation</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.documents)
+                    {
+                        <tr>
+                            <td>@row.Name</td>
+                            <td>
+                               <a asp-action=GetFIRDocumentFile asp-route-id="@Model.application.Id" asp-route-link="@row.Link">@row.Link</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <hr />
+        </div>
+    }
+    <hr>
+    <form enctype="multipart/form-data" method="post" asp-action="UploadFIRDocument">
+    <h3>Upload new FIR Document</h3>
+        <input type="hidden" name="id" id="id" value="@Model.application.Id">
+         <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Document Name</label>
+                <input id="docName" name="docName" class="col-form">
+            </div>
+        
+        <input id="file" name="file" type="file">            
+        <input class="btn btn-primary" type="submit" value="Upload" />
+    </form>
+    <hr>
+</div>
+<div class="container col-sm-10">
     <div class="row">
         <h3>Field Inspection Report</h3>        
     </div>
