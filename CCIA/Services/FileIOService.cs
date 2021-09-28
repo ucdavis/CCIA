@@ -23,9 +23,13 @@ namespace CCIA.Services
 
         Task SaveFIRDocumentFile(Applications applications, IFormFile file);
 
+        Task SaveBlendFile(BlendRequests blend, IFormFile file);
+
         FileStream DownloadCertificateFile(Applications applications, string link);
 
         FileStream DownloadFIRDocumentFile(Applications applications, string link);
+
+        FileStream DownloadBlendFile(BlendDocuments blendDoc, int certYear);
 
         Task SaveSeedDocument(Seeds sid, string docType, IFormFile file);
 
@@ -62,6 +66,13 @@ namespace CCIA.Services
            var localFolder = $"{GetRoot()}/certyear{sid.CertYear}/sid{sid.Id}/{docType}/";
            await SaveFile(localFolder, file);
         }
+
+        public async Task SaveBlendFile(BlendRequests blend, IFormFile file)
+        {
+           var localFolder = $"{GetRoot()}/certyear{blend.CertYear}/blend{blend.Id}/";
+           await SaveFile(localFolder, file);
+        }
+        
 
         public async Task SaveTagDocument(int tagId, int certYear, IFormFile file)
         {
@@ -109,6 +120,13 @@ namespace CCIA.Services
         public FileStream DownloadSeedFile(SeedDocuments doc, int certYear)
         {
             var localFolder =  $"{GetRoot()}/certyear{certYear}/sid{doc.SeedsId}/{doc.DocumentType.Folder}/";
+            var filePath = Path.Combine(localFolder, doc.Link);   
+            return GetFile(filePath);
+        }
+
+        public FileStream DownloadBlendFile(BlendDocuments doc, int certYear)
+        {
+            var localFolder =  $"{GetRoot()}/certyear{certYear}/blend{doc.BlendId}/";
             var filePath = Path.Combine(localFolder, doc.Link);   
             return GetFile(filePath);
         }

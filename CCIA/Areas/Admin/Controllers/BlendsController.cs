@@ -1,10 +1,12 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
 using CCIA.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
@@ -17,11 +19,13 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly IFileIOService _fileService;
 
-        public BlendsController(CCIAContext dbContext, IFullCallService helper)
+        public BlendsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileIOService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _fileService = fileIOService;
         }
 
         public IActionResult Index()
@@ -41,6 +45,47 @@ namespace CCIA.Controllers.Admin
             ViewBag.Status = status;
             return View(model);
         }
+
+        public async Task<IActionResult> GetBlendFile(int id)
+        {
+            var blendDoc = await _dbContext.BlendDocuments.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var certYear = await _dbContext.BlendRequests.Where(b => b.Id == blendDoc.BlendId).Select(b => b.CertYear).FirstOrDefaultAsync();
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadBlendFile(blendDoc, certYear), contentType, blendDoc.Link);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadBlendDocument(int id, string docName, IFormFile file)
+        {
+           var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
+           if(blend == null)
+           {
+               ErrorMessage = "Blend not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveBlendFile(blend, file);               
+                var doc = new BlendDocuments();
+                doc.BlendId = blend.Id;
+                doc.Name = docName;
+                doc.Link = file.FileName;
+                _dbContext.Add(doc);
+                await _dbContext.SaveChangesAsync();
+                Message = "Document saved";
+           }
+           return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
 
          public async Task<IActionResult> Search()
         {
