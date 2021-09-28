@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CCIA.Helpers;
@@ -8,11 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using CCIA.Models.DetailsViewModels;
-using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
+using System.IO;
 
 namespace CCIA.Controllers.Admin
 {
@@ -24,12 +21,56 @@ namespace CCIA.Controllers.Admin
         private readonly IFullCallService _helper;
         private readonly INotificationService _notificationService;
 
-        public SeedsController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
+         private readonly IFileIOService _fileService;
+
+        public SeedsController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService, IFileIOService fileIOService)
         {
             _dbContext = dbContext;
             _helper = helper;
             _notificationService = notificationService;
+            _fileService = fileIOService;
         }
+
+        public async Task<IActionResult> GetSeedFile(int id)
+        {
+            var doc = await _dbContext.SeedDocuments.Where(d => d.Id == id).Include(d => d.DocumentType).FirstOrDefaultAsync();
+            var certYear = await _dbContext.Seeds.Where(s => s.Id == doc.SeedsId).Select(s => s.CertYear).FirstOrDefaultAsync();
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadSeedFile(doc, certYear.Value), contentType, doc.Link);
+        }        
+
+        [HttpPost]
+        public async Task<IActionResult> UploadSeedDocument(int id, string certName, int docType, IFormFile file)
+        {
+           var sid = await _dbContext.Seeds.Where(s => s.Id==id).FirstOrDefaultAsync();
+           var documentType = await _dbContext.SeedsDocumentTypes.Where(t => t.Id == docType).FirstOrDefaultAsync();
+           if(sid == null)
+           {
+               ErrorMessage = "SID not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveSeedDocument(sid, documentType.Folder, file); 
+               var seedDoc = new SeedDocuments();
+               seedDoc.SeedsId = sid.Id;
+               seedDoc.DocType = docType;
+               seedDoc.Name = certName;
+               seedDoc.Link = file.FileName;                             
+                _dbContext.Add(seedDoc);
+                await _dbContext.SaveChangesAsync();
+           }
+           return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
 
         public async Task<IActionResult> Pending()
         {

@@ -463,6 +463,9 @@ namespace CCIA.Models
         [ForeignKey("BulkVarietyId")]
         public VarFull BulkVariety { get; set; }
 
+        [ForeignKey("TagId")]
+        public ICollection<TagDocuments> Documents { get; set; }
+
 
 
     }

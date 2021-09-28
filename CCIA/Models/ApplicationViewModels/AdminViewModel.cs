@@ -21,6 +21,8 @@ namespace CCIA.Models.DetailsViewModels
 
         public List<County> Counties { get; set; }
 
+        public List<FIRDocuments> documents { get; set; }
+
         public static async Task<AdminViewModel> CreateDetails(CCIAContext _dbContext, int id, IFullCallService _helper)
         {   
             var p0 = new SqlParameter("@app_id", id);
@@ -47,11 +49,11 @@ namespace CCIA.Models.DetailsViewModels
         }
 
         public static async Task<AdminViewModel> CreateFIR(CCIAContext _dbContext, int id, IFullCallService _helper)
-        {                   
-            var app = await _helper.FIRApplications().Where(a => a.Id == id).FirstOrDefaultAsync();  
+        {                 
             var viewModel = new AdminViewModel
             {
-                application = app                  
+                application =  await _helper.FIRApplications().Where(a => a.Id == id).FirstOrDefaultAsync(),    
+                documents = await _dbContext.FIRDocuments.Where(d => d.AppId == id).ToListAsync(),
             };           
 
             return viewModel;

@@ -271,7 +271,6 @@
         <div><hr></div>
         <div class="col-sm-8">        
             <h3>Supporting Documentation</h3>
-            <div>Form to upload new documents</div>
             @if(Model.documents.Any())
             {
                 <table class="table">
@@ -279,7 +278,6 @@
                         <tr>
                             <th>Name</th>
                             <th>Link</th>
-                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -287,13 +285,24 @@
                         {
                             <tr>
                                 <td>@row.Name</td>
-                                <td>@row.Link</td>
-                                <td>delete</td>
+                                <td><a asp-action="GetBlendFile" asp-route-id="@row.Id">@row.Link</a></td>
                             </tr>                        
                         }
                     </tbody>
                 </table>
             }
+        </div>
+        <div class="col-sm-8">
+             <form enctype="multipart/form-data" method="post" asp-action="UploadBlendDocument">
+                        <h4>Upload new Document</h4>
+                            <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Document Name</label>
+                                <input id="docName" name="docName" class="col-form">
+                            </div>                            
+                            <input id="file" name="file" type="file">            
+                            <input class="btn btn-primary" type="submit" value="Upload" />
+                        </form>
         </div>
     </div>
 </div>
