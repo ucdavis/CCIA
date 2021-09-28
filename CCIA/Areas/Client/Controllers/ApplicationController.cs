@@ -28,8 +28,7 @@ namespace CCIA.Controllers.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.OrgId).FirstAsync();           
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);          
             int? certYearToUse;
             if (certYear == 0)
             {
@@ -49,8 +48,7 @@ namespace CCIA.Controllers.Client
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.OrgId).FirstAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)

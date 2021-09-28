@@ -10,6 +10,7 @@ namespace CCIA.Models
     {
         public BulkSalesCertificates() {
             Date = DateTime.Now.Date;
+            PurchaserStateId = 102;
         }
         public int Id { get; set; }
         public int ConditionerOrganizationId { get; set; }

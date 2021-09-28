@@ -26,20 +26,28 @@ namespace CCIA.Controllers.Client.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();   
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            int? certYearToUse;
             if (certYear == 0)
             {
-                certYear = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId).Select(b => b.CertYear).MaxAsync();;
-            }         
-            var model = await BlendIndexViewModel.Create(_dbContext, orgId, certYear);             
+                certYearToUse = await _dbContext.BlendRequests.Where(o => o.ConditionerId == orgId).MaxAsync(x => (int?)x.RequestStarted.Year);
+            } else
+            {
+                certYearToUse = certYear;
+            }
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }
+
+            var model = await BlendIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);             
             return View(model);
         }
 
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            // TODO restrict to logged in user.
-             var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             // var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             // return View(model);
             return View();
