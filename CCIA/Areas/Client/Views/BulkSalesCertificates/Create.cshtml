@@ -74,7 +74,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label" asp-for="BulkSalesCertificate.PurchaserStateId"></label>
-                <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","StateProvinceName"))"></select>
+                <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","Name"))"></select>
             </div>             
             <div class="form-group">
                 <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCountryId"></label>
