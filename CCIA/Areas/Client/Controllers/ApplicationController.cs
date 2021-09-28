@@ -22,6 +22,9 @@ namespace CCIA.Controllers.Client
             _dbContext = dbContext;
         }
 
+        // TODO Add file upload/download. Both need security checks to make sure they are only uploading/downloading to their own apps
+        // TODO Same for FIR, seeds, blends, tags
+
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
