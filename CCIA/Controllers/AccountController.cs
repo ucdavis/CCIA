@@ -142,7 +142,8 @@ namespace CCIA.Controllers
                 new Claim("user", contact.Email),
                 new Claim("role", "Member"),
                 new Claim("role", "conditioner"),
-                new Claim("contactId", contact.Id.ToString())                
+                new Claim("contactId", contact.Id.ToString()),
+                new Claim("orgId", contact.OrgId.ToString()),               
             };
             if(isEmulation)
             {
