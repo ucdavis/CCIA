@@ -19,6 +19,8 @@ namespace CCIA.Services
 
         Task SeedLotAccepted(Seeds seed);
 
+        Task BlendRequestApproved(BlendRequests blend);
+
     }
 
     public class NotificationService : INotificationService
@@ -129,6 +131,22 @@ namespace CCIA.Services
                     Email = user,
                     SID = seed.Id,
                     Message = "Seed Lot Accepted"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task BlendRequestApproved(BlendRequests blendRequest)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == blendRequest.UserEntered || (c.BlendNotices && c.OrgId == blendRequest.ConditionerId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    BlendId = blendRequest.Id,
+                    Message = "Blend Request Approved"
                 };
                 _dbContext.Notifications.Add(notification);      
             }
