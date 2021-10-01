@@ -10,6 +10,10 @@ namespace CCIA.Models
         {
             Pending = true;
             Created = DateTime.Now;
+            AppId = 0;
+            SID = 0;
+            BlendId = 0;
+            TagId = 0;
         }
 
         public int Id { get; set; }

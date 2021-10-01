@@ -22,12 +22,14 @@ namespace CCIA.Controllers.Admin
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
+        private readonly INotificationService _notificationService;
 
-        public TagsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService)
+        public TagsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
             _fileService = fileService;
+            _notificationService = notificationService;
         }
 
         // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes
@@ -313,6 +315,7 @@ namespace CCIA.Controllers.Admin
             tag.Stage = TagStages.PendingFile.GetDisplayName();
             tag.UserPrinted = User.FindFirstValue(ClaimTypes.Name);
             tag.PrintedDate = DateTime.Now;
+            await _notificationService.TagPrinted(tag);
             await _dbContext.SaveChangesAsync();
 
             Message = "Tag marked printed";
@@ -330,6 +333,7 @@ namespace CCIA.Controllers.Admin
                 return RedirectToAction(nameof(Index));
             }
             tag.Stage = TagStages.Complete.GetDisplayName();
+            await _notificationService.TagFiled(tag);
 
             await _dbContext.SaveChangesAsync();
 
@@ -414,6 +418,7 @@ namespace CCIA.Controllers.Admin
 
             }
 
+            await _notificationService.TagApproved(tag);
             await _dbContext.SaveChangesAsync();
 
             if(tag.OECD)

@@ -21,6 +21,12 @@ namespace CCIA.Services
 
         Task BlendRequestApproved(BlendRequests blend);
 
+        Task TagApproved(Tags tag);
+
+        Task TagPrinted(Tags tag);
+
+        Task TagFiled(Tags tag);
+
     }
 
     public class NotificationService : INotificationService
@@ -147,6 +153,54 @@ namespace CCIA.Services
                     Email = user,
                     BlendId = blendRequest.Id,
                     Message = "Blend Request Approved"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task TagApproved(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag Approved and waiting to be printed"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task TagPrinted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag printed and shipped"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task TagFiled(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag filed and now complete"
                 };
                 _dbContext.Notifications.Add(notification);      
             }
