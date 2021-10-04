@@ -14,6 +14,7 @@ namespace CCIA.Models
             SID = 0;
             BlendId = 0;
             TagId = 0;
+            OrgId = 0;
         }
 
         public int Id { get; set; }
@@ -26,6 +27,8 @@ namespace CCIA.Models
         public int? BlendId { get; set; }
 
         public int? TagId { get; set; }
+
+        public int? OrgId { get; set; }
 
         public string Message { get; set; }
 

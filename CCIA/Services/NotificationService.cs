@@ -27,6 +27,10 @@ namespace CCIA.Services
 
         Task TagFiled(Tags tag);
 
+        Task OrgCreated(Organizations org);
+
+        Task OrgUpdated(Organizations org);
+
     }
 
     public class NotificationService : INotificationService
@@ -201,6 +205,38 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag filed and now complete"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task OrgCreated(Organizations org)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    OrgId = org.Id,
+                    Message = "Organization created"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task OrgUpdated(Organizations org)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    OrgId = org.Id,
+                    Message = "Organization updated"
                 };
                 _dbContext.Notifications.Add(notification);      
             }
