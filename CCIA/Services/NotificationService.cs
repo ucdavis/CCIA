@@ -31,6 +31,8 @@ namespace CCIA.Services
 
         Task OrgUpdated(Organizations org);
 
+        Task OECDCharged(OECD oecd);
+
     }
 
     public class NotificationService : INotificationService
@@ -237,6 +239,22 @@ namespace CCIA.Services
                     Email = user,
                     OrgId = org.Id,
                     Message = "Organization updated"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task OECDCharged(OECD oecd)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.OECDInvoicePrinter && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    OecdId = oecd.Id,
+                    Message = "OECD Certificate printed/charged"
                 };
                 _dbContext.Notifications.Add(notification);      
             }

@@ -23,6 +23,8 @@ namespace CCIA.Services
         Task SendPendingTagNotices(string password);
 
         Task SendPendingOrganizationNotices(string password);
+
+        Task SendPendingOECDNotices(string password);
     }
     
 
@@ -176,6 +178,35 @@ namespace CCIA.Services
                     //message.To.Add(address);
                     message.Body = "An org has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/OrgNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+
+        }
+
+        public async Task SendPendingOECDNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.OecdId != 0).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA OECD Certificates printed/charged"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "An org has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/OECDAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }

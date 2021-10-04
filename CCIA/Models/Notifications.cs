@@ -30,6 +30,8 @@ namespace CCIA.Models
 
         public int? OrgId { get; set; }
 
+        public int? OecdId { get; set; }
+
         public string Message { get; set; }
 
         public bool Pending { get; set; }
