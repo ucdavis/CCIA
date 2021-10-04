@@ -21,6 +21,8 @@ namespace CCIA.Services
         Task SendPendingBlendNotices(string password);
 
         Task SendPendingTagNotices(string password);
+
+        Task SendPendingOrganizationNotices(string password);
     }
     
 
@@ -145,6 +147,35 @@ namespace CCIA.Services
                     //message.To.Add(address);
                     message.Body = "A Tag has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/TagNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+
+        }
+
+        public async Task SendPendingOrganizationNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.OrgId != 0).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Organization changes"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "An org has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/OrgNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }

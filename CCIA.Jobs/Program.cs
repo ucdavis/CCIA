@@ -35,6 +35,7 @@ namespace CCIA.Jobs
             emailService.SendPendingSeedNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
             emailService.SendPendingBlendNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
             emailService.SendPendingTagNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
+            emailService.SendPendingOrganizationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
 
 
                       
