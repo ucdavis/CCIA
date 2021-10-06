@@ -29,21 +29,29 @@ namespace CCIA.Controllers.Client
 
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
-        {
-
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+        {           
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            int? certYearToUse;
             if (certYear == 0)
             {
-                certYear = await _dbContext.BulkSalesCertificates.Where(b => b.ConditionerOrganizationId == orgId).Select(b => b.Date.Year).MaxAsync();
+                certYearToUse = await _dbContext.BulkSalesCertificates.Where(o => o.ConditionerOrganizationId == orgId).MaxAsync(x => (int?)x.Date.Year);
+            } else
+            {
+                certYearToUse = certYear;
             }
-            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYear);
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }
+            
+            var model = await BulkSalesCertificatesIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);
             return View(model);
         }
 
         // GET: Application/Create
         public async Task<ActionResult> Create()
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await BulkSalesCreateViewModel.Create(_dbContext, orgId);
             return View(model);
         }
@@ -55,8 +63,7 @@ namespace CCIA.Controllers.Client
         {
             try
             {
-                // TODO Use real contact ID
-                var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+               var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
                 var newBulkSalesCertificate = new BulkSalesCertificates();
                 newBulkSalesCertificate.ConditionerOrganizationId = orgId;
                 newBulkSalesCertificate.Date = model.BulkSalesCertificate.Date;
@@ -108,14 +115,14 @@ namespace CCIA.Controllers.Client
 
         public async Task<ActionResult> Certificate(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await CertificateViewModel.Create(_dbContext, id, orgId);
             return View(model);
         }
 
         public async Task<ActionResult> Share(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await BulkSalesCertificateShareViewModel.Create(_dbContext, id, orgId);
             if (model.BulkSalesCertificate == null)
             {
@@ -128,7 +135,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> AddShare(int id, int shareOrgId)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var bulkSalesCertificate = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id && b.ConditionerOrganizationId == orgId).SingleOrDefaultAsync();
             if (bulkSalesCertificate == null)
             {
@@ -271,7 +278,7 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> GetMyCustomerInfo(int id)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await _dbContext.MyCustomers.Where(m => m.Id == id && m.OrganizationId == orgId)
                 .Include(m => m.State)
                 .Include(m => m.Country)

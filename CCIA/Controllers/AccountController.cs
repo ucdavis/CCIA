@@ -106,6 +106,10 @@ namespace CCIA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string password, string returnUrl = null)
         {
+            if(returnUrl.Contains("admin"))
+            {
+                returnUrl = "/client/home/";
+            }
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -138,7 +142,8 @@ namespace CCIA.Controllers
                 new Claim("user", contact.Email),
                 new Claim("role", "Member"),
                 new Claim("role", "conditioner"),
-                new Claim("contactId", contact.Id.ToString())                
+                new Claim("contactId", contact.Id.ToString()),
+                new Claim("orgId", contact.OrgId.ToString()),               
             };
             if(isEmulation)
             {

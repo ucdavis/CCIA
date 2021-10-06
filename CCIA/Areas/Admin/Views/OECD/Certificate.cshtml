@@ -197,7 +197,10 @@
                 <td valign="top" class="topandbottom">
                     &nbsp;Date Test Concluded</td>
                 <td valign="top" class="label">
-                    @Model.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                    @if(Model.Seeds.LabResults.PrivateLabDate.HasValue)
+                    {
+                        @Model.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                    }                    
                 </td>
             </tr>
             <tr>

@@ -29,8 +29,7 @@ namespace CCIA.Controllers.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             if (certYear == 0)
             {
                 certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
@@ -42,8 +41,7 @@ namespace CCIA.Controllers.Client
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             return View(model);
         }
@@ -104,6 +102,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> CreateQALot(SeedsCreateQAViewModel model)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             if(model.Seed.LotNumber == null){
                 var returnModel = await SeedsCreateQAViewModel.Return(_dbContext, model.Seed);
                 if(returnModel.Application == null)
@@ -156,8 +155,7 @@ namespace CCIA.Controllers.Client
             newSeed.AppId = seed.AppId;
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
-            // TODO Used logged in user org ID and logged in contact ID
-            newSeed.ConditionerId = 168;
+            newSeed.ConditionerId = orgId;
             newSeed.UserEntered = 1;
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             if(app.Variety != null)
@@ -221,6 +219,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> SubmitInState(SeedsCreateViewModel model)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var seed = model.Seed;
             #region Begin error checking
             bool error = false;
@@ -255,8 +254,7 @@ namespace CCIA.Controllers.Client
             newSeed.SampleFormRad = seed.SampleFormRad;
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
-            // TODO Used logged in user org ID and logged in contact ID
-            newSeed.ConditionerId = 168;
+            newSeed.ConditionerId = orgId;
             newSeed.UserEntered = 1;
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             newSeed.OfficialVarietyId = app.Variety.ParentId;
@@ -317,6 +315,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> NewOOSSeedLot(SeedsCreateOOSViewModel model)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var seed = model.Seed;  
             seed.LotNumber = seed.LotNumber.Trim();
             seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();   
@@ -351,9 +350,7 @@ namespace CCIA.Controllers.Client
             newSeed.ApplicantId = seed.ApplicantId;
             newSeed.SampleFormVarietyId = seed.SampleFormVarietyId;
             newSeed.OfficialVarietyId = seed.SampleFormVarietyId.HasValue ? seed.SampleFormVarietyId.Value : 0;
-            
-            // TODO Used logged in user org ID and logged in contact ID
-            newSeed.ConditionerId = 168;
+            newSeed.ConditionerId = orgId;
             newSeed.UserEntered = 1;           
             newSeed.LotNumber = seed.LotNumber;
             newSeed.PoundsLot = seed.PoundsLot;

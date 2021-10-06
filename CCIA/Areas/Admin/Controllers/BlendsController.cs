@@ -20,12 +20,14 @@ namespace CCIA.Controllers.Admin
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
+        private readonly INotificationService _notificationService;
 
-        public BlendsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileIOService)
+        public BlendsController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileIOService, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
             _fileService = fileIOService;
+            _notificationService = notificationService;
         }
 
         public IActionResult Index()
@@ -260,6 +262,8 @@ namespace CCIA.Controllers.Admin
            blend.Status = BlendStatus.Approved.GetDisplayName();
            blend.ApproveDate = DateTime.Now;
            blend.ApprovedBy = User.FindFirstValue(ClaimTypes.Name);
+
+           await _notificationService.BlendRequestApproved(blend);
 
            await _dbContext.SaveChangesAsync();
            Message = "Blend Approved";

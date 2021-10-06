@@ -22,23 +22,33 @@ namespace CCIA.Controllers.Client
             _dbContext = dbContext;
         }
 
+        // TODO Add file upload/download. Both need security checks to make sure they are only uploading/downloading to their own apps
+        // TODO Same for FIR, seeds, blends, tags
+
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).FirstAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);          
+            int? certYearToUse;
             if (certYear == 0)
             {
-                certYear = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync(); ;
+                certYearToUse = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).MaxAsync(x => (int?)x.CertYear);
+            } else
+            {
+                certYearToUse = certYear;
             }
-            var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYear);
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }
+            var model = await ApplicationIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);
             return View(model);
         }
 
         // GET: Application/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            // TODO restrict to logged in user.
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).FirstAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
@@ -72,7 +82,7 @@ namespace CCIA.Controllers.Client
             if (ModelState.IsValid)
             {
                 // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == seedApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
                 var days = await _dbContext.Crops.Where(c => c.CropId == seedApp.CropId).Select(c => c.AppDue).FirstOrDefaultAsync();
 
                 // Use helper class to create application record based on app type
@@ -136,7 +146,7 @@ namespace CCIA.Controllers.Client
 
         // GET: Application/CreatePotatoApplication
         public async Task<IActionResult> CreatePotatoApplication(int orgId, int appTypeId)
-        {
+        {            
             var model = new PotatoApp();
             var viewModel = await ApplicationViewModel.Create(_dbContext, orgId, appTypeId);
             model.AppViewModel = viewModel;
@@ -148,11 +158,11 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> CreatePotatoApplication(PotatoApp potatoApp)
         {
             if (ModelState.IsValid)
-            {
-                // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == potatoApp.GrowerId).FirstOrDefaultAsync();
+            {                
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);                
 
                 // Use helper class to create application record based on app type
+                // TODO double check this is actually using contact ID and not looking for grower id
                 Applications app = ApplicationPostMap.CreatePotatoAppRecord(potatoApp, contactId, "PO");
                 _dbContext.Add(app);
 
@@ -197,9 +207,8 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> CreateHeritageGrainApplication(HeritageGrainQAApp heritageGrainApp)
         {
             if (ModelState.IsValid)
-            {
-                // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == heritageGrainApp.GrowerId).FirstOrDefaultAsync();
+            {               
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateHeritageGrainAppRecord(heritageGrainApp, contactId, "GQ");
@@ -247,8 +256,7 @@ namespace CCIA.Controllers.Client
         {
             if (ModelState.IsValid)
             {
-                // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == preVarietyGermplasmApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreatePreVarietyGermplasmAppRecord(preVarietyGermplasmApp, contactId, "PV");
@@ -296,8 +304,7 @@ namespace CCIA.Controllers.Client
         {
             if (ModelState.IsValid)
             {
-                // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == riceApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateRiceAppRecord(riceApp, contactId, "RQ");
@@ -345,8 +352,7 @@ namespace CCIA.Controllers.Client
         {
             if (ModelState.IsValid)
             {
-                // Get contact id associated with growerid
-                var contactId = await _dbContext.Contacts.Select(c => c.Id).Where(c => c == hempFromSeedApp.GrowerId).FirstOrDefaultAsync();
+                var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
 
                 // Use helper class to create application record based on app type
                 Applications app = ApplicationPostMap.CreateHempFromSeedAppRecord(hempFromSeedApp, contactId, "HS");
@@ -382,9 +388,9 @@ namespace CCIA.Controllers.Client
         // GET: Application/GrowerLookup
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
-            // Get contact ID -- will correspond to logged-in user
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             var contact = await _dbContext.Contacts
-                                .Where(c => c.Id == 1)
+                                .Where(c => c.Id == contactId)
                                 .FirstOrDefaultAsync();
 
             // Check if grower is same as applicant

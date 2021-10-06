@@ -77,7 +77,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new BlendIndexViewModel
             {
-                blends = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.CertYear == certYear)
+                blends = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.RequestStarted.Year == certYear)
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
@@ -95,7 +95,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
                 .ToListAsync(),
-                certYears = await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.RequestStarted.Year).Select(a => a.RequestStarted.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Blends",
                 DropDownText = "Display Blends for Cert Year:"
@@ -163,14 +163,14 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new OECDIndexViewModel
             {
-                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryYear == certYear)
+                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryDate.Value.Year == certYear)
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(o => o.Class)
                 .Include(o => o.Country)
                 .ToListAsync(),
-                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.DataEntryYear).Select(a => a.DataEntryYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId && a.DataEntryDate != null).OrderByDescending(a => a.DataEntryDate.Value.Year).Select(a => a.DataEntryDate.Value.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "OECD",
                 DropDownText = "Display OECD Forms for Data Entry Year:"
@@ -279,7 +279,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(t => t.TagAbbrevClass)
                 .Include(t => t.AbbrevTagType)
                 .ToListAsync(),
-                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested != null).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
                 DropDownText = "Display Tags Requested in Calendar Year:"

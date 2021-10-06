@@ -10,6 +10,11 @@ namespace CCIA.Models
         {
             Pending = true;
             Created = DateTime.Now;
+            AppId = 0;
+            SID = 0;
+            BlendId = 0;
+            TagId = 0;
+            OrgId = 0;
         }
 
         public int Id { get; set; }
@@ -22,6 +27,10 @@ namespace CCIA.Models
         public int? BlendId { get; set; }
 
         public int? TagId { get; set; }
+
+        public int? OrgId { get; set; }
+
+        public int? OecdId { get; set; }
 
         public string Message { get; set; }
 

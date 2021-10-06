@@ -27,14 +27,22 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Index(int certYear)
         {
            
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
-            
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            int? certYearToUse;
             if (certYear == 0)
             {
-                certYear = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).Select(a => a.CertYear).MaxAsync();
+                certYearToUse = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).MaxAsync(x => (int?)x.CertYear);
+            } else
+            {
+                certYearToUse = certYear;
             }
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }         
+            
 
-            var model = await TurgrassCertificateIndexViewModel.Create(_dbContext, orgId, certYear);            
+            var model = await TurgrassCertificateIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);            
             return View(model);
         }
 

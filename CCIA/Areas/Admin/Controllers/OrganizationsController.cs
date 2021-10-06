@@ -18,11 +18,13 @@ namespace CCIA.Controllers
         // TODO Add "Update Org" as role on employees so they can maintain on client side.
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly INotificationService _notification;
 
-        public OrganizationsController(CCIAContext dbContext, IFullCallService helper)
+        public OrganizationsController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notification = notificationService;
         }
 
         // TODO: Add Roles - Seasonal Field get nothing in here. View (can edit phone, fax, website). EditOrg has full edit & create. CondStatus allows you to update conditioner status settings.
@@ -75,13 +77,15 @@ namespace CCIA.Controllers
             orgToCreate.UserModified = User.FindFirstValue(ClaimTypes.Name);
 
              if(ModelState.IsValid){
-                 _dbContext.Add(orgToCreate);
+                _dbContext.Add(orgToCreate);
                 await _dbContext.SaveChangesAsync();
                 Message = "Org Created";
             } else {
                 ErrorMessage = "Something went wrong.";                
                 return View(org); 
             }
+            await _notification.OrgCreated(orgToCreate);
+            await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new { id = orgToCreate.Id });  
 
@@ -109,6 +113,7 @@ namespace CCIA.Controllers
                 ErrorMessage = "Org not found!";
                 return  RedirectToAction(nameof(Index));
             }
+            
 
             orgToUpdate.Email = org.Email;
             orgToUpdate.GermLab = org.GermLab;
@@ -310,6 +315,7 @@ namespace CCIA.Controllers
             var addressToEdit = await _dbContext.OrganizationAddress
                 .Include(oa => oa.Address)
                 .Where(a => a.Id == id).FirstOrDefaultAsync();
+            var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
             var update = vm.orgAddress;
             if(addressToEdit == null || update == null)
             {
@@ -319,8 +325,7 @@ namespace CCIA.Controllers
 
             if(addressToEdit.Address.CountyId != update.Address.CountyId && addressToEdit.Active)
             {
-                var county = await _dbContext.County.Where(c => c.CountyId == update.Address.CountyId).FirstAsync();
-                var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
+                var county = await _dbContext.County.Where(c => c.CountyId == update.Address.CountyId).FirstAsync();                
                 if(update.Address.CountyId != 0)
                 {
                     org.District = county.District;
@@ -348,7 +353,8 @@ namespace CCIA.Controllers
             addressToEdit.Address.StateProvinceId = update.Address.StateProvinceId;
             addressToEdit.Address.UserModified =  User.FindFirstValue(ClaimTypes.Name);
 
-            if(ModelState.IsValid){               
+            if(ModelState.IsValid){     
+                await _notification.OrgUpdated(org);          
                 await _dbContext.SaveChangesAsync();
                 Message = "Address Updated";
             } else {

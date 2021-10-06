@@ -39,6 +39,7 @@ namespace CCIA.Models.BulkSalesCreateViewModel
                 StateProvinces = stateProvince,
                 Countries = countries
             };
+            
 
             return viewModel;
         }

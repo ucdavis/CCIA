@@ -21,11 +21,13 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly INotificationService _notificationService;
 
-        public OECDController(CCIAContext dbContext, IFullCallService helper)
+        public OECDController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         public ActionResult Index ()
@@ -153,6 +155,7 @@ namespace CCIA.Controllers.Admin
             {
                 if(model.DatePrinted == null)
                 {
+                    await _notificationService.OECDCharged(model);
                     model.DatePrinted = DateTime.Now;
                     model.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
                     await _dbContext.SaveChangesAsync();

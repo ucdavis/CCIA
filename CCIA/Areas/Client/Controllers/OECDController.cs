@@ -25,13 +25,22 @@ namespace CCIA.Controllers.Client
         
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
-        {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync(); 
+        { 
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            int? certYearToUse;
             if (certYear == 0)
             {
-                certYear = await _dbContext.OECD.Where(o => o.ConditionerId == orgId).Select(o => o.DataEntryYear).MaxAsync();
+                certYearToUse = await _dbContext.OECD.Where(o => o.ConditionerId == orgId).MaxAsync(x => (int?)x.DataEntryDate.Value.Year);
+            } else
+            {
+                certYearToUse = certYear;
             }
-            var model = await OECDIndexViewModel.Create(_dbContext, orgId, certYear);            
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }
+            
+            var model = await OECDIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);            
             return View(model);
         }
 

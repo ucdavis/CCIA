@@ -149,6 +149,10 @@ namespace CCIA.Models
                     {
                         return SampleFormCertNumber;
                     }
+                    if(Variety == null)
+                    {
+                        return "unknown";
+                    }
                     if (CertYear < 2007)
                     {
                         return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
@@ -159,6 +163,10 @@ namespace CCIA.Models
                 {
                     if (CertYear < 2007 || SampleFormRad == null)
                     {
+                        if(Variety == null)
+                        {
+                            return "unknown";
+                        }
                         return $"{certYearAbbrev}{Variety.Crop.Annual}-{SampleFormCertNumber}";
                     }                   
                     return $"{certYearAbbrev}CA-{SampleFormRad}-{SampleFormCertNumber}";
