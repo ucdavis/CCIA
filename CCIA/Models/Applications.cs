@@ -51,6 +51,7 @@ namespace CCIA.Models
 
        
         public int Id { get; set; }
+        [Display(Name="Renew ID")]
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
 

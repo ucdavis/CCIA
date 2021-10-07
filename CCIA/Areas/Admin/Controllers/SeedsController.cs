@@ -68,6 +68,7 @@ namespace CCIA.Controllers.Admin
                 _dbContext.Add(seedDoc);
                 await _dbContext.SaveChangesAsync();
            }
+           Message = "File uploaded";
            return RedirectToAction(nameof(Details), new { id = id }); 
         }
 
