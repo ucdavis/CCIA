@@ -1,12 +1,31 @@
+@using CCIA.Helpers;
 @model CCIA.Models.DetailsViewModels.AdminViewModel
 
 
 <h2>Field Inspection Report</h2> 
+
 <div class="container col-sm-10">
     <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Full Details</a> | 
-            <a class="btn btn-info" asp-action="BasicFir" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Basic Fir Form</a>           
+            <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.application.Id">Full Details</a> | 
+            <a class="btn btn-info" asp-action="BasicFir" asp-route-id="@Model.application.Id">Basic Fir Form</a>           
+            @if(Model.application.Status == ApplicationStatus.FieldInspectionInProgress.GetDisplayName() && !Model.application.FieldInspection.Any())
+            @* If any inspections - full fee *@
+            {
+                <form asp-action="CancelApplicationFIR">
+                    <input type="hidden" id="AppId" name="AppId" value="@Model.application.Id">
+                    <input type="hidden" id="Fee" name="Fee" value="NoFee">
+                    <input type="submit" class="btn btn-danger" value="Cancel App (no fee)" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>                
+            }
+            @if(Model.application.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName() || Model.application.FieldInspection.Any())
+            {
+                <form asp-action="CancelApplicationFIR">
+                    <input type="hidden" id="AppId" name="AppId" value="@Model.application.Id">
+                    <input type="hidden" id="Fee" name="Fee" value="FullFee">
+                    <input type="submit" class="btn btn-danger" value="Cancel App (full fee)" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>
+            }
         </div>
     </div>   
      <div class="row">

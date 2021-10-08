@@ -103,8 +103,37 @@ namespace CCIA.Controllers.Admin
             var appToCancel = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             appToCancel.Cancelled = true;
             appToCancel.CancelledBy =  User.FindFirstValue(ClaimTypes.Name);
-            appToCancel.Comments = appToCancel.Comments +  "<br/> Cancelled at 'process pending apps' prior to inspection";
+            appToCancel.Comments = appToCancel.Comments +  "; Cancelled at 'process pending apps' prior to inspection";
             appToCancel.Status = "Application cancelled";
+
+            await _dbContext.SaveChangesAsync();
+            Message = "Application Cancelled";
+            return  RedirectToAction(nameof(Pending));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelApplicationFIR(int AppId, string Fee)
+        {            
+            // TODO handle charges
+            var appToCancel = await _dbContext.Applications.Where(a => a.Id == AppId).FirstAsync();
+            var charges = await _dbContext.Charges.Where(c => c.LinkId == AppId && c.LinkType == "Applications").FirstAsync();
+            appToCancel.Cancelled = true;
+            appToCancel.CancelledBy =  User.FindFirstValue(ClaimTypes.Name);
+            if(Fee == "NoFee")
+            {
+                appToCancel.Comments = appToCancel.Comments +  "; Cancelled at field inspection prior to inspection";
+                charges.HoldCheck = true;
+                charges.HoldDate = DateTime.Now;
+                charges.Note = charges.Note + "; Cancelled at FIR";
+            } else
+            {
+                appToCancel.Comments = appToCancel.Comments +  "; Cancelled at field inspection after first inspection";
+                charges.HoldCheck = false;
+                charges.Note = charges.Note + "; Cancelled at FIR";
+            }
+            
+            appToCancel.Status = ApplicationStatus.ApplicationCancelled.GetDisplayName();
 
             await _dbContext.SaveChangesAsync();
             Message = "Application Cancelled";
@@ -230,9 +259,7 @@ namespace CCIA.Controllers.Admin
 
             renew.Action = 3;
             renew.DateRenewed = DateTime.Now;
-
-            // TODO add notifications
-
+            
             _dbContext.Add(newApp);                
             _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
