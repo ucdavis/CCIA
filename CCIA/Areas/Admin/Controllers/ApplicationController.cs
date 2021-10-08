@@ -114,8 +114,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelApplicationFIR(int AppId, string Fee)
-        {            
-            // TODO handle charges
+        {   
             var appToCancel = await _dbContext.Applications.Where(a => a.Id == AppId).FirstAsync();
             var charges = await _dbContext.Charges.Where(c => c.LinkId == AppId && c.LinkType == "Applications").FirstAsync();
             appToCancel.Cancelled = true;
@@ -446,8 +445,7 @@ namespace CCIA.Controllers.Admin
          }
 
         public async Task<IActionResult> FIR(int id)
-        {
-            // TODO: Add cancel pre-app (half fee), cancel app (no fee), cancel app (full fee)
+        {            
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
             if(model.application == null)
             {
