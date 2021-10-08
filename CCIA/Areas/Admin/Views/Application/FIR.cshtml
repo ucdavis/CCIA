@@ -463,6 +463,17 @@
                 </div>
             </div>
         </div>
+        @if(Model.application.AppType == AppTypes.Potato.GetDisplayName())
+        {
+            <div class="col-lg-6">
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PotatoPoundsHarvested" class="col-sm-3 col-form-label">PO # Harvested</label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PotatoPoundsHarvested)
+                    </div>
+                </div>
+            </div>           
+        }
     </div>
 </div>
 

@@ -3036,6 +3036,8 @@ namespace CCIA.Models
                 entity.HasOne(e => e.CompleteEmployee);
 
                 entity.HasOne(e => e.POPassClass);
+
+                entity.Property(e => e.PotatoPoundsHarvested).HasColumnName("potato_pounds_harvested");
             });
 
             

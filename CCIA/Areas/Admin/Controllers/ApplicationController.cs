@@ -507,6 +507,7 @@ namespace CCIA.Controllers.Admin
                 firToUpdate.PathPlrv = fir.PathPlrv;
                 firToUpdate.PathPvy = fir.PathPvy;
                 firToUpdate.PathComments = fir.PathComments;
+                firToUpdate.PotatoPoundsHarvested = fir.PotatoPoundsHarvested;
             }
             firToUpdate.Comments = fir.Comments;
             if(fir.Complete)

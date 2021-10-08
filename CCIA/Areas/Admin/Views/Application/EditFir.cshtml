@@ -177,6 +177,10 @@
                 <input type="checkbox" asp-for="fir.Complete">
             </div>
         </div> 
+        <div class="form-group row">
+            <label asp-for="fir.PotatoPoundsHarvested" class="col-sm-2 col-form-label">PO #Harvested</label>            
+            <input type="text" class="col-sm-3 form-control" asp-for="fir.PotatoPoundsHarvested">                          
+        </div>  
         <div class="row">
             <input type="submit" value="Update" class="btn btn-primary"></input> 
             <a class="btn btn-dark" asp-action="FIR" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.fir.AppId">Cancel</a>
