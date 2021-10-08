@@ -16,7 +16,7 @@ namespace CCIA.Controllers
     public class OrganizationsController : AdminController
     {
 
-        // TODO Add "Update Org" as role on contacts so they can maintain on client side.
+        // TODO Create org update in client area.
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly INotificationService _notification;
@@ -578,6 +578,7 @@ namespace CCIA.Controllers
             employeeToUpdate.BusinessPhoneExtension = employee.BusinessPhoneExtension;
             employeeToUpdate.HomePhone = employee.HomePhone;
             employeeToUpdate.AllowApps = employee.AllowApps;
+            employeeToUpdate.AllowOrgUpdate = employee.AllowOrgUpdate;
             employeeToUpdate.LastName = employee.LastName;
             employeeToUpdate.Suffix = employee.Suffix;
             employeeToUpdate.MobilePhone = employee.MobilePhone;

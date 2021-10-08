@@ -42,6 +42,7 @@ namespace CCIA.Models
         public bool AllowPinning { get; set; }
         public bool AllowApps { get; set; }
         public bool AllowSeeds { get; set; }
+        public bool AllowOrgUpdate { get; set; }
 
         public bool ApplicationNotices { get; set; }
         public bool SeedNotices { get; set; }
