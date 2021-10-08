@@ -37,8 +37,6 @@ namespace CCIA.Controllers.Admin
             _fileService = fileIOService;            
         }
 
-        // TODO: Add Potato pounds harvested to model & FIR processing
-
         
         public async Task<IActionResult> Index(int certYear)
         {            

@@ -35,6 +35,7 @@ namespace CCIA.Controllers.Admin
         // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes
         // TODO: Add file count, #row of series, total series count to pending page
         // TODO: Conditioner approve goes to pending file, not complete
+        // TODO: Check weight from PO Pounds Harvested for new tags/overage check
 
         public ActionResult Index ()
         {
