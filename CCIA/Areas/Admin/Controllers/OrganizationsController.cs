@@ -12,10 +12,11 @@ using System.Security.Claims;
 
 namespace CCIA.Controllers
 {
+    [Authorize(Roles = "CoreStaff")]
     public class OrganizationsController : AdminController
     {
 
-        // TODO Add "Update Org" as role on employees so they can maintain on client side.
+        // TODO Add "Update Org" as role on contacts so they can maintain on client side.
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly INotificationService _notification;
@@ -27,8 +28,7 @@ namespace CCIA.Controllers
             _notification = notificationService;
         }
 
-        // TODO: Add Roles - Seasonal Field get nothing in here. View (can edit phone, fax, website). EditOrg has full edit & create. CondStatus allows you to update conditioner status settings.
-
+        
         public async Task<IActionResult> Index(string term = "")
         {
             if(string.IsNullOrWhiteSpace(term))
@@ -60,9 +60,8 @@ namespace CCIA.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Organizations org)
-        {
-            // TODO Add notification to org created
-             var orgToCreate = new Organizations();            
+        {            
+            var orgToCreate = new Organizations();            
 
             orgToCreate.Email = org.Email;
             orgToCreate.GermLab = org.GermLab;
