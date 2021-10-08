@@ -115,7 +115,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.SEED);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)seedApp.GrowerId, (int)AppTypes.Seed);
             if (SecondPlantingStockErrors())
             {
                 appViewModel.RenderSecondPlantingStock = true;
@@ -187,7 +187,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.POTATO);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)potatoApp.GrowerId, (int)AppTypes.Potato);
             appViewModel.RenderFormRemainder = true;
             potatoApp.AppViewModel = appViewModel;
             return View("Potato/CreatePotatoApplication", potatoApp);
@@ -235,7 +235,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)heritageGrainApp.GrowerId, (int)AppTypes.GRAINQA);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)heritageGrainApp.GrowerId, (int)AppTypes.GrainQA);
             appViewModel.RenderFormRemainder = true;
             heritageGrainApp.AppViewModel = appViewModel;
             return View("HeritageGrain/CreateheritageGrainApplication", heritageGrainApp);
@@ -283,7 +283,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)preVarietyGermplasmApp.GrowerId, (int)AppTypes.GERMPLASM);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)preVarietyGermplasmApp.GrowerId, (int)AppTypes.PrevarietyGermplasm);
             appViewModel.RenderFormRemainder = true;
             preVarietyGermplasmApp.AppViewModel = appViewModel;
             return View("PreVarietyGermplasm/CreatepreVarietyGermplasmApplication", preVarietyGermplasmApp);
@@ -331,7 +331,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)riceApp.GrowerId, (int)AppTypes.RICE);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)riceApp.GrowerId, (int)AppTypes.RiceQA);
             appViewModel.RenderFormRemainder = true;
             riceApp.AppViewModel = appViewModel;
             return View("Rice/CreatericeApplication", riceApp);
@@ -379,7 +379,7 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = app.Id });
             }
-            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)hempFromSeedApp.GrowerId, (int)AppTypes.HEMP);
+            var appViewModel = await ApplicationViewModel.Create(_dbContext, (int)hempFromSeedApp.GrowerId, (int)AppTypes.HempProgarm);
             appViewModel.RenderFormRemainder = true;
             hempFromSeedApp.AppViewModel = appViewModel;
             return View("HempFromSeed/CreatehempFromSeedApplication", hempFromSeedApp);
