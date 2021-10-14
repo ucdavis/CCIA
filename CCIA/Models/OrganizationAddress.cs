@@ -12,7 +12,8 @@ namespace CCIA.Models
         public bool Mailing { get; set; }
         public bool Billing { get; set; }
         public bool Delivery { get; set; }
-        public bool Physical { get; set; }        
+        public bool Physical { get; set; }
+        public bool Facility { get; set; }        
         public bool Active { get; set; }
 
         [ForeignKey("AddressId")]

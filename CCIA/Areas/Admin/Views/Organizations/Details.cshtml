@@ -257,6 +257,7 @@
                         <th>Billing</th>
                         <th>Delivery</th>
                         <th>Physical Location</th>
+                        <th>Facility</th>
                         <th>Active</th>
                         <th></th>
                     </tr>
@@ -282,6 +283,7 @@
                             <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
                             <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
                             <td>@Html.CheckBoxFor(x => add.Physical, new { @disabled = "disabled"})</td>
+                            <td>@Html.CheckBoxFor(x => add.Facility, new { @disabled = "disabled"})</td>
                             <td>@Html.CheckBoxFor(x => add.Active, new { @disabled = "disabled"})</td>
                             <th>
                                 @if(this.User.IsInRole("Admin") && !add.Active)

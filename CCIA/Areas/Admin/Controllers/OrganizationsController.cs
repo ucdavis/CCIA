@@ -253,6 +253,7 @@ namespace CCIA.Controllers
             addressToAdd.Mailing = newAddress.Mailing;
             addressToAdd.Delivery = newAddress.Delivery;
             addressToAdd.Physical = newAddress.Physical;
+            addressToAdd.Facility = newAddress.Facility;
             addressToAdd.OrgId = vm.OrgId;
             addressToAdd.Address.Address1 = newAddress.Address.Address1;
             addressToAdd.Address.Address2 = newAddress.Address.Address2;
@@ -342,6 +343,7 @@ namespace CCIA.Controllers
             addressToEdit.Billing = update.Billing;
             addressToEdit.Delivery = update.Delivery;
             addressToEdit.Physical = update.Physical;
+            addressToEdit.Facility = update.Facility;
             addressToEdit.Address.Address1 = update.Address.Address1;
             addressToEdit.Address.Address2 = update.Address.Address2;
             addressToEdit.Address.Address3 = update.Address.Address3;
