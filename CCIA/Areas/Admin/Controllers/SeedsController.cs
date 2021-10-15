@@ -114,6 +114,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {  
+            var model = await AdminSeedsViewModel.EditDetails(_dbContext, id, _helper);
+            return View(model);
+        }
+
         public ActionResult Seeds()
         {
             return View();

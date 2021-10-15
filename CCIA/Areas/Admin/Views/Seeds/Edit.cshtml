@@ -7,18 +7,14 @@
             <h2>Seed Lot Details</h2> 
         </div>            
     </div>
-    <div class="row col-sm-12">
-         <a asp-action="Edit" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit SID</a>
+    <div class="row">
+        <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>        
     </div>
-    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && Model.LabsAndStandards.Labs.CciaConfirmed)
-    {
-        <div class="row col-sm-12">
-            <form asp-action="AcceptSeed">
-                @Html.HiddenFor(x => x.seed.Id)
-                <input type="submit" class="btn btn-success" value="Accept Seed">
-            </form>       
-        </div>
-    }
+    <div class="row col-sm-12">
+         <a asp-action="Details" asp-route-id="@Model.seed.Id" class="btn btn-dark">Cancel</a>
+    </div>    
     <div class="row">
         <div class="col-sm-6"> @* First column *@
             <div class="form-group row">
@@ -35,9 +31,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="seed.CertYear" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.CertYear)
-                </div>
+                <select asp-for="seed.CertYear"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.certYears))"></select>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
@@ -86,9 +80,11 @@
         <div class="col-sm-6"> @* Second column *@
             <div class="form-group row">
                 <label asp-for="seed.SampleFormDate" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.SampleFormDate)
-                </div>
+                <input type="text" class="col-sm-3 form-control datepicker" asp-for="seed.SampleFormDate">
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.DateInspected" data-valmsg-replace="true"></span> 
             </div>  
             <div class="form-group row">
                 <label asp-for="seed.CertNumber"  class="col-sm-3 col-form-label"></label>
@@ -155,90 +151,20 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
-        @if(Model.seed.SeedsApplications.Count > 0)
-        {
-            @:Apps in this lot:
-            <table class="table">
-                <tr>
-                    <th>AppID</th>
-                    <th>Applicant</th>
-                    <th>Grower</th>
-                    <th>Cert Year</th>
-                    <th>Crop</th>
-                    <th>Variety</th>
-                    <th>Class</th>
-                    <th>Status</th>
-                </tr>
-                @foreach(var app in Model.seed.SeedsApplications)
-                {
-                    <tr>
-                        <td>@app.AppId</td>
-                        <td>@app.Application.ApplicantOrganization.NameAndId</td>
-                        <td>@app.Application.GrowerOrganization.NameAndId</td>
-                        <td>@app.Application.CertYear</td>
-                        <td>@app.Application.CropName</td>
-                        <td>@app.Application.VarietyName</td>
-                        <td>@app.Application.ClassProducedName</td>
-                        <td>@app.Application.Status</td>
-                    </tr>
-                }
-            </table>
-        }
-    </div>           
-    <div class="col-sm-12 row">
-        <div class="col-sm-6">
-            <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
-    
-    
-            @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
-            <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
-        </div>
-        <div class="col-sm-6">
-            <table>
-                <tr>
-                    <td class="align-middle"> 
-                        @if(Model.Documents.Any())
-                        {
-                            <h3>Supporting Documents</h3>
-                            <table class="table">
-                                <tr>
-                                    <th>File</th>
-                                    <th>Type</th>
-                                </tr>
-                                @foreach (var document in Model.Documents)
-                                {
-                                    <tr>
-                                        <td><a asp-action="GetSeedFile" asp-route-id="@document.Id">@document.Link</a></td>
-                                        <td>@document.DocumentType.Name</td>
-                                    </tr>                                
-                                }
-                            </table>
-                        }
-                    </td>
-                </tr>
-                <tr><td><br><br><hr><br></td></tr>
-                <tr>
-                    <td>
-                        <form enctype="multipart/form-data" method="post" asp-action="UploadSeedDocument">
-                        <h3>Upload new Document</h3>
-                            <input type="hidden" name="id" id="id" value="@Model.seed.Id">
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Certificate Name</label>
-                                <input id="certName" name="certName" class="col-form">
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Document Type</label>
-                                <select name="doctype" id="docType" class="form-control" asp-items="@(new SelectList(Model.documentTypes, "Id","Name"))"></select>
-                            </div>
-                            <input id="file" name="file" type="file">            
-                            <input class="btn btn-primary" type="submit" value="Upload" />
-                        </form>
-
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+    
+        
+    
+    </script>
+}

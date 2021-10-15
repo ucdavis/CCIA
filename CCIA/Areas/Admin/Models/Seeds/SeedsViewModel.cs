@@ -20,6 +20,8 @@ namespace CCIA.Models.ViewModels
 
         public List<SeedsDocumentTypes> documentTypes { get; set; }
 
+        public List<int> certYears { get; set; }
+
         public static async Task<AdminSeedsViewModel> CreateDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
              if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
@@ -45,6 +47,17 @@ namespace CCIA.Models.ViewModels
             };           
 
             return viewModel;
+        }
+
+        public static async Task<AdminSeedsViewModel> EditDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
+        {
+            var viewModel = new AdminSeedsViewModel
+            {
+                seed =  await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync(),        
+                certYears = Helpers.CertYearFinder.certYearList,         
+            }; 
+            return viewModel;
+
         }
 
         
