@@ -22,6 +22,10 @@ namespace CCIA.Models.ViewModels
 
         public List<int> certYears { get; set; }
 
+        public List<Countries> countries { get; set; }
+        public List<StateProvince> states { get; set; }
+        public List<AbbrevClassSeeds> classes { get; set; }
+
         public static async Task<AdminSeedsViewModel> CreateDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
              if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
@@ -51,10 +55,19 @@ namespace CCIA.Models.ViewModels
 
         public static async Task<AdminSeedsViewModel> EditDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
+            var countryList = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();            
+            countryList.Insert(0, new Countries{ Id = 0, Name = ""});
+            var stateList = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
+            stateList.Insert(0, new StateProvince{ StateProvinceId = 0, Name = ""});
+
+
             var viewModel = new AdminSeedsViewModel
             {
                 seed =  await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync(),        
-                certYears = Helpers.CertYearFinder.certYearList,         
+                certYears = Helpers.CertYearFinder.certYearList,  
+                countries = countryList,  
+                states = stateList,    
+                classes = await _dbContext.AbbrevClassSeeds.Include(c => c.AppType).OrderBy(c => c.AppType).ThenBy(c => c.SortOrder).ToListAsync(),
             }; 
             return viewModel;
 
