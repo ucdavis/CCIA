@@ -80,7 +80,7 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
-        // TODO: Edit seed lots!
+        
         // TODO: Add ability to associate applications with a SID
 
         [HttpPost]
