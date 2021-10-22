@@ -95,12 +95,6 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Model.seed.CertNumber
                 </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
-                </div>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
@@ -185,6 +179,31 @@
                 }
             </table>
         }
+    </div> 
+    <div class="col-sm-12">
+        @if(Model.seed.Changes.Count > 0)
+        {
+            <h2>Changes To this SID</h2>
+            <table class="table">
+                <tr>
+                    <th>Column</th>>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                @foreach(var change in Model.seed.Changes)
+                {
+                    <tr>
+                        <td>@change.ColumnChange</td>
+                        <td>@change.OldValue</td>
+                        <td>@change.NewValue</td>
+                        <td>@change.DateChanged</td>
+                        <td>@change.Employee.Name</td>
+                    </tr>
+                }
+            </table>
+        }
     </div>           
     <div class="col-sm-12 row">
         <div class="col-sm-6">
@@ -240,5 +259,30 @@
             </table>
         </div>
     </div>
+     <div class="col-sm-12">
+        @if(Model.seed.LabResults.Changes.Count > 0)
+        {
+            <h2>Changes To Lab Results</h2>
+            <table class="table">
+                <tr>
+                    <th>Column</th>>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Date</th>
+                    <th>Person</th>
+                </tr>
+                @foreach(var change in Model.seed.LabResults.Changes)
+                {
+                    <tr>
+                        <td>@change.ColumnChange</td>
+                        <td>@change.OldValue</td>
+                        <td>@change.NewValue</td>
+                        <td>@change.DateChanged</td>
+                        <td>@change.Employee.Name</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>   
 </div>
 

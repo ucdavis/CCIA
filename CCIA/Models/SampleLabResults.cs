@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -187,6 +188,10 @@ namespace CCIA.Models
         [DisplayFormat(DataFormatString = "{0:P2}")]
         [Range(0.0, 100)]
         public decimal? BadlyDiscoloredPercent { get; set; }
+
+        [ForeignKey("SID")]
+        public ICollection<SampleLabResultsChanges> Changes { get; set; }
+
         public string BadlyDiscoloredValue 
         { 
             get

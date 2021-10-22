@@ -10,6 +10,7 @@ using CCIA.Models.ViewModels;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using System.IO;
+using System.Security.Claims;
 
 namespace CCIA.Controllers.Admin
 {
@@ -118,6 +119,43 @@ namespace CCIA.Controllers.Admin
         {  
             var model = await AdminSeedsViewModel.EditDetails(_dbContext, id, _helper);
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdminSeedsViewModel vm)
+        {
+            var seedEdit = vm.seed;
+            var seedToUpdate = await _dbContext.Seeds.Where(s => s.Id == seedEdit.Id).FirstOrDefaultAsync();
+
+            seedToUpdate.SampleFormDate = seedEdit.SampleFormDate;
+            seedToUpdate.CertYear = seedEdit.CertYear;
+            seedToUpdate.ConditionerId = seedEdit.ConditionerId;
+            seedToUpdate.ApplicantId = seedEdit.ApplicantId;
+            seedToUpdate.OfficialVarietyId = seedEdit.OfficialVarietyId;
+            seedToUpdate.SampleFormCertNumber = seedEdit.SampleFormCertNumber;
+            seedToUpdate.LotNumber = seedEdit.LotNumber;
+            seedToUpdate.PoundsLot = seedEdit.PoundsLot;
+            seedToUpdate.NotFinallyCertified = seedEdit.NotFinallyCertified;
+            seedToUpdate.Class = seedEdit.Class;
+            seedToUpdate.SampleDrawnBy = seedEdit.SampleDrawnBy;
+            seedToUpdate.CountryOfOrigin = seedEdit.CountryOfOrigin;
+            seedToUpdate.StateOfOrigin = seedEdit.StateOfOrigin;
+            seedToUpdate.OriginalRun = seedEdit.OriginalRun;
+            seedToUpdate.Remill = seedEdit.Remill;
+            seedToUpdate.OECDLot = seedEdit.OECDLot;
+            seedToUpdate.EmployeeModified = User.FindFirstValue(ClaimTypes.Name);
+
+             if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Seed updated";
+            } else {
+                ErrorMessage = "Something went wrong";
+                var model = await AdminSeedsViewModel.EditDetails(_dbContext, seedEdit.Id, _helper);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = seedEdit.Id });
+
         }
 
         public ActionResult Seeds()

@@ -154,28 +154,24 @@ namespace CCIA.Models
 
         public virtual DbSet<AppCertificates> AppCertificates { get; set; }
         public virtual DbSet<FIRDocuments> FIRDocuments { get; set; }
+        public virtual DbSet<SeedsChanges> SeedsChanges { get; set; }
+
+        public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
 
         
-        // Unable to generate entity type for table 'dbo.fir_docs'. Please see the warning messages.
+       
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
         
-        // Unable to generate entity type for table 'dbo.tag_docs'. Please see the warning messages.
         
-        // Unable to generate entity type for table 'dbo.seeds_changes'. Please see the warning messages.       
         
-        // Unable to generate entity type for table 'dbo.blend_docs'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
       
-        // Unable to generate entity type for table 'dbo.seed_docs'. Please see the warning messages.        
         
-        // Unable to generate entity type for table 'dbo.field_results'. Please see the warning messages.
-        // Unable to generate entity type for table 'dbo.sx_lab_results_changes'. Please see the warning messages.
 
        
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
-        // Unable to generate entity type for table 'dbo.notices'. Please see the warning messages.
        
 
         public static ILoggerFactory GetLoggerFactory()
@@ -416,6 +412,52 @@ namespace CCIA.Models
                 entity.Property(e => e.Name).HasColumnName("description");
 
                 entity.Property(e => e.Url).HasColumnName("url");
+
+            });
+
+            modelBuilder.Entity<SeedsChanges>(entity => {
+                entity.ToTable("seeds_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.SID).HasColumnName("seeds_id");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
+
+            });
+
+            modelBuilder.Entity<SampleLabResultsChanges>(entity => {
+                entity.ToTable("sx_lab_results_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.SID).HasColumnName("seeds_id");
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");                
+
+                entity.Property(e => e.UserChange).HasColumnName("user_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                entity.HasOne(e => e.Employee);
 
             });
 

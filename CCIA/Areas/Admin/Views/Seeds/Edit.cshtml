@@ -56,10 +56,12 @@
   </div>
 </div>
 
+
+<form asp-action="Edit">
 <div class="container col-sm-12">
     <div class="row">
         <div class="col-sm-12">
-            <h2>Seed Lot Details</h2> 
+            <h2>Edit Seed Lot</h2> 
         </div>            
     </div>
     <div class="row">
@@ -69,6 +71,7 @@
     </div>
     <div class="row col-sm-12">
          <a asp-action="Details" asp-route-id="@Model.seed.Id" class="btn btn-dark">Cancel</a>
+         <input type="hidden" asp-for="@Model.seed.Id">
     </div>    
     <div class="row">
         <div class="col-sm-6"> @* First column *@
@@ -121,18 +124,11 @@
             <div class="form-group row">
                 <label asp-for="seed.Class" class="col-sm-3 col-form-label"></label>
                 <select asp-for="seed.Class"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classes, "Id","NameAndAppType"))"></select>
-            </div> 
+            </div>                       
             <div class="form-group row">
-                <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
-                </div>
-            </div>                  
-            <div class="form-group row">
-                <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.SampleDrawnBy)
-                </div>
+                <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label">Drawn By</label>
+                <input type="text" class="col-sm-7 form-control" asp-for="seed.SampleDrawnBy">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleDrawnBy" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.UserEntered" class="col-sm-3 col-form-label"></label>
@@ -155,7 +151,7 @@
                     <div class="input-group-append" onclick="$('.datepicker').focus();">             
                         <i class="fa fa-calendar input-group-text"></i>
                     </div>
-                    <span class="field-validation-valid text-danger" data-valmsg-for="FI.DateInspected" data-valmsg-replace="true"></span> 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleFormDate" data-valmsg-replace="true"></span> 
             </div>  
             <div class="form-group row">
                 <label asp-for="seed.CertNumber"  class="col-sm-3 col-form-label"></label>
@@ -165,25 +161,18 @@
             </div> 
             <div class="form-group row">
                 <label asp-for="seed.SampleFormCertNumber"  class="col-sm-3 col-form-label">Form Cert#</label>
-                <input type="text" class="col-sm-3 form-control datepicker" asp-for="seed.SampleFormCertNumber">
-            </div> 
-            <div class="form-group row">
-                <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
-                </div>
-            </div>
+                <input type="text" class="col-sm-3 form-control" asp-for="seed.SampleFormCertNumber">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleFormCertNumber" data-valmsg-replace="true"></span>
+            </div>            
             <div class="form-group row">
                 <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.LotNumber)
-                </div>
+                <input type="text" class="col-sm-5 form-control" asp-for="seed.LotNumber">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.LotNumber" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="seed.PoundsLot" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.PoundsLot)
-                </div>
+                <input type="text" class="col-sm-3 form-control" asp-for="seed.PoundsLot">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.PoundsLot" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Crop</label>
@@ -192,12 +181,10 @@
                     <input type="hidden" value="@Model.seed.GetCropId()" id="cropId">
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.NotFinallyCertified)
-                </div>
-            </div>                    
+            <div class="form-group row">                
+                    <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="seed.NotFinallyCertified" class="col-sm-3 form-control">
+            </div>                                       
             <div class="form-group row">
                 <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -213,21 +200,36 @@
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Lot Type</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    Original Run @Html.DisplayFor(x => x.seed.OriginalRun) | Remill  @Html.DisplayFor(x => x.seed.Remill) | 
-                    OECD  @Html.DisplayFor(x => x.seed.OECDLot)
+                    <div class="form-group row">                
+                        <label asp-for="seed.OriginalRun" class="col-sm-3 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OriginalRun" class="col-sm-3 form-control">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.Remill" class="col-sm-3 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.Remill" class="col-sm-3 form-control">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.OECDLot" class="col-sm-3 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OECDLot" class="col-sm-3 form-control">
+                    </div>
                 </div>
             </div>       
         </div>
     </div>
     <div class="col-sm-12">
         <div class="form-group row">
-            <label asp-for="seed.Remarks" class="col-sm-3 col-form-label"></label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.seed.Remarks)
-            </div>
+            <label asp-for="seed.Remarks" class="col-sm-2 col-form-label"></label>
+            <textarea asp-for="seed.Remarks" rows="5" class="col-sm-9 form-control" ></textarea>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="submit" class="btn btn-primary" value="Update"> | 
+            <a class="btn btn-dark" asp-action="Details" asp-route-id="@Model.seed.Id">Cancel</a> <br><br>
+        </div>            
+    </div>   
 </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

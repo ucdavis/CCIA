@@ -165,6 +165,7 @@ namespace CCIA.Controllers.Admin
             labsToUpdate.WeedSeedComments = labs.WeedSeedComments;
             labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
             labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
+            labsToUpdate.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
 
              if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();

@@ -129,6 +129,9 @@ namespace CCIA.Models
 
         [ForeignKey("Id")]
         public List<OECD> OECDForm { get; set; }
+
+        [ForeignKey("SID")]
+        public ICollection<SeedsChanges> Changes { get; set; }
        
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
