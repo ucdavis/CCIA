@@ -29,7 +29,7 @@ namespace CCIA.Models
         public string DescHyperlink { get; set; }
         public int? CropId { get; set; }
         public bool Active { get; set; }
-        // TODO: delete this property?
+        
         public string ReasonForInactive { get; set; }
         public string HistoricalName { get; set; }
         public string Comments { get; set; }

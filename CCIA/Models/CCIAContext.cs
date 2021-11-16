@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Thinktecture;
+//using Thinktecture;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -2954,6 +2954,8 @@ namespace CCIA.Models
                 entity.HasKey(e => e.Id);
 
                 entity.ToTable("field_inspect");
+
+                entity.Property(e => e.Id).HasColumnName("fldinsp_id");
 
                 entity.Property(e => e.AcresApproved)
                     .HasColumnName("acres_approved")

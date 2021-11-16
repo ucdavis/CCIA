@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Thinktecture;
+//using Thinktecture;
 
 namespace CCIA
 {
@@ -49,7 +49,6 @@ namespace CCIA
                 o.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
                 {                       
                         sqlOptions.UseNetTopologySuite();
-                        sqlOptions.AddRowNumberSupport();
                 });
                 o.UseLoggerFactory(CCIAContext.GetLoggerFactory());
                 
@@ -140,9 +139,11 @@ namespace CCIA
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // TODO Move back into correct environment
+            app.UseDeveloperExceptionPage();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseCookiePolicy(new CookiePolicyOptions()
                 {
                     MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax
@@ -150,8 +151,9 @@ namespace CCIA
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
                 app.UseCookiePolicy();
+                app.UseHsts();
             }                     
 
             app.UseStaticFiles();
