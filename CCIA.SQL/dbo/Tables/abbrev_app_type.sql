@@ -1,17 +1,21 @@
 ﻿CREATE TABLE [dbo].[abbrev_app_type] (
-    [app_type_id]       TINYINT       NOT NULL,
-    [app_type_trans]    VARCHAR (100) NULL,
-    [abbreviation]      VARCHAR (50)  NULL,
-    [certificate_title] VARCHAR (500) NULL,
-    [number_title]      VARCHAR (500) NULL,
-    [sir_title]         VARCHAR (50)  NULL,
-    [process_title]     VARCHAR (50)  NULL,
-    [species_or_crop]   VARCHAR (50)  NULL,
-    [produced_title]    VARCHAR (50)  NULL,
-    [variety_title]     VARCHAR (50)  NULL,
-    [show_type]         BIT           NULL,
+    [app_type_id]              INT           NOT NULL,
+    [app_type_trans]           VARCHAR (100) NULL,
+    [abbreviation]             VARCHAR (2)   NOT NULL,
+    [certificate_title]        VARCHAR (50)  NULL,
+    [number_title]             VARCHAR (50)  NULL,
+    [sir_title]                VARCHAR (50)  NULL,
+    [process_title]            VARCHAR (500) NULL,
+    [species_or_crop]          VARCHAR (50)  NULL,
+    [produced_title]           VARCHAR (50)  NULL,
+    [variety_title]            VARCHAR (50)  NULL,
+    [show_type]                BIT           NULL,
+    [grower_same_as_applicant] BIT           CONSTRAINT [DF_abbrev_app_type_grower_same_as_applicant] DEFAULT ((0)) NOT NULL,
+    [qa_program]               BIT           CONSTRAINT [DF_abbrev_app_type_qa_program] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_abbrev_app_type] PRIMARY KEY CLUSTERED ([app_type_id] ASC)
 );
+
+
 
 
 GO

@@ -2,8 +2,10 @@
     [access_id] INT IDENTITY (1, 1) NOT NULL,
     [org_id]    INT NOT NULL,
     [crop_id]   INT NOT NULL,
-    [access]    BIT NOT NULL
+    [access]    BIT CONSTRAINT [DF_map_crop_access_access] DEFAULT ((1)) NOT NULL
 );
+
+
 
 
 GO

@@ -3,6 +3,8 @@
     [seeds_id]     INT           NOT NULL,
     [doc_name]     VARCHAR (100) NOT NULL,
     [doc_link]     VARCHAR (100) NOT NULL,
-    [doc_type]     TINYINT       NOT NULL
+    [doc_type]     INT           NOT NULL
 );
+
+
 

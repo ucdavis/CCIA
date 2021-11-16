@@ -5,27 +5,20 @@
     [sx_form_no]                 INT             NULL,
     [sx_form_date]               DATETIME        NULL,
     [sx_form_cert_no]            VARCHAR (50)    NULL,
-    [sx_form_rad]                SMALLINT        NULL,
-    [cert_year]                  SMALLINT        NULL,
+    [sx_form_rad]                INT             NULL,
+    [cert_year]                  INT             NULL,
     [applicant_id]               INT             NULL,
     [conditioner_id]             INT             NULL,
     [sx_form_variety_id]         INT             NULL,
     [official_variety_id]        INT             NULL,
     [lot_num]                    VARCHAR (50)    NULL,
-    [lbs_lot]                    NUMERIC (16, 2) NULL,
-    [class]                      TINYINT         NULL,
-    [class_produced_accession]   TINYINT         NULL,
-    [old_class]                  CHAR (1)        NULL,
+    [lbs_lot]                    NUMERIC (16, 2) CONSTRAINT [DF_seeds_lbs_lot] DEFAULT ((0)) NOT NULL,
+    [class]                      INT             NULL,
+    [class_produced_accession]   INT             NULL,
+    [status]                     VARCHAR (50)    NULL,
     [county_drawn]               INT             NULL,
     [origin_state]               INT             NULL,
-    [old_lot_state_origin]       CHAR (2)        NULL,
     [origin_country]             INT             NULL,
-    [docs]                       BIT             CONSTRAINT [DF_seeds_docs] DEFAULT ((0)) NOT NULL,
-    [submitted]                  BIT             CONSTRAINT [DF_seeds_submitted] DEFAULT ((0)) NOT NULL,
-    [confirmed]                  BIT             CONSTRAINT [DF_seeds_confirmed] DEFAULT ((0)) NULL,
-    [date_confirmed]             DATE            NULL,
-    [year_confirmed]             AS              (case when [date_confirmed] IS NULL AND datepart(month,[date_sample_recd])=(12) OR datepart(month,[date_sample_recd])=(11) OR datepart(month,[date_sample_recd])=(10) then CONVERT([smallint],datepart(year,[date_sample_recd])+(1),(0)) when [date_confirmed] IS NULL then CONVERT([smallint],datepart(year,[date_sample_recd]),(0)) when datepart(month,[date_confirmed])=(12) OR datepart(month,[date_confirmed])=(11) OR datepart(month,[date_confirmed])=(10) then CONVERT([smallint],datepart(year,[DATE_confirmed])+(1),(0)) else CONVERT([smallint],datepart(year,[date_confirmed]),(0)) end) PERSISTED,
-    [status]                     VARCHAR (50)    NULL,
     [lot_country_origin]         CHAR (3)        NULL,
     [sx_bulk]                    BIT             CONSTRAINT [DF_seeds_bulk] DEFAULT ((0)) NOT NULL,
     [original_run]               BIT             CONSTRAINT [DF_seeds_original_run] DEFAULT ((0)) NOT NULL,
@@ -36,6 +29,7 @@
     [ccia_auth]                  VARCHAR (50)    NULL,
     [remarks]                    VARCHAR (500)   NULL,
     [sx_drawn_by]                VARCHAR (100)   NULL,
+    [sampler_id]                 VARCHAR (50)    NULL,
     [cert_id]                    INT             NULL,
     [sample_id]                  INT             NULL,
     [oecd_lot]                   BIT             CONSTRAINT [DF_seeds_oecd_lot] DEFAULT ((0)) NOT NULL,
@@ -51,20 +45,26 @@
     [lot_succ]                   VARCHAR (50)    NULL,
     [bill_tbl]                   BIT             CONSTRAINT [DF_seeds_bill_tbl] DEFAULT ((0)) NOT NULL,
     [lot_cert_cert_ok]           BIT             CONSTRAINT [DF_seeds_lot_cert_cert_ok] DEFAULT ((0)) NOT NULL,
-    [billable]                   BIT             CONSTRAINT [DF_seeds_billable] DEFAULT ((1)) NOT NULL,
-    [charged]                    BIT             CONSTRAINT [DF_seeds_charged] DEFAULT ((0)) NOT NULL,
     [user_entered]               INT             NULL,
+    [submitted]                  BIT             CONSTRAINT [DF_seeds_submitted] DEFAULT ((0)) NOT NULL,
+    [confirmed]                  BIT             CONSTRAINT [DF_seeds_confirmed] DEFAULT ((0)) NULL,
+    [date_confirmed]             DATE            NULL,
+    [year_confirmed]             AS              (case when [date_confirmed] IS NULL AND [date_sample_recd] IS NULL then (1900) when [date_confirmed] IS NULL AND datepart(month,[date_sample_recd])=(12) OR datepart(month,[date_sample_recd])=(11) OR datepart(month,[date_sample_recd])=(10) then CONVERT([int],datepart(year,[date_sample_recd])+(1),(0)) when [date_confirmed] IS NULL then CONVERT([int],datepart(year,[date_sample_recd]),(0)) when datepart(month,[date_confirmed])=(12) OR datepart(month,[date_confirmed])=(11) OR datepart(month,[date_confirmed])=(10) then CONVERT([int],datepart(year,[DATE_confirmed])+(1),(0)) else CONVERT([int],datepart(year,[date_confirmed]),(0)) end) PERSISTED,
+    [docs]                       BIT             CONSTRAINT [DF_seeds_docs] DEFAULT ((0)) NOT NULL,
     [emp_modified]               VARCHAR (50)    NULL,
     [audit_preflag]              BIT             CONSTRAINT [DF_seeds_audit_preflag] DEFAULT ((0)) NOT NULL,
     [audit_sample]               BIT             CONSTRAINT [DF_seeds_audit_sample] DEFAULT ((0)) NOT NULL,
     [audit_notified]             BIT             CONSTRAINT [DF_seeds_audit_notified] DEFAULT ((0)) NOT NULL,
-    [audit_date_notified]        DATETIME        NULL,
     [audit_reminder_conditioner] BIT             CONSTRAINT [DF_seeds_audit_reminder_conditioner] DEFAULT ((0)) NOT NULL,
     [audit_reminder_lab]         BIT             CONSTRAINT [DF_seeds_audit_reminder_lab] DEFAULT ((0)) NOT NULL,
+    [audit_date_notified]        DATETIME        NULL,
     [not_finally_certified]      BIT             CONSTRAINT [DF_seeds_not_finally_certified] DEFAULT ((0)) NOT NULL,
     [charge_full_fees]           BIT             CONSTRAINT [DF_seeds_charge_full_fees] DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_seeds] PRIMARY KEY CLUSTERED ([seeds_id] ASC),
     CONSTRAINT [FK_seeds_abbrev_class_produced] FOREIGN KEY ([class]) REFERENCES [dbo].[abbrev_class_produced] ([class_produced_id])
 );
+
+
 
 
 GO
@@ -154,7 +154,7 @@ BEGIN
 		BEGIN
 			INSERT INTO seeds_changes (seeds_id, column_change, old_value, new_value, user_change, date_change)
 			SELECT inserted.seeds_id, 'Class', deleted.class, inserted.class, inserted.emp_modified, GETDATE()
-			FROM inserted JOIN deleted ON inserted.seeds_id = deleted.seeds_id AND ISNULL(inserted.class,-1) <> ISNULL(deleted.class,-1)
+			FROM inserted JOIN deleted ON inserted.seeds_id = deleted.seeds_id AND ISNULL(inserted.class,255) <> ISNULL(deleted.class,255)
 			WHERE inserted.emp_modified IS NOT NULL
 		END
 	IF UPDATE(origin_state)

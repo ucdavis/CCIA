@@ -67,7 +67,6 @@
     <Build Include="dbo\Tables\var_family.sql" />
     <Build Include="dbo\Tables\var_countries.sql" />
     <Build Include="dbo\Tables\turfgrass_certificates.sql" />
-    <Build Include="dbo\Tables\trs.sql" />
     <Build Include="dbo\Tables\tags_changes.sql" />
     <Build Include="dbo\Tables\tags.sql" />
     <Build Include="dbo\Tables\tag_series.sql" />
@@ -76,7 +75,6 @@
     <Build Include="dbo\Tables\sx_lab_results.sql" />
     <Build Include="dbo\Tables\state_province.sql" />
     <Build Include="dbo\Tables\standards.sql" />
-    <Build Include="dbo\Tables\Sheet1_.sql" />
     <Build Include="dbo\Tables\seeds_changes.sql" />
     <Build Include="dbo\Tables\seeds_apps.sql" />
     <Build Include="dbo\Tables\seeds.sql" />
@@ -100,12 +98,9 @@
     <Build Include="dbo\Tables\renew_fields.sql" />
     <Build Include="dbo\Tables\renew_actions_trans.sql" />
     <Build Include="dbo\Tables\rates.sql" />
-    <Build Include="dbo\Tables\random_seeds2015.sql" />
-    <Build Include="dbo\Tables\random_samples.sql" />
     <Build Include="dbo\Tables\po_health_cert.sql" />
     <Build Include="dbo\Tables\po_cert_history.sql" />
     <Build Include="dbo\Tables\planting_stocks.sql" />
-    <Build Include="dbo\Tables\organization_deleted.sql" />
     <Build Include="dbo\Tables\organization.sql" />
     <Build Include="dbo\Tables\org_map.sql" />
     <Build Include="dbo\Tables\org_address.sql" />
@@ -113,30 +108,16 @@
     <Build Include="dbo\Tables\oecd.sql" />
     <Build Include="dbo\Tables\notices.sql" />
     <Build Include="dbo\Tables\my_customers.sql" />
-    <Build Include="dbo\Tables\meridians.sql" />
-    <Build Include="dbo\Tables\map_user_access.sql" />
     <Build Include="dbo\Tables\map_typelut.sql">
       <AnsiNulls>Off</AnsiNulls>
     </Build>
-    <Build Include="dbo\Tables\map_sweetcorn_isolation.sql" />
-    <Build Include="dbo\Tables\map_radish_isolation.sql" />
-    <Build Include="dbo\Tables\map_onion_isolation.sql" />
     <Build Include="dbo\Tables\map_objects.sql" />
-    <Build Include="dbo\Tables\map_cucurbita_isolation.sql" />
-    <Build Include="dbo\Tables\map_cucumber_isolation.sql" />
     <Build Include="dbo\Tables\map_croppts_app_listing.sql" />
     <Build Include="dbo\Tables\map_croppts_app.sql" />
     <Build Include="dbo\Tables\map_crop_access.sql" />
-    <Build Include="dbo\Tables\map_carrot_isolation.sql" />
-    <Build Include="dbo\Tables\map_brassica_isolation.sql" />
     <Build Include="dbo\Tables\map_alfalfa_gefree_isolation.sql" />
     <Build Include="dbo\Tables\lot_blends.sql" />
     <Build Include="dbo\Tables\Jobs.sql" />
-    <Build Include="dbo\Tables\idaho_onion_isolation.sql" />
-    <Build Include="dbo\Tables\idaho_lists.sql" />
-    <Build Include="dbo\Tables\idaho_carrot_isolation.sql" />
-    <Build Include="dbo\Tables\idaho_brassica_radish_isolation.sql" />
-    <Build Include="dbo\Tables\idaho_beta_isolation.sql" />
     <Build Include="dbo\Tables\fir_docs.sql" />
     <Build Include="dbo\Tables\field_results.sql" />
     <Build Include="dbo\Tables\field_maps.sql" />
@@ -144,7 +125,6 @@
     <Build Include="dbo\Tables\field_history.sql" />
     <Build Include="dbo\Tables\fees.sql" />
     <Build Include="dbo\Tables\ecoregions.sql" />
-    <Build Include="dbo\Tables\duplicateOrgs.sql" />
     <Build Include="dbo\Tables\districts.sql" />
     <Build Include="dbo\Tables\district_county.sql" />
     <Build Include="dbo\Tables\crops_rates.sql" />
@@ -181,6 +161,59 @@
     <Build Include="dbo\Tables\abbrev_class_produced.sql" />
     <Build Include="dbo\Tables\abbrev_app_type.sql" />
     <Build Include="dbo\Views\var_full.sql" />
+    <Build Include="dbo\Tables\var_other_certs.sql" />
+    <Build Include="dbo\Tables\var_OECD_list.sql" />
+    <Build Include="dbo\Tables\var_historical_owner.sql" />
+    <Build Include="dbo\Tables\sx_testname.sql" />
+    <Build Include="dbo\Tables\sx_results.sql" />
+    <Build Include="dbo\Tables\sx_identity.sql" />
+    <Build Include="dbo\Tables\schedules.sql" />
+    <Build Include="dbo\Tables\samples.sql" />
+    <Build Include="dbo\Tables\organization_address.sql" />
+    <Build Include="dbo\Tables\online.sql" />
+    <Build Include="dbo\Tables\notifications.sql" />
+    <Build Include="dbo\Tables\map_croppts_2007.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_croppts_2006.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_croppts_2005.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_croppts_2004.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_croppts.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_croplut.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\map_crop_isolation.sql" />
+    <Build Include="dbo\Tables\inspectors.sql" />
+    <Build Include="dbo\Tables\fee_history.sql" />
+    <Build Include="dbo\Tables\farm_fields.sql" />
+    <Build Include="dbo\Tables\crops_new.sql" />
+    <Build Include="dbo\Tables\conditioners.sql" />
+    <Build Include="dbo\Tables\cond_reps.sql" />
+    <Build Include="dbo\Tables\cond_import.sql" />
+    <Build Include="dbo\Tables\company_color_lut.sql">
+      <AnsiNulls>Off</AnsiNulls>
+    </Build>
+    <Build Include="dbo\Tables\board_of_dir.sql" />
+    <Build Include="dbo\Tables\AspNetUserTokens.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
+    <Build Include="dbo\Tables\AspNetRoleClaims.sql" />
+    <Build Include="dbo\Tables\apps_to_certs.sql" />
+    <Build Include="dbo\Tables\AppCertificates.sql" />
+    <Build Include="dbo\Tables\app_errors.sql" />
+    <Build Include="dbo\Tables\__EFMigrationsHistory.sql" />
+    <Build Include="dbo\Views\tag_bagging.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Compare\BananaToProject.scmp" />
