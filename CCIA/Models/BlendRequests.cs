@@ -74,7 +74,7 @@ namespace CCIA.Models
         }
 
         public string GetVarietyName()
-        {
+        {           
             if (BlendType == "Varietal" && Variety != null)
             {
                 return Variety.Name;
@@ -82,8 +82,8 @@ namespace CCIA.Models
             if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
             {
                 return LotBlends.First().Seeds.Variety.Name;
-            }
-            if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Application.Variety != null)
+            }          
+            if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().AppId != null && InDirtBlends.First().Application != null && InDirtBlends.First().Application.Variety != null)
             {
                 return InDirtBlends.First().Application.Variety.Name;
             }
