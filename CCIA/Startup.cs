@@ -33,17 +33,14 @@ namespace CCIA
                      
             services.AddControllersWithViews(); 
 
-            IMvcBuilder builder = services.AddRazorPages(); 
-
-            #if DEBUG
-                if (Env.IsDevelopment())
-                {
-                    builder.AddRazorRuntimeCompilation();
-                }
-            #endif        
-       
-          
-            //services.AddDbContext<CCIAContext>();
+            
+            if(Env.IsDevelopment()){
+                services.AddRazorPages().AddRazorRuntimeCompilation();               
+            }  else
+            {
+                services.AddRazorPages();
+            }
+            
             services.AddDbContextPool<CCIAContext>( o =>
             {
                 o.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
