@@ -1,6 +1,7 @@
 @model CCIA.Models.AdminSeedsReportViewModel
 
-
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
 <h3>Seed Certification Report</h3>
 <form asp-action="Seeds" method="POST">
@@ -56,6 +57,10 @@
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
     </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+    </div>
 </div>
 <hr>
 </form>
@@ -104,13 +109,24 @@
         </tbody>
     </table>
 }
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
+
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+     <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'Brt',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
      
 }
 
