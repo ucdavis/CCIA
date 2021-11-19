@@ -367,6 +367,7 @@ namespace CCIA.Models
 	
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n1}")]
         public double? AreaAcres {  get; private set; }  
 		
 

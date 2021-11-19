@@ -74,12 +74,10 @@
                     @Html.DisplayFor(x => x.application.DatePlanted)
                 </div>
             </div>  
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.Renewal)
-                </div>
-            </div>                 
+                <input type="checkbox" asp-for="application.Renewal" class="col-sm-3 form-control" disabled="disabled">
+            </div>              
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
@@ -99,12 +97,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Postmark)
                 </div>
-            </div>  
-            <div class="form-group row">                    
-                <div class="form-check form-check-inline col-sm-12">
-                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-check-input col-sm-1 " disabled asp-for="application.AppLate">
-                </div>                
-            </div>
+            </div>              
+            <div class="form-group row">                
+                    <label asp-for="application.AppLate" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.AppLate" class="col-sm-3 form-control" disabled="disabled">
+            </div>   
             <div class="form-group row">
                 <label asp-for="application.OriginalCertYear" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -130,12 +127,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Deadline) 
                 </div>
-            </div> 
-            <div class="form-group row">
-                <div class="form-check form-check-inline col-sm-12">
-                    <label asp-for="application.OverrideLateFee" class="col-form-label col-sm-3"> </label>  <input type="checkbox" class="form-check-input col-sm-1" disabled asp-for="application.OverrideLateFee">    
-                </div>         
-            </div>
+            </div>             
+            <div class="form-group row">                
+                    <label asp-for="application.OverrideLateFee" class="col-sm-4 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.OverrideLateFee" class="col-sm-3 form-control" disabled="disabled">
+            </div>   
             <div class="form-group row">
                 <label asp-for="application.PaperAppNum" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -145,13 +141,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4"> 
-            <div class="form-group row">
-                <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.WarningFlag)
-                </div>
-            </div>   
+        <div class="col-lg-4">             
+            <div class="form-group row">                
+                    <label asp-for="application.WarningFlag" class="col-sm-6 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.WarningFlag" class="col-sm-3 form-control" disabled="disabled">
+            </div>                 
         </div>
         <div class="col-lg-8">
             <div class="form-group row">
@@ -227,18 +221,14 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Variety.Name)
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="form-check form-check-inline col-sm-12">
+            </div>            
+            <div class="form-group row">                
                     <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" class="col-sm-1 form-check-input form-check-inline" disabled asp-for="application.PackageComplete">
-                </div>                
-            </div>
+                    <input type="checkbox" asp-for="application.PackageComplete" class="col-sm-3 form-control" disabled="disabled">
+            </div>   
              <div class="form-group row">
-                <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-2 form-control-plaintext">
-                    @Html.CheckBox("MapsVe", Model.application.MapVe, new {@disabled = true})
-                </div>
+               <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.MapVe" class="col-sm-3 form-control" disabled="disabled">
                 @if(Model.application.MapVe)
                 {
                     <div>
@@ -250,14 +240,14 @@
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="application.ApplicantComments" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-11 form-control-plaintext">
+        <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="application.Comments" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-11 form-control-plaintext">
+        <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.Comments)
         </div>
     </div>
