@@ -23,7 +23,7 @@
                 <input asp-for="searchId">
             </div>
             <div class="form-group row">
-                 <label asp-for="searchYearsCreated" class="col-sm-2 col-form-label">Year Created</label>
+                 <label asp-for="searchYearsCreated" class="col-sm-3 col-form-label">Year Created</label>
                 <select asp-for="searchYearsCreated" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.creationYears))"></select>
                <div class="col-sm-1">&dagger;</div> 
             </div>           
@@ -34,8 +34,8 @@
                 <input asp-for="searchBid">
             </div> 
             <div class="form-group row">
-                 <label asp-for="searchProgramId" class="col-sm-2 col-form-label">Program</label>
-                <select asp-for="searchProgramId" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.programTypes,"AppTypeId","AppTypeTrans"))"></select>
+                 <label asp-for="searchProgramId" class="col-sm-3 col-form-label">Program</label>
+                <select asp-for="searchProgramId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.programTypes,"AppTypeId","AppTypeTrans"))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>           
         </div>
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="searchConditioner" class="col-sm-3 col-form-label">Conditioner</label>
-                <input asp-for="searchConditioner" class="col-sm-5 form-control">
+                <input asp-for="searchConditioner" class="col-sm-4 form-control">
                 <div class="col-sm-5">
                     (partial name or Id)
                 </div>
@@ -55,6 +55,10 @@
     </div>
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
     </div>
 </div>
 <hr>
@@ -97,10 +101,7 @@
         </tbody>
     </table>
 }
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 
 

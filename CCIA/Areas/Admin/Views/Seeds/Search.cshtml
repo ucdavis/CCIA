@@ -81,6 +81,10 @@
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
     </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+    </div>
 </div>
 <hr>
 </form>
@@ -88,10 +92,7 @@
 {
     @await Html.PartialAsync("_SeedsTable", @Model.seeds)
 }
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 
 

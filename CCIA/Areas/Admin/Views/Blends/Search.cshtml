@@ -12,21 +12,21 @@
     <div class="row">
         <div class="col-md-6 col-xl-4">@* First column*@ 
             <div class="form-group row">
-                <label asp-for="typeSearchValue" class="col-sm-2 col-form-label">Type</label>
-                <select asp-for="typeSearchValue" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.blendTypes))"></select>               
+                <label asp-for="typeSearchValue" class="col-sm-3 col-form-label">Type</label>
+                <select asp-for="typeSearchValue" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.blendTypes))"></select>               
             </div>        
         </div>
         <div class="col-md-6 col-xl-4">@* 2nd column*@            
              <div class="form-group row">
-                 <label asp-for="searchStatus" class="col-sm-2 col-form-label"></label>
-                <select asp-for="searchStatus" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
+                 <label asp-for="searchStatus" class="col-sm-3 col-form-label"></label>
+                <select asp-for="searchStatus" size="3" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
                 <div class="col-sm-1">&dagger;</div>
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 3rd column*@ 
             <div class="form-group row">
-                <label asp-for="conditionerSearchTerm" class="col-sm-2 col-form-label">Conditioner</label>
-                <input asp-for="conditionerSearchTerm" class="col-sm-5 form-control">
+                <label asp-for="conditionerSearchTerm" class="col-sm-3 col-form-label">Conditioner</label>
+                <input asp-for="conditionerSearchTerm" class="col-sm-4 form-control">
                 <div class="col-sm-5">
                     (partial name or Id)
                 </div>        
@@ -36,6 +36,10 @@
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
     </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+    </div>
 </div>
 <hr>
 </form>
@@ -44,10 +48,7 @@
     @await Html.PartialAsync("_BlendsTable", @Model.blends)
 }
 
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 
 
