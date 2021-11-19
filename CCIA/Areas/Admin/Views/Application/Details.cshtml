@@ -289,7 +289,15 @@
                             <td>@row.Crop</td>
                             <td>@row.Variety</td>
                             <td>@row.Status</td>
-                            <td><a href="@row.Url">link</a></td>
+                            <td>
+                                @if(row.Origin == "applications")
+                                {
+                                    <a class="btn btn-info" asp-action="FieldMap" asp-area="admin" asp-controller="Application" asp-route-id="@row.Id">View Map</a>                                    
+                                } else
+                                {
+                                    <a href="@row.Url" class="btn btn-info">link</a>
+                                }                                 
+                            </td>
                         </tr>                    
                     }
                 </tbody>
@@ -528,7 +536,12 @@
                     <td>@row.OldValue</td>
                     <td>@row.NewValue</td>
                     <td>@row.DateChanged</td>
-                    <td>@row.Employee.Name</td>
+                    <td>
+                        @if(row.Employee != null)
+                        {
+                            @row.Employee.Name
+                        }
+                    </td>
                 </tr>
             }
             </tbody>
