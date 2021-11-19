@@ -113,12 +113,10 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Model.seed.GetCropName()
                 </div>
-            </div>
+            </div>            
             <div class="form-group row">
                 <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.seed.NotFinallyCertified)
-                </div>
+                <input type="checkbox" asp-for="seed.NotFinallyCertified" class="col-sm-3 form-control" disabled="disabled">                   
             </div>                    
             <div class="form-group row">
                 <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
@@ -135,10 +133,20 @@
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Lot Type</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    Original Run @Html.DisplayFor(x => x.seed.OriginalRun) | Remill  @Html.DisplayFor(x => x.seed.Remill) | 
-                    OECD  @Html.DisplayFor(x => x.seed.OECDLot)
+                    <div class="form-group row">                
+                        <label asp-for="seed.OriginalRun" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OriginalRun" class="col-sm-3 form-control" disabled="disabled">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.Remill" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.Remill" class="col-sm-3 form-control" disabled="disabled">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.OECDLot" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OECDLot" class="col-sm-3 form-control" disabled="disabled">
+                    </div>
                 </div>
-            </div>       
+            </div>                      
         </div>
     </div>
     <div class="col-sm-12">
@@ -206,14 +214,14 @@
         }
     </div>           
     <div class="col-sm-12 row">
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>   
     
     
             @await Html.PartialAsync("_SampleLabResultsAdminDetails.cshtml", Model.LabsAndStandards)
             <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit Lab Results</a>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <table>
                 <tr>
                     <td class="align-middle"> 
