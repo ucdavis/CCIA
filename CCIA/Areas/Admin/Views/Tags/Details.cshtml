@@ -14,6 +14,19 @@
     </div> 
     @if(Model.Stage == TagStages.Requested.GetDisplayName())
     {
+        @if(@ViewBag.AllowConditionerPrint != null && @ViewBag.AllowConditionerPrint)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                        <form asp-action="AcceptTag">
+                        @Html.HiddenFor(x => x.Id)
+                        <input type="hidden" id="conditionerPrint" name="conditionerPrint" value="True">
+                        <input type="submit" class="btn btn-primary" value="Approve Conditioner Print"><br>
+                        This marks tag as "Pending File" and notifies conditioner of approval. <br>"Approve Request" sends this down the regular CCIA print path (notify CCIA printer, etc.).
+                    </form>                    
+                </div>            
+            </div>            
+        }
         <div class="row">
             <div class="col-sm-12">
                     <form asp-action="AcceptTag">
