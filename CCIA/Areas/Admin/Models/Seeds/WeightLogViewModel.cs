@@ -53,7 +53,7 @@ namespace CCIA.Models.ViewModels
                         PoundsLot = u.PoundsLot, ConditionerName = u.ConditionerName, Class = u.Class, ClassName = u.ClassName, OutsideCalifornia = u.OutsideCalifornia, AppId = u.AppId, 
                         SampleFormCertNumber = u.SampleFormCertNumber, CropAnnual = u.CropAnnual, SampleFormRad = u.SampleFormRad, CropName = u.CropName,
                         VarietyName = u.VarietyName, PrivateLabDate = u.PrivateLabDate, PrivateLabNumber = u.PrivateLabNumber, LabName = u.LabName,
-                        Rejected = u.Rejected, HasOECDForm = u.HasOECDForm, RowNumber = index} )
+                        Rejected = u.Rejected, HasOECDForm = u.HasOECDForm, RowNumber = index + 1} )
                     .ToList(),
                 Years = await _dbContext.Seeds.Select(s => s.YearConfirmed).Distinct().OrderBy(id => id).ToListAsync(),
                 Year = year,                
