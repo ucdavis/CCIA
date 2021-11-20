@@ -28,24 +28,20 @@
                     @Html.DisplayFor(x => x.org.Email)
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="org.Member" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.org.Member)
-                </div>
-            </div>    
+                <input type="checkbox" asp-for="org.Member" class="col-sm-3 form-control">
+            </div>   
             <div class="form-group row">
                 <label asp-for="org.MemberType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.org.MemberType)
                 </div>
-            </div> 
-            <div class="form-group row">
+            </div>  
+            <div class="form-group row">                
                 <label asp-for="org.GermLab" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.org.GermLab)
-                </div>
-            </div> 
+                <input type="checkbox" asp-for="org.GermLab" class="col-sm-3 form-control">
+            </div>
             <div class="form-group row">
                 <label asp-for="org.District" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -66,24 +62,20 @@
                     @Html.DisplayFor(x => x.org.Phone)
                 </div>
             </div> 
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="org.Active" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.org.Active)
-                </div>
-            </div>
+                <input type="checkbox" asp-for="org.Active" class="col-sm-3 form-control">
+            </div> 
             <div class="form-group row">
                 <label asp-for="org.RepresentativeContactId" class="col-sm-3 col-form-label">Member Representative</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.org.RepresentativeContact.Name)
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="org.DiagnosticLab" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.org.DiagnosticLab)
-                </div>
-            </div>                                                      
+                <input type="checkbox" asp-for="org.DiagnosticLab" class="col-sm-3 form-control">
+            </div>                                                     
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -110,12 +102,10 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.org.MemberSince)
                 </div>
-            </div>
-            <div class="form-group row">
+            </div>           
+            <div class="form-group row">                
                 <label asp-for="org.AgCommissioner" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.org.AgCommissioner)
-                </div>
+                <input type="checkbox" asp-for="org.AgCommissioner" class="col-sm-3 form-control">
             </div>                     
         </div>
     </div>
@@ -159,11 +149,11 @@
                         </td>
                         <td>@status.Year</td>
                         <td>@status.Status</td>
-                        <td>@Html.CheckBoxFor(x => status.AllowPretag,new { @disabled = "disabled"})</td>
-                        <td>@Html.CheckBoxFor(x => status.PrintSeries, new { @disabled = "disabled"})</td>
-                        <td>@Html.CheckBoxFor(x => status.RequestCciaPrintSeries, new { @disabled = "disabled"})</td>
+                        <td>@Html.CheckBoxFor(x => status.AllowPretag)</td>
+                        <td>@Html.CheckBoxFor(x => status.PrintSeries)</td>
+                        <td>@Html.CheckBoxFor(x => status.RequestCciaPrintSeries)</td>
                         <td>@Html.DisplayFor(x => @status.DatePretagApproved)</td>
-                        <td>@status.DateUpdated</td>
+                        <td style="white-space:nowrap;">@status.DateUpdated</td>
                     </tr>                    
                 }  
             </tbody>
@@ -191,7 +181,7 @@
                             <tr>
                                 <td><form asp-action="ToggleMapPermissions"><input type="hidden" id="mapPermission" name="mapPermission" value="@permission.Id"><input type="submit" value="Toggle"></form></td>
                                 <td>@permission.Map</td>
-                                <td>@Html.CheckBoxFor(a => permission.Allow, new { @disabled = "disabled"})</td>
+                                <td>@Html.CheckBoxFor(a => permission.Allow)</td>
                             </tr>                    
                         }
                     </tbody>
@@ -219,7 +209,7 @@
                             <tr>
                                 <td><form asp-action="ToggleMapCropPermissions"><input type="hidden" id="mapPermission" name="mapPermission" value="@permission.Id"><input type="submit" value="Toggle"></form></td>
                                 <td>@permission.Crop.Name</td>
-                                <td>@Html.CheckBoxFor(a => permission.Allow, new { @disabled = "disabled"})</td>
+                                <td>@Html.CheckBoxFor(a => permission.Allow)</td>
                             </tr>                    
                         }
                     </tbody>
@@ -279,12 +269,12 @@
                             <th>@add.Address.StateName</th>
                             <th>@add.Address.PostalCode</th>
                             <th>@add.Address.CountryName</th>
-                            <th>@Html.CheckBoxFor(x => add.Mailing, new { @disabled = "disabled"})</th>
-                            <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
-                            <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
-                            <td>@Html.CheckBoxFor(x => add.Physical, new { @disabled = "disabled"})</td>
-                            <td>@Html.CheckBoxFor(x => add.Facility, new { @disabled = "disabled"})</td>
-                            <td>@Html.CheckBoxFor(x => add.Active, new { @disabled = "disabled"})</td>
+                            <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                            <td>@Html.CheckBoxFor(x => add.Billing)</td>
+                            <td>@Html.CheckBoxFor(x => add.Delivery)</td>
+                            <td>@Html.CheckBoxFor(x => add.Physical)</td>
+                            <td>@Html.CheckBoxFor(x => add.Facility)</td>
+                            <td>@Html.CheckBoxFor(x => add.Active)</td>
                             <th>
                                 @if(this.User.IsInRole("Admin") && !add.Active)
                                 {   
@@ -332,3 +322,10 @@
     </div>
     
 </div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

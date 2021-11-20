@@ -46,25 +46,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Email)
                 </div>
-            </div>  
-            <div class="form-group row">
+            </div>             
+            <div class="form-group row">                
                 <label asp-for="ApplicationNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.ApplicationNotices)
-                </div>
-            </div> 
-            <div class="form-group row">
+                <input type="checkbox" asp-for="ApplicationNotices" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
                 <label asp-for="OECDNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OECDNotices)
-                </div>
-            </div>   
-            <div class="form-group row">
+                <input type="checkbox" asp-for="OECDNotices" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.TransferNotices)
-                </div>
-            </div>                             
+                <input type="checkbox" asp-for="TransferNotices" class="col-sm-3 form-control">
+            </div>                                        
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -90,31 +84,23 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.HomePhone)
                 </div>
-            </div>   
-            <div class="form-group row">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="AllowApps" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.AllowApps)
-                </div>
-            </div>
-            <div class="form-group row">
+                <input type="checkbox" asp-for="AllowApps" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="AllowOrgUpdate" class="col-sm-3 col-form-label">Update Org?</label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.AllowOrgUpdate)
-                </div>
-            </div>
-            <div class="form-group row">
+                <input type="checkbox" asp-for="AllowOrgUpdate" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="SeedNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.SeedNotices)
-                </div>
-            </div>
-            <div class="form-group row">
+                <input type="checkbox" asp-for="SeedNotices" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="BlendNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.BlendNotices)
-                </div>
-            </div>                                                             
+                <input type="checkbox" asp-for="BlendNotices" class="col-sm-3 form-control">
+            </div>                                                 
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
              <div class="form-group row">
@@ -140,25 +126,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.PagerNumber)
                 </div>
-            </div>   
-            <div class="form-group row">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="AllowSeeds" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.AllowSeeds)
-                </div>
-            </div>
-            <div class="form-group row">
+                <input type="checkbox" asp-for="AllowSeeds" class="col-sm-3 form-control">
+            </div>  
+            <div class="form-group row">                
                 <label asp-for="TagNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.TagNotices)
-                </div>
-            </div>
-            <div class="form-group row">
+                <input type="checkbox" asp-for="TagNotices" class="col-sm-3 form-control">
+            </div>  
+            <div class="form-group row">                
                 <label asp-for="BulkSalesNotices" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.BulkSalesNotices)
-                </div>
-            </div>                 
+                <input type="checkbox" asp-for="BulkSalesNotices" class="col-sm-3 form-control">
+            </div>                             
         </div>
     </div>
     <div>
@@ -203,10 +183,10 @@
                         <th>@add.Address.StateName</th>
                         <th>@add.Address.PostalCode</th>
                         <th>@add.Address.CountryName</th>
-                        <th>@Html.CheckBoxFor(x => add.Mailing, new { @disabled = "disabled"})</th>
-                        <td>@Html.CheckBoxFor(x => add.Billing, new { @disabled = "disabled"})</td>
-                        <td>@Html.CheckBoxFor(x => add.Delivery, new { @disabled = "disabled"})</td>
-                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc, new { @disabled = "disabled"})</td>
+                        <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                        <td>@Html.CheckBoxFor(x => add.Billing)</td>
+                        <td>@Html.CheckBoxFor(x => add.Delivery)</td>
+                        <td>@Html.CheckBoxFor(x => add.PhysicalLoc)</td>
                         <th>
                             @if(this.User.IsInRole("CoreStaff"))
                             {
@@ -219,3 +199,10 @@
         </table>        
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}
