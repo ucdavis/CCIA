@@ -38,12 +38,10 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.CertificateDate)
                 </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="SubmittedForAnalysis" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.SubmittedForAnalysis)
-                </div>
+            </div>            
+            <div class="form-group row">                
+                <label asp-for="SubmittedForAnalysis" class="col-sm-4 col-form-label"></label>
+                <input type="checkbox" asp-for="SubmittedForAnalysis" class="col-sm-3 form-control">
             </div>                                    
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@ 
@@ -338,25 +336,19 @@
         </table>
     </div>
     <div class="col-sm-12">
-        <div><hr><h2>Ag Commissioner Response:</h2></div>
-        <div class="form-group row">
-            <label asp-for="AgricultureCommissionerAccurate" class="col-sm-3 col-form-label">Accurate</label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.AgricultureCommissionerAccurate)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="AgricultureCommissionerInaccurate" class="col-sm-3 col-form-label">Inaccurate</label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.AgricultureCommissionerInaccurate)
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="AgricultureCommissionerApprove" class="col-sm-3 col-form-label">Approved</label>
-            <div class="col-sm-9 form-control-plaintext">
-                @Html.DisplayFor(x => x.AgricultureCommissionerApprove)
-            </div>
-        </div>
+        <div><hr><h2>Ag Commissioner Response:</h2></div>       
+        <div class="form-group row">                
+            <label asp-for="AgricultureCommissionerAccurate" class="col-sm-2 col-form-label">Accurate</label>
+            <input type="checkbox" asp-for="AgricultureCommissionerAccurate" class="col-sm-3 form-control">
+        </div> 
+        <div class="form-group row">                
+            <label asp-for="AgricultureCommissionerInaccurate" class="col-sm-2 col-form-label">Inaccurate</label>
+            <input type="checkbox" asp-for="AgricultureCommissionerInaccurate" class="col-sm-3 form-control">
+        </div>        
+        <div class="form-group row">                
+            <label asp-for="AgricultureCommissionerApprove" class="col-sm-2 col-form-label">Approved</label>
+            <input type="checkbox" asp-for="AgricultureCommissionerApprove" class="col-sm-3 form-control">
+        </div>               
         <div class="form-group row">
             <label asp-for="AgricultureCommissionerContactRespond.Name" class="col-sm-3 col-form-label">Who</label>
             <div class="col-sm-9 form-control-plaintext">
@@ -405,3 +397,9 @@
             </table>
         </div> 
 </div>
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}
