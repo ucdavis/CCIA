@@ -119,7 +119,7 @@
             </div> 
             <div class="form-group row">
                 <label asp-for="oecd.NotCertified" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-check-input">
+                <input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-control">
             </div>  
             <div class="form-group row">
                 <label asp-for="oecd.DataEntryDate" class="col-sm-3 col-form-label"></label>
@@ -174,7 +174,7 @@
            </div>
            <div class="form-group row">
                <label asp-for="oecd.Canceled" class="col-sm-3 col-form-label"></label>
-               <input type="checkbox" asp-for="oecd.Canceled" class="col-sm-7 form-check-input">
+               <input type="checkbox" asp-for="oecd.Canceled" class="col-sm-7 form-control">
            </div>
            <div class="form-group row">
                <label asp-for="oecd.DataEntryUser" class="col-sm-3 col-form-label"></label>
@@ -213,22 +213,22 @@
                 <input asp-for="oecd.Pounds" class="col-sm-3 col-form">
             </div> 
             <div class="form-group row">
-                <label asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <label asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form-label">Reference #</label>
                 <input asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form">
             </div>    
             <div class="form-group row">
                 <label asp-for="oecd.DomesticOrigin" class="col-sm-3 col-form-label"></label>                
-                <input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-check-input">
+                <input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-control">
             </div>                         
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@        
         <div class="form-group row">
-            <label asp-for="oecd.Comments" class="col-sm-1 col-form-label"></label>
+            <label asp-for="oecd.Comments" class="col-sm-2 col-form-label"></label>
             <textarea rows="2"  asp-for="oecd.Comments" class="col-sm form-control"></textarea>
         </div>
         <div class="form-group row">
-            <label asp-for="oecd.AdminComments" class="col-sm-1 col-form-label"></label>
+            <label asp-for="oecd.AdminComments" class="col-sm-2 col-form-label"></label>
             <textarea rows="5"  asp-for="oecd.AdminComments" class="col-sm form-control"></textarea>
         </div>       
          <div class="row">
