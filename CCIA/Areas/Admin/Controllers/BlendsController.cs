@@ -40,11 +40,24 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
-        public async Task<IActionResult> ByStatus(string status = "Approved")
+        // public async Task<IActionResult> ByStatus(string status = "Approved")
+        // {
+        //     var blendStatus = (BlendStatus) Enum.Parse(typeof(BlendStatus), status);
+        //     var model = await _helper.FullBlendRequest().Where(b => b.Status == blendStatus.GetDisplayName()).ToListAsync();
+        //     ViewBag.Status = status;
+        //     return View(model);
+        // }
+
+        public async Task<IActionResult> ByStatus()
         {
-            var blendStatus = (BlendStatus) Enum.Parse(typeof(BlendStatus), status);
-            var model = await _helper.FullBlendRequest().Where(b => b.Status == blendStatus.GetDisplayName()).ToListAsync();
-            ViewBag.Status = status;
+            var model = await AdminBlendsSearchViewModel.ByStatus(_dbContext, null, _helper);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ByStatus(AdminBlendsSearchViewModel vm)
+        {
+            var model = await AdminBlendsSearchViewModel.ByStatus(_dbContext, vm, _helper);
             return View(model);
         }
 
@@ -89,7 +102,7 @@ namespace CCIA.Controllers.Admin
         }
 
 
-         public async Task<IActionResult> Search()
+        public async Task<IActionResult> Search()
         {
             var model = await AdminBlendsSearchViewModel.Create(_dbContext, null, _helper);
             return View(model);
