@@ -50,7 +50,7 @@
             </div>
             <div class="form-group row">                
                     <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="application.Renewal" class="col-sm-3 form-control" disabled="disabled">
+                    <input type="checkbox" asp-for="application.Renewal" class="col-sm-3 form-control">
             </div>                   
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
@@ -98,7 +98,7 @@
         <div class="col-lg-4">            
             <div class="form-group row">                
                     <label asp-for="application.WarningFlag" class="col-sm-5 col-form-label"></label>
-                    <input type="checkbox" asp-for="application.WarningFlag" class="col-sm-3 form-control" disabled="disabled">
+                    <input type="checkbox" asp-for="application.WarningFlag" class="col-sm-3 form-control">
             </div>    
         </div>
         <div class="col-lg-8">
@@ -420,7 +420,7 @@
         <div class="col-lg-6">            
             <div class="form-group row">                
                     <label asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 form-control" disabled="disabled">
+                    <input type="checkbox" asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 form-control">
             </div>  
         </div>
         <div class="col-lg-6">
@@ -444,7 +444,7 @@
         <div class="col-lg-6">
             <div class="form-group row">                
                     <label asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 form-control" disabled="disabled">
+                    <input type="checkbox" asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 form-control">
             </div>  
         </div>
         <div class="col-lg-6">
@@ -514,11 +514,11 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="@row.ApplicantContacted" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="@row.ApplicantContacted" class="col-sm-3 form-control" disabled="disabled">                   
+                    <input type="checkbox" asp-for="@row.ApplicantContacted" class="col-sm-3 form-control">                   
                 </div> 	
                 <div class="form-group row">
                     <label asp-for="@row.ApplicantPresent" class="col-sm-3 col-form-label"></label>
-                    <input type="checkbox" asp-for="@row.ApplicantPresent" class="col-sm-3 form-control" disabled="disabled">                   
+                    <input type="checkbox" asp-for="@row.ApplicantPresent" class="col-sm-3 form-control">                   
                 </div>    
             @if(Model.application.AppType == "PO")
             {
@@ -675,6 +675,7 @@
     		});
 
     	});
+        $(":checkbox").on("click", false);
     </script>
    
 }
