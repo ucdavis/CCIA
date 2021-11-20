@@ -142,8 +142,8 @@
                     <input type="checkbox" asp-for="variety.VarietyOfficial.Confidential" class="col-sm-3 form-control">
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.CCIACertifiedDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="variety.VarietyOfficial.CCIACertifiedDate" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Model.variety.VarietyOfficial.CCIACertifiedDate.Value.ToShortDateString()
                     </div>
                 </div>
@@ -177,8 +177,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.VarReviewBoardDate" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="variety.VarietyOfficial.VarReviewBoardDate" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @if(Model.variety.VarietyOfficial.VarReviewBoardDate.HasValue)
                         {
                             @Model.variety.VarietyOfficial.VarReviewBoardDate.Value.ToShortDateString()
@@ -257,8 +257,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="variety.VarietyOfficial.CtcDateApproved" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @if(Model.variety.VarietyOfficial.CtcDateApproved.HasValue)
                         {
                             @Model.variety.VarietyOfficial.CtcDateApproved.Value.ToShortDateString()
@@ -325,22 +325,20 @@
     @if(@Model.variety.Type != "official")
     {
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12">               
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyFamily.DescHyperlink" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyFamily.DescHyperlink)
-                    </div>
+                    <label asp-for="variety.VarietyFamily.DescHyperlink" class="col-sm-2 col-form-label"></label>
+                    <a href="@Model.variety.VarietyFamily.DescHyperlink" target="_blank" class="col-sm-10 form-control-plaintext">@Model.variety.VarietyFamily.DescHyperlink</a>                    
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyFamily.VarComments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
+                    <label asp-for="variety.VarietyFamily.VarComments" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.variety.VarietyFamily.VarComments)
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyFamily.UpdateComments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
+                    <label asp-for="variety.VarietyFamily.UpdateComments" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.variety.VarietyFamily.UpdateComments)
                     </div>
                 </div>
@@ -360,20 +358,18 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.DescHyperlink" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
-                        @Html.DisplayFor(x => x.variety.VarietyOfficial.DescHyperlink)
-                    </div>
+                    <label asp-for="variety.VarietyOfficial.DescHyperlink" class="col-sm-2 col-form-label"></label>
+                    <a href="@Model.variety.VarietyOfficial.DescHyperlink" target="_blank" class="col-sm-10 form-control-plaintext">@Model.variety.VarietyOfficial.DescHyperlink</a>                    
                 </div>
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.BriefDescription" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
+                    <label asp-for="variety.VarietyOfficial.BriefDescription" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.variety.VarietyOfficial.BriefDescription)
                     </div>
                 </div> 
                 <div class="form-group row">
-                    <label asp-for="variety.VarietyOfficial.Comments" class="col-sm-1 col-form-label"></label>
-                    <div class="col-sm-11 form-control-plaintext">
+                    <label asp-for="variety.VarietyOfficial.Comments" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10 form-control-plaintext">
                         @Html.DisplayFor(x => x.variety.VarietyOfficial.Comments)
                     </div>
                 </div>
@@ -408,3 +404,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

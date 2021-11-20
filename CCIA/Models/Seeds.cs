@@ -38,7 +38,8 @@ namespace CCIA.Models
         public Applications Application { get; set; }
         public int? SampleFormNumber { get; set; }
         [Display(Name = "Sample Form Date")] 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
@@ -128,6 +129,9 @@ namespace CCIA.Models
 
         [ForeignKey("Id")]
         public List<OECD> OECDForm { get; set; }
+
+        [ForeignKey("SID")]
+        public ICollection<SeedsChanges> Changes { get; set; }
        
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;

@@ -20,6 +20,7 @@ namespace CCIA.Models
         {
            Complete = false;
            ReportGenerated = false;
+           PotatoPoundsHarvested = 0;
         }
 
         public int Id { get; set; }
@@ -85,6 +86,8 @@ namespace CCIA.Models
 
         [ForeignKey("CompleteBy")]
         public CCIAEmployees CompleteEmployee { get; set; }
+
+        public int PotatoPoundsHarvested { get; set; }
 
         [Display(Name="TotalEntered")]
         public decimal AcresTotalEntered { 

@@ -1,12 +1,31 @@
+@using CCIA.Helpers;
 @model CCIA.Models.DetailsViewModels.AdminViewModel
 
 
 <h2>Field Inspection Report</h2> 
+
 <div class="container col-sm-10">
     <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Full Details</a> | 
-            <a class="btn btn-info" asp-action="BasicFir" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Basic Fir Form</a>           
+            <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.application.Id">Full Details</a> | 
+            <a class="btn btn-info" asp-action="BasicFir" asp-route-id="@Model.application.Id">Basic Fir Form</a>           
+            @if(Model.application.Status == ApplicationStatus.FieldInspectionInProgress.GetDisplayName() && !Model.application.FieldInspection.Any())
+            @* If any inspections - full fee *@
+            {
+                <form asp-action="CancelApplicationFIR">
+                    <input type="hidden" id="AppId" name="AppId" value="@Model.application.Id">
+                    <input type="hidden" id="Fee" name="Fee" value="NoFee">
+                    <input type="submit" class="btn btn-danger" value="Cancel App (no fee)" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>                
+            }
+            @if(Model.application.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName() || Model.application.FieldInspection.Any())
+            {
+                <form asp-action="CancelApplicationFIR">
+                    <input type="hidden" id="AppId" name="AppId" value="@Model.application.Id">
+                    <input type="hidden" id="Fee" name="Fee" value="FullFee">
+                    <input type="submit" class="btn btn-danger" value="Cancel App (full fee)" onClick="return confirm('Are you sure you wish to Cancel this application?');">
+                </form>
+            }
         </div>
     </div>   
      <div class="row">
@@ -28,13 +47,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.DatePlanted)
                 </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.Renewal)
-                </div>
-            </div>                 
+            </div>
+            <div class="form-group row">                
+                    <label asp-for="application.Renewal" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.Renewal" class="col-sm-3 form-control">
+            </div>                   
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
@@ -78,13 +95,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4"> 
-            <div class="form-group row">
-                <label asp-for="application.WarningFlag" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.WarningFlag)
-                </div>
-            </div>   
+        <div class="col-lg-4">            
+            <div class="form-group row">                
+                    <label asp-for="application.WarningFlag" class="col-sm-5 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.WarningFlag" class="col-sm-3 form-control">
+            </div>    
         </div>
         <div class="col-lg-8">
             <div class="form-group row">
@@ -164,14 +179,14 @@
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="application.ApplicantComments" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-11 form-control-plaintext">
+        <label asp-for="application.ApplicantComments" class="col-sm-9 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="application.Comments" class="col-sm-1 col-form-label"></label>
-        <div class="col-sm-11 form-control-plaintext">
+        <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.Comments)
         </div>
     </div>
@@ -239,54 +254,54 @@
         <div class="row">
             <div class="col-md-6 col-xl-4">@* First column*@
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresApproved" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresApproved" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresApproved)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresInspectionOnly" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresInspectionOnly" class="col-sm-5 col-form-label"></label>
+                    <div class="col-sm-7 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresInspectionOnly)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresNoCrop" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresNoCrop" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresNoCrop)
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-xl-4">@* Second*@
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresRejected" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresRejected" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresRejected)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresRefund" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresRefund" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresRefund)
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-xl-4">@* third*@
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresGrowout" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresGrowout" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresGrowout)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresCancelled" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresCancelled" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresCancelled)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="application.FieldInspectionReport.AcresTotalEntered" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
+                    <label asp-for="application.FieldInspectionReport.AcresTotalEntered" class="col-sm-4 col-form-label"></label>
+                    <div class="col-sm-8 form-control-plaintext">
                         @Html.DisplayFor(x => x.application.FieldInspectionReport.AcresTotalEntered)
                     </div>
                 </div>
@@ -402,13 +417,11 @@
         </div>        
     }
     <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group row">
-                <label asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.FieldInspectionReport.ReportGenerated)
-                </div>
-            </div>
+        <div class="col-lg-6">            
+            <div class="form-group row">                
+                    <label asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.FieldInspectionReport.ReportGenerated" class="col-sm-3 form-control">
+            </div>  
         </div>
         <div class="col-lg-6">
             <div class="form-group row">
@@ -429,12 +442,10 @@
     
     <div class="row">
         <div class="col-lg-6">
-            <div class="form-group row">
-                <label asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.FieldInspectionReport.Complete)
-                </div>
-            </div>
+            <div class="form-group row">                
+                    <label asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="application.FieldInspectionReport.Complete" class="col-sm-3 form-control">
+            </div>  
         </div>
         <div class="col-lg-6">
             <div class="form-group row">
@@ -444,6 +455,17 @@
                 </div>
             </div>
         </div>
+        @if(Model.application.AppType == AppTypes.Potato.GetDisplayName())
+        {
+            <div class="col-lg-6">
+                <div class="form-group row">
+                    <label asp-for="application.FieldInspectionReport.PotatoPoundsHarvested" class="col-sm-3 col-form-label">PO # Harvested</label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.FieldInspectionReport.PotatoPoundsHarvested)
+                    </div>
+                </div>
+            </div>           
+        }
     </div>
 </div>
 
@@ -470,7 +492,7 @@
     @{ var j = 1;}    
     @foreach (var row in Model.application.FieldInspection.OrderBy(f => f.DateInspected))
     {
-        <div id="@row.Id" class="card col-sm-5">
+        <div id="@row.Id" class="card col-sm-12">
 		    <div class="card-block">
                 <h4 class="card-title">Inspection @j</h4>
                 
@@ -492,16 +514,12 @@
                 </div>
                 <div class="form-group row">
                     <label asp-for="@row.ApplicantContacted" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        <input type="checkbox" asp-for="@row.ApplicantContacted" disabled>
-                    </div>
-                </div>	
+                    <input type="checkbox" asp-for="@row.ApplicantContacted" class="col-sm-3 form-control">                   
+                </div> 	
                 <div class="form-group row">
                     <label asp-for="@row.ApplicantPresent" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        <input type="checkbox" asp-for="@row.ApplicantPresent" disabled>
-                    </div>
-                </div>	    
+                    <input type="checkbox" asp-for="@row.ApplicantPresent" class="col-sm-3 form-control">                   
+                </div>    
             @if(Model.application.AppType == "PO")
             {
                 <div class="form-group row">
@@ -657,6 +675,7 @@
     		});
 
     	});
+        $(":checkbox").on("click", false);
     </script>
    
 }

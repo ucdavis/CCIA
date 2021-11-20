@@ -5,11 +5,13 @@
     [field_name]          VARCHAR (50)   NULL,
     [acres]               NUMERIC (7, 3) NOT NULL,
     [class_produced_char] CHAR (10)      NOT NULL,
-    [gen_planted_char]    CHAR (10)      NULL,
+    [gen_planted_char]    CHAR (10)      NOT NULL,
     [class_produced]      INT            NULL,
     [gen_planted]         INT            NULL,
-    [renew_action]        TINYINT        CONSTRAINT [DF_renew_fields_renew_action] DEFAULT ((0)) NOT NULL,
+    [renew_action]        INT            CONSTRAINT [DF_renew_fields_renew_action] DEFAULT ((0)) NOT NULL,
     [county_id]           INT            NULL,
     [action_date]         DATETIME       NULL
 );
+
+
 

@@ -14,6 +14,19 @@
     </div> 
     @if(Model.Stage == TagStages.Requested.GetDisplayName())
     {
+        @if(@ViewBag.AllowConditionerPrint != null && @ViewBag.AllowConditionerPrint)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                        <form asp-action="AcceptTag">
+                        @Html.HiddenFor(x => x.Id)
+                        <input type="hidden" id="conditionerPrint" name="conditionerPrint" value="True">
+                        <input type="submit" class="btn btn-primary" value="Approve Conditioner Print"><br>
+                        This marks tag as "Pending File" and notifies conditioner of approval. <br>"Approve Request" sends this down the regular CCIA print path (notify CCIA printer, etc.).
+                    </form>                    
+                </div>            
+            </div>            
+        }
         <div class="row">
             <div class="col-sm-12">
                     <form asp-action="AcceptTag">
@@ -107,12 +120,10 @@
                     @Html.DisplayFor(x => x.CoatingPercent)
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="SeriesRequest" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.SeriesRequest)
-                </div>
-            </div>            
+                <input type="checkbox" asp-for="SeriesRequest" class="col-sm-3 form-control disabled">
+            </div>             
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@ 
             <div class="form-group row">&nbsp;</div>
@@ -165,13 +176,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.TagBagging.TotalBagged)
                 </div>
-            </div>           
-            <div class="form-group row">
+            </div>  
+            <div class="form-group row">                
                 <label asp-for="Bulk" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Bulk)
-                </div>
-            </div>                                               
+                <input type="checkbox" asp-for="Bulk" class="col-sm-3 form-control disabled">
+            </div>                                                         
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -205,7 +214,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="LotWeightRequested" class="col-sm-3 col-form-label"></label>
+                <label asp-for="LotWeightRequested" class="col-sm-3 col-form-label">Requested Weight</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.LotWeightRequested)
                 </div>
@@ -233,13 +242,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.DateNeeded)
                 </div>
-            </div>              
-            <div class="form-group row">
+            </div> 
+            <div class="form-group row">                
                 <label asp-for="AnalysisRequested" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.AnalysisRequested)
-                </div>
-            </div>          
+                <input type="checkbox" asp-for="AnalysisRequested" class="col-sm-3 form-control disabled">
+            </div>         
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@
@@ -494,14 +501,14 @@
             <h4>New Entry:</h4>
             <form asp-action="RecordSeries" class="form-inline">
                 @Html.HiddenFor(x => x.Id)                
-               <label for="Letter">Letter</label> 
-               <input type="text" id="Letter" name="Letter" class="form-control mb-2 mr-sm-2 ml-sm-2" width="15px" />
-               <label for="Start">Series Start Number</label>
-               <input type="text" id="Start" name="Start" class="form-control mb-2 mr-sm-2 ml-sm-2">
-               <label for="End">Series End Number</label>
-               <input type="text" id="End" name="End" class="form-control mb-2 mr-sm-2 ml-sm-2">    
-               <label for="Start">Void</label>
-               <input type="checkbox" id="Void" name="Void" value="true" class="form-control mb-2 mr-sm-2 ml-sm-2">           
+               <label for="Letter" class="col-sm-1">Letter</label> 
+               <input type="text" id="Letter" name="Letter" class="form-control col-sm-1" width="5px" />
+               <label for="Star" class="col-sm-2">Start Number</label>
+               <input type="text" id="Start" name="Start" class="form-control col-sm-1">
+               <label for="End" class="col-sm-2">End Number</label>
+               <input type="text" id="End" name="End" class="form-control col-sm-1">    
+               <label for="Start" class="col-sm-1">Void</label>
+               <input type="checkbox" id="Void" name="Void" value="true" class="form-control col-sm-1">           
                <input type="submit" class="btn btn-info" value="Record Line">
             </form>                  
         </div>
@@ -526,7 +533,7 @@
                             <td>@tagSeries.Letter</td>
                             <td>@tagSeries.Start</td>
                             <td>@tagSeries.End</td>
-                            <td>@Html.CheckBoxFor(x => tagSeries.Void)</td>
+                            <td><input type="checkbox" asp-for="@tagSeries.Void" class="col-sm-3 form-control disabled"></td>
                             <td>@tagSeries.Count </td>
                             <td>
                                 <form asp-action="DeleteSeries">
@@ -569,4 +576,11 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        $(".disabled:checkbox").on("click", false);
+    </script>
+   
+}
+
 

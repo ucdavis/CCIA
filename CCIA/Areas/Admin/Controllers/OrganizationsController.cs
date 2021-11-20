@@ -12,10 +12,11 @@ using System.Security.Claims;
 
 namespace CCIA.Controllers
 {
+    [Authorize(Roles = "CoreStaff")]
     public class OrganizationsController : AdminController
     {
 
-        // TODO Add "Update Org" as role on employees so they can maintain on client side.
+        // TODO Create org update in client area.
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly INotificationService _notification;
@@ -27,8 +28,7 @@ namespace CCIA.Controllers
             _notification = notificationService;
         }
 
-        // TODO: Add Roles - Seasonal Field get nothing in here. View (can edit phone, fax, website). EditOrg has full edit & create. CondStatus allows you to update conditioner status settings.
-
+        
         public async Task<IActionResult> Index(string term = "")
         {
             if(string.IsNullOrWhiteSpace(term))
@@ -60,9 +60,8 @@ namespace CCIA.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Organizations org)
-        {
-            // TODO Add notification to org created
-             var orgToCreate = new Organizations();            
+        {            
+            var orgToCreate = new Organizations();            
 
             orgToCreate.Email = org.Email;
             orgToCreate.GermLab = org.GermLab;
@@ -254,6 +253,7 @@ namespace CCIA.Controllers
             addressToAdd.Mailing = newAddress.Mailing;
             addressToAdd.Delivery = newAddress.Delivery;
             addressToAdd.Physical = newAddress.Physical;
+            addressToAdd.Facility = newAddress.Facility;
             addressToAdd.OrgId = vm.OrgId;
             addressToAdd.Address.Address1 = newAddress.Address.Address1;
             addressToAdd.Address.Address2 = newAddress.Address.Address2;
@@ -306,7 +306,6 @@ namespace CCIA.Controllers
 
         }
 
-        // TODO: Create facility or some sort of location for differnt places seed can ship from. Add those to the Seed transfer/bulk sale certificate to make county selection more accurate.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -343,6 +342,7 @@ namespace CCIA.Controllers
             addressToEdit.Billing = update.Billing;
             addressToEdit.Delivery = update.Delivery;
             addressToEdit.Physical = update.Physical;
+            addressToEdit.Facility = update.Facility;
             addressToEdit.Address.Address1 = update.Address.Address1;
             addressToEdit.Address.Address2 = update.Address.Address2;
             addressToEdit.Address.Address3 = update.Address.Address3;
@@ -579,6 +579,7 @@ namespace CCIA.Controllers
             employeeToUpdate.BusinessPhoneExtension = employee.BusinessPhoneExtension;
             employeeToUpdate.HomePhone = employee.HomePhone;
             employeeToUpdate.AllowApps = employee.AllowApps;
+            employeeToUpdate.AllowOrgUpdate = employee.AllowOrgUpdate;
             employeeToUpdate.LastName = employee.LastName;
             employeeToUpdate.Suffix = employee.Suffix;
             employeeToUpdate.MobilePhone = employee.MobilePhone;

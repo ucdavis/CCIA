@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models;
 using Microsoft.Extensions.Configuration;
-using Thinktecture;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 
@@ -55,7 +54,6 @@ namespace CCIA.Jobs
                 o.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
                 {                       
                         sqlOptions.UseNetTopologySuite();
-                        sqlOptions.AddRowNumberSupport();
                 });
                 
             });

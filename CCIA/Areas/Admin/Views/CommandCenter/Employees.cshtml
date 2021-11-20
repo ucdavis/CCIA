@@ -32,14 +32,21 @@
                     <td><a class="btn btn-info" asp-action="EmployeeDetails" asp-route-id="@emp.Id">Details</a></td>
                     <td>@emp.FirstName</td>
                     <td>@emp.LastName</td>
-                    <td><input type="checkbox" asp-for="@emp.Current"></td>
-                    <td><input type="checkbox" asp-for="@emp.CCIAAccess"></td>
-                    <td><input type="checkbox" asp-for="@emp.CoreStaff"></td>
-                    <td><input type="checkbox" asp-for="@emp.FieldInspector"></td>
-                    <td><input type="checkbox" asp-for="@emp.Admin"></td>
-                    <td><input type="checkbox" asp-for="@emp.ConditionerStatusUpdate"></td>
+                    <td><input type="checkbox" asp-for="@emp.Current" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.CCIAAccess" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.CoreStaff" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.FieldInspector" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.Admin" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.ConditionerStatusUpdate" class="form-control"></td>
                 </tr>                
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

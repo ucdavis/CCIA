@@ -22,36 +22,26 @@
                     @Html.DisplayFor(x => x.UCDMaildID)
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="Current" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Current)
-                </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="FieldInspector" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.FieldInspector)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="EditVarieties" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.EditVarieties)
-                </div>
-            </div>    
-            <div class="form-group row">
-                <label asp-for="BillingAccess" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.BillingAccess)
-                </div>
+                <input type="checkbox" asp-for="Current" class="col-sm-3 form-control">
             </div>
-            <div class="form-group row">
-                <label asp-for="HeritageGrainQA" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.HeritageGrainQA)
-                </div>
-            </div>               
+            <div class="form-group row">                
+                <label asp-for="FieldInspector" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="FieldInspector" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="EditVarieties" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="EditVarieties" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="BillingAccess" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="BillingAccess" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
+                <label asp-for="HeritageGrainQA" class="col-sm-4 col-form-label"></label>
+                <input type="checkbox" asp-for="HeritageGrainQA" class="col-sm-3 form-control">
+            </div>            
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
@@ -66,36 +56,26 @@
                     @Html.DisplayFor(x => x.CampusPhone)
                 </div>
             </div> 
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="CCIAAccess" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CCIAAccess)
-                </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="ConditionerStatusUpdate" class="col-sm-3 col-form-label">Update Cond. Status</label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.ConditionerStatusUpdate)
-                </div>
-            </div> 
-            <div class="form-group row">
+                <input type="checkbox" asp-for="CCIAAccess" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="ConditionerStatusUpdate" class="col-sm-5 col-form-label"></label>
+                <input type="checkbox" asp-for="ConditionerStatusUpdate" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
                 <label asp-for="SeedLotInform" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.SeedLotInform)
-                </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="NewTag" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.NewTag)
-                </div>
+                <input type="checkbox" asp-for="SeedLotInform" class="col-sm-3 form-control">
             </div> 
-            <div class="form-group row">
-                <label asp-for="PrevarietyGermplasm" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PrevarietyGermplasm)
-                </div>
-            </div>                          
+            <div class="form-group row">                
+                <label asp-for="NewTag" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="NewTag" class="col-sm-3 form-control">
+            </div> 
+            <div class="form-group row">                
+                <label asp-for="PrevarietyGermplasm" class="col-sm-4 col-form-label"></label>
+                <input type="checkbox" asp-for="PrevarietyGermplasm" class="col-sm-3 form-control">
+            </div>                  
         </div>
         <div class="col-md-6 col-xl-4">@*Third column *@
             <div class="form-group row">
@@ -110,38 +90,35 @@
                     @Html.DisplayFor(x => x.CellPhone)
                 </div>
             </div>  
-            <div class="form-group row">
+            <div class="form-group row">                
                 <label asp-for="CoreStaff" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.CoreStaff)
-                </div>
-            </div>  
-            <div class="form-group row">
-                <label asp-for="Admin" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Admin)
-                </div>
-            </div>   
-            <div class="form-group row">
-                <label asp-for="SeasonalEmployee" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.SeasonalEmployee)
-                </div>
-            </div>   
-            <div class="form-group row">
-                <label asp-for="TagPrint" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.TagPrint)
-                </div>
+                <input type="checkbox" asp-for="CoreStaff" class="col-sm-3 form-control">
             </div>
-            <div class="form-group row">
-                <label asp-for="OECDInvoicePrinter" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OECDInvoicePrinter)
-                </div>
-            </div>            
+            <div class="form-group row">                
+                <label asp-for="Admin" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="Admin" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="SeasonalEmployee" class="col-sm-4 col-form-label"></label>
+                <input type="checkbox" asp-for="SeasonalEmployee" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="TagPrint" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="TagPrint" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">                
+                <label asp-for="OECDInvoicePrinter" class="col-sm-4 col-form-label"></label>
+                <input type="checkbox" asp-for="OECDInvoicePrinter" class="col-sm-3 form-control">
+            </div>        
         </div>
     </div>
 </div>
 
 @await Html.PartialAsync("_RoleExplaination")
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

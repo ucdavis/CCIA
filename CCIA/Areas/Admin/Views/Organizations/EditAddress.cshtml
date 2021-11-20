@@ -15,7 +15,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>  
     </div>  
-    <div class="col-sm-6">
+    <div class="col-sm-8">
         <div class="form-group row">                
             <label asp-for="orgAddress.Mailing" class="col-sm-3 col-form-label"></label>
             <input type="checkbox" asp-for="orgAddress.Mailing" class="col-sm-1 form-control">
@@ -31,6 +31,10 @@
         <div class="form-group row">                
             <label asp-for="orgAddress.Physical" class="col-sm-3 col-form-label"></label>
             <input type="checkbox" asp-for="orgAddress.Physical" class="col-sm-1 form-control">
+        </div> 
+        <div class="form-group row">                
+            <label asp-for="orgAddress.Facility" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="orgAddress.Facility" class="col-sm-1 form-control">
         </div>   
         <div class="form-group row">
             <label asp-for="orgAddress.Address.Address1" class="col-sm-3 col-form-label"></label>

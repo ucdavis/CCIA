@@ -32,9 +32,8 @@ namespace CCIA.Controllers.Admin
             _notificationService = notificationService;
         }
 
-        // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes
-        // TODO: Add file count, #row of series, total series count to pending page
-        // TODO: Conditioner approve goes to pending file, not complete
+        // TODO: Add app warnings for apps from Seed_apps for SID or App for Potatoes        
+        // TODO: Check weight from PO Pounds Harvested for new tags/overage check
 
         public ActionResult Index ()
         {
@@ -232,6 +231,11 @@ namespace CCIA.Controllers.Admin
                 .Include(t => t.EmployeePrinted)
                 .Include(t => t.Documents)
                 .Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(model.Stage ==  TagStages.Requested.GetDisplayName() && model.SeriesRequest)
+            {
+                ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.DateEntered.Value.Year && c.PrintSeries).AnyAsync();
+            }            
+
             if(model == null)
             {
                 ErrorMessage = "Tag ID not found!";
@@ -368,7 +372,7 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> AcceptTag(int id)
+        public async Task<IActionResult> AcceptTag(int id, bool conditionerPrint = false)
         {
             var tag = await _dbContext.Tags
                 .Include(t => t.Seeds)
@@ -418,7 +422,16 @@ namespace CCIA.Controllers.Admin
 
             }
 
-            await _notificationService.TagApproved(tag);
+            if(conditionerPrint)
+            {
+                tag.Stage = TagStages.PendingFile.GetDisplayName();
+                await _notificationService.TagApprovedForConditionerPrint(tag);
+                Message = "Tag Approved for Conditioner Print";
+            } else
+            {
+                await _notificationService.TagApproved(tag);
+            }
+            
             await _dbContext.SaveChangesAsync();
 
             if(tag.OECD)
@@ -428,7 +441,7 @@ namespace CCIA.Controllers.Admin
                 tag.OECDId = oecd.Id;
                 tag.Seeds.Remarks = $"{tag.Seeds.Remarks}{msg}";
                 await _dbContext.SaveChangesAsync(); 
-                Message = "Tag Accepted & OECD File saved";               
+                Message = $"{Message} & OECD File saved";               
             }
 
             return RedirectToAction(nameof(Details), new {id = id});            

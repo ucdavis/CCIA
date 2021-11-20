@@ -19,6 +19,7 @@ namespace CCIA.Controllers.Client
 {
     public class BulkSalesCertificatesController : ClientController
     {
+        // TODO Get shipping location from address w/ Facility
         private readonly CCIAContext _dbContext;
 
         public BulkSalesCertificatesController(CCIAContext dbContext)

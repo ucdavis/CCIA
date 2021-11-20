@@ -5,6 +5,8 @@
     [map_desc]  VARCHAR (5000)    NOT NULL,
     [field]     [sys].[geography] NOT NULL,
     [goz_type]  VARCHAR (50)      NULL,
-    [active]    BIT               CONSTRAINT [DF_map_objects_active] DEFAULT ((1)) NOT NULL
+    [active]    BIT               NOT NULL
 );
+
+
 

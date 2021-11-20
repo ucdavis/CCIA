@@ -11,10 +11,12 @@
 <div class="container col-sm-10 collapse show" id="SearchCollapse">
     <div>&nbsp;</div>
     <div class="row form-inline"> 
-        <label asp-for="searchTerm"></label>            
-        <input asp-for="searchTerm" class="form-control mb-2 mr-sm-2 ml-sm-2">
-        <label asp-for="searchWhat"></label>
+        <label asp-for="searchTerm" class="col-form-label col-sm-2"></label>            
+        <input asp-for="searchTerm" class="form-control col-sm-2">
+        <span class="col-sm-1">&nbsp;</span>
+        <label asp-for="searchWhat" class="col-form-label col-sm-2"></label>
         <select asp-for="searchWhat" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.searchOptions))"></select>
+        <span class="col-sm-1">&nbsp;</span>
         <input type="submit" class="btn btn-primary" value="Search">          
     </div>    
 </div>

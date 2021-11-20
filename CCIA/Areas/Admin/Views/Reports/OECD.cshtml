@@ -1,6 +1,7 @@
 @model CCIA.Models.AdminOECDReportViewModel
 
-
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
 <h3>OECD Report</h3>
 <form asp-action="Seeds" method="POST">
@@ -16,7 +17,7 @@
         <div class="col-md-6 col-xl-3">@* First column*@
             <div class="form-group row">
                 <label asp-for="cropsReport" class="col-sm-3 col-form-label">Crops</label>
-                <select asp-for="cropsReport" size="8" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>   
+                <select asp-for="cropsReport" size="8" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>   
                  <div class="col-sm-1">&dagger;</div>             
             </div>                         
         </div>
@@ -28,7 +29,7 @@
             
             <div class="form-group row">
                  <label asp-for="reportType" class="col-sm-3 col-form-label">Report</label>
-                <select asp-for="reportType" class="col-sm-5 form-control">
+                <select asp-for="reportType" class="col-sm-7 form-control">
                     <option value="crop">By Crop</option>
                     <option value="rg">By Report Group</option>
                     <option value="cropXcounty">By Crop and County</option>
@@ -54,6 +55,10 @@
     </div>
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
     </div>
 </div>
 <hr>
@@ -103,13 +108,24 @@
         </tbody>
     </table>
 }
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
+
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+     <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'Brt',
+                buttons: ['copyHtml5', 'csvHtml5']
+            });
+        } );
+    </script>
      
 }
 

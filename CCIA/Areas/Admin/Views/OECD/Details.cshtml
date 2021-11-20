@@ -56,13 +56,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.TotalFee)
                 </div>
-            </div> 
-            <div class="form-group row">
+            </div>
+            <div class="form-group row">                
                 <label asp-for="NotCertified" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.NotCertified)
-                </div>
-            </div>  
+                <input type="checkbox" asp-for="NotCertified" class="col-sm-3 form-control">
+            </div> 
             <div class="form-group row">
                 <label asp-for="DataEntryDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -119,12 +117,10 @@
                    @Html.DisplayFor(x => x.Country.Name)
                </div>
            </div>
-           <div class="form-group row">
-               <label asp-for="Canceled" class="col-sm-3 col-form-label"></label>
-               <div class="col-sm-9 form-control-plaintext">
-                   @Html.DisplayFor(x => x.Canceled)
-               </div>
-           </div>
+           <div class="form-group row">                
+                <label asp-for="Canceled" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="Canceled" class="col-sm-3 form-control">
+            </div> 
            <div class="form-group row">
                <label asp-for="DataEntryUser" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-9 form-control-plaintext">
@@ -170,17 +166,15 @@
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="ReferenceNumber" class="col-sm-3 col-form-label"></label>
+                <label asp-for="ReferenceNumber" class="col-sm-3 col-form-label">Reference #</label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.ReferenceNumber)
                 </div>
-            </div>    
-            <div class="form-group row">
+            </div>   
+            <div class="form-group row">                
                 <label asp-for="DomesticOrigin" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.DomesticOrigin)
-                </div>
-            </div>                         
+                <input type="checkbox" asp-for="DomesticOrigin" class="col-sm-3 form-control">
+            </div>                        
         </div>
     </div>
     <div class="col-sm-12"> @* full width *@        
@@ -233,3 +227,10 @@
         </div>
     </div>     
 </div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

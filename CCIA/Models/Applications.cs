@@ -51,6 +51,7 @@ namespace CCIA.Models
 
        
         public int Id { get; set; }
+        [Display(Name="Renew ID")]
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
 
@@ -366,6 +367,7 @@ namespace CCIA.Models
 	
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:n1}")]
         public double? AreaAcres {  get; private set; }  
 		
 

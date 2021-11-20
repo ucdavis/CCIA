@@ -17,8 +17,10 @@
     [redrice_completed_by]      VARCHAR (50)   NULL,
     [redrice_result]            VARCHAR (50)   NULL,
     [redrice_comments]          VARCHAR (5000) NULL,
-    [redrice_insufficient_size] BIT            CONSTRAINT [DF_seedlab_noxious_weed_redrice_insufficient_size_1] DEFAULT ((0)) NOT NULL,
+    [redrice_insufficient_size] BIT            CONSTRAINT [DF_seedlab_noxious_weed_redrice_insufficient_size] DEFAULT ((0)) NOT NULL,
     [redrice_count]             INT            NULL,
     CONSTRAINT [PK_seedlab_noxious_weed] PRIMARY KEY NONCLUSTERED ([lab_id] ASC)
 );
+
+
 

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[seedlab] (
-    [lab_id]                   INT            IDENTITY (5000, 1) NOT NULL,
+    [lab_id]                   INT            IDENTITY (200, 1) NOT NULL,
     [date_received]            DATE           NOT NULL,
     [weight]                   FLOAT (53)     NULL,
     [insufficient_size_sample] BIT            CONSTRAINT [DF_seedlab_insufficient_size_sample] DEFAULT ((0)) NOT NULL,
@@ -19,4 +19,6 @@
     [divided_by]               VARCHAR (10)   NULL,
     CONSTRAINT [PK_seedlab] PRIMARY KEY NONCLUSTERED ([lab_id] ASC)
 );
+
+
 

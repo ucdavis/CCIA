@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[districts] (
-    [dist_id]     SMALLINT     IDENTITY (1, 1) NOT NULL,
+    [dist_id]     INT          IDENTITY (1, 1) NOT NULL,
     [dist_code]   VARCHAR (5)  NULL,
     [dist_name]   VARCHAR (50) NULL,
     [dist_leader] INT          NULL,
@@ -7,6 +7,8 @@
     [comments]    VARCHAR (25) NULL,
     CONSTRAINT [PK_Districts] PRIMARY KEY CLUSTERED ([dist_id] ASC)
 );
+
+
 
 
 GO

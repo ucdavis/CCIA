@@ -10,7 +10,7 @@
             <th></th>          
             <th>BID</th>
             <th>Type</th>
-            <th>Variety</th>
+            <th>Variety</th> 
             <th>Initiated</th>
             <th>Status</th>
             <th>Blend Cert#</th>
@@ -24,7 +24,7 @@
                 <td><a class="btn btn-info" asp-action="Details" asp-route-id="@blend.Id">Details</a></td>                
                 <td>@blend.Id</td>
                 <td>@blend.BlendType</td> 
-                <td>@blend.GetVarietyName()</td>  
+                <td>@blend.GetVarietyName()</td>
                 <td>@blend.RequestStarted</td>            
                 <td>@blend.Status</td>
                 <td>@blend.CertNumber</td>

@@ -16,7 +16,7 @@
     <div class="form-group col">
         @await Html.PartialAsync("Shared/_CountyDropdown", Model.AppViewModel)
     </div>
-        @if(Model.AppViewModel.AppTypeId == (int)AppTypes.HEMP)
+        @if(Model.AppViewModel.AppTypeId == (int)AppTypes.HempProgarm)
         {
             <div class="form-group col">
                 <label for="county-permit-no">County Permit Number</label><em class="required">•</em>

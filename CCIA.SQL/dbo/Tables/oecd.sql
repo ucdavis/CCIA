@@ -3,22 +3,22 @@
     [seeds_id]         INT            NULL,
     [variety_id]       INT            NULL,
     [tag_id_link]      INT            NULL,
-    [lbs_oecd]         INT            NULL,
+    [lbs_oecd]         INT            CONSTRAINT [DF_oecd_lbs_oecd] DEFAULT ((0)) NULL,
     [cert_num]         VARCHAR (50)   NULL,
-    [oecd_num]         VARCHAR (100)  NULL,
-    [class]            TINYINT        NULL,
+    [oecd_num]         VARCHAR (50)   NULL,
+    [class]            INT            NULL,
     [close_date]       DATETIME       NULL,
     [conditioner_id]   INT            NULL,
-    [country]          SMALLINT       NULL,
+    [country]          INT            NULL,
     [issue_date]       DATETIME       NULL,
     [lot_num]          VARCHAR (50)   NULL,
     [shipper_id]       INT            NULL,
     [sample_form_num]  INT            NULL,
     [date_requested]   DATETIME       NULL,
-    [total_fee]        SMALLMONEY     NULL,
+    [total_fee]        SMALLMONEY     CONSTRAINT [DF_oecd_total_fee] DEFAULT ((0)) NULL,
     [not_cert]         BIT            NULL,
     [data_entry_date]  DATETIME       NULL,
-    [data_entry_year]  AS             (case when datepart(month,[data_entry_date])=(12) OR datepart(month,[data_entry_date])=(11) OR datepart(month,[data_entry_date])=(10) then CONVERT([smallint],datepart(year,[data_entry_date])+(1),(0)) else CONVERT([smallint],datepart(year,[data_entry_date]),(0)) end) PERSISTED,
+    [data_entry_year]  AS             (case when datepart(month,[data_entry_date])=(12) OR datepart(month,[data_entry_date])=(11) OR datepart(month,[data_entry_date])=(10) then CONVERT([int],datepart(year,[data_entry_date])+(1),(0)) else CONVERT([int],datepart(year,[data_entry_date]),(0)) end) PERSISTED,
     [data_entry_user]  VARCHAR (50)   NULL,
     [update_date]      DATETIME       NULL,
     [update_user]      VARCHAR (50)   NULL,
@@ -28,8 +28,6 @@
     [admin_comments]   VARCHAR (5000) NULL,
     [date_printed]     DATETIME       NULL,
     [ref_num]          VARCHAR (100)  NULL,
-    [billable]         BIT            CONSTRAINT [DF_oecd_billable] DEFAULT ((1)) NOT NULL,
-    [charged]          BIT            CONSTRAINT [DF_oecd_charged] DEFAULT ((0)) NOT NULL,
     [usda_reported]    BIT            CONSTRAINT [DF_oecd_usda_reported] DEFAULT ((0)) NOT NULL,
     [usda_report_date] DATETIME       NULL,
     [tags_requested]   INT            CONSTRAINT [DF_oecd_tags_requested] DEFAULT ((0)) NOT NULL,
@@ -40,8 +38,10 @@
 );
 
 
+
+
 GO
-CREATE TRIGGER [dbo].[updtOECD] ON [dbo].[oecd]
+CREATE TRIGGER [dbo].[updtOECD] ON dbo.oecd
 AFTER UPDATE NOT FOR REPLICATION AS
 BEGIN
 	SET NOCOUNT ON
@@ -119,70 +119,70 @@ BEGIN
 		IF UPDATE(lot_num)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Conditioner ID', deleted.lot_num, inserted.lot_num, inserted.update_user, GETDATE()
+			SELECT inserted.file_num, 'Lot number', deleted.lot_num, inserted.lot_num, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.lot_num,-1) <> ISNULL(deleted.lot_num,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(shipper_id)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Conditioner ID', deleted.shipper_id, inserted.shipper_id, inserted.update_user, GETDATE()
+			SELECT inserted.file_num, 'Shipper ID', deleted.shipper_id, inserted.shipper_id, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.shipper_id,-1) <> ISNULL(deleted.shipper_id,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(sample_form_num)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Sample form #', deleted.conditioner_id, inserted.sample_form_num, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Sample form #', deleted.sample_form_num, inserted.sample_form_num, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.sample_form_num,-1) <> ISNULL(deleted.sample_form_num,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(not_cert)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Not certified', deleted.not_cert, inserted.not_cert, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Not certified', deleted.not_cert, inserted.not_cert, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.not_cert,-1) <> ISNULL(deleted.not_cert,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(domestic_origin)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Domestic origin', deleted.domestic_origin, inserted.domestic_origin, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Domestic origin', deleted.domestic_origin, inserted.domestic_origin, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.domestic_origin,-1) <> ISNULL(deleted.domestic_origin,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(canceled)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Canceled', deleted.canceled, inserted.canceled, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Canceled', deleted.canceled, inserted.canceled, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.canceled,-1) <> ISNULL(deleted.canceled,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(comments)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Comments', deleted.comments, inserted.comments, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Comments', deleted.comments, inserted.comments, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.comments,-1) <> ISNULL(deleted.comments,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(date_printed)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'Date printed', deleted.date_printed, inserted.date_printed, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'Date printed', deleted.date_printed, inserted.date_printed, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.date_printed,-1) <> ISNULL(deleted.date_printed,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(ref_num)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'ref #', deleted.ref_num, inserted.ref_num, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'ref #', deleted.ref_num, inserted.ref_num, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.ref_num,-1) <> ISNULL(deleted.ref_num,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END
 		IF UPDATE(tags_requested)
 		BEGIN
 			INSERT INTO oecd_changes (file_num, column_change, old_value, new_value, user_change, date_change)
-			SELECT inserted.file_num, 'tags requested', deleted.tags_requested, inserted.tags_requested, inserted.sample_form_num, GETDATE()
+			SELECT inserted.file_num, 'tags requested', deleted.tags_requested, inserted.tags_requested, inserted.update_user, GETDATE()
 			FROM inserted JOIN deleted ON inserted.file_num = deleted.file_num AND ISNULL(inserted.tags_requested,-1) <> ISNULL(deleted.tags_requested,-1)
 			WHERE inserted.update_user IS NOT NULL
 		END

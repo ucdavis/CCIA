@@ -5,7 +5,10 @@
     [list_id]        INT          NOT NULL,
     [count]          SMALLINT     NULL,
     [grams]          FLOAT (53)   NULL,
+    [fraction]       VARCHAR (50) NULL,
     CONSTRAINT [PK_seedlab_purity_lists_1] PRIMARY KEY NONCLUSTERED ([purity_list_id] ASC),
     CONSTRAINT [IX_seedlab_purity_lists] UNIQUE NONCLUSTERED ([lab_id] ASC, [type] ASC, [list_id] ASC)
 );
+
+
 

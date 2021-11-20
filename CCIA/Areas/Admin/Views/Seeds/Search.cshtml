@@ -13,73 +13,77 @@
     <div class="row">
         <div class="col-md-6 col-xl-4">@* First column*@
             <div class="form-group row">
-                <label asp-for="sid" class="col-sm-2 col-form-label"></label>
+                <label asp-for="sid" class="col-sm-3 col-form-label"></label>
                 <input asp-for="sid" class="col-sm-2 form-control">
             </div>  
             <div class="form-group row">
-                <label asp-for="variety" class="col-sm-2 col-form-label"></label>
+                <label asp-for="variety" class="col-sm-3 col-form-label"></label>
                 <input asp-for="variety" class="col-sm-2 form-control">
                 <div class="col-sm-6">
                     (accepts partials)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="submittedYearsToSearch" class="col-sm-2 col-form-label"></label>
-                <select asp-for="submittedYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
+                <label asp-for="submittedYearsToSearch" class="col-sm-3 col-form-label"></label>
+                <select asp-for="submittedYearsToSearch" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>
             <div class="form-group row">
-                <label asp-for="searchStatus" class="col-sm-2 col-form-label"></label>
-                <select asp-for="searchStatus" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
+                <label asp-for="searchStatus" class="col-sm-3 col-form-label"></label>
+                <select asp-for="searchStatus" class="col-sm-8 form-control" asp-items="@(new SelectList(Model.statusOptions))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 2nd column*@ 
             <div class="form-group row">
-                <label asp-for="applicantName" class="col-sm-2 col-form-label"></label>
+                <label asp-for="applicantName" class="col-sm-3 col-form-label"></label>
                 <input asp-for="applicantName" class="col-sm-4 form-control">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     (partial name or Id)
                 </div>        
             </div>
             <div class="form-group row">
-                <label asp-for="lotNumber" class="col-sm-2 col-form-label"></label>
-                <input asp-for="lotNumber" class="col-sm-2 form-control">
-                <div class="col-sm-6">
+                <label asp-for="lotNumber" class="col-sm-4 col-form-label"></label>
+                <input asp-for="lotNumber" class="col-sm-3 form-control">
+                <div class="col-sm-5">
                     (accepts partials)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="certYearsToSearch" class="col-sm-2 col-form-label"></label>
-                <select asp-for="certYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
+                <label asp-for="certYearsToSearch" class="col-sm-3 col-form-label"></label>
+                <select asp-for="certYearsToSearch" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>
             <div class="form-group row">
-                <label asp-for="ProgramToSearch" class="col-sm-2 col-form-label"></label>
+                <label asp-for="ProgramToSearch" class="col-sm-3 col-form-label"></label>
                 <select asp-for="ProgramToSearch" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.AppTypes,"Abbreviation","AppTypeTrans"))"></select>
             </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 3rd column*@ 
             <div class="form-group row">
-                <label asp-for="conditionerName" class="col-sm-2 col-form-label"></label>
+                <label asp-for="conditionerName" class="col-sm-3 col-form-label"></label>
                 <input asp-for="conditionerName" class="col-sm-4 form-control">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     (partial name or Id)
                 </div>        
             </div>
             <div class="form-group row">
-                <label asp-for="appId" class="col-sm-2 col-form-label"></label>
+                <label asp-for="appId" class="col-sm-3 col-form-label"></label>
                 <input asp-for="appId" class="col-sm-2 form-control">                
             </div>  
              <div class="form-group row">
-                <label asp-for="searchCrops" class="col-sm-2 col-form-label"></label>
-                <select multiple="multiple" asp-for="searchCrops" class="col-sm-4 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+                <label asp-for="searchCrops" class="col-sm-3 col-form-label"></label>
+                <select multiple="multiple" asp-for="searchCrops" class="col-sm-6 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
                 <div class="col-sm-1">&dagger;</div> 
             </div>            
         </div>
     </div>
     <div>
         <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
     </div>
 </div>
 <hr>
@@ -88,10 +92,7 @@
 {
     @await Html.PartialAsync("_SeedsTable", @Model.seeds)
 }
-<div class="col-sm-12">
-    <hr>
-    &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
-</div>
+
 
 
 

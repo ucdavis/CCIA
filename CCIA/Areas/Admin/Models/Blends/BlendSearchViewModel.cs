@@ -73,6 +73,35 @@ namespace CCIA.Models
             return freshModel;
         }
 
+        public static async Task<AdminBlendsSearchViewModel> ByStatus(CCIAContext _dbContext, AdminBlendsSearchViewModel vm, IFullCallService helper)
+        {   
+            if(vm != null)
+            {
+                var blendsToFind = helper.FullBlendRequest().AsQueryable();
+
+               if(vm.searchStatus != null)
+                {                    
+                    blendsToFind = blendsToFind.Where(b => vm.searchStatus.Contains(b.Status));
+                }    
+                
+                var viewModel = new AdminBlendsSearchViewModel
+                {
+                    blends = await blendsToFind.ToListAsync(),
+                    statusOptions = EnumHelper.GetListOfDisplayNames<BlendStatus>(),
+                    searchStatus = vm.searchStatus
+                };  
+                return viewModel;
+            }
+            var freshModel = new AdminBlendsSearchViewModel
+            {
+                blends = new List<BlendRequests>(),
+                statusOptions = EnumHelper.GetListOfDisplayNames<BlendStatus>(),
+            };           
+
+            return freshModel;
+        }
+
+
         
     } 
 

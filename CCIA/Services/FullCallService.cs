@@ -94,6 +94,8 @@ namespace CCIA.Services
                 .ThenInclude(a => a.Crop)
                 .Include(c => c.ClassProduced)
                 .Include(l => l.LabResults)
+                .ThenInclude(l => l.Changes)
+                .ThenInclude(c => c.Employee)
                 .Include(s => s.CountryOfOrigin)
                 .Include(s => s.StateOfOrigin)
                 .Include(s => s.CountySampleDrawn)
@@ -115,6 +117,8 @@ namespace CCIA.Services
                 .Include(s => s.SeedsApplications)
                 .ThenInclude(sa => sa.Application)
                 .ThenInclude(a => a.ClassProduced)
+                .Include(s => s.Changes)
+                .ThenInclude(c => c.Employee)
                 .AsQueryable();
             return seed;
 

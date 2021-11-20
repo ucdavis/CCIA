@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Thinktecture;
+//using Thinktecture;
 
 namespace CCIA.Models.ViewModels
 {   
@@ -14,10 +14,10 @@ namespace CCIA.Models.ViewModels
         public int Year { get; set; }
 
         public static async Task<WeightLogViewModel> Create(CCIAContext _dbContext, int year)
-        {
+        {             
             var viewModel = new WeightLogViewModel
             {
-                seeds = await _dbContext.Seeds.Where(s => s.YearConfirmed == year && s.Submitted)                    
+                seeds = _dbContext.Seeds.Where(s => s.YearConfirmed == year && s.Submitted)                    
                     .Include(c => c.ConditionerOrganization)
                     .Include(c => c.AppTypeTrans)
                     .Include(v => v.Variety)
@@ -43,11 +43,18 @@ namespace CCIA.Models.ViewModels
                         PrivateLabNumber = s.LabResults.PrivateLabNumber,
                         LabName = s.LabResults.LabOrganization == null ? s.LabResults.PrivateLabName : s.LabResults.LabOrganization.Name,
                         Rejected = s.LabResults.PurityResults == "R" || s.LabResults.GermResults == "R" || s.LabResults.AssayResults == "R" ? true : false,
-                        HasOECDForm = s.OECDForm.Any(),
-                        RowNumber = EF.Functions.RowNumber(s.ConditionerId, s.Variety.CropId, EF.Functions.OrderBy(s.DateSampleReceived))
+                        HasOECDForm = s.OECDForm.Any()
+                        
                     }
                 
-                    ).ToListAsync(),
+                    ).AsEnumerable()
+                    .Select((u, index) => new WeightLog { Id = u.Id, ConditionerId = u.ConditionerId, DateSampleReceived = u.DateSampleReceived, 
+                        ConfirmedAt = u.ConfirmedAt, SampleFormDate = u.SampleFormDate, OECDLot = u.OECDLot, CertYear = u.CertYear, LotNumber = u.LotNumber,
+                        PoundsLot = u.PoundsLot, ConditionerName = u.ConditionerName, Class = u.Class, ClassName = u.ClassName, OutsideCalifornia = u.OutsideCalifornia, AppId = u.AppId, 
+                        SampleFormCertNumber = u.SampleFormCertNumber, CropAnnual = u.CropAnnual, SampleFormRad = u.SampleFormRad, CropName = u.CropName,
+                        VarietyName = u.VarietyName, PrivateLabDate = u.PrivateLabDate, PrivateLabNumber = u.PrivateLabNumber, LabName = u.LabName,
+                        Rejected = u.Rejected, HasOECDForm = u.HasOECDForm, RowNumber = index + 1} )
+                    .ToList(),
                 Years = await _dbContext.Seeds.Select(s => s.YearConfirmed).Distinct().OrderBy(id => id).ToListAsync(),
                 Year = year,                
             };
