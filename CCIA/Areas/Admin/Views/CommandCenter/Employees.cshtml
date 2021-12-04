@@ -1,5 +1,10 @@
 @model List<CCIA.Models.CCIAEmployees>
-
+@{var checkedValue = "checked";
+    if(!ViewBag.showOnlyCurrent)
+    {
+        checkedValue = "";
+    }
+}
 <div class="card">
     <div class="card-header-access">
         <div class="card-head">
@@ -11,6 +16,22 @@
     <a class="btn btn-primary" asp-action="NewEmployee">Add New Employee</a>
 </div>
 <div>
+    <form method="Post" class="form-inline">
+        <div class="card" style="width: 100%;">            
+            <div class="card-body">
+                <div class="form-row">
+                <div class="form-group">
+                    <label for="showOnlyCurrent" class="col-form-label">Current employees:</label>
+                    <input type="checkbox" id="showOnlyCurrent" @checkedValue name="showOnlyCurrent" class="col-sm-2 form-control">
+                    <input hidden name="showOnlyCurrent" value="false">
+                </div>
+                <div class="form-group"> 
+                    <i class="fa fa-refresh"></i><input type="submit" value="Update Table" class="btn btn-primary">                                           
+                </div> 
+                </div>
+            </div>
+        </div>    
+    </form>
     <table class="table">
         <thead>
             <tr>
@@ -32,12 +53,12 @@
                     <td><a class="btn btn-info" asp-action="EmployeeDetails" asp-route-id="@emp.Id">Details</a></td>
                     <td>@emp.FirstName</td>
                     <td>@emp.LastName</td>
-                    <td><input type="checkbox" asp-for="@emp.Current" class="form-control"></td>
-                    <td><input type="checkbox" asp-for="@emp.CCIAAccess" class="form-control"></td>
-                    <td><input type="checkbox" asp-for="@emp.CoreStaff" class="form-control"></td>
-                    <td><input type="checkbox" asp-for="@emp.FieldInspector" class="form-control"></td>
-                    <td><input type="checkbox" asp-for="@emp.Admin" class="form-control"></td>
-                    <td><input type="checkbox" asp-for="@emp.ConditionerStatusUpdate" class="form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.Current" class="displayOnly form-control"></td>
+                    <td><input type="checkbox" asp-for="@emp.CCIAAccess" class="form-control displayOnly"></td>
+                    <td><input type="checkbox" asp-for="@emp.CoreStaff" class="form-control displayOnly"></td>
+                    <td><input type="checkbox" asp-for="@emp.FieldInspector" class="form-control displayOnly"></td>
+                    <td><input type="checkbox" asp-for="@emp.Admin" class="form-control displayOnly"></td>
+                    <td><input type="checkbox" asp-for="@emp.ConditionerStatusUpdate" class="form-control displayOnly"></td>
                 </tr>                
             }
         </tbody>
@@ -46,7 +67,7 @@
 
 @section Scripts {
     <script>
-        $(":checkbox").on("click", false);
+        $(".displayOnly").on("click", false);
     </script>
    
 }
