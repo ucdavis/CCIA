@@ -372,7 +372,7 @@
             </div>
         
         <input id="file" name="file" type="file">            
-        <input class="btn btn-primary" type="submit" value="Upload" />
+        <input class="btn btn-primary" type="submit" value="Upload" disabled />
     </form>
     <hr>
     @if(Model.application.PlantingStocks.Any())
@@ -565,8 +565,19 @@
             
         } 
    
-        $(":checkbox").on("click", false);
+        
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(":checkbox").on("click", false);
+        });
     </script>
    
 }
-}
+

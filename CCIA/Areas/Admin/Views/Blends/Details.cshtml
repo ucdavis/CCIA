@@ -301,8 +301,26 @@
                                 <input id="docName" name="docName" class="col-form">
                             </div>                            
                             <input id="file" name="file" type="file">            
-                            <input class="btn btn-primary" type="submit" value="Upload" />
+                            <input class="btn btn-primary" type="submit" value="Upload" disabled />
                         </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(":checkbox").on("click", false);
+        });
+    </script>
+   
+}
+
