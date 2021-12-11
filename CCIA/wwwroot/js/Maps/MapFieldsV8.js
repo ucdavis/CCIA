@@ -22,8 +22,10 @@ function loadMapScenario() {
 
     lblIDs = $("#lblIDs");
 
+    
+
     pinLayer = new Microsoft.Maps.Layer();
-     map.layers.insert(pinLayer);
+    map.layers.insert(pinLayer);
        
     infobox = new Microsoft.Maps.Infobox(map.getCenter(), { visible: false });
     infobox.setMap(map);
@@ -39,12 +41,60 @@ function loadMapScenario() {
         strokeColor: myStrokeColor,
         strokeThickness: myStrokeThickness
     };
+
+    Microsoft.Maps.loadModule('Microsoft.Maps.DrawingTools', function () {
+        var dt = Microsoft.Maps.DrawingTools;
+        var da = dt.DrawingBarAction;
+        var tools = new dt(map);
+        tools.showDrawingManager(function (manager) { 
+            drawingManager = manager;           
+            manager.setOptions({
+                drawingBarActions: da.polygon 
+            });
+            Microsoft.Maps.Events.addHandler(manager, 'drawingStarted', function () {  beginDraw(); }); 
+        });
+    });
     
 }
 
 function round(n) {
     number = new Number(n);
     return Math.round(number * 1000) / 1000;
+}
+
+function zoom_county() {
+    var county = $("[id*=county_name").val() + " county california";
+    Search(county);
+}
+
+function Search(query) {
+    if (!searchManager) {
+        //Create an instance of the search manager and perform the search.
+        Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+            searchManager = new Microsoft.Maps.Search.SearchManager(map);
+            Search(query)
+        });
+    } else {
+        //Remove any previous results from the map.
+        map.entities.clear();       
+        geocodeQuery(query);
+    }
+}
+
+function geocodeQuery(query) {
+    var searchRequest = {
+        where: query,
+        callback: function (answer, userData) {
+            map.setView({ bounds: answer.results[0].bestView });
+            map.entities.push(new Microsoft.Maps.Pushpin(answer.results[0].location));
+        },
+        errorCallback: function (e) {
+            //If there is an error, alert the user about it.
+            alert("No results found.");
+        }
+    };
+    //Make the geocode request.
+    searchManager.geocode(searchRequest);
 }
 
 
@@ -150,4 +200,65 @@ function setMapView() {
     map.setView({ bounds: viewRect });
     map.setView({ zoom: 9 });
 }
+
+function beginDraw() {
+    beginDrawPrompts();    
+    rightClickHandler = Microsoft.Maps.Events.addHandler(map, 'rightclick', function (e) {
+        finishDrawing(e);
+    });  
+};
+
+function beginDrawPrompts() {
+    alert('Please right click on your final point to close the field. Remember: Field must be drawn in a clockwise direction.');
+}
+
+function finishDrawing(e) {
+    Microsoft.Maps.Events.invoke(map, 'click', e);
+    Microsoft.Maps.Events.invoke(map, 'dblclick', e);    
+    Microsoft.Maps.Events.removeHandler(rightClickHandler);
+    getShapes();
+}
+
+function getShapes() {
+    var shapes = drawingManager.getPrimitives();    
+    var coords = shapes[0].getLocations().reverse();
+    var strCoord = "";
+
+    for (var i = 0; i < coords.length; ++i) 
+    {
+        strCoord = strCoord + ' ' + LatLonStr(coords[i]);
+    }
+    strCoord = strCoord.replaceAll("(","");
+    strCoord = strCoord.substring(0, strCoord.length - 1);
+    //alert(strCoord);
+    $("#map").val(strCoord);
+        
+}
+
+function LatLonStr(loc)
+{
+  return "(" + loc.longitude + " " + loc.latitude + ",";
+}
+
+function Panmap () {
+    
+    var x = $("#txtLat").val();   
+    var y = $("#txtLong").val();
+    if (isNaN(x) || x < 32 || x > 42) {
+        alert('Latitude must be a number between 32 and 42');
+      }
+      else
+    if (isNaN(y) || y < -125 || y > -114) {
+        alert('Longitude must be a number between -125 and -114');
+    }
+     else
+     {        
+        map.setView({           
+            center: new Microsoft.Maps.Location(x,y),
+            zoom: 14,
+        });
+        
+     }
+ }
+
 
