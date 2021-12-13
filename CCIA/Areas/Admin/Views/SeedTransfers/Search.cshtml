@@ -91,8 +91,24 @@
                 <td>@stc.PurchaserName</td>
                 <td>@stc.Pounds</td>
                 <td>@stc.CertificateDate.ToShortDateString()</td>
-                <td>@stc.GetCrop()</td>
-                <td>@stc.GetVariety()</td>
+                <td>
+                    @if(stc.BlendId != null)
+                    {
+                        <span>Blend</span>
+                    } else
+                    {
+                        @stc.GetCrop()
+                    }                    
+                </td>
+                <td>
+                    @if(stc.BlendId != null)
+                    {
+                        <span>Blend</span>
+                    } else
+                    {
+                        @stc.GetVariety()
+                    }                    
+                </td>
                 <td>@stc.GetClass()</td>
                 <td>@stc.ClassTransferred()</td>
                 <td>@stc.CreatedByContact.Name</td>
@@ -120,7 +136,9 @@
             oTable = $('#table').dataTable({
                  dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
-                "pageLength": 50
+                "pageLength": 50,
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
             });           
             
         } );

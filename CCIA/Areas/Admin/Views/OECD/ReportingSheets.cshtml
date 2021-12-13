@@ -105,9 +105,19 @@
                 <td>0</td>
                 <td>Domestic</td>
                 <td></td>
-                <td>@oecd.Seeds.LabResults.LabOrganization.Name</td>
+                <td>
+                    @if(oecd.Seeds.LabResults.LabOrganization != null)
+                    {
+                        @oecd.Seeds.LabResults.LabOrganization.Name
+                    }
+                </td>
                 <td>SID @oecd.SeedsId</td>
-                <td>@oecd.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()</td>
+                <td>
+                     @if(oecd.Seeds.LabResults.PrivateLabDate.HasValue)
+                    {
+                        @oecd.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
+                    }
+                </td>
                 <td>@oecd.Seeds.LabResults.PurityValue</td>
                 <td>@oecd.Seeds.LabResults.InertValue</td>
                 <td>@oecd.Seeds.LabResults.OtherCropValue</td>
