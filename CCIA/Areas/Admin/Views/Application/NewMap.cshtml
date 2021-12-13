@@ -74,9 +74,10 @@
     <form method="post" id="newMap">
         @if(Model.showLink)
         {
-                <div>This field is linked to an isolation map field. You can update both maps, or just the application map.</div>
-                <div>Update Both? <input type="checkbox" name="updateBoth" id="updateBoth" checked></div>
-
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label">This field is linked to an isolation map field. You can update both maps, or just the application map. Update Both?</label>
+                <input type="checkbox" name="updateBoth" id="updateBoth" checked class="form-control col-sm-1">
+            </div>
         } else
         {
             <div>This field does not appear to be linked to an isolation map field.</div>

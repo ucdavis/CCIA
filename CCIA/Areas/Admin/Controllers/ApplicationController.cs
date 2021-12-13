@@ -77,7 +77,7 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewMap(int id, string map)
+        public async Task<IActionResult> NewMap(int id, string map, string updateBoth)
         {
             var points = new SqlParameter("points", map);
             var msg = new SqlParameter
@@ -108,7 +108,7 @@ namespace CCIA.Controllers.Admin
             }
 
             var appId = new SqlParameter("app_id", id);
-            var link = new SqlParameter("link", false);
+            var link = new SqlParameter("link", updateBoth == "on" ? true : false);
             
             await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_insert_app_map @app_Id, @points, @link", appId, points, link); 
             Message = "Field Updated";
