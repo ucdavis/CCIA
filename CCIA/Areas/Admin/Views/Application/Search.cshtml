@@ -151,7 +151,7 @@
             oTable = $('#table').dataTable({
                  dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
-                "pageLength": 50,
+                bPaginate: false,
                 order: [[ 1, "asc"]],
                 columnDefs: [{ targets: 0, orderable: false}],
             });
