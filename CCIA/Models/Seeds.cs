@@ -60,9 +60,10 @@ namespace CCIA.Models
         public int? OfficialVarietyId { get; set; }
         //public VarFull  Variety { get; set; }
 
-        [Display(Name="Lot Number")]
+        [Display(Name="Lot Number")]        
         public string LotNumber { get; set; }
         [Display(Name="Lot Weight (pounds)")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal PoundsLot { get; set; }
 
         [ForeignKey("Class")]

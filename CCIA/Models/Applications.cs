@@ -121,6 +121,7 @@ namespace CCIA.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DatePlanted { get; set; }
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? AcresApplied { get; set; }
         public bool Billable { get; set; }
         public bool Charged { get; set; }

@@ -292,6 +292,7 @@ namespace CCIA.Models
             }
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal SourceLotWeight
         {
             get
@@ -324,6 +325,7 @@ namespace CCIA.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DateNeeded { get; set; }
         public DateTime? DateRun { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? LotWeightBagged { get; set; }
         public decimal? CoatingPercent { get; set; }
         public string WeightUnit { get; set; }
@@ -331,6 +333,7 @@ namespace CCIA.Models
         public int? ExtrasOverrun { get; set; }
         public decimal? BagSize { get; set; }
         [NotMapped]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? BagSizePounds
         {
             get
@@ -353,6 +356,7 @@ namespace CCIA.Models
             }
         }
         [NotMapped]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? LotWeightRequested
         {
             get
