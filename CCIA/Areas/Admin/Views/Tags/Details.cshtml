@@ -524,6 +524,7 @@
                         <th>Void?</th>
                         <th>Count</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -535,7 +536,8 @@
                             <td>@tagSeries.End</td>
                             <td><input type="checkbox" asp-for="@tagSeries.Void" class="col-sm-3 form-control disabled"></td>
                             <td>@tagSeries.Count </td>
-                            <td>
+                            <td><a asp-action="EditSeries" asp-route-id="@tagSeries.Id" class="btn btn-info">Edit</a></td>
+                            <td>                                
                                 <form asp-action="DeleteSeries">
                                     <input type="hidden" value="@tagSeries.Id" name="id" id="id">
                                     <input type="submit" class="btn btn-warning" value="Delete entry" onclick="return confirm('Are you sure you want to delete this entry?')">

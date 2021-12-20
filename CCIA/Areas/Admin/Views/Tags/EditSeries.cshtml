@@ -1,0 +1,48 @@
+@model CCIA.Models.TagSeries
+
+<form asp-action="EditSeries" method="post">
+    <input type="hidden" asp-for="Id">
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Tag Series</h2> 
+        </div>            
+    </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-dark" asp-action="Details" asp-controller="Tags" asp-area="Admin" asp-route-id="@Model.TagId">Return to tag</a> <br><br>
+        </div>            
+    </div> 
+    <div class="row">
+        <div class="form-group col-sm-3 row">
+            <label asp-for="Letter" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Letter" class="col-sm-5 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="Letter" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group col-sm-3 row">
+            <label asp-for="Start" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Start" class="col-sm-7 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="Start" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group col-sm-3 row">
+            <label asp-for="End" class="col-sm-3 col-form-label"></label>
+            <input asp-for="End" class="col-sm-7 form-control">
+            <span class="field-validation-valid text-danger" data-valmsg-for="End" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group col-sm-3 row">
+            <label asp-for="Void" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Void" class="col-sm-7 form-control">
+        </div>        
+    </div>
+    <div class="row">
+        <input type="submit" value="Update" class="btn btn-primary">
+    </div>
+</div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     
+}

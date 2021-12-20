@@ -446,5 +446,38 @@ namespace CCIA.Controllers.Admin
 
             return RedirectToAction(nameof(Details), new {id = id});            
         }
+
+        public async Task<IActionResult> EditSeries(int id)
+        {
+            var model = await _dbContext.TagSeries.Where(ts => ts.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Tag Series not found";
+            }            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSeries(int id, TagSeries ts)
+        {
+            var tagSeriesToUpdate = await _dbContext.TagSeries.Where(ts => ts.Id == id).FirstOrDefaultAsync();
+            if(tagSeriesToUpdate == null || tagSeriesToUpdate.Id != ts.Id)
+            {
+                ErrorMessage = "Tag Series not found";
+                return RedirectToAction(nameof(Process));
+            }
+
+            tagSeriesToUpdate.Letter = ts.Letter;
+            tagSeriesToUpdate.Start = ts.Start;
+            tagSeriesToUpdate.End = ts.End;
+            tagSeriesToUpdate.Void = ts.Void;
+
+            if(ModelState.IsValid){               
+                await _dbContext.SaveChangesAsync();
+                Message = "Tag Series updated";
+            }
+             return RedirectToAction(nameof(Details), new { id = tagSeriesToUpdate.TagId });  
+
+        }
     }
 }
