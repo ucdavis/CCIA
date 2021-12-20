@@ -305,6 +305,10 @@ div.required label.col-form-label:after {
   color: red;
 }
 
+label.col-form-label{
+  font-weight: bold;
+}
+
 .scrollable-menu {
   height: auto;
   max-height: 400px;
