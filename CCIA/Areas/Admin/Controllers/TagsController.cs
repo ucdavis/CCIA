@@ -245,6 +245,21 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Previous(int id)
+        {
+            var previousId = await _dbContext.Tags.Where(t => t.Id < id).OrderBy(t => t.Id).Select(t => t.Id).LastOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+        public async Task<IActionResult> Next(int id)
+        {
+            var previousId = await _dbContext.Tags.Where(t => t.Id > id).OrderBy(t => t.Id).Select(t => t.Id).FirstOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> RecordSeries(int id, string Letter, int Start, int End, bool Void)
         {
