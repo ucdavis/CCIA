@@ -30,7 +30,11 @@
                 <td>@seed.CertNumber</td>
                 <td>@seed.CertYear</td>
                 <td>@seed.ApplicantId</td>
-                <td>@seed.ApplicantOrganization.Name</td>
+                <td>@if(seed.ApplicantOrganization != null)
+                    {
+                         @seed.ApplicantOrganization.Name
+                    }
+                </td>
                 <td>@seed.ConditionerId</td> 
                 <td>@seed.ConditionerOrganization.Name</td>
                 <td>@seed.GetCropName()</td>

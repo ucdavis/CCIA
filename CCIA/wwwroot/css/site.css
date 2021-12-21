@@ -245,9 +245,14 @@ button.accept-policy {
     }
 }
 
+.card {
+  background-color: #f5f1e8;
+}
+
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  background-color: #f5f1e8;
 }
 .footer {
   position: absolute;
@@ -298,6 +303,10 @@ body {
 div.required label.col-form-label:after {
   content: " *";
   color: red;
+}
+
+label.col-form-label{
+  font-weight: bold;
 }
 
 .scrollable-menu {

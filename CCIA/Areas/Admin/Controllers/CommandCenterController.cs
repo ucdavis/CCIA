@@ -24,9 +24,10 @@ namespace CCIA.Controllers
             return View();
         }  
 
-        public async Task<IActionResult> Employees()
+        public async Task<IActionResult> Employees(bool showOnlyCurrent = true)
         {
-            var model = await _dbContext.CCIAEmployees.ToListAsync();
+            ViewBag.showOnlyCurrent = showOnlyCurrent;
+            var model = await _dbContext.CCIAEmployees.Where(e => e.Current == showOnlyCurrent).OrderBy(e => e.LastName).ThenBy(e => e.FirstName).ToListAsync();
             return View(model);
         }  
 

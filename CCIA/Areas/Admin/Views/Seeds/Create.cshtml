@@ -1,0 +1,301 @@
+@using CCIA.Helpers;
+@model  CCIA.Models.ViewModels.AdminSeedsViewModel
+
+<!-- Org Lookup Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Orgs" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Org</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Name or Account Number:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <input type="hidden" id="lookupType" value=""/>
+        <div id="orgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Variety Lookup Modal -->
+<div class="modal fade" id="lookupVarietyModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Variety" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Variety</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Variety Name:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="variety" placeholder="Enter the varieties name (partial accepted)">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="variety-lookup-btn"><i class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <div id="varietyTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form asp-action="Create">
+<div class="container col-sm-12">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Create Seed Lot</h2> 
+        </div>            
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>        
+    </div>
+    <div class="row col-sm-12">
+         <a asp-action="Seeds" class="btn btn-dark">Cancel</a>
+    </div>    
+    <div class="row">
+        <div class="col-sm-6"> @* First column *@   
+            <div class="form-group row">
+                <label asp-for="seed.CertProgram" class="col-sm-3 col-form-label"></label>
+                <select asp-for="seed.CertProgram"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.certPrograms, "Abbreviation","AppTypeTrans"))"></select>
+            </div>                      
+            <div class="form-group row">
+                <label asp-for="seed.CertYear" class="col-sm-3 col-form-label"></label>
+                <select asp-for="seed.CertYear"  class="col-sm-3 form-control" asp-items="@(new SelectList(Model.certYears))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>                    
+                <input type="text" asp-for="seed.ConditionerOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Conditioner"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                @Html.HiddenFor(x => x.seed.ConditionerId)                              
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>                    
+                <input type="text" asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-8 form-control" readonly>
+                <div class="input-group-append"> 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Applicant"><i class="fa fa-exchange-alt"></i></button>                            
+                </div>  
+                @Html.HiddenFor(x => x.seed.ApplicantId)                              
+            </div>  
+            <div class="form-group row">
+                <label asp-for="seed.OfficialVarietyId" class="col-sm-4 col-form-label">Official Variety</label>
+                <input type="text" asp-for="seed.Variety.Name" class="col-sm-6 form-control" readonly>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
+                </div>  
+                @Html.HiddenFor(x => x.seed.OfficialVarietyId)             
+            </div>                       
+            <div class="form-group row">
+                <label asp-for="seed.Class" class="col-sm-3 col-form-label"></label>
+                <select asp-for="seed.Class"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classes, "Id","NameAndAppType"))"></select>
+            </div>                       
+            <div class="form-group row">
+                <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label">Drawn By</label>
+                <input type="text" class="col-sm-7 form-control" asp-for="seed.SampleDrawnBy">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleDrawnBy" data-valmsg-replace="true"></span>
+            </div>           
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Seed Origin</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    Country: <select asp-for="seed.OriginCountry"  class="col-sm-6 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select> <br>
+                    State: <select asp-for="seed.OriginState"  class="col-sm-6 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "Name"))"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6"> @* Second column *@
+            <div class="form-group row">
+                <label asp-for="seed.SampleFormDate" class="col-sm-4 col-form-label"></label>
+                <input type="text" class="col-sm-3 form-control datepicker" asp-for="seed.SampleFormDate">
+                    <div class="input-group-append" onclick="$('.datepicker').focus();">             
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>
+                    <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleFormDate" data-valmsg-replace="true"></span> 
+            </div>  
+            
+            <div class="form-group row">
+                <label asp-for="seed.SampleFormCertNumber"  class="col-sm-3 col-form-label">Form Cert#</label>
+                <input type="text" class="col-sm-3 form-control" asp-for="seed.SampleFormCertNumber">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.SampleFormCertNumber" data-valmsg-replace="true"></span>
+            </div>            
+            <div class="form-group row">
+                <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-5 form-control" asp-for="seed.LotNumber">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.LotNumber" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                <input type="text" class="col-sm-3 form-control" asp-for="seed.PoundsLot">
+                <span class="field-validation-valid text-danger" data-valmsg-for="seed.PoundsLot" data-valmsg-replace="true"></span>
+            </div>            
+            <div class="form-group row">                
+                    <label asp-for="seed.NotFinallyCertified" class="col-sm-3 col-form-label"></label>
+                    <input type="checkbox" asp-for="seed.NotFinallyCertified" class="col-sm-3 form-control">
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.CountyDrawn" class="col-sm-3 col-form-label"></label>
+                <select asp-for="seed.CountyDrawn"  class="col-sm-5 form-control" asp-items="@(new SelectList(Model.counties, "CountyId","Name"))"></select>
+            </div>                                                               
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Lot Type</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    <div class="form-group row">                
+                        <label asp-for="seed.OriginalRun" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OriginalRun" class="col-sm-3 form-control">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.Remill" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.Remill" class="col-sm-3 form-control">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.OECDLot" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.OECDLot" class="col-sm-3 form-control">
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group row">
+            <label asp-for="seed.Remarks" class="col-sm-2 col-form-label"></label>
+            <textarea asp-for="seed.Remarks" rows="5" class="col-sm-9 form-control" ></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="submit" class="btn btn-primary" value="Create"> | 
+            <a class="btn btn-dark" asp-action="Details" asp-route-id="@Model.seed.Id">Cancel</a> <br><br>
+        </div>            
+    </div>   
+</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        });
+
+        $('#lookupOrgModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever')          
+            var modal = $(this)
+            modal.find('.modal-title').text('Look Up ' + recipient + ' Org');
+            modal.find('#lookupType').val(recipient);
+            modal.find("#account").val("");
+            modal.find("#orgTable").empty();            
+        })
+      
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();
+            var lookup = $("#account").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }
+            $("#orgTable").empty();
+            $("#orgTable").load("/admin/Application/LookupOrg?lookup="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        $("#variety-lookup-btn").click(function(e){
+            e.preventDefault();
+            var lookup = $("#variety").val();
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }        
+            $("#varietyTable").empty();
+            $("#varietyTable").load("/admin/Application/LookupVariety?lookup="+lookup+"&cropId=0", (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        $("#variety").keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                e.preventDefault();
+                $(':focus').blur();
+                $("#variety-lookup-btn").click();
+            }
+        });
+
+
+        $("#account").keyup(function(e){
+            if(e.keyCode == 13)
+            {
+                e.preventDefault();
+                $(':focus').blur();
+                $("#account-lookup-btn").click();
+            }
+        });
+
+        function useOrg(e,orgId, orgNameAndId)
+        {
+            e.preventDefault();
+            var lookupType = $("#lookupType").val();
+            if(lookupType === "Applicant")
+            {
+                $("#seed_ApplicantId").val(orgId);
+                $("#seed_ApplicantOrganization_NameAndId").val(orgNameAndId);
+            }
+            if(lookupType === "Conditioner")
+            {
+                $("#seed_ConditionerId").val(orgId);
+                $("#seed_ConditionerOrganization_NameAndId").val(orgNameAndId);
+            }
+            $("#orgTable").empty();
+            $("#lookupOrgModal").modal('hide');                       
+        }
+
+        function useVariety(e, varId, varName)
+        {
+            e.preventDefault();
+            $("#seed_OfficialVarietyId").val(varId);
+            $("#seed_Variety_Name").val(varName);
+            $("#varietyTable").empty();            
+            $("#variety").val("");
+            $("#lookupVarietyModal").modal('hide');
+        }
+
+        function useClass(e, classId, className)
+        {
+            e.preventDefault();
+            $("#application_ClassProducedId").val(classId);
+            $("#application_ClassProduced_ClassProducedTrans").val(className);
+            $("#classTable").empty(); 
+            $("#lookupClassModal").modal('hide');
+        }
+    </script>
+}

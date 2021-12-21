@@ -16,7 +16,44 @@
 
 @if(Model.tags.Any())
 {
-     @await Html.PartialAsync("_TagTable", @Model.tags)  
+    <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+    <table id="table" class="table datatable">
+        <thead> 
+            <th>&nbsp;</th>            
+            <th>TID</th>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Org</th>
+            <th>Crop</th>
+            <th>Variety</th>
+            <th>Lot#</th>
+            <th>Lot weight</th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.tags)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="Tags" asp-route-id="@item.Id">Details</a></td>
+                <td>@item.Id</td>
+                <td>@item.LinkId</td>
+                <td>@item.IdType</td>
+                <td>@item.TaggingOrganization.NameAndId</td>
+                <td>@item.CropName</td>
+                <td>@item.VarietyName</td>
+                <td>@item.LotNumber</td>
+                <td>
+                    @if(item.LotWeightBagged.HasValue) 
+                    {
+                        @Math.Round(item.LotWeightBagged.Value,1)
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
 }
 
 
@@ -35,7 +72,9 @@
             oTable = $('#table').dataTable({
                  dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
-                "pageLength": 50
+                "pageLength": 50,
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
             });           
             
         } );

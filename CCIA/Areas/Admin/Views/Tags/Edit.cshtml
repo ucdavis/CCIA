@@ -48,6 +48,7 @@
             <div class="form-group row">
                 <label asp-for="tag.BagSize" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.BagSize" class="col-sm-2 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.BagSize" data-valmsg-replace="true"></span>   
                 <span class="col-sm-1"></span>
                 <select asp-for="tag.WeightUnit" class="col-sm-2 form-control">
                     <option value="L">Pounds</option>
@@ -69,10 +70,12 @@
              <div class="form-group row">
                 <label asp-for="tag.CountRequested" class="col-sm-4 col-form-label"></label>
                 <input asp-for="tag.CountRequested" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CountRequested" data-valmsg-replace="true"></span>
             </div>  
             <div class="form-group row">
                 <label asp-for="tag.CoatingPercent" class="col-sm-4 col-form-label"></label>
                 <input asp-for="tag.CoatingPercent" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CoatingPercent" data-valmsg-replace="true"></span>
             </div>  
             <div class="form-group row">
                  <div class="form-check form-check-inline col-sm-12">
@@ -84,14 +87,17 @@
             <div class="form-group row">
                 <label asp-for="tag.SeedsID" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.SeedsID" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.SeedsId" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="tag.BlendId" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.BlendId" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.BlendId" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="tag.PotatoAppId" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.PotatoAppId" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.PotatoAppId" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="tag.Seeds.CertProgram" class="col-sm-3 col-form-label"></label>
@@ -124,6 +130,7 @@
            <div class="form-group row">
                 <label asp-for="tag.CountUsed" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.CountUsed" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.CountUsed" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row">
                 <label asp-for="tag.TagBagging.TotalBagged" class="col-sm-3 col-form-label">Total Bagged</label>
@@ -187,6 +194,7 @@
              <div class="form-group row">
                 <label asp-for="tag.ExtrasOverrun" class="col-sm-3 col-form-label"></label>
                 <input asp-for="tag.ExtrasOverrun" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="tag.ExtrasOverrun" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
                 <label asp-for="tag.DateNeeded" class="col-sm-3 col-form-label"></label>
@@ -290,4 +298,12 @@
     </div>
 </div>
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    
+     
+}
 

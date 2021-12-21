@@ -245,6 +245,21 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Previous(int id)
+        {
+            var previousId = await _dbContext.Tags.Where(t => t.Id < id).OrderBy(t => t.Id).Select(t => t.Id).LastOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+        public async Task<IActionResult> Next(int id)
+        {
+            var previousId = await _dbContext.Tags.Where(t => t.Id > id).OrderBy(t => t.Id).Select(t => t.Id).FirstOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> RecordSeries(int id, string Letter, int Start, int End, bool Void)
         {
@@ -445,6 +460,39 @@ namespace CCIA.Controllers.Admin
             }
 
             return RedirectToAction(nameof(Details), new {id = id});            
+        }
+
+        public async Task<IActionResult> EditSeries(int id)
+        {
+            var model = await _dbContext.TagSeries.Where(ts => ts.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Tag Series not found";
+            }            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSeries(int id, TagSeries ts)
+        {
+            var tagSeriesToUpdate = await _dbContext.TagSeries.Where(ts => ts.Id == id).FirstOrDefaultAsync();
+            if(tagSeriesToUpdate == null || tagSeriesToUpdate.Id != ts.Id)
+            {
+                ErrorMessage = "Tag Series not found";
+                return RedirectToAction(nameof(Process));
+            }
+
+            tagSeriesToUpdate.Letter = ts.Letter;
+            tagSeriesToUpdate.Start = ts.Start;
+            tagSeriesToUpdate.End = ts.End;
+            tagSeriesToUpdate.Void = ts.Void;
+
+            if(ModelState.IsValid){               
+                await _dbContext.SaveChangesAsync();
+                Message = "Tag Series updated";
+            }
+             return RedirectToAction(nameof(Details), new { id = tagSeriesToUpdate.TagId });  
+
         }
     }
 }

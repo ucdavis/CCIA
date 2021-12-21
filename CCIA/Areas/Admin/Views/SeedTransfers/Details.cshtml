@@ -3,7 +3,8 @@
 <div class="container col-sm-12">    
     <div class="row">
         <div class="col-sm-12">
-            <h2>Seed Transfer Details</h2> 
+            <h2>Seed Transfer Details</h2>             
+            <a asp-action="Previous" asp-route-id="@Model.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.Id"  class="btn btn-light">Next</a><hr>
         </div>            
     </div>
     @if(this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))

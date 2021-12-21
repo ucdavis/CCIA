@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>Seed Lot Details</h2> 
+            <a asp-action="Previous" asp-route-id="@Model.seed.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.seed.Id"  class="btn btn-light">Next</a><hr>
         </div>            
     </div>
     <div class="row col-sm-12">
@@ -259,7 +260,7 @@
                                 <select name="doctype" id="docType" class="form-control" asp-items="@(new SelectList(Model.documentTypes, "Id","Name"))"></select>
                             </div>
                             <input id="file" name="file" type="file">            
-                            <input class="btn btn-primary" type="submit" value="Upload" />
+                            <input class="btn btn-primary" type="submit" value="Upload" disabled />
                         </form>
                     </td>
                 </tr>
@@ -294,8 +295,18 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(":checkbox").on("click", false);
+    <script>        
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(":checkbox").on("click", false);
+        });
     </script>
    
 }

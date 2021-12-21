@@ -5,6 +5,8 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>Tag Details</h2> 
+            <a asp-action="Previous" asp-route-id="@Model.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.Id"  class="btn btn-light">Next</a>
+            <hr>
         </div>            
     </div>
      <div class="row">
@@ -489,7 +491,7 @@
                 <input type="hidden" name="id" id="id" value="@Model.Id">  
                 <input type="hidden" name="certYear" id="certYear" value="@Model.CertYear">
                 <input id="file" name="file" type="file">            
-                <input class="btn btn-primary" type="submit" value="Upload" />
+                <input class="btn btn-primary" type="submit" value="Upload" disabled />
             </form>
         </div>
     </div>
@@ -524,6 +526,7 @@
                         <th>Void?</th>
                         <th>Count</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -535,7 +538,8 @@
                             <td>@tagSeries.End</td>
                             <td><input type="checkbox" asp-for="@tagSeries.Void" class="col-sm-3 form-control disabled"></td>
                             <td>@tagSeries.Count </td>
-                            <td>
+                            <td><a asp-action="EditSeries" asp-route-id="@tagSeries.Id" class="btn btn-info">Edit</a></td>
+                            <td>                                
                                 <form asp-action="DeleteSeries">
                                     <input type="hidden" value="@tagSeries.Id" name="id" id="id">
                                     <input type="submit" class="btn btn-warning" value="Delete entry" onclick="return confirm('Are you sure you want to delete this entry?')">
@@ -578,7 +582,18 @@
 </div>
 @section Scripts {
     <script>
-        $(".disabled:checkbox").on("click", false);
+        
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(".disabled:checkbox").on("click", false);
+        });
     </script>
    
 }

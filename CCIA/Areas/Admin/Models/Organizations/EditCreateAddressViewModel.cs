@@ -49,6 +49,8 @@ namespace CCIA.Models
                 thisOrgAddress = new OrganizationAddress();
                 thisOrgAddress.Address = new Address();
                 thisOrgAddress.OrgId = orgId;
+                thisOrgAddress.Address.StateProvinceId = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstOrDefaultAsync();
+                thisOrgAddress.Address.CountryId = await _dbContext.Countries.Where(c => c.Name == "United States").Select(c => c.Id).FirstOrDefaultAsync();
             }
                        
             var model = new AdminAddressEditCreateViewModel

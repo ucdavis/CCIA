@@ -230,7 +230,7 @@
             </div>
         
         <input id="file" name="file" type="file">            
-        <input class="btn btn-primary" type="submit" value="Upload" />
+        <input class="btn btn-primary" type="submit" value="Upload" disabled />
     </form>
     <hr>
 </div>
@@ -645,6 +645,14 @@
 
     <script type="text/javascript">
     	$(document).ready(function(){
+        
+            $('input:file').change(
+                function(){
+                    if ($(this).val()) {
+                        $('input:submit').removeAttr('disabled'); 
+                    } 
+                });
+                
             
     		//Hide all cards
     		$(".card").each(function(index, value){

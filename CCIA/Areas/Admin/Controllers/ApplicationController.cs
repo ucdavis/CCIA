@@ -65,6 +65,56 @@ namespace CCIA.Controllers.Admin
             return View("Index", model);
         }
 
+        public async Task<IActionResult> NewMap(int id)
+        {
+            var model = await NewMapViewModel.Create(_dbContext, id);           
+            if(model.application == null)
+            {
+                ErrorMessage = "App not found!";
+                return  RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewMap(int id, string map, string updateBoth)
+        {
+            var points = new SqlParameter("points", map);
+            var msg = new SqlParameter
+            {
+                ParameterName = "msg",
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Direction = System.Data.ParameterDirection.Output,
+                Size = 100,
+            };
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_map_app_validate_field @points, @msg output", points, msg); 
+            if(msg.Value.ToString() != "Ok")
+            {
+                switch(msg.Value.ToString()){
+                    case "Not valid":
+                        ErrorMessage = "Field not valid. This most commonly is because the external boundary of the field crosses itself. Please redraw field.";
+                        break;
+                    case "Ring orientation":
+                        ErrorMessage = "Field area is quite large. This most commonly is because the field was drawn in the wrong direction. Please redraw field; ensure you draw in a clockwise direction (start at north west corner, then move east).";
+                        break;
+                };
+                var model = await NewMapViewModel.Create(_dbContext, id);           
+                if(model.application == null)
+                {
+                    ErrorMessage = "App not found!";
+                    return  RedirectToAction(nameof(Index));
+                }
+                return View(model);
+            }
+
+            var appId = new SqlParameter("app_id", id);
+            var link = new SqlParameter("link", updateBoth == "on" ? true : false);
+            
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_insert_app_map @app_Id, @points, @link", appId, points, link); 
+            Message = "Field Updated";
+            return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
 
 
         [HttpPost]
@@ -323,6 +373,18 @@ namespace CCIA.Controllers.Admin
         {   
             var model = await AdminViewModel.CreateDetails(_dbContext, id, _helper);
             return View(model);  
+        }
+
+        public async Task<IActionResult> Previous(int id)
+        {
+            var previousId = await _dbContext.Applications.Where(x => x.Id < id).OrderBy(x => x.Id).Select(x => x.Id).LastOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+        public async Task<IActionResult> Next(int id)
+        {
+            var previousId = await _dbContext.Applications.Where(x => x.Id > id).OrderBy(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
         }
 
        
@@ -748,7 +810,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> LookupVariety (string lookup, int cropId) 
         {
-            var varieties = await _dbContext.VarFull.Where(v => v.CropId == cropId && v.Name.Contains(lookup)).ToListAsync();
+            var varieties = await _dbContext.VarFull.Where(v => (v.CropId == cropId || cropId ==0) && v.Name.Contains(lookup)).ToListAsync();
             return PartialView("_LookupVariety", varieties);
         }
 
