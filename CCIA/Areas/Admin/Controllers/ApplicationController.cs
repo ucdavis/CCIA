@@ -798,7 +798,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> LookupVariety (string lookup, int cropId) 
         {
-            var varieties = await _dbContext.VarFull.Where(v => v.CropId == cropId && v.Name.Contains(lookup)).ToListAsync();
+            var varieties = await _dbContext.VarFull.Where(v => (v.CropId == cropId || cropId ==0) && v.Name.Contains(lookup)).ToListAsync();
             return PartialView("_LookupVariety", varieties);
         }
 
