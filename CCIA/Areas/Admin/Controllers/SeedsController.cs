@@ -32,6 +32,54 @@ namespace CCIA.Controllers.Admin
             _fileService = fileIOService;
         }
 
+        public async Task<IActionResult> Create()
+        {
+            var model = await AdminSeedsViewModel.CreateNew(_dbContext);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AdminSeedsViewModel vm)
+        {
+            var seedToCreate = new Seeds();
+            var seedSubmitted = vm.seed;
+
+            seedToCreate.CertProgram = seedSubmitted.CertProgram;
+            seedToCreate.DateSampleReceived = seedSubmitted.DateSampleReceived;
+            seedToCreate.CertYear = seedSubmitted.CertYear;
+            seedToCreate.ConditionerId = seedSubmitted.ConditionerId;
+            seedToCreate.ApplicantId = seedSubmitted.ApplicantId;
+            seedToCreate.OfficialVarietyId = seedSubmitted.OfficialVarietyId;
+            seedToCreate.Class = seedSubmitted.Class;
+            seedToCreate.SampleDrawnBy = seedSubmitted.SampleDrawnBy;
+            seedToCreate.OriginCountry = seedSubmitted.OriginCountry;
+            seedToCreate.OriginState = seedSubmitted.OriginState;
+            seedToCreate.SampleFormCertNumber = seedSubmitted.SampleFormCertNumber;
+            seedToCreate.LotNumber = seedSubmitted.LotNumber;
+            seedToCreate.PoundsLot = seedSubmitted.PoundsLot;
+            seedToCreate.NotFinallyCertified = seedSubmitted.NotFinallyCertified;
+            seedToCreate.CountyDrawn = seedSubmitted.CountyDrawn;
+            seedToCreate.OriginalRun = seedSubmitted.OriginalRun;
+            seedToCreate.Remill = seedSubmitted.Remill;
+            seedToCreate.OECDLot = seedSubmitted.OECDLot;
+            seedToCreate.Remarks = seedSubmitted.Remarks;
+            seedToCreate.SampleFormVarietyId = seedSubmitted.OfficialVarietyId;
+            seedToCreate.SampleFormDate = seedSubmitted.SampleFormDate;
+
+            if(ModelState.IsValid){
+                _dbContext.Add(seedToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Seed created";
+            } else {
+                ErrorMessage = "Something went wrong";
+                var model = await AdminSeedsViewModel.CreateNew(_dbContext);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = seedToCreate.Id });
+
+        }
+
         public async Task<IActionResult> GetSeedFile(int id)
         {
             var doc = await _dbContext.SeedDocuments.Where(d => d.Id == id).Include(d => d.DocumentType).FirstOrDefaultAsync();
@@ -145,7 +193,7 @@ namespace CCIA.Controllers.Admin
             seedToUpdate.OECDLot = seedEdit.OECDLot;
             seedToUpdate.EmployeeModified = User.FindFirstValue(ClaimTypes.Name);
 
-             if(ModelState.IsValid){
+            if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Seed updated";
             } else {

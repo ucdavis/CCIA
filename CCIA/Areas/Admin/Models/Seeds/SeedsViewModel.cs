@@ -26,6 +26,10 @@ namespace CCIA.Models.ViewModels
         public List<StateProvince> states { get; set; }
         public List<AbbrevClassSeeds> classes { get; set; }
 
+        public List<AbbrevAppType> certPrograms { get; set; }
+
+        public List<County> counties { get; set; }
+
         public static async Task<AdminSeedsViewModel> CreateDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
              if (!await _dbContext.SampleLabResults.AnyAsync(s => s.SeedsId == sid))
@@ -69,6 +73,31 @@ namespace CCIA.Models.ViewModels
                 states = stateList,    
                 classes = await _dbContext.AbbrevClassSeeds.Include(c => c.AppType).OrderBy(c => c.AppType).ThenBy(c => c.SortOrder).ToListAsync(),
             }; 
+            return viewModel;
+
+        }
+
+         public static async Task<AdminSeedsViewModel> CreateNew(CCIAContext _dbContext)
+        {
+            var countryList = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();            
+            countryList.Insert(0, new Countries{ Id = 0, Name = ""});
+            var stateList = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
+            stateList.Insert(0, new StateProvince{ StateProvinceId = 0, Name = ""});
+
+
+            var viewModel = new AdminSeedsViewModel
+            {
+                seed =  new Seeds(),        
+                certYears = Helpers.CertYearFinder.certYearList,  
+                countries = countryList,  
+                states = stateList,    
+                classes = await _dbContext.AbbrevClassSeeds.Include(c => c.AppType).OrderBy(c => c.AppType).ThenBy(c => c.SortOrder).ToListAsync(),
+                certPrograms = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeTrans).ToListAsync(),
+                counties = await _dbContext.County.OrderBy(c => c.Name).Where(c => c.StateProvinceId == 102).ToListAsync(),
+            }; 
+            viewModel.seed.CertYear = Helpers.CertYearFinder.CertYear - 1;
+            viewModel.seed.CertProgram = "SD";
+            viewModel.counties.Insert(0, new County{CountyId = 0, Name = ""});
             return viewModel;
 
         }

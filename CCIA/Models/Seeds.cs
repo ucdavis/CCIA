@@ -168,7 +168,7 @@ namespace CCIA.Models
                 {
                     if (CertYear < 2007 || SampleFormRad == null)
                     {
-                        if(Variety == null)
+                        if(Variety == null || Variety.Crop == null)
                         {
                             return "unknown";
                         }
