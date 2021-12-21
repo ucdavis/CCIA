@@ -163,6 +163,18 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Previous(int id)
+        {
+            var previousId = await _dbContext.Seeds.Where(x => x.Id < id).OrderBy(x => x.Id).Select(x => x.Id).LastOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
+        public async Task<IActionResult> Next(int id)
+        {
+            var previousId = await _dbContext.Seeds.Where(x => x.Id > id).OrderBy(x => x.Id).Select(x => x.Id).FirstOrDefaultAsync();
+            return RedirectToAction(nameof(Details), new {id = previousId});
+        }
+
         public async Task<IActionResult> Edit(int id)
         {  
             var model = await AdminSeedsViewModel.EditDetails(_dbContext, id, _helper);
