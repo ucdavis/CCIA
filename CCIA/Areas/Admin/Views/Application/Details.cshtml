@@ -7,8 +7,13 @@
     bool showTHC = false;
 }
 
-<h2>Application Details</h2> 
 <div class="container col-sm-10">
+     <div class="row">
+        <div class="col-sm-12">
+            <h2>Application Details</h2> 
+            <a asp-action="Previous" asp-route-id="@Model.application.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.application.Id"  class="btn btn-light">Next</a><hr>
+        </div>            
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>            
