@@ -76,11 +76,13 @@
                 <td>@app.County.Name</td>
                 <td>@app.FieldName</td>
                 <td>@app.AcresApplied</td>
-                <td>@if(app.DatePlanted.HasValue)
-                    {
-                        @app.DatePlanted.Value.ToShortDateString()
-                    }
-                </td>                
+                @if(app.DatePlanted.HasValue)
+                {
+                    <td data-sort="@string.Format("{0:yyyy/MM/dd}" , app.DatePlanted.Value)">@app.DatePlanted.Value.ToShortDateString()</td>
+                } else
+                {
+                    <td></td>
+                }             
                 <td>@app.MapVe</td>
                 <td>@app.PoLotNum</td> 
                 @if(ViewBag.HideFI == null)              

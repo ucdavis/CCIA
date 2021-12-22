@@ -79,7 +79,7 @@
                 <td>@bsc.Program</td>
                 <td>@bsc.PurchaserName</td>
                 <td>@bsc.Pounds</td>
-                <td>@bsc.Date.ToShortDateString()</td>
+                <td data-sort="@string.Format("{0:yyyy/MM/dd}",bsc.Date)">@bsc.Date.ToShortDateString()</td>
                 <td>@bsc.CertNumber</td>
                 <td>@bsc.CropName</td>
                 <td>@bsc.VarietyName</td>
