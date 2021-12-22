@@ -132,7 +132,7 @@
                     <td><input type="checkbox" checked="@row.Member"></td>
                     <td>@row.MemberType</td>
                     <td>@row.MemberYear</td>
-                    <td>@row.LastMemberAgreement</td>
+                    <td data-sort="@string.Format("{0:yyyy/MM/dd}",row.LastMemberAgreement)">@row.LastMemberAgreement</td>
                 </tr>
             }
         </tbody>
@@ -152,7 +152,7 @@
         $(document).ready( function () {
             $('#table').DataTable({
                 dom: 'Brt',
-                buttons: ['copyHtml5', 'csvHtml5']
+                buttons: ['copyHtml5', 'csvHtml5'],
                 bPaginate: false,
             });
         } );
