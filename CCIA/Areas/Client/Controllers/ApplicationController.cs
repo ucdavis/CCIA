@@ -477,7 +477,7 @@ namespace CCIA.Controllers.Client
             growerInfo.Orgs = orgs;
             growerInfo.AppTypeId = appTypeId;
             growerInfo.ActionType = ApplicationPostMap.ActionTypes[appTypeId];
-            string fullPartialPath = "~/Client/Views/Application/Shared/_GrowerLookupInfoTable.cshtml";
+            string fullPartialPath = "/Areas/Client/Views/Application/Shared/_GrowerLookupInfoTable.cshtml";
             return PartialView(fullPartialPath, growerInfo);
         }
 
