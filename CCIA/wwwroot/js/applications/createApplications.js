@@ -22,17 +22,27 @@ $("#datepicker").datepicker({
     autoclose: "true"
 });
 
+// Set search variety click listener
+// Located in seed.js because the callback of selecting a variety changes depending on App type
+$('#varietySearch').on('click', () => {
+    searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder", "Seed", "SeedAppPartial");
+});
+
+// Called before HTML form submitted to controller
+$('#seedApplication').submit(function (e) {
+    insertHiddenInput("growerId", growerId, "seedApplication");
+    let fhIndicesStr = JSON.stringify(fhIndices);
+    insertHiddenInput("AppViewModel.FieldHistoryIndices", fhIndicesStr, "seedApplication");
+    return true;
+});
+
+
 
 ///////////////////////////
 // General-Use Functions //
 ///////////////////////////
 
-function fillVarietyNameAndId(varietyNameInput, varietyIdInput, varietyId, varietyName) {
-    // Set hidden input of variety id from selected variety
-    document.getElementById(varietyIdInput).value = varietyId;
-    // Set variety input text to be the selected variety from dropdown
-    document.getElementById(varietyNameInput).value = varietyName;
-}
+
 
 /* Load the rest of the form after selecting (or entering) a variety*/
 function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
@@ -67,18 +77,15 @@ function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderNam
         });
 }
 
-function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {   
-    alert("starting");
+function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {      
     // Display error if user tries to search for variety before selecting crop
-    let crop = document.getElementsByName("CropId")[0];
-    let cropText = crop.options[crop.selectedIndex].text;
-    let cropId = crop.options[crop.selectedIndex].value;
-    if (cropText === "") {
+    let cropId =$("#Application_CropId").val();   
+    if (cropId === "0") {
         $("#cropAlert").modal('show');
         return;
     }
 
-    let varietyName = document.getElementById(varietyInputId).value;
+    let varietyName = $("#Application_EnteredVariety").val();
     if (varietyName === "") {
         $("#emptyVarAlert").modal('show');
         return;
@@ -88,26 +95,23 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, rema
         name: varietyName,
         cropId: cropId
     };
-    let vs = document.getElementById(dropdownId);
-    // Take text in input box and autofill input with the variety name that most closely matches it
+    let vs = $("#DropdownId");    
+    // Take text in input box and autofill input with the variety name that most closely matches it    
     $.ajax({
         type: "GET",
-        url: "/Application/FindVariety",
+        url: "/Client/Application/FindVariety",
         data: data,
-        success: function (res) {
-            vs.innerHTML = "";
+        success: function (res) {            
             // No varieties were found
             if (res.length === 0) {
                 $("#varAlert").modal('show');
                 // If this is the first variety, then load the rest of the form.
-                window[selectVarietyCallback](-1, varietyName, remainderFolder, remainderName);
+                window[selectVarietyCallback](-1, varietyName);
             }
             // Populate dropdown with list of varieties
+            vs.html("");
             res.forEach((el) => {
-                vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
-                document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
-                    window[selectVarietyCallback](el.varOffId, el.varOffName, remainderFolder, remainderName);
-                });
+                vs.html(vs.html() + `<a class="dropdown-item" id="variety-${el.id}" onClick="selectFirstVarietyFormRemainder(${el.id}, '${el.name}');">${el.name}</a>`);
             })
         },
         error: function (res) {
@@ -116,18 +120,17 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, rema
     });
 }
 
-function selectFirstVariety(varietyId, varietyName) {
-    // Original variety
-    fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-    // Planting Stock 1 Variety
-    fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
-    showSpinner("variety-dropdown");
-}
 
-function selectFirstVarietyFormRemainder(varietyId, varietyName, remainderFolder, remainderName) {
+
+function selectFirstVarietyFormRemainder(varietyId, varietyName) {
     // Original variety
-    fillVarietyNameAndId("variety", "variety-id", varietyId, varietyName);
-    loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName);
+     // Set hidden input of variety id from selected variety
+     $("#Application_SelectedVarietyId").val(varietyId);
+     // Set variety input text to be the selected variety from dropdown
+     $("#Application_EnteredVariety").val(varietyName); 
+     $("#ps1-variety").val(varietyName);
+    //loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName);
+    $("#form-remainder").collapse('show');
 }
 
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside

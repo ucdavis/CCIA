@@ -19,6 +19,11 @@ namespace CCIA.Models
         public bool? ShowType { get; set; }
 
         public bool QAProgram { get; set; }
+        public int FieldHistoryCount { get; set; }
+
+        public bool showSecondPlantingStock { get; set; }
+        public string VarietyLabel { get; set; }
+        public string PlantingStockCertNumberLabel { get; set; }
 
         public ICollection<Applications> Applications { get; set; }
         public ICollection<Seeds> Seeds { get; set; }

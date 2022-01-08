@@ -66,6 +66,12 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
+        {
+            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value));
+            return View(model);
+        }
+
         // GET: Application/CreateSeedApplication
         public async Task<IActionResult> CreateSeedApplication(int orgId, int appTypeId)
         {
@@ -495,15 +501,14 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> FindVariety(string name, int cropId)
         {
-            var varieties = await _dbContext.VarOfficial
-                .Where(v => v.VarOffName.ToLower() == name.ToLower())
-                .Where(v => v.CropId == cropId)
-                .Select(v => new VarOfficial
+            var varieties = await _dbContext.VarFull
+                .Where(v => v.Name.Contains(name) && v.CropId == cropId)
+                .Select(v => new VarFull
                 {
                     CropId = v.CropId,
-                    Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
-                    VarOffId = v.VarOffId,
-                    VarOffName = v.VarOffName
+                    //Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
+                    Id = v.Id,
+                    Name = v.Name
                 })
                 .ToListAsync();
             return Json(varieties);

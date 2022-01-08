@@ -20,12 +20,84 @@ namespace CCIA.Models
         public List<Ecoregions> Ecoregions { get; set; }
         public string FieldHistoryIndices { get; set; }
         public int MaxFieldHistoryRecords { get; set; }
+        
+        public Organizations GrowerOrg { get; set; }
         public Organizations Organization { get; set; }
         public bool RenderFormRemainder { get; set; }
         public bool RenderSecondPlantingStock { get; set; }
         public List<StateProvince> StateProvince { get; set; }
         public List<VarOfficial> Varieties { get; set; }
+        public AbbrevAppType AppType { get; set; }
+        public int CertYear { get; set; }
         // Maximum number of field history records allowed for a specified app type
+
+        public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg)
+        {
+            var abbrevAppType = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == appType).FirstOrDefaultAsync();
+            var app = new Applications();
+            app.AppType = abbrevAppType.Abbreviation;
+            app.ApplicantOrganization = await _dbContext.Organizations.Where(o => o.Id == applicantOrg).FirstAsync();
+            var appLabels = ApplicationLabels.Create(appType);
+            var crops = new List<Crops>();
+
+            switch (appType)
+            {
+                // Seed
+                case 1:
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).ToListAsync();
+                    break;
+                // Potato
+                case 2:
+                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).ToListAsync();
+                    break;
+                // Heritage Grain QA
+                case 3:
+                    crops = await _dbContext.Crops.Where(c => c.Heritage == true).ToListAsync();
+                    break;
+                // Pre Variety Germplasm
+                case 4:
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).ToListAsync();
+                    break;
+                // Rice QA
+                case 5:
+                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).ToListAsync();
+                    break;
+                // // Turfgrass
+                // case 6:
+                //     break;
+                // Hemp from seed
+                case 7:
+                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).ToListAsync();
+                    break;
+                // // Hemp from clones
+                // case 8:
+                //     maxFieldHistoryRecords = 5;
+                //     break;
+            }
+
+            crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
+
+            var model = new ApplicationViewModel
+            {
+                ApplicationLabels = appLabels,
+                AppType = abbrevAppType,
+                Application = app,
+                ClassProducedList = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType).ToListAsync(),
+                Counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync(),
+                Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
+                GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)
+                    .Include(o => o.Address)
+                    .Include(o => o.Address)
+                    .ThenInclude(a => a.StateProvince)
+                    .FirstOrDefaultAsync(),
+                StateProvince =  await _dbContext.StateProvince.ToListAsync(),
+                Crops = crops,
+                CertYear = Helpers.CertYearFinder.CertYear,
+            };
+
+            return model;
+
+        }
 
         public static async Task<ApplicationViewModel> Create(CCIAContext dbContext, int orgId, int appType, int fhEntryId = -1)
         {

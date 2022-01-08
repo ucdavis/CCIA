@@ -1610,9 +1610,12 @@ namespace CCIA.Models
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
+            entity.Property(e => e.FieldHistoryCount).HasColumnName("field_history_number");
+
             entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
 
             entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValueSql("((0))");
+            
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
