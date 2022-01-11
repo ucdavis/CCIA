@@ -149,6 +149,7 @@ namespace CCIA.Models
             }
         }       
 
+        [Display(Name ="Crop")]
         public string CropName
         {
             get
@@ -165,6 +166,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name ="Variety")]
         public string VarietyName
         {
             get
@@ -181,6 +183,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name ="Cert #")]
         public string CertNumber
         {
             get

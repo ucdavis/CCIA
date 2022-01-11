@@ -20,7 +20,9 @@ namespace CCIA.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name ="Blend Type")]
         public string BlendType { get; set; }
+        [Display(Name ="Requested")]
         public DateTime RequestStarted { get; set; }
         public int ConditionerId { get; set; }
         public int UserEntered { get; set; }
@@ -37,6 +39,7 @@ namespace CCIA.Models
         public DateTime? DateSubmitted { get; set; }
         public bool? Submitted { get; set; }
         public bool? Approved { get; set; }
+        [Display(Name ="Approved")]
         public DateTime? ApproveDate { get; set; }
         public string ApprovedBy { get; set; }
 
@@ -52,6 +55,7 @@ namespace CCIA.Models
         [ForeignKey("ConditionerId")]
         public Organizations Conditioner { get; set; }
 
+        [Display(Name ="Crop")]
         public string GetCrop()
         {
             if (BlendType == "Varietal" && Variety != null)
@@ -73,6 +77,7 @@ namespace CCIA.Models
             return "unknown";
         }
 
+        [Display(Name ="Variety")]
         public string GetVarietyName()
         {           
             if (BlendType == "Varietal" && Variety != null)
@@ -94,6 +99,7 @@ namespace CCIA.Models
             return "unknown";
         }
 
+        [Display(Name ="Cert Year")]
         public int CertYear
         {
             get
@@ -109,6 +115,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name ="Cert #")]
         public string CertNumber
         {
             get

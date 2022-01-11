@@ -23,6 +23,7 @@ namespace CCIA.Models
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public int? Pounds { get; set; }
 
+        [Display(Name ="Cert #")]
         public string CertNumber { get; set; }
 
         public string OECDNumber { get; set; }
@@ -34,6 +35,7 @@ namespace CCIA.Models
 
 
          [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+         [Display(Name ="Close Date")]
         public DateTime? CloseDate { get; set; }
 
         public int? ConditionerId { get; set; }
@@ -47,18 +49,23 @@ namespace CCIA.Models
 
         public DateTime? IssueDate { get; set; }
 
+        [Display(Name ="Lot #")]
         public string LotNumber { get; set; }
 
         public int? ShipperId { get; set; }
         [ForeignKey("ShipperId")]
         public Organizations ShipperOrganization { get; set; }
 
+        [Display(Name ="Requested")]
         public DateTime? DateRequested { get; set; }
 
+        [Display(Name ="Total Fee")]
         public decimal? TotalFee { get; set; }
 
+        [Display(Name ="Not Certified")]
         public bool NotCertified { get; set; }
 
+        [Display(Name ="Entered")]
         public DateTime? DataEntryDate { get; set; }
 
         public int DataEntryYear
@@ -80,25 +87,31 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name ="Entered By")]
         public string DataEntryUser { get; set; }
 
         [ForeignKey("DataEntryUser")]
         public CCIAEmployees EntryEmployee { get; set; }
 
+        [Display(Name ="Updated")]
         public DateTime? UpdateDate { get; set; }
 
+        [Display(Name ="Updated By")]
         public string UpdateUser { get; set; }
         [ForeignKey("UpdateUser")]
         public CCIAEmployees UpdateEmployee { get; set; }
 
+        [Display(Name ="Domestic Origin?")]
         public bool DomesticOrigin { get; set; }
 
         public bool Canceled { get; set; }
 
         public string Comments { get; set; }
 
+        [Display(Name ="Admin Comments")]
         public string AdminComments { get; set; }
 
+        [Display(Name ="Printed")]
         public DateTime? DatePrinted { get; set; }
 
         public int FiscalYearPrinted 
@@ -124,6 +137,7 @@ namespace CCIA.Models
 
         public DateTime? USDAReportDate { get; set; }
 
+        [Display(Name ="Tags Requested")]
         public int TagsRequested { get; set; }
 
         public decimal? CertificateFee { get; set; }

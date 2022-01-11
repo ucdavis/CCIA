@@ -430,6 +430,7 @@ namespace CCIA.Models
         [Display(Name ="Analysis Requested?")]
         public bool AnalysisRequested { get; set; }
 
+        [Display(Name ="How Deliver")]
         public string HowDeliver { get; set; }
 
         public string TrackingNumber { get; set; }
@@ -468,12 +469,14 @@ namespace CCIA.Models
 
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name ="Date Sealed")]
         public DateTime? DateSealed { get; set; }
 
         public int? OECDCountryId { get; set; }
         [ForeignKey("OECDCountryId")]
         public Countries OECDCountry {get; set;}
 
+        [Display(Name ="Admin Comments")]
         public string AdminComments { get; set; }
 
         [Display(Name = "Series Request")] 

@@ -35,17 +35,21 @@ namespace CCIA.Models
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
         public int CropId { get; set; }
+        [Display(Name ="Category")]
         public string Category { get; set; }
         public string Status { get; set; }
         public bool Certified { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name ="Certified")]
         public DateTime? DateCertified { get; set; }
 
         public string TableName { get; set; }
        
        
+        [Display(Name ="Rice QA")]
         public bool RiceQa { get; set; }
+        [Display(Name ="Rice Color")]
         public string RiceColor { get; set; }
         public int ParentId { get; set; }
 
@@ -69,6 +73,7 @@ namespace CCIA.Models
         [Display(Name="Permitted number of generations")]
         public int? NumberOfGenerationsPermitted { get; set; }
 
+        [Display(Name ="G0 Collection Info")]
         public string G0CollectionInfo
         {
             get

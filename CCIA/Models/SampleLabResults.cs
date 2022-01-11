@@ -181,6 +181,7 @@ namespace CCIA.Models
         public Organizations LabOrganization { get; set; }
         public int? PrivateLabId { get; set; }
         public string PrivateLabNumber { get; set; }
+        [Display(Name ="CCIA Confirmed")]
         public bool CciaConfirmed { get; set; }
         public DateTime? ConfirmDate { get; set; }
         public string ConfirmUser { get; set; }
