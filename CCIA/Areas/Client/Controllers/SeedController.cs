@@ -46,6 +46,8 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        // TODO Check conditioner status versus conditioner year
+
         // GET: Application/Create
         public ActionResult SelectOrigin()
         {

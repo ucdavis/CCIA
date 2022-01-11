@@ -55,6 +55,7 @@ namespace CCIA.Models
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
 
+        [Display(Name="Cert Year")]
         public int CertYear { get; set; }
         
         [Display(Name="Orig Year")]
@@ -91,6 +92,8 @@ namespace CCIA.Models
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
         public int? Trace { get; set; }
+        
+        [Display(Name="Warning Flag")]
         public bool WarningFlag { get; set; }
         public string ApplicantNotes { get; set; }
         public bool Denied { get; set; }
@@ -114,10 +117,12 @@ namespace CCIA.Models
         
 
         [Required]
+        [Display(Name="Field Name")]
         public string FieldName { get; set; }
        
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name="Date Planted?")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DatePlanted { get; set; }
         [Required]
@@ -133,6 +138,7 @@ namespace CCIA.Models
         public decimal? Fee { get; set; }
         public decimal? LateFee { get; set; }
         public decimal? IncompleteFee { get; set; }
+        [Display(Name="Override Late Fee?")]
         public bool OverrideLateFee { get; set; }
         public decimal FeeCofactor { get; set; }
         public bool NotifyNeeded { get; set; }
@@ -282,6 +288,8 @@ namespace CCIA.Models
 
 
 
+        
+        [Display(Name="Full Cert")]
         public string FullCert 
         { 
             get
@@ -405,6 +413,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name="App Late")]
         public bool AppLate { 
             get 
             {

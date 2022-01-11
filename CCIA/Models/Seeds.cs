@@ -32,6 +32,7 @@ namespace CCIA.Models
         public int Id { get; set; }
         [ForeignKey("CertProgram")]
         public AbbrevAppType AppTypeTrans { get; set; }
+        [Display(Name = "Cert Program")] 
         public string CertProgram { get; set; }
         public int? AppId { get; set; }
         [ForeignKey("AppId")]
@@ -43,6 +44,7 @@ namespace CCIA.Models
         public DateTime? SampleFormDate { get; set; }
         public string SampleFormCertNumber { get; set; }
         public int? SampleFormRad { get; set; }
+        [Display(Name = "Cert Year")] 
         public int? CertYear { get; set; }
 
         [ForeignKey("ApplicantId")]
@@ -118,6 +120,7 @@ namespace CCIA.Models
         public int YearConfirmed { get; set; }
         public bool Docs { get; set; }
         public string EmployeeModified { get; set; }
+        [Display(Name = "Not Finally Certified")] 
         public bool NotFinallyCertified { get; set; }
         public bool ChargeFullFees { get; set; }
 

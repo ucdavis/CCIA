@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
     public partial class AbbrevAppType
     {
         public int AppTypeId { get; set; }
+        [Display(Name="App Type")]
         public string AppTypeTrans { get; set; }
         public string Abbreviation { get; set; }
         public bool GrowerSameAsApplicant { get; set; }

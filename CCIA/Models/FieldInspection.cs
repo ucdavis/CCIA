@@ -18,11 +18,15 @@ namespace CCIA.Models
         
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name="Date")]
         public DateTime? DateInspected { get; set; }
 
+        [Display(Name="Inspector")]
         public string InspectorId { get; set; }
+        [Display(Name="Applicant Contacted?")]
         public bool ApplicantContacted { get; set; }
 
+        [Display(Name="Applicant Present")]
         public bool ApplicantPresent { get; set; }
 
         public string Weeds { get; set; }
@@ -30,20 +34,26 @@ namespace CCIA.Models
         public string Comments { get; set; }
 
         // PO Fields        
+        [Display(Name="Total Plants Inspected")]
         public int? TotalPlantsInspected { get; set; }
+        [Display(Name="Other Varieties")]
         public int? OtherVarieties { get; set; }
         public int? Mosaic { get; set; }
         public int? Leafroll { get; set; }
         public int? Blackleg { get; set; }
         public int? Calico { get; set; }
+        [Display(Name="Other Diseases")]
         public int? OtherDiseases { get; set; }
         public string Insects { get; set; }
 
         //Seeds
         public string Maturity { get; set; }
         public string Isolation { get; set; }
+        [Display(Name="Estimated yield")]
         public string EstimatedYield { get; set; }
+        [Display(Name="Other Varieties Comments")]
         public string OtherVarietiesComment { get; set; }
+        [Display(Name="Other crop")]
         public string OtherCrop { get; set; }
         public string Disease { get; set; }
         public string Appearance { get; set; }
