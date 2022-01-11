@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
@@ -7,6 +8,7 @@ namespace CCIA.Models
     {
         public int Id { get; set; }
         
+        [Display(Name = "Tag Type")] 
         public string TagTypeTrans { get; set; }
         public int SortOrder { get; set; }
 

@@ -21,6 +21,7 @@ namespace CCIA.Models
         public string Email { get; set; }
         public string Website { get; set; }
 
+        [Display(Name ="Name & ID")]
         public string NameAndId => Id + " " + Name;
 
         public int? CountyId { get; set; }
