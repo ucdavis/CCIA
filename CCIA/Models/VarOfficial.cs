@@ -16,14 +16,16 @@ namespace CCIA.Models
         public string VarOffName { get; set; }
         [Display(Name ="Category")]
         public string VarCategory { get; set; }
+        [Display(Name="Status")]
         public string VarStatus { get; set; }
         public bool Experimental { get; set; }
         [Display(Name="Private Code")]
         public bool PrivateCode { get; set; }
         public bool OECD { get; set; }
-        [Display(Name ="CCIA Certified")]
+        [Display(Name ="CCIA Certified?")]
         public bool CCIACertified { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name="CCIA Certified")]
         public DateTime? CCIACertifiedDate { get; set; }
         public string CCIACertifier { get; set; }
         [Display(Name ="Pending Certification?")]

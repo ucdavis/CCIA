@@ -37,6 +37,7 @@ namespace CCIA.Models
         public int? StateProvinceId { get; set; }
         [ForeignKey("StateProvinceId")]
         public StateProvince StateProvince { get; set; }
+        [Display(Name="Postal Code")]
         public string PostalCode { get; set; }
         public int? CountryId { get; set; }
         [ForeignKey("CountryId")]

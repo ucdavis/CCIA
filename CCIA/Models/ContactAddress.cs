@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
@@ -12,6 +13,7 @@ namespace CCIA.Models
         public bool Mailing { get; set; }
         public bool Billing { get; set; }
         public bool Delivery { get; set; }
+        [Display(Name="Physical Location?")]
         public bool PhysicalLoc { get; set; }
         public string UserModified { get; set; }
         public DateTime? DateModified { get; set; }
