@@ -1029,8 +1029,6 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BillingAccess).HasColumnName("billing_access");
 
-                entity.Property(e => e.SeedLab).HasColumnName("seed_lab");
-
                 entity.Property(e => e.SeasonalEmployee).HasColumnName("seasonal_employee");
 
                 entity.Property(e => e.NewTag).HasColumnName("new_tag");
