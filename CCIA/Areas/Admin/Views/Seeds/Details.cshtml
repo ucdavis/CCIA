@@ -286,7 +286,12 @@
                         <td>@change.OldValue</td>
                         <td>@change.NewValue</td>
                         <td>@change.DateChanged</td>
-                        <td>@change.Employee.Name</td>
+                        <td>
+                            @if(change.Employee != null)
+                            {
+                                @change.Employee.Name
+                            } 
+                        </td>
                     </tr>
                 }
             </table>
