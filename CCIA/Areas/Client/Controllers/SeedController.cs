@@ -45,13 +45,16 @@ namespace CCIA.Controllers.Client
             var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
             return View(model);
         }
-
-        // TODO Check conditioner status versus conditioner year
-
+       
         // GET: Application/Create
-        public ActionResult SelectOrigin()
-        {
-            // TODO: Check that logged in user has permission to create seeds.
+        public async Task<IActionResult> SelectOrigin()
+        {            
+            var permissionOk = await CheckConditionerPermission();
+            if(!permissionOk)
+            {
+                ErrorMessage = "You do not have current permission to create new seed lots. Please contact CCIA to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
@@ -71,8 +74,21 @@ namespace CCIA.Controllers.Client
 
         public async Task<ActionResult> NewOOSSeedLot()
         {
+            var permissionOk = await CheckConditionerPermission();
+            if(!permissionOk)
+            {
+                ErrorMessage = "You do not have current permission to create new seed lots. Please contact CCIA to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             var model = await SeedsCreateOOSViewModel.Create(_dbContext);
             return View(model);
+        }
+
+        private async Task<bool> CheckConditionerPermission()
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var approverStatus = new List<string> {"AP", "AC"};
+            return await _dbContext.CondStatus.Where(s => s.OrgId == orgId && s.Year == CertYearFinder.ConditionerYear && approverStatus.Contains(s.Status)).AnyAsync();            
         }
 
         public ActionResult SelectApp()

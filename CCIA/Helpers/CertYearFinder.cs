@@ -8,6 +8,8 @@ namespace CCIA.Helpers
     {
         private static int _certYear;
 
+        private static int _conditionerYear;
+
         public static int CertYear
         {
             get
@@ -24,6 +26,24 @@ namespace CCIA.Helpers
                     }
                 }
                 return _certYear;
+            }
+        }
+
+        public static int ConditionerYear
+        {
+            get
+            {
+                if(_conditionerYear ==0)
+                {
+                    if(DateTime.Now.Month >= 1 && DateTime.Now.Month <= 6)
+                    {
+                        _conditionerYear = DateTime.Now.Year -1;
+                    } else
+                    {
+                        _conditionerYear = DateTime.Now.Year;
+                    }
+                }
+                return _conditionerYear;
             }
         }
 
