@@ -103,6 +103,23 @@ namespace CCIA.Models
             }
         }
 
+        public int ConditionerYearEntered 
+        { get
+            {
+                if(!DateEntered.HasValue)
+                {
+                    return 0;
+                }
+                if(DateEntered.Value.Month >= 1 && DateEntered.Value.Month <= 6)
+                    {
+                        return DateEntered.Value.Year - 1;
+                    } else
+                    {
+                        return DateEntered.Value.Year;
+                    }                
+            }        
+        }
+
         [Display(Name = "Tagged Class")] 
         public string TaggedClass
         {

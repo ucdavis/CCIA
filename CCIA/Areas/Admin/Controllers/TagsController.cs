@@ -233,7 +233,7 @@ namespace CCIA.Controllers.Admin
                 .Where(t => t.Id == id).FirstOrDefaultAsync();
             if(model.Stage ==  TagStages.Requested.GetDisplayName() && model.SeriesRequest)
             {
-                ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.DateEntered.Value.Year && c.PrintSeries).AnyAsync();
+                ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.ConditionerYearEntered && c.PrintSeries).AnyAsync();
             }            
 
             if(model == null)
