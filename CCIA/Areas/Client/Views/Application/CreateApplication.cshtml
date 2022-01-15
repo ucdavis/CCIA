@@ -47,7 +47,7 @@
 
 
 <form>
-    <div class="row">
+    <div class="row border">
         <div class="form-group col-sm-3 required">            
                 <label asp-for="Application.CropId" class="col-form-label">Crop</label>
                 <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
@@ -63,11 +63,11 @@
             }
             <select asp-for="Application.CertYear" class="form-control" asp-items="@(new SelectList(selectList))"></select>           
         </div>
-        <div class="form-group required col-sm-6">                     
+        <div class="form-group required col-sm-6 border">                     
             <label asp-for="Application.EnteredVariety" class="col-form-label">@Model.AppType.VarietyTitle</label>
             <div>
                 <div class="btn-group col-sm-12">
-                    <input type="text" asp-for="Application.EnteredVariety" placeholder="@Model.AppType.VarietyTitle" class="col-sm-9">
+                    <input type="text" asp-for="Application.EnteredVariety" placeholder="@Model.AppType.VarietyTitle" class="col-sm-10 form-control">
                     <button class="btn btn-primary dropdown-toggle" id="varietySearch" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-search"></i>
                     </button>     
@@ -80,33 +80,21 @@
             </div>
     </div> 
 
-    <div id="form-remainder" class="collapse">
-        <div class="form-group">
-            <label>Class to be Produced</label><em class="required">•</em>
-            @{ ViewBag.name = "ClassProducedId"; }
-            <div>
-                        <style>
-                .classradio .form-check-label {
-                    margin-right: 50px;
-                }
-
-                .classradio .form-check {
-                    padding-left: 0;
-                }
-            </style>
-            @{ string name = ViewBag.name; }
-            <div class="form-check form-check-inline classradio">
-                @foreach (var item in Model.ClassProducedList) 
-                {
-                    <label class="form-check-label radio-btn-container" for="@name-@item.ClassProducedId">
-                        @Html.RadioButton(name, item.ClassProducedId, new { @class = "form-check-input checkbox", id=name+"-"+item.ClassProducedId } )
-                        @item.ClassProducedTrans
-                        <span class="checkmark"></span>
-                    </label>
-                }
-            </div>
-            </div>
-            @Html.ValidationMessage("ClassProduced", "", new { @class = "text-danger" })
+    <div id="form-remainder" class="XXXcollapse col-sm-12">
+        <hr>
+        <div class="form-group required row">
+            <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
+            <div class="col-sm-9">         
+            @foreach (var item in Model.ClassProducedList) 
+            {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" value="@item.ClassProducedId">
+                    <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
+                </div>
+            } 
+            </div> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+            <hr>
         </div>
  
         <section id="planting-stock" class="rounded-section off-white">
@@ -115,174 +103,279 @@
             <!-- First Planting Stock form --> 
            <section class="rounded-section light-grey">
                 <div class="row">
-                    <div class="form-group col">
-                        <label for="ps1-variety">@Model.AppType.VarietyLabel<em class="required">•</em>
-                        </label>
-                        @Html.TextBox("AppSpecificPlantingStocks[0].PsEnteredVariety", "", new { @class="form-control", id="ps1-variety", placeholder=@Model.AppType.VarietyLabel })
-                        @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsEnteredVariety", "", new { @class = "text-danger" })
+                    <div class="form-group required col-sm-5">
+                        <label for="ps1_PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                        <input type="text" id="ps1_PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PsEnteredVariety" data-valmsg-replace="true"></span>
                     </div>
-                    <div class="form-group col">
-                        <label for="cert-lot-num">@Model.AppType.PlantingStockCertNumberLabel<em class="required">•</em></label>
-                        @Html.TextBox("AppSpecificPlantingStocks[0].PsCertNum", "", new { @class="form-control", id="cert-lot-num", placeholder=@Model.AppType.PlantingStockCertNumberLabel })
-                        @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsCertNum", "", new { @class = "text-danger" })
+                    <div class="form-group required col-sm-7">
+                        <label for="ps1_PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
+                        <input type="text" id="ps1_PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PsCertNum" data-valmsg-replace="true"></span>
                     </div>
                 </div>
-
-                @* <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            @{ ViewBag.name = "AppSpecificPlantingStocks[0].PsClass"; }
-                            <label>Class Planted</label><em class="required">•</em>
-                            @await Html.PartialAsync("Shared/_ClassDropdown")
-                            @Html.ValidationMessage("AppSpecificPlantingStocks[0].PsClass", "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                <div class="row">                    
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" for="ps1_PsClass">Class Planted</label>
+                        <select id="ps1_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassProducedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PsClass" data-valmsg-replace="true"></span>
+                    </div>                    
                     <!-- Potato app doesn't have pounds planted field -->
-                    @if(Model.AppViewModel.AppTypeId != 2)
+                    @if(Model.AppType.Abbreviation != "PO")
                     {
-                        <div class="form-group col">
-                            <label for="pounds-planted">Pounds Planted
+                        <div class="form-group required">
+                            <label for="ps1_PoundsPlanted" class="col-form-label">Pounds Planted
                                 <!-- Special PVG Label -->
-                                @if(Model.AppViewModel.AppTypeId == 4) {
+                                @if(Model.AppType.Abbreviation == "PV") {
                                     <text>(1 for G0)</text>
                                 }
-                                <em class="required">•</em>
                             </label>
-                            @Html.TextBox("AppSpecificPlantingStocks[0].PoundsPlanted", "", new { @class="form-control", id="pounds-planted", placeholder="Pounds Planted" })
-                            @Html.ValidationMessage("AppSpecificPlantingStocks[0].PoundsPlanted", "", new { @class = "text-danger" })
+                            <input type="text" id="ps1_PoundsPlanted" class="form-control" placeholder="Pounds Planted">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PoundsPlanted" data-valmsg-replace="true"></span>
                         </div>
                     }
                 </div>
                 <div class="row">
-                    <!-- PVG and Heritage Apps don't have Tag Issued field -->
-                    @if(Model.AppViewModel.AppTypeId == 1 || Model.AppViewModel.AppTypeId == 2 || Model.AppViewModel.AppTypeId == 7)
+                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    @if(Model.AppType.ShowPSTagIssued)
                     {
                         <div class="form-group col">
-                            <label>State/Country Where PS Tag 
-                                @if(Model.AppViewModel.AppTypeId == 7)
-                                {
-                                    <text>or Breeder Letter</text>
-                                }    
-                                Was Issued</label>
-                            @{ViewBag.name = "AppSpecificPlantingStocks[0].StateCountryTagIssued";}
-                            @await Html.PartialAsync("Shared/_StateCountryDropdown")
-                    </div>
+                            <label for="ps1_StaeCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
+                            <select id="ps1_StaeCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                        </div>
                     }
                     <div class="form-group col">
-                        <label>State/Country Where PS Was Grown</label>
-                        @{ViewBag.name = "AppSpecificPlantingStocks[0].StateCountryGrown";}
-                        @await Html.PartialAsync("Shared/_StateCountryDropdown")
-                    </div>
+                            <label for="ps1_StaeCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
+                            <select id="ps1_StaeCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                    </div>                    
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <label for="seed-purchased-from">Seed purchased/acquired from</label>
-                        @Html.TextBox("AppSpecificPlantingStocks[0].SeedPurchasedFrom", "", new { @class="form-control", id="seed-purchased-from", placeholder="Seed purchased/acquired from" })
-                        @Html.ValidationMessage("AppSpecificPlantingStocks[0].SeedPurchasedFrom", "", new { @class = "text-danger"})
+                        <label for="ps1_SeedPurchasedFrom" class="col-form-label">Seed purchased/acquired from</label>
+                        <input type="text" id="ps1_SeedPurchasedFrom" class="form-control" placeholder="Seed purchased/acquired from">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps1_SeedPurchasedFrom" data-valmsg-replace="true"></span>
                     </div>
                     <!-- Hemp -->
-                    @if(Model.AppViewModel.AppTypeId == ApplicationViewModel.HempCropId)
+                    @if(Model.AppType.Abbreviation == "HP")
                     {
                         <div class="form-group col">
-                            <label for="thc-percent">THC Percent</label>
-                            @Html.TextBox("AppSpecificPlantingStocks[0].ThcPercent", "", new { @class="form-control", id="thc-percent", placeholder="THC Percent" })
-                            @Html.ValidationMessage("AppSpecificPlantingStocks[0].ThcPercent", "", new { @class = "text-danger"})
+                            <label for="ps1_ThcPercent" class="col-form-label">THC Percent</label>
+                            <input type="text" id="ps1_ThcPercent" class="form-control" placeholder="THC Percent">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps1_ThcPercent" data-valmsg-replace="true"></span>
                         </div>
                     }
-                </div> *@
+                </div>                
             </section>
             <!-- Second Planting Stock form -->
-            @* <div id="second-ps">
+            <div id="second_ps_button">
+                <p><em>Enter both parent lines for hybrid production.</em></p>
+                <div id="add-second-ps" class="btn btn-warning collapse show">Add a second planting stocks record</div>
+            </div>
+            <div id="second-ps" class="collapse">
                 <section class="rounded-section light-blue pos-rel">
                 <button type="button" id="remove-ps2" onclick="removeSecondPSEntry();" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this planting stock record">
                     <i id="remove-ps2" class="fas fa-times"></i>
                 </button>    
                 <div class="row" id="second-ps-first-row">
-                    <div class="form-group col">
-                        @{ ViewData["varietyName"] = "AppSpecificPlantingStocks[1].PsEnteredVariety"; }  *@
-                        @* @await Html.PartialAsync("Shared/_VarietySelect") *@
-                    @* </div>
-                    @Html.ValidationMessage("AppSpecificPlantingStocks[1].PsEnteredVariety", "", new { @class = "text-danger" })
-                    <div class="form-group col">
-                        <label for="cert-lot-num">Certification and Lot Number<em class="required">•</em></label>
-                        @Html.TextBox("AppSpecificPlantingStocks[1].PsCertNum", "", new { @class="form-control", id="cert-lot-num", placeholder="Certification and Lot Number" })
-                        @Html.ValidationMessage("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+                    <div class="form-group required col-sm-5">
+                        <label for="ps2_PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                        <input type="text" id="ps2_PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PsEnteredVariety" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group required col-sm-7">
+                        <label for="ps2_PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
+                        <input type="text" id="ps2_PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PsCertNum" data-valmsg-replace="true"></span>
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            @{ ViewBag.name = "AppSpecificPlantingStocks[1].PsClass"; }
-                            <label>Class Planted</label><em class="required">•</em> *@
-                            @* @await Html.PartialAsync("Shared/_ClassDropdown") *@
-                            @* @Html.ValidationMessage("AppSpecificPlantingStocks[1].PsClass", "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" for="ps2_PsClass">Class Planted</label>
+                        <select id="ps2_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassProducedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PsClass" data-valmsg-replace="true"></span>
+                    </div>                    
                     <!-- Potato app doesn't have pounds planted field -->
-                    @if(Model.AppType.AppTypeId != 2)
+                    @if(Model.AppType.Abbreviation != "PO")
                     {
-                        <div class="form-group col">
-                            <label for="pounds-planted">Pounds Planted
+                        <div class="form-group required">
+                            <label for="ps2_PoundsPlanted" class="col-form-label">Pounds Planted
                                 <!-- Special PVG Label -->
-                                @if(Model.AppType.AppTypeId == 4) {
+                                @if(Model.AppType.Abbreviation == "PV") {
                                     <text>(1 for G0)</text>
                                 }
-                                <em class="required">•</em>
                             </label>
-                            @Html.TextBox("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class="form-control", id="pounds-planted", placeholder="Pounds Planted" })
-                            @Html.ValidationMessage("AppSpecificPlantingStocks[1].PoundsPlanted", "", new { @class = "text-danger" })
+                            <input type="text" id="ps2_PoundsPlanted" class="form-control" placeholder="Pounds Planted">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PoundsPlanted" data-valmsg-replace="true"></span>
                         </div>
                     }
                 </div>
                 <div class="row">
-                    <!-- PVG and Heritage Apps don't have Tag Issued field -->
-                    @if(Model.AppType.AppTypeId == 1 || Model.AppType.AppTypeId == 2 || Model.AppType.AppTypeId == 7)
+                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    @if(Model.AppType.ShowPSTagIssued)
                     {
                         <div class="form-group col">
-                            <label>State/Country Where PS Tag 
-                                @if(Model.AppType.AppTypeId == 7)
-                                {
-                                    <text>or Breeder Letter</text>
-                                }    
-                                Was Issued</label>
-                            @{ViewBag.name = "AppSpecificPlantingStocks[1].StateCountryTagIssued";} *@
-                            @* @await Html.PartialAsync("Shared/_StateCountryDropdown") *@
-                    @* </div>
+                            <label for="ps2_StaeCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
+                            <select id="ps2_StaeCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                        </div>
                     }
                     <div class="form-group col">
-                        <label>State/Country Where PS Was Grown</label>
-                        @{ViewBag.name = "AppSpecificPlantingStocks[1].StateCountryGrown";} *@
-                        @* @await Html.PartialAsync("Shared/_StateCountryDropdown") *@
-                    @* </div>
+                            <label for="ps2_StaeCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
+                            <select id="ps2_StaeCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                    </div>                    
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-12">
-                        <label for="seed-purchased-from">Seed purchased/acquired from</label>
-                        @Html.TextBox("AppSpecificPlantingStocks[1].SeedPurchasedFrom", "", new { @class="form-control", id="seed-purchased-from", placeholder="Seed purchased/acquired from" })
-                        @Html.ValidationMessage("AppSpecificPlantingStocks[1].SeedPurchasedFrom", "", new { @class = "text-danger"})
+                    <div class="form-group col">
+                        <label for="ps2_SeedPurchasedFrom" class="col-form-label">Seed purchased/acquired from</label>
+                        <input type="text" id="ps2_SeedPurchasedFrom" class="form-control" placeholder="Seed purchased/acquired from">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="ps2_SeedPurchasedFrom" data-valmsg-replace="true"></span>
                     </div>
                     <!-- Hemp -->
-                    @if(Model.AppType.AppTypeId == 10)
+                    @if(Model.AppType.Abbreviation == "HP")
                     {
                         <div class="form-group col">
-                            <label for="thc-percent">THC Percent</label>
-                            @Html.TextBox("AppSpecificPlantingStocks[0].ThcPercent", "", new { @class="form-control", id="thc-percent", placeholder="THC Percent" })
-                            @Html.ValidationMessage("AppSpecificPlantingStocks[0].ThcPercent", "", new { @class = "text-danger"})
+                            <label for="ps2_ThcPercent" class="col-form-label">THC Percent</label>
+                            <input type="text" id="ps2_ThcPercent" class="form-control" placeholder="THC Percent">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps2_ThcPercent" data-valmsg-replace="true"></span>
                         </div>
                     }
-                </div>
-                @Html.TextBox("AppSpecificPlantingStocks[1].OfficialVarietyId", "", new { type="hidden", id="ps2-variety-id", name="SelectedVarietyId" })
-            </section>
-                <p><em>Enter both parent lines for hybrid production.</em></p>
+                </div>  
+                </section>                
             </div>
-            <button id="add-second-ps" class="btn btn-warning">Add a second planting stocks record</button> *@
+            
+            
 
         </section> 
 
-        @* <section id="field-info" class="rounded-section off-white">
-            @await Html.PartialAsync("Shared/_FieldInformation")
-        </section> *@
+        <section id="field-info" class="rounded-section off-white">
+            <h4>Field Information</h4>
+            <div class="rounded-section light-grey" >
+            <div class="row">
+                <div class="form-group col required">
+                    <label asp-for="Application.FieldName" class="col-form-label"></label>
+                    <input asp-for="Application.FieldName" class="form-control" placeholder="Field Name">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldName" data-valmsg-replace="true"></span>
+                </div>
+                <!-- Date Time Picker -->
+                <div class="form-group col required">
+                    <label asp-for="Application.DatePlanted" class="col-form-label">Date Planted
+                        @if(Model.AppType.Abbreviation == "PG")
+                        {
+                            <text>(or collection date for G0)</text>
+                        }
+                    </label>
+                    <div class="input-group mb-3">
+                        <input type="text" asp-for="Application.DatePlanted" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                        <div class="input-group-append" id="calendar-btn" onclick="$('.datepicker').focus();">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>       
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.DatePlanted" data-valmsg-replace="true"></span>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                     <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="Application.FarmCounty">Farm County</label>
+                        <select asp-for="Application.FarmCounty" class="form-control" asp-items="@(new SelectList(Model.Counties,"CountyId","Name"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FarmCounty" data-valmsg-replace="true"></span>
+                    </div>  
+                </div>
+                    @if(Model.AppType.Abbreviation == "HP")
+                    {
+                        <div class="form-group col required">
+                            <label asp-for="Application.CountyPermit">County Permit Number</label>
+                            <input asp-for="Application.CountyPermit" class="form-control" placeholder="County Permit Number">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Application.CountyPermit" data-valmsg-replace="true"></span>
+                        </div>            
+                    }
+                <div class="form-group col required">
+                    <label asp-for="Application.AcresApplied" class="col-form-label ">Acres Applied
+                        <!-- PVG -->
+                        @if(Model.AppType.Abbreviation == "PV") 
+                        {
+                            <text>(enter 1 for G0)</text>
+                        }
+                    </label>
+                    <input asp-for="Application.AcresApplied" class="form-control" placeholder="Acres Applied">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <!-- PVG Fields -->
+            @if(Model.AppType.Abbreviation == "PV")
+            {
+                <div class="row">
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="Application.Ecoregion">US EPA Level III Ecoregion</label>
+                        <select asp-for="Application.Ecoregion" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.Ecoregion" data-valmsg-replace="true"></span>
+                    </div>                     
+                    <div class="col form-group">
+                        <label asp-for="Application.FieldElevation">Field Elevation</label>
+                        <input asp-for="Application.FieldElevation" class="form-control" placeholder="Field Elevation">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldElevation" data-valmsg-replace="true"></span>                        
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Application.ApplicantComments">Additional Information/Comments</label>
+                <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
+            </div>
+
+            <h5><strong>History:</strong></h5>
+            <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
+
+                    @{
+                int fhEntryId = 1;
+                int nextFhEntryId = fhEntryId+1;
+                ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
+                ViewBag.startYearOffset = 0;
+                ViewBag.endYearOffset = 6;
+            }
+            <button id="@fhEntryId" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this field history record">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-form-label">Crop Year</label>                   
+                    @{
+                        string name = ViewBag.name;
+                        var cropYearList = new List<int>();
+                        @for (int i = 0; i <= ViewBag.endYearOffset; i++)
+                        {
+                            int year = DateTime.Now.Year + ViewBag.startYearOffset - i;
+                            cropYearList.Add(year);                            
+                        }                        
+                    }
+                    <select id="@name" class="form-control" asp-items="@(new SelectList(cropYearList))"></select>
+                </div>
+                <div class="form-group col-md-4 col-sm-4 col-xs-4">
+                    <label for="crop-not-in-list" class="col-form-label">Variety or Crop not in list</label>
+                    @Html.TextBox("FieldHistories["+fhEntryId+"].Variety", "", new { @class="form-control", id="crop-not-in-list" })
+                </div>
+                
+                 
+                
+                <div class="form-group co-md-4 col-sm-4 col-xs-4">
+                    <label for="app-num" class="col-form-label">Application Number</label>
+                    @Html.TextBox("FieldHistories["+fhEntryId+"].AppNumber", "", new { @class="form-control", id="app-num" })
+                </div> 
+            </div>
+
+            @* @for(int i=1; i < Model.AppType.FieldHistoryCount; i++)
+            {
+                <section id="fh-entry-@i" class="@("rounded-section pos-rel light-blue " + (fhIndicesArr[i] == 0 ? "hidden" : ""))">
+                   @if (@fhIndicesArr[i] == 1)
+                    {
+                        @await Html.PartialAsync("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
+                    } 
+                </section>
+            } *@
+
+            <button id="add-fieldhistory" class="btn btn-warning">Add a Field History record</button>
+            </div>
+        </section>
 
         <div class="text-right">
             <button type="submit" class="btn btn-primary">Continue with Application</button>
@@ -297,7 +390,7 @@
     <!-- Alert dialog modals -->
     @{
         var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
-        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
+        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system.Application. A new variety will be used.", "Close", "Ok");
         var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
     }
     @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
@@ -306,8 +399,8 @@
 </form>
 
 @section Scripts {
-    <script type="text/javascript">
-        @* var orgId = @Model.AppViewModel.Organization.Id;
+   @*  <script type="text/javascript">
+        var orgId = @Model.AppViewModel.Organization.Id;
         var growerId = @Model.AppViewModel.Organization.Id;
         var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
         var appTypeId = @Model.AppViewModel.AppTypeId;
@@ -322,8 +415,8 @@
 
         // Counts the occurrences of used spaces in fhIndices\
         // Used spaces are indicated by 1s. Free spaces are marked with 0s.
-        let fhEntryCount = countOccurrences(1, fhIndices); *@
-    </script>
+        let fhEntryCount = countOccurrences(1, fhIndices);
+    </script> *@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/applications/createApplications.js" asp-append-version="true"></script>
    

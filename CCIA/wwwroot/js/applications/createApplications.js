@@ -8,8 +8,18 @@ const spinner_div = `<div class="text-center"><div class="spinner-border text-ce
 // Event handlers //
 ////////////////////
 
-// Set click listener for button to add second plantingstock
-$('#add-second-ps').on('click', addSecondPs);
+$("#add-second-ps").click(function() {
+    $("#second-ps").collapse('show');
+    $("#add-second-ps").collapse('hide');
+});
+
+// Click handler for removing the second planting stocks record
+function removeSecondPSEntry() {
+    $("#second-ps").collapse('hide');
+    $("#add-second-ps").collapse('show');
+    return false;
+};
+
 
 // Set click listener for button to add field history records
 $('#add-fieldhistory').on('click', (e) => {
@@ -17,7 +27,7 @@ $('#add-fieldhistory').on('click', (e) => {
 });
 
 // Datepicker
-$("#datepicker").datepicker({
+$(".datepicker").datepicker({
     format: 'LT',
     autoclose: "true"
 });
@@ -67,10 +77,7 @@ function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderNam
                 // Set click listener for button to add field history records
                 $('#add-fieldhistory').on('click', (e) => {
                     addNewFieldHistory(e, appTypeId);
-                });
-
-                // Planting Stock 1 Variety
-                fillVarietyNameAndId("ps1-variety", "ps1-variety-id", varietyId, varietyName);
+                });               
 
                 showSpinner("variety-dropdown");
             }
@@ -128,8 +135,7 @@ function selectFirstVarietyFormRemainder(varietyId, varietyName) {
      $("#Application_SelectedVarietyId").val(varietyId);
      // Set variety input text to be the selected variety from dropdown
      $("#Application_EnteredVariety").val(varietyName); 
-     $("#ps1-variety").val(varietyName);
-    //loadFormRemainder(varietyId, varietyName, remainderFolder, remainderName);
+     $("#ps1_PsEnteredVariety").val(varietyName);    
     $("#form-remainder").collapse('show');
 }
 
@@ -206,50 +212,4 @@ function removeFhEntryById(id) {
 }
 
 
-//////////////////////////////
-// Planting Stock Functions //
-//////////////////////////////
 
-function addSecondPs(e) {
-    e.preventDefault();
-    showSpinner("second-ps");
-    let appTypeId = 1;
-    if (secondPsRendered) {
-        return;
-    }
-    // Populate div with second planting stocks partial
-    $("#second-ps")
-        .load("/Application/GetPartial?folder=Seed&partialName=_SecondPlantingStock&orgId=" + orgId + "&appTypeId=" + appTypeId, (response, status, xhr) => {
-            if (status == "error") {
-                var msg = "Sorry, there was an error loading the remainder of this form: ";
-                $("#error").html(msg + xhr.status + " " + xhr.statusText);
-            }
-            else {
-                // Click listener for ps2 variety search button
-                $('#ps2-variety-search').on('click', function (e) {
-                    e.preventDefault();
-                    searchVarieties("ps2-variety-dropdown", "ps2-variety", "selectPs2Variety");
-                });
-
-                secondPsRendered = true;
-                let addSecondPsBtn = document.getElementById("add-second-ps");
-                addSecondPsBtn.disabled = true;
-
-                // Click handler for removing the second planting stocks record
-                document.getElementById("remove-ps2").onclick = (e) => {
-                    secondPsRendered = false;
-                    e.preventDefault();
-                    removeSecondPSEntry();
-                    addSecondPsBtn.disabled = false;
-                }
-            }
-        });
-}
-
-// Click handler for removing the second planting stocks record
-function removeSecondPSEntry() {
-    secondPsRendered = false;
-    document.getElementById("add-second-ps").disabled = false;
-    $("#second-ps").empty();
-    return false;
-};

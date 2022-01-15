@@ -20,7 +20,7 @@ namespace CCIA.Models
         public List<Ecoregions> Ecoregions { get; set; }
         public string FieldHistoryIndices { get; set; }
         public int MaxFieldHistoryRecords { get; set; }
-        
+        public ICollection<PlantingStocks> PlantingStocks { get; set; }        
         public Organizations GrowerOrg { get; set; }
         public Organizations Organization { get; set; }
         public bool RenderFormRemainder { get; set; }
@@ -39,6 +39,7 @@ namespace CCIA.Models
             app.ApplicantOrganization = await _dbContext.Organizations.Where(o => o.Id == applicantOrg).FirstAsync();
             var appLabels = ApplicationLabels.Create(appType);
             var crops = new List<Crops>();
+           
 
             switch (appType)
             {
@@ -76,6 +77,8 @@ namespace CCIA.Models
             }
 
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
+            var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
+            counties.Insert(0, new County { CountyId = 0, Name="Select County..."});
 
             var model = new ApplicationViewModel
             {
@@ -83,7 +86,7 @@ namespace CCIA.Models
                 AppType = abbrevAppType,
                 Application = app,
                 ClassProducedList = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType).ToListAsync(),
-                Counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync(),
+                Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
                 GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)
                     .Include(o => o.Address)

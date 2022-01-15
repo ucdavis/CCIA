@@ -117,7 +117,7 @@ namespace CCIA.Models
         
 
         [Required]
-        [Display(Name="Field Name")]
+        [Display(Name="Field Name/No.")]
         public string FieldName { get; set; }
        
         [Required]

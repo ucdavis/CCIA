@@ -146,76 +146,9 @@ button.accept-policy {
     background: #d2d7e1;
 }
 
-/* Custom Radio Buttons */
-.radio-btn-container {
-  display: block;
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.form-check-label .radio-btn-container {
-  padding-top: 5px;
-}
-
-/* Hide the browser's default radio button */
-.radio-btn-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-/* Create a custom radio button */
-.checkmark {
-  border: 1px solid #ced4da;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
+.lgRadio {
   width: 25px;
-  background-color: #fff;
-  border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color */
-.radio-btn-container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* When the radio button is checked, add a blue background */
-.radio-btn-container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Show the indicator (dot/circle) when checked */
-.radio-btn-container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the indicator (dot/circle) */
-.radio-btn-container .checkmark:after {
-  left: 50%;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  margin-left: -4px;
-  margin-top: -4px;
-  border-radius: 50%;
-  background: white;
+  height: 25px;
 }
 
 /* QR code generator */
