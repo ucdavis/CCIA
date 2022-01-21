@@ -317,13 +317,13 @@
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Email</td>
-                    <td>@employee.BusinessPhone 
+                    <td nowrap>@employee.BusinessPhone 
                         @if(employee.BusinessPhoneExtension != null)
                         {
                             <span>Ext: @employee.BusinessPhoneExtension</span>
                         }
                     </td>
-                    <td>@employee.MobilePhone</td>
+                    <td nowrap>@employee.MobilePhone</td>
                 </tr>
             }
         </tbody>
