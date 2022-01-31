@@ -42,6 +42,7 @@ namespace CCIA.Models
         public decimal? IsolationParentA { get; set; }
         public decimal? IsolationParentB { get; set; }
         public decimal? IsolationParentR { get; set; }
+        public bool LacTracker { get; set; }
 
         public string GenusSpecies 
         { 
