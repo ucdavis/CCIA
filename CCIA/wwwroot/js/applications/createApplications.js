@@ -21,11 +21,6 @@ function removeSecondPSEntry() {
 };
 
 
-// Set click listener for button to add field history records
-$('#add-fieldhistory').on('click', (e) => {
-    addNewFieldHistory(e, appTypeId);
-});
-
 // Datepicker
 $(".datepicker").datepicker({
     format: 'LT',
@@ -37,20 +32,6 @@ $(".datepicker").datepicker({
 $('#varietySearch').on('click', () => {
     searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder", "Seed", "SeedAppPartial");
 });
-
-// Called before HTML form submitted to controller
-$('#seedApplication').submit(function (e) {
-    insertHiddenInput("growerId", growerId, "seedApplication");
-    let fhIndicesStr = JSON.stringify(fhIndices);
-    insertHiddenInput("AppViewModel.FieldHistoryIndices", fhIndicesStr, "seedApplication");
-    return true;
-});
-
-
-
-///////////////////////////
-// General-Use Functions //
-///////////////////////////
 
 
 
@@ -131,11 +112,19 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, rema
 
 function selectFirstVarietyFormRemainder(varietyId, varietyName) {
     // Original variety
-     // Set hidden input of variety id from selected variety
-     $("#Application_SelectedVarietyId").val(varietyId);
-     // Set variety input text to be the selected variety from dropdown
-     $("#Application_EnteredVariety").val(varietyName); 
-     $("#ps1_PsEnteredVariety").val(varietyName);    
+    // Set hidden input of variety id from selected variety
+    $("#Application_SelectedVarietyId").val(varietyId);
+    // Set variety input text to be the selected variety from dropdown
+    $("#Application_EnteredVariety").val(varietyName); 
+    $("#ps1_PsEnteredVariety").val(varietyName);    
+    $("#form-remainder").collapse('show');
+}
+
+function ddlVarietySelected(){
+    var varietyId = $("#Application_EnteredVariety").val();
+    var varietyName = $("#Application_EnteredVariety :selected").text();
+    $("#Application_SelectedVarietyId").val(varietyId);   
+    $("#ps1_PsEnteredVariety").val(varietyName);    
     $("#form-remainder").collapse('show');
 }
 
@@ -143,73 +132,5 @@ function selectFirstVarietyFormRemainder(varietyId, varietyName) {
 function showSpinner(parentId) {
     $(`#${parentId}`)[0].innerHTML = spinner_div;
 }
-
-
-/////////////////////////////
-// Field History Functions //
-/////////////////////////////
-
-function addNewFieldHistory(e, appTypeId) {
-    e.preventDefault();
-    // Populate div with an additional field history partial
-    fhEntryId = findAvailableFhIndex();
-    if (fhEntryId == -1) {
-        return;
-    }
-    let fh_entry_div = `#fh-entry-${fhEntryId}`;
-    // Show the section
-    document.getElementById("fh-entry-" + fhEntryId).classList.remove("hidden");
-    showSpinner("fh-entry-" + fhEntryId);
-    $(fh_entry_div)
-        .load("/Application/GetPartial?folder=Shared&partialName=_FieldHistoryEntry&orgId=" + orgId + "&appTypeId=" + appTypeId + "&fhEntryId=" + fhEntryId, (response, status, xhr) => {
-            if (status == "error") {
-                var msg = "Sorry, there was an error loading the remainder of this form: ";
-                $("#error").html(msg + xhr.status + " " + xhr.statusText);
-            }
-            else {
-                // Mark that id as used
-                fhIndices[fhEntryId] = 1;
-
-                // Click handler for removing additional field history entry
-                document.getElementById(fhEntryId).onclick = (e) => {
-                    e.preventDefault();
-                    // Grabs ID from closest parent section -- the parent section containing the "X" button
-                    let idToRemove = parseInt(e.target.closest("button").id);
-                    // Hide the section
-                    document.getElementById("fh-entry-" + idToRemove).classList.add("hidden");
-                    // Mark this entry as unused
-                    if (fhEntryCount === maxFieldHistories) {
-                        // Re-enable button to add new entry
-                        document.getElementById("add-fieldhistory").disabled = false;
-                    }
-                    idToRemove = parseInt(e.target.closest("button").id);
-                    fhIndices[idToRemove] = 0;
-                    fhEntryCount--;
-                    removeFhEntryById(idToRemove);
-                }
-                fhEntryCount++;
-            }
-            if (fhEntryCount === maxFieldHistories) {
-                document.getElementById("add-fieldhistory").disabled = true;
-            }
-        });
-}
-
-function findAvailableFhIndex() {
-    for (let i = 0; i < fhIndices.length; i++) {
-        // 0 = free, 1 = used
-        if (fhIndices[i] === 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-// Removes contents of a field history section, while keeping the section tags intact
-function removeFhEntryById(id) {
-    let fhEntrySection = `#fh-entry-${id}`;
-    $(fhEntrySection).empty();
-}
-
 
 

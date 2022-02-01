@@ -66,21 +66,27 @@
         <div class="form-group required col-sm-6 border">                     
             <label asp-for="Application.EnteredVariety" class="col-form-label">@Model.AppType.VarietyTitle</label>
             <div>
-                <div class="btn-group col-sm-12">
-                    <input type="text" asp-for="Application.EnteredVariety" placeholder="@Model.AppType.VarietyTitle" class="col-sm-10 form-control">
-                    <button class="btn btn-primary dropdown-toggle" id="varietySearch" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search"></i>
-                    </button>     
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="DropdownId">
-                        <div class="text-center">
-                            <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
-                        </div>
-                    </div> 
-                </div>
+                @if(Model.AppType.Abbreviation != "PO" && Model.AppType.Abbreviation != "RQ" && Model.AppType.Abbreviation != "TG")
+                {
+                    <div class="btn-group col-sm-12">
+                        <input type="text" asp-for="Application.EnteredVariety" placeholder="@Model.AppType.VarietyTitle" class="col-sm-10 form-control">
+                        <button class="btn btn-primary dropdown-toggle" id="varietySearch" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search"></i>
+                        </button>     
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="DropdownId">
+                            <div class="text-center">
+                                <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                            </div>
+                        </div> 
+                    </div>
+                } else
+                {
+                    <select class="form-control col-sm-10" asp-for="Application.EnteredVariety" asp-items="@(new SelectList(Model.PrefiilledVarieties,"Id","Name"))" onchange="ddlVarietySelected()"></select>
+                }
             </div>
     </div> 
 
-    <div id="form-remainder" class="XXXcollapse col-sm-12">
+    <div id="form-remainder" class="collapse col-sm-12">
         <hr>
         <div class="form-group required row">
             <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
@@ -164,8 +170,51 @@
                             <span class="field-validation-valid text-danger" data-valmsg-for="ps1_ThcPercent" data-valmsg-replace="true"></span>
                         </div>
                     }
-                </div>                
+                </div>  
+                @if(Model.AppType.Abbreviation == "PO")
+                {
+                    <div class="row col">
+                        <h4>Winter test results are required for recertification:</h4>                            
+                    </div>
+                    <div class="row">                        
+                        <div class="form-group col required">
+                            <label for="ps1_WinterTest" class="col-form-label">Winter test completed?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  id="ps1_WinterTest" value="Yes" name="ps1_WinterTest" >
+                                <label class="form-check-label" for="ps1_WinterTestYes">Yes</label>                    
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  id="ps1_WinterTest" value="No" name="ps1_WinterTest" >
+                                <label class="form-check-label" for="ps1_WinterTestNo">No</label>                    
+                            </div>
+                        </div>
+                        <div class="col">
+                            (If yes, documentation required)
+                        </div>
+                    </div>
+                    <div class="row col">
+                        <h4>For prenuclear and nuclear class planted:</h4>                            
+                    </div>
+                    <div class="row">                        
+                        <div class="form-group col required">
+                            <label for="ps1_WinterTest" class="col-form-label">Was this lot PVX tested?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  id="ps1_PVXTested" value="Yes" name="ps1_PVXTested" >
+                                <label class="form-check-label" for=ps1_WinterTestYes">Yes</label>                    
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  id="ps1_PVXTested" value="No" name="ps1_PVXTested" >
+                                <label class="form-check-label" for=ps1_WinterTestNo">No</label>                    
+                            </div>
+                        </div>
+                         <div class="col">
+                            (If yes, documentation required)
+                        </div>
+                    </div>
+                }              
             </section>
+            @if(Model.AppType.showSecondPlantingStock)
+            {
             <!-- Second Planting Stock form -->
             <div id="second_ps_button">
                 <p><em>Enter both parent lines for hybrid production.</em></p>
@@ -241,10 +290,12 @@
                 </div>  
                 </section>                
             </div>
+            }
             
             
 
         </section> 
+            
 
         <section id="field-info" class="rounded-section off-white">
             <h4>Field Information</h4>
@@ -337,43 +388,57 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="row">
-                <div class="form-group">
-                    <label class="col-form-label">Crop Year</label>                   
-                    @{
-                        string name = ViewBag.name;
-                        var cropYearList = new List<int>();
+                    @{                        
+                        var cropYearList = new List<SelectListItem>();
                         @for (int i = 0; i <= ViewBag.endYearOffset; i++)
                         {
-                            int year = DateTime.Now.Year + ViewBag.startYearOffset - i;
-                            cropYearList.Add(year);                            
-                        }                        
+                            int year = Model.CertYear - 1 - i;
+                            var newItem = new SelectListItem() { Value= year.ToString(), Text=year.ToString()};     
+                            cropYearList.Add(newItem);                            
+                        }  
                     }
-                    <select id="@name" class="form-control" asp-items="@(new SelectList(cropYearList))"></select>
-                </div>
-                <div class="form-group col-md-4 col-sm-4 col-xs-4">
-                    <label for="crop-not-in-list" class="col-form-label">Variety or Crop not in list</label>
-                    @Html.TextBox("FieldHistories["+fhEntryId+"].Variety", "", new { @class="form-control", id="crop-not-in-list" })
-                </div>
+                <table class="table">
+                    <thead>
+                        <th>Crop Year</th>
+                        <th>Crop</th>
+                        <th>Variety or Crop not in list</th>
+                        <th>Application Number</th>
+                    </thead>
+                    <tbody>
+                        @for(int j =0; j <= Model.AppType.FieldHistoryCount; j++)
+                        {                            
+                            int year = Model.CertYear - 1 - j;  
+                            <tr>
+                                <td>
+                                   <select id="FhYear_@(j)" class="form-control">
+                                       @foreach (var item in cropYearList)
+                                       {
+                                           if(item.Value == year.ToString())
+                                           {
+                                               <option value="item.value" selected>@item.Value</option>
+                                           } else
+                                           {
+                                               <option value="item.value">@item.Value</option>
+                                           }
+                                       }
+                                   </select> 
+                                </td>
+                                <td>
+                                     <select id="FHCrop_@(j)" class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
+                                         <option value="0">Select crop...</option>
+                                     </select>
+                                </td>
+                                <td>
+                                    <input type="text" id="FHVariety_@(j)" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" id="FHAppNum_@(j)" class="form-control">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
                 
-                 
-                
-                <div class="form-group co-md-4 col-sm-4 col-xs-4">
-                    <label for="app-num" class="col-form-label">Application Number</label>
-                    @Html.TextBox("FieldHistories["+fhEntryId+"].AppNumber", "", new { @class="form-control", id="app-num" })
-                </div> 
-            </div>
-
-            @* @for(int i=1; i < Model.AppType.FieldHistoryCount; i++)
-            {
-                <section id="fh-entry-@i" class="@("rounded-section pos-rel light-blue " + (fhIndicesArr[i] == 0 ? "hidden" : ""))">
-                   @if (@fhIndicesArr[i] == 1)
-                    {
-                        @await Html.PartialAsync("Shared/_FieldHistoryEntry", new ViewDataDictionary(ViewData){{ "fhEntryId", @i }})
-                    } 
-                </section>
-            } *@
-
-            <button id="add-fieldhistory" class="btn btn-warning">Add a Field History record</button>
             </div>
         </section>
 

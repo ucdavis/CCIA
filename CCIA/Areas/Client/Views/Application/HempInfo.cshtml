@@ -1,0 +1,89 @@
+<section class="app-header">
+    <h2>Application to Hemp Program</h2>
+</section>
+
+
+<form method="post" asp-action="CreateHempApplication">
+<input type="hidden" id="growerId" name="growerId" value="@ViewBag.GrowerId">
+<input type="hidden" id="appTypeId" name="appTypeId" value="@ViewBag.AppType">
+<div>
+    <h2>Please tell us about this application</h2>
+    <div class="row">                        
+        <div class="form-group col required">
+            <label for="whatPlanted" class="col-form-label">What are you planting?</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" data-val="true" data-val-required="Please select what you are planting" id="whatPlantedClones" value="Clones" name="whatPlanted" >
+                <label class="form-check-label" for="whatPlantedClones">Clones</label>                    
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" data-val="true" data-val-required="Please select what you are planting" id="whatPlantedSeed" value="Seed" name="whatPlanted" >
+                <label class="form-check-label" for="whatPlantedSeed">Seed</label>                    
+            </div>
+            <div>
+                <span class="field-validation-valid text-danger" data-valmsg-for="whatPlanted" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">                        
+        <div class="form-group col required">
+            <label for="whatProduced" class="col-form-label">What are you producing?</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" data-val="true" data-val-required="Please select what you are producing"  id="whatProducedClones" class="checkValue" value="Clones" name="whatProduced" >
+                <label class="form-check-label" for="whatProducedClones">Clones</label>                    
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio"  id="whatProducedSeed" data-val="true" data-val-required="Please select what you are producing" class="checkValue" value="Seed" name="whatProduced" >
+                <label class="form-check-label" for="whatProducedSeed">Seed</label>  &nbsp; &nbsp; &nbsp;
+                <select id="producingSeedType" name="producingSeedType" data-val="true" data-val-required="Please select as seed type" >
+                    <option value="">Select seed type</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Open Pollinator">Open Pollinator (OP)</option>
+                    <option value="Feminized">Feminized</option>
+                </select>                  
+            </div>
+            <div>
+                <span class="field-validation-valid text-danger" data-valmsg-for="whatProduced" data-valmsg-replace="true"></span>
+                <span class="field-validation-valid text-danger" data-valmsg-for="producingSeedType" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">                        
+        <div class="form-group col required">
+            <label for="whereProduction" class="col-form-label">Is this production indoor or outdoor?</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" data-val="true" data-val-required="Please select where you are producing" id="whereProductionIndoor" value="Indoors" name="whereProduction" >
+                <label class="form-check-label" for="whereProductionIndoor">Indoor</label>                    
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" data-val="true" data-val-required="Please select where you are producing"  id="whereProductionOutdoors" value="Outdoors" name="whereProduction" >
+                <label class="form-check-label" for="whereProductionOutdoors">Outdoors</label>                    
+            </div>
+            <div>
+                <span class="field-validation-valid text-danger" data-valmsg-for="whereProduction" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="submit" value="Continue Application" class="btn btn-primary">
+</form>
+
+@section Scripts {
+ @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+    var update_production = function () {
+        if($("#whatProducedSeed").is(':checked'))
+        {
+            //alert("Checked");
+            $('#producingSeedType').prop('disabled', false);            
+        } else
+        {
+            //alert("not seed");
+            $('#producingSeedType').prop('disabled', 'disabled').val($("#target option:first").val());
+        }
+    };
+
+    $(update_production);
+    $("input[type=radio][name=whatProduced").change(update_production);
+
+</script>
+}

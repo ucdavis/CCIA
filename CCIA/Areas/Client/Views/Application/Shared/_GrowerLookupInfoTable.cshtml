@@ -19,7 +19,15 @@
         @foreach (var org in Model.Orgs)
         {
             <tr>
-                <td><a class="btn btn-primary" href="/Client/Application/CreateApplication/?growerId=@org.Id&appTypeId=@Model.AppTypeId">Select</a>
+                <td>
+                    @if(Model.AppTypeId != 10)
+                    {
+                        <a class="btn btn-primary" href="/Client/Application/CreateApplication/?growerId=@org.Id&appTypeId=@Model.AppTypeId">Select</a>
+                    } else
+                    {
+                        <a class="btn btn-primary" href="/Client/Application/HempInfo/?growerId=@org.Id&appTypeId=@Model.AppTypeId">Select</a>
+                    }
+                    
                 <td>@org.Id</td>
                 <td>@org.Name</td>
                 @if (org.Address != null)

@@ -17,6 +17,7 @@ namespace CCIA.Models
         public List<AbbrevClassProduced> ClassProducedList { get; set; }
         public List<County> Counties { get; set; }
         public List<Crops> Crops { get; set; }
+        public List<Crops> FullCrops { get; set; }
         public List<Ecoregions> Ecoregions { get; set; }
         public string FieldHistoryIndices { get; set; }
         public int MaxFieldHistoryRecords { get; set; }
@@ -27,11 +28,17 @@ namespace CCIA.Models
         public bool RenderSecondPlantingStock { get; set; }
         public List<StateProvince> StateProvince { get; set; }
         public List<VarOfficial> Varieties { get; set; }
+        public List<VarFull> PrefiilledVarieties { get; set; }
         public AbbrevAppType AppType { get; set; }
         public int CertYear { get; set; }
+
+        public string WhatPlanted { get; set; }
+        public string WhatProduced { get; set; }
+        public string ProducingSeedType { get; set; }
+        public string WhereProduction { get; set; }
         // Maximum number of field history records allowed for a specified app type
 
-        public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg)
+        public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
         {
             var abbrevAppType = await _dbContext.AbbrevAppType.Where(a => a.AppTypeId == appType).FirstOrDefaultAsync();
             var app = new Applications();
@@ -39,41 +46,52 @@ namespace CCIA.Models
             app.ApplicantOrganization = await _dbContext.Organizations.Where(o => o.Id == applicantOrg).FirstAsync();
             var appLabels = ApplicationLabels.Create(appType);
             var crops = new List<Crops>();
+            var varieties = new List<VarFull>();
            
 
             switch (appType)
             {
                 // Seed
                 case 1:
-                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
                 // Potato
                 case 2:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    varieties = await _dbContext.VarFull.Where(v => v.CropId == PotatoCropId).OrderBy(v => v.Name).ToListAsync();
+                    varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
+                    app.CropId = PotatoCropId;
                     break;
                 // Heritage Grain QA
                 case 3:
-                    crops = await _dbContext.Crops.Where(c => c.Heritage == true).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.Heritage == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
                 // Pre Variety Germplasm
                 case 4:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
                 // Rice QA
                 case 5:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    varieties = await _dbContext.VarFull.Where(v => v.RiceQa).OrderBy(v=> v.Name).ToListAsync();
+                    varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
+                    app.CropId = RiceCropId;
                     break;
                 // // Turfgrass
-                // case 6:
-                //     break;
-                // Hemp from seed
-                case 7:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).ToListAsync();
+                case 6:
+                    varieties = await _dbContext.VarFull.Where(v => v.Turfgrass).OrderBy(v=> v.Name).ToListAsync();
+                    var turfgrassVarieties = varieties.Select(v => v.CropId).Distinct().ToList();
+                    varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
+                    crops = await _dbContext.Crops.Where(c => turfgrassVarieties.Contains(c.CropId)).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    break;               
+                // Hemp program
+                case 10:
+                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
-                // // Hemp from clones
-                // case 8:
-                //     maxFieldHistoryRecords = 5;
-                //     break;
+                // LacTracker program
+                case 11:
+                    crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    break;
             }
 
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
@@ -96,6 +114,12 @@ namespace CCIA.Models
                 StateProvince =  await _dbContext.StateProvince.ToListAsync(),
                 Crops = crops,
                 CertYear = Helpers.CertYearFinder.CertYear,
+                FullCrops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
+                PrefiilledVarieties = varieties,
+                WhatPlanted = whatPlanted,
+                WhatProduced = whatProduced,
+                ProducingSeedType = producingSeedType,
+                WhereProduction = whereProduction
             };
 
             return model;

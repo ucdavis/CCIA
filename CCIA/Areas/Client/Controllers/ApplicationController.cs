@@ -68,8 +68,29 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
         {
-            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value));
+            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), null, null, null, null);
             return View(model);
+        }
+
+        public async Task<IActionResult> CreateHempApplication(int growerId, int appTypeId, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
+        {
+            if(growerId == 0)
+            {
+                return RedirectToAction(nameof(GrowerLookup), new { appTypeID = 10});
+            }
+            if(string.IsNullOrWhiteSpace(whatPlanted) || string.IsNullOrWhiteSpace(whatProduced) || string.IsNullOrWhiteSpace(whereProduction))
+            {
+                return RedirectToAction(nameof(HempInfo), new { growerId = growerId, appTypeId = appTypeId});
+            }
+            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), whatPlanted, whatProduced, producingSeedType, whereProduction);
+            return View(nameof(CreateApplication), model);
+        }
+
+        public ActionResult HempInfo(int growerId, int appTypeId)
+        {
+            ViewBag.GrowerId = growerId;
+            ViewBag.AppType = appTypeId;
+            return View();
         }
 
         // GET: Application/CreateSeedApplication
