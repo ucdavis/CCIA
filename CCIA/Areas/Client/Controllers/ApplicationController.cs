@@ -68,6 +68,10 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
         {
+            if(appTypeId == 10)
+            {
+                return RedirectToAction(nameof(HempInfo), new { growerId = growerId, appTypeId = appTypeId});
+            }
             var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), null, null, null, null);
             return View(model);
         }

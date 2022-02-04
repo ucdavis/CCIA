@@ -15,6 +15,7 @@ namespace CCIA.Models
         public ApplicationLabels ApplicationLabels { get; set; }
         public int AppTypeId { get; set; }
         public List<AbbrevClassProduced> ClassProducedList { get; set; }
+        public List<AbbrevClassProduced> ClassPlantedList { get; set; }
         public List<County> Counties { get; set; }
         public List<Crops> Crops { get; set; }
         public List<Crops> FullCrops { get; set; }
@@ -46,14 +47,18 @@ namespace CCIA.Models
             app.ApplicantOrganization = await _dbContext.Organizations.Where(o => o.Id == applicantOrg).FirstAsync();
             var appLabels = ApplicationLabels.Create(appType);
             var crops = new List<Crops>();
-            var varieties = new List<VarFull>();
+            var varieties = new List<VarFull>();         
+            var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType).ToListAsync();
+            var planted = classes;
+
+        
            
 
             switch (appType)
             {
                 // Seed
                 case 1:
-                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
                     break;
                 // Potato
                 case 2:
@@ -77,7 +82,7 @@ namespace CCIA.Models
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     app.CropId = RiceCropId;
                     break;
-                // // Turfgrass
+                // Turfgrass
                 case 6:
                     varieties = await _dbContext.VarFull.Where(v => v.Turfgrass).OrderBy(v=> v.Name).ToListAsync();
                     var turfgrassVarieties = varieties.Select(v => v.CropId).Distinct().ToList();
@@ -87,6 +92,14 @@ namespace CCIA.Models
                 // Hemp program
                 case 10:
                     crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    app.CropId = HempCropId;
+                    var hempProducing = whatProduced;
+                    if(whatProduced == "Seed")
+                    {
+                        hempProducing = whatProduced + " - " + producingSeedType;
+                    }
+                    classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType && c.HempProduction == hempProducing).ToListAsync();
+                    planted = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType && c.HempProduction == hempProducing && c.HempPlanted).ToListAsync();
                     break;
                 // LacTracker program
                 case 11:
@@ -103,7 +116,8 @@ namespace CCIA.Models
                 ApplicationLabels = appLabels,
                 AppType = abbrevAppType,
                 Application = app,
-                ClassProducedList = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == appType).ToListAsync(),
+                ClassProducedList = classes,
+                ClassPlantedList = planted,
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
                 GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)

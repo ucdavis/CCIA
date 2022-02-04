@@ -1641,6 +1641,9 @@ namespace CCIA.Models
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
                 
                 entity.HasOne(e => e.AppType);
+                entity.Property(e => e.HempProduction).HasColumnName("hemp_producing");
+                entity.Property(e => e.HempProduced).HasColumnName("hemp_produced");
+                entity.Property(e => e.HempPlanted).HasColumnName("hemp_planted");
             });
 
             modelBuilder.Entity<AbbrevClassSeeds>(entity =>

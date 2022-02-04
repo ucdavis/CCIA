@@ -86,7 +86,7 @@
             </div>
     </div> 
 
-    <div id="form-remainder" class="collapse col-sm-12">
+    <div id="form-remainder" class="XXXcollapse col-sm-12">
         <hr>
         <div class="form-group required row">
             <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
@@ -104,7 +104,17 @@
         </div>
  
         <section id="planting-stock" class="rounded-section off-white">
-            <h4>Planting Stock</h4>
+            <h4>Planting Stock
+                @if(Model.AppType.Abbreviation == "HP")
+                {
+                    @if(Model.WhatProduced == "Clones" || Model.ProducingSeedType == "Hybrid")
+                    {
+                        <span> - Parent 1</span>
+                    } else{
+                        <span> - Pollen Donating</span>
+                    }
+                }
+            </h4>
 
             <!-- First Planting Stock form --> 
            <section class="rounded-section light-grey">
@@ -123,13 +133,20 @@
                 <div class="row">                    
                     <div class="form-group required col-sm-6">
                         <label class="col-form-label" for="ps1_PsClass">Class Planted</label>
-                        <select id="ps1_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassProducedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
+                        <select id="ps1_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
                         <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PsClass" data-valmsg-replace="true"></span>
                     </div>                    
                     <!-- Potato app doesn't have pounds planted field -->
                     @if(Model.AppType.Abbreviation != "PO")
                     {
                         <div class="form-group required">
+                        @if(Model.AppType.Abbreviation == "HP" && Model.WhatPlanted == "Clones")
+                        {
+                            <label for="ps1_NummberOfPlantsPlanted" class="col-form-label">Number of Plants</label>
+                            <input type="text" id="ps1_NummberOfPlantsPlanted" class="form-control" placeholder="Number of Plants">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps1_NummberOfPlantsPlanted" data-valmsg-replace="true"></span>
+
+                        } else {                            
                             <label for="ps1_PoundsPlanted" class="col-form-label">Pounds Planted
                                 <!-- Special PVG Label -->
                                 @if(Model.AppType.Abbreviation == "PV") {
@@ -137,7 +154,8 @@
                                 }
                             </label>
                             <input type="text" id="ps1_PoundsPlanted" class="form-control" placeholder="Pounds Planted">
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PoundsPlanted" data-valmsg-replace="true"></span>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps1_PoundsPlanted" data-valmsg-replace="true"></span>                          
+                        }
                         </div>
                     }
                 </div>
@@ -213,7 +231,7 @@
                     </div>
                 }              
             </section>
-            @if(Model.AppType.showSecondPlantingStock)
+            @if(Model.AppType.showSecondPlantingStock || (Model.AppType.Abbreviation =="HP" && Model.ProducingSeedType != "Open Pollinator"))
             {
             <!-- Second Planting Stock form -->
             <div id="second_ps_button">
@@ -221,6 +239,17 @@
                 <div id="add-second-ps" class="btn btn-warning collapse show">Add a second planting stocks record</div>
             </div>
             <div id="second-ps" class="collapse">
+                <h4> Second Planting Stock
+                @if(Model.AppType.Abbreviation == "HP")
+                {
+                    @if(Model.WhatProduced == "Clones" || Model.ProducingSeedType == "Hybrid")
+                    {
+                        <span> - Parent 2</span>
+                    } else{
+                        <span> - Pollen Receiving</span>
+                    }
+                }
+            </h4>
                 <section class="rounded-section light-blue pos-rel">
                 <button type="button" id="remove-ps2" onclick="removeSecondPSEntry();" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this planting stock record">
                     <i id="remove-ps2" class="fas fa-times"></i>
@@ -240,13 +269,20 @@
                 <div class="row">
                     <div class="form-group required col-sm-6">
                         <label class="col-form-label" for="ps2_PsClass">Class Planted</label>
-                        <select id="ps2_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassProducedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
+                        <select id="ps2_PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
                         <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PsClass" data-valmsg-replace="true"></span>
                     </div>                    
                     <!-- Potato app doesn't have pounds planted field -->
                     @if(Model.AppType.Abbreviation != "PO")
                     {
-                        <div class="form-group required">
+                         <div class="form-group required">
+                        @if(Model.AppType.Abbreviation == "HP" && Model.WhatPlanted == "Clones")
+                        {
+                            <label for="ps2_NummberOfPlantsPlanted" class="col-form-label">Number of Plants</label>
+                            <input type="text" id="ps2_NummberOfPlantsPlanted" class="form-control" placeholder="Number of Plants">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps2_NummberOfPlantsPlanted" data-valmsg-replace="true"></span>
+
+                        } else {                            
                             <label for="ps2_PoundsPlanted" class="col-form-label">Pounds Planted
                                 <!-- Special PVG Label -->
                                 @if(Model.AppType.Abbreviation == "PV") {
@@ -254,7 +290,8 @@
                                 }
                             </label>
                             <input type="text" id="ps2_PoundsPlanted" class="form-control" placeholder="Pounds Planted">
-                            <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PoundsPlanted" data-valmsg-replace="true"></span>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="ps2_PoundsPlanted" data-valmsg-replace="true"></span>                          
+                        }
                         </div>
                     }
                 </div>
@@ -340,15 +377,22 @@
                         </div>            
                     }
                 <div class="form-group col required">
-                    <label asp-for="Application.AcresApplied" class="col-form-label ">Acres Applied
-                        <!-- PVG -->
-                        @if(Model.AppType.Abbreviation == "PV") 
-                        {
-                            <text>(enter 1 for G0)</text>
-                        }
-                    </label>
-                    <input asp-for="Application.AcresApplied" class="form-control" placeholder="Acres Applied">
-                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                    @if(Model.AppType.Abbreviation == "HP" && Model.WhereProduction == "Indoors")
+                    {
+                        <label asp-for="Application.AcresApplied" class="col-form-label ">Square Feet</label>
+                        <input asp-for="Application.AcresApplied" class="form-control" placeholder="Square Feet">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                    } else {
+                        <label asp-for="Application.AcresApplied" class="col-form-label ">Acres Applied
+                            <!-- PVG -->
+                            @if(Model.AppType.Abbreviation == "PV") 
+                            {
+                                <text>(enter 1 for G0)</text>
+                            }
+                        </label>
+                        <input asp-for="Application.AcresApplied" class="form-control" placeholder="Acres Applied">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                    }
                 </div>
             </div>
 
@@ -374,19 +418,18 @@
                 <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
             </div>
 
+            @if(Model.AppType.Abbreviation != "HP" || Model.WhereProduction != "Indoors")
+            {
             <h5><strong>History:</strong></h5>
             <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
 
-                    @{
+                    
                 int fhEntryId = 1;
                 int nextFhEntryId = fhEntryId+1;
                 ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
                 ViewBag.startYearOffset = 0;
                 ViewBag.endYearOffset = 6;
-            }
-            <button id="@fhEntryId" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this field history record">
-                <i class="fas fa-times"></i>
-            </button>
+                        
             <div class="row">
                     @{                        
                         var cropYearList = new List<SelectListItem>();
@@ -440,6 +483,7 @@
                 </table>
                 
             </div>
+            }
         </section>
 
         <div class="text-right">

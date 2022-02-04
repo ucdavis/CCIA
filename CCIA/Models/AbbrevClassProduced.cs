@@ -21,6 +21,12 @@ namespace CCIA.Models
         [ForeignKey("AppTypeId")]
         public AbbrevAppType AppType { get; set; }
 
+        public string HempProduction { get; set; }
+
+        public bool HempPlanted { get; set; }
+
+        public bool HempProduced { get; set; }
+
         public string NameAndAppType 
         { 
             get 
