@@ -46,7 +46,9 @@
 </div>
 
 
-<form>
+<form asp-action="CreateApplication">
+    <input type="hidden" asp-for="Application.GrowerId" value="@Model.GrowerOrg.Id">
+    <input type="hidden" asp-for="Application.AppType" value="@Model.AppType.Abbreviation">
     <div class="row border">
         <div class="form-group col-sm-3 required">            
                 <label asp-for="Application.CropId" class="col-form-label">Crop</label>
@@ -86,7 +88,7 @@
             </div>
     </div> 
 
-    <div id="form-remainder" class="XXXcollapse col-sm-12">
+    <div id="form-remainder" class="collapse col-sm-12">
         <hr>
         <div class="form-group required row">
             <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
@@ -102,6 +104,33 @@
             <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
             <hr>
         </div>
+
+        @if(Model.AppType.Abbreviation == "PV")
+        {
+            <div class="form-group required row">
+                <label asp-for=Application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label> 
+                <select class="col-sm-4 form-control" asp-for="Application.PvgSource" data-val="true" data-val-required="Please select Germplasm Source"  >
+                    <option value="">Select germplasm type...</option>
+                    <option value="Source Identified Germplasm">Source Identified Germplasm</option>
+                    <option value="Selected Germplasm">Selected Germplasm</option>
+                    <option value="Tested Germplasm">Tested Germplasm</option>
+                </select>      
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.PvgSource" data-valmsg-replace="true"></span>
+                <hr>
+            </div>
+        }
+
+        @if(Model.AppType.Abbreviation == "PO")
+        {
+            <div class="form-group required row">
+                <label asp-for=Application.PoLotNum class="col-form-label col-sm-3">Lot # for Certification Number</label> 
+                <input asp-for="Application.PoLotNum" class="col-sm-3 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.PoLotNum" data-valmsg-replace="true"></span>
+                <span class="col-sm-3">(do not enter year or account number)</span>
+                <hr>
+            </div>
+
+        }
  
         <section id="planting-stock" class="rounded-section off-white">
             <h4>Planting Stock
@@ -508,24 +537,7 @@
 </form>
 
 @section Scripts {
-   @*  <script type="text/javascript">
-        var orgId = @Model.AppViewModel.Organization.Id;
-        var growerId = @Model.AppViewModel.Organization.Id;
-        var renderFormRemainder = "@Model.AppViewModel.RenderFormRemainder".toLocaleLowerCase();
-        var appTypeId = @Model.AppViewModel.AppTypeId;
-        // How many field history records are possible for this application
-        let maxFieldHistories = @Model.AppViewModel.MaxFieldHistoryRecords;
-        let secondPsRendered = false;
-        let fhEntryId = -1;
-
-        // Converting our fixed-size array of booleans from the model to a JavaScript array
-        // for use with removing/adding field history entries
-        let fhIndices = @Model.AppViewModel.FieldHistoryIndices;
-
-        // Counts the occurrences of used spaces in fhIndices\
-        // Used spaces are indicated by 1s. Free spaces are marked with 0s.
-        let fhEntryCount = countOccurrences(1, fhIndices);
-    </script> *@
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/applications/createApplications.js" asp-append-version="true"></script>
    

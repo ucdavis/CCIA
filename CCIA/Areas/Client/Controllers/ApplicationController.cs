@@ -90,6 +90,22 @@ namespace CCIA.Controllers.Client
             return View(nameof(CreateApplication), model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
+        {
+            var newApp = new Applications();
+            var submittedApp = model.Application;
+            newApp.CertYear = submittedApp.CertYear;
+            newApp.OriginalCertYear = submittedApp.CertYear;
+
+            if(submittedApp.AppType == "PO")
+            {
+                newApp.PoLotNum = submittedApp.PoLotNum;
+            }
+
+            return View();
+        }
+
         public ActionResult HempInfo(int growerId, int appTypeId)
         {
             ViewBag.GrowerId = growerId;
@@ -431,7 +447,7 @@ namespace CCIA.Controllers.Client
             if (abbrevAppType.GrowerSameAsApplicant)
             {
                 int orgId = Convert.ToInt32(contact.OrgId);
-                return RedirectToAction("CreatePotatoApplication", new { orgId = orgId, appTypeId = appTypeId });
+                return RedirectToAction("CreateApplication", new { growerId = orgId, appTypeId = appTypeId });
             }
             else
             {
