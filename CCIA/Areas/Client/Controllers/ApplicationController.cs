@@ -93,6 +93,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
         {
+            // check farm county !=0;
             var newApp = new Applications();
             var submittedApp = model.Application;
             newApp.CertYear = submittedApp.CertYear;
