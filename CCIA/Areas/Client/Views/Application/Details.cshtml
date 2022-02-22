@@ -106,6 +106,8 @@
      <div class="row">
         <hr />
     </div>
+    @if(Model.PlantingStocks.Any())
+    {
     <div class="row">
         <label class="col-form-label">Planting Stock Info</label>
         <table class="table">
@@ -194,6 +196,7 @@
             </tbody>
         </table>
     </div>
+    }
     <div class="row">
         <hr />
     </div>  

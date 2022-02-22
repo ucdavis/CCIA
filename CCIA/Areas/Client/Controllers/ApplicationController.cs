@@ -89,19 +89,81 @@ namespace CCIA.Controllers.Client
             var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), whatPlanted, whatProduced, producingSeedType, whereProduction);
             return View(nameof(CreateApplication), model);
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
         {
             // check farm county !=0;
             var newApp = new Applications();
             var submittedApp = model.Application;
+            newApp.AppType = submittedApp.AppType;
             newApp.CertYear = submittedApp.CertYear;
             newApp.OriginalCertYear = submittedApp.CertYear;
+            newApp.UserDataentry = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            newApp.EnteredVariety = submittedApp.EnteredVariety;
+            newApp.Received = DateTime.Now;
+            newApp.Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName();
+            newApp.ApplicantComments = submittedApp.ApplicantComments;
+            newApp.FieldName = submittedApp.FieldName;
+            newApp.DatePlanted = submittedApp.DatePlanted;
+            newApp.AcresApplied = submittedApp.AcresApplied;
+            newApp.ApplicantComments = submittedApp.ApplicantComments;
+            newApp.CropId = submittedApp.CropId;
+            newApp.ApplicantId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            newApp.GrowerId = submittedApp.GrowerId;
+            newApp.FarmCounty = submittedApp.FarmCounty;
+            newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
+            newApp.ClassProducedId = submittedApp.ClassProducedId;
 
+            if(submittedApp.AppType == "HP")
+            {
+                newApp.CountyPermit = submittedApp.CountyPermit;
+            }
             if(submittedApp.AppType == "PO")
             {
                 newApp.PoLotNum = submittedApp.PoLotNum;
+            }
+            if(submittedApp.AppType == "GQ")
+            {
+                newApp.ClassProducedAccession = submittedApp.ClassProducedAccession;
+            }
+            // if((model.PlantingStocks.First().PsClass.Value <= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStocks.First().PsAccession <= submittedApp.ClassProducedAccession))
+            // {
+            //     newApp.WarningFlag = true;
+            //     newApp.ApplicantNotes += "Class produced is less then or equal to class planted";
+            // }
+            if(submittedApp.AppType == "PV")
+            {
+                newApp.PvgSource = submittedApp.PvgSource;
+                newApp.PvgSelectionId = submittedApp.PvgSelectionId;
+                newApp.EcoregionId = submittedApp.EcoregionId;
+                newApp.FieldElevation = submittedApp.FieldElevation;
+            }
+
+            if (ModelState.IsValid)
+            {   
+                _dbContext.Add(newApp);
+
+                // Adds to database and populates AppId.
+                await _dbContext.SaveChangesAsync();
+
+                // // Add AppId wherever we need it in plantingstocks and fieldhistory
+                // foreach (PlantingStocks ps in app.PlantingStocks)
+                // {
+                //     ps.AppId = app.Id;
+                // }
+
+                // if (app.FieldHistories != null)
+                // {
+                //     foreach (FieldHistory fh in app.FieldHistories)
+                //     {
+                //         fh.AppId = app.Id;
+                //     }
+                // }
+
+               // await _dbContext.SaveChangesAsync();
+                Message = "Application successfully submitted!";
+                return RedirectToAction("Details", new { id = newApp.Id });
             }
 
             return View();

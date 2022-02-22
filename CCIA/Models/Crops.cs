@@ -6,12 +6,7 @@ namespace CCIA.Models
 {
     public partial class Crops
     {
-        public Crops()
-        {
-            Applications = new HashSet<Applications>();
-            VarOfficial = new HashSet<VarOfficial>();
-        }
-
+        
         public int CropId { get; set; }
         public string Genus { get; set; }
         public string Species { get; set; }
@@ -58,7 +53,7 @@ namespace CCIA.Models
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
 
 
-        public ICollection<Applications> Applications { get; set; }
+        
         public ICollection<VarOfficial> VarOfficial { get; set; }
 
         public ICollection<CropStandards> CropStandards { get; set; }

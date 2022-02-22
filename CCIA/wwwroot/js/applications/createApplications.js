@@ -27,6 +27,32 @@ $(".datepicker").datepicker({
     autoclose: "true"
 });
 
+function ClassChange()
+{
+    var val = $('input[name="Application.ClassProducedId"]:checked').val();
+    if(val == 14)
+    {
+        $("#AccessionSelector").collapse('show');
+    } else
+    {
+        $("#AccessionSelector").collapse('hide');
+        $("#Application_ClassProducedAccession").val("");
+    }
+}
+
+$("#ps1_PsClass").change(function() {
+    var val = $("#ps1_PsClass").val();
+    if(val == 14)
+    {
+        $("#PSAccessionSelector").collapse('show');
+    } else
+    {
+        $("#PSAccessionSelector").collapse('hide');
+        $("#ps1_PsAccession").val("");
+    }
+});
+
+
 // Set search variety click listener
 // Located in seed.js because the callback of selecting a variety changes depending on App type
 $('#varietySearch').on('click', () => {

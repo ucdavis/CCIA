@@ -29,11 +29,13 @@ namespace CCIA.Models
 
         public bool ShowPSTagIssued { get; set; }
 
-        public ICollection<Applications> Applications { get; set; }
-        public ICollection<Seeds> Seeds { get; set; }
+        public ICollection<BulkSalesCertificates> BulkSalesCertificate { get; set; }
+        public ICollection<Applications> Application { get; set; }
+        public ICollection<Seeds> Seed { get; set; }
 
-        public ICollection<BulkSalesCertificates> BulkSalesCertificates { get; set; }
-
+       
+        
+       
         
     }
 }

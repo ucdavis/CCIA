@@ -7,10 +7,7 @@ namespace CCIA.Models
 {
     public partial class AbbrevClassProduced
     {
-        public AbbrevClassProduced()
-        {            
-            PlantingStocks = new HashSet<PlantingStocks>();
-        }
+       
         [Key]
         public int ClassProducedId { get; set; }
         public string ClassAbbrv { get; set; }
@@ -40,6 +37,6 @@ namespace CCIA.Models
         }
 
        
-        public ICollection<PlantingStocks> PlantingStocks { get; set; }
+       
     }
 }

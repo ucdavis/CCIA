@@ -50,6 +50,8 @@ namespace CCIA.Models
         }
 
        
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Display(Name="Renew ID")]
         public int? PaperAppNum { get; set; }
@@ -60,7 +62,7 @@ namespace CCIA.Models
         
         [Display(Name="Orig Year")]
         public int? OriginalCertYear { get; set; }
-        public string LotNo { get; set; }
+        
         
         
         public int? UserDataentry { get; set; }
@@ -91,7 +93,7 @@ namespace CCIA.Models
         public bool Approved { get; set; }
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
-        public int? Trace { get; set; }
+        
         
         [Display(Name="Warning Flag")]
         public bool WarningFlag { get; set; }
@@ -146,8 +148,7 @@ namespace CCIA.Models
         public DateTime? DateNotified { get; set; }
         public string ApplicantComments { get; set; }
         public string PvgSource { get; set; }
-        public string PvgSelectionId { get; set; }
-        public string FieldHardiness { get; set; }
+        public string PvgSelectionId { get; set; }        
         public int? FieldElevation { get; set; }
         public int EcoregionId { get; set; }
         [ForeignKey("EcoregionId")]
@@ -159,6 +160,7 @@ namespace CCIA.Models
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
       
+        [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
 
@@ -188,8 +190,7 @@ namespace CCIA.Models
         [ForeignKey("AppType")]
         public AbbrevAppType AppTypeTrans { get; set; }
         public string AppType { get; set; }
-
-        [ForeignKey("Id")]
+       
         public PotatoHealthCertificates PotatoHealthCertificate { get; set; }
 
         [ForeignKey("AppId")]
@@ -210,6 +211,7 @@ namespace CCIA.Models
         
         
         public FieldInspectionReport FieldInspectionReport { get; set; }
+        
         
         public CertRad AppCertRad {get; set;}
 

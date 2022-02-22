@@ -38,9 +38,9 @@ namespace CCIA.Models
 
         public string UserEmpModified { get; set; }
 
-    //    [ForeignKey("AppId")]
-    //    public Applications Application { get; set; }
+    
         
+        [ForeignKey("PsClass")]
         public AbbrevClassProduced PsClassNavigation { get; set; }
 
        

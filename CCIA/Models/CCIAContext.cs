@@ -158,6 +158,8 @@ namespace CCIA.Models
 
         public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
 
+      
+
         
        
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -211,7 +213,7 @@ namespace CCIA.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            
             modelBuilder.Entity<Seeds>(entity =>
             {
                 entity.ToTable("Seeds");
@@ -278,7 +280,7 @@ namespace CCIA.Models
 
                 entity.HasOne(s => s.LabResults);
 
-                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
+                entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Seed).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.CertProgram);
                 
                 entity.HasOne(d => d.Application);
 
@@ -632,6 +634,7 @@ namespace CCIA.Models
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
 
                 entity.HasOne(e => e.Employee);
+                
             });
 
             modelBuilder.Entity<SeedTransferChanges>(entity => {
@@ -1118,7 +1121,7 @@ namespace CCIA.Models
 
                 entity.HasMany(e => e.BulkSalesCertificatesShares);
 
-                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificates).HasForeignKey(e => e.CertProgramAbbreviation).HasPrincipalKey(a => a.Abbreviation);
+                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificate).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.CertProgramAbbreviation);
 
             });
 
@@ -1876,13 +1879,7 @@ namespace CCIA.Models
                 entity.Property(e => e.FieldElevation)
                     .HasColumnName("field_elevation")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FieldHardiness)
-                    .HasColumnName("field_hardiness")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false);               
 
                 entity.Property(e => e.FieldName)
                     .HasColumnName("field_name")
@@ -1902,12 +1899,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.LateFee)
                     .HasColumnName("late_fee")
-                    .HasColumnType("smallmoney");
-
-                entity.Property(e => e.LotNo)
-                    .HasColumnName("lot_no")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasColumnType("smallmoney");                
 
                 entity.Property(e => e.MapCenterLat)
                     .HasColumnName("map_center_lat")
@@ -1984,9 +1976,7 @@ namespace CCIA.Models
                 entity.Property(e => e.TextField)
                     .HasColumnName("text_field")
                     .HasMaxLength(3000)
-                    .IsUnicode(false);               
-
-                entity.Property(e => e.Trace).HasColumnName("trace");
+                    .IsUnicode(false);                 
 
                 entity.Property(e => e.UserDataentry).HasColumnName("user_app_dataentry");
 
@@ -2013,23 +2003,21 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.ClassProduced);
 
-                entity.HasOne(d => d.Crop)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.CropId)
-                    .HasConstraintName("FK_Applications_Crops");
+                entity.HasOne(d => d.Crop);
+                    
 
                 entity.HasOne(d => d.GrowerOrganization);
 
-                entity.HasOne(d => d.ApplicantOrganization)
-                    .WithMany(p => p.AppliedApplications)
-                    .HasForeignKey(d => d.ApplicantId);
+                entity.HasOne(d => d.ApplicantOrganization);
+                    // .WithMany(p => p.AppliedApplications)
+                    // .HasForeignKey(d => d.Id);
 
                 
                 entity.HasOne(d => d.County);
 
                 entity.HasOne(d => d.Variety);
 
-                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
+                entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Application).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.AppType);
 
                 entity.HasMany(d => d.Certificates);
 
@@ -2039,13 +2027,14 @@ namespace CCIA.Models
 
                 entity.HasMany(d => d.TurfgrassCertificates);
 
-                entity.HasMany(d => d.FieldInspection);
-                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
-                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
+                entity.HasMany(d => d.FieldInspection);                
+                
+                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => new { d.CertNum, d.CertYear }).HasPrincipalKey(t => new { t.CertNum, t.CertYear });
                 entity.HasMany(d => d.Changes);
                 entity.HasOne(d => d.FieldInspectionReport);
                 entity.HasOne(d => d.Ecoregion);
-                entity.HasOne(d => d.PotatoHealthCertificate);
+                
+                entity.HasOne(d => d.PotatoHealthCertificate).WithOne(p => p.Application).HasForeignKey<PotatoHealthCertificates>(e => e.AppId).IsRequired(false);
 
             });
 
@@ -3177,10 +3166,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
 
-                entity.HasOne(d => d.PsClassNavigation)
-                    .WithMany(p => p.PlantingStocks)
-                    .HasForeignKey(d => d.PsClass)
-                    .HasConstraintName("FK_planting_stocks_farm_field");
+                entity.HasOne(d => d.PsClassNavigation);
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);

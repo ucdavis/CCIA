@@ -65,7 +65,7 @@ namespace CCIA.Models
         [ForeignKey("OrgId")]
         public ICollection<OrganizationAddress> Addresses { get; set; }
        
-        public ICollection<Applications> AppliedApplications { get; set; }
+        //public ICollection<Applications> AppliedApplications { get; set; }
         
         [ForeignKey("OrgId")]
         public ICollection<Contacts> Employees { get; set; }
