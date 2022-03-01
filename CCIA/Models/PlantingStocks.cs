@@ -16,6 +16,7 @@ namespace CCIA.Models
         public int? AppId { get; set; }
 
         [Required]
+        [Display(Name="Planting Stock Cert Number")]
         public string PsCertNum { get; set; }
         public virtual string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }

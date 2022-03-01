@@ -22,7 +22,9 @@ namespace CCIA.Models
         public List<Ecoregions> Ecoregions { get; set; }
         public string FieldHistoryIndices { get; set; }
         public int MaxFieldHistoryRecords { get; set; }
-        public ICollection<PlantingStocks> PlantingStocks { get; set; }        
+        public ICollection<PlantingStocks> PlantingStocks { get; set; }  
+        public PlantingStocks PlantingStock1 { get; set; }
+        public PlantingStocks PlantingStock2 { get; set; }      
         public Organizations GrowerOrg { get; set; }
         public Organizations Organization { get; set; }
         public bool RenderFormRemainder { get; set; }

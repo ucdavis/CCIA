@@ -115,12 +115,15 @@ namespace CCIA.Controllers.Client
             newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
             newApp.ClassProducedId = submittedApp.ClassProducedId;
 
+            // TODO work on planting stocks & field history
+
             if(submittedApp.AppType == "HP")
             {
                 newApp.CountyPermit = submittedApp.CountyPermit;
             }
             if(submittedApp.AppType == "PO")
             {
+                // check winter test & PVX response in planting stock
                 newApp.PoLotNum = submittedApp.PoLotNum;
             }
             if(submittedApp.AppType == "GQ")

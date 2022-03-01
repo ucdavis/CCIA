@@ -8,6 +8,9 @@ const spinner_div = `<div class="text-center"><div class="spinner-border text-ce
 // Event handlers //
 ////////////////////
 
+$.validator.unobtrusive.adapters.addBool("mandatory", "required");
+
+
 $("#add-second-ps").click(function() {
     $("#second-ps").collapse('show');
     $("#add-second-ps").collapse('hide');
@@ -41,7 +44,7 @@ function ClassChange()
 }
 
 $("#ps1_PsClass").change(function() {
-    var val = $("#ps1_PsClass").val();
+    var val = $("#PlantingStock1.PsClass").val();
     if(val == 14)
     {
         $("#PSAccessionSelector").collapse('show');
@@ -142,7 +145,7 @@ function selectFirstVarietyFormRemainder(varietyId, varietyName) {
     $("#Application_SelectedVarietyId").val(varietyId);
     // Set variety input text to be the selected variety from dropdown
     $("#Application_EnteredVariety").val(varietyName); 
-    $("#ps1_PsEnteredVariety").val(varietyName);    
+    $("#PlantingStock1_PsEnteredVariety").val(varietyName);    
     $("#form-remainder").collapse('show');
 }
 
