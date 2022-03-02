@@ -115,26 +115,32 @@ namespace CCIA.Controllers.Client
             newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
             newApp.ClassProducedId = submittedApp.ClassProducedId;
 
-            // TODO work on planting stocks & field history
+            var newPS1 = TransferPlantingStockFromSubmission(model.PlantingStock1);            
+            if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
+            {
+                newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
+            }         
+
+
+            // TODO work on field history
 
             if(submittedApp.AppType == "HP")
             {
                 newApp.CountyPermit = submittedApp.CountyPermit;
             }
             if(submittedApp.AppType == "PO")
-            {
-                // check winter test & PVX response in planting stock
+            {               
                 newApp.PoLotNum = submittedApp.PoLotNum;
             }
             if(submittedApp.AppType == "GQ")
             {
                 newApp.ClassProducedAccession = submittedApp.ClassProducedAccession;
             }
-            // if((model.PlantingStocks.First().PsClass.Value <= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStocks.First().PsAccession <= submittedApp.ClassProducedAccession))
-            // {
-            //     newApp.WarningFlag = true;
-            //     newApp.ApplicantNotes += "Class produced is less then or equal to class planted";
-            // }
+            if((newPS1.PsClass <= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession <= submittedApp.ClassProducedAccession))
+            {
+                newApp.WarningFlag = true;
+                newApp.ApplicantNotes += "Class produced is less then or equal to class planted";
+            }
             if(submittedApp.AppType == "PV")
             {
                 newApp.PvgSource = submittedApp.PvgSource;
@@ -150,11 +156,8 @@ namespace CCIA.Controllers.Client
                 // Adds to database and populates AppId.
                 await _dbContext.SaveChangesAsync();
 
-                // // Add AppId wherever we need it in plantingstocks and fieldhistory
-                // foreach (PlantingStocks ps in app.PlantingStocks)
-                // {
-                //     ps.AppId = app.Id;
-                // }
+                newPS1.AppId = newApp.Id;
+                _dbContext.Add(newPS1);               
 
                 // if (app.FieldHistories != null)
                 // {
@@ -164,12 +167,32 @@ namespace CCIA.Controllers.Client
                 //     }
                 // }
 
-               // await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = newApp.Id });
             }
 
             return View();
+        }
+
+        private PlantingStocks TransferPlantingStockFromSubmission (PlantingStocks submittedPS1)
+        {
+            var newPS = new PlantingStocks();
+            newPS.PsCertNum = submittedPS1.PsCertNum;
+            newPS.PsEnteredVariety = submittedPS1.PsEnteredVariety;            
+            newPS.PoundsPlanted = submittedPS1.PoundsPlanted;
+            newPS.PsClass = submittedPS1.PsClass;
+            newPS.PsAccession = submittedPS1.PsAccession;
+            newPS.StateCountryGrown = submittedPS1.StateCountryGrown;
+            newPS.StateCountryTagIssued = submittedPS1.StateCountryTagIssued;
+            newPS.SeedPurchasedFrom = submittedPS1.SeedPurchasedFrom;
+            newPS.WinterTest = submittedPS1.WinterTest;
+            newPS.PvxTest = submittedPS1.PvxTest;
+            newPS.DateEntered = DateTime.Now;
+            newPS.ThcPercent = submittedPS1.ThcPercent;
+
+            return newPS;
+
         }
 
         public ActionResult HempInfo(int growerId, int appTypeId)
