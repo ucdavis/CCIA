@@ -39,6 +39,12 @@ namespace CCIA.Models
         public string WhatProduced { get; set; }
         public string ProducingSeedType { get; set; }
         public string WhereProduction { get; set; }
+
+        public FieldHistory FieldHistory1 { get; set; }
+        public FieldHistory FieldHistory2 { get; set; }
+        public FieldHistory FieldHistory3 { get; set; }
+        public FieldHistory FieldHistory4 { get; set; }
+        public FieldHistory FieldHistory5 { get; set; }
         // Maximum number of field history records allowed for a specified app type
 
         public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
@@ -135,7 +141,9 @@ namespace CCIA.Models
                 WhatPlanted = whatPlanted,
                 WhatProduced = whatProduced,
                 ProducingSeedType = producingSeedType,
-                WhereProduction = whereProduction
+                WhereProduction = whereProduction, 
+                PlantingStock1 = new PlantingStocks(),
+                PlantingStock2 = new PlantingStocks(),
             };
 
             return model;

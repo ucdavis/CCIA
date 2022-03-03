@@ -504,35 +504,35 @@
                         <th>Variety or Crop not in list</th>
                         <th>Application Number</th>
                     </thead>
-                    <tbody>
-                        @for(int j =0; j <= Model.AppType.FieldHistoryCount; j++)
-                        {                            
-                            int year = Model.CertYear - 1 - j;  
+                    <tbody>                        
+                        @for(int j =1; j <= Model.AppType.FieldHistoryCount; j++)
+                        {                                                     
+                            int year = Model.CertYear - j;  
                             <tr>
                                 <td>
-                                   <select id="FhYear_@(j)" class="form-control">
+                                   <select name='@("FieldHistory" + j).Year' id='@("FieldHistory" + j)_Year' class="form-control">
                                        @foreach (var item in cropYearList)
                                        {
                                            if(item.Value == year.ToString())
                                            {
-                                               <option value="item.value" selected>@item.Value</option>
+                                               <option value="@item.Value" selected>@item.Value</option>
                                            } else
                                            {
-                                               <option value="item.value">@item.Value</option>
+                                               <option value="@item.Value">@item.Value</option>
                                            }
                                        }
                                    </select> 
                                 </td>
                                 <td>
-                                     <select id="FHCrop_@(j)" class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
+                                     <select name='@("FieldHistory" + j).Crop' id='@("FieldHistory" + j)_Crop' class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
                                          <option value="0">Select crop...</option>
                                      </select>
                                 </td>
                                 <td>
-                                    <input type="text" id="FHVariety_@(j)" class="form-control">
+                                    <input type="text" name='@("FieldHistory" + j).Variety' id='@("FieldHistory" + j)_Variety' class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" id="FHAppNum_@(j)" class="form-control">
+                                    <input type="text" name='@("FieldHistory" + j).AppNumber' id='@("FieldHistory" + j)_AppNumber' class="form-control">
                                 </td>
                             </tr>
                         }
@@ -549,9 +549,9 @@
     </div>
 
     <!-- Hidden fields -->
-    <input type="hidden" id="Application.SelectedVarietyId" value="">   
+    <input type="hidden" asp-for="Application.SelectedVarietyId" value="">   
     @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
-    <input type="hidden" readonly="readonly" class="form-control" id="app-type-id" name="AppType" value="SD">
+    
 
     <!-- Alert dialog modals -->
     @{

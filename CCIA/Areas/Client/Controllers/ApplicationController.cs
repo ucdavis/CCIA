@@ -51,6 +51,7 @@ namespace CCIA.Controllers.Client
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await _dbContext.Applications.Where(a => a.Id == id && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
+                .Include(a => a.ApplicantOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
@@ -94,6 +95,9 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
         {
             // check farm county !=0;
+            var newPS2 = new PlantingStocks();
+            List<FieldHistory> newFieldHistories = new List<FieldHistory>();
+            var newFieldHistory = new FieldHistory();
             var newApp = new Applications();
             var submittedApp = model.Application;
             newApp.AppType = submittedApp.AppType;
@@ -119,8 +123,41 @@ namespace CCIA.Controllers.Client
             if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
             {
                 newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
-            }         
+            }  
 
+            if(!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+            {
+                newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);                 
+            } else
+            {
+                model.PlantingStock2.PsCertNum = "0";
+            }    
+
+            if(FieldHistoryExists(model.FieldHistory1))
+            {
+                newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory1);
+                newFieldHistories.Add(newFieldHistory);
+            }  
+            if(FieldHistoryExists(model.FieldHistory2))
+            {
+                newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory2);
+                newFieldHistories.Add(newFieldHistory);
+            }  
+            if(FieldHistoryExists(model.FieldHistory3))
+            {
+                newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory3);
+                newFieldHistories.Add(newFieldHistory);
+            }  
+            if(FieldHistoryExists(model.FieldHistory4))
+            {
+                newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory4);
+                newFieldHistories.Add(newFieldHistory);
+            }  
+            if(FieldHistoryExists(model.FieldHistory5))
+            {
+                newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory5);
+                newFieldHistories.Add(newFieldHistory);
+            }  
 
             // TODO work on field history
 
@@ -136,7 +173,7 @@ namespace CCIA.Controllers.Client
             {
                 newApp.ClassProducedAccession = submittedApp.ClassProducedAccession;
             }
-            if((newPS1.PsClass <= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession <= submittedApp.ClassProducedAccession))
+            if((newPS1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession >= submittedApp.ClassProducedAccession))
             {
                 newApp.WarningFlag = true;
                 newApp.ApplicantNotes += "Class produced is less then or equal to class planted";
@@ -149,7 +186,8 @@ namespace CCIA.Controllers.Client
                 newApp.FieldElevation = submittedApp.FieldElevation;
             }
 
-            if (ModelState.IsValid)
+            ModelState.Clear();           
+            if (TryValidateModel(model))
             {   
                 _dbContext.Add(newApp);
 
@@ -157,15 +195,19 @@ namespace CCIA.Controllers.Client
                 await _dbContext.SaveChangesAsync();
 
                 newPS1.AppId = newApp.Id;
-                _dbContext.Add(newPS1);               
+                _dbContext.Add(newPS1);  
 
-                // if (app.FieldHistories != null)
-                // {
-                //     foreach (FieldHistory fh in app.FieldHistories)
-                //     {
-                //         fh.AppId = app.Id;
-                //     }
-                // }
+                if(model.PlantingStock2.PsCertNum != "0")
+                {
+                    newPS2.AppId = newApp.Id;
+                    _dbContext.Add(newPS2);
+                }  
+
+                foreach(FieldHistory history in newFieldHistories)
+                {
+                    history.AppId = newApp.Id;
+                    _dbContext.Add(history);
+                }           
 
                 await _dbContext.SaveChangesAsync();
                 Message = "Application successfully submitted!";
@@ -175,21 +217,45 @@ namespace CCIA.Controllers.Client
             return View();
         }
 
-        private PlantingStocks TransferPlantingStockFromSubmission (PlantingStocks submittedPS1)
+        private bool FieldHistoryExists(FieldHistory submittedFh)
+        {
+            if(submittedFh == null)
+            {
+                return false;
+            }
+            if(!string.IsNullOrWhiteSpace(submittedFh.Variety) || !string.IsNullOrWhiteSpace(submittedFh.AppNumber) || submittedFh.Crop != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private FieldHistory TransferFieldHistoryFromSubmission(FieldHistory submittedFH)
+        {
+            var newFH = new FieldHistory();
+            newFH.Year = submittedFH.Year;
+            newFH.Crop = submittedFH.Crop;
+            newFH.Variety = submittedFH.Variety;
+            newFH.AppNumber = submittedFH.AppNumber;
+
+            return newFH;
+        }
+
+        private PlantingStocks TransferPlantingStockFromSubmission (PlantingStocks submittedPS)
         {
             var newPS = new PlantingStocks();
-            newPS.PsCertNum = submittedPS1.PsCertNum;
-            newPS.PsEnteredVariety = submittedPS1.PsEnteredVariety;            
-            newPS.PoundsPlanted = submittedPS1.PoundsPlanted;
-            newPS.PsClass = submittedPS1.PsClass;
-            newPS.PsAccession = submittedPS1.PsAccession;
-            newPS.StateCountryGrown = submittedPS1.StateCountryGrown;
-            newPS.StateCountryTagIssued = submittedPS1.StateCountryTagIssued;
-            newPS.SeedPurchasedFrom = submittedPS1.SeedPurchasedFrom;
-            newPS.WinterTest = submittedPS1.WinterTest;
-            newPS.PvxTest = submittedPS1.PvxTest;
+            newPS.PsCertNum = submittedPS.PsCertNum;
+            newPS.PsEnteredVariety = submittedPS.PsEnteredVariety;            
+            newPS.PoundsPlanted = submittedPS.PoundsPlanted;
+            newPS.PsClass = submittedPS.PsClass;
+            newPS.PsAccession = submittedPS.PsAccession;
+            newPS.StateCountryGrown = submittedPS.StateCountryGrown;
+            newPS.StateCountryTagIssued = submittedPS.StateCountryTagIssued;
+            newPS.SeedPurchasedFrom = submittedPS.SeedPurchasedFrom;
+            newPS.WinterTest = submittedPS.WinterTest;
+            newPS.PvxTest = submittedPS.PvxTest;
             newPS.DateEntered = DateTime.Now;
-            newPS.ThcPercent = submittedPS1.ThcPercent;
+            newPS.ThcPercent = submittedPS.ThcPercent;
 
             return newPS;
 
