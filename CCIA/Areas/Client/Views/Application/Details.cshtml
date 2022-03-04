@@ -11,71 +11,77 @@
     <div class="row">
         <div class="col-lg-6">
                 <div class="form-group row">
-                    <label asp-for="Id" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.Id)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Status" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="Status" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.Status)
                     </div>
                 </div>                
                 <div class="form-group row">
-                    <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-2 col-form-label">Applicant</label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.ApplicantOrganization.NameAndId)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Crop.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.Crop.Name)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-2 col-form-label">Class</label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.ClassProduced.ClassProducedTrans)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="MapVe" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="MapVe" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.CheckBox("MapsVe", Model.MapVe, new {@disabled = true})
                     </div>
                 </div>
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
-                    <label asp-for="CertYear" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="CertYear" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.CertYear)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="AppType" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="AppType" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.AppTypeTrans.AppTypeTrans)
                     </div>
                 </div>               
                 <div class="form-group row">
-                    <label asp-for="GrowerOrganization.NameAndId" class="col-sm-2 col-form-label">Grower</label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="GrowerOrganization.NameAndId" class="col-sm-3 col-form-label">Grower</label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.GrowerOrganization.NameAndId)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Variety.Name" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="Variety.Name" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.Variety.Name)
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="AcresApplied" class="col-sm-2 col-form-label">Acres</label>
-                    <div class="col-sm-10 form-control-plaintext">
+                    <label asp-for="AcresApplied" class="col-sm-3 col-form-label">Acres</label>
+                    <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.AcresApplied) (Mapped: @Html.DisplayFor(x => x.AreaAcres) )
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="DatePlanted" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.DatePlanted)
                     </div>
                 </div>
         </div>

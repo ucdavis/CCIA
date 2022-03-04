@@ -93,8 +93,7 @@ namespace CCIA.Controllers.Client
         
         [HttpPost]
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
-        {
-            // check farm county !=0;
+        {           
             var newPS2 = new PlantingStocks();
             List<FieldHistory> newFieldHistories = new List<FieldHistory>();
             var newFieldHistory = new FieldHistory();
@@ -158,9 +157,7 @@ namespace CCIA.Controllers.Client
                 newFieldHistory = TransferFieldHistoryFromSubmission(model.FieldHistory5);
                 newFieldHistories.Add(newFieldHistory);
             }  
-
-            // TODO work on field history
-
+           
             if(submittedApp.AppType == "HP")
             {
                 newApp.CountyPermit = submittedApp.CountyPermit;
@@ -186,12 +183,14 @@ namespace CCIA.Controllers.Client
                 newApp.FieldElevation = submittedApp.FieldElevation;
             }
 
-            ModelState.Clear();           
+            ModelState.Clear();    
+            if(submittedApp.FarmCounty == 0)       
+            {
+                ModelState.AddModelError("Application.FarmCounty","Must select a Farm county");
+            }
             if (TryValidateModel(model))
             {   
-                _dbContext.Add(newApp);
-
-                // Adds to database and populates AppId.
+                _dbContext.Add(newApp);                
                 await _dbContext.SaveChangesAsync();
 
                 newPS1.AppId = newApp.Id;
@@ -213,8 +212,9 @@ namespace CCIA.Controllers.Client
                 Message = "Application successfully submitted!";
                 return RedirectToAction("Details", new { id = newApp.Id });
             }
-
-            return View();
+            
+            var retryModel = await ApplicationViewModel.CreateRetryModel(_dbContext, model,  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value));   
+            return View(retryModel);
         }
 
         private bool FieldHistoryExists(FieldHistory submittedFh)

@@ -8,6 +8,14 @@ const spinner_div = `<div class="text-center"><div class="spinner-border text-ce
 // Event handlers //
 ////////////////////
 
+$(function() {
+    if($("#Application.EnteredVariety").val() != "")
+    {
+        $("#form-remainder").collapse('show');
+    }
+});
+
+
 $.validator.unobtrusive.adapters.addBool("mandatory", "required");
 
 

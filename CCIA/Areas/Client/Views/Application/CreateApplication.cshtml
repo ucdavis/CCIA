@@ -49,6 +49,11 @@
 <form asp-action="CreateApplication">
     <input type="hidden" asp-for="Application.GrowerId" value="@Model.GrowerOrg.Id">
     <input type="hidden" asp-for="Application.AppType" value="@Model.AppType.Abbreviation">
+    <input type="hidden" asp-for="WhatPlanted" value="@Model.WhatPlanted">
+    <input type="hidden" asp-for="WhatProduced" value="@Model.WhatProduced">
+    <input type="hidden" asp-for="ProducingSeedType" value="@Model.ProducingSeedType">
+    <input type="hidden" asp-for="WhereProduction" value="@Model.WhereProduction">
+
     <div class="row border">
         <div class="form-group col-sm-3 required">            
                 <label asp-for="Application.CropId" class="col-form-label">Crop</label>
