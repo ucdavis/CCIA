@@ -48,3 +48,27 @@
 
 <p>* Certificates can be shared by Org ID so companies may see certificates belonging to other companies. Most often this is so conditioners can see their client's certificates. Only the company that created the certificate may add shares.</p>
 </div>
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
+                pageLength: 50,
+            });
+            
+        } );
+       
+    </script>
+}

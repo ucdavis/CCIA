@@ -7,7 +7,7 @@
 
 @await Html.PartialAsync("_IndexHeaderPartial", @Model)
 
-<div class="col-lg-10">
+<div class="col-lg-12">
     <table id="table" class="table">
         <thead>
             <th></th>
@@ -25,15 +25,39 @@
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.Id">Details</a></td>
-                <th>@blend.Id</th>
-                <th>@blend.BlendType</th>       
-                <th>@blend.GetCrop()</th>
-                <th>@blend.GetVarietyName()</th>
-                <th>@blend.RequestStarted.ToShortDateString()</th>
-                <th>@blend.Status</th>
-                <th>@blend.CertNumber</th>   
+                <td>@blend.Id</td>
+                <td>@blend.BlendType</td>       
+                <td>@blend.GetCrop()</td>
+                <td>@blend.GetVarietyName()</td>
+                <td>@blend.RequestStarted.ToShortDateString()</td>
+                <td>@blend.Status</td>
+                <td>@blend.CertNumber</td>   
             </tr>
             }
         </tbody>
     </table>
 </div>
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
+                pageLength: 50,
+            });
+            
+        } );
+       
+    </script>
+}
