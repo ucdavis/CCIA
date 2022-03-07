@@ -47,6 +47,7 @@ namespace CCIA.Models
            IncompleteFee = 0;
            LateFee = 0;
            Fee = 0;
+           IsSquareFeet = false;
         }
 
        
@@ -130,6 +131,7 @@ namespace CCIA.Models
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? AcresApplied { get; set; }
+        public bool IsSquareFeet { get; set; }
         public bool Billable { get; set; }
         public bool Charged { get; set; }
         public string UserEmpModified { get; set; }
@@ -166,6 +168,11 @@ namespace CCIA.Models
 
         [ForeignKey("GrowerId")]
         public Organizations GrowerOrganization { get; set; }
+
+        public string HempWhatPlanted { get; set; }
+        public string HempWhatProduced { get; set; }
+        public string HempWhereProduced { get; set; }
+        public string HempProducingSeedType { get; set; }
 
         
 

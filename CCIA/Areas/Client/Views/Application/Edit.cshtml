@@ -1,0 +1,539 @@
+@model CCIA.Models.ApplicationViewModel
+
+@{
+    ViewData["Title"] = @Model.AppType.AppTypeTrans +  "Application";
+}
+
+<section class="app-header">
+    <h2>Application to @Model.AppType.CertificateTitle</h2>
+    <h5>@Model.Application.ApplicantOrganization.Name</h5>
+</section>
+ 
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Grower:</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Account #</th>
+                    <th>Grower</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody id="organizations">
+                <tr>
+                    <td>@Model.GrowerOrg.Id</td>
+                    <td>@Model.GrowerOrg.Name</td>
+                    @if (@Model.GrowerOrg.Address != null)
+                    {
+                        <td>@Model.GrowerOrg.Address.Address1</td>
+                        <td>@Model.GrowerOrg.Address.City</td>
+                        @if (@Model.GrowerOrg.Address.StateProvince != null)
+                        {
+                            <td>@Model.GrowerOrg.Address.StateProvince.Name</td>
+                        }                
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Application.GrowerId" value="@Model.GrowerOrg.Id">
+    <input type="hidden" asp-for="Application.AppType" value="@Model.AppType.Abbreviation">
+    <input type="hidden" asp-for="WhatPlanted" value="@Model.WhatPlanted">
+    <input type="hidden" asp-for="WhatProduced" value="@Model.WhatProduced">
+    <input type="hidden" asp-for="ProducingSeedType" value="@Model.ProducingSeedType">
+    <input type="hidden" asp-for="WhereProduction" value="@Model.WhereProduction">
+    <input type="hidden" asp-for="Application.Id">
+
+    <div class="row border">
+        <div class="form-group col-sm-3 required">            
+                <label asp-for="Application.CropId" class="col-form-label">Crop</label>
+                <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
+        </div>          
+        <div class="form-group col-sm-3 required">           
+            <label asp-for="Application.CertYear" class="col-form-label">Cert Year</label>
+            @{                
+                var selectList = new List<int>();
+                @for (int i = 0; i <= 1; i++)
+                {
+                    selectList.Add(Model.CertYear + i);
+                }                 
+            }
+            <select asp-for="Application.CertYear" class="form-control" asp-items="@(new SelectList(selectList))"></select>           
+        </div>
+        <div class="form-group required col-sm-6 border">                     
+            <label asp-for="Application.EnteredVariety" class="col-form-label">@Model.AppType.VarietyTitle</label>
+            <div>
+                @if(Model.AppType.Abbreviation != "PO" && Model.AppType.Abbreviation != "RQ" && Model.AppType.Abbreviation != "TG")
+                {
+                    <div class="btn-group col-sm-12">
+                        <input type="text" asp-for="Application.EnteredVariety" placeholder="@Model.AppType.VarietyTitle" class="col-sm-10 form-control">
+                        <button class="btn btn-primary dropdown-toggle" id="varietySearch" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search"></i>
+                        </button>     
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="DropdownId">
+                            <div class="text-center">
+                                <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                            </div>
+                        </div> 
+                    </div>
+                } else
+                {
+                    <select class="form-control col-sm-10" asp-for="Application.EnteredVariety" asp-items="@(new SelectList(Model.PrefiilledVarieties,"Id","Name"))" onchange="ddlVarietySelected()"></select>
+                }
+            </div>
+    </div> 
+
+    <div id="form-remainder" class="collapse col-sm-12">
+        <hr>
+        <div class="form-group required row">
+            <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
+            <div class="col-sm-9">         
+            @foreach (var item in Model.ClassProducedList) 
+            {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" onclick="ClassChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class you are planting" >
+                    <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
+                </div>
+            } 
+            </div> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+            <hr>
+        </div>
+        @if(Model.AppType.Abbreviation == "GQ")
+        {
+            <div id="AccessionSelector" class="form-group required row collapse">
+                <label asp-for="Application.ClassProducedAccession" class="col-form-label col-sm-3">Accession Increase</label>
+                <select asp-for="Application.ClassProducedAccession" class="col-sm-9 form-control" data-val="true" data-val-required="Please select an Accession Level if Class is Accession">
+                    <option value="">Select Accession Level...</option>
+                    @for (int x = 1; x <= 20; x++)
+                    {
+                        <option value="@x">@x</option>
+                    }
+                </select>
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedAccession" data-valmsg-replace="true"></span>
+            </div>
+        }
+
+        @if(Model.AppType.Abbreviation == "PV")
+        {
+            <div class="form-group required row">
+                <label asp-for=Application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label> 
+                <select class="col-sm-4 form-control" asp-for="Application.PvgSource" data-val="true" data-val-required="Please select Germplasm Source"  >
+                    <option value="">Select germplasm type...</option>
+                    <option value="Source Identified Germplasm">Source Identified Germplasm</option>
+                    <option value="Selected Germplasm">Selected Germplasm</option>
+                    <option value="Tested Germplasm">Tested Germplasm</option>
+                </select>      
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.PvgSource" data-valmsg-replace="true"></span>
+                <hr>
+            </div>
+        }
+
+        @if(Model.AppType.Abbreviation == "PO")
+        {
+            <div class="form-group required row">
+                <label asp-for=Application.PoLotNum class="col-form-label col-sm-3">Lot # for Certification Number</label> 
+                <input asp-for="Application.PoLotNum" class="col-sm-3 form-control" data-val="true" data-val-required="Please enter Lot Number" >
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.PoLotNum" data-valmsg-replace="true"></span>
+                <span class="col-sm-3">(do not enter year or account number)</span>
+                <hr>
+            </div>
+
+        }
+ 
+        <section id="planting-stock" class="rounded-section off-white">
+            <h4>Planting Stock
+                @if(Model.AppType.Abbreviation == "HP")
+                {
+                    @if(Model.WhatProduced == "Clones" || Model.ProducingSeedType == "Hybrid")
+                    {
+                        <span> - Parent 1</span>
+                    } else{
+                        <span> - Pollen Donating</span>
+                    }
+                }
+            </h4>
+
+            <!-- First Planting Stock form --> 
+           <section class="rounded-section light-grey">
+                <div class="row">
+                    <div class="form-group required col-sm-5">
+                        <label asp-for="PlantingStock1.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                        <input type="text" asp-for="PlantingStock1.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel" data-val="true" data-val-required="Please enter Planting Stock Variety" > 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsEnteredVariety" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group required col-sm-7">
+                        <label asp-for="PlantingStock1.PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
+                        <input type="text"  asp-for="PlantingStock1.PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsCertNum" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="row">                    
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="PlantingStock1.PsClass">Class Planted</label>
+                        <select id="ps1_PsClass" asp-for="PlantingStock1.PsClass" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))" onchange="PSClassChange"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsClass" data-valmsg-replace="true"></span>
+                    </div>                    
+                    <!-- Potato app doesn't have pounds planted field -->
+                    @if(Model.AppType.Abbreviation != "PO")
+                    {
+                        <div class="form-group required">
+                        @if(Model.AppType.Abbreviation == "HP" && Model.WhatPlanted == "Clones")
+                        {
+                            <label asp-for="PlantingStock1.PoundsPlanted" class="col-form-label">Number of Plants</label>
+                            <input type="text" asp-for="PlantingStock1.PoundsPlanted" class="form-control" placeholder="Number of Plants" data-val="true" data-val-required="Planting Stock Number of Plants is required" data-val-number="The Planting Stock Number of Plants must be a number.">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PoundsPlanted" data-valmsg-replace="true"></span>
+
+                        } else {                            
+                            <label asp-for="PlantingStock1.PoundsPlanted"  class="col-form-label">Pounds Planted
+                                <!-- Special PVG Label -->
+                                @if(Model.AppType.Abbreviation == "PV") {
+                                    <text>(1 for G0)</text>
+                                }
+                            </label>
+                            <input type="text" asp-for="PlantingStock1.PoundsPlanted" class="form-control" placeholder="Pounds Planted"  data-val="true" data-val-required="Please enter Planting Stock Pounds Planted" data-val-number="Planting Stock Pounds Planted must be a number">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PoundsPlanted" data-valmsg-replace="true"></span>                          
+                        }
+                        </div>
+                    }
+                </div>
+                
+                @if(Model.AppType.Abbreviation == "GQ")
+                {                    
+                    <div id="PSAccessionSelector" class="form-group required row collapse row">
+                        <label asp-for="PlantingStock1.PsAccession" class="col-form-label col-sm-3">Accession Increase</label>
+                        <select asp-for="PlantingStock1.PsAccession" class="col-sm-9 form-control" data-val="true" data-val-required="Please select a Planting Stock Accession Level if Class is Accession">
+                            <option value="">Select Accession Level...</option>
+                            @for (int x = 1; x <= 20; x++)
+                            {
+                                <option value="@x">@x</option>
+                            }
+                        </select>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsAccession" data-valmsg-replace="true"></span>
+                    </div>
+                }
+                <div class="row">
+                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    @if(Model.AppType.ShowPSTagIssued)
+                    {
+                        <div class="form-group col">
+                            <label asp-for="PlantingStock1.StateCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
+                            <select asp-for="PlantingStock1.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                        </div>
+                    }
+                    <div class="form-group col">
+                            <label asp-for="PlantingStock1.StateCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
+                            <select asp-for="PlantingStock1.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="PlantingStock1.SeedPurchasedFrom" class="col-form-label">Seed purchased/acquired from</label>
+                        <input type="text" asp-for="PlantingStock1.SeedPurchasedFrom" class="form-control" placeholder="Seed purchased/acquired from">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.SeedPurchasedFrom" data-valmsg-replace="true"></span>
+                    </div>
+                    <!-- Hemp -->
+                    @if(Model.AppType.Abbreviation == "HP")
+                    {
+                        <div class="form-group col">
+                            <label asp-for="PlantingStock1.ThcPercent" class="col-form-label">THC Percent</label>
+                            <input type="text" asp-for="PlantingStock1.ThcPercent" class="form-control" placeholder="THC Percent">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.ThcPercent" data-valmsg-replace="true"></span>
+                        </div>
+                    }
+                </div>  
+                @if(Model.AppType.Abbreviation == "PO")
+                {
+                    <div class="row col">
+                        <h4>Winter test results are required for recertification:</h4>                            
+                    </div>
+                    <div class="row">                        
+                        <div class="form-group col required">
+                            <label class="col-form-label">Winter test completed?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio" asp-for="PlantingStock1.WinterTest" value="Yes" data-val-mandatory="Planting Stock Winter Test response is required" >
+                                <label class="form-check-label"  asp-for="PlantingStock1.WinterTest">Yes</label>                    
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  asp-for="PlantingStock1.WinterTest" value="No" data-val-mandatory="Planting Stock Winter Test response is required">
+                                <label class="form-check-label"  asp-for="PlantingStock1.WinterTest">No</label>                    
+                            </div>  
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.WinterTest" data-valmsg-replace="true"></span>                           
+                        </div>
+                        <div class="col">
+                            (If yes, documentation required)
+                        </div>
+                    </div>
+                    <div class="row col">
+                        <h4>For prenuclear and nuclear class planted:</h4>                            
+                    </div>
+                    <div class="row">                        
+                        <div class="form-group col required">
+                            <label class="col-form-label">Was this lot PVX tested?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio"  asp-for="PlantingStock1.PvxTest" value="Yes" data-val-mandatory="Planting Stock PVX Test response is required">
+                                <label class="form-check-label" asp-for="PlantingStock1.PvxTest">Yes</label>                    
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input lgRadio" type="radio" asp-for="PlantingStock1.PvxTest" value="No" data-val-mandatory="Planting Stock PVX Test response is required">
+                                <label class="form-check-label" asp-for="PlantingStock1.PvxTest">No</label>                    
+                            </div>
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PvxTest" data-valmsg-replace="true"></span>
+                        </div>
+                         <div class="col">
+                            (If yes, documentation required)
+                        </div>
+                    </div>
+                }              
+            </section>
+            @if(Model.AppType.showSecondPlantingStock || (Model.AppType.Abbreviation =="HP" && Model.ProducingSeedType != "Open Pollinator"))
+            {
+            <!-- Second Planting Stock form -->
+            <div id="second_ps_button">
+                <p><em>Enter both parent lines for hybrid production.</em></p>
+                <div id="add-second-ps" class="btn btn-warning collapse show">Add a second planting stocks record</div>
+            </div>
+            <div id="second-ps" class="collapse">
+                <h4> Second Planting Stock
+                @if(Model.AppType.Abbreviation == "HP")
+                {
+                    @if(Model.WhatProduced == "Clones" || Model.ProducingSeedType == "Hybrid")
+                    {
+                        <span> - Parent 2</span>
+                    } else{
+                        <span> - Pollen Receiving</span>
+                    }
+                }
+            </h4>
+                <section class="rounded-section light-blue pos-rel">
+                <button type="button" id="remove-ps2" onclick="removeSecondPSEntry();" class="btn circular top-right-btn" data-toggle="tooltip" data-placement="top" title="Remove this planting stock record">
+                    <i id="remove-ps2" class="fas fa-times"></i>
+                </button>    
+                <div class="row" id="second-ps-first-row">
+                    <div class="form-group required col-sm-5">
+                        <label asp-for="PlantingStock2.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                        <input type="text" asp-for="PlantingStock2.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.PsEnteredVariety" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group required col-sm-7">
+                        <label asp-for="PlantingStock2.PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
+                        <input type="text" asp-for="PlantingStock2.PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.PsCertNum" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="PlantingStock2.PsClass">Class Planted</label>
+                        <select asp-for="PlantingStock2.PsClass" class="form-control" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.PsClass" data-valmsg-replace="true"></span>
+                    </div>                    
+                    <!-- Potato app doesn't have pounds planted field -->
+                    @if(Model.AppType.Abbreviation != "PO")
+                    {
+                        <div class="form-group required">
+                        @if(Model.AppType.Abbreviation == "HP" && Model.WhatPlanted == "Clones")
+                        {
+                            <label asp-for="PlantingStock2.PoundsPlanted" class="col-form-label">Number of Plants</label>
+                            <input type="text" asp-for="PlantingStock2.PoundsPlanted" class="form-control" placeholder="Number of Plants">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock.NummberOfPlantsPlanted" data-valmsg-replace="true"></span>
+
+                        } else {                            
+                            <label asp-for="PlantingStock2.PoundsPlanted" class="col-form-label">Pounds Planted
+                                <!-- Special PVG Label -->
+                                @if(Model.AppType.Abbreviation == "PV") {
+                                    <text>(1 for G0)</text>
+                                }
+                            </label>
+                            <input type="text" asp-for="PlantingStock2.PoundsPlanted" class="form-control" placeholder="Pounds Planted">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.PoundsPlanted" data-valmsg-replace="true"></span>                          
+                        }
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    @if(Model.AppType.ShowPSTagIssued)
+                    {
+                        <div class="form-group col">
+                            <label asp-for="PlantingStock2.StateCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
+                            <select asp-for="PlantingStock2.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                        </div>
+                    }
+                    <div class="form-group col">
+                            <label asp-for="PlantingStock2.StateCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
+                            <select asp-for="PlantingStock2.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label asp-for="PlantingStock2.SeedPurchasedFrom" class="col-form-label">Seed purchased/acquired from</label>
+                        <input type="text" asp-for="PlantingStock2.SeedPurchasedFrom" class="form-control" placeholder="Seed purchased/acquired from">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.SeedPurchasedFrom" data-valmsg-replace="true"></span>
+                    </div>
+                    <!-- Hemp -->
+                    @if(Model.AppType.Abbreviation == "HP")
+                    {
+                        <div class="form-group col">
+                            <label asp-for="PlantingStock2.ThcPercent" class="col-form-label">THC Percent</label>
+                            <input type="text"  asp-for="PlantingStock2.ThcPercent" class="form-control" placeholder="THC Percent">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock2.ThcPercent" data-valmsg-replace="true"></span>
+                        </div>
+                    }
+                </div>  
+                </section>                
+            </div>
+            }
+        </section> 
+            
+
+        <section id="field-info" class="rounded-section off-white">
+            <h4>Field Information</h4>
+            <div class="rounded-section light-grey" >
+            <div class="row">
+                <div class="form-group col required">
+                    <label asp-for="Application.FieldName" class="col-form-label"></label>
+                    <input asp-for="Application.FieldName" class="form-control" placeholder="Field Name">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldName" data-valmsg-replace="true"></span>
+                </div>
+                <!-- Date Time Picker -->
+                <div class="form-group col required">
+                    <label asp-for="Application.DatePlanted" class="col-form-label">Date Planted
+                        @if(Model.AppType.Abbreviation == "PG")
+                        {
+                            <text>(or collection date for G0)</text>
+                        }
+                    </label>
+                    <div class="input-group mb-3">
+                        <input type="text" asp-for="Application.DatePlanted" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                        <div class="input-group-append" id="calendar-btn" onclick="$('.datepicker').focus();">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>       
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.DatePlanted" data-valmsg-replace="true"></span>  
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                     <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="Application.FarmCounty">Farm County</label>
+                        <select asp-for="Application.FarmCounty" class="form-control" asp-items="@(new SelectList(Model.Counties,"CountyId","Name"))" data-val="true" data-val-required="Please select Farm County"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FarmCounty" data-valmsg-replace="true"></span>
+                    </div>  
+                </div>
+                    @if(Model.AppType.Abbreviation == "HP")
+                    {
+                        <div class="form-group col required">
+                            <label asp-for="Application.CountyPermit">County Permit Number</label>
+                            <input asp-for="Application.CountyPermit" class="form-control" placeholder="County Permit Number">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="Application.CountyPermit" data-valmsg-replace="true"></span>
+                        </div>            
+                    }
+                <div class="form-group col required">
+                    @if(Model.AppType.Abbreviation == "HP" && Model.WhereProduction == "Indoors")
+                    {
+                        <label asp-for="Application.AcresApplied" class="col-form-label ">Square Feet</label>
+                        <input asp-for="Application.AcresApplied" class="form-control" placeholder="Square Feet">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                    } else {
+                        <label asp-for="Application.AcresApplied" class="col-form-label ">Acres Applied
+                            <!-- PVG -->
+                            @if(Model.AppType.Abbreviation == "PV") 
+                            {
+                                <text>(enter 1 for G0)</text>
+                            }
+                        </label>
+                        <input asp-for="Application.AcresApplied" class="form-control" placeholder="Acres Applied">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.AcresApplied" data-valmsg-replace="true"></span>
+                    }
+                </div>
+            </div>
+
+            <!-- PVG Fields -->
+            @if(Model.AppType.Abbreviation == "PV")
+            {
+                <div class="row">
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="Application.Ecoregion">US EPA Level III Ecoregion</label>
+                        <select asp-for="Application.Ecoregion" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.Ecoregion" data-valmsg-replace="true"></span>
+                    </div>                     
+                    <div class="col form-group">
+                        <label asp-for="Application.FieldElevation">Field Elevation</label>
+                        <input asp-for="Application.FieldElevation" class="form-control" placeholder="Field Elevation">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldElevation" data-valmsg-replace="true"></span>                        
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Application.ApplicantComments">Additional Information/Comments</label>
+                <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
+            </div>             
+        <hr />
+         </section>
+        <div class="row">
+            <h4>Field History</h4>
+            <div><a class="btn btn-primary" asp-action="NewHistory" asp-route-id="@Model.Application.Id">Create new</a></div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Year</th>
+                    <th>Crop</th>
+                    <th>Variety</th>
+                    <th>Application #</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var row in Model.Application.FieldHistories.OrderBy(h => h.Year))
+                {
+                    <tr>
+                        <td><a asp-action="EditHistory" asp-route-id="@row.Id" class="btn btn-info">Edit</a></td>
+                        <td>@row.Year</td>
+                        <td>@row.FHCrops.Name</td>
+                        <td>@row.Variety</td>
+                        <td>@row.AppNumber</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>                    
+       
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary">Updates Application</button>
+        </div>     
+    </div>
+
+    <!-- Hidden fields -->
+    <input type="hidden" asp-for="Application.SelectedVarietyId" value="">   
+    @Html.TextBox("AppSpecificPlantingStocks[0].OfficialVarietyId", "", new { type="hidden", id="ps1-variety-id" })
+    
+
+    <!-- Alert dialog modals -->
+    @{
+        var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
+        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system.Application. A new variety will be used.", "Close", "Ok");
+        var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
+    }
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", varietyAlert)
+    @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", emptyVarietyAlert)
+</form>
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/js/applications/createApplications.js" asp-append-version="true"></script>
+   
+} 

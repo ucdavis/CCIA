@@ -13,6 +13,11 @@ $(function() {
     {
         $("#form-remainder").collapse('show');
     }
+    if($("#PlantingStock1.PsEnteredVariety").val() != "" || $("#PlantingStock1.PsCertNum").val() != "" )
+    {
+        $("#second-ps").collapse('show');
+        $("#add-second-ps").collapse('hide');
+    }
 });
 
 

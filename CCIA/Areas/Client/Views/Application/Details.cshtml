@@ -7,6 +7,21 @@
 }
 
 <h2>Application Details</h2> 
+@if(Model.Submitable)
+{
+    <div class="row col-sm-12">
+        <div class="col-sm-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Edit</a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-action="Submit" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Once submitted, you will no longer be able to edit application or add/change supporting material. Are you sure you want to submit this application?')">Submit Final Application</a>
+        </div>
+        <div class="col-sm-4">
+            <a asp-action="Cancel" asp-route-id="@Model.Id" class="btn btn-dark" onclick="return confirm('Once cancelled, this app will no longer be available. Are you sure you want to cancel this field?')">Cancel App</a>
+        </div>
+    </div>
+    
+}
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
@@ -96,29 +111,43 @@
 </div>
 <div class="container">
     <div class="col-lg-1 row">
-        <label class="col-form-label">Certificates/Tags</label>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.Certificates)
-                {
+         <h3>Certificates/Tags</h3>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            Filedownload -
-                            @row.Link
-                        </td>
+                        <th>Title</th>
+                        <th>Link</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-     <div class="row">
-        <hr />
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Certificates)
+                    {
+                        <tr>
+                            <td>@row.Name</td>
+                            <td>
+                               <a asp-action=GetCertificateFile asp-route-id="@Model.Id" asp-route-link="@row.Link">@row.Link</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <hr />
+        </div>
+    <hr>
+    <form enctype="multipart/form-data" method="post" asp-action="UploadCertificate">
+    <h3>Upload new Certificate</h3>
+        <input type="hidden" name="id" id="id" value="@Model.Id">
+         <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Certificate Name</label>
+                <input id="certName" name="certName" class="col-form">
+            </div>
+        
+        <input id="file" name="file" type="file">            
+        <input class="btn btn-primary" type="submit" value="Upload" disabled />
+    </form>
+    <hr>
     @if(Model.PlantingStocks.Any())
     {
     <div class="row">
@@ -227,7 +256,7 @@
             <tbody>
             @foreach (var row in Model.FieldHistories.OrderBy(h => h.Year))
             {
-                <tr>
+                <tr>                    
                     <td>@row.Year</td>
                     <td>@row.FHCrops.Name</td>
                     <td>@row.Variety</td>
@@ -244,13 +273,13 @@
     <script type="text/javascript">
         $(document).ready(
             function(){
-                @* $('input:file').change(
+                $('input:file').change(
                     function(){
                         if ($(this).val()) {
                             $('input:submit').removeAttr('disabled'); 
                         } 
                     }
-                ); *@
+                );
             $(":checkbox").on("click", false);
         });
     </script>

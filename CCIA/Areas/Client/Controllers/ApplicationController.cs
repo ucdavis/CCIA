@@ -11,6 +11,9 @@ using CCIA.Models.IndexViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.SqlClient;
 using CCIA.Services;
+using System.IO;
+using CCIA.Models.DetailsViewModels;
+using System.Security.Claims;
 
 namespace CCIA.Controllers.Client
 {
@@ -19,11 +22,13 @@ namespace CCIA.Controllers.Client
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly IFileIOService _fileService;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper)
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService)
         {
             _dbContext = dbContext;
              _helper = helper;
+             _fileService = fileIOService;
         }
 
         // TODO Add file upload/download. Both need security checks to make sure they are only uploading/downloading to their own apps
@@ -68,6 +73,12 @@ namespace CCIA.Controllers.Client
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .FirstOrDefaultAsync();
+
+            if(model == null)
+            {
+                ErrorMessage = "That app was either not found or does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }    
             return View(model);
         }
 
@@ -94,6 +105,8 @@ namespace CCIA.Controllers.Client
             var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), whatPlanted, whatProduced, producingSeedType, whereProduction);
             return View(nameof(CreateApplication), model);
         }
+
+        
         
         [HttpPost]
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
@@ -165,6 +178,13 @@ namespace CCIA.Controllers.Client
             if(submittedApp.AppType == "HP")
             {
                 newApp.CountyPermit = submittedApp.CountyPermit;
+                if(model.WhereProduction == "Indoors")
+                {
+                    newApp.IsSquareFeet = true;
+                }
+                newApp.HempWhatPlanted = model.WhatPlanted;
+                newApp.HempWhatProduced = model.WhatProduced;
+                newApp.HempWhereProduced = model.WhereProduction;
             }
             if(submittedApp.AppType == "PO")
             {               
@@ -219,6 +239,228 @@ namespace CCIA.Controllers.Client
             
             var retryModel = await ApplicationViewModel.CreateRetryModel(_dbContext, model,  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value));   
             return View(retryModel);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var retryModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);   
+            return View(retryModel);            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ApplicationViewModel model)
+        {             
+            var appToUpdate = await _dbContext.Applications
+                .Include(a => a.PlantingStocks)
+                .Where(a => a.Id == id).FirstOrDefaultAsync();            
+            if(appToUpdate == null)
+            {
+                ErrorMessage = "Application not found!";
+                return  RedirectToAction(nameof(Index));
+            }   
+            if(appToUpdate.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            var submittedApp = model.Application;
+            
+            appToUpdate.CertYear = submittedApp.CertYear;
+            appToUpdate.OriginalCertYear = submittedApp.CertYear;
+            appToUpdate.UserAppModifed = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            appToUpdate.UserAppModDt = DateTime.Now;
+            appToUpdate.EnteredVariety = submittedApp.EnteredVariety;                        
+            appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
+            appToUpdate.FieldName = submittedApp.FieldName;
+            appToUpdate.DatePlanted = submittedApp.DatePlanted;
+            appToUpdate.AcresApplied = submittedApp.AcresApplied;
+            appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
+            appToUpdate.CropId = submittedApp.CropId;            
+            appToUpdate.FarmCounty = submittedApp.FarmCounty;
+            appToUpdate.SelectedVarietyId = submittedApp.SelectedVarietyId;
+            appToUpdate.ClassProducedId = submittedApp.ClassProducedId;
+
+
+            var PSToUpdate = appToUpdate.PlantingStocks.First();
+            PSToUpdate.PsCertNum = model.PlantingStock1.PsCertNum;
+            PSToUpdate.PsEnteredVariety = model.PlantingStock1.PsEnteredVariety;            
+            PSToUpdate.PoundsPlanted = model.PlantingStock1.PoundsPlanted;
+            PSToUpdate.PsClass = model.PlantingStock1.PsClass;
+            PSToUpdate.PsAccession = model.PlantingStock1.PsAccession;
+            PSToUpdate.StateCountryGrown = model.PlantingStock1.StateCountryGrown;
+            PSToUpdate.StateCountryTagIssued = model.PlantingStock1.StateCountryTagIssued;
+            PSToUpdate.SeedPurchasedFrom = model.PlantingStock1.SeedPurchasedFrom;
+            PSToUpdate.WinterTest = model.PlantingStock1.WinterTest;
+            PSToUpdate.PvxTest = model.PlantingStock1.PvxTest;
+            PSToUpdate.ThcPercent = model.PlantingStock1.ThcPercent;            
+            if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
+            {
+                PSToUpdate.OfficialVarietyId = submittedApp.SelectedVarietyId;
+            }  
+
+            if(!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+            {
+                if(appToUpdate.PlantingStocks.Count > 1)
+                {
+                    // Original App had 2 PS as does this one
+                    var PS2ToUpdate = appToUpdate.PlantingStocks.Last();
+                    PS2ToUpdate.PsCertNum = model.PlantingStock2.PsCertNum;
+                    PS2ToUpdate.PsEnteredVariety = model.PlantingStock2.PsEnteredVariety;            
+                    PS2ToUpdate.PoundsPlanted = model.PlantingStock2.PoundsPlanted;
+                    PS2ToUpdate.PsClass = model.PlantingStock2.PsClass;
+                    PS2ToUpdate.PsAccession = model.PlantingStock2.PsAccession;
+                    PS2ToUpdate.StateCountryGrown = model.PlantingStock2.StateCountryGrown;
+                    PS2ToUpdate.StateCountryTagIssued = model.PlantingStock2.StateCountryTagIssued;
+                    PS2ToUpdate.SeedPurchasedFrom = model.PlantingStock2.SeedPurchasedFrom;
+                    PS2ToUpdate.WinterTest = model.PlantingStock2.WinterTest;
+                    PS2ToUpdate.PvxTest = model.PlantingStock2.PvxTest;
+                    PS2ToUpdate.ThcPercent = model.PlantingStock2.ThcPercent;              
+                } else
+                {
+                    // Original app had 1 ps, but edit has 2
+                    var newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
+                    newPS2.AppId = PSToUpdate.AppId;
+                    _dbContext.Add(newPS2);
+                }
+                               
+            } else
+            {
+                //Check if app had 2 ps, removed second one
+                model.PlantingStock2.PsCertNum = "0";
+                if(appToUpdate.PlantingStocks.Count > 1)
+                {
+                    var psToRemove = appToUpdate.PlantingStocks.Last();
+                    _dbContext.Remove(psToRemove);
+                }
+            }                 
+           
+            if(submittedApp.AppType == "HP")
+            {
+                appToUpdate.CountyPermit = submittedApp.CountyPermit;                
+            }
+            if(submittedApp.AppType == "PO")
+            {               
+                appToUpdate.PoLotNum = submittedApp.PoLotNum;
+            }
+            if(submittedApp.AppType == "GQ")
+            {
+                appToUpdate.ClassProducedAccession = submittedApp.ClassProducedAccession;
+            }
+            if((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
+            {
+                appToUpdate.WarningFlag = true;
+                appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted";
+            }
+            if(submittedApp.AppType == "PV")
+            {
+                appToUpdate.PvgSource = submittedApp.PvgSource;
+                appToUpdate.PvgSelectionId = submittedApp.PvgSelectionId;
+                appToUpdate.EcoregionId = submittedApp.EcoregionId;
+                appToUpdate.FieldElevation = submittedApp.FieldElevation;
+            }
+
+            ModelState.Clear();    
+            if(submittedApp.FarmCounty == 0)       
+            {
+                ModelState.AddModelError("Application.FarmCounty","Must select a Farm county");
+            }
+            if (TryValidateModel(model))
+            {                  
+                await _dbContext.SaveChangesAsync();
+
+                Message = "Application successfully updated!";
+                return RedirectToAction("Details", new { id = appToUpdate.Id });
+            }
+            
+            var retryModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);    
+            return View(retryModel);
+        }
+
+         public async Task<IActionResult> EditHistory(int id)
+        {
+            var model = await AdminHistoryViewModel.Create(_dbContext, id);
+            var app = await _dbContext.Applications.Where(a => a.Id == model.history.AppId).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+        
+        public async Task<IActionResult> NewHistory(int id)
+        {
+            var model = await AdminHistoryViewModel.Create(_dbContext, 0, id);
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            return View(model);           
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
+        {
+            var history = historyVm.history;
+            var newHistory = new FieldHistory();
+            newHistory.AppId = history.AppId;
+            newHistory.Year = history.Year;
+            if(history.Crop != 0)
+            {
+                newHistory.Crop = history.Crop;
+            }            
+            newHistory.Variety = history.Variety;
+            newHistory.AppNumber = history.AppNumber;
+            newHistory.DateModified = DateTime.Now;
+            newHistory.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            if(ModelState.IsValid){
+                _dbContext.Add(newHistory);
+                await _dbContext.SaveChangesAsync();
+                Message = "Field History Created";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminHistoryViewModel.Create(_dbContext, 0, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = newHistory.AppId });              
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
+        {
+            var history = historyVm.history;
+            var historyToUpdate = await _dbContext.FieldHistory.Where(f => f.Id == id).FirstAsync();
+            historyToUpdate.Year = history.Year;
+            historyToUpdate.Crop = history.Crop;
+            historyToUpdate.Variety = history.Variety;
+            historyToUpdate.AppNumber = history.AppNumber;
+            historyToUpdate.DateModified = DateTime.Now;
+            historyToUpdate.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Field History Updated";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var model = await AdminHistoryViewModel.Create(_dbContext, id);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = historyToUpdate.AppId });              
         }
 
         public async Task<IActionResult> FieldMap(int id)
@@ -285,6 +527,65 @@ namespace CCIA.Controllers.Client
             await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_insert_app_map @app_Id, @points, @link", appId, points, link); 
             Message = "Field Updated";
             return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
+        {
+           var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+           if(app == null)
+           {
+               ErrorMessage = "App not found";
+               return RedirectToAction(nameof(Index));
+           }
+           if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+           
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveCertificateFile(app, file);               
+                var cert = new AppCertificates();
+                cert.AppId = app.Id;
+                cert.Name = certName;
+                cert.Link = file.FileName;
+                _dbContext.Add(cert);
+                await _dbContext.SaveChangesAsync();
+                Message = "Certificate added";
+
+                var appId = new SqlParameter("app_id", id);
+                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC check_app_status @app_id", appId); 
+
+           }
+           return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
+        public async Task<IActionResult> GetCertificateFile(int id, string link)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            
+            if(app == null)
+            {
+                ErrorMessage = "App not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadCertificateFile(app, link), contentType, link);
         }
 
         private bool FieldHistoryExists(FieldHistory submittedFh)
@@ -680,52 +981,7 @@ namespace CCIA.Controllers.Client
             }
         }
 
-        // GET: Application/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+      
         // GET: Application/Lookup
         [HttpGet]
         public async Task<IActionResult> Lookup(string lookupVal, int appTypeId)

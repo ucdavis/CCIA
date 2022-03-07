@@ -1742,6 +1742,8 @@ namespace CCIA.Models
                     .HasColumnName("acres_applied")
                     .HasColumnType("decimal(14, 2)");
 
+                entity.Property(e => e.IsSquareFeet).HasColumnName("is_square_feet");
+
                 entity.Property(e => e.CountyPermit)
                     .HasColumnName("county_permit")
                     .HasColumnType("varchar(50)");
@@ -2000,6 +2002,11 @@ namespace CCIA.Models
                 entity.Property(e => e.WarningFlag)
                     .HasColumnName("warning_flag")
                     .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.HempWhatPlanted);
+                entity.Property(e =>e.HempWhatProduced);
+                entity.Property(e => e.HempWhereProduced);
+                entity.Property(e => e.HempProducingSeedType);
 
                 entity.HasOne(d => d.ClassProduced);
 
