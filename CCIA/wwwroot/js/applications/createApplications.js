@@ -9,12 +9,12 @@ const spinner_div = `<div class="text-center"><div class="spinner-border text-ce
 ////////////////////
 
 $(function() {
-    if($("#Application.EnteredVariety").val() != "")
+    if($("#Application_EnteredVariety").val() != "")
     {
         $("#form-remainder").collapse('show');
     }
-    if($("#PlantingStock1.PsEnteredVariety").val() != "" || $("#PlantingStock1.PsCertNum").val() != "" )
-    {
+    if($("#PlantingStock2_PsEnteredVariety").val() != "" )
+    {      
         $("#second-ps").collapse('show');
         $("#add-second-ps").collapse('hide');
     }

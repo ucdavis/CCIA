@@ -414,6 +414,17 @@ namespace CCIA.Controllers.Client
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
         {
+             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
             var history = historyVm.history;
             var newHistory = new FieldHistory();
             newHistory.AppId = history.AppId;
@@ -443,6 +454,17 @@ namespace CCIA.Controllers.Client
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
         {
+             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
             var history = historyVm.history;
             var historyToUpdate = await _dbContext.FieldHistory.Where(f => f.Id == id).FirstAsync();
             historyToUpdate.Year = history.Year;
