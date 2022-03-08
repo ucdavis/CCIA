@@ -172,6 +172,7 @@
                     <th>Variety</th>
                     <th>Class</th>
                     <th>Status</th>
+                    <th>Warning</th>
                 </tr>
                 @foreach(var app in Model.seed.SeedsApplications)
                 {
@@ -184,6 +185,35 @@
                         <td>@app.Application.VarietyName</td>
                         <td>@app.Application.ClassProducedName</td>
                         <td>@app.Application.Status</td>
+                        <td>
+                            @if(app.Application.Status != "Field Inspection Report Ready")
+                            {
+                                <a class="btn btn-danger" href="#">FIR not ready</a>
+                            }
+                           
+                            @if(app.Application.FieldInspectionReport != null)
+                            {
+                                @if(app.Application.FieldInspectionReport.AcresApproved == 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Approved =0</a>
+                                }
+                                @if(app.Application.FieldInspectionReport.AcresGrowout > 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Growout > 0</a>
+                                }
+                                @if(app.Application.FieldInspectionReport.AcresRejected > 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Rejected > 0</a>
+                                }
+                                 @if(!app.Application.FieldInspectionReport.Complete)
+                                {
+                                    <a class="btn btn-danger" href="#">FIR not marked complete</a>
+                                }                                
+                            } else
+                            {
+                                <a class="btn btn-danger" href="#">Field Inspection Report Not Found</a>
+                            }
+                        </td>
                     </tr>
                 }
             </table>

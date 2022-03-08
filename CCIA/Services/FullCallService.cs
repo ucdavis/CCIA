@@ -117,6 +117,9 @@ namespace CCIA.Services
                 .Include(s => s.SeedsApplications)
                 .ThenInclude(sa => sa.Application)
                 .ThenInclude(a => a.ClassProduced)
+                .Include(s => s.SeedsApplications)
+                .ThenInclude(sa => sa.Application)
+                .ThenInclude(a => a.FieldInspectionReport)
                 .Include(s => s.Changes)
                 .ThenInclude(c => c.Employee)
                 .AsQueryable();
