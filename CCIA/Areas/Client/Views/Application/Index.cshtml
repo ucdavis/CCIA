@@ -42,7 +42,12 @@
                     <td>@app.GrowerOrganization.Name</td>
                 }               
                 <td>@app.FieldName</td>
-                <td>@app.AcresApplied</td>
+                <td>@app.AcresApplied
+                    @if(app.IsSquareFeet)
+                    {
+                        <span>Square feet</span>
+                    } 
+                </td>
                 <td>@app.County.Name</td>
                 <td>@app.Crop.Name</td>
                 @if (app.AppType == "PV" || app.SelectedVarietyId==null)
@@ -62,7 +67,7 @@
             <td>@app.ClassProducedId</td>
         }
 
-        <td>@app.MapVe</td>
+        <td><input type="checkbox" asp-for="@app.MapVe" class="form-control"></td>
         <td>@app.Status</td>
             </tr>
             }

@@ -250,7 +250,11 @@
             </div>
             <div class="form-group row">
                 <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
-                <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" >
+                <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" > 
+                @if(Model.application.IsSquareFeet)
+                {
+                    <span>Square feet</span>
+                } 
             </div>
             <div class="form-group row">
                 <label asp-for="application.FarmCounty" class="col-sm-3 col-form-label"></label>                 

@@ -75,7 +75,12 @@
                 <td>@app.ClassProducedName</td> 
                 <td>@app.County.Name</td>
                 <td>@app.FieldName</td>
-                <td>@app.AcresApplied</td>
+                <td>@app.AcresApplied
+                    @if(app.IsSquareFeet)
+                    {
+                        <span>Square feet</span>
+                    } 
+                </td>
                 @if(app.DatePlanted.HasValue)
                 {
                     <td data-sort="@string.Format("{0:yyyy/MM/dd}" , app.DatePlanted.Value)">@app.DatePlanted.Value.ToShortDateString()</td>
