@@ -14,7 +14,10 @@
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Edit</a>
         </div>
         <div class="col-sm-4">
-            <a asp-action="Submit" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Once submitted, you will no longer be able to edit application or add/change supporting material. Are you sure you want to submit this application?')">Submit Final Application</a>
+            <form asp-action="Submit">
+                <input type="hidden" asp-for="Id">
+                <input type="submit" class="btn btn-danger" onclick="return confirm('Once submitted, you will no longer be able to edit application or add/change supporting material. Are you sure you want to submit this application?')" value="Submit Final Application">
+            </form>
         </div>
         <div class="col-sm-4">
             <a asp-action="Cancel" asp-route-id="@Model.Id" class="btn btn-dark" onclick="return confirm('Once cancelled, this app will no longer be available. Are you sure you want to cancel this field?')">Cancel App</a>
@@ -219,7 +222,7 @@
                         } else {
                             <td>???</td>
                         }
-                        @if(@row.GrownStateProvince.Name != null)
+                        @if(@row.GrownStateProvince != null)
                         {
                             <td>@row.GrownStateProvince.Name</td>
                         }  else {
