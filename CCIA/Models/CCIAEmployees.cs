@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using CCIA.Models;
 
 namespace CCIA.Models
 {
@@ -88,6 +90,9 @@ namespace CCIA.Models
 
         [Display(Name="Map Permissions Update?")]
         public bool UpdateMapPermissions { get; set; }
+
+        [ForeignKey("EmployeeId")]
+        public ICollection<CropAssignments> AssignedCrops { get; set; }
         
     }
 }

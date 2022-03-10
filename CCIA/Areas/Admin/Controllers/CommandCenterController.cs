@@ -33,7 +33,11 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> EmployeeDetails(string id)    
         {
-            var model = await _dbContext.CCIAEmployees.Where(e => e.Id == id).FirstOrDefaultAsync();
+            var model = await _dbContext.CCIAEmployees
+                .Where(e => e.Id == id)
+                .Include(e => e.AssignedCrops)
+                .ThenInclude(a => a.AssignedCrop)
+                .FirstOrDefaultAsync();
             if(model == null)
             {
                 ErrorMessage = "Employee not found";

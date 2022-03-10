@@ -112,6 +112,18 @@
             </div>        
         </div>
     </div>
+    <div class="row">
+        @if(Model.AssignedCrops.Any())
+        {
+            <h4>Assigned crops</h4>
+            <ul>
+            @foreach (var asssignement in Model.AssignedCrops.OrderBy(a => a.AssignedCrop.Name))
+            {
+               <li>@asssignement.AssignedCrop.Name</li> 
+            }
+            </ul>
+        }
+    </div>
 </div>
 
 @await Html.PartialAsync("_RoleExplaination")

@@ -158,23 +158,12 @@ namespace CCIA.Models
 
         public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
 
-      
-
-        
-       
+        public virtual DbSet<CropAssignments> CropAssignments { get; set; }
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
-        
-        
-        
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
-      
-        
-
-       
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
-       
 
         public static ILoggerFactory GetLoggerFactory()
         {
@@ -188,27 +177,7 @@ namespace CCIA.Models
         }
        
 
-        // public CCIAContext(IConfiguration configuration)
-        // {
-        //     Configuration = configuration;
-        // }
-
-        // public IConfiguration Configuration { get; }
-
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     // if (!optionsBuilder.IsConfigured)
-        //     // {
-        //     //     optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
-        //     //     {                       
-        //     //             sqlOptions.UseNetTopologySuite();
-        //     //             sqlOptions.AddRowNumberSupport();
-        //     //     });
-        //     // }
-        //     optionsBuilder.UseLoggerFactory(GetLoggerFactory());
-
-        // }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -326,6 +295,17 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Section).HasColumnName("Section");
 
+            });
+
+            modelBuilder.Entity<CropAssignments>(entity => {
+                entity.ToTable("crop_assign");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("crop_assign_id");
+                entity.Property(e => e.CropId).HasColumnName("crop_id");
+                entity.Property(e => e.EmployeeId).HasColumnName("assign_id");
+                entity.Property(e => e.Level).HasColumnName("assign_level");
+                entity.HasOne(e => e.AssignedCrop);
             });
 
                modelBuilder.Entity<PotatoHealthCertificates>(entity => {
@@ -1049,6 +1029,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
 
                 entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
+                entity.HasMany(e => e.AssignedCrops);
 
             });
 
