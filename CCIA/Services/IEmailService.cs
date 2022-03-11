@@ -25,6 +25,8 @@ namespace CCIA.Services
         Task SendPendingOrganizationNotices(string password);
 
         Task SendPendingOECDNotices(string password);
+
+        Task SendPendingAdminAppNotices(string password);
     }
     
 
@@ -48,7 +50,7 @@ namespace CCIA.Services
         public  async Task SendWeeklyApplicationNotices(string password)
         {
             ConfigureSMTPClient(password);
-            var notifications =  await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0).ToListAsync();
+            var notifications =  await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0 && !n.IsAdmin).ToListAsync();
             if(notifications.Count == 0)
             {
                 return;
@@ -70,6 +72,34 @@ namespace CCIA.Services
             } 
             notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
             await _dbContext.SaveChangesAsync();          
+        }
+
+        public async Task SendPendingAdminAppNotices(string password)
+        {
+             ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0 && n.IsAdmin).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Application Notices"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "An Application has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();  
         }
 
         public async Task SendPendingSeedNotices(string password)

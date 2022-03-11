@@ -23,12 +23,15 @@ namespace CCIA.Controllers.Client
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
+        private readonly INotificationService _notificationService;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService)
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService,  INotificationService notificationService)
         {
             _dbContext = dbContext;
-             _helper = helper;
-             _fileService = fileIOService;
+            _helper = helper;
+            _fileService = fileIOService;
+            _notificationService = notificationService;
+
         }
 
         // TODO Add file upload/download. Both need security checks to make sure they are only uploading/downloading to their own apps
@@ -374,6 +377,36 @@ namespace CCIA.Controllers.Client
             
             var retryModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);    
             return View(retryModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Submit(int id)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found!";
+                return  RedirectToAction(nameof(Index));
+            }   
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            app.Postmark = DateTime.Now;
+            app.Submitable = false;
+            app.Status = ApplicationStatus.PendingAcceptance.GetDisplayName();
+            await _notificationService.ApplicationSubmitted(app);
+
+            if (TryValidateModel(app))
+            {                  
+                await _dbContext.SaveChangesAsync();
+                Message = "Application submitted for acceptance!";
+            } else
+            {
+                ErrorMessage = "Something went wrong";
+            }
+            return RedirectToAction("Details", new { id = app.Id });
         }
 
          public async Task<IActionResult> EditHistory(int id)
