@@ -119,6 +119,7 @@ namespace CCIA.Models
         public virtual DbSet<TagChanges> TagChanges { get; set; }
 
         public virtual DbSet<TagBagging> TagBagging { get; set; }
+        public virtual DbSet<StatesAndCountries> StatesAndCountries { get; set; }
 
         public virtual DbSet<TagSeries> TagSeries { get; set; }
 
@@ -276,6 +277,14 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
 
+            });
+
+            modelBuilder.Entity<StatesAndCountries>(entity => {
+                entity.ToTable("statesAndCountries");
+                entity.HasKey(e => e.Id);
+                entity.Property(e =>e.Id);
+                entity.Property(e => e.Name);
+                entity.Property(e => e.Ord);
             });
 
             modelBuilder.Entity<Jobs>(entity => {
@@ -3158,6 +3167,8 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);
+                entity.HasOne(d => d.GrownCountry);
+                entity.HasOne(d => d.TaggedCountry);
                 //entity.HasOne(d => d.Application);
 
             });

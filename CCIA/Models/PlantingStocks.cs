@@ -11,6 +11,8 @@ namespace CCIA.Models
         {
             WinterTest = false;
             PvxTest = false;
+            StateCountryGrown = 102;
+            StateCountryTagIssued = 102;
         }
         public int PsId { get; set; }
         public int? AppId { get; set; }
@@ -48,8 +50,14 @@ namespace CCIA.Models
        [ForeignKey("StateCountryGrown")]
        public StateProvince GrownStateProvince {get; set; }
 
+       [ForeignKey("StateCountryGrown")]
+       public Countries GrownCountry { get; set; }
+
        [ForeignKey("StateCountryTagIssued")]
        public StateProvince TaggedStateProvince { get; set; }
+
+       [ForeignKey("StateCountryTagIssued")]
+       public Countries TaggedCountry { get; set; }
 
        
     }

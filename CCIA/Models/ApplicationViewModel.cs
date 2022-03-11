@@ -30,6 +30,7 @@ namespace CCIA.Models
         public bool RenderFormRemainder { get; set; }
         public bool RenderSecondPlantingStock { get; set; }
         public List<StateProvince> StateProvince { get; set; }
+        public List<StatesAndCountries> statesAndCountries { get; set; }
         public List<VarOfficial> Varieties { get; set; }
         public List<VarFull> PrefiilledVarieties { get; set; }
         public AbbrevAppType AppType { get; set; }
@@ -131,7 +132,7 @@ namespace CCIA.Models
                     .Include(o => o.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
-                StateProvince =  await _dbContext.StateProvince.ToListAsync(),
+                statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
                 Crops = crops,
                 CertYear = Helpers.CertYearFinder.CertYear,
                 FullCrops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
@@ -225,7 +226,7 @@ namespace CCIA.Models
                     .Include(o => o.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
-                StateProvince =  await _dbContext.StateProvince.ToListAsync(),
+                statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
                 Crops = crops,
                 CertYear = Helpers.CertYearFinder.CertYear,
                 FullCrops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
@@ -334,7 +335,7 @@ namespace CCIA.Models
                     .Include(o => o.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
-                StateProvince =  await _dbContext.StateProvince.ToListAsync(),
+                statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
                 Crops = crops,
                 CertYear = Helpers.CertYearFinder.CertYear,
                 FullCrops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),

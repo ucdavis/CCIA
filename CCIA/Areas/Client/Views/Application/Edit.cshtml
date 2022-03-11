@@ -229,12 +229,12 @@
                     {
                         <div class="form-group col">
                             <label asp-for="PlantingStock1.StateCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
-                            <select asp-for="PlantingStock1.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                            <select asp-for="PlantingStock1.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.statesAndCountries,"Id","Name"))"></select>
                         </div>
                     }
                     <div class="form-group col">
                             <label asp-for="PlantingStock1.StateCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
-                            <select asp-for="PlantingStock1.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                            <select asp-for="PlantingStock1.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.statesAndCountries,"Id","Name"))"></select>
                     </div>                    
                 </div>
                 <div class="row">
@@ -367,12 +367,12 @@
                     {
                         <div class="form-group col">
                             <label asp-for="PlantingStock2.StateCountryTagIssued" class="col-form-label">State/Country Where PS Tag or Breeder Letter Was Issued</label>
-                            <select asp-for="PlantingStock2.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                            <select asp-for="PlantingStock2.StateCountryTagIssued" class="form-control" asp-items="@(new SelectList(Model.statesAndCountries,"Id","Name"))"></select>
                         </div>
                     }
                     <div class="form-group col">
                             <label asp-for="PlantingStock2.StateCountryGrown" class="col-form-label">State/Country Where PS Was Grown</label>
-                            <select asp-for="PlantingStock2.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.StateProvince,"StateProvinceId","Name"))"></select>
+                            <select asp-for="PlantingStock2.StateCountryGrown" class="form-control" asp-items="@(new SelectList(Model.statesAndCountries,"Id","Name"))"></select>
                     </div>                    
                 </div>
                 <div class="row">
@@ -511,6 +511,7 @@
        
 
         <div class="text-right">
+            <a asp-action="Details" asp-route-id="@Model.Application.Id" class="btn btn-dark">Cancel Edit</a> | 
             <button type="submit" class="btn btn-primary">Updates Application</button>
         </div>     
     </div>
