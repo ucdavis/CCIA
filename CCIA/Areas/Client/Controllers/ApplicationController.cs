@@ -712,6 +712,84 @@ namespace CCIA.Controllers.Client
             return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
 
+        public async Task<IActionResult> Renewals()
+        {
+            var certYear = CertYearFinder.CertYear;
+            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
+            return View(model);
+        }
+
+        public async Task<IActionResult> Renew_app(int id)
+        {
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+            var appToRenew = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstAsync();
+            var newApp =  MapRenewFromApp(appToRenew);   
+
+            renew.Action = 1;
+            renew.DateRenewed = DateTime.Now;
+           
+            _dbContext.Add(newApp);                            
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
+
+            await _notificationService.ApplicationRenewed(newApp);
+
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewed. New App ID: {newApp.Id}";		
+		
+            return  RedirectToAction(nameof(Renewals));
+        }
+
+         public async Task<IActionResult> Renew_noseed(int id)
+        {
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+            var appToRenew = await _dbContext.Applications.Where(a => a.Id == renew.AppId).FirstAsync();
+            var newApp =  MapRenewFromApp(appToRenew);  
+
+            newApp.Comments = "App renew, NO CROP";          
+
+            renew.Action = 3;
+            renew.DateRenewed = DateTime.Now;
+            
+            _dbContext.Add(newApp);                
+            _dbContext.Update(renew);
+            await _dbContext.SaveChangesAsync();
+
+             var newFIR = new FieldInspectionReport();
+            newFIR.AppId = newApp.Id;                        
+            _dbContext.Add(newFIR);
+
+            await _notificationService.ApplicationRenewNoSeed(newApp);
+
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewed for NO SEED. New App ID: {newApp.Id}";		
+		
+            return  RedirectToAction(nameof(Renewals));;
+        }
+
+        public async Task<IActionResult> Renew_cancel(int id)
+        {
+            var renew = await _dbContext.RenewFields.Where(r => r.Id == id).FirstAsync();
+           
+            renew.Action = 2;
+            renew.DateRenewed = DateTime.Now;
+            
+            _dbContext.Update(renew);
+            await _notificationService.ApplicationRenewalCancelled(renew);
+            await _dbContext.SaveChangesAsync();
+
+            Message = $"App renewal cancelled.";		
+		
+            return  RedirectToAction(nameof(Renewals));;
+        }
+
+
         private bool FieldHistoryExists(FieldHistory submittedFh)
         {
             if(submittedFh == null)
@@ -1210,6 +1288,46 @@ namespace CCIA.Controllers.Client
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
             ViewData["fhEntryId"] = fhEntryId;
             return PartialView(fullPartialPath, app);
+        }
+
+        private Applications MapRenewFromApp(Applications appToRenew)
+        {
+            var newApp = new Applications();
+            
+            newApp.PaperAppNum = appToRenew.Id;
+            newApp.UserDataentry = appToRenew.UserDataentry;
+            newApp.CertNum = appToRenew.CertNum;
+            newApp.CertYear = CertYearFinder.CertYear;
+            newApp.OriginalCertYear = appToRenew.OriginalCertYear;
+            newApp.AppType = appToRenew.AppType;
+            newApp.ApplicantId = appToRenew.ApplicantId;
+            newApp.GrowerId = appToRenew.GrowerId;
+            newApp.CropId = appToRenew.CropId;
+            newApp.SelectedVarietyId = appToRenew.SelectedVarietyId;
+            newApp.EnteredVariety = appToRenew.EnteredVariety;
+            newApp.ClassProducedId = appToRenew.ClassProducedId;
+            newApp.Received = DateTime.Now;
+            newApp.Postmark = DateTime.Now;
+            newApp.Deadline = DateTime.Now.AddDays(1);
+            newApp.Status = ApplicationStatus.PendingAcceptance.GetDisplayName();
+            newApp.AcresApplied = appToRenew.AcresApplied;
+            newApp.Renewal = true;
+            newApp.FieldName = appToRenew.FieldName;
+            newApp.FarmCounty = appToRenew.FarmCounty;
+            newApp.Maps = appToRenew.Maps;
+            newApp.MapsSubmissionDate = appToRenew.MapsSubmissionDate;
+            newApp.MapCenterLat = appToRenew.MapCenterLat;
+            newApp.MapCenterLong = appToRenew.MapCenterLong;
+            newApp.MapVe = appToRenew.MapVe;
+            newApp.MapUploadFile = appToRenew.MapUploadFile;
+            newApp.TextField = appToRenew.TextField;
+            newApp.GeoTextField = appToRenew.GeoTextField;
+            newApp.GeoField = appToRenew.GeoField;
+            newApp.DatePlanted = appToRenew.DatePlanted;
+            newApp.Tags = appToRenew.Tags;
+
+            return newApp;
+
         }
 
     }
