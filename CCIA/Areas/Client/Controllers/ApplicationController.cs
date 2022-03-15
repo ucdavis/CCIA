@@ -696,6 +696,22 @@ namespace CCIA.Controllers.Client
             return View("Index",model);
         }
 
+        public async Task<IActionResult> FIR(int id)
+        {
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            if(model.application == null)
+            {
+                ErrorMessage = "Application not found or no FIR ready (not accepted?)";
+                return RedirectToAction(nameof(Index));
+            }
+            if(model.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
+        }
+
         private bool FieldHistoryExists(FieldHistory submittedFh)
         {
             if(submittedFh == null)
