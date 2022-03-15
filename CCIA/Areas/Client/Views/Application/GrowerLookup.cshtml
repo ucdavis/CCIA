@@ -17,42 +17,7 @@
 <div id="growersTable"></div>
 
 @section Scripts {
-    <script type="text/javascript">
-
-        function lookupOrgs() {
-            const antiforgery = $("input[name='__RequestVerificationToken']").val();
-            var val = document.getElementById("account").value;
-            if (val === "") {
-                alert("This field cannot be empty");
-                return;
-            }
-            var dataToPost = {lookupVal: val};
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: "/Application/Lookup",
-                data: dataToPost,
-                success: (response) => {
-                    if (response.length == 0){
-                        document.getElementById("res-warning").innerText = "No records matched your search.";
-                    }
-                    else {
-                        document.getElementById("res-warning").innerText = "";
-                    }
-                    // clear our table before populating it
-                    $("#organizations").empty();
-                    // Get state/province from code                    
-                    var row = "";                   
-                    jQuery.each(response, function(i, data) {
-                        populateOrgsTable(data);
-                    });
-                },
-                error: (e) => {
-                    console.log(e);
-                    alert("An internal error occured...");
-                }
-                });
-        }
+    <script type="text/javascript">       
 
         $('#account-lookup-btn').click(function(e){
             e.preventDefault();
@@ -64,7 +29,7 @@
             /* Get app type id from querystring */
             const urlParams = new URLSearchParams(window.location.search);
             const appTypeId = parseInt(urlParams.get('appTypeId'));
-            let lookupVal = document.getElementById("account").value;
+            let lookupVal = $("#account").val();            
             if (lookupVal === "") {
                 alert("This field cannot be empty.");
                 return;

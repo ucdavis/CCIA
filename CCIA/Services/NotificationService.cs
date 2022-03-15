@@ -9,6 +9,8 @@ namespace CCIA.Services
     {
         Task ApplicationAccepted(Applications app);
 
+        Task ApplicationSubmitted(Applications app);
+
         Task ApplicationRenewed(Applications app);
 
         Task ApplicationRenewNoSeed(Applications app);
@@ -46,8 +48,7 @@ namespace CCIA.Services
         {
             _dbContext = dbContext;
         }
-
-        // Assume we email all Team KeyMasters & DepartmentalAdmins
+        
         public async Task ApplicationAccepted(Applications app)
         {
            
@@ -63,6 +64,24 @@ namespace CCIA.Services
                     Email = user,
                     AppId = app.Id,
                     Message = "Application accepted"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task ApplicationSubmitted(Applications app)
+        {
+            var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
+            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id)).Distinct().ToListAsync();            
+            
+            foreach (var employee in inspectors)
+            {                
+                var notification = new Notifications
+                {
+                    Email = employee.Email,
+                    AppId = app.Id,
+                    Message = "Application accepted",
+                    IsAdmin = true,
                 };
                 _dbContext.Notifications.Add(notification);      
             }

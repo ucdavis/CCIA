@@ -304,6 +304,8 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Email</th>
+                <th>Business Phone</th>
+                <th>Cell Phone</th>
             </tr>
         </thead>
         <tbody>
@@ -315,6 +317,13 @@
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Email</td>
+                    <td nowrap>@employee.BusinessPhone 
+                        @if(employee.BusinessPhoneExtension != null)
+                        {
+                            <span>Ext: @employee.BusinessPhoneExtension</span>
+                        }
+                    </td>
+                    <td nowrap>@employee.MobilePhone</td>
                 </tr>
             }
         </tbody>

@@ -96,5 +96,8 @@ namespace CCIA.Models
        [ForeignKey("AppId")]
        public ICollection<PotatoHealthCertificateHistory> History { get; set; }
 
+       
+       public Applications Application { get; set; }       
+
     }
 }

@@ -67,7 +67,8 @@ function loadFormRemainder(varietyId, varietyName, remainderFolder, remainderNam
         });
 }
 
-function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {
+function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, remainderFolder, remainderName) {   
+    alert("starting");
     // Display error if user tries to search for variety before selecting crop
     let crop = document.getElementsByName("CropId")[0];
     let cropText = crop.options[crop.selectedIndex].text;

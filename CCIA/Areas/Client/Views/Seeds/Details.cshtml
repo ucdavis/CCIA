@@ -102,7 +102,12 @@
                             <tr>
                                 <td>@app.Application.Id</td>
                                 <td>@app.Application.GrowerOrganization.Name</td>
-                                <td>@app.Application.AcresApplied</td>
+                                <td>@app.Application.AcresApplied 
+                                    @if(app.Application.IsSquareFeet)
+                                    {
+                                        <span>Square feet</span>
+                                    } 
+                                </td>
                             </tr>
                         }
                     </table>

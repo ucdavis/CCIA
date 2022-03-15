@@ -89,7 +89,7 @@ namespace CCIA.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = "/client/home/")
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync("Cookies");
@@ -101,7 +101,7 @@ namespace CCIA.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string email, string password, string returnUrl = null)
+        public async Task<IActionResult> Login(string email, string password, string returnUrl = "/client/home/")
         {
             if(returnUrl.Contains("admin"))
             {
@@ -172,7 +172,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
-            return RedirectToAction(nameof(RootController.Index), "Home");
+            return RedirectToAction(nameof(Login));
         }      
         
         

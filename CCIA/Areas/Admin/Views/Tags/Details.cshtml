@@ -238,13 +238,7 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.ExtrasOverrun)
                 </div>
-            </div> 
-            <div class="form-group row">
-                <label asp-for="DateNeeded" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.DateNeeded)
-                </div>
-            </div> 
+            </div>             
             <div class="form-group row">                
                 <label asp-for="AnalysisRequested" class="col-sm-3 col-form-label"></label>
                 <input type="checkbox" asp-for="AnalysisRequested" class="col-sm-3 form-control disabled">
@@ -443,6 +437,123 @@
                 @(!string.IsNullOrWhiteSpace(Model.TaggingOrganization.Address.Address3) ? $"{Model.TaggingOrganization.Address.Address3} <br/>" : "")
                 @Model.TaggingOrganization.Address.City, @Model.TaggingOrganization.Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Address.PostalCode
             </div>
+        </div>
+        <div class="row">
+            @if(Model.Seeds != null && Model.Seeds.SeedsApplications != null && Model.Seeds.SeedsApplications.Count > 0)
+            {
+                @:Apps in this lot:
+                <table class="table">
+                    <tr>
+                        <th>AppID</th>
+                        <th>Applicant</th>
+                        <th>Grower</th>
+                        <th>Cert Year</th>
+                        <th>Crop</th>
+                        <th>Variety</th>
+                        <th>Class</th>
+                        <th>Status</th>
+                        <th>Warning</th>
+                    </tr>
+                    @foreach(var app in Model.Seeds.SeedsApplications)
+                    {
+                        <tr>
+                            <td>@app.AppId</td>
+                            <td>@app.Application.ApplicantOrganization.NameAndId</td>
+                            <td>@app.Application.GrowerOrganization.NameAndId</td>
+                            <td>@app.Application.CertYear</td>
+                            <td>@app.Application.CropName</td>
+                            <td>@app.Application.VarietyName</td>
+                            <td>@app.Application.ClassProducedName</td>
+                            <td>@app.Application.Status</td>
+                            <td>
+                                @if(app.Application.Status != "Field Inspection Report Ready")
+                                {
+                                    <a class="btn btn-danger" href="#">FIR not ready</a>
+                                }
+                            
+                                @if(app.Application.FieldInspectionReport != null)
+                                {
+                                    @if(app.Application.FieldInspectionReport.AcresApproved == 0)
+                                    {
+                                        <a class="btn btn-danger" href="#">Acres Approved =0</a>
+                                    }
+                                    @if(app.Application.FieldInspectionReport.AcresGrowout > 0)
+                                    {
+                                        <a class="btn btn-danger" href="#">Acres Growout > 0</a>
+                                    }
+                                    @if(app.Application.FieldInspectionReport.AcresRejected > 0)
+                                    {
+                                        <a class="btn btn-danger" href="#">Acres Rejected > 0</a>
+                                    }
+                                    @if(!app.Application.FieldInspectionReport.Complete)
+                                    {
+                                        <a class="btn btn-danger" href="#">FIR not marked complete</a>
+                                    }                                
+                                } else
+                                {
+                                    <a class="btn btn-danger" href="#">Field Inspection Report Not Found</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            @if(Model.Application != null)
+            {
+                @:Apps in this lot:
+                <table class="table">
+                    <tr>
+                        <th>AppID</th>
+                        <th>Applicant</th>
+                        <th>Grower</th>
+                        <th>Cert Year</th>
+                        <th>Crop</th>
+                        <th>Variety</th>
+                        <th>Class</th>
+                        <th>Status</th>
+                        <th>Warning</th>
+                    </tr>                   
+                    <tr>
+                        <td>@Model.Application.Id</td>
+                        <td>@Model.Application.ApplicantOrganization.NameAndId</td>
+                        <td>@Model.Application.GrowerOrganization.NameAndId</td>
+                        <td>@Model.Application.CertYear</td>
+                        <td>@Model.Application.CropName</td>
+                        <td>@Model.Application.VarietyName</td>
+                        <td>@Model.Application.ClassProducedName</td>
+                        <td>@Model.Application.Status</td>
+                        <td>
+                            @if(Model.Application.Status != "Field Inspection Report Ready")
+                            {
+                                <a class="btn btn-danger" href="#">FIR not ready</a>
+                            }
+                        
+                            @if(Model.Application.FieldInspectionReport != null)
+                            {
+                                @if(Model.Application.FieldInspectionReport.AcresApproved == 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Approved =0</a>
+                                }
+                                @if(Model.Application.FieldInspectionReport.AcresGrowout > 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Growout > 0</a>
+                                }
+                                @if(Model.Application.FieldInspectionReport.AcresRejected > 0)
+                                {
+                                    <a class="btn btn-danger" href="#">Acres Rejected > 0</a>
+                                }
+                                @if(!Model.Application.FieldInspectionReport.Complete)
+                                {
+                                    <a class="btn btn-danger" href="#">FIR not marked complete</a>
+                                }                                
+                            } else
+                            {
+                                <a class="btn btn-danger" href="#">Field Inspection Report Not Found</a>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            }
         </div>
         <form asp-action="UpdateAdminComments" asp-area="Admin" asp-controller="Tags">
             <input type="hidden" asp-for="Id">

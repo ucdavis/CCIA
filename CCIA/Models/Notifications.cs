@@ -15,6 +15,7 @@ namespace CCIA.Models
             BlendId = 0;
             TagId = 0;
             OrgId = 0;
+            IsAdmin = false;
         }
 
         public int Id { get; set; }
@@ -39,6 +40,7 @@ namespace CCIA.Models
         public DateTime Created { get; set; }
 
         public DateTime? Sent { get; set; }
+        public bool IsAdmin { get; set; }
         
     }
 }

@@ -36,5 +36,17 @@ namespace CCIA.Models
             
             return model;
         }
+
+        public static async Task<NewMapViewModel> CreateClient(CCIAContext _dbContext, int id)
+        {  
+            var model = new NewMapViewModel
+                {
+                   application = await _dbContext.Applications.Where(a => a.Id==id).FirstOrDefaultAsync(),
+                   showLink =  false,                  
+                };
+            
+            return model;
+        }
+        
     }    
 }

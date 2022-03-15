@@ -11,11 +11,14 @@ namespace CCIA.Models
         {
             WinterTest = false;
             PvxTest = false;
+            StateCountryGrown = 102;
+            StateCountryTagIssued = 102;
         }
         public int PsId { get; set; }
         public int? AppId { get; set; }
 
         [Required]
+        [Display(Name="Planting Stock Cert Number")]
         public string PsCertNum { get; set; }
         public virtual string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }
@@ -38,17 +41,23 @@ namespace CCIA.Models
 
         public string UserEmpModified { get; set; }
 
-    //    [ForeignKey("AppId")]
-    //    public Applications Application { get; set; }
+    
         
+        [ForeignKey("PsClass")]
         public AbbrevClassProduced PsClassNavigation { get; set; }
 
        
        [ForeignKey("StateCountryGrown")]
        public StateProvince GrownStateProvince {get; set; }
 
+       [ForeignKey("StateCountryGrown")]
+       public Countries GrownCountry { get; set; }
+
        [ForeignKey("StateCountryTagIssued")]
        public StateProvince TaggedStateProvince { get; set; }
+
+       [ForeignKey("StateCountryTagIssued")]
+       public Countries TaggedCountry { get; set; }
 
        
     }

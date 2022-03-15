@@ -44,11 +44,11 @@
         </div>
         <div class="form-group row">
             <label asp-for="plantingStocks.StateCountryTagIssued" class="col-sm-3 col-form-label"></label>            
-            <select asp-for="plantingStocks.StateCountryTagIssued" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "StateProvinceName"))"></select> 
+            <select asp-for="plantingStocks.StateCountryTagIssued" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.statesAndCountries, "Id", "Name"))"></select> 
         </div>
         <div class="form-group row">
             <label asp-for="plantingStocks.StateCountryGrown" class="col-sm-3 col-form-label"></label>            
-            <select asp-for="plantingStocks.StateCountryGrown" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.states, "StateProvinceId", "StateProvinceName"))"></select> 
+            <select asp-for="plantingStocks.StateCountryGrown" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.statesAndCountries, "Id", "Name"))"></select> 
         </div>
         @if(Model.plantingStocks.SeedPurchasedFrom != null){
             <div class="form-group row">

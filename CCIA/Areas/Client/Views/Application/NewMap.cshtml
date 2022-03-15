@@ -1,0 +1,111 @@
+@model CCIA.Models.NewMapViewModel
+<link href="/css/DrawingToolsModule.css" rel="stylesheet" type="text/css" />
+<br>
+<div>
+    Latitude:
+            <input id="txtLat" size="10" type="text" />
+            &nbsp;Longitude:
+            <input id="txtLong" size="10" type="text" />&nbsp;
+            <input id="Button20" onclick="Panmap();" type="button" value="Zoom to" />
+            Zoom to county: &nbsp;<select id="county_name" onchange="zoom_county();">
+                <option selected="selected">Select county...</option>
+                <option>ALAMEDA</option>
+                <option>ALPINE</option>
+                <option>AMADOR</option>
+                <option>BUTTE</option>
+                <option>CALAVERAS</option>
+                <option>COLUSA</option>
+                <option>CONTRA COSTA</option>
+                <option>DEL NORTE</option>
+                <option>EL DORADO</option>
+                <option>FRESNO</option>
+                <option>GLENN</option>
+                <option>HUMBOLDT</option>
+                <option>IMPERIAL</option>
+                <option>INYO</option>
+                <option>KERN</option>
+                <option>KINGS</option>
+                <option>LAKE</option>
+                <option>LASSEN</option>
+                <option>LOS ANGELES</option>
+                <option>MADERA</option>
+                <option>MARIN</option>
+                <option>MARIPOSA</option>
+                <option>MENDOCINO</option>
+                <option>MERCED</option>
+                <option>MODOC</option>
+                <option>MONO</option>
+                <option>MONTEREY</option>
+                <option>NAPA</option>
+                <option>NEVADA</option>
+                <option>ORANGE</option>
+                <option>PLACER</option>
+                <option>PLUMAS</option>
+                <option>RIVERSIDE</option>
+                <option>SACRAMENTO</option>
+                <option>SAN BENITO</option>
+                <option>SAN BERNARDINO</option>
+                <option>SAN DIEGO</option>
+                <option>SAN FRANCISCO</option>
+                <option>SAN JOAQUIN</option>
+                <option>SAN LUIS OBISPO</option>
+                <option>SAN MATEO</option>
+                <option>SANTA BARBARA</option>
+                <option>SANTA CLARA</option>
+                <option>SANTA CRUZ</option>
+                <option>SHASTA</option>
+                <option>SIERRA</option>
+                <option>SISKIYOU</option>
+                <option>SOLANO</option>
+                <option>SONOMA</option>
+                <option>STANISLAUS</option>
+                <option>SUTTER</option>
+                <option>TEHAMA</option>
+                <option>TRINITY</option>
+                <option>TULARE</option>
+                <option>TUOLUMNE</option>
+                <option>VENTURA</option>
+                <option>YOLO</option>
+                <option>YUBA</option>
+            </select>
+</div>
+<hr>
+<div>
+    <form method="post" id="newMap">        
+            <input type="hidden" id="map" name="map" value="test">
+            <input type="hidden" id="id" name="id" value="@Model.application.Id"/>
+    <input type="submit" value="Update Map">
+    </form>
+    
+
+                <div id="MapDiv" style="position:relative;width:800px;height:600px;float:left;z-index: 1" >
+                    <div id="myMap" style="position:relative; width:800px;height:600px;"></div>                   
+                    <input type="hidden" ID="showDrawingTools" Value="1" />
+                    <input type="hidden" id="showField" value="findPin" />
+                </div>
+                <div>
+                
+                    &nbsp; &nbsp;
+                   
+                    <br />
+                    <br />
+                </div>
+            <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+        
+</div>
+
+@section Scripts {
+    
+    <script>
+        $("#newMap").submit(function() {
+            var textVal = $("#map").val();
+            if(textVal == "" || textVal == "test") {
+                alert('No field mapped');
+                return false;
+            }
+        });
+    </script>
+    <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+    <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
+}
+

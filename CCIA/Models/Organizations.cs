@@ -21,22 +21,31 @@ namespace CCIA.Models
         public string Email { get; set; }
         public string Website { get; set; }
 
+        [Display(Name ="Name & ID")]
         public string NameAndId => Id + " " + Name;
 
         public int? CountyId { get; set; }
         public County OrgCounty { get; set; }
 
+        [Display(Name="Germ Lab?")]
         public bool GermLab { get; set; }
         //public bool FoundationSeedGrower { get; set; }
+        [Display(Name="Diagnostic Lab")]
         public bool DiagnosticLab { get; set; }
+        
+        [Display(Name="Ag Commissioner?")]
         public bool AgCommissioner { get; set; }
 
         public string District { get; set; }
         public bool Member { get; set; }
 
+        [Display(Name="Member Year")]
         public int? MemberYear { get; set; }
+        [Display(Name="Member Type")]
         public string MemberType { get; set; }
+        [Display(Name="Last Member Agreement")]
         public DateTime? LastMemberAgreement { get; set; }
+        [Display(Name="Member Since")]
         public DateTime? MemberSince { get; set; }
         [ForeignKey("Id")]
         public int? RepresentativeContactId { get; set; }
@@ -56,7 +65,7 @@ namespace CCIA.Models
         [ForeignKey("OrgId")]
         public ICollection<OrganizationAddress> Addresses { get; set; }
        
-        public ICollection<Applications> AppliedApplications { get; set; }
+        //public ICollection<Applications> AppliedApplications { get; set; }
         
         [ForeignKey("OrgId")]
         public ICollection<Contacts> Employees { get; set; }

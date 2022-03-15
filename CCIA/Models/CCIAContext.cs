@@ -119,6 +119,7 @@ namespace CCIA.Models
         public virtual DbSet<TagChanges> TagChanges { get; set; }
 
         public virtual DbSet<TagBagging> TagBagging { get; set; }
+        public virtual DbSet<StatesAndCountries> StatesAndCountries { get; set; }
 
         public virtual DbSet<TagSeries> TagSeries { get; set; }
 
@@ -158,21 +159,12 @@ namespace CCIA.Models
 
         public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
 
-        
-       
+        public virtual DbSet<CropAssignments> CropAssignments { get; set; }
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
-        
-        
-        
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
-      
-        
-
-       
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.org_map'. Please see the warning messages.
       
-       
 
         public static ILoggerFactory GetLoggerFactory()
         {
@@ -186,32 +178,12 @@ namespace CCIA.Models
         }
        
 
-        // public CCIAContext(IConfiguration configuration)
-        // {
-        //     Configuration = configuration;
-        // }
-
-        // public IConfiguration Configuration { get; }
-
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     // if (!optionsBuilder.IsConfigured)
-        //     // {
-        //     //     optionsBuilder.UseSqlServer(Configuration.GetConnectionString("CCIACoreContext"), sqlOptions =>
-        //     //     {                       
-        //     //             sqlOptions.UseNetTopologySuite();
-        //     //             sqlOptions.AddRowNumberSupport();
-        //     //     });
-        //     // }
-        //     optionsBuilder.UseLoggerFactory(GetLoggerFactory());
-
-        // }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            
             modelBuilder.Entity<Seeds>(entity =>
             {
                 entity.ToTable("Seeds");
@@ -278,7 +250,7 @@ namespace CCIA.Models
 
                 entity.HasOne(s => s.LabResults);
 
-                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Seeds).HasForeignKey(d => d.CertProgram).HasPrincipalKey(p => p.Abbreviation);
+                entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Seed).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.CertProgram);
                 
                 entity.HasOne(d => d.Application);
 
@@ -307,6 +279,14 @@ namespace CCIA.Models
 
             });
 
+            modelBuilder.Entity<StatesAndCountries>(entity => {
+                entity.ToTable("statesAndCountries");
+                entity.HasKey(e => e.Id);
+                entity.Property(e =>e.Id);
+                entity.Property(e => e.Name);
+                entity.Property(e => e.Ord);
+            });
+
             modelBuilder.Entity<Jobs>(entity => {
                 entity.ToTable("jobs");
 
@@ -324,6 +304,17 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Section).HasColumnName("Section");
 
+            });
+
+            modelBuilder.Entity<CropAssignments>(entity => {
+                entity.ToTable("crop_assign");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).HasColumnName("crop_assign_id");
+                entity.Property(e => e.CropId).HasColumnName("crop_id");
+                entity.Property(e => e.EmployeeId).HasColumnName("assign_id");
+                entity.Property(e => e.Level).HasColumnName("assign_level");
+                entity.HasOne(e => e.AssignedCrop);
             });
 
                modelBuilder.Entity<PotatoHealthCertificates>(entity => {
@@ -632,6 +623,7 @@ namespace CCIA.Models
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
 
                 entity.HasOne(e => e.Employee);
+                
             });
 
             modelBuilder.Entity<SeedTransferChanges>(entity => {
@@ -1029,8 +1021,6 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BillingAccess).HasColumnName("billing_access");
 
-                entity.Property(e => e.SeedLab).HasColumnName("seed_lab");
-
                 entity.Property(e => e.SeasonalEmployee).HasColumnName("seasonal_employee");
 
                 entity.Property(e => e.NewTag).HasColumnName("new_tag");
@@ -1048,6 +1038,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
 
                 entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
+                entity.HasMany(e => e.AssignedCrops);
 
             });
 
@@ -1120,7 +1111,7 @@ namespace CCIA.Models
 
                 entity.HasMany(e => e.BulkSalesCertificatesShares);
 
-                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificates).HasForeignKey(e => e.CertProgramAbbreviation).HasPrincipalKey(a => a.Abbreviation);
+                entity.HasOne(e => e.CertProgram).WithMany(a => a.BulkSalesCertificate).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.CertProgramAbbreviation);
 
             });
 
@@ -1610,9 +1601,12 @@ namespace CCIA.Models
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
+            entity.Property(e => e.FieldHistoryCount).HasColumnName("field_history_number");
+
             entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
 
             entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValueSql("((0))");
+            
         });
 
             modelBuilder.Entity<AbbrevClassProduced>(entity =>
@@ -1640,6 +1634,9 @@ namespace CCIA.Models
                 entity.Property(e => e.SortOrder).HasColumnName("sort_order");
                 
                 entity.HasOne(e => e.AppType);
+                entity.Property(e => e.HempProduction).HasColumnName("hemp_producing");
+                entity.Property(e => e.HempProduced).HasColumnName("hemp_produced");
+                entity.Property(e => e.HempPlanted).HasColumnName("hemp_planted");
             });
 
             modelBuilder.Entity<AbbrevClassSeeds>(entity =>
@@ -1734,6 +1731,8 @@ namespace CCIA.Models
                 entity.Property(e => e.AcresApplied)
                     .HasColumnName("acres_applied")
                     .HasColumnType("decimal(14, 2)");
+
+                entity.Property(e => e.IsSquareFeet).HasColumnName("is_square_feet");
 
                 entity.Property(e => e.CountyPermit)
                     .HasColumnName("county_permit")
@@ -1872,13 +1871,7 @@ namespace CCIA.Models
                 entity.Property(e => e.FieldElevation)
                     .HasColumnName("field_elevation")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FieldHardiness)
-                    .HasColumnName("field_hardiness")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
+                    .IsUnicode(false);               
 
                 entity.Property(e => e.FieldName)
                     .HasColumnName("field_name")
@@ -1898,12 +1891,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.LateFee)
                     .HasColumnName("late_fee")
-                    .HasColumnType("smallmoney");
-
-                entity.Property(e => e.LotNo)
-                    .HasColumnName("lot_no")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasColumnType("smallmoney");                
 
                 entity.Property(e => e.MapCenterLat)
                     .HasColumnName("map_center_lat")
@@ -1980,9 +1968,7 @@ namespace CCIA.Models
                 entity.Property(e => e.TextField)
                     .HasColumnName("text_field")
                     .HasMaxLength(3000)
-                    .IsUnicode(false);               
-
-                entity.Property(e => e.Trace).HasColumnName("trace");
+                    .IsUnicode(false);                 
 
                 entity.Property(e => e.UserDataentry).HasColumnName("user_app_dataentry");
 
@@ -2007,25 +1993,28 @@ namespace CCIA.Models
                     .HasColumnName("warning_flag")
                     .HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.HempWhatPlanted);
+                entity.Property(e =>e.HempWhatProduced);
+                entity.Property(e => e.HempWhereProduced);
+                entity.Property(e => e.HempProducingSeedType);
+
                 entity.HasOne(d => d.ClassProduced);
 
-                entity.HasOne(d => d.Crop)
-                    .WithMany(p => p.Applications)
-                    .HasForeignKey(d => d.CropId)
-                    .HasConstraintName("FK_Applications_Crops");
+                entity.HasOne(d => d.Crop);
+                    
 
                 entity.HasOne(d => d.GrowerOrganization);
 
-                entity.HasOne(d => d.ApplicantOrganization)
-                    .WithMany(p => p.AppliedApplications)
-                    .HasForeignKey(d => d.ApplicantId);
+                entity.HasOne(d => d.ApplicantOrganization);
+                    // .WithMany(p => p.AppliedApplications)
+                    // .HasForeignKey(d => d.Id);
 
                 
                 entity.HasOne(d => d.County);
 
                 entity.HasOne(d => d.Variety);
 
-                entity.HasOne(d => d.AppTypeTrans).WithMany(p => p.Applications).HasForeignKey(d => d.AppType).HasPrincipalKey(p => p.Abbreviation);
+                entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Application).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.AppType);
 
                 entity.HasMany(d => d.Certificates);
 
@@ -2035,13 +2024,14 @@ namespace CCIA.Models
 
                 entity.HasMany(d => d.TurfgrassCertificates);
 
-                entity.HasMany(d => d.FieldInspection);
-                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertYear).HasPrincipalKey(c => c.CertYear);
-                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => d.CertNum).HasPrincipalKey(c => c.CertNum);
+                entity.HasMany(d => d.FieldInspection);                
+                
+                entity.HasOne(d => d.AppCertRad).WithMany(c => c.Applications).HasForeignKey(d => new { d.CertNum, d.CertYear }).HasPrincipalKey(t => new { t.CertNum, t.CertYear });
                 entity.HasMany(d => d.Changes);
                 entity.HasOne(d => d.FieldInspectionReport);
                 entity.HasOne(d => d.Ecoregion);
-                entity.HasOne(d => d.PotatoHealthCertificate);
+                
+                entity.HasOne(d => d.PotatoHealthCertificate).WithOne(p => p.Application).HasForeignKey<PotatoHealthCertificates>(e => e.AppId).IsRequired(false);
 
             });
 
@@ -3173,13 +3163,12 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
 
-                entity.HasOne(d => d.PsClassNavigation)
-                    .WithMany(p => p.PlantingStocks)
-                    .HasForeignKey(d => d.PsClass)
-                    .HasConstraintName("FK_planting_stocks_farm_field");
+                entity.HasOne(d => d.PsClassNavigation);
 
                 entity.HasOne(d => d.GrownStateProvince);
                 entity.HasOne(d => d.TaggedStateProvince);
+                entity.HasOne(d => d.GrownCountry);
+                entity.HasOne(d => d.TaggedCountry);
                 //entity.HasOne(d => d.Application);
 
             });

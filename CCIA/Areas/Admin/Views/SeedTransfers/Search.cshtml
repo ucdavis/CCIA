@@ -90,7 +90,7 @@
                 <td>@stc.LinkId @stc.IdType</td>
                 <td>@stc.PurchaserName</td>
                 <td>@stc.Pounds</td>
-                <td>@stc.CertificateDate.ToShortDateString()</td>
+                <td data-sort="@string.Format("{0:yyyy/MM/dd}",stc.CertificateDate)">@stc.CertificateDate.ToShortDateString()</td>
                 <td>
                     @if(stc.BlendId != null)
                     {

@@ -198,8 +198,8 @@ namespace CCIA.Controllers.Admin
             seedToUpdate.NotFinallyCertified = seedEdit.NotFinallyCertified;
             seedToUpdate.Class = seedEdit.Class;
             seedToUpdate.SampleDrawnBy = seedEdit.SampleDrawnBy;
-            seedToUpdate.CountryOfOrigin = seedEdit.CountryOfOrigin;
-            seedToUpdate.StateOfOrigin = seedEdit.StateOfOrigin;
+            seedToUpdate.OriginCountry = seedEdit.OriginCountry;
+            seedToUpdate.OriginState = seedEdit.OriginState;
             seedToUpdate.OriginalRun = seedEdit.OriginalRun;
             seedToUpdate.Remill = seedEdit.Remill;
             seedToUpdate.OECDLot = seedEdit.OECDLot;

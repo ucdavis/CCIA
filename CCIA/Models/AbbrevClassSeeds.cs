@@ -11,6 +11,7 @@ namespace CCIA.Models
         [Key]
         public int Id { get; set; }
         public string Abbrv { get; set; }
+        [Display(Name = "Cert Class")] 
         public string CertClass { get; set; }
         public int? SortOrder { get; set; }
         

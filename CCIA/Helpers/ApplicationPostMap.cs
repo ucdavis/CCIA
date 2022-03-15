@@ -17,8 +17,8 @@ namespace CCIA.Helpers
             {4, "CreatePreVarietyGermplasmApplication"},
             {5, "CreateRiceApplication"},
             {6, "CreateTurfgrassApplication"},
-            {7, "CreateHempFromSeedApplication"},
-            {8, "CreateHempFromClonesApplication"},
+            {10, "CreateHempFromSeedApplication"},
+            {11, "CreateLacTrackerApplication"},
         };
 
         /* Assigns all required fields from our cshtml */

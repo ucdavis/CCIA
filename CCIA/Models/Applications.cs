@@ -47,19 +47,23 @@ namespace CCIA.Models
            IncompleteFee = 0;
            LateFee = 0;
            Fee = 0;
+           IsSquareFeet = false;
         }
 
        
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Display(Name="Renew ID")]
         public int? PaperAppNum { get; set; }
         public int? CertNum { get; set; }
 
+        [Display(Name="Cert Year")]
         public int CertYear { get; set; }
         
         [Display(Name="Orig Year")]
         public int? OriginalCertYear { get; set; }
-        public string LotNo { get; set; }
+        
         
         
         public int? UserDataentry { get; set; }
@@ -90,7 +94,9 @@ namespace CCIA.Models
         public bool Approved { get; set; }
         public string Approver { get; set; }
         public DateTime? DateApproved { get; set; }
-        public int? Trace { get; set; }
+        
+        
+        [Display(Name="Warning Flag")]
         public bool WarningFlag { get; set; }
         public string ApplicantNotes { get; set; }
         public bool Denied { get; set; }
@@ -114,15 +120,18 @@ namespace CCIA.Models
         
 
         [Required]
+        [Display(Name="Field Name/No.")]
         public string FieldName { get; set; }
        
         [Required]
         [DataType(DataType.Date)]
+        [Display(Name="Date Planted?")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime? DatePlanted { get; set; }
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? AcresApplied { get; set; }
+        public bool IsSquareFeet { get; set; }
         public bool Billable { get; set; }
         public bool Charged { get; set; }
         public string UserEmpModified { get; set; }
@@ -133,6 +142,7 @@ namespace CCIA.Models
         public decimal? Fee { get; set; }
         public decimal? LateFee { get; set; }
         public decimal? IncompleteFee { get; set; }
+        [Display(Name="Override Late Fee?")]
         public bool OverrideLateFee { get; set; }
         public decimal FeeCofactor { get; set; }
         public bool NotifyNeeded { get; set; }
@@ -140,8 +150,7 @@ namespace CCIA.Models
         public DateTime? DateNotified { get; set; }
         public string ApplicantComments { get; set; }
         public string PvgSource { get; set; }
-        public string PvgSelectionId { get; set; }
-        public string FieldHardiness { get; set; }
+        public string PvgSelectionId { get; set; }        
         public int? FieldElevation { get; set; }
         public int EcoregionId { get; set; }
         [ForeignKey("EcoregionId")]
@@ -153,11 +162,17 @@ namespace CCIA.Models
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
       
+        [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
 
         [ForeignKey("GrowerId")]
         public Organizations GrowerOrganization { get; set; }
+
+        public string HempWhatPlanted { get; set; }
+        public string HempWhatProduced { get; set; }
+        public string HempWhereProduced { get; set; }
+        public string HempProducingSeedType { get; set; }
 
         
 
@@ -182,8 +197,7 @@ namespace CCIA.Models
         [ForeignKey("AppType")]
         public AbbrevAppType AppTypeTrans { get; set; }
         public string AppType { get; set; }
-
-        [ForeignKey("Id")]
+       
         public PotatoHealthCertificates PotatoHealthCertificate { get; set; }
 
         [ForeignKey("AppId")]
@@ -204,6 +218,7 @@ namespace CCIA.Models
         
         
         public FieldInspectionReport FieldInspectionReport { get; set; }
+        
         
         public CertRad AppCertRad {get; set;}
 
@@ -282,6 +297,8 @@ namespace CCIA.Models
 
 
 
+        
+        [Display(Name="Full Cert")]
         public string FullCert 
         { 
             get
@@ -405,6 +422,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name="App Late")]
         public bool AppLate { 
             get 
             {

@@ -86,9 +86,9 @@
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
-                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
+                <label asp-for="application.AppTypeTrans.AppTypeTrans" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.AppType)
+                    @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
                 </div>
             </div> 
             <div class="form-group row">
@@ -114,13 +114,7 @@
                 </div>
             </div>                    
         </div>
-        <div class="col-md-6 col-xl-4">@*Third column *@
-            <div class="form-group row">
-                <label asp-for="application.AppType" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
-                </div>
-            </div>             
+        <div class="col-md-6 col-xl-4">@*Third column *@                  
             <div class="form-group row">
                 <label asp-for="application.Status" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -210,7 +204,12 @@
             <div class="form-group row">
                 <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.AcresApplied)  (Mapped: @Html.DisplayFor(x => x.application.AreaAcres) )
+                    @Html.DisplayFor(x => x.application.AcresApplied)
+                    @if(Model.application.IsSquareFeet)
+                        {
+                            <span>Square feet</span>
+                        } 
+                    (Mapped: @Html.DisplayFor(x => x.application.AreaAcres) )
                 </div>
             </div>
             <div class="form-group row">
@@ -447,13 +446,18 @@
                             @if(@row.TaggedStateProvince != null)
                             {
                                 <td>@row.TaggedStateProvince.Name</td>
+                            } else if(@row.TaggedCountry != null){
+                                <td>@row.TaggedCountry.Name</td>
                             } else {
                                 <td>???</td>
                             }
                             @if(@row.GrownStateProvince != null && @row.GrownStateProvince.Name != null)
                             {
                                 <td>@row.GrownStateProvince.Name</td>
-                            }  else {
+                            }  else if(@row.GrownCountry != null) 
+                            {
+                                <td>@row.GrownCountry.Name</td>
+                            } else {
                                 <td>???</td>
                             }                                           
                             @if(showPurchasedFrom)

@@ -98,6 +98,10 @@
                             Acres Applied:</td>
                         <td nowrap="nowrap">
                             @Model.application.AcresApplied
+                            @if(Model.application.IsSquareFeet)
+                            {
+                                <span>Square feet</span>
+                            } 
                         </td>
                         <td>
                         </td>

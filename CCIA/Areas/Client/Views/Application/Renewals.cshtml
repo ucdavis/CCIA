@@ -1,0 +1,56 @@
+@model List<CCIA.Models.RenewFields>
+
+
+@{
+    ViewData["Title"] = "Renewable Applications";
+}
+
+
+@if(Model != null)
+{
+    <div class="col-sm-12">
+        <table id="table" class="table">
+            <thead>
+                <th></th>
+            <th>AppId</th>
+            <th>Type</th>
+            <th>Applicant ID</th>
+            <th>Applicant Name</th>
+            <th>Grower ID</th>
+            <th>Grower</th>
+            <th>Crop</th>
+            <th>Variety</th>
+            <th>Class</th>           
+            <th>Field Name</th>
+            <th>Renew</th>
+            <th>No Crop</th>
+            <th>Cancel</th>
+            </thead>
+            <tbody>
+            
+                @foreach (var renew in Model)
+                {
+                <tr>
+                    <td><a class="btn btn-info" asp-action="Details" asp-route-id="@renew.Application.Id">Details</a></td>
+                     <td>@renew.Application.Id</td>
+                    <td>@renew.Application.AppType</td>
+                    <td>@renew.Application.ApplicantId</td>
+                    <td>@renew.Application.ApplicantName</td>
+                    <td>@renew.Application.GrowerId</td>
+                    <td>@renew.Application.GrowerName</td> 
+                    <td>@renew.Application.Crop.Name</td>
+                    <td>@renew.Application.VarietyName</td>
+                    <td>@renew.Application.ClassProducedName</td>                     
+                    <td>@renew.Application.FieldName</td> 
+                    <td><a class="btn btn-primary" asp-action="renew_app" asp-route-id="@renew.Id">Renew</a></td>                   
+                    <td><a class="btn btn-dark" asp-action="renew_noseed" asp-route-id="@renew.Id">No Seed</a></td>
+                    <td><a class="btn btn-warning" asp-action="renew_cancel" asp-route-id="@renew.Id">Cancel</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+} else
+{
+     <div class="alert alert-info">No renewable applications at this time.</div>
+}

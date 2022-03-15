@@ -51,6 +51,7 @@ namespace CCIA.Models
         [ForeignKey("TagId")]
         public ICollection<TagChanges> Changes { get; set; }
         
+        [Display(Name = "ID Type")] 
         public string IdType
         {
             get
@@ -78,6 +79,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Cert Year")] 
         public int CertYear
         {
             get
@@ -101,6 +103,24 @@ namespace CCIA.Models
             }
         }
 
+        public int ConditionerYearEntered 
+        { get
+            {
+                if(!DateEntered.HasValue)
+                {
+                    return 0;
+                }
+                if(DateEntered.Value.Month >= 1 && DateEntered.Value.Month <= 6)
+                    {
+                        return DateEntered.Value.Year - 1;
+                    } else
+                    {
+                        return DateEntered.Value.Year;
+                    }                
+            }        
+        }
+
+        [Display(Name = "Tagged Class")] 
         public string TaggedClass
         {
             get
@@ -113,6 +133,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Crop")] 
         public string CropName
         {
             get
@@ -137,6 +158,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Variety")] 
         public string VarietyName
         {
             get
@@ -161,6 +183,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Variety ID")] 
         public int VarietyId
         {
             get
@@ -194,6 +217,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Cert Number")] 
         public string CertNumber
         {
             get
@@ -214,6 +238,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Lot Number")] 
         public string LotNumber
         {
             get
@@ -226,6 +251,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "SID Class")] 
         public string SIDClass
         {
             get
@@ -242,6 +268,7 @@ namespace CCIA.Models
             }
         }
 
+        [Display(Name = "Class Produced")] 
         public string ClassProduced
         {
             get
@@ -293,6 +320,7 @@ namespace CCIA.Models
         }
 
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [Display(Name = "Source Lot Weight")] 
         public decimal SourceLotWeight
         {
             get
@@ -318,22 +346,28 @@ namespace CCIA.Models
         public AbbrevClassSeeds TagAbbrevClass { get; set; }
 
        
+        [Display(Name = "Date Requested")] 
         public DateTime? DateRequested { get; set; }
 
         public int YearRequested { get { return DateRequested.HasValue ? DateRequested.Value.Year : 0; } }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name ="Date Needed")]
         public DateTime? DateNeeded { get; set; }
         public DateTime? DateRun { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? LotWeightBagged { get; set; }
+        [Display(Name = "Coating %")] 
         public decimal? CoatingPercent { get; set; }
         public string WeightUnit { get; set; }
+        [Display(Name = "Count Requested")] 
         public int? CountRequested { get; set; }
+        [Display(Name ="Extras/Overrun")]
         public int? ExtrasOverrun { get; set; }
         public decimal? BagSize { get; set; }
         [NotMapped]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [Display(Name = "Bag Size (Pounds)")] 
         public decimal? BagSizePounds
         {
             get
@@ -378,6 +412,7 @@ namespace CCIA.Models
                 }
             }
         }
+        [Display(Name ="Count Used")]
         public int? CountUsed { get; set; }
         public int? TagType { get; set; }
 
@@ -409,8 +444,10 @@ namespace CCIA.Models
 
         public bool SeriesNumbered { get; set; }
 
+        [Display(Name ="Analysis Requested?")]
         public bool AnalysisRequested { get; set; }
 
+        [Display(Name ="How Deliver")]
         public string HowDeliver { get; set; }
 
         public string TrackingNumber { get; set; }
@@ -433,12 +470,14 @@ namespace CCIA.Models
 
         public DateTime? ApprovedDate { get; set; }
 
+        [Display(Name ="Date Printed")]
         public DateTime? PrintedDate { get; set; }
 
         public string Alias { get; set; }
 
         public bool OECD { get; set; }
 
+        [Display(Name ="Planting Stock #")]
         public string PlantingStockNumber { get; set; }
 
         public int? OECDTagType { get; set; }
@@ -447,14 +486,17 @@ namespace CCIA.Models
 
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
+        [Display(Name ="Date Sealed")]
         public DateTime? DateSealed { get; set; }
 
         public int? OECDCountryId { get; set; }
         [ForeignKey("OECDCountryId")]
         public Countries OECDCountry {get; set;}
 
+        [Display(Name ="Admin Comments")]
         public string AdminComments { get; set; }
 
+        [Display(Name = "Series Request")] 
         public bool SeriesRequest { get; set; }
 
         public int? BulkCropId { get; set; }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CCIA.Models
 {
     public partial class AbbrevAppType
     {
         public int AppTypeId { get; set; }
+        [Display(Name="App Type")]
         public string AppTypeTrans { get; set; }
         public string Abbreviation { get; set; }
         public bool GrowerSameAsApplicant { get; set; }
@@ -19,12 +21,21 @@ namespace CCIA.Models
         public bool? ShowType { get; set; }
 
         public bool QAProgram { get; set; }
+        public int FieldHistoryCount { get; set; }
 
-        public ICollection<Applications> Applications { get; set; }
-        public ICollection<Seeds> Seeds { get; set; }
+        public bool showSecondPlantingStock { get; set; }
+        public string VarietyLabel { get; set; }
+        public string PlantingStockCertNumberLabel { get; set; }
 
-        public ICollection<BulkSalesCertificates> BulkSalesCertificates { get; set; }
+        public bool ShowPSTagIssued { get; set; }
 
+        public ICollection<BulkSalesCertificates> BulkSalesCertificate { get; set; }
+        public ICollection<Applications> Application { get; set; }
+        public ICollection<Seeds> Seed { get; set; }
+
+       
+        
+       
         
     }
 }

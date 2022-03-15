@@ -1,0 +1,40 @@
+@model CCIA.Models.DetailsViewModels.AdminHistoryViewModel
+
+
+<h2>Edit Crop History for AppId @Model.history.AppId</h2> 
+
+<form asp-action="EditHistory">
+    @Html.HiddenFor(x => x.history.Id)
+    <div class="container">
+        <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div> 
+        <div class="form-group row required">
+            <label asp-for="history.Year" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="history.Year">
+            <span class="field-validation-valid text-danger" data-valmsg-for="history.Year" data-valmsg-replace="true"></span>
+        </div>
+         <div class="form-group row">
+            <label asp-for="history.Crop" class="col-sm-3 col-form-label"></label>            
+            <select asp-for="history.Crop" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select> 
+        </div> 
+        <div class="form-group row">
+            <label asp-for="history.Variety" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="history.Variety">
+            <span class="field-validation-valid text-danger" data-valmsg-for="history.Variety" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="history.AppNumber" class="col-sm-3 col-form-label"></label>
+            <input type="text" class="col-sm-9 form-control" asp-for="history.AppNumber">
+            <span class="field-validation-valid text-danger" data-valmsg-for="history.AppNumber" data-valmsg-replace="true"></span>
+        </div>       
+        <div class="col-lg-12">            
+            <input type="submit" value="Update" class="btn btn-primary"></input> 
+            <a class="btn btn-dark" asp-action="Edit" asp-controller="Application" asp-area="Admin" asp-route-id="@Model.history.AppId">Cancel</a>                     
+        </div> 
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

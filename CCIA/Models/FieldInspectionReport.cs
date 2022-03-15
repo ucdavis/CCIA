@@ -30,18 +30,22 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public Applications Application { get; set;}    
         public  decimal? AcresInspectionOnly { get; set; }
+        [Display(Name="Acres Approved")]
         public decimal? AcresApproved { get; set; }
         
         [Display(Name="Cancel-Inspected")]
         public decimal? AcresCancelled { get; set; }
+        [Display(Name="Acres Growout")]
         public decimal? AcresGrowout { get; set; }
         
         [Display(Name="Cancel-NoInspect")]
         public decimal? AcresRefund { get; set; }
+        [Display(Name="Acres Rejected")]
         public decimal? AcresRejected { get; set; }
+        [Display(Name="Acres No-Crop")]
         public decimal? AcresNoCrop { get; set; }        
-        public bool Complete { get; set; }
-       
+        public bool Complete { get; set; }       
+        
         public DateTime? DateComplete { get; set; }
         public string CompleteBy { get; set; }
         public int? PassClass { get; set; }
