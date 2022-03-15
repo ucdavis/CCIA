@@ -20,7 +20,10 @@
             </form>
         </div>
         <div class="col-sm-4">
-            <a asp-action="Cancel" asp-route-id="@Model.Id" class="btn btn-dark" onclick="return confirm('Once cancelled, this app will no longer be available. Are you sure you want to cancel this field?')">Cancel App</a>
+            <form asp-action="Cancel">
+                <input type="hidden" asp-for="Id">
+                <input type="submit" class="btn btn-dark" onclick="return confirm('Once cancelled, this app will no longer be available. Are you sure you want to cancel this field?')" value="Cancel Application">
+            </form>
         </div>
     </div>
     
@@ -219,15 +222,20 @@
                          @if(@row.TaggedStateProvince != null)
                         {
                             <td>@row.TaggedStateProvince.Name</td>
+                        } else if(@row.TaggedCountry != null){
+                            <td>@row.TaggedCountry.Name</td>
                         } else {
                             <td>???</td>
                         }
-                        @if(@row.GrownStateProvince != null)
+                        @if(@row.GrownStateProvince != null && @row.GrownStateProvince.Name != null)
                         {
                             <td>@row.GrownStateProvince.Name</td>
-                        }  else {
+                        }  else if(@row.GrownCountry != null) 
+                        {
+                            <td>@row.GrownCountry.Name</td>
+                        } else {
                             <td>???</td>
-                        }                                            
+                        }                                                              
                         @if(showPurchasedFrom)
                         {
                             <td>@row.SeedPurchasedFrom</td>

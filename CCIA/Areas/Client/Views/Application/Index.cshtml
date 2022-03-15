@@ -11,6 +11,10 @@
     <table id="table" class="table">
         <thead>
             <th></th>
+            @if(Model.IsFIR)
+            {
+                <th>FIR</th>
+            }
         <th>AppId</th>
         <th>Type</th>
         <th>Cert Year</th>
@@ -30,6 +34,10 @@
             {
             <tr>
                 <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
+                @if(Model.IsFIR)
+                {
+                    <td><a asp-action="FIR" asp-route-id="@app.Id" class="btn btn-info">FIR</a></td>
+                }
                 <td>@app.Id</td>
                 <td>@app.AppType</td>
                 <td>@app.CertYear</td>

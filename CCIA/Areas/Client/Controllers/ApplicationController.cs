@@ -74,6 +74,8 @@ namespace CCIA.Controllers.Client
                 .ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownCountry)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedCountry)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .FirstOrDefaultAsync();
 
@@ -409,6 +411,37 @@ namespace CCIA.Controllers.Client
             return RedirectToAction("Details", new { id = app.Id });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found!";
+                return  RedirectToAction(nameof(Index));
+            }   
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            app.Status = ApplicationStatus.ApplicationCancelled.GetDisplayName();
+            app.Submitable = false;
+            app.Cancelled = true;
+            app.Comments += "Canceled prior to submission";
+
+            if (TryValidateModel(app))
+            {                  
+                await _dbContext.SaveChangesAsync();
+                Message = "Application cancelled!";
+            } else
+            {
+                ErrorMessage = "Something went wrong";
+            }
+            return RedirectToAction("Details", new { id = app.Id });
+
+        }
+
          public async Task<IActionResult> EditHistory(int id)
         {
             var model = await AdminHistoryViewModel.Create(_dbContext, id);
@@ -641,6 +674,26 @@ namespace CCIA.Controllers.Client
             }
             var contentType = "APPLICATION/octet-stream";
             return File(_fileService.DownloadCertificateFile(app, link), contentType, link);
+        }
+
+        public async Task<IActionResult> FIRSummary(int certYear)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);          
+            int? certYearToUse;
+            if (certYear == 0)
+            {
+                certYearToUse = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).MaxAsync(x => (int?)x.CertYear);
+            } else
+            {
+                certYearToUse = certYear;
+            }
+            if(certYearToUse == null)
+            {
+                certYearToUse = CertYearFinder.CertYear;
+            }
+            var model = await ApplicationIndexViewModel.FIRSummary(_dbContext, orgId, certYearToUse.Value);
+            ViewBag.IsFIR = true;
+            return View("Index",model);
         }
 
         private bool FieldHistoryExists(FieldHistory submittedFh)

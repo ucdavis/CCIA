@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Helpers;
 using CCIA.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,8 @@ namespace CCIA.Models.IndexViewModels
     {
         public List<Applications> applications { get; set; }
 
+        public bool IsFIR { get; set; }
+
         public static async Task<ApplicationIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
         {
             var viewModel = new ApplicationIndexViewModel
@@ -37,7 +40,29 @@ namespace CCIA.Models.IndexViewModels
                 certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Applications",
-                DropDownText = "Display Apps for Cert Year:"
+                DropDownText = "Display Apps for Cert Year:",
+                IsFIR = false,
+            };
+
+            return viewModel;
+        }
+
+        public static async Task<ApplicationIndexViewModel> FIRSummary(CCIAContext _dbContext, int orgId, int certYear)
+        {
+            var viewModel = new ApplicationIndexViewModel
+            {
+                applications = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.ApplicantId == orgId && a.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName())
+                .Include(a => a.GrowerOrganization)
+                .Include(a => a.County)
+                .Include(a => a.Crop)
+                .Include(a => a.Variety)
+                .Include(a => a.ClassProduced)
+                .ToListAsync(),
+                certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                CertYear = certYear,
+                PageTitle = "Applications FIR Summary",
+                DropDownText = "Display Apps for Cert Year:",
+                IsFIR = true,
             };
 
             return viewModel;
@@ -67,6 +92,8 @@ namespace CCIA.Models.IndexViewModels
 
             return viewModel;
         }
+
+        
     }
 
     public class BlendIndexViewModel : IndexViewModel
