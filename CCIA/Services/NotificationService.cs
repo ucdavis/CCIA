@@ -21,6 +21,8 @@ namespace CCIA.Services
 
         Task SeedLotAccepted(Seeds seed);
 
+        Task SeedLotSubmitted(Seeds seed);
+
         Task BlendRequestApproved(BlendRequests blend);
 
         Task TagApproved(Tags tag);
@@ -167,6 +169,24 @@ namespace CCIA.Services
                 };
                 _dbContext.Notifications.Add(notification);      
             }
+        }
+
+        public async Task SeedLotSubmitted(Seeds seed)
+        {
+            var assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform).ToListAsync();            
+            
+            foreach (var employee in assignments)
+            {                
+                var notification = new Notifications
+                {
+                    Email = employee.Email,
+                    SID = seed.Id,
+                    Message = "Seed lot submitted",
+                    IsAdmin = true,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+
         }
 
         public async Task BlendRequestApproved(BlendRequests blendRequest)
