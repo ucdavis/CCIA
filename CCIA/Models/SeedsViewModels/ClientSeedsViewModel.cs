@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
+using System.Collections.Generic;
 
 namespace CCIA.Models.SeedsViewModels
 {
@@ -9,6 +10,9 @@ namespace CCIA.Models.SeedsViewModels
     {
         public Seeds seed { get; set; }
         public LabsAndStandards LabsAndStandards { get; set; }
+
+        public List<SeedDocuments>  Documents { get; set;}
+        public List<SeedsDocumentTypes> documentTypes { get; set; }
        
 
         public static async Task<ClientSeedsViewModel> Create(CCIAContext _dbContext, int orgId, int sid)
@@ -25,7 +29,10 @@ namespace CCIA.Models.SeedsViewModels
             labsAndStandards.Labs = await _dbContext.SampleLabResults.Where(l => l.SeedsId == sid)
                     .Include(r => r.LabOrganization)
                     .FirstOrDefaultAsync();
-            labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid);
+            if(labsAndStandards.Labs != null)
+            {
+                labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid);
+            }            
 
             return new ClientSeedsViewModel
             {
@@ -44,7 +51,8 @@ namespace CCIA.Models.SeedsViewModels
                     .ThenInclude(a => a.Crop)
                     .FirstOrDefaultAsync(),
                 LabsAndStandards = labsAndStandards,
-                
+                Documents = await _dbContext.SeedDocuments.Where(d => d.SeedsId == sid).ToListAsync(),
+                documentTypes = await _dbContext.SeedsDocumentTypes.ToListAsync(),                
             };
         }
     }
