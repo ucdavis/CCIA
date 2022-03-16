@@ -53,7 +53,7 @@
 
                 $.ajax({
                     method: 'GET',
-                    url: '/Seeds/GetAppsFromCertNumber',
+                    url: '/client/Seeds/GetAppsFromCertNumber',
                     data: {
                         certYear: certYear,
                         rad: rad,
@@ -65,7 +65,7 @@
                     var rad = $('#RAD').val();
                     var certNumber = $('#CertNumber').val();
                     $('#results').html("");
-                    var s = '<form action="/Seeds/CreateInState/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
+                    var s = '<form action="/client/Seeds/CreateInState/" method="post"><input type="hidden" id="__RequestVerificationToken" name="__RequestVerificationToken" value="' + gettoken() + '"><table class="table"><tr><th>&nbsp;</th><th>AppId</th><th>Grower</th><th>Acres</th></tr>';
                         $.each(data,
                             function(i) {
                                 var item = data[i];
