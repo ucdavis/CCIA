@@ -8,22 +8,25 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
-
-
+using CCIA.Services;
 
 namespace CCIA.Controllers.Client
 {
     public class TagController : ClientController
     {
         private readonly CCIAContext _dbContext;
+        private readonly IFullCallService _helper;
+        private readonly IFileIOService _fileService;
+        private readonly INotificationService _notificationService;
 
-        public TagController(CCIAContext dbContext)
+        public TagController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService, INotificationService notificationService)
         {
             _dbContext = dbContext;
+            _helper = helper;
+            _fileService = fileService;
+            _notificationService = notificationService;
         }
-
-        // TODO: Add notice when new series is added
-        // TODO: Add notice when new file is added
+       
 
         
         // GET: Application
@@ -46,79 +49,28 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
-        // GET: Application/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)    
         {            
-            return View();
-        }
+            var tag = _helper.FullTag();
+            var model = await tag
+                .Include(t => t.TagBagging)
+                .Include(t => t.EmployeePrinted)
+                .Include(t => t.Documents)
+                .Where(t => t.Id == id).FirstOrDefaultAsync();                     
 
-        // GET: Application/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Application/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if(model == null)
             {
-                // TODO: Add insert logic here
-
+                ErrorMessage = "Tag ID not found!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            
+            if(model.TaggingOrg != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
             {
-                return View();
-            }
-        }
-
-        // GET: Application/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
+                ErrorMessage = "You are not the company that requested that tag";
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
     }
 }
