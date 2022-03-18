@@ -339,6 +339,9 @@ namespace CCIA.Models
 
         
         public int? OECDId { get; set; }
+        
+        [ForeignKey("OECDId")]
+        public OECD OECDFile { get; set; }
        
         public int? TagClass { get; set; }
 

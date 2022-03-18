@@ -549,6 +549,7 @@ namespace CCIA.Services
                 .Include(t => t.OECDCountry)
                 .Include(t => t.Changes)
                 .ThenInclude(c => c.Employee)
+                .Include(t => t.OECDFile)
                 .AsQueryable();
             return tag;
         }
