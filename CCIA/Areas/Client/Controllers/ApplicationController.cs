@@ -145,8 +145,9 @@ namespace CCIA.Controllers.Client
             {
                 newApp.ClassProducedId = 78;
                 newPS1.PsClass = 77;
-            } else
-            {
+                newPS1.PsCertNum = "LT";
+                model.PlantingStock1.PsCertNum = "LT";
+            } else {
                 newApp.ClassProducedId = submittedApp.ClassProducedId;
             }          
             if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
@@ -154,12 +155,15 @@ namespace CCIA.Controllers.Client
                 newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
             }  
 
-            if(!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+            if(model.PlantingStock2 != null && !string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
             {
                 newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);                 
             } else
             {
-                model.PlantingStock2.PsCertNum = "0";
+                if(model.PlantingStock2 != null)
+                {
+                    model.PlantingStock2.PsCertNum = "0";
+                }
             }    
 
             if(FieldHistoryExists(model.FieldHistory1))
@@ -233,7 +237,7 @@ namespace CCIA.Controllers.Client
                 newPS1.AppId = newApp.Id;
                 _dbContext.Add(newPS1);  
 
-                if(model.PlantingStock2.PsCertNum != "0")
+                if(model.PlantingStock2 != null && model.PlantingStock2.PsCertNum != "0")
                 {
                     newPS2.AppId = newApp.Id;
                     _dbContext.Add(newPS2);
@@ -403,9 +407,11 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
             }
+            var crop = await _dbContext.Crops.Where(c => c.CropId == app.CropId).FirstOrDefaultAsync();
             app.Postmark = DateTime.Now;
             app.Submitable = false;
             app.Status = ApplicationStatus.PendingAcceptance.GetDisplayName();
+            app.Deadline = app.DatePlanted.Value.AddDays(crop.AppDue.Value);
             await _notificationService.ApplicationSubmitted(app);
 
             if (TryValidateModel(app))
