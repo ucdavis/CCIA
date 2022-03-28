@@ -1349,7 +1349,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BlendId).HasColumnName("blend_id");
 
-                entity.Property(e => e.PotatoAppId).HasColumnName("pot_app_id");
+                entity.Property(e => e.AppId).HasColumnName("pot_app_id");
 
                 entity.Property(e => e.OECDId).HasColumnName("oecd_file_num");
 

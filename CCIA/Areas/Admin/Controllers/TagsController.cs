@@ -60,7 +60,7 @@ namespace CCIA.Controllers.Admin
 
             tagToCreate.SeedsID = newTag.SeedsID;
             tagToCreate.BlendId = newTag.BlendId;
-            tagToCreate.PotatoAppId = newTag.PotatoAppId;
+            tagToCreate.AppId = newTag.AppId;
             tagToCreate.TagType = newTag.TagType;
             tagToCreate.BagSize = newTag.BagSize;
             tagToCreate.WeightUnit = newTag.WeightUnit;
@@ -147,7 +147,7 @@ namespace CCIA.Controllers.Admin
             var edit = vm.tag;
             tagToUpdate.SeedsID = edit.SeedsID;
             tagToUpdate.BlendId = edit.BlendId;
-            tagToUpdate.PotatoAppId = edit.PotatoAppId;
+            tagToUpdate.AppId = edit.AppId;
             tagToUpdate.TagType = edit.TagType;
             tagToUpdate.TagClass = edit.TagClass;
             tagToUpdate.Alias = edit.Alias;
