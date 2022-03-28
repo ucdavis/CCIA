@@ -138,9 +138,17 @@ namespace CCIA.Controllers.Client
             newApp.GrowerId = submittedApp.GrowerId;
             newApp.FarmCounty = submittedApp.FarmCounty;
             newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
-            newApp.ClassProducedId = submittedApp.ClassProducedId;
+            
 
-            var newPS1 = TransferPlantingStockFromSubmission(model.PlantingStock1);            
+            var newPS1 = TransferPlantingStockFromSubmission(model.PlantingStock1);  
+            if(submittedApp.AppType == "LT")
+            {
+                newApp.ClassProducedId = 78;
+                newPS1.PsClass = 77;
+            } else
+            {
+                newApp.ClassProducedId = submittedApp.ClassProducedId;
+            }          
             if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
             {
                 newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;

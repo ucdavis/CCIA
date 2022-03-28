@@ -95,20 +95,23 @@
 
     <div id="form-remainder" class="collapse col-sm-12">
         <hr>
-        <div class="form-group required row">
-            <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
-            <div class="col-sm-9">         
-            @foreach (var item in Model.ClassProducedList) 
-            {
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" onclick="ClassChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class you are planting" >
-                    <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
-                </div>
-            } 
-            </div> 
-            <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
-            <hr>
-        </div>
+        @if(Model.AppType.Abbreviation != "LT")
+        {
+            <div class="form-group required row">
+                <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
+                <div class="col-sm-9">         
+                @foreach (var item in Model.ClassProducedList) 
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" onclick="ClassChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class you are planting" >
+                        <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
+                    </div>
+                } 
+                </div> 
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+                <hr>
+            </div>
+        }
         @if(Model.AppType.Abbreviation == "GQ")
         {
             <div id="AccessionSelector" class="form-group required row collapse">
@@ -166,24 +169,30 @@
 
             <!-- First Planting Stock form --> 
            <section class="rounded-section light-grey">
-                <div class="row">
-                    <div class="form-group required col-sm-5">
-                        <label asp-for="PlantingStock1.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
-                        <input type="text" asp-for="PlantingStock1.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel" data-val="true" data-val-required="Please enter Planting Stock Variety" > 
-                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsEnteredVariety" data-valmsg-replace="true"></span>
+               @if(Model.AppType.Abbreviation != "LT")
+               {
+                    <div class="row">
+                        <div class="form-group required col-sm-5">
+                            <label asp-for="PlantingStock1.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                            <input type="text" asp-for="PlantingStock1.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel" data-val="true" data-val-required="Please enter Planting Stock Variety" > 
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsEnteredVariety" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-group required col-sm-7">
+                            <label asp-for="PlantingStock1.PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
+                            <input type="text"  asp-for="PlantingStock1.PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsCertNum" data-valmsg-replace="true"></span>
+                        </div>
                     </div>
-                    <div class="form-group required col-sm-7">
-                        <label asp-for="PlantingStock1.PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
-                        <input type="text"  asp-for="PlantingStock1.PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
-                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsCertNum" data-valmsg-replace="true"></span>
-                    </div>
-                </div>
-                <div class="row">                    
-                    <div class="form-group required col-sm-6">
-                        <label class="col-form-label" asp-for="PlantingStock1.PsClass">Class Planted</label>
-                        <select id="ps1_PsClass" asp-for="PlantingStock1.PsClass" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))" onchange="PSClassChange"></select>                             
-                        <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsClass" data-valmsg-replace="true"></span>
-                    </div>                    
+               }
+                <div class="row"> 
+                    @if(Model.AppType.Abbreviation != "LT")
+                    {                   
+                        <div class="form-group required col-sm-6">
+                            <label class="col-form-label" asp-for="PlantingStock1.PsClass">Class Planted</label>
+                            <select id="ps1_PsClass" asp-for="PlantingStock1.PsClass" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))" onchange="PSClassChange"></select>                             
+                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsClass" data-valmsg-replace="true"></span>
+                        </div>   
+                    }                 
                     <!-- Potato app doesn't have pounds planted field -->
                     @if(Model.AppType.Abbreviation != "PO")
                     {
@@ -561,7 +570,7 @@
     <!-- Alert dialog modals -->
     @{
         var cropAlert = new AlertViewModel("cropAlert", "Error: A crop must be selected.", "Please select a crop before searching for a variety.", "Close", "Ok");
-        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system.Application. A new variety will be used.", "Close", "Ok");
+        var varietyAlert = new AlertViewModel("varAlert", "Warning: No variety found", "No variety with the entered name was found in our system. A new variety will be used.", "Close", "Ok");
         var emptyVarietyAlert = new AlertViewModel("emptyVarAlert", "Variety cannot be blank", "Please enter a variety name before searching for a variety.", "Close", "Ok");
     }
     @await Html.PartialAsync("~/Views/Shared/_AlertModal.cshtml", cropAlert)
