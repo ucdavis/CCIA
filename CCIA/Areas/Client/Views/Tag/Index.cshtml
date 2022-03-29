@@ -36,7 +36,7 @@
             @foreach (var tag in Model.tags)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="tag" asp-route-id="@tag.Id">Details</a></td>
+                <td><a asp-action="Details" asp-controller="tag" asp-route-id="@tag.Id" class="btn btn-info">Details</a></td>
                 <td>@tag.Id</td>
                 <td>@tag.LinkId</td>
                 <td>@tag.IdType</td>

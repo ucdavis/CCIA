@@ -28,7 +28,7 @@
             @foreach (var oecd in Model.oecd)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="oecd" asp-route-id="@oecd.Id">Details</a></td>
+                <td><a asp-action="Details" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Details</a></td>
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
                 <td>@oecd.TagId</td>
