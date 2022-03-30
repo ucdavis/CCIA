@@ -33,7 +33,7 @@
             @foreach (var app in Model.applications)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.Id">Details</a></td>
+                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@app.Id" class="btn btn-info">Details</a></td>
                 @if(Model.IsFIR)
                 {
                     <td><a asp-action="FIR" asp-route-id="@app.Id" class="btn btn-info">FIR</a></td>
