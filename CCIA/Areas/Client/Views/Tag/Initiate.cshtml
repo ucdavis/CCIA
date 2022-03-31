@@ -1,0 +1,31 @@
+
+<div class="card" >
+  <div class="card-body">
+    <h2 class="card-title">Tag Request Guidelines:</h2>
+    <ul>
+        <li>Tag Request will be printed in the order they were received during the hours of 7:30 am – 3:00 pm, Monday –Friday, unless otherwise notified.</li>
+        <li>Tag Request turnaround time is between 24 to 48 business hours. However, the CCIA strives to complete all tag requests on the same day received whenever possible.</li>
+        <li>Tag requests that contain inaccurate or incorrect information will cause delays!</li>
+        <li>Overnight orders cannot be guaranteed unless they have been submitted by Noon the previous day.</li>
+        <li>Conditioners who wish to pick-up their tag orders in person will be notified by CCIA Staff when the tags are ready and available. Please note that the 24-48 hour turnaround time applies for all pick-up orders as well.</li>
+    </ul>
+  </div>
+</div>
+
+<form class="form-inline" asp-action="Create">
+    <label for="Id" class="col-sm-1 col-form-label">ID</label>
+    <input id="Id" name="Id" class="form-control mb-2 mr-sm-2" type="text">
+
+    <label for="TagTarget" class="col-sm-1 col-form-label">Tagging</label>
+    <select id="TagTarget" name="TagTarget" class="form-control">
+        <option value="SID">Seed ID (SID)</option>
+        <option value="BID">Blend ID (BID)</option>
+        <option value="Potato">Potato (App ID)</option>
+        <option value="LT">LacTracker (App ID)</option>
+    </select>
+    <div class="col-sm-1"></div>
+    <button type="submit" class="btn btn-primary mb-2">Retrieve Info</button>
+  </div>
+
+  
+</form>

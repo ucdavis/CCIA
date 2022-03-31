@@ -68,6 +68,19 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        public ActionResult Initiate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(int id, string TagTarget)
+        {
+            var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget);
+            return View(model);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> UpdateOECD(TagCreateEditViewModel vm)
         {

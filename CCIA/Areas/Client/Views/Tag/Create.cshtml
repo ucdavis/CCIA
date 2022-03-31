@@ -1,0 +1,138 @@
+@model CCIA.Models.ClientTagRequestViewModel
+
+
+<div class="card" >
+  <div class="card-body">
+    <h2 class="card-title">Tag Request Guidelines:</h2>
+    <ul>
+        <li>Tag Request will be printed in the order they were received during the hours of 7:30 am – 3:00 pm, Monday –Friday, unless otherwise notified.</li>
+        <li>Tag Request turnaround time is between 24 to 48 business hours. However, the CCIA strives to complete all tag requests on the same day received whenever possible.</li>
+        <li>Tag requests that contain inaccurate or incorrect information will cause delays!</li>
+        <li>Overnight orders cannot be guaranteed unless they have been submitted by Noon the previous day.</li>
+        <li>Conditioners who wish to pick-up their tag orders in person will be notified by CCIA Staff when the tags are ready and available. Please note that the 24-48 hour turnaround time applies for all pick-up orders as well.</li>
+    </ul>
+  </div>
+</div>
+
+<div id="errors" class="text-danger">
+    @Html.ValidationSummary()
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6"> @* FIRST Column *@
+        <div class="form-group row">
+            <label asp-for="request.Id" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.Id) @Model.request.Target
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.Crop" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.Crop)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.CertNumber" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.CertNumber)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.LotWeight" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.LotWeight)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.ClassProduced" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.ClassProduced)
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6"> @* Second Column *@
+        <div class="form-group row">
+            <label asp-for="request.Program" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.Program)
+            </div>
+        </div>
+            <div class="form-group row">
+            <label asp-for="request.Variety" class="col-sm-4 col-form-label">@Model.request.VarietyLabel</label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.Variety)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.LotNumber" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.LotNumber)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="request.WeightBalance" class="col-sm-4 col-form-label"></label>
+            <div class="col-sm-8 form-control-plaintext">
+                @Html.DisplayFor(x => x.request.WeightBalance) (@(Model.request.LotWeight - Model.request.WeightBalance) remaining)*
+            </div>
+        </div>
+    </div>     
+</div>
+<form asp-action="Create">
+@* Add hiddens here*@
+<div>
+    <div class="form-group row">
+        <label asp-for="request.Alias" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.Alias" class="form-control col-sm-2">
+    </div>    
+    <div class="form-group row">
+        <label asp-for="request.NumberOfTags" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.NumberOfTags" class="form-control col-sm-2">
+    </div> 
+    <div class="form-group row">
+        <label asp-for="request.BagWeight" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.BagWeight" class="form-control col-sm-2">
+        <div class="col-sm-1"></div>
+        <select asp-for="request.BagWeightUnits">
+            <option value="L">Pounds</option> 
+            <option value="K">Kilograms</option>
+        </select>
+    </div> 
+     <div class="form-group required row">
+        <label asp-for="request.CoatingPercent" class="col-form-label col-sm-2"></label> 
+        <div class="col-sm-9">      
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value="0" data-val="true" data-val-required="Please coating percentage" >
+                <label class="form-check-label" for="0">No coating</label>                    
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value=".34" data-val="true" data-val-required="Please coating percentage" >
+                <label class="form-check-label" for=".34">34%</label>                    
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value=".5" data-val="true" data-val-required="Please coating percentage" >
+                <label class="form-check-label" for=".5">50%</label>                    
+            </div>         
+        </div> 
+        <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+        <hr>
+    </div>
+</div>
+    
+    
+   
+    
+    
+    
+    
+    
+</form>
+<hr>
+<div>* Only includes tag requests made using this form/system. Actual balances will be confirmed before issuing tags.</div>
+
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+} 
