@@ -98,17 +98,17 @@
         @if(Model.AppType.Abbreviation != "LT")
         {
             <div class="form-group required row">
-                <label asp-for=Application.ClassProducedId class="col-form-label col-sm-3">Class to be Produced</label> 
+                <label asp-for="Application.ClassProducedId" class="col-form-label col-sm-3">Class to be Produced</label> 
                 <div class="col-sm-9">         
-                @foreach (var item in Model.ClassProducedList) 
-                {
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" onclick="ClassChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class you are planting" >
-                        <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
-                    </div>
-                } 
-                </div> 
-                <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+                    @foreach (var item in Model.ClassProducedList) 
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input lgRadio" type="radio" asp-for="Application.ClassProducedId" onclick="ClassChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class you are planting" >
+                            <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
+                        </div>
+                    } 
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Application.ClassProducedId" data-valmsg-replace="true"></span>
+                </div>                 
                 <hr>
             </div>
         }
