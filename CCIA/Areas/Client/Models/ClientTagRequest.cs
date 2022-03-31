@@ -12,12 +12,15 @@ namespace CCIA.Models
      
     public class ClientTagRequestViewModel
     {
-        public TagsRequest request { get; set; }       
+        public TagsRequest request { get; set; }  
+        public List<AbbrevClassSeeds> possibleClasses { get; set; }  
+        public List<AbbrevTagType> TagTypes { get; set; }   
         
                
         public static async Task<ClientTagRequestViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id, string tagTarget)
         {                   
             var model = new ClientTagRequestViewModel();
+            
             var request = new TagsRequest();
             request.Id = id;
             request.Target = tagTarget;
@@ -27,6 +30,8 @@ namespace CCIA.Models
                 var previousTags = await _dbContext.Tags.Where(t => t.SeedsID == id).ToListAsync();
                 var previousBlends = await _dbContext.LotBlends.Where(b => b.Sid == id).SumAsync(b => b.Weight);
                 var previousBSC = await _dbContext.BulkSalesCertificates.Where(b => b.SeedsID == id).SumAsync(b => b.Pounds);
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Program == seed.AppTypeTrans.AppTypeId && c.Id >= seed.Class).OrderBy(c => c.SortOrder).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();
                 request.Program = seed.CertProgram;                
                 request.Crop = seed.GetCropName();
                 request.Variety = seed.GetVarietyName();
@@ -69,8 +74,10 @@ namespace CCIA.Models
         public string ClassProduced { get; set; }
         public string Alias { get; set; }
         [Display(Name ="Number of Tags")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
         public int NumberOfTags { get; set; }
         [Display(Name ="Bag Weight")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
         public int BagWeight { get; set; }
         public string BagWeightUnits { get; set; }
         [Display(Name ="Coating (%)")]
@@ -93,6 +100,7 @@ namespace CCIA.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         [Display(Name ="Date Needed")]
+        [Required]
         public DateTime? DateNeeded { get; set; }
 
         [Display(Name ="How Deliver")]
