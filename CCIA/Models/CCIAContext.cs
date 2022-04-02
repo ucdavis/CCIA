@@ -1399,7 +1399,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Pretagging).HasColumnName("pretagging");
 
-                entity.Property(e => e.SeriesNumbered).HasColumnName("series_numbered");
+                //entity.Property(e => e.SeriesNumbered).HasColumnName("series_numbered");
 
                 entity.Property(e => e.AnalysisRequested).HasColumnName("analysis_request");
 

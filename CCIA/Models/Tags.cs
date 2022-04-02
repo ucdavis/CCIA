@@ -30,6 +30,16 @@ namespace CCIA.Models
     } 
     public partial class Tags
     {
+
+        public Tags()
+        {
+            Bulk = false;
+            Pretagging = false;
+            //SeriesNumbered = false;
+            AnalysisRequested = false;
+            OECD = false;
+            SeriesRequest = false;
+        }
         [Display(Name = "TagID")]
         public int Id { get; set; }
         public int? SeedsID { get; set; }
@@ -445,7 +455,7 @@ namespace CCIA.Models
 
         public bool Pretagging { get; set; }
 
-        public bool SeriesNumbered { get; set; }
+        // public bool SeriesNumbered { get; set; }
 
         [Display(Name ="Analysis Requested?")]
         public bool AnalysisRequested { get; set; }
