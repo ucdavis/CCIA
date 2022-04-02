@@ -76,7 +76,8 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> Create(int id, string TagTarget)
         {
-            var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget, orgId);
             return View(model);
         }
 

@@ -15,11 +15,26 @@ namespace CCIA.Models
         public TagsRequest request { get; set; }  
         public List<AbbrevClassSeeds> possibleClasses { get; set; }  
         public List<AbbrevTagType> TagTypes { get; set; }   
+        public List<Countries> Countries { get; set; }
+        public List<AbbrevOECDClass> OECDTagTypes { get; set; }
+        public bool AllowOECD { get; set; }
+        public bool AllowSeries { get; set; }
+        public bool AllowPreTag { get; set; }
+        public bool AllowAnalysis { get; set; }
+
+        public ClientTagRequestViewModel()
+        {
+            AllowSeries = false;
+            AllowPreTag = false;
+            AllowAnalysis = false;
+            AllowOECD = false;
+        }
         
                
-        public static async Task<ClientTagRequestViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id, string tagTarget)
+        public static async Task<ClientTagRequestViewModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id, string tagTarget, int orgId)
         {                   
             var model = new ClientTagRequestViewModel();
+            
             
             var request = new TagsRequest();
             request.Id = id;
@@ -41,8 +56,28 @@ namespace CCIA.Models
                 request.WeightBalance = decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value) + previousBlends + previousBSC);
                 request.ClassProduced = seed.ClassProduced.CertClass;
                 request.Program = seed.AppTypeTrans.AppTypeTrans;
+                request.TagClass = seed.Class.Value;
+                request.AllowOECD = true;
+                var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                countries.Insert(0, new Countries { Id=0, Name="Select country..."});
+                model.Countries = countries;
+                model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
             }
             model.request = request;
+            
+            var status = await _dbContext.CondStatus.Where(c => c.OrgId == orgId && c.Year == Helpers.CertYearFinder.ConditionerYear).FirstOrDefaultAsync();
+            if(status.AllowPretag)
+            {
+                model.AllowPreTag = true;
+            }
+            if(status.PrintSeries)
+            { 
+                model.AllowSeries = true;
+            }
+            if(orgId == 37 || orgId ==168)
+            {
+                model.AllowAnalysis = true;
+            }
             return model;
         }
     } 
@@ -52,6 +87,14 @@ namespace CCIA.Models
         public TagsRequest() 
         {
             BagWeightUnits = "L";
+            HowDeliver = "UPS Ground";
+            TagType = 1;
+            DateNeeded = DateTime.Now.AddDays(2).Date;
+            OECD = false;
+            OECDTagType = 5;
+            Pretagging = false;
+            SeriesRequest = false;
+            AnalysisRequested = false;
         }
 
 
@@ -84,13 +127,17 @@ namespace CCIA.Models
         public decimal CoatingPercent { get; set; }
         public bool OECD { get; set; }
         public bool AllowOECD { get; set; }
+        [Display(Name ="Planting Stock Lot Number")]
         public string PlantingStockLotNumber { get; set; }
+        [Display(Name ="OECD Tag")]
         public int OECDTagType { get; set; }
         
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         [Display(Name ="Date Sealed")]
+        [Required]
         public DateTime? DateSealed { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a destination country.")]
         public int OECDCountryId { get; set; }
 
         [Display(Name ="Class Produced of Tag")]
@@ -107,6 +154,13 @@ namespace CCIA.Models
         public string HowDeliver { get; set; }
 
         public string Comments { get; set; }
+        public bool Pretagging { get; set; }
+
+        [Display(Name = "Series Request")] 
+        public bool SeriesRequest { get; set; }
+
+        [Display(Name ="Analysis Requested?")]
+        public bool AnalysisRequested { get; set; }
 
 
     }   

@@ -84,36 +84,36 @@
     </div>    
     <div class="form-group row required">
         <label asp-for="request.NumberOfTags" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.NumberOfTags" class="form-control col-sm-2">
+        <input asp-for="request.NumberOfTags" class="form-control col-sm-2" onchange="WeightChange()">
         <span class="field-validation-valid text-danger" asp-validation-for="request.NumberOfTags" data-valmsg-replace="true"></span>
     </div> 
     <div class="form-group row required">
         <label asp-for="request.BagWeight" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.BagWeight" class="form-control col-sm-2">
+        <input asp-for="request.BagWeight" class="form-control col-sm-2" onchange="WeightChange()">
         <span class="field-validation-valid text-danger" asp-validation-for="request.BagWeight" data-valmsg-replace="true"></span>
         <div class="col-sm-1"></div>
-        <select asp-for="request.BagWeightUnits">
+        <select asp-for="request.BagWeightUnits" onchange="WeightChange()">
             <option value="L">Pounds</option> 
             <option value="K">Kilograms</option>
         </select>
     </div> 
     <div class="form-group row">
         <label class="col-sm-3 col-form-label" for="weightOfRequest">Weight of this request</label>
-        <div id="weightOfRequest" class="form-control-plaintext col-sm-2">test</div>
+        <div id="weightOfRequest" class="form-control-plaintext col-sm-2"></div>
     </div>
-     <div class="form-group required row">
+    <div class="form-group required row">
         <label asp-for="request.CoatingPercent" class="col-form-label col-sm-2"></label> 
         <div class="col-sm-9">      
             <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value="0" data-val="true" data-val-required="Please coating percentage" >
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0" data-val="true" data-val-required="Please coating percentage" >
                 <label class="form-check-label" for="0">No coating</label>                    
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value=".34" data-val="true" data-val-required="Please coating percentage" >
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value=".34" data-val="true" data-val-required="Please coating percentage" >
                 <label class="form-check-label" for=".34">34%</label>                    
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="CoatingChange()" value=".5" data-val="true" data-val-required="Please coating percentage" >
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value=".5" data-val="true" data-val-required="Please coating percentage" >
                 <label class="form-check-label" for=".5">50%</label>                    
             </div>  
             <span class="field-validation-valid text-danger" asp-validation-for="request.CoatingPercent" data-valmsg-replace="true"></span>       
@@ -125,46 +125,153 @@
             @foreach (var item in Model.possibleClasses) 
             {
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassChange()" value="@item.Id" data-val="true" data-val-required="Please select what class for this tag" >
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.Id" data-val="true" data-val-required="Please select what class for this tag" >
                     <label class="form-check-label" for="@item.Id">@item.CertClass</label>                    
                 </div>
             } 
             <span class="field-validation-valid text-danger" asp-validation-for="request.TagClass" data-valmsg-replace="true"></span>
         </div>         
     </div>
-     <div class="form-group required row">
+    <div class="form-group required row">
         <label asp-for="request.TagType" class="col-form-label col-sm-3"></label> 
         <div class="col-sm-9">         
             @foreach (var item in Model.TagTypes) 
             {
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagType" onclick="ClassChange()" value="@item.Id" data-val="true" data-val-required="Please select tag type" >
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagType" value="@item.Id" data-val="true" data-val-required="Please select tag type" onclick="ClassOrTagChange()" >
                     <label class="form-check-label" for="@item.Id">@item.TagTypeTrans</label>                    
                 </div>
             } 
             <span class="field-validation-valid text-danger" asp-validation-for="request.TagType" data-valmsg-replace="true"></span>
         </div>         
     </div>
-    <div>
-        OECD Stuff
-    </div>
-    <div class="form-group row">
+    @if(Model.AllowPreTag)
+    {
+        <div class="form-group row">
+            <label asp-for="request.Pretagging" class="col-form-label col-sm-3"></label>
+            <div class="col-sm-8">      
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.Pretagging" value="true" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="true">Yes</label>                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.Pretagging" value="false" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="false">No</label>                    
+                </div>
+            </div> 
+        </div>
+    }
+    @if(Model.AllowSeries)
+    {
+        <div class="form-group row">
+            <label asp-for="request.SeriesRequest" class="col-form-label col-sm-3"></label>
+            <div class="col-sm-8">      
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.SeriesRequest" value="true" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="true">Yes</label>                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.SeriesRequest" value="false" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="false">No</label>                    
+                </div>
+            </div> 
+        </div>
+    }
+    @if(Model.AllowAnalysis)
+    {
+        <div class="form-group row">
+            <label asp-for="request.AnalysisRequested" class="col-form-label col-sm-3"></label>
+            <div class="col-sm-8">      
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.AnalysisRequested" value="true" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="true">Yes</label>                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.AnalysisRequested" value="false" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="false">No</label>                    
+                </div>
+            </div> 
+        </div>
+    }
+    @if(Model.request.AllowOECD)
+    {
+        <div class="form-group required row">
+            <label asp-for="request.OECD" class="col-form-label col-sm-3">Is this an OECD Request?</label> 
+            <div class="col-sm-8">      
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.OECD" onclick="OECDChange('true')" value="true" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="true">Yes</label>                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.OECD" onclick="OECDChange('false')" value="false" data-val="true" data-val-required="Please coating percentage" >
+                    <label class="form-check-label" for="false">No</label>                    
+                </div>
+            </div>         
+        </div>   
+        <div class="collapse rounded-section light-grey" id="OECD">
+            <div class="form-group row">
+                <label asp-for="request.PlantingStockLotNumber" class="col-sm-4 col-form-label"></label>
+                <input asp-for="request.PlantingStockLotNumber" class="form-control col-sm-2">                    
+                <span class="field-validation-valid text-danger" asp-validation-for="request.PlantingStockLotNumber" data-valmsg-replace="true"></span>
+                <span>(Type "Blend" if this is a blend)</span>
+            </div>    
+            <div class="form-group required row">
+                <label asp-for="request.OECDTagType" class="col-form-label col-sm-3"></label> 
+                <div class="col-sm-9">         
+                    @foreach (var item in Model.OECDTagTypes) 
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input lgRadio" type="radio" asp-for="request.OECDTagType" value="@item.Id" data-val="true" data-val-required="Please select tag type"  >
+                            <label class="form-check-label" for="@item.Id">@item.Class</label>                    
+                        </div>
+                    } 
+                    <span class="field-validation-valid text-danger" asp-validation-for="request.OECDTagType" data-valmsg-replace="true"></span>
+                </div>         
+            </div>
+            <div class="form-group row required">
+                <label asp-for="request.DateSealed" class="col-sm-2 col-form-label"></label>
+                <input asp-for="request.DateSealed" class="form-control col-sm-2 datepicker" type="text">        
+                <span class="field-validation-valid text-danger" asp-validation-for="request.DateSealed" data-valmsg-replace="true"></span>
+            </div>         
+            <div class="form-group row required">
+                <label asp-for="request.OECDCountryId" class="col-sm-2 col-form-label"></label>
+                <select asp-for="request.OECDCountryId" class="form-control col-sm-2" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
+                <span class="field-validation-valid text-danger" asp-validation-for="request.OECDCountryId" data-valmsg-replace="true"></span>
+            </div>
+        </div> 
+    }   
+    <div class="form-group row required">
         <label asp-for="request.DateNeeded" class="col-sm-2 col-form-label"></label>
         <input asp-for="request.DateNeeded" class="form-control col-sm-2 datepicker" type="text">        
         <span class="field-validation-valid text-danger" asp-validation-for="request.DateNeeded" data-valmsg-replace="true"></span>
+        <span>(please allow 24-48 hours)</span>
     </div> 
+    <div class="form-group row required">
+        <label asp-for="request.HowDeliver" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Ground" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="UPS Ground">UPS Ground</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Overnight" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="UPS Overnight">UPS Overnight</label>
+            </div> 
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Pick-up at Parsons Building" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="Pick-up at Parsons Building">Pick-up at Parsons Building</label>
+            </div> 
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Other" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="Other">Other</label>
+            </div> 
+            <span class="field-validation-valid text-danger" asp-validation-for="request.HowDeliver" data-valmsg-replace="true"></span>
+        </div>
+    </div>
      <div class="form-group row">
-        <input type="submit" value="Create Tag Request">
+        <input type="submit" value="Create Tag Request" class="btn btn-primary">
     </div> 
 </div>
-    
-    
-   
-    
-    
-    
-    
-    
 </form>
 <hr>
 <div>* Only includes tag requests made using this form/system. Actual balances will be confirmed before issuing tags.</div>
@@ -175,7 +282,64 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
      <script type="text/javascript">
         $(document).ready(function () {
-            $('.datepicker').datepicker();
+            $('.datepicker').datepicker();            
         });
+
+        function OECDChange(collapse){            
+            if(collapse == "true")
+            {
+                $("#OECD").collapse('show');
+                var selectedTag = $("[id*=request_TagType]:checked").val();
+                if (selectedTag === "5") {
+                    alert("All OECD request must be Sew-on tags!");
+                }
+            } else {
+                $("#OECD").collapse('hide');
+            }           
+        };
+
+        function WeightChange(){
+            var count = $("#request_NumberOfTags").val();            
+            var weight = $("#request_BagWeight").val();            
+            var priorBalance = @Model.request.LotWeight - @Model.request.WeightBalance;            
+            var coating = $("[id*=request_CoatingPercent]:checked").val();           
+            var balance = "";
+            if (!isNaN(count) && count.length != 0 && count != 0 && !isNaN(weight) && weight.length != 0 && weight != 0) {
+                balance = (($("[id*=request_BagWeightUnits").val() == "L") ? count * weight * (1- coating) : count * weight * 2.20462262 * (1- coating));
+                $("[id*=weightOfRequest").text(Math.round(balance));
+                if (balance > priorBalance) {
+                    $("[id*=weightOfRequest").addClass("text-danger");
+                } else {
+                    $("[id*=weightOfRequest").removeClass("text-danger");
+                }
+            } 
+        };
+
+        function ClassOrTagChange(){
+            var selectedClass = $("[id*=request_TagClass]:checked").val();
+            var selectedTag = $("[id*=request_TagType]:checked").val();
+           
+            if (selectedClass === "2" && selectedTag==="5") {
+                alert("Presure Sensitive Foundation tags are not allowed");
+            } 
+
+            var isFirstClassCheck = $("input:radio[id*=request_TagClass]:first").is(':checked');
+            if (!isFirstClassCheck) {
+                alert('Please double check that you wish to downgrade this lot when tagging.');
+            }
+
+        };
+
+        function DeliveryChange() {
+            var method = $("[id*=request_HowDeliver]:checked").val();
+            if (method == 'UPS Overnight') {
+                alert('Please provide your UPS account number in comment box. Failure to do so will delay your tags.');
+            }
+            if (method == 'Other') {
+                alert('Enter information in comment box. Failure to do so will delay your tags.');
+            }            
+        };
+
+
     </script>  
 } 
