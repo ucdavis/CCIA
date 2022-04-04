@@ -14,6 +14,7 @@ namespace CCIA.Models
     {
         public TagsRequest request { get; set; }  
         public List<AbbrevClassSeeds> possibleClasses { get; set; }  
+        public List<AbbrevClassProduced> potatoClasses { get; set; }
         public List<AbbrevTagType> TagTypes { get; set; }   
         public List<Countries> Countries { get; set; }
         public List<AbbrevOECDClass> OECDTagTypes { get; set; }
@@ -46,14 +47,13 @@ namespace CCIA.Models
                 var previousBlends = await _dbContext.LotBlends.Where(b => b.Sid == id).SumAsync(b => b.Weight);
                 var previousBSC = await _dbContext.BulkSalesCertificates.Where(b => b.SeedsID == id).SumAsync(b => b.Pounds);
                 model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Program == seed.AppTypeTrans.AppTypeId && c.Id >= seed.Class).OrderBy(c => c.SortOrder).ToListAsync();
-                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();
-                request.Program = seed.CertProgram;                
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();                                
                 request.Crop = seed.GetCropName();
                 request.Variety = seed.GetVarietyName();
                 request.CertNumber = seed.CertNumber;
                 request.LotNumber = seed.LotNumber;
                 request.LotWeight = decimal.ToInt32(seed.PoundsLot);
-                request.WeightBalance = decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value) + previousBlends + previousBSC);
+                request.WeightBalance = decimal.ToInt32((previousTags.Any() ? previousTags.Sum(t => t.LotWeightRequested.Value) : 0) + previousBlends + previousBSC);
                 request.ClassProduced = seed.ClassProduced.CertClass;
                 request.Program = seed.AppTypeTrans.AppTypeTrans;
                 request.TagClass = seed.Class.Value;
@@ -63,8 +63,58 @@ namespace CCIA.Models
                 model.Countries = countries;
                 model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
             }
-            model.request = request;
-            
+            if(tagTarget == "BID")
+            {
+                var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
+                var previousTags = await _dbContext.Tags.Where(t => t.BlendId == id).ToListAsync();
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 4).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = "Blends";
+                request.Crop = blend.GetCrop();
+                request.Variety = blend.GetVarietyName();
+                request.CertNumber = blend.CertNumber;
+                request.LotNumber = "";
+                request.LotWeight = blend.LbsLot.HasValue ? decimal.ToInt32(blend.LbsLot.Value) : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.ClassProduced = "Certified";
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            if(tagTarget == "LT")
+            {
+                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 79).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = app.AppTypeTrans.AppTypeTrans;
+                request.Crop = app.CropName;
+                request.Variety = app.VarietyName;
+                request.CertNumber = app.FullCert;
+                request.LotNumber = "";
+                request.LotWeight = app.FieldInspectionReport != null ? app.FieldInspectionReport.PotatoPoundsHarvested : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.ClassProduced = "Certified";
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            if(tagTarget == "PO")
+            {
+                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
+                model.potatoClasses = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId).OrderBy(c => c.SortOrder).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.PotatoTag).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = app.AppTypeTrans.AppTypeTrans;
+                request.Crop = app.CropName;
+                request.Variety = app.VarietyName;
+                request.CertNumber = app.FullCert;
+                request.LotNumber = "";
+                request.LotWeight = app.FieldInspectionReport != null ? app.FieldInspectionReport.PotatoPoundsHarvested : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.ClassProduced = "Certified";
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            model.request = request;            
             var status = await _dbContext.CondStatus.Where(c => c.OrgId == orgId && c.Year == Helpers.CertYearFinder.ConditionerYear).FirstOrDefaultAsync();
             if(status.AllowPretag)
             {

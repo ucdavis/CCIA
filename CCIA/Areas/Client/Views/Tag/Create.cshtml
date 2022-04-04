@@ -121,14 +121,27 @@
     </div>
     <div class="form-group required row">
         <label asp-for="request.TagClass" class="col-form-label col-sm-3"></label> 
-        <div class="col-sm-9">         
-            @foreach (var item in Model.possibleClasses) 
+        <div class="col-sm-9">             
+            @if(Model.request.Program != "Potato")
+            {      
+                @foreach (var item in Model.possibleClasses) 
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.Id" data-val="true" data-val-required="Please select what class for this tag" >
+                        <label class="form-check-label" for="@item.Id">@item.CertClass</label>                    
+                    </div>
+                }
+            } else 
             {
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.Id" data-val="true" data-val-required="Please select what class for this tag" >
-                    <label class="form-check-label" for="@item.Id">@item.CertClass</label>                    
-                </div>
-            } 
+                 @foreach (var item in Model.potatoClasses) 
+                {
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class for this tag" >
+                        <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
+                    </div>
+                }
+
+            }
             <span class="field-validation-valid text-danger" asp-validation-for="request.TagClass" data-valmsg-replace="true"></span>
         </div>         
     </div>
