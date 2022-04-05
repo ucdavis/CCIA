@@ -68,16 +68,45 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
-        public ActionResult Initiate()
+        private async Task<bool> checkTagPermission(int orgId)
         {
+            return await _dbContext.CondStatus.Where(s => s.OrgId == orgId && s.Year == CertYearFinder.ConditionerYear && s.Status != "O").AnyAsync();
+        }
+
+        public async Task<IActionResult> Initiate()
+        {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(int id, string TagTarget)
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget, orgId);
+            if(model.request == null)
+            {
+                ErrorMessage = "Tag request could not be started. Please double check ID & Tag type.";
+                return RedirectToAction(nameof(Index));
+            }
+        
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitTag(int id, ClientTagRequestViewModel model)
+        {
+            var newTag = new Tags();
+            await _dbContext.SaveChangesAsync();
             return View(model);
         }
 

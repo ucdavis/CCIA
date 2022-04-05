@@ -43,6 +43,10 @@ namespace CCIA.Models
             if(tagTarget == "SID")
             {
                 var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
+                if(seed == null)
+                {
+                    return model;
+                }
                 var previousTags = await _dbContext.Tags.Where(t => t.SeedsID == id).ToListAsync();
                 var previousBlends = await _dbContext.LotBlends.Where(b => b.Sid == id).SumAsync(b => b.Weight);
                 var previousBSC = await _dbContext.BulkSalesCertificates.Where(b => b.SeedsID == id).SumAsync(b => b.Pounds);
@@ -66,6 +70,10 @@ namespace CCIA.Models
             if(tagTarget == "BID")
             {
                 var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
+                if(blend == null)
+                {
+                    return model;
+                }
                 var previousTags = await _dbContext.Tags.Where(t => t.BlendId == id).ToListAsync();
                 model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 4).ToListAsync();
                 model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
@@ -83,6 +91,10 @@ namespace CCIA.Models
             if(tagTarget == "LT")
             {
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    return model;
+                }
                 var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
                 model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 79).ToListAsync();
                 model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
@@ -100,6 +112,10 @@ namespace CCIA.Models
             if(tagTarget == "PO")
             {
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    return model;
+                }
                 var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
                 model.potatoClasses = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId).OrderBy(c => c.SortOrder).ToListAsync();
                 model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.PotatoTag).OrderBy(t => t.SortOrder).ToListAsync(); 
