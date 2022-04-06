@@ -33,6 +33,8 @@ namespace CCIA.Services
 
         Task TagFiled(Tags tag);
 
+        Task TagSubmitted(Tags tag);
+
         Task OrgCreated(Organizations org);
 
         Task OrgUpdated(Organizations org);
@@ -249,6 +251,22 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag printed and shipped"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+         public async Task TagSubmitted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag submitted by conditioner"
                 };
                 _dbContext.Notifications.Add(notification);      
             }

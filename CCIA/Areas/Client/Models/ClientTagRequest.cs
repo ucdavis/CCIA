@@ -146,13 +146,143 @@ namespace CCIA.Models
             }
             return model;
         }
+
+        public static async Task<ClientTagRequestViewModel> Edit(CCIAContext _dbContext, IFullCallService _helper , int id, string tagTarget, int orgId, TagsRequest submittedTag)
+        {                   
+            var model = new ClientTagRequestViewModel();
+            
+            
+            var request = new TagsRequest();
+            request.Id = id;
+            request.Target = tagTarget;
+            if(tagTarget == "SID")
+            {
+                var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
+                if(seed == null)
+                {
+                    return model;
+                }
+                var previousTags = await _dbContext.Tags.Where(t => t.SeedsID == id).ToListAsync();
+                var previousBlends = await _dbContext.LotBlends.Where(b => b.Sid == id).SumAsync(b => b.Weight);
+                var previousBSC = await _dbContext.BulkSalesCertificates.Where(b => b.SeedsID == id).SumAsync(b => b.Pounds);
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Program == seed.AppTypeTrans.AppTypeId && c.Id >= seed.Class).OrderBy(c => c.SortOrder).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();                                
+                request.Crop = seed.GetCropName();
+                request.Variety = seed.GetVarietyName();
+                request.CertNumber = seed.CertNumber;
+                request.LotNumber = seed.LotNumber;
+                request.LotWeight = decimal.ToInt32(seed.PoundsLot);
+                request.WeightBalance = decimal.ToInt32((previousTags.Any() ? previousTags.Sum(t => t.LotWeightRequested.Value) : 0) + previousBlends + previousBSC);
+                request.Program = seed.AppTypeTrans.AppTypeTrans;
+                request.TagClass = seed.Class.Value;
+                request.AllowOECD = true;
+                var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                countries.Insert(0, new Countries { Id=0, Name="Select country..."});
+                model.Countries = countries;
+                model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
+            }
+            if(tagTarget == "BID")
+            {
+                var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
+                if(blend == null)
+                {
+                    return model;
+                }
+                var previousTags = await _dbContext.Tags.Where(t => t.BlendId == id).ToListAsync();
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 4).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = "Blends";
+                request.Crop = blend.GetCrop();
+                request.Variety = blend.GetVarietyName();
+                request.CertNumber = blend.CertNumber;
+                request.LotNumber = "";
+                request.LotWeight = blend.LbsLot.HasValue ? decimal.ToInt32(blend.LbsLot.Value) : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            if(tagTarget == "LT")
+            {
+                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    return model;
+                }
+                var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
+                model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 79).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = app.AppTypeTrans.AppTypeTrans;
+                request.Crop = app.CropName;
+                request.Variety = app.VarietyName;
+                request.CertNumber = app.FullCert;
+                request.LotNumber = "";
+                request.LotWeight = app.FieldInspectionReport != null ? app.FieldInspectionReport.PotatoPoundsHarvested : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            if(tagTarget == "PO")
+            {
+                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    return model;
+                }
+                var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
+                model.potatoClasses = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId).OrderBy(c => c.SortOrder).ToListAsync();
+                model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.PotatoTag).OrderBy(t => t.SortOrder).ToListAsync(); 
+                request.Program = app.AppTypeTrans.AppTypeTrans;
+                request.Crop = app.CropName;
+                request.Variety = app.VarietyName;
+                request.CertNumber = app.FullCert;
+                request.LotNumber = "";
+                request.LotWeight = app.FieldInspectionReport != null ? app.FieldInspectionReport.PotatoPoundsHarvested : 0;
+                request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
+                request.TagClass = 4;
+                request.AllowOECD = false;
+            }
+            request.Alias = submittedTag.Alias;
+            request.CountRequested = submittedTag.CountRequested;
+            request.BagSize = submittedTag.BagSize;
+            request.WeightUnit = submittedTag.WeightUnit;
+            request.CoatingPercent = submittedTag.CoatingPercent;
+            request.TagClass = submittedTag.TagClass;
+            request.TagType = submittedTag.TagType;
+            request.Pretagging = submittedTag.Pretagging;
+            request.SeriesRequest = submittedTag.SeriesRequest;
+            request.AnalysisRequested = submittedTag.AnalysisRequested;
+            request.DateNeeded = submittedTag.DateNeeded;
+            request.HowDeliver = submittedTag.HowDeliver;
+            request.Comments = submittedTag.Comments;
+            request.OECD = submittedTag.OECD;
+            request.PlantingStockLotNumber = submittedTag.PlantingStockLotNumber;
+            request.OECDTagType = submittedTag.OECDTagType;
+            request.DateSealed = submittedTag.DateSealed;
+            request.OECDCountryId = submittedTag.OECDCountryId;
+
+            model.request = request;                        
+            var status = await _dbContext.CondStatus.Where(c => c.OrgId == orgId && c.Year == Helpers.CertYearFinder.ConditionerYear).FirstOrDefaultAsync();
+            if(status.AllowPretag)
+            {
+                model.AllowPreTag = true;
+            }
+            if(status.PrintSeries)
+            { 
+                model.AllowSeries = true;
+            }
+            if(orgId == 37 || orgId ==168)
+            {
+                model.AllowAnalysis = true;
+            }
+            return model;
+        }
     } 
 
     public class TagsRequest
     {
         public TagsRequest() 
         {
-            BagWeightUnits = "L";
+            WeightUnit = "L";
             HowDeliver = "UPS Ground";
             TagType = 1;
             DateNeeded = DateTime.Now.AddDays(2).Date;
@@ -184,11 +314,11 @@ namespace CCIA.Models
         public string Alias { get; set; }
         [Display(Name ="Number of Tags")]
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
-        public int NumberOfTags { get; set; }
+        public int CountRequested { get; set; }
         [Display(Name ="Bag Weight")]
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
-        public int BagWeight { get; set; }
-        public string BagWeightUnits { get; set; }
+        public int BagSize { get; set; }
+        public string WeightUnit { get; set; }
         [Display(Name ="Coating (%)")]
         public decimal CoatingPercent { get; set; }
         public bool OECD { get; set; }

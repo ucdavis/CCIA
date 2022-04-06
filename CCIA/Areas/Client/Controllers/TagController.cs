@@ -105,9 +105,81 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> SubmitTag(int id, ClientTagRequestViewModel model)
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             var newTag = new Tags();
-            await _dbContext.SaveChangesAsync();
-            return View(model);
+            var submittedTag = model.request;
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            switch(submittedTag.Target)
+            {
+                case "SID":
+                    newTag.SeedsID = submittedTag.Id;
+                    break;
+                case "BID":
+                    newTag.BlendId = submittedTag.Id;
+                    break;
+                default:
+                    newTag.AppId = submittedTag.Id;
+                    break;
+            }
+            newTag.TagClass = submittedTag.TagClass;
+            newTag.DateRequested = DateTime.Now;
+            newTag.DateNeeded = submittedTag.DateNeeded;
+            newTag.CoatingPercent = submittedTag.CoatingPercent;
+            newTag.WeightUnit = submittedTag.WeightUnit;
+            newTag.CountRequested = submittedTag.CountRequested;
+            newTag.ExtrasOverrun = 0;
+            newTag.BagSize = submittedTag.BagSize;
+            newTag.TagType = submittedTag.TagType;
+            newTag.Comments = submittedTag.Comments;
+            newTag.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            // TODO These are the same column. Get rid of one?
+            newTag.Contact = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            // TODO DateEntered & DateRequested are duplicates. Get rid of one
+            newTag.DateEntered = DateTime.Now;
+            newTag.TaggingOrg = orgId;
+            newTag.Bulk = false;
+            newTag.Pretagging = submittedTag.Pretagging;
+            newTag.AnalysisRequested = submittedTag.AnalysisRequested;
+            newTag.SeriesRequest = submittedTag.SeriesRequest;
+            newTag.HowDeliver = submittedTag.HowDeliver;
+            newTag.Stage = TagStages.Requested.GetDisplayName();
+            newTag.Alias = submittedTag.Alias;
+            if(submittedTag.Target == "SID")
+            {
+                newTag.OECD = submittedTag.OECD;
+                if(submittedTag.OECD)
+                {
+                    newTag.PlantingStockNumber = submittedTag.PlantingStockLotNumber;
+                    newTag.OECDTagType = submittedTag.OECDTagType;
+                    newTag.DateSealed = submittedTag.DateSealed;
+                    newTag.OECDCountryId = submittedTag.OECDCountryId;
+                }
+
+            } else {
+                newTag.OECD = false;
+            }
+
+            ModelState.Clear();    
+            if(submittedTag.DateNeeded < DateTime.Now.AddDays(1))       
+            {
+                ModelState.AddModelError("request.DateNeeded","Date needed must be greater than 2 days out");
+            }
+            if (TryValidateModel(model))
+            {   
+                _dbContext.Add(newTag);                
+                await _dbContext.SaveChangesAsync();  
+                await _notificationService.TagSubmitted(newTag);
+                await _dbContext.SaveChangesAsync();             
+                Message = "Tag submitted!";
+                return RedirectToAction("Details", new { id = newTag.Id });
+            }
+            
+            var retryModel = await ClientTagRequestViewModel.Edit(_dbContext, _helper, submittedTag.Id, submittedTag.Target, orgId, submittedTag);
+            return View("Create", retryModel);
         }
 
 

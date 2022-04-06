@@ -75,7 +75,8 @@
     </div>     
 </div>
 <form asp-action="SubmitTag">
-@* Add hiddens here*@
+<input type="hidden" asp-for="request.Id">
+<input type="hidden" asp-for="request.Target">
 <div>
     <div class="form-group row">
         <label asp-for="request.Alias" class="col-sm-2 col-form-label"></label>
@@ -83,16 +84,16 @@
         <span class="field-validation-valid text-danger" asp-validation-for="request.Alias" data-valmsg-replace="true"></span>
     </div>    
     <div class="form-group row required">
-        <label asp-for="request.NumberOfTags" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.NumberOfTags" class="form-control col-sm-2" onchange="WeightChange()">
-        <span class="field-validation-valid text-danger" asp-validation-for="request.NumberOfTags" data-valmsg-replace="true"></span>
+        <label asp-for="request.CountRequested" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.CountRequested" class="form-control col-sm-2" onchange="WeightChange()">
+        <span class="field-validation-valid text-danger" asp-validation-for="request.CountRequested" data-valmsg-replace="true"></span>
     </div> 
     <div class="form-group row required">
-        <label asp-for="request.BagWeight" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.BagWeight" class="form-control col-sm-2" onchange="WeightChange()">
-        <span class="field-validation-valid text-danger" asp-validation-for="request.BagWeight" data-valmsg-replace="true"></span>
+        <label asp-for="request.BagSize" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.BagSize" class="form-control col-sm-2" onchange="WeightChange()">
+        <span class="field-validation-valid text-danger" asp-validation-for="request.BagSize" data-valmsg-replace="true"></span>
         <div class="col-sm-1"></div>
-        <select asp-for="request.BagWeightUnits" onchange="WeightChange()">
+        <select asp-for="request.WeightUnit" onchange="WeightChange()">
             <option value="L">Pounds</option> 
             <option value="K">Kilograms</option>
         </select>
@@ -109,12 +110,12 @@
                 <label class="form-check-label" for="0">No coating</label>                    
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value=".34" data-val="true" data-val-required="Please coating percentage" >
-                <label class="form-check-label" for=".34">34%</label>                    
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.34" data-val="true" data-val-required="Please coating percentage" >
+                <label class="form-check-label" for="0.34">34%</label>                    
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value=".5" data-val="true" data-val-required="Please coating percentage" >
-                <label class="form-check-label" for=".5">50%</label>                    
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.5" data-val="true" data-val-required="Please coating percentage" >
+                <label class="form-check-label" for="0.5">50%</label>                    
             </div>  
             <span class="field-validation-valid text-danger" asp-validation-for="request.CoatingPercent" data-valmsg-replace="true"></span>       
         </div>         
@@ -281,6 +282,11 @@
             <span class="field-validation-valid text-danger" asp-validation-for="request.HowDeliver" data-valmsg-replace="true"></span>
         </div>
     </div>
+    <div class="form-group row">
+        <label asp-for="request.Comments" class="col-sm-2 col-form-label"></label>
+        <textarea asp-for="request.Comments" class="form-control col-sm-8" rows="3"></textarea>        
+        <span class="field-validation-valid text-danger" asp-validation-for="request.Comments" data-valmsg-replace="true"></span>       
+    </div> 
      <div class="form-group row">
         <input type="submit" value="Create Tag Request" class="btn btn-primary">
     </div> 
@@ -295,7 +301,11 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
      <script type="text/javascript">
         $(document).ready(function () {
-            $('.datepicker').datepicker();            
+            $('.datepicker').datepicker(); 
+            if($("input:radio[id*=request_OECD]:first").is(':checked'))  
+            {                
+                OECDChange('true');
+            }         
         });
 
         function OECDChange(collapse){            
@@ -312,13 +322,13 @@
         };
 
         function WeightChange(){
-            var count = $("#request_NumberOfTags").val();            
-            var weight = $("#request_BagWeight").val();            
+            var count = $("#request_CountRequested").val();            
+            var weight = $("#request_BagSize").val();            
             var priorBalance = @Model.request.LotWeight - @Model.request.WeightBalance;            
             var coating = $("[id*=request_CoatingPercent]:checked").val();           
-            var balance = "";
+            var balance = "";            
             if (!isNaN(count) && count.length != 0 && count != 0 && !isNaN(weight) && weight.length != 0 && weight != 0) {
-                balance = (($("[id*=request_BagWeightUnits").val() == "L") ? count * weight * (1- coating) : count * weight * 2.20462262 * (1- coating));
+                balance = (($("[id*=request_WeightUnit").val() == "L") ? count * weight * (1- coating) : count * weight * 2.20462262 * (1- coating));
                 $("[id*=weightOfRequest").text(Math.round(balance));
                 if (balance > priorBalance) {
                     $("[id*=weightOfRequest").addClass("text-danger");
