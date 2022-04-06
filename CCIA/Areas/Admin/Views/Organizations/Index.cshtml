@@ -36,6 +36,7 @@
             <th>City</th>
             <th>County</th>
             <th>State</th>
+            <th>Zip</th>
             <th>District</th>
         </thead>
         <tbody>
@@ -50,6 +51,7 @@
                     <td>@(row.Address == null ? "" : @row.Address.City)</td>
                     <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.Name)</td>
                     <td>@(row.Address == null || row.Address.StateProvince == null ? "" : @row.Address.StateProvince.Name)</td>
+                    <td>@(row.Address == null ? "" : @row.Address.PostalCode)</td>
                     <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.District)</td>
                 </tr>
                 
