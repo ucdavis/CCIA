@@ -73,6 +73,12 @@ namespace CCIA.Controllers.Client
             return await _dbContext.CondStatus.Where(s => s.OrgId == orgId && s.Year == CertYearFinder.ConditionerYear && s.Status != "O").AnyAsync();
         }
 
+        public async Task<IActionResult> InitiateBulk()
+        {
+            var model = await _dbContext.Crops.Where(c => c.CertifiedCrop.Value).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+            return View(model);
+        }
+
         public async Task<IActionResult> Initiate()
         {
             if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
