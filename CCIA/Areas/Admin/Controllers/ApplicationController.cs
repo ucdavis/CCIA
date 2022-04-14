@@ -65,6 +65,22 @@ namespace CCIA.Controllers.Admin
             return View("Index", model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateComments (int Id, string comments )
+        {
+            var appToUpdate = await _dbContext.Applications.Where(a => a.Id == Id).FirstOrDefaultAsync();
+            if(appToUpdate == null)
+            { 
+                ErrorMessage = "Application not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            appToUpdate.Comments = comments;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = Id }); 
+        }
+
+       
+
         public async Task<IActionResult> NewMap(int id)
         {
             var model = await NewMapViewModel.Create(_dbContext, id);           
