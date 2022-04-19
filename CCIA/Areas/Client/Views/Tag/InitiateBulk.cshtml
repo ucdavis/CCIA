@@ -4,8 +4,8 @@
 
 
 <form class="form-inline" asp-action="CreateBulk">
-    <label for="Crop" class="col-sm-1 col-form-label">Crop</label>
-    <select id="Crop" name="Crop" class="form-control col-sm-2" asp-items="@(new SelectList(Model, "CropId", "Name"))"></select>
+    <label for="cropId" class="col-sm-1 col-form-label">Crop</label>
+    <select id="cropId" name="cropId" class="form-control col-sm-2" asp-items="@(new SelectList(Model, "CropId", "Name"))"></select>
 
 
     <label for="Id" class="col-sm-1 col-form-label">Variety</label>

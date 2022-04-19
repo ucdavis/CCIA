@@ -73,10 +73,96 @@ namespace CCIA.Controllers.Client
             return await _dbContext.CondStatus.Where(s => s.OrgId == orgId && s.Year == CertYearFinder.ConditionerYear && s.Status != "O").AnyAsync();
         }
 
+        private async Task<bool> checkBulkPermission(int orgId)
+        {
+            return await _dbContext.CondStatus.Where(s => s.OrgId == orgId && s.Year == CertYearFinder.ConditionerYear && s.Status != "O" && s.PrintSeries).AnyAsync();
+        }
+
         public async Task<IActionResult> InitiateBulk()
         {
+            if(!(await checkBulkPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request bulk tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             var model = await _dbContext.Crops.Where(c => c.CertifiedCrop.Value).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
             return View(model);
+        }
+
+        public async Task<IActionResult> CreateBulk(int cropId, string variety)
+        {
+            if(!(await checkBulkPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request bulk tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var model = await ClientTagRequestViewModel.CreateBulk(_dbContext, _helper, cropId, variety, orgId);
+            if(model.variety == null || model.crop == null)
+            {
+                ErrorMessage = "Crop/variety not found";
+                return RedirectToAction(nameof(InitiateBulk));
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> SubmitBulk(int id, ClientTagRequestViewModel model)
+        {
+            if(!(await checkBulkPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request bulk tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var newTag = new Tags();
+            var submittedTag = model.request;
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);            
+           
+           
+            newTag.TagClass = 4;
+            newTag.DateRequested = DateTime.Now;
+            newTag.DateNeeded = submittedTag.DateNeeded;
+            newTag.SeriesRequest = true;
+            newTag.WeightUnit = "0";
+            newTag.CountRequested = submittedTag.CountRequested;
+            newTag.ExtrasOverrun = 0;            
+            newTag.TagType = submittedTag.TagType;
+            newTag.Comments = submittedTag.Comments;
+            newTag.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            // TODO These are the same column. Get rid of one?
+            newTag.Contact = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            // TODO DateEntered & DateRequested are duplicates. Get rid of one
+            newTag.DateEntered = DateTime.Now;
+            newTag.TaggingOrg = orgId;
+            newTag.Bulk = true;
+            newTag.HowDeliver = submittedTag.HowDeliver;
+            newTag.Stage = TagStages.Requested.GetDisplayName();
+            newTag.Alias = submittedTag.Alias;
+            newTag.BulkCropId = model.crop.CropId;
+            newTag.BulkVarietyId = model.variety.Id;
+            newTag.OECD = false;
+            newTag.BagSize = null;
+            newTag.DateSealed = null;
+            newTag.OECDCountryId = null;
+
+            ModelState.Clear();    
+            if(submittedTag.DateNeeded < DateTime.Now.AddDays(1))       
+            {
+                ModelState.AddModelError("request.DateNeeded","Date needed must be greater than 2 days out");
+            }
+            if (TryValidateModel(newTag))
+            {   
+                _dbContext.Add(newTag);                
+                await _dbContext.SaveChangesAsync();  
+                await _notificationService.TagSubmitted(newTag);
+                await _dbContext.SaveChangesAsync();             
+                Message = "Tag submitted!";
+                return RedirectToAction("Details", new { id = newTag.Id });
+            }
+            
+            var retryModel = await ClientTagRequestViewModel.CreateBulkRetry(_dbContext, _helper, submittedTag.Id, submittedTag.Target, orgId, submittedTag);
+            return View("CreateBulk", retryModel);
+
         }
 
         public async Task<IActionResult> Initiate()
@@ -174,7 +260,7 @@ namespace CCIA.Controllers.Client
             {
                 ModelState.AddModelError("request.DateNeeded","Date needed must be greater than 2 days out");
             }
-            if (TryValidateModel(model))
+            if (TryValidateModel(newTag))
             {   
                 _dbContext.Add(newTag);                
                 await _dbContext.SaveChangesAsync();  

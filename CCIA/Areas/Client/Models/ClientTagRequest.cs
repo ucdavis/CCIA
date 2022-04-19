@@ -19,6 +19,9 @@ namespace CCIA.Models
         public List<Countries> Countries { get; set; }
         public List<AbbrevOECDClass> OECDTagTypes { get; set; }
         public bool AllowOECD { get; set; }
+        public Crops crop { get; set; }
+        public VarFull variety { get; set; }
+
         public bool AllowSeries { get; set; }
         public bool AllowPreTag { get; set; }
         public bool AllowAnalysis { get; set; }
@@ -144,6 +147,25 @@ namespace CCIA.Models
             {
                 model.AllowAnalysis = true;
             }
+            return model;
+        }
+        public static async Task<ClientTagRequestViewModel> CreateBulk(CCIAContext _dbContext, IFullCallService _helper , int cropId, string variety, int orgId)
+        {                   
+            var model = new ClientTagRequestViewModel();
+            model.crop = await _dbContext.Crops.Where(c => c.CropId == cropId).FirstOrDefaultAsync();
+            model.variety = await _dbContext.VarFull.Where(v => v.CropId == cropId && EF.Functions.Like(v.Name, "%" +  variety + "%")).FirstOrDefaultAsync();            
+            model.request = new TagsRequest(); 
+            model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();                      
+            return model;
+        }
+
+        public static async Task<ClientTagRequestViewModel> CreateBulkRetry(CCIAContext _dbContext, IFullCallService _helper , int cropId, string variety, int orgId, TagsRequest submittedTag)
+        {                   
+            var model = new ClientTagRequestViewModel();
+            model.crop = await _dbContext.Crops.Where(c => c.CropId == cropId).FirstOrDefaultAsync();
+            model.variety = await _dbContext.VarFull.Where(v => v.CropId == cropId && EF.Functions.Like(v.Name, "%" +  variety + "%")).FirstOrDefaultAsync();            
+            model.request =submittedTag; 
+            model.TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync();                      
             return model;
         }
 

@@ -1,0 +1,95 @@
+@model CCIA.Models.ClientTagRequestViewModel
+
+@await Html.PartialAsync("_tagGuidelines")
+
+
+ 
+<form asp-action="SubmitBulk">
+<input type="hidden" asp-for="crop.CropId">
+<input type="hidden" asp-for="variety.Id">
+<input type="hidden" asp-for="variety.Name">
+<div>
+    <div class="form-group row">
+        <label asp-for="request.Alias" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.Alias" class="form-control col-sm-2">        
+        <span class="field-validation-valid text-danger" asp-validation-for="request.Alias" data-valmsg-replace="true"></span>(leave blank for listed variety name)
+    </div>    
+    <div class="form-group row required">
+        <label asp-for="request.CountRequested" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.CountRequested" class="form-control col-sm-2" onchange="WeightChange()">
+        <span class="field-validation-valid text-danger" asp-validation-for="request.CountRequested" data-valmsg-replace="true"></span>
+    </div> 
+    <div class="form-group required row">
+        <label asp-for="request.TagType" class="col-form-label col-sm-3"></label> 
+        <div class="col-sm-9">         
+            @foreach (var item in Model.TagTypes) 
+            {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagType" value="@item.Id" data-val="true" data-val-required="Please select tag type" onclick="ClassOrTagChange()" >
+                    <label class="form-check-label" for="@item.Id">@item.TagTypeTrans</label>                    
+                </div>
+            } 
+            <span class="field-validation-valid text-danger" asp-validation-for="request.TagType" data-valmsg-replace="true"></span>
+        </div>         
+    </div>   
+    <div class="form-group row required">
+        <label asp-for="request.DateNeeded" class="col-sm-2 col-form-label"></label>
+        <input asp-for="request.DateNeeded" class="form-control col-sm-2 datepicker" type="text">        
+        <span class="field-validation-valid text-danger" asp-validation-for="request.DateNeeded" data-valmsg-replace="true"></span>
+        <span>(please allow 24-48 hours)</span>
+    </div> 
+    <div class="form-group row required">
+        <label asp-for="request.HowDeliver" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Ground" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="UPS Ground">UPS Ground</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Overnight" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="UPS Overnight">UPS Overnight</label>
+            </div> 
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Pick-up at Parsons Building" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="Pick-up at Parsons Building">Pick-up at Parsons Building</label>
+            </div> 
+            <div class="form-check form-check-inline">
+                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Other" data-val="true" data-val-required="Please select delivery method">
+                <label class="form-check-label" for="Other">Other</label>
+            </div> 
+            <span class="field-validation-valid text-danger" asp-validation-for="request.HowDeliver" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="request.Comments" class="col-sm-2 col-form-label"></label>
+        <textarea asp-for="request.Comments" class="form-control col-sm-8" rows="3"></textarea>        
+        <span class="field-validation-valid text-danger" asp-validation-for="request.Comments" data-valmsg-replace="true"></span>       
+    </div> 
+     <div class="form-group row">
+        <input type="submit" value="Create Tag Request" class="btn btn-primary">
+    </div> 
+</div>
+</form>
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();             
+        });
+
+        
+        function DeliveryChange() {
+            var method = $("[id*=request_HowDeliver]:checked").val();
+            if (method == 'UPS Overnight') {
+                alert('Please provide your UPS account number in comment box. Failure to do so will delay your tags.');
+            }
+            if (method == 'Other') {
+                alert('Enter information in comment box. Failure to do so will delay your tags.');
+            }            
+        };
+
+
+    </script>  
+} 
