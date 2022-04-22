@@ -62,7 +62,14 @@
                 @Model.application.ApplicantId)</td>
             <td align="right" nowrap="nowrap">
                 Date:
-                @DateTime.Now.ToShortDateString()</td>
+                @if(Model.application.FieldInspectionReport.DateComplete.HasValue)
+                {
+                    @Model.application.FieldInspectionReport.DateComplete.Value.ToShortDateString()
+                } else
+                {
+                    <span>Incomplete!</span>
+                }
+                </td>
         </tr>
         <tr>
             <td valign="top">
@@ -349,12 +356,23 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">Approved by: @Model.application.FieldInspectionReport.CompleteEmployee.Name,<br/> CCIA Certification Representative </td>
-            
+            <td colspan="3">Approved by:
+                @if(Model.application.FieldInspectionReport.CompleteEmployee != null)
+                {
+                    @Model.application.FieldInspectionReport.CompleteEmployee.Name<span>,<br/> CCIA Certification Representative</span>
+
+                } else {
+                    <span>Incomplete!</span>
+                }
+            </td>    
             <td>
             </td>
             <td colspan="2" align="right">
-                <img width="250px" src="/images/ExecutiveDirector_signature.JPG" alt="Executive Director Signature" /></td>
+                @if(Model.application.FieldInspectionReport.Complete)
+                {
+                    <img width="250px" src="/images/ExecutiveDirector_signature.JPG" alt="Executive Director Signature" />
+                }
+            </td>
         </tr>
         
     </table>           
