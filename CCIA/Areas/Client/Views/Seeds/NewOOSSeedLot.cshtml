@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.OriginState" class="col-sm-3 col-form-label"></label>                    
-                    <select asp-for="Seed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateProvinceName"))"></select>                  
+                    <select asp-for="Seed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","Name"))"></select>                  
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.SampleFormCertNumber" class="col-sm-3 col-form-label"></label>                    
@@ -161,10 +161,10 @@
             SetStatesForCountry();
            
             $('#retrieveApplicantButton').click(function () {
-                var searchTerm = $('#ApplicantSearch').val();                
+                var searchTerm = $('#ApplicantSearch').val(); 
                 $.ajax({
                     method: 'GET',
-                    url: '/Seeds/GetApplicants',
+                    url: '/client/Seeds/GetApplicants',
                     data: {
                         search: searchTerm,
                     }
@@ -176,8 +176,8 @@
                             function(i) {
                                 var item = data[i];
                                 s += '<tr><td><input type="button" value="Select" onClick="selectApplicant(' + item.Id + ')"></input></td>';
-                                s += '<td>' + item.Id + '</td>';
-                                s += '<td>' + item.Name + '</td>';
+                                s += '<td>' + item.id + '</td>';
+                                s += '<td>' + item.name + '</td>';
                             });
                         s += '</table>';                                                
                     $('#results').html(s);
@@ -270,7 +270,7 @@
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
                 type: "GET",
-                url: "/Application/FindVariety",
+                url: "/client/Application/FindVariety",
                 data: data,
                 success: function (res) {
                     vs.innerHTML = "";
@@ -281,9 +281,9 @@
                     }
                     // Populate dropdown with list of varieties
                     res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
-                        document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
-                            varietySelected(el.varOffId);
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
+                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
+                            varietySelected(el.id);
                         });
                     })
                 },
