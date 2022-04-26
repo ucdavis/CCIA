@@ -26,8 +26,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
 
         public static async Task<SeedsCreateOOSViewModel> Create(CCIAContext _dbContext)
-        {   
-            // TODO : get real org ID!
+        {               
             var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewOOSSeeds();
             seed.CountyDrawn = countyId; 
