@@ -39,6 +39,7 @@ namespace CCIA.Models
             AnalysisRequested = false;
             OECD = false;
             SeriesRequest = false;
+            ExtrasOverrun = 0;
         }
         [Display(Name = "TagID")]
         public int Id { get; set; }

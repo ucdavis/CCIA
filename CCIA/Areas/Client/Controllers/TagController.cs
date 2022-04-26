@@ -386,17 +386,19 @@ namespace CCIA.Controllers.Client
             newSeed.Status = SeedsStatus.PendingAcceptance.GetDisplayName();
             newSeed.CertProgram = app.AppType;
             newSeed.NotFinallyCertified = true;
-            var seedapps = new List<SeedsApplications>();
-            foreach(var sa in seed.AppId)
-            {
-                seedapps.Add(new SeedsApplications { AppId = sa});
-            }
-            newSeed.SeedsApplications = seedapps;
+            
             
             if(ModelState.IsValid)
             {
-                _dbContext.Add(newSeed);
+                await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
+
+                var seedapps = new List<SeedsApplications>();
+                foreach(var sa in seed.AppId)
+                {
+                    seedapps.Add(new SeedsApplications { AppId = sa});
+                }
+                newSeed.SeedsApplications = seedapps;
 
                 var newTag = new Tags();
                 newTag.SeedsID = newSeed.Id;

@@ -346,18 +346,21 @@ namespace CCIA.Controllers.Client
             newSeed.Confirmed = false;
             newSeed.Status = "Pending supporting material";
             newSeed.CertProgram = app.AppType;
-            var seedapps = new List<SeedsApplications>();
-            foreach(var sa in seed.AppId)
-            {
-                seedapps.Add(new SeedsApplications { AppId = sa});
-            }
-            newSeed.SeedsApplications = seedapps;
+           
+            
             
             if(ModelState.IsValid)
             {
                 await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
 
+                 var seedapps = new List<SeedsApplications>();
+                foreach(var sa in seed.AppId)
+                {
+                    seedapps.Add(new SeedsApplications { AppId = sa});
+                }
+
+                newSeed.SeedsApplications = seedapps;
                 var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
                 await _dbContext.SampleLabResults.AddAsync(labresults);
