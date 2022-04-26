@@ -55,6 +55,8 @@ namespace CCIA.Services
             await SendPendingSeedNotices(password);
             await SendPendingAdminAppNotices(password);
             await SendPendingAdminSeedNotices(password);
+            await SendPendingAdminNFCNotices(password);
+            await SendPendingAdminTagNotices(password);
             await SendPendingBlendNotices(password);
             await SendPendingTagNotices(password);
             await SendPendingOrganizationNotices(password);
@@ -116,10 +118,10 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();  
         }
 
-        public async Task SendPendingAdminSeedNotices(string password)
+        public async Task SendPendingAdminNFCNotices(string password)
         {
              ConfigureSMTPClient(password);
-            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin).ToListAsync();
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId != 0).ToListAsync();
             if(notifications.Count == 0)
             {
                 return;
@@ -135,7 +137,35 @@ namespace CCIA.Services
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
                     message.Body = "An Seed Lot has been updated. Please visit CCIA website for details";
-                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/NFCAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();  
+        }
+
+        public async Task SendPendingAdminSeedNotices(string password)
+        {
+             ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId == 0).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Seed Notices"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "An Seed Lot has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }
@@ -192,6 +222,35 @@ namespace CCIA.Services
                     //message.To.Add(address);
                     message.Body = "A Blend has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/BlendClientNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+
+        }
+
+        public async Task SendPendingAdminTagNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.TagId != 0 && n.IsAdmin).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+
+            var recipients = notifications.Select(n => n.Email).Distinct().ToList();
+            foreach(var address in recipients)
+            {
+                var thisNotices = notifications.Where(n => n.Email == address).ToList();                
+
+                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Tag status changes"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    //message.To.Add(address);
+                    message.Body = "A Tag has been updated. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/TagAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }

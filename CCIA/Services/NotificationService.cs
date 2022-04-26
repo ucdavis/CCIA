@@ -41,6 +41,8 @@ namespace CCIA.Services
 
         Task OECDCharged(OECD oecd);
 
+        Task NFCSubmitted(Tags tag);
+
     }
 
     public class NotificationService : INotificationService
@@ -256,7 +258,7 @@ namespace CCIA.Services
             }
         }
 
-         public async Task TagSubmitted(Tags tag)
+        public async Task TagSubmitted(Tags tag)
         {
             var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
 
@@ -267,6 +269,23 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag submitted by conditioner"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task NFCSubmitted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    SID = tag.SeedsID,
+                    Message = $"NFC SID/Tag submitted by conditioner SID:{tag.SeedsID} TID:{tag.Id}"
                 };
                 _dbContext.Notifications.Add(notification);      
             }
