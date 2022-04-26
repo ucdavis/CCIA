@@ -136,7 +136,7 @@ namespace CCIA.Controllers.Client
 
         public ActionResult SelectApp()
         {
-            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2006).ToArray();
+             int[] years = CertYearFinder.certYearListReverse.ToArray();
             return View(years);
         }
 
@@ -316,7 +316,7 @@ namespace CCIA.Controllers.Client
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             newSeed.OfficialVarietyId = app.Variety.ParentId;
             newSeed.LotNumber = seed.LotNumber;
