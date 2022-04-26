@@ -305,6 +305,8 @@ namespace CCIA.Models.IndexViewModels
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.TagAbbrevClass)
                 .Include(t => t.AbbrevTagType)
+                .Include(t => t.BulkCrop)
+                .Include(t => t.BulkVariety)
                 .ToListAsync(),
                 certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested != null).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
                 CertYear = certYear,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Models.SeedsCreateViewModel;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,8 @@ namespace CCIA.Models
         public bool AllowSeries { get; set; }
         public bool AllowPreTag { get; set; }
         public bool AllowAnalysis { get; set; }
+        public Applications Application { get; set; }
+        public NewSeeds Seed { get; set; }
 
         public ClientTagRequestViewModel()
         {
@@ -297,6 +300,67 @@ namespace CCIA.Models
                 model.AllowAnalysis = true;
             }
             return model;
+        }
+
+        public static async Task<ClientTagRequestViewModel> CreateGrayTag(CCIAContext _dbContext, int[] appId, int certYear, int certNum, int certRad)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == appId.First())
+                .Include(a => a.ApplicantOrganization)
+                .Include(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(a => a.AppTypeTrans)
+                .Include(a => a.ClassProduced)
+                .FirstAsync();          
+           
+            var seed = new NewSeeds();           
+            seed.AppId = appId;
+            seed.CertYear = certYear;
+            seed.SampleFormCertNumber = certNum;
+            if(certRad == 0)
+            {
+                seed.SampleFormRad = null;
+            } else
+            {
+                seed.SampleFormRad = certRad;
+            }      
+            var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+            countries.Insert(0, new Countries { Id=0, Name="Select country..."});
+
+            var viewModel = new ClientTagRequestViewModel
+            {
+                Application = app,
+                Seed = seed,
+                Countries = countries,
+                TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(),
+                request = new TagsRequest(),
+            };
+
+            return viewModel;
+        }
+
+        public static async Task<ClientTagRequestViewModel> CreateGrayTagRetry(CCIAContext _dbContext, ClientTagRequestViewModel model )
+        {      
+            var app = await _dbContext.Applications.Where(a => a.Id == model.Seed.AppId.First())
+                .Include(a => a.ApplicantOrganization)
+                .Include(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(a => a.AppTypeTrans)
+                .Include(a => a.ClassProduced)
+                .FirstAsync();                       
+           
+            var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+            countries.Insert(0, new Countries { Id=0, Name="Select country..."});
+
+            var viewModel = new ClientTagRequestViewModel
+            {
+                Application = app,
+                Seed = model.Seed,
+                Countries = countries,
+                TagTypes = await _dbContext.AbbrevTagType.Where(t => t.StandardTagForm).OrderBy(t => t.SortOrder).ToListAsync(),
+                request = model.request,
+            };
+
+            return viewModel;
         }
     } 
 

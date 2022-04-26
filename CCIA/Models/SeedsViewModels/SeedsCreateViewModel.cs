@@ -87,6 +87,9 @@ namespace CCIA.Models.SeedsCreateViewModel
 
     public partial class NewSeeds
     {
+        public NewSeeds() {
+            Type = "Original Run";
+        }
         public int[] AppId { get; set; }
 
         [Display(Name = "Lot Number")]

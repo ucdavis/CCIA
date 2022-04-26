@@ -238,7 +238,7 @@
                 <span class="field-validation-valid text-danger" asp-validation-for="request.DateSealed" data-valmsg-replace="true"></span>
             </div>         
             <div class="form-group row required">
-                <label asp-for="request.OECDCountryId" class="col-sm-2 col-form-label"></label>
+                <label asp-for="request.OECDCountryId" class="col-sm-2 col-form-label">Country</label>
                 <select asp-for="request.OECDCountryId" class="form-control col-sm-2" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
                 <span class="field-validation-valid text-danger" asp-validation-for="request.OECDCountryId" data-valmsg-replace="true"></span>
             </div>

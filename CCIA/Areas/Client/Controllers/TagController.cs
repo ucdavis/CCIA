@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using CCIA.Services;
 using System.IO;
+using CCIA.Models.SeedsCreateViewModel;
 
 namespace CCIA.Controllers.Client
 {
@@ -272,6 +273,173 @@ namespace CCIA.Controllers.Client
             
             var retryModel = await ClientTagRequestViewModel.Edit(_dbContext, _helper, submittedTag.Id, submittedTag.Target, orgId, submittedTag);
             return View("Create", retryModel);
+        }
+
+        public async Task<IActionResult> SelectOrigin()
+        {            
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SelectOrigin(string origin)
+        {
+            if(origin == "Ca")
+            {
+                return RedirectToAction("SelectApp");
+            }
+            if(origin == "OOS")
+            {
+                return RedirectToAction("NewOOSSeedLot");
+            }
+            return View();
+        }
+
+        public ActionResult SelectApp()
+        {
+            int[] years = CertYearFinder.certYearListReverse.ToArray();
+            return View(years);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
+        {
+            if(appId == null || appId.Count() == 0)
+            {
+                ErrorMessage = "No apps selected";
+                return RedirectToAction(nameof(SelectApp));
+
+            }
+            var model = await ClientTagRequestViewModel.CreateGrayTag(_dbContext, appId, certYear, certNum, certRad);
+           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SubmitInState(ClientTagRequestViewModel model)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var seed = model.Seed;
+            var tag = model.request;
+            
+            bool error = false;
+            
+            
+            
+            if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber.ToString() && s.SampleFormRad == seed.SampleFormRad))
+            {
+                ErrorMessage = "SID with same Lot, Cert Year, Cert Number, and Rad found. Duplicates are not allowed.";
+                error = true;                
+            }   
+
+            if(error)
+            {
+                var returnModel = await ClientTagRequestViewModel.CreateGrayTagRetry(_dbContext, model);
+                return View("CreateInState", returnModel);
+            }
+
+             
+            
+            var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
+                .Include(a => a.Variety)
+                .FirstAsync();
+           
+            var newSeed = new Seeds();
+            newSeed.SampleFormDate = DateTime.Now;
+            newSeed.SampleFormCertNumber = seed.SampleFormCertNumber.ToString();
+            newSeed.SampleFormRad = seed.SampleFormRad;
+            newSeed.CertYear = seed.CertYear;
+            newSeed.ApplicantId = app.ApplicantId;
+            newSeed.ConditionerId = orgId;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            newSeed.SampleFormVarietyId = app.SelectedVarietyId;
+            newSeed.OfficialVarietyId = app.Variety.ParentId;
+            newSeed.LotNumber = seed.LotNumber;
+            newSeed.PoundsLot = seed.PoundsLot;
+            newSeed.Class = app.ClassProducedId;
+            newSeed.CountyDrawn = seed.CountyDrawn;
+            newSeed.OriginState = 102;
+            newSeed.OriginCountry = 58;
+            if(seed.Type == "Original Run")
+            {
+                newSeed.OriginalRun = true;
+            } else
+            {
+                newSeed.OriginalRun = false;
+            }
+            if(seed.Type == "Remill")
+            {
+                newSeed.Remill = true;
+            } else
+            {
+                newSeed.Remill = false;
+            }
+            newSeed.Remarks = seed.Remarks;
+            newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
+            newSeed.SamplerID = seed.SamplerId;
+            newSeed.OECDLot = true;
+            newSeed.Confirmed = false;
+            newSeed.Status = SeedsStatus.PendingAcceptance.GetDisplayName();
+            newSeed.CertProgram = app.AppType;
+            newSeed.NotFinallyCertified = true;
+            var seedapps = new List<SeedsApplications>();
+            foreach(var sa in seed.AppId)
+            {
+                seedapps.Add(new SeedsApplications { AppId = sa});
+            }
+            newSeed.SeedsApplications = seedapps;
+            
+            if(ModelState.IsValid)
+            {
+                _dbContext.Add(newSeed);
+                await _dbContext.SaveChangesAsync();
+
+                var newTag = new Tags();
+                newTag.SeedsID = newSeed.Id;
+                newTag.LotWeightBagged = seed.PoundsLot;
+                newTag.CountRequested = tag.CountRequested;
+                newTag.BagSize = tag.BagSize;
+                newTag.WeightUnit = tag.WeightUnit;
+                newTag.TagClass = seed.Class;
+                newTag.TagType = 7;
+                newTag.DateNeeded = tag.DateNeeded;
+                newTag.HowDeliver = tag.HowDeliver;
+                newTag.Comments = tag.Comments;
+                newTag.DateRequested = DateTime.Now;
+                newTag.Contact = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+                newTag.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+                newTag.DateEntered = DateTime.Now;
+                newTag.TaggingOrg = orgId;
+                newTag.Stage = TagStages.Requested.GetDisplayName();
+                newTag.OECD = true;
+                newTag.PlantingStockNumber = tag.PlantingStockLotNumber;
+                newTag.OECDTagType = 5;
+                newTag.DateSealed = tag.DateSealed;
+                newTag.OECDCountryId = tag.OECDCountryId;
+                newTag.Alias = tag.Alias;
+                newTag.CoatingPercent = tag.CoatingPercent;
+
+                _dbContext.Add(newTag);
+                await _dbContext.SaveChangesAsync();
+
+                var adminComments = $"NFC request: SID={newSeed.Id} Tag ID={newTag.Id}";
+
+                newSeed.Remarks = string.IsNullOrWhiteSpace(seed.Remarks) ? adminComments : $"{seed.Remarks}; {adminComments}";
+                newTag.AdminComments = adminComments;
+                await _notificationService.NFCSubmitted(newTag);
+
+                await _dbContext.SaveChangesAsync();                
+                Message = $"NFC Seed/Tag request submitted for review. SID: {newSeed.Id}, TagID: {newTag.Id}";
+                return RedirectToAction(nameof(Index));
+            }
+            
+                ErrorMessage = "Error encountered saving seed lot or tag";
+                var retryModel =  await ClientTagRequestViewModel.CreateGrayTagRetry(_dbContext, model);
+                return View("CreateInState", retryModel);
         }
 
 
