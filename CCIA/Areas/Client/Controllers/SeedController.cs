@@ -217,7 +217,7 @@ namespace CCIA.Controllers.Client
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             if(app.Variety != null)
             {
@@ -409,7 +409,7 @@ namespace CCIA.Controllers.Client
             newSeed.SampleFormVarietyId = seed.SampleFormVarietyId;
             newSeed.OfficialVarietyId = seed.SampleFormVarietyId.HasValue ? seed.SampleFormVarietyId.Value : 0;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;           
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);;           
             newSeed.LotNumber = seed.LotNumber;
             newSeed.PoundsLot = seed.PoundsLot;
             newSeed.Class = seed.Class;
