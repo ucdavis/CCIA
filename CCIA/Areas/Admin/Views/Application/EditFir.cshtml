@@ -17,24 +17,24 @@
             <div class="row">
                 <div class="col-lg-4">@* First column*@
                     <div class="form-group row">
-                        <label asp-for="fir.AcresApproved" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresApproved">
+                        <label asp-for="fir.AcresApproved" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresApproved">
                         <div class="input-group-append" onclick="fillAcres('approved');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
                         <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresApproved" data-valmsg-replace="true"></span>                
                     </div>
                     <div class="form-group row">
-                        <label asp-for="fir.AcresInspectionOnly" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresInspectionOnly">
+                        <label asp-for="fir.AcresInspectionOnly" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresInspectionOnly">
                         <div class="input-group-append" onclick="fillAcres('inspectionOnly');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
                         <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresInspectionOnly" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
-                        <label asp-for="fir.AcresNoCrop" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresNoCrop">
+                        <label asp-for="fir.AcresNoCrop" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresNoCrop">
                         <div class="input-group-append" onclick="fillAcres('noCrop');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
@@ -43,16 +43,16 @@
                 </div>
                 <div class="col-lg-4">@* Second*@
                     <div class="form-group row">
-                        <label asp-for="fir.AcresRejected" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresRejected">
+                        <label asp-for="fir.AcresRejected" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresRejected">
                         <div class="input-group-append" onclick="fillAcres('rejected');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
                         <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresRejected" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
-                        <label asp-for="fir.AcresRefund" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresRefund">
+                        <label asp-for="fir.AcresRefund" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresRefund">
                         <div class="input-group-append" onclick="fillAcres('refund');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
@@ -61,16 +61,16 @@
                 </div>
                 <div class="col-lg-4">@* third*@
                     <div class="form-group row">
-                        <label asp-for="fir.AcresGrowout" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresGrowout">
+                        <label asp-for="fir.AcresGrowout" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresGrowout">
                         <div class="input-group-append" onclick="fillAcres('growout');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
                         <span class="field-validation-valid text-danger" data-valmsg-for="fir.AcresGrowout" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group row">
-                        <label asp-for="fir.AcresCancelled" class="col-sm-3 col-form-label"></label>
-                        <input type="text" class="col-sm-8 form-control" asp-for="fir.AcresCancelled">
+                        <label asp-for="fir.AcresCancelled" class="col-sm-7 col-form-label"></label>
+                        <input type="text" class="col-sm-3 form-control" asp-for="fir.AcresCancelled">
                         <div class="input-group-append" onclick="fillAcres('cancelled');">             
                             <i class="fa fa-angle-double-left input-group-text"></i>
                         </div>
@@ -171,12 +171,10 @@
                 <textarea asp-for="fir.Comments" class="form-control border" rows="3" width="400px"></textarea>
             </div>                
         </div> 
-        <div class="form-group row">
-            <div class="form-check form-check-inline col-sm-4">
-                <label asp-for="fir.Complete" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="fir.Complete">
-            </div>
-        </div> 
+        <div class="form-group row">                
+                <label asp-for="fir.Complete" class="col-sm-6 col-form-label"></label>
+                <input type="checkbox" asp-for="fir.Complete" class="col-sm-3 form-control">
+        </div>          
         <div class="form-group row">
             <label asp-for="fir.PotatoPoundsHarvested" class="col-sm-2 col-form-label">PO #Harvested</label>            
             <input type="text" class="col-sm-3 form-control" asp-for="fir.PotatoPoundsHarvested">                          

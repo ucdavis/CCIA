@@ -28,20 +28,21 @@ namespace CCIA.Models
             var tagToEdit = await _helper.FullTag()
                     .Include(t => t.TagBagging)
                     .Include(t => t.EmployeePrinted)
+                    .Include(t => t.Documents)
                     .Where(t => t.Id == id).FirstOrDefaultAsync(); 
            var model = new TagCreateEditViewModel
             {
                 tag = tagToEdit,
                 tagTypes = await _dbContext.AbbrevTagType.OrderBy(t => t.SortOrder).ToListAsync(),
                 tagClass = await _dbContext.AbbrevClassSeeds.FromSqlRaw("EXEC class_seed_pot_labeled").ToListAsync(),
+                oecdClass = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync(),
+                oecdCountries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync()
             };
 
-            if(id != 0){
-                return model;
-            }
-
-            model.oecdClass = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
-            model.oecdCountries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+            if(id == 0){
+                model.oecdClass = new List<AbbrevOECDClass>();
+                model.oecdCountries = new List<Countries>();                
+            }         
 
             return model;
         }

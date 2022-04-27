@@ -1,0 +1,385 @@
+@model CCIA.Models.ClientTagRequestViewModel
+
+@await Html.PartialAsync("_tagGuidelines")
+
+<h1>Create New OECD-Gray Tag/NFC from Seed grown outside California</h1>
+
+<div class="row">
+    <div class="col-sm-8">
+        <form asp-action="NewOOSSeedLot" method="post">            
+            <div asp-validation-summary="All" class="text-danger"></div>                      
+            <div class="form-group row">
+                <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
+                <div class="input-group col-sm-6" >
+                    <input id="ApplicantSearch" class="form-control" value="@Model.OOSSeed.ApplicantId"></input>                    
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" id="retrieveApplicantButton" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>                        
+                    </div>
+                    &nbsp;(enter Org Id or Name)
+                </div>               
+            </div>
+             <div>
+                <span id="results"></span>
+            </div>
+
+            <div id="selectCrop" style="display: none !important;">
+                <input type="hidden" asp-for="OOSSeed.ApplicantId" /> 
+                <div class="form-group row">
+                   <label class="col-sm-3 col-form-label">Crop:</label>
+                   <select id="Crop" name="Crop" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>          
+                </div>
+                <div class="form-group row required">  
+                    <label asp-for="OOSSeed.SampleFormVarietyId" class="col-sm-3 col-form-label"></label>
+                    <div class="input-group col-sm-6">                        
+                            <input class="form-check" id="Variety" value="@Model.OOSSeed.SampleFormVarietyId" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-search"></i>
+                                </button>     
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>     
+                    @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+                </div>
+            </div>
+              
+            <div id="completeForm" style="display: none !important;">
+                <input type="hidden" asp-for="OOSSeed.SampleFormVarietyId" /> 
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.CertYear" class="col-sm-3 col-form-label"></label>
+                    <select asp-for="OOSSeed.CertYear" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.CertYears))"></select> 
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.OriginCountry" class="col-sm-3 col-form-label"></label>                    
+                    <select asp-for="OOSSeed.OriginCountry" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>                  
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.OriginState" class="col-sm-3 col-form-label"></label>                    
+                    <select asp-for="OOSSeed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateWithCountry"))"></select>                  
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.SampleFormCertNumber" class="col-sm-3 col-form-label"></label>                    
+                    <input asp-for="OOSSeed.SampleFormCertNumber" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="OOSSeed.SampleFormCertNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.LotNumber" class="col-sm-3 col-form-label"></label>                    
+                    <input asp-for="OOSSeed.LotNumber" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="OOSSeed.LotNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="OOSSeed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="OOSSeed.PoundsLot" class="col-sm-6 form-control"></input>
+                    <span asp-validation-for="OOSSeed.PoundsLot" class="text-danger"></span>
+                </div>                
+                <div class="form-group row required">
+                <label asp-for="OOSSeed.Type" class="col-sm-3 col-form-label"></label>                
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" asp-for="OOSSeed.Type" value="Original Run" />Original Run
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" asp-for="OOSSeed.Type" value="Remill" />Remill
+                    </label>
+                </div>   
+                <span asp-validation-for="OOSSeed.Type" class="text-danger"></span>   
+            </div>            
+            
+            <div class="form-group row">
+                <label asp-for="request.Alias" class="col-sm-3 col-form-label"></label>
+                <input asp-for="request.Alias" class="form-control col-sm-2">        
+                <span class="field-validation-valid text-danger" asp-validation-for="request.Alias" data-valmsg-replace="true"></span>
+                (leave blank for listed variety name)
+            </div>
+            <div class="form-group row required">
+                <label asp-for="request.CountRequested" class="col-sm-3 col-form-label"></label>
+                <input asp-for="request.CountRequested" class="form-control col-sm-2" onchange="WeightChange()">
+                <span class="field-validation-valid text-danger" asp-validation-for="request.CountRequested" data-valmsg-replace="true"></span>
+            </div> 
+            <div class="form-group row required">
+                <label asp-for="request.BagSize" class="col-sm-3 col-form-label"></label>
+                <input asp-for="request.BagSize" class="form-control col-sm-2" onchange="WeightChange()">
+                <span class="field-validation-valid text-danger" asp-validation-for="request.BagSize" data-valmsg-replace="true"></span>
+                <div class="col-sm-1"></div>
+                <select asp-for="request.WeightUnit" onchange="WeightChange()">
+                    <option value="L">Pounds</option> 
+                    <option value="K">Kilograms</option>
+                </select>
+            </div> 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label" for="weightOfRequest">Weight of this request</label>
+                <div id="weightOfRequest" class="form-control-plaintext col-sm-2"></div>
+            </div>
+            <div class="form-group required row">
+                <label asp-for="request.CoatingPercent" class="col-form-label col-sm-3"></label> 
+                <div class="col-sm-9">      
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0" data-val="true" data-val-required="Please coating percentage" >
+                        <label class="form-check-label" for="0">No coating</label>                    
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.34" data-val="true" data-val-required="Please coating percentage" >
+                        <label class="form-check-label" for="0.34">34%</label>                    
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.5" data-val="true" data-val-required="Please coating percentage" >
+                        <label class="form-check-label" for="0.5">50%</label>                    
+                    </div>  
+                    <span class="field-validation-valid text-danger" asp-validation-for="request.CoatingPercent" data-valmsg-replace="true"></span>       
+                </div>         
+            </div>                       
+            <div class="form-group row">
+                <label asp-for="request.PlantingStockLotNumber" class="col-sm-4 col-form-label"></label>
+                <input asp-for="request.PlantingStockLotNumber" class="form-control col-sm-2">                    
+                <span class="field-validation-valid text-danger" asp-validation-for="request.PlantingStockLotNumber" data-valmsg-replace="true"></span>
+            </div>                
+            <div class="form-group row required">
+                <label asp-for="request.DateSealed" class="col-sm-3 col-form-label"></label>
+                <input asp-for="request.DateSealed" class="form-control col-sm-2 datepicker" type="text">        
+                <span class="field-validation-valid text-danger" asp-validation-for="request.DateSealed" data-valmsg-replace="true"></span>
+            </div>         
+            <div class="form-group row required">
+                <label asp-for="request.OECDCountryId" class="col-sm-3 col-form-label">Country</label>
+                <select asp-for="request.OECDCountryId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
+                <span class="field-validation-valid text-danger" asp-validation-for="request.OECDCountryId" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="form-group row required">
+                <label asp-for="request.DateNeeded" class="col-sm-3 col-form-label"></label>
+                <input asp-for="request.DateNeeded" class="form-control col-sm-2 datepicker" type="text">        
+                <span class="field-validation-valid text-danger" asp-validation-for="request.DateNeeded" data-valmsg-replace="true"></span>
+                <span>(please allow 24-48 hours)</span>
+            </div> 
+            <div class="form-group row required">
+                <label asp-for="request.HowDeliver" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Ground" data-val="true" data-val-required="Please select delivery method">
+                        <label class="form-check-label" for="UPS Ground">UPS Ground</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Overnight" data-val="true" data-val-required="Please select delivery method">
+                        <label class="form-check-label" for="UPS Overnight">UPS Overnight</label>
+                    </div> 
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Pick-up at Parsons Building" data-val="true" data-val-required="Please select delivery method">
+                        <label class="form-check-label" for="Pick-up at Parsons Building">Pick-up at Parsons Building</label>
+                    </div> 
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Other" data-val="true" data-val-required="Please select delivery method">
+                        <label class="form-check-label" for="Other">Other</label>
+                    </div> 
+                    <span class="field-validation-valid text-danger" asp-validation-for="request.HowDeliver" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="request.Comments" class="col-sm-3 col-form-label"></label>
+                <textarea asp-for="request.Comments" class="form-control col-sm-7" rows="3"></textarea>        
+                <span class="field-validation-valid text-danger" asp-validation-for="request.Comments" data-valmsg-replace="true"></span>       
+            </div> 
+            <div class="form-group row">
+                <input type="submit" value="Create Tag Request" class="btn btn-primary">
+            </div> 
+            <div>
+                <input type="hidden" asp-for="Seed.SamplerName" value="NFC" />
+            <div>
+
+            </div>            
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+
+    <script type="application/javascript">
+
+        $(document).ready(function () {
+            checkLoad();
+            SetStatesForCountry();
+            $('.datepicker').datepicker();  
+           
+            $('#retrieveApplicantButton').click(function () {
+                var searchTerm = $('#ApplicantSearch').val(); 
+                $.ajax({
+                    method: 'GET',
+                    url: '/client/Seeds/GetApplicants',
+                    data: {
+                        search: searchTerm,
+                    }
+                })
+                .done(function(data){                    
+                    $('#results').html("");
+                    var s = '<table class="table"><tr><th>&nbsp;</th><th>Org Id</th><th>Applicant</th></tr>';
+                        $.each(data,
+                            function(i) {
+                                var item = data[i];
+                                s += '<tr><td><input type="button" class="btn btn-primary" value="Select" onClick="selectApplicant(' + item.id + ')"></input></td>';
+                                s += '<td>' + item.id + '</td>';
+                                s += '<td>' + item.name + '</td>';
+                            });
+                        s += '</table>';                                                
+                    $('#results').html(s);
+                })
+                .fail(function(xhr) {
+                    alert("Could not find info on that Org Id or Name");
+                    console.log('error', xhr);
+                }); 
+            });
+
+            $('#OOSSeed_OriginCountry').change(function () {                
+                SetStatesForCountry();
+            })
+
+        });
+
+        function SetStatesForCountry() 
+        {
+            var country = $("#OOSSeed_OriginCountry option:selected");
+
+                if(country.text() === "United States")
+                {
+                    showStates("USA");
+                } else  if(country.text() === "Canada")
+                {
+                    showStates("Canada");
+                } else 
+                {
+                    showStates("Outside");
+                }
+
+        };
+
+        function showStates(country)
+        {   
+            $("#OOSSeed_OriginState option").filter(function(index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+            var selectText, indexText ;
+            if(country === "USA")
+            {   
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if(country === "Canada"){
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";               
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";                   
+            }
+           
+            $("#OOSSeed_OriginState > option").each(function() {
+                if(~this.text.indexOf(indexText))
+                {
+                    $("#OOSSeed_OriginState option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#OOSSeed_OriginState option[value*='" + this.value + "']").prop('disabled', true); 
+                }
+            });
+             
+            $("#OOSSeed_OriginState option").removeAttr("selected");                         
+            $("#CountryDropDownList option:contains(" + selectText + ")").attr('selected', 'selected');
+            
+        };
+
+        function selectApplicant(orgId)
+        {
+            $("#selectCrop").show();
+            $("#OOSSeed_ApplicantId").val(orgId);           
+        }
+
+        $('#variety-search').on('click', () => {
+            searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder")
+        });
+
+        
+
+        function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback) {            
+            let cropId = $("#Crop").val();
+
+            let varietyName = $("#Variety").val();
+            if (varietyName === "") {
+                alert("Warning: No variety found. No variety with the entered name was found in our system. Please update and try again"); 
+                return;
+            }
+
+            let data = {
+                name: varietyName,
+                cropId: cropId
+            };
+            let vs = document.getElementById(dropdownId);
+            // Take text in input box and autofill input with the variety name that most closely matches it
+            $.ajax({
+                type: "GET",
+                url: "/client/Application/FindVariety",
+                data: data,
+                success: function (res) {
+                    vs.innerHTML = "";
+                    // No varieties were found
+                    if (res.length === 0) {
+                        alert("Warning: No variety found. No variety with the entered name was found in our system. Please update and try again"); 
+                        //window[selectVarietyCallback](-1, varietyName);                      
+                    }
+                    // Populate dropdown with list of varieties
+                    res.forEach((el) => {
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
+                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
+                            varietySelected(el.id);
+                        });
+                    })
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        }
+
+        function varietySelected(varietyId) {
+            $("#completeForm").show();            
+            $("#OOSSeed_SampleFormVarietyId").val(varietyId);                
+        };
+
+        function checkLoad() {
+            var applicantId = $("#OOSSeed_ApplicantId").val();
+            var varietyId = $("#OOSSeed_SampleFormVarietyId").val();
+            if(applicantId != "")
+            {
+                $("#selectCrop").show();                
+            }
+            if(varietyId != "")
+            {
+                $("#completeForm").show();   
+            }
+        }  
+
+        function WeightChange(){
+            var count = $("#request_CountRequested").val();            
+            var weight = $("#request_BagSize").val();                                  
+            var coating = $("[id*=request_CoatingPercent]:checked").val();           
+            var balance = "";            
+            if (!isNaN(count) && count.length != 0 && count != 0 && !isNaN(weight) && weight.length != 0 && weight != 0) {
+                balance = (($("[id*=request_WeightUnit").val() == "L") ? count * weight * (1- coating) : count * weight * 2.20462262 * (1- coating));
+                $("[id*=weightOfRequest").text(Math.round(balance));                
+            } 
+        };        
+
+        function DeliveryChange() {
+            var method = $("[id*=request_HowDeliver]:checked").val();
+            if (method == 'UPS Overnight') {
+                alert('Please provide your UPS account number in comment box. Failure to do so will delay your tags.');
+            }
+            if (method == 'Other') {
+                alert('Enter information in comment box. Failure to do so will delay your tags.');
+            }            
+        };    
+
+    </script>
+}

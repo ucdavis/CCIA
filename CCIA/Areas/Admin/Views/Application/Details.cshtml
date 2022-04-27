@@ -246,19 +246,23 @@
                 <a class="btn btn-warning" asp-action="NewMap" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Update/Create Map</a>
             </div> 
         </div>
-    </div>
+    </div>   
     <div class="form-group row">
         <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-9 form-control-plaintext">
             @Html.DisplayFor(x => x.application.ApplicantComments)
         </div>
     </div>
-    <div class="form-group row">
-        <label asp-for="application.Comments" class="col-sm-3 col-form-label"></label>
-        <div class="col-sm-9 form-control-plaintext">
-            @Html.DisplayFor(x => x.application.Comments)
+    <form asp-action="UpdateComments">
+        <input type="hidden" name="id" id="id" value="@Model.application.Id">
+        <div class="form-group row ">
+            <div class="col-sm-11 row">
+                <label for="comments" class="col-sm-3 col-form-label">Admin Comments</label>
+                <textarea name="comments" id="comments" class="col-sm-9 form-control" rows="3">@Model.application.Comments</textarea>
+            </div>
+            <div class="col-sm-1"><input type="submit" value="Update" class="btn btn-primary"></div>            
         </div>
-    </div>
+    </form> 
     @if(Model.conflicts.Any())
     {
         <div class="row">

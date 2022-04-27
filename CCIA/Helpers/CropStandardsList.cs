@@ -51,6 +51,11 @@ namespace CCIA.Helpers
                 .Select(s => new Tuple<int, string>(s.GetCropId(), s.CertProgram))
                 .FirstOrDefaultAsync();
             
+            if(cropId == null)
+            {
+                return returnList;
+            }
+            
                 
             var cs = await _dbContext.CropStandards.Where(c => c.CropId == cropId.Item1 && c.Standards.Program == cropId.Item2)
                 .Include(c => c.Standards)

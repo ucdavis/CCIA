@@ -11,8 +11,10 @@ using CCIA.Models.IndexViewModels;
 using CCIA.Models.SeedsCreateViewModel;
 using CCIA.Models.SeedsCreateOOSViewModel;
 using CCIA.Models.SeedsCreateQAViewModel;
-
-
+using CCIA.Models.ViewModels;
+using CCIA.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace CCIA.Controllers.Client
 {
@@ -20,13 +22,19 @@ namespace CCIA.Controllers.Client
     public class SeedsController : ClientController
     {
         private readonly CCIAContext _dbContext;
+         private readonly IFullCallService _helper;
+        private readonly INotificationService _notificationService;
 
-        public SeedsController(CCIAContext dbContext)
+         private readonly IFileIOService _fileService;
+
+        public SeedsController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService, IFileIOService fileIOService)
         {
             _dbContext = dbContext;
+            _helper = helper;
+            _notificationService = notificationService;
+            _fileService = fileIOService;
         }
-
-        // GET: Application
+        
         public async Task<IActionResult> Index(int certYear)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
@@ -37,16 +45,51 @@ namespace CCIA.Controllers.Client
             var model = await SeedsIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
         }
-
-        // GET: Application/Details/5
+        
         public async Task<IActionResult> Details(int id)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var model = await ClientSeedsViewModel.Create(_dbContext, orgId, id);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            if(model.seed.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
             return View(model);
-        }
+        }      
+
+        [HttpPost]
+        public async Task<IActionResult> Submit(int id)
+        {
+            var seedToSubmit = await _dbContext.Seeds.Where(s => s.Id == id).FirstOrDefaultAsync();
+            if(seedToSubmit == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            if(seedToSubmit.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
+
+            seedToSubmit.Status = SeedsStatus.PendingAcceptance.GetDisplayName();
+            seedToSubmit.DateSampleReceived = DateTime.Now;
+            seedToSubmit.Submitted = true;
+
+            await _notificationService.SeedLotSubmitted(seedToSubmit);
+
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed lot submitted for review";
+
+            return RedirectToAction("Details", new { id = seedToSubmit.Id });
+        } 
        
-        // GET: Application/Create
         public async Task<IActionResult> SelectOrigin()
         {            
             var permissionOk = await CheckConditionerPermission();
@@ -93,7 +136,7 @@ namespace CCIA.Controllers.Client
 
         public ActionResult SelectApp()
         {
-            int[] years = Enumerable.Range(2007, CertYearFinder.CertYear - 2006).ToArray();
+             int[] years = CertYearFinder.certYearListReverse.ToArray();
             return View(years);
         }
 
@@ -174,7 +217,7 @@ namespace CCIA.Controllers.Client
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             if(app.Variety != null)
             {
@@ -239,7 +282,7 @@ namespace CCIA.Controllers.Client
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var seed = model.Seed;
-            #region Begin error checking
+            
             bool error = false;
             
             if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
@@ -259,7 +302,7 @@ namespace CCIA.Controllers.Client
                 return View("CreateInState", returnModel);
             }
 
-            #endregion         
+             
             
             var app = await _dbContext.Applications.Where(a => a.Id == seed.AppId.First())
                 .Include(a => a.Variety)
@@ -273,7 +316,7 @@ namespace CCIA.Controllers.Client
             newSeed.CertYear = seed.CertYear;
             newSeed.ApplicantId = app.ApplicantId;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             newSeed.SampleFormVarietyId = app.SelectedVarietyId;
             newSeed.OfficialVarietyId = app.Variety.ParentId;
             newSeed.LotNumber = seed.LotNumber;
@@ -303,18 +346,21 @@ namespace CCIA.Controllers.Client
             newSeed.Confirmed = false;
             newSeed.Status = "Pending supporting material";
             newSeed.CertProgram = app.AppType;
-            var seedapps = new List<SeedsApplications>();
-            foreach(var sa in seed.AppId)
-            {
-                seedapps.Add(new SeedsApplications { AppId = sa});
-            }
-            newSeed.SeedsApplications = seedapps;
+           
+            
             
             if(ModelState.IsValid)
             {
                 await _dbContext.Seeds.AddAsync(newSeed);
                 await _dbContext.SaveChangesAsync();
 
+                 var seedapps = new List<SeedsApplications>();
+                foreach(var sa in seed.AppId)
+                {
+                    seedapps.Add(new SeedsApplications { AppId = sa});
+                }
+
+                newSeed.SeedsApplications = seedapps;
                 var labresults = new SampleLabResults();
                 labresults.SeedsId = newSeed.Id;
                 await _dbContext.SampleLabResults.AddAsync(labresults);
@@ -337,10 +383,8 @@ namespace CCIA.Controllers.Client
             var seed = model.Seed;  
             seed.LotNumber = seed.LotNumber.Trim();
             seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();   
-
-            #region Begin error checking
-            bool error = false;
-            
+           
+            bool error = false;            
              if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
                 ErrorMessage = "Must Select county";
                 error = true;
@@ -355,11 +399,7 @@ namespace CCIA.Controllers.Client
             {
                 var returnModel = await SeedsCreateOOSViewModel.Return(_dbContext, seed);
                 return View(returnModel); 
-            }
-
-            #endregion         
-            
-               
+            }  
             
             var newSeed = new Seeds();
             newSeed.SampleFormDate = DateTime.Now;
@@ -369,7 +409,7 @@ namespace CCIA.Controllers.Client
             newSeed.SampleFormVarietyId = seed.SampleFormVarietyId;
             newSeed.OfficialVarietyId = seed.SampleFormVarietyId.HasValue ? seed.SampleFormVarietyId.Value : 0;
             newSeed.ConditionerId = orgId;
-            newSeed.UserEntered = 1;           
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);;           
             newSeed.LotNumber = seed.LotNumber;
             newSeed.PoundsLot = seed.PoundsLot;
             newSeed.Class = seed.Class;
@@ -458,5 +498,113 @@ namespace CCIA.Controllers.Client
             }
             return Json(orgs);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {  
+            var model = await AdminSeedsViewModel.ClientEditDetails(_dbContext, id, _helper);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            if(model.seed.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdminSeedsViewModel vm)
+        {
+            var seedEdit = vm.seed;
+            var seedToUpdate = await _dbContext.Seeds.Where(s => s.Id == seedEdit.Id).FirstOrDefaultAsync();  
+            if(seedToUpdate == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if(seedToUpdate.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }        
+           
+            seedToUpdate.LotNumber = seedEdit.LotNumber;
+            seedToUpdate.PoundsLot = seedEdit.PoundsLot;            
+            seedToUpdate.Class = seedEdit.Class;
+            seedToUpdate.Remarks = seedEdit.Remarks;        
+
+            if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Seed updated";
+            } else {
+                ErrorMessage = "Something went wrong";
+                var model = await AdminSeedsViewModel.ClientEditDetails(_dbContext, seedEdit.Id, _helper);
+                return View(model); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = seedEdit.Id });
+
+        }
+
+         public async Task<IActionResult> GetSeedFile(int id)
+        {
+            var doc = await _dbContext.SeedDocuments.Where(d => d.Id == id).Include(d => d.DocumentType).FirstOrDefaultAsync();
+            var seed = await _dbContext.Seeds.Where(s => s.Id == doc.SeedsId).FirstOrDefaultAsync();
+            if(seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            if(seed.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadSeedFile(doc, seed.CertYear.Value), contentType, doc.Link);
+        }        
+
+        [HttpPost]
+        public async Task<IActionResult> UploadSeedDocument(int id, string certName, int docType, IFormFile file)
+        {
+           var sid = await _dbContext.Seeds.Where(s => s.Id==id).FirstOrDefaultAsync();
+           if(sid.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
+           var documentType = await _dbContext.SeedsDocumentTypes.Where(t => t.Id == docType).FirstOrDefaultAsync();
+           if(sid == null)
+           {
+               ErrorMessage = "SID not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+           if(_fileService.CheckDeniedExtension(ext))
+           {
+               ErrorMessage = "File extension not allowed!";
+               return RedirectToAction(nameof(Details), new { id = id });
+           }      
+           
+           if(file.Length >0)
+           {
+               await _fileService.SaveSeedDocument(sid, documentType.Folder, file); 
+               var seedDoc = new SeedDocuments();
+               seedDoc.SeedsId = sid.Id;
+               seedDoc.DocType = docType;
+               seedDoc.Name = certName;
+               seedDoc.Link = file.FileName;                             
+                _dbContext.Add(seedDoc);
+                await _dbContext.SaveChangesAsync();
+           }
+           Message = "File uploaded";
+           return RedirectToAction(nameof(Details), new { id = id }); 
+        }
+
     }
 }

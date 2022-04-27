@@ -1349,7 +1349,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.BlendId).HasColumnName("blend_id");
 
-                entity.Property(e => e.PotatoAppId).HasColumnName("pot_app_id");
+                entity.Property(e => e.AppId).HasColumnName("pot_app_id");
 
                 entity.Property(e => e.OECDId).HasColumnName("oecd_file_num");
 
@@ -1399,7 +1399,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Pretagging).HasColumnName("pretagging");
 
-                entity.Property(e => e.SeriesNumbered).HasColumnName("series_numbered");
+                //entity.Property(e => e.SeriesNumbered).HasColumnName("series_numbered");
 
                 entity.Property(e => e.AnalysisRequested).HasColumnName("analysis_request");
 

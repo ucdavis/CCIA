@@ -77,6 +77,19 @@ namespace CCIA.Models.ViewModels
 
         }
 
+        public static async Task<AdminSeedsViewModel> ClientEditDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
+        {
+            var seedToEdit = await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync();
+
+            var viewModel = new AdminSeedsViewModel
+            {
+                seed = seedToEdit, 
+                classes = await _dbContext.AbbrevClassSeeds.Include(c => c.AppType).Where(c => c.Id >= seedToEdit.Class && c.Program == seedToEdit.AppTypeTrans.AppTypeId).OrderBy(c => c.SortOrder).ToListAsync(),
+            }; 
+            return viewModel;
+
+        }
+
          public static async Task<AdminSeedsViewModel> CreateNew(CCIAContext _dbContext)
         {
             var countryList = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();            

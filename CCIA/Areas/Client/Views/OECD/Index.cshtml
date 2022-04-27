@@ -20,15 +20,14 @@
         <th>Close Date</th>
         <th>Lbs</th>
         <th>Class</th>
-        <th>Country</th>
-        <th>Link</th>        
+        <th>Country</th>    
         </thead>
         <tbody>
         
             @foreach (var oecd in Model.oecd)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="oecd" asp-route-id="@oecd.Id">Details</a></td>
+                <td><a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a></td>
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
                 <td>@oecd.TagId</td>
@@ -39,7 +38,6 @@
                 <td>@oecd.Pounds</td>
                 <td>@oecd.Class.Class</td>
                 <td>@oecd.Country.Name</td>
-                <td></td>                
             </tr>
             }
         </tbody>

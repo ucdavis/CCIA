@@ -85,6 +85,7 @@ namespace CCIA.Services
             var seed = _context.Seeds
                 .Include(s => s.ApplicantOrganization)
                 .Include(s => s.ConditionerOrganization)
+                .Include(s => s.AppTypeTrans)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(s => s.Application)
@@ -548,6 +549,7 @@ namespace CCIA.Services
                 .Include(t => t.OECDCountry)
                 .Include(t => t.Changes)
                 .ThenInclude(c => c.Employee)
+                .Include(t => t.OECDFile)
                 .AsQueryable();
             return tag;
         }

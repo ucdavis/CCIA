@@ -13,7 +13,7 @@
             <div class="form-group row">
                 <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
                 <div class="input-group col-sm-6" >
-                    <input id="ApplicantSearch" class="form-control"></input>                    
+                    <input id="ApplicantSearch" class="form-control" value="@Model.Seed.ApplicantId"></input>                    
                     <div class="input-group-append">
                         <button class="btn btn-primary" id="retrieveApplicantButton" type="button">
                             <i class="fas fa-search"></i>
@@ -35,7 +35,7 @@
                 <div class="form-group row required">  
                     <label asp-for="Seed.SampleFormVarietyId" class="col-sm-3 col-form-label"></label>
                     <div class="input-group col-sm-6">                        
-                            <input class="form-check" id="Variety" />
+                            <input class="form-check" id="Variety" value="@Model.Seed.SampleFormVarietyId" />
                             <div class="input-group-append">
                                 <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-search"></i>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.OriginState" class="col-sm-3 col-form-label"></label>                    
-                    <select asp-for="Seed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateProvinceName"))"></select>                  
+                    <select asp-for="Seed.OriginState" class="form-control  col-sm-6" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateWithCountry"))"></select>                  
                 </div>
                 <div class="form-group row required">
                     <label asp-for="Seed.SampleFormCertNumber" class="col-sm-3 col-form-label"></label>                    
@@ -149,22 +149,16 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script type="application/javascript">
-
         
-        function gettoken() {
-            var token = '@Html.AntiForgeryToken()';
-            token = $(token).val();
-            return token;
-        };
-
         $(document).ready(function () {
+            checkLoad();
             SetStatesForCountry();
            
             $('#retrieveApplicantButton').click(function () {
-                var searchTerm = $('#ApplicantSearch').val();                
+                var searchTerm = $('#ApplicantSearch').val(); 
                 $.ajax({
                     method: 'GET',
-                    url: '/Seeds/GetApplicants',
+                    url: '/client/Seeds/GetApplicants',
                     data: {
                         search: searchTerm,
                     }
@@ -175,9 +169,9 @@
                         $.each(data,
                             function(i) {
                                 var item = data[i];
-                                s += '<tr><td><input type="button" value="Select" onClick="selectApplicant(' + item.Id + ')"></input></td>';
-                                s += '<td>' + item.Id + '</td>';
-                                s += '<td>' + item.Name + '</td>';
+                                s += '<tr><td><input type="button" class="btn btn-primary" value="Select" onClick="selectApplicant(' + item.id + ')"></input></td>';
+                                s += '<td>' + item.id + '</td>';
+                                s += '<td>' + item.name + '</td>';
                             });
                         s += '</table>';                                                
                     $('#results').html(s);
@@ -243,7 +237,7 @@
 
         function selectApplicant(orgId)
         {
-            $("#selectCrop").show();
+            $("#selectCrop").show();            
             $("#Seed_ApplicantId").val(orgId);           
         }
 
@@ -270,7 +264,7 @@
             // Take text in input box and autofill input with the variety name that most closely matches it
             $.ajax({
                 type: "GET",
-                url: "/Application/FindVariety",
+                url: "/client/Application/FindVariety",
                 data: data,
                 success: function (res) {
                     vs.innerHTML = "";
@@ -281,24 +275,35 @@
                     }
                     // Populate dropdown with list of varieties
                     res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.varOffId} value=${el.varOffId}>${el.varOffName}</a>`;
-                        document.getElementById(`variety-${el.varOffId}`).addEventListener('click', (e) => {
-                            varietySelected(el.varOffId);
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
+                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
+                            varietySelected(el.id);
                         });
                     })
                 },
                 error: function (res) {
                     alert("There was an error processing the request");
                 }
-        });
+            });
+        }
 
         function varietySelected(varietyId) {
             $("#completeForm").show();            
             $("#Seed_SampleFormVarietyId").val(varietyId);                
         };
 
-
-}
+        function checkLoad() {
+            var applicantId = $("#Seed_ApplicantId").val();
+            var varietyId = $("#Seed_SampleFormVarietyId").val();
+            if(applicantId != "")
+            {
+                $("#selectCrop").show();                
+            }
+            if(varietyId != "")
+            {
+                $("#completeForm").show();   
+            }
+        }
        
 
     </script>

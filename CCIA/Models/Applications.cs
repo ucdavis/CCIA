@@ -358,6 +358,10 @@ namespace CCIA.Models
                 if(AppCertRad != null){
                     rad = AppCertRad.Rad;
                 }
+                if(AppType == "LT")
+                {
+                    return $"{certYearAbbrev}CA-LT-{Id} for";
+                }
                 if(AppType == "PO")
                 {
                     return "";

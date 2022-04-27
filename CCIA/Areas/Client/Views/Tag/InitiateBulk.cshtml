@@ -1,0 +1,19 @@
+@model List<Crops>
+
+@await Html.PartialAsync("_tagGuidelines")
+
+
+<form class="form-inline" asp-action="CreateBulk">
+    <label for="cropId" class="col-sm-1 col-form-label">Crop</label>
+    <select id="cropId" name="cropId" class="form-control col-sm-2" asp-items="@(new SelectList(Model, "CropId", "Name"))"></select>
+
+
+    <label for="Id" class="col-sm-1 col-form-label">Variety</label>
+    <input id="Variety" name="Variety" class="form-control mb-2 mr-sm-2" type="text">
+   
+    <div class="col-sm-1"></div>
+    <button type="submit" class="btn btn-primary mb-2">Retrieve Info</button>
+  </div>
+
+  
+</form>

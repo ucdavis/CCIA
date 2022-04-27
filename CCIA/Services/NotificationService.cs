@@ -21,6 +21,8 @@ namespace CCIA.Services
 
         Task SeedLotAccepted(Seeds seed);
 
+        Task SeedLotSubmitted(Seeds seed);
+
         Task BlendRequestApproved(BlendRequests blend);
 
         Task TagApproved(Tags tag);
@@ -31,11 +33,15 @@ namespace CCIA.Services
 
         Task TagFiled(Tags tag);
 
+        Task TagSubmitted(Tags tag);
+
         Task OrgCreated(Organizations org);
 
         Task OrgUpdated(Organizations org);
 
         Task OECDCharged(OECD oecd);
+
+        Task NFCSubmitted(Tags tag);
 
     }
 
@@ -169,6 +175,24 @@ namespace CCIA.Services
             }
         }
 
+        public async Task SeedLotSubmitted(Seeds seed)
+        {
+            var assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform).ToListAsync();            
+            
+            foreach (var employee in assignments)
+            {                
+                var notification = new Notifications
+                {
+                    Email = employee.Email,
+                    SID = seed.Id,
+                    Message = "Seed lot submitted",
+                    IsAdmin = true,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+
+        }
+
         public async Task BlendRequestApproved(BlendRequests blendRequest)
         {
             var users = await _dbContext.Contacts.Where(c => (c.Id == blendRequest.UserEntered || (c.BlendNotices && c.OrgId == blendRequest.ConditionerId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
@@ -229,6 +253,39 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag printed and shipped"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task TagSubmitted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag submitted by conditioner"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task NFCSubmitted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    SID = tag.SeedsID,
+                    Message = $"NFC SID/Tag submitted by conditioner SID:{tag.SeedsID} TID:{tag.Id}"
                 };
                 _dbContext.Notifications.Add(notification);      
             }

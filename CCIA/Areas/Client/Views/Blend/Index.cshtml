@@ -24,7 +24,7 @@
             @foreach (var blend in Model.blends)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.Id">Details</a></td>
+                <td><a asp-action="Details" asp-controller="Blend" asp-route-id="@blend.Id" class="btn btn-info">Details</a></td>
                 <td>@blend.Id</td>
                 <td>@blend.BlendType</td>       
                 <td>@blend.GetCrop()</td>

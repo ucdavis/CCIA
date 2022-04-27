@@ -26,8 +26,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
 
         public static async Task<SeedsCreateOOSViewModel> Create(CCIAContext _dbContext)
-        {   
-            // TODO : get real org ID!
+        {               
             var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewOOSSeeds();
             seed.CountyDrawn = countyId; 
@@ -37,7 +36,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
             var viewModel = new SeedsCreateOOSViewModel
             {
-                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
                 ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
@@ -46,7 +45,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == cal)
                     .Select(c => new County { CountyId = c.CountyId, Name = c.Name }).ToListAsync(),
                 Countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
-                CertYears = Enumerable.Range(2007, seed.CertYear.Value - 2006).ToList(),
+                CertYears =  CertYearFinder.certYearListReverse.ToList(),
             };
 
             return viewModel;
@@ -61,7 +60,7 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
             var viewModel = new SeedsCreateOOSViewModel
             {
-                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.StateWithCountry, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),
                 ClassProducible = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == 1 && c.ClassProducedTrans != "Inspection Only" && c.ClassProducedTrans != "Breeder").
                     Select(m => new AbbrevClassProduced { ClassProducedId = m.ClassProducedId, ClassProducedTrans = m.ClassProducedTrans })
                     .ToListAsync(),
@@ -79,6 +78,11 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
     public partial class NewOOSSeeds
     {   
+        public NewOOSSeeds() {
+            Type = "Original Run";
+        }
+
+
         public int? ApplicantId { get; set; }     
         [Display(Name = "Lot Number")]
         [Required]

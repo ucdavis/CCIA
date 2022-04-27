@@ -30,6 +30,17 @@ namespace CCIA.Models
     } 
     public partial class Tags
     {
+
+        public Tags()
+        {
+            Bulk = false;
+            Pretagging = false;
+            //SeriesNumbered = false;
+            AnalysisRequested = false;
+            OECD = false;
+            SeriesRequest = false;
+            ExtrasOverrun = 0;
+        }
         [Display(Name = "TagID")]
         public int Id { get; set; }
         public int? SeedsID { get; set; }
@@ -38,8 +49,8 @@ namespace CCIA.Models
         public int? BlendId { get; set; }
         [ForeignKey("BlendId")]
         public BlendRequests Blend { get; set; }
-        public int? PotatoAppId { get; set; }
-        [ForeignKey("PotatoAppId")]
+        public int? AppId { get; set; }
+        [ForeignKey("AppId")]
         public Applications Application {get; set;}
 
         
@@ -64,7 +75,7 @@ namespace CCIA.Models
                 {
                     return "BID";
                 }
-                else if (PotatoAppId.HasValue)
+                else if (AppId.HasValue)
                 {
                     return "AppID";
                 }
@@ -92,7 +103,7 @@ namespace CCIA.Models
                 {
                     return Blend.CertYear;
                 }
-                if(PotatoAppId.HasValue && Application != null)
+                if(AppId.HasValue && Application != null)
                 {
                     return Application.CertYear;
                 }
@@ -150,7 +161,7 @@ namespace CCIA.Models
                 {
                     return BulkCrop.Name;
                 }
-                if(PotatoAppId.HasValue && Application != null)
+                if(AppId.HasValue && Application != null)
                 {
                     return Application.CropName;
                 }
@@ -175,7 +186,7 @@ namespace CCIA.Models
                 {
                     return BulkVariety.Name;
                 }
-                if(PotatoAppId.HasValue && Application != null)
+                if(AppId.HasValue && Application != null)
                 {
                     return Application.VarietyName;
                 }
@@ -200,7 +211,7 @@ namespace CCIA.Models
                 {
                     return BulkVariety.Id;
                 }
-                if(PotatoAppId.HasValue && Application != null && Application.SelectedVarietyId.HasValue)
+                if(AppId.HasValue && Application != null && Application.SelectedVarietyId.HasValue)
                 {
                     return Application.SelectedVarietyId.Value;
                 }
@@ -281,7 +292,7 @@ namespace CCIA.Models
                 {
                     return "Certified Blend";
                 }
-                else if(PotatoAppId.HasValue && Application != null)
+                else if(AppId.HasValue && Application != null)
                 {
                     return Application.ClassProducedName;
                 }
@@ -304,9 +315,9 @@ namespace CCIA.Models
                 {
                     return BlendId;
                 }
-                else if (PotatoAppId.HasValue)
+                else if (AppId.HasValue)
                 {
-                    return PotatoAppId;
+                    return AppId;
                 }
                 else if (Bulk)
                 {
@@ -339,6 +350,9 @@ namespace CCIA.Models
 
         
         public int? OECDId { get; set; }
+        
+        [ForeignKey("OECDId")]
+        public OECD OECDFile { get; set; }
        
         public int? TagClass { get; set; }
 
@@ -442,7 +456,7 @@ namespace CCIA.Models
 
         public bool Pretagging { get; set; }
 
-        public bool SeriesNumbered { get; set; }
+        // public bool SeriesNumbered { get; set; }
 
         [Display(Name ="Analysis Requested?")]
         public bool AnalysisRequested { get; set; }

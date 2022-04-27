@@ -29,7 +29,7 @@
             @foreach (var seeds in Model.seeds)
             {
             <tr>
-                <td><a asp-area="client" asp-action="Details" asp-controller="Seeds" asp-route-id="@seeds.Id">Details</a></td>
+                <td><a asp-area="client" asp-action="Details" asp-controller="Seeds" asp-route-id="@seeds.Id" class="btn btn-info">Details</a></td>
                 <td>@seeds.Id</td>
                 <td>@seeds.CertProgram</td>
                 <td>@seeds.CertYear</td>
