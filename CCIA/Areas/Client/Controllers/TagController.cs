@@ -286,8 +286,13 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
-        public ActionResult SelectOrigin(string origin)
+        public async Task<IActionResult> SelectOrigin(string origin)
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             if(origin == "Ca")
             {
                 return RedirectToAction("SelectApp");
@@ -299,8 +304,123 @@ namespace CCIA.Controllers.Client
             return View();
         }
 
-        public ActionResult SelectApp()
+        public async Task<ActionResult> NewOOSSeedLot()
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
+            var model = await ClientTagRequestViewModel.CreateOOSGrayTag(_dbContext);
+            return View(model);
+        }
+
+         [HttpPost]
+        public async Task<IActionResult> NewOOSSeedLot(ClientTagRequestViewModel model)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var seed = model.OOSSeed;  
+            var tag = model.request;
+            seed.LotNumber = seed.LotNumber.Trim();
+            seed.SampleFormCertNumber = seed.SampleFormCertNumber.Trim();   
+           
+            bool error = false;                        
+            
+            if(await _dbContext.Seeds.AnyAsync(s => s.LotNumber == seed.LotNumber && s.CertYear == seed.CertYear && s.SampleFormCertNumber == seed.SampleFormCertNumber))
+            {
+                ErrorMessage = "SID with same Lot, Cert Year, and Cert Number found. Duplicates are not allowed.";
+                error = true;              
+            }        
+            if(error)
+            {
+                var returnErrorModel = await ClientTagRequestViewModel.CreateOOSGrayTagRetry(_dbContext, model);
+                return View(returnErrorModel); 
+            }  
+            
+            var newSeed = new Seeds();
+            newSeed.SampleFormDate = DateTime.Now;
+            newSeed.SampleFormCertNumber = seed.SampleFormCertNumber;
+            newSeed.CertYear = seed.CertYear;
+            newSeed.ApplicantId = seed.ApplicantId;
+            newSeed.ConditionerId = orgId;
+            newSeed.SampleFormVarietyId = seed.SampleFormVarietyId;
+            newSeed.OfficialVarietyId = seed.SampleFormVarietyId.HasValue ? seed.SampleFormVarietyId.Value : 0;
+            newSeed.ConditionerId = orgId;
+            newSeed.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);           
+            newSeed.LotNumber = seed.LotNumber;
+            newSeed.PoundsLot = seed.PoundsLot;
+            newSeed.Class = 6;
+            newSeed.CountyDrawn = 0;
+            newSeed.OriginState = seed.OriginState;
+            newSeed.OriginCountry = seed.OriginCountry;
+            newSeed.OriginalRun = seed.Type == "Original Run" ? true : false;
+            newSeed.Remill = seed.Type == "Remill" ? true : false;            
+            newSeed.Remarks = tag.Comments;
+            newSeed.SampleDrawnBy = "NFC";
+            newSeed.OECDLot = true;
+            newSeed.Confirmed = false;
+            newSeed.CertProgram = "SD";
+            newSeed.Status = SeedsStatus.PendingAcceptance.GetDisplayName();
+            newSeed.NotFinallyCertified = true;
+
+            ModelState.Clear();                
+            if (TryValidateModel(newSeed))            
+            {
+                await _dbContext.Seeds.AddAsync(newSeed);
+                await _dbContext.SaveChangesAsync();
+
+                var newTag = new Tags();
+                newTag.SeedsID = newSeed.Id;
+                newTag.LotWeightBagged = seed.PoundsLot;
+                newTag.CountRequested = tag.CountRequested;
+                newTag.BagSize = tag.BagSize;
+                newTag.WeightUnit = tag.WeightUnit;
+                newTag.TagClass = seed.Class;
+                newTag.TagType = 7;
+                newTag.DateNeeded = tag.DateNeeded;
+                newTag.HowDeliver = tag.HowDeliver;
+                newTag.Comments = tag.Comments;
+                newTag.DateRequested = DateTime.Now;
+                newTag.Contact = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+                newTag.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+                newTag.DateEntered = DateTime.Now;
+                newTag.TaggingOrg = orgId;
+                newTag.Stage = TagStages.Requested.GetDisplayName();
+                newTag.OECD = true;
+                newTag.PlantingStockNumber = tag.PlantingStockLotNumber;
+                newTag.OECDTagType = 5;
+                newTag.DateSealed = tag.DateSealed;
+                newTag.OECDCountryId = tag.OECDCountryId;
+                newTag.Alias = tag.Alias;
+                newTag.CoatingPercent = tag.CoatingPercent;
+
+                _dbContext.Add(newTag);
+                await _dbContext.SaveChangesAsync();
+
+                var adminComments = $"NFC request: SID={newSeed.Id} Tag ID={newTag.Id}";
+
+                newSeed.Remarks = string.IsNullOrWhiteSpace(seed.Remarks) ? adminComments : $"{seed.Remarks}; {adminComments}";
+                newTag.AdminComments = adminComments;
+                await _notificationService.NFCSubmitted(newTag);
+
+                await _dbContext.SaveChangesAsync();                
+                Message = $"NFC Seed/Tag request submitted for review. SID: {newSeed.Id}, TagID: {newTag.Id}";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ErrorMessage = "Error encountered saving seed lot";
+            var returnModel = await ClientTagRequestViewModel.CreateOOSGrayTagRetry(_dbContext, model);
+            return View(returnModel);                
+        
+        }
+
+        public async Task<IActionResult> SelectApp()
+        {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             int[] years = CertYearFinder.certYearListReverse.ToArray();
             return View(years);
         }
@@ -308,6 +428,11 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> CreateInState(int[] appId, int certYear, int certNum, int certRad)
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             if(appId == null || appId.Count() == 0)
             {
                 ErrorMessage = "No apps selected";
@@ -322,6 +447,11 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> SubmitInState(ClientTagRequestViewModel model)
         {
+            if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
+            {
+                ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
+                return RedirectToAction(nameof(Index));
+            }
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var seed = model.Seed;
             var tag = model.request;

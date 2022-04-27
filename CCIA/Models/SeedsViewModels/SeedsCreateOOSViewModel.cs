@@ -78,6 +78,11 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
     public partial class NewOOSSeeds
     {   
+        public NewOOSSeeds() {
+            Type = "Original Run";
+        }
+
+
         public int? ApplicantId { get; set; }     
         [Display(Name = "Lot Number")]
         [Required]

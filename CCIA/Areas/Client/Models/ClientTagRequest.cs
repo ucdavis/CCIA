@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Helpers;
+using CCIA.Models.SeedsCreateOOSViewModel;
 using CCIA.Models.SeedsCreateViewModel;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
@@ -28,6 +30,10 @@ namespace CCIA.Models
         public bool AllowAnalysis { get; set; }
         public Applications Application { get; set; }
         public NewSeeds Seed { get; set; }
+        public List<StateProvince> States { get; set; }
+        public NewOOSSeeds OOSSeed { get; set; }
+        public List<int> CertYears { get; set; }
+        public List<Crops> crops { get; set; }
 
         public ClientTagRequestViewModel()
         {
@@ -300,6 +306,41 @@ namespace CCIA.Models
                 model.AllowAnalysis = true;
             }
             return model;
+        }
+
+        public static async Task<ClientTagRequestViewModel> CreateOOSGrayTag (CCIAContext _dbContext)
+        {            
+            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
+            var seed = new NewOOSSeeds();
+            seed.CountyDrawn = countyId; 
+            seed.CertYear = CertYearFinder.CertYear;            
+
+            var viewModel = new ClientTagRequestViewModel
+            {
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),               
+                OOSSeed = seed,
+                crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),                
+                Countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                CertYears =  CertYearFinder.certYearListReverse.ToList(),
+                request = new TagsRequest(),
+            };
+            return viewModel;
+        }
+
+        public static async Task<ClientTagRequestViewModel> CreateOOSGrayTagRetry (CCIAContext _dbContext, ClientTagRequestViewModel model)
+        {               
+            var viewModel = new ClientTagRequestViewModel
+            {
+                States =  await _dbContext.StateProvince.Where(s => s.Name != "California").Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),               
+                OOSSeed = model.OOSSeed,
+                crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true).Select(c => new Crops { CropId = c.CropId, Crop = c.Crop, CropKind = c.CropKind}).ToListAsync(),                
+                Countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                CertYears =  CertYearFinder.certYearListReverse.ToList(),
+                request = model.request,
+            };
+
+            return viewModel;
+
         }
 
         public static async Task<ClientTagRequestViewModel> CreateGrayTag(CCIAContext _dbContext, int[] appId, int certYear, int certNum, int certRad)
