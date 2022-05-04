@@ -16,6 +16,16 @@ namespace CCIA.Models
         Approved,        
     } 
 
+    public enum BlendType
+    {
+        [Display(Name="Lot")]
+        Lot,
+        [Display(Name="Varietal")]
+        Varietal,
+        [Display(Name="In Dirt")]
+        InDirt,
+    }
+
     public partial class BlendRequests
     {
         [Key]
