@@ -257,7 +257,7 @@ namespace CCIA.Controllers.Client.Client
                 .FirstOrDefaultAsync();
                 if(seed.OfficialVarietyId != variety.Seeds.OfficialVarietyId)
                 {
-                    ErrorMessage = "New SID variety does not batch other SID(s) in blend. All varieties must be same in Lot Blend.";
+                    ErrorMessage = "New SID variety does not match other SID(s) in blend. All varieties must be same in Lot Blend.";
                     return RedirectToAction(nameof(Details), new {id = blendId});
                 }
             } else {
@@ -265,7 +265,7 @@ namespace CCIA.Controllers.Client.Client
                 if(!varietySearch.Any(v => v.ComponentVarietyId == seed.OfficialVarietyId))
                 {
                     ErrorMessage = "SID variety is not a component of the entered variety. Please double check values.";
-                    return View();
+                    return RedirectToAction(nameof(Details), new {id = blendId});
                 }
             }
             
@@ -283,5 +283,93 @@ namespace CCIA.Controllers.Client.Client
             return RedirectToAction(nameof(Details), new {id = blendId});
 
         }
+
+         public async Task<IActionResult> EditLot(int id)
+       {
+           var comp = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();
+           if(comp == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           return View(comp);
+       } 
+       
+       [HttpPost]      
+       public async Task<IActionResult> EditLot(int id, LotBlends blend)
+       {
+           var lotToUpdate = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();
+           if(lotToUpdate == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           var blendToUpdate = await _dbContext.BlendRequests.Where(b => b.Id == lotToUpdate.BlendId).FirstOrDefaultAsync();
+           if(blendToUpdate == null)
+           {
+               ErrorMessage = "Blend not found";
+               return RedirectToAction(nameof(Index));
+           }
+           var seeds = await _dbContext.Seeds.Where(s => s.Id == blend.Sid).FirstOrDefaultAsync();
+           if(seeds == null)
+           {
+               ErrorMessage = "SID not found";
+               return RedirectToAction(nameof(EditLot), new { id = id }); 
+           }
+
+           if(blendToUpdate.BlendType == BlendType.Lot.GetDisplayName())
+            {
+                var variety = await _dbContext.LotBlends.Where(l => l.BlendId == blendToUpdate.Id)
+                .Include(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .FirstOrDefaultAsync();
+                if(seeds.OfficialVarietyId != variety.Seeds.OfficialVarietyId)
+                {
+                    ErrorMessage = "New SID variety does not match other SID(s) in blend. All varieties must be same in Lot Blend.";
+                    return RedirectToAction(nameof(EditLot), new { id = id });
+                }
+            } else {
+                var varietySearch = await _dbContext.VarietyBlendComponents.Where(v => v.BlendVarietyId == blendToUpdate.VarietyId).ToListAsync();                       
+                if(!varietySearch.Any(v => v.ComponentVarietyId == seeds.OfficialVarietyId))
+                {
+                    ErrorMessage = "SID variety is not a component of the entered variety. Please double check values.";
+                    return RedirectToAction(nameof(EditLot), new { id = id });
+                }
+            }
+          
+           lotToUpdate.Sid = blend.Sid;
+           lotToUpdate.Weight = blend.Weight;
+
+            if(ModelState.IsValid){                
+                await _dbContext.SaveChangesAsync();
+                Message = "Component updated";
+            } else {
+                ErrorMessage = "Something went wrong";                         
+                return View(lotToUpdate);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = lotToUpdate.BlendId }); 
+
+       }
+
+       [HttpPost]
+       public async Task<IActionResult> DeleteLot(int id)
+       {
+           var compToDelete = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();           
+           if(compToDelete == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           var blendId = compToDelete.BlendId;
+           _dbContext.Remove(compToDelete);
+           await _dbContext.SaveChangesAsync();
+
+           Message = "Component deleted";
+
+          return RedirectToAction(nameof(Details), new { id = blendId });  
+
+       }
+
     }
 }

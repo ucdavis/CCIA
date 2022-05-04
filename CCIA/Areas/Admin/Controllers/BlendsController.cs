@@ -302,7 +302,7 @@ namespace CCIA.Controllers.Admin
        [HttpPost]      
        public async Task<IActionResult> EditLot(int id, LotBlends blend)
        {
-           var lotToUpdate = await _dbContext.LotBlends.Where(lb => blend.CompId == id).FirstOrDefaultAsync();
+           var lotToUpdate = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();
            if(lotToUpdate == null)
            {
                ErrorMessage = "Component not found!";

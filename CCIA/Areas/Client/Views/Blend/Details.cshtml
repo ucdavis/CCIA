@@ -115,7 +115,6 @@
                         <th>Inert</th>
                         <th>Weed</th>
                         <th>Lab Date</th>
-                        <th>Dif. Cond.</th>
                         <th>Link</th>
                         <th>Cert Results</th>
                         <th></th>
@@ -156,14 +155,7 @@
                             <td>@row.OtherCropValue</td>
                             <td>@row.InertValue</td>
                             <td>@row.WeedValue</td>
-                            <td>@row.LabDate</td>
-                            @if(row.CompId > 0)
-                            {
-                                <td><input type="checkbox" checked="@row.DifferentConditioner"></td>
-                            } else
-                            {
-                                <td></td>
-                            } 
+                            <td>@row.LabDate</td>                           
                             @if(row.CompId > 0)
                             {
                                 <td><a asp-action="Details" asp-controller="Seeds" asp-route-id="@row.Sid" class="btn btn-info">SID</a></td>
