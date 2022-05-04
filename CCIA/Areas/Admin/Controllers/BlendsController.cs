@@ -38,15 +38,7 @@ namespace CCIA.Controllers.Admin
         public IActionResult Lookup()
         {
             return View();
-        }
-
-        // public async Task<IActionResult> ByStatus(string status = "Approved")
-        // {
-        //     var blendStatus = (BlendStatus) Enum.Parse(typeof(BlendStatus), status);
-        //     var model = await _helper.FullBlendRequest().Where(b => b.Status == blendStatus.GetDisplayName()).ToListAsync();
-        //     ViewBag.Status = status;
-        //     return View(model);
-        // }
+        }       
 
         public async Task<IActionResult> ByStatus()
         {
