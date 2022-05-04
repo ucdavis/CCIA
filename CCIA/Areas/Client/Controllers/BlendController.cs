@@ -146,8 +146,8 @@ namespace CCIA.Controllers.Client.Client
         [HttpPost]
         public async Task<IActionResult> StartNewVarietalBlend(int varietyId, int sid, int weight)
         {
-            var varietySearch = await _dbContext.VarFull.Where(v => v.Blend && v.Id == varietyId).FirstOrDefaultAsync();
-            if(varietySearch == null)
+            var varietySearch = await _dbContext.VarietyBlendComponents.Where(v => v.BlendVarietyId == varietyId).ToListAsync();
+            if(!varietySearch.Any())
             {
                 ErrorMessage = "Variety not found. Please try again";
                 return View();
@@ -158,9 +158,9 @@ namespace CCIA.Controllers.Client.Client
                 ErrorMessage = "SID not found. Please check entered SID.";
                 return View();
             }
-            if(sidSearch.OfficialVarietyId != varietySearch.Id)
+            if(!varietySearch.Any(v => v.ComponentVarietyId == sidSearch.OfficialVarietyId))
             {
-                ErrorMessage = "SID variety and entered variety do not match. Please double check values.";
+                ErrorMessage = "SID variety is not a component of the entered variety. Please double check values.";
                 return View();
             }
             var newBlend = new BlendRequests();
@@ -169,7 +169,7 @@ namespace CCIA.Controllers.Client.Client
             newBlend.ConditionerId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             newBlend.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             newBlend.Status = BlendStatus.Initiated.GetDisplayName();
-            newBlend.VarietyId = varietySearch.Id;
+            newBlend.VarietyId = varietyId;
 
             _dbContext.Add(newBlend);
             await _dbContext.SaveChangesAsync();   
@@ -248,15 +248,27 @@ namespace CCIA.Controllers.Client.Client
                 ErrorMessage = "Blend not found";
                 return RedirectToAction(nameof(Index));
             }
-            var variety = await _dbContext.LotBlends.Where(l => l.BlendId == blendId)
+
+            if(blend.BlendType == BlendType.Lot.GetDisplayName())
+            {
+                var variety = await _dbContext.LotBlends.Where(l => l.BlendId == blendId)
                 .Include(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
                 .FirstOrDefaultAsync();
-            if(seed.OfficialVarietyId != variety.Seeds.OfficialVarietyId)
-            {
-                ErrorMessage = "New SID variety does not batch other SID(s) in blend. All varieties must be same in Lot Blend.";
-                return RedirectToAction(nameof(Details), new {id = blendId});
+                if(seed.OfficialVarietyId != variety.Seeds.OfficialVarietyId)
+                {
+                    ErrorMessage = "New SID variety does not batch other SID(s) in blend. All varieties must be same in Lot Blend.";
+                    return RedirectToAction(nameof(Details), new {id = blendId});
+                }
+            } else {
+                var varietySearch = await _dbContext.VarietyBlendComponents.Where(v => v.BlendVarietyId == blend.VarietyId).ToListAsync();                       
+                if(!varietySearch.Any(v => v.ComponentVarietyId == seed.OfficialVarietyId))
+                {
+                    ErrorMessage = "SID variety is not a component of the entered variety. Please double check values.";
+                    return View();
+                }
             }
+            
             var newLot = new LotBlends();
 
             newLot.BlendId = blendId;
