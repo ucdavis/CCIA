@@ -121,18 +121,46 @@ namespace CCIA.Controllers.Client.Client
            return RedirectToAction(nameof(Details), new { id = id }); 
         }
 
+        
+        [HttpGet]
+        public async Task<JsonResult> FindBlend(string name)
+        {
+            var varieties = await _dbContext.VarFull
+                .Where(v => EF.Functions.Like(v.Name, "%" + name + "%") && v.Blend)
+                .Select(v => new VarFull
+                {
+                    CropId = v.CropId,                    
+                    Id = v.Id,
+                    Name = v.Name
+                })
+                .ToListAsync();
+            return Json(varieties);
+        }
+
+
         public ActionResult StartNewVarietalBlend()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> StartNewVarietalBlend(string variety)
+        public async Task<IActionResult> StartNewVarietalBlend(int varietyId, int sid, int weight)
         {
-            var varietySearch = await _dbContext.VarFull.Where(v => v.Blend && (EF.Functions.Like(v.Name, "%" + variety + "%") || EF.Functions.Like(v.Id.ToString(), "%" + variety + "%"))).FirstOrDefaultAsync();
+            var varietySearch = await _dbContext.VarFull.Where(v => v.Blend && v.Id == varietyId).FirstOrDefaultAsync();
             if(varietySearch == null)
             {
                 ErrorMessage = "Variety not found. Please try again";
+                return View();
+            }
+            var sidSearch = await _dbContext.Seeds.Where(s => s.Id == sid).FirstOrDefaultAsync();
+            if(sidSearch == null)
+            {
+                ErrorMessage = "SID not found. Please check entered SID.";
+                return View();
+            }
+            if(sidSearch.OfficialVarietyId != varietySearch.Id)
+            {
+                ErrorMessage = "SID variety and entered variety do not match. Please double check values.";
                 return View();
             }
             var newBlend = new BlendRequests();
@@ -144,9 +172,18 @@ namespace CCIA.Controllers.Client.Client
             newBlend.VarietyId = varietySearch.Id;
 
             _dbContext.Add(newBlend);
-            await _dbContext.SaveChangesAsync();            
+            await _dbContext.SaveChangesAsync();   
 
-            Message = "New Varietal Blend created and ready for lots to be added.";
+            var newLot = new LotBlends();
+
+            newLot.BlendId = newBlend.Id;
+            newLot.Sid = sid;
+            newLot.Weight = weight;
+
+            _dbContext.Add(newLot);
+            await _dbContext.SaveChangesAsync();         
+
+            Message = "New Varietal Blend created and lot added.";
 
             return RedirectToAction(nameof(Details), new {id = newBlend.Id});
         }
