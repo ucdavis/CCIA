@@ -137,6 +137,131 @@ namespace CCIA.Controllers.Client.Client
             return Json(varieties);
         }
 
+        public async Task<IActionResult> StartNewInDirtBlend()
+        {
+           var comp = await AdminBlendsInDirtEditViewModel.Create(_dbContext, 0);                                         
+           return View(comp);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StartNewInDirtBlend(AdminBlendsInDirtEditViewModel model)
+        {
+            bool error = false;
+            var comp = model.comp;
+            var app = new Applications();
+            var applicant = new Organizations();
+            var variety = new VarFull();
+            var newComp = new BlendInDirtComponents();
+            if(model.comp.Weight <= 0)
+            {
+                ErrorMessage = "Weight must be greater than 0";
+                error = true;
+            }
+            if(model.origin == "Ca")
+            {
+                app = await _dbContext.Applications.Where(a => a.Id == model.comp.AppId).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    ErrorMessage = "Application not found";
+                    error = true;
+                }
+            }
+            if(model.origin == "OOS")
+            {
+                applicant = await _dbContext.Organizations.Where(o => o.Id == comp.ApplicantId).FirstOrDefaultAsync();
+                if(applicant == null)
+                {
+                    ErrorMessage = "Applicant not found";
+                    error = true;
+                }
+                if(comp.CropId == null || comp.CropId == 0)
+                {
+                    ErrorMessage = "Please select a crop";
+                    error = true;
+                }
+                variety = await _dbContext.VarFull.Where(v => v.Id == comp.OfficialVarietyId).FirstOrDefaultAsync();
+                if(variety == null)
+                {
+                    ErrorMessage = "Variety not found";
+                    error = true;
+                }
+                if(comp.CertYear == null || comp.CertYear < 2000 || comp.CertYear > 2100)
+                {
+                    ErrorMessage = "Cert year must be a valid 4 digit year";
+                    error = true;
+                }
+                if(comp.CountryOfOrigin == null || comp.CountryOfOrigin == 0)
+                {
+                    ErrorMessage = "Country of Origin is required";
+                    error = true;
+                }
+                if(comp.StateOfOrigin == null || comp.StateOfOrigin == 0)
+                {
+                    ErrorMessage = "State of Origin is required";
+                    error = true;
+                }
+                if(string.IsNullOrWhiteSpace(comp.CertNumber))
+                {
+                    ErrorMessage = "Cert number is required";
+                    error = true;
+                }
+                if(string.IsNullOrWhiteSpace(comp.LotNumber))
+                {
+                    ErrorMessage = "Lot number is required";
+                    error = true;
+                }
+                if(comp.Class == null || comp.Class == 0)
+                {
+                    ErrorMessage = "Please select a class";
+                    error = true;
+                }
+            }
+            if(error)
+            {
+                var compRetry = await AdminBlendsInDirtEditViewModel.Create(_dbContext, 0);
+                compRetry.comp = model.comp;
+                return View(compRetry);
+            }
+
+            var newBlend = new BlendRequests();
+            newBlend.BlendType = BlendType.InDirt.GetDisplayName();
+            newBlend.RequestStarted = DateTime.Now;
+            newBlend.ConditionerId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            newBlend.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            newBlend.Status = BlendStatus.Initiated.GetDisplayName();
+
+            _dbContext.Add(newBlend);
+            await _dbContext.SaveChangesAsync();  
+
+            if(model.origin == "Ca")
+            {
+                newComp.AppId = comp.AppId;
+                newComp.Weight = comp.Weight;
+            } 
+            if(model.origin == "OOS")
+            {
+                newComp.ApplicantId = comp.ApplicantId;
+                newComp.CropId = comp.CropId;
+                newComp.OfficialVarietyId = comp.OfficialVarietyId;
+                newComp.CertYear = comp.CertYear;
+                newComp.CountryOfOrigin = comp.CountryOfOrigin;
+                newComp.StateOfOrigin = comp.StateOfOrigin;
+                newComp.CertNumber = comp.CertNumber;
+                newComp.LotNumber = comp.LotNumber;
+                newComp.Class = comp.Class;
+            }
+
+            newComp.BlendId = newBlend.Id;
+            _dbContext.Add(newComp);
+            await _dbContext.SaveChangesAsync();
+
+            Message = "New In-Dirt Blend created and lot added.";
+
+            return RedirectToAction(nameof(Details), new {id = newBlend.Id});
+        }
+
+       
+
 
         public ActionResult StartNewVarietalBlend()
         {
