@@ -1,0 +1,115 @@
+@model CCIA.Models.AdminBlendsInDirtEditViewModel
+
+<div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>            
+        </div>  
+    </div>
+    <div class="col-sm-12">
+         <div class="form-group row required">
+            <label asp-for="comp.Weight" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.Weight" class="col-sm-3 form-control"  data-val="true" data-val-required="Please" data-val-number="Weight must be a number">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.Weight" data-valmsg-replace="true"></span>
+        </div>
+        <div><hr></div>
+        <div>
+            <div class="form-group row">
+                <label for="CertYear" class="col-sm-3">Origin of Seed:</label>
+                <select asp-for="origin" class="form-control col-sm-3">
+                    <option>Select Origin</option>
+                    <option value="Ca">California</option>
+                    <option value="OOS">Outside California</option>
+                </select> 
+                <input type="button" value="Continue" class="btn btn-info" onclick="displayReady()">   
+            </div>            
+        </div>
+    </div>  
+    <div class="col-sm-6 collapse required" id="InState" >
+        <div><h3>For In-State Lots</h3></div>       
+        <div class="form-group row">
+            <label asp-for="comp.AppId" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.AppId" class="col-sm-3 form-control" data-val="true" data-val-required="Please enter AppID" data-val-number="AppId must be a number">              
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.AppId" data-valmsg-replace="true"></span>
+        </div> 
+    </div>
+    <div class="col-sm-6 collapse" id="OOState">
+        <div><hr><h4>For Out of State Lots</h4></div>
+        <div class="form-group row">
+            <label for="ApplicantSearch" class="col-sm-3 col-form-label">Applicant:</label>
+            <div class="input-group col-sm-6" >
+                <input id="ApplicantSearch" class="form-control"></input>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="retrieveApplicantButton" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>                        
+                </div>
+                &nbsp;(enter Org Id or Name)
+            </div>               
+        </div>
+        <div>
+            <span id="results"></span>
+        </div>
+        <div class="collapse" id="selectCrop">
+            <input type="hidden" asp-for="comp.ApplicantId" />
+            <div class="form-group row required">
+                <label asp-for="comp.CropId" class="col-sm-3 col-form-label">Crop</label>
+                <select required asp-for="comp.CropId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+            </div>    
+            <div class="form-group row required">                
+                <label asp-for="comp.OfficialVarietyId" class="col-sm-3 col-form-label">Variety</label>
+                <div class="input-group col-sm-8">                        
+                        <input class="form-check col-sm-4" id="Variety" value="@Model.comp.OfficialVarietyId" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary dropdown-toggle" id="variety-search" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search"></i>
+                            </button>     
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" id="variety-dropdown">
+                                <div class="text-center">
+                                    <div class="spinner-border text-center" role="status"><span class="sr-only">Loading...</span></div>
+                                </div>
+                            </div>
+                        </div>
+                </div>     
+                @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
+            </div>             
+            <div class="collapse" id="completeForm">
+                <input type="hidden" asp-for="comp.OfficialVarietyId">
+                <div class="form-group row required">
+                    <label asp-for="comp.CertYear" class="col-sm-3 col-form-label">Cert Year</label>
+                    <input asp-for="comp.CertYear" class="col-sm-3 form-control" data-val-required="Cert Year is required" data-val-number="Cert Year must be a number">                
+                    <span class="field-validation-valid text-danger" data-valmsg-for="comp.CertYear" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="comp.CountryOfOrigin" class="col-sm-3 col-form-label">County</label>
+                    <select required asp-for="comp.CountryOfOrigin" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+                </div>     
+                <div class="form-group row required">
+                    <label asp-for="comp.StateOfOrigin" class="col-sm-3 col-form-label">State</label>
+                    <select required asp-for="comp.StateOfOrigin" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "StateWithCountry"))"></select>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="comp.CertNumber" class="col-sm-3 col-form-label"  data-val-required="Cert number is required">Cert Number</label>
+                    <input asp-for="comp.CertNumber" class="col-sm-3 form-control">                
+                    <span class="field-validation-valid text-danger" data-valmsg-for="comp.CertNumber" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="comp.LotNumber" class="col-sm-3 col-form-label">Lot Number</label>
+                    <input asp-for="comp.LotNumber" class="col-sm-3 form-control"  data-val-required="Lot number is required">
+                    <span class="field-validation-valid text-danger" data-valmsg-for="comp.LotNumber" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="comp.Class" class="col-sm-3 col-form-label">Class</label>
+                    <select required asp-for="comp.Class" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classSeeds.Where(c => c.AppTypeId ==1 || c.ClassProducedId == 0), "ClassProducedId", "NameAndAppType"))"></select>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 collapse" id="Buttons">
+        <div>
+                <input type="submit" value="@(Model.blendId != 0 ? "Add Lot" : "Create Blend")" class="btn btn-primary"> | <a asp-action="Index" class="btn btn-dark">Cancel</a>
+        </div>
+    </div>
+
+
+
+    

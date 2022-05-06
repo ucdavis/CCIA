@@ -143,6 +143,14 @@ namespace CCIA.Controllers.Client.Client
            return View(comp);
         }
 
+        public async Task<IActionResult> AddInDirtBlendLot(int id)
+        {
+           var comp = await AdminBlendsInDirtEditViewModel.Create(_dbContext, 0);
+           comp.blendId = id;
+           return View(comp);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> StartNewInDirtBlend(AdminBlendsInDirtEditViewModel model)
         {
@@ -216,22 +224,54 @@ namespace CCIA.Controllers.Client.Client
                     error = true;
                 }
             }
+            if(model.blendId != 0)
+            {
+                var existingApp = await _dbContext.BlendInDirtComponents.Include(b => b.Application).Where(b => b.BlendId == model.blendId).FirstOrDefaultAsync();                    
+                if(model.origin == "Ca")
+                {
+                    var thisApp = await _dbContext.Applications.Where(a => a.Id == comp.AppId).FirstOrDefaultAsync();
+                    if((existingApp.Application != null && existingApp.Application.SelectedVarietyId != thisApp.SelectedVarietyId) || (existingApp.Application == null && existingApp.OfficialVarietyId != thisApp.SelectedVarietyId))
+                    if(existingApp.Application.SelectedVarietyId != thisApp.SelectedVarietyId)
+                    {
+                        ErrorMessage = "Variety of this lot and existing lot(s) do not match";
+                        error = true;
+                    }
+                } else
+                {
+                    if((existingApp.Application != null && existingApp.Application.SelectedVarietyId != comp.OfficialVarietyId) || (existingApp.Application == null && existingApp.OfficialVarietyId != comp.OfficialVarietyId))
+                    {
+                        ErrorMessage = "Variety of this lot and existing lot(s) do not match";
+                        error = true;
+                    }
+                }
+            }
             if(error)
             {
                 var compRetry = await AdminBlendsInDirtEditViewModel.Create(_dbContext, 0);
                 compRetry.comp = model.comp;
-                return View(compRetry);
+                if(model.blendId == 0)
+                {
+                    return View(compRetry);
+                } else {
+                    return RedirectToAction(nameof(Details), new {id = model.blendId});
+                }                
             }
 
             var newBlend = new BlendRequests();
-            newBlend.BlendType = BlendType.InDirt.GetDisplayName();
-            newBlend.RequestStarted = DateTime.Now;
-            newBlend.ConditionerId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
-            newBlend.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
-            newBlend.Status = BlendStatus.Initiated.GetDisplayName();
+            if(model.blendId == 0)
+            {
+                newBlend.BlendType = BlendType.InDirt.GetDisplayName();
+                newBlend.RequestStarted = DateTime.Now;
+                newBlend.ConditionerId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+                newBlend.UserEntered = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+                newBlend.Status = BlendStatus.Initiated.GetDisplayName();
 
-            _dbContext.Add(newBlend);
-            await _dbContext.SaveChangesAsync();  
+                _dbContext.Add(newBlend);
+                await _dbContext.SaveChangesAsync();  
+            } else {
+                newBlend = await _dbContext.BlendRequests.Where(b => b.Id == model.blendId).FirstOrDefaultAsync();
+            }
+            
 
             if(model.origin == "Ca")
             {
@@ -255,7 +295,11 @@ namespace CCIA.Controllers.Client.Client
             _dbContext.Add(newComp);
             await _dbContext.SaveChangesAsync();
 
-            Message = "New In-Dirt Blend created and lot added.";
+            if(model.blendId == 0) {
+                Message = "New In-Dirt Blend created and lot added.";
+            } else {
+                Message = "New lot added";
+            }           
 
             return RedirectToAction(nameof(Details), new {id = newBlend.Id});
         }

@@ -25,6 +25,8 @@ namespace CCIA.Models
        public List<AbbrevClassProduced> classSeeds { get; set; }
        public string origin { get; set; }
 
+       public int blendId { get; set; }
+
         public static async Task<AdminBlendsInDirtEditViewModel> Create(CCIAContext _dbContext, int id)
         {    
             var thisComp = await _dbContext.BlendInDirtComponents.Where(b => b.Id == id).FirstOrDefaultAsync(); 
