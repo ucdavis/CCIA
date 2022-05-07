@@ -28,10 +28,16 @@ namespace CCIA.Controllers.Client
         // GET: Application
         public async Task<IActionResult> Index(int certYear)
         {           
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value); 
             if (certYear == 0)
             {
-                certYear = await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).Select(a => a.CertificateDate.Year).MaxAsync();;
+                var maxCertYear =  await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).MaxAsync(a => (int?)a.CertificateDate.Year);
+                if(maxCertYear.HasValue)
+                {
+                    certYear = maxCertYear.Value;
+                } else {
+                    certYear = CertYearFinder.CertYear;
+                }               
             }
             var model = await SeedTransferIndexViewModel.Create(_dbContext, orgId, certYear);          
             return View(model);
