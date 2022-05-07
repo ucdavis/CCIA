@@ -22,8 +22,8 @@ namespace CCIA.Controllers.Client
 
         // GET: Application
         public async Task<IActionResult> Index()
-        {          
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();        
+        {     
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);     
             var model = await MyCustomersIndexViewModel.Create(_dbContext, orgId);            
             return View(model);
         }
@@ -39,7 +39,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<ActionResult> Create(MyCustomerViewModel model)
         {
-            var orgId = await _dbContext.Contacts.Where(c => c.Id == 1).Select(c => c.Id).SingleAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var myCustomer = new MyCustomers();
             myCustomer.OrganizationId = orgId;
 
@@ -91,6 +91,12 @@ namespace CCIA.Controllers.Client
                 .Include(e => e.Country)
                 .Include(e => e.Organization)
                 .FirstOrDefaultAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(model.OrganizationId != orgId)
+            {
+                ErrorMessage = "That customer does not belong to your org";
+                return Redirect(nameof(Index));
+            }
 
             return View(model);
         }
@@ -99,6 +105,12 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Edit(int id)
         {
             var model = await MyCustomerViewModel.Edit(_dbContext, id);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(model.MyCustomer.OrganizationId != orgId)
+            {
+                ErrorMessage = "That customer does not belong to your org";
+                return Redirect(nameof(Index));
+            }
             return View(model);
         }
 
@@ -119,24 +131,27 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "Customer not found. Please try again.";
                 return RedirectToAction(nameof(Index));
             }
-
-            // if MyCustomer does exist in database. then update value
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(myCustomerToEdit.OrganizationId != orgId)
+            {
+                ErrorMessage = "That customer does not belong to your org";
+                return Redirect(nameof(Index));
+            }
+            
             myCustomerToEdit.Name = model.MyCustomer.Name;
             myCustomerToEdit.Address1 = model.MyCustomer.Address1;
             myCustomerToEdit.Address2 = model.MyCustomer.Address2;
             myCustomerToEdit.City = model.MyCustomer.City;
             myCustomerToEdit.CountryId = model.MyCustomer.CountryId;
 
-            // 10 is Canada
-            // 58 is United States
-            // if Canada or United states is selected, then state should be filled
+            
             if (myCustomerToEdit.CountryId == 10 || myCustomerToEdit.CountryId == 58) {
                 myCustomerToEdit.StateId = model.MyCustomer.StateId;
             } else {
                 myCustomerToEdit.StateId = 0;
             }
 
-            // if United States and California are selected, then county should be filled
+            
             if (myCustomerToEdit.CountryId == 58 && myCustomerToEdit.StateId == 102) {
                 myCustomerToEdit.CountyId = model.MyCustomer.CountyId;
             } else {
@@ -163,6 +178,12 @@ namespace CCIA.Controllers.Client
         public async Task<ActionResult> Delete(int id)
         {
             var myCustomerToDelete = await MyCustomerViewModel.Edit(_dbContext, id);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(myCustomerToDelete.MyCustomer.OrganizationId != orgId)
+            {
+                ErrorMessage = "That customer does not belong to your org";
+                return Redirect(nameof(Index));
+            }
 
             return View(myCustomerToDelete);
         }
@@ -174,6 +195,12 @@ namespace CCIA.Controllers.Client
         {
             var myCustomerToDelete = await _dbContext.MyCustomers.Where(m => m.Id == id)
                 .FirstOrDefaultAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(myCustomerToDelete.OrganizationId != orgId)
+            {
+                ErrorMessage = "That customer does not belong to your org";
+                return Redirect(nameof(Index));
+            }
                 
             if (ModelState.IsValid)
             {

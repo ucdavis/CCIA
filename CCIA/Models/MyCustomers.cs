@@ -22,7 +22,7 @@ namespace CCIA.Models
 
         [ForeignKey("StateId")]
         public StateProvince State { get; set; }
-        public int CountyId { get; set; }
+        public int? CountyId { get; set; }
         [ForeignKey("CountyId")]
         public County County { get; set; }
         public int CountryId { get; set; }

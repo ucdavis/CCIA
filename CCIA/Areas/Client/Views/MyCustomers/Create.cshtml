@@ -46,7 +46,7 @@
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label" asp-for="MyCustomer.StateId">State <span style="font-weight:normal">(Select "Outside US" as appropriate)</span></label>
-                    <select required asp-for="MyCustomer.StateId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "StateProvinceName"))"></select>
+                    <select required asp-for="MyCustomer.StateId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId", "Name"))"></select>
                     <span asp-validation-for="MyCustomer.StateId" class="text-danger"></span>
                 </div>
 
