@@ -289,6 +289,7 @@ namespace CCIA.Controllers.Client.Client
                 newComp.CertNumber = comp.CertNumber;
                 newComp.LotNumber = comp.LotNumber;
                 newComp.Class = comp.Class;
+                newComp.Weight = comp.Weight;
             }
 
             newComp.BlendId = newBlend.Id;
@@ -531,6 +532,96 @@ namespace CCIA.Controllers.Client.Client
                return RedirectToAction(nameof(Index));
            }
            var blendId = compToDelete.BlendId;
+           var count = await _dbContext.LotBlends.Where(b => b.BlendId == blendId).CountAsync();
+           if(count < 2)
+           {
+               ErrorMessage = "Can not delete the last lot in a blend. Add a different lot before removing this one.";
+               return RedirectToAction(nameof(Details), new { id = blendId });
+           }
+           _dbContext.Remove(compToDelete);
+           await _dbContext.SaveChangesAsync();
+
+           Message = "Component deleted";
+
+          return RedirectToAction(nameof(Details), new { id = blendId });  
+
+       }
+
+       public async Task<IActionResult> EditDirtLot(int id)
+       {
+           var comp = await AdminBlendsInDirtEditViewModel.Create(_dbContext, id);          
+           
+           if(comp.comp == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           return View(comp);
+       }  
+
+       [HttpPost]      
+       public async Task<IActionResult> EditDirtLot(int id, BlendInDirtComponents comp)
+       {
+           var compToUpdate = await _dbContext.BlendInDirtComponents.Where(b => b.Id == id).FirstOrDefaultAsync();
+           if(compToUpdate == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           
+           compToUpdate.AppId = comp.AppId;
+           compToUpdate.Weight = comp.Weight;
+           if((compToUpdate.CropId == null & comp.CropId != 0) || (compToUpdate.CropId != null && comp.CropId == 0))
+           {
+               compToUpdate.CropId = comp.CropId;
+           }
+           
+           compToUpdate.ApplicantId = comp.ApplicantId;
+           compToUpdate.OfficialVarietyId = comp.OfficialVarietyId;
+           compToUpdate.CertYear = comp.CertYear;
+           if((compToUpdate.CountryOfOrigin == null & comp.CountryOfOrigin != 0) || (compToUpdate.CountryOfOrigin != null && comp.CountryOfOrigin == 0))
+           {
+               compToUpdate.CountryOfOrigin = comp.CountryOfOrigin;
+           }
+           if((compToUpdate.StateOfOrigin == null & comp.StateOfOrigin != 0) || (compToUpdate.StateOfOrigin != null && comp.StateOfOrigin == 0))
+           {
+               compToUpdate.StateOfOrigin = comp.StateOfOrigin;
+           }
+           compToUpdate.CertNumber = comp.CertNumber;
+           compToUpdate.LotNumber = comp.LotNumber;
+           if((compToUpdate.Class == null & comp.Class != 0) || (compToUpdate.Class != null && comp.Class == 0))
+           {
+               compToUpdate.Class = comp.Class;
+           }
+
+            if(ModelState.IsValid){                
+                await _dbContext.SaveChangesAsync();
+                Message = "Component updated";
+            } else {
+                ErrorMessage = "Something went wrong";                         
+                return View(compToUpdate);
+            }
+            return RedirectToAction(nameof(Details), new { id = compToUpdate.BlendId }); 
+
+       }
+
+       [HttpPost]
+       public async Task<IActionResult> DeleteDirtLot(int id)
+       {
+           var compToDelete = await _dbContext.BlendInDirtComponents.Where(b => b.Id == id).FirstOrDefaultAsync();           
+           if(compToDelete == null)
+           {
+               ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           var blendId = compToDelete.BlendId;           
+           var count = await _dbContext.BlendInDirtComponents.Where(b => b.BlendId == blendId).CountAsync();
+           
+           if(count < 2)
+           {
+               ErrorMessage = "Can not delete the last lot in a blend. Add a different lot before removing this one.";
+               return RedirectToAction(nameof(Details), new { id = blendId });
+           }
            _dbContext.Remove(compToDelete);
            await _dbContext.SaveChangesAsync();
 

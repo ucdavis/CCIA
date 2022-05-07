@@ -1,0 +1,85 @@
+@model CCIA.Models.AdminBlendsInDirtEditViewModel
+
+<div class="container col-sm-12">  
+    <form asp-action="EditDirtLot"> 
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Blend Components</h2> 
+        </div>            
+    </div>
+     <div class="row">
+         <div class="col-sm-12">
+            <div asp-validation-summary="All" class="text-danger"></div>            
+        </div>  
+    </div>  
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <label asp-for="comp.Id" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9 form-control-plaintext">
+                @Html.DisplayFor(x => x.comp.Id)
+            </div>
+            @Html.HiddenFor(x => x.comp.Id)
+        </div>
+        <div class="form-group row">
+            <label asp-for="comp.AppId" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.AppId" class="col-sm-3 form-control">  (CA lots)              
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.AppId" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="comp.Weight" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.Weight" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.Weight" data-valmsg-replace="true"></span>
+        </div>
+        <div><hr><h4>Below fields for all non-CA lots</h4></div>
+        <div class="form-group row">
+            <label asp-for="comp.ApplicantId" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.ApplicantId" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.ApplicantId" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="comp.CropId" class="col-sm-3 col-form-label">Crop</label>
+            <select required asp-for="comp.CropId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+        </div>    
+        <div class="form-group row">
+            <label asp-for="comp.OfficialVarietyId" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.OfficialVarietyId" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.OfficialVarietyId" data-valmsg-replace="true"></span>
+        </div> 
+        <div class="form-group row">
+            <label asp-for="comp.CertYear" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.CertYear" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.CertYear" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="comp.CountryOfOrigin" class="col-sm-3 col-form-label">County</label>
+            <select required asp-for="comp.CountryOfOrigin" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+        </div>     
+        <div class="form-group row">
+            <label asp-for="comp.StateOfOrigin" class="col-sm-3 col-form-label">State</label>
+            <select required asp-for="comp.StateOfOrigin" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.stateProvinces, "StateProvinceId", "Name"))"></select>
+        </div>
+         <div class="form-group row">
+            <label asp-for="comp.CertNumber" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.CertNumber" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.CertNumber" data-valmsg-replace="true"></span>
+        </div>
+         <div class="form-group row">
+            <label asp-for="comp.LotNumber" class="col-sm-3 col-form-label"></label>
+            <input asp-for="comp.LotNumber" class="col-sm-3 form-control">                
+            <span class="field-validation-valid text-danger" data-valmsg-for="comp.LotNumber" data-valmsg-replace="true"></span>
+        </div>
+        <div class="form-group row">
+            <label asp-for="comp.Class" class="col-sm-3 col-form-label">Class</label>
+            <select required asp-for="comp.Class" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classSeeds, "ClassProducedId", "NameAndAppType"))"></select>
+        </div>         
+    </div>
+     <div>
+            <input type="submit" value="Update" class="btn btn-primary"> | <a asp-action="Details" asp-route-id="@Model.comp.BlendId" class="btn btn-dark">Cancel</a>
+    </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}    
+}
