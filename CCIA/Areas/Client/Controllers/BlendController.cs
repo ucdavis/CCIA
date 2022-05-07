@@ -418,6 +418,11 @@ namespace CCIA.Controllers.Client.Client
                 ErrorMessage = "Blend not found";
                 return RedirectToAction(nameof(Index));
             }
+            if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+                return RedirectToAction(nameof(Index));
+            }
 
             if(blend.BlendType == BlendType.Lot.GetDisplayName())
             {
@@ -462,6 +467,12 @@ namespace CCIA.Controllers.Client.Client
                ErrorMessage = "Component not found!";
                return RedirectToAction(nameof(Index));
            }
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == comp.BlendId).FirstOrDefaultAsync();
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+               return RedirectToAction(nameof(Index));
+           }
            return View(comp);
        } 
        
@@ -478,6 +489,11 @@ namespace CCIA.Controllers.Client.Client
            if(blendToUpdate == null)
            {
                ErrorMessage = "Blend not found";
+               return RedirectToAction(nameof(Index));
+           }           
+           if(blendToUpdate.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
                return RedirectToAction(nameof(Index));
            }
            var seeds = await _dbContext.Seeds.Where(s => s.Id == blend.Sid).FirstOrDefaultAsync();
@@ -532,6 +548,12 @@ namespace CCIA.Controllers.Client.Client
                return RedirectToAction(nameof(Index));
            }
            var blendId = compToDelete.BlendId;
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == blendId).FirstOrDefaultAsync();
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+               return RedirectToAction(nameof(Index));
+           }
            var count = await _dbContext.LotBlends.Where(b => b.BlendId == blendId).CountAsync();
            if(count < 2)
            {
@@ -556,6 +578,12 @@ namespace CCIA.Controllers.Client.Client
                ErrorMessage = "Component not found!";
                return RedirectToAction(nameof(Index));
            }
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == comp.comp.BlendId).FirstOrDefaultAsync();
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+               return RedirectToAction(nameof(Index));
+           }
            return View(comp);
        }  
 
@@ -566,6 +594,12 @@ namespace CCIA.Controllers.Client.Client
            if(compToUpdate == null)
            {
                ErrorMessage = "Component not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == compToUpdate.BlendId).FirstOrDefaultAsync();
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
                return RedirectToAction(nameof(Index));
            }
            
@@ -614,9 +648,14 @@ namespace CCIA.Controllers.Client.Client
                ErrorMessage = "Component not found!";
                return RedirectToAction(nameof(Index));
            }
-           var blendId = compToDelete.BlendId;           
-           var count = await _dbContext.BlendInDirtComponents.Where(b => b.BlendId == blendId).CountAsync();
-           
+           var blendId = compToDelete.BlendId; 
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == blendId).FirstOrDefaultAsync();
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+               return RedirectToAction(nameof(Index));
+           }          
+           var count = await _dbContext.BlendInDirtComponents.Where(b => b.BlendId == blendId).CountAsync();           
            if(count < 2)
            {
                ErrorMessage = "Can not delete the last lot in a blend. Add a different lot before removing this one.";
