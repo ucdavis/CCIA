@@ -79,6 +79,7 @@ namespace CCIA.Controllers
             newEmployee.HeritageGrainQA = employee.HeritageGrainQA;
             newEmployee.PrevarietyGermplasm = employee.PrevarietyGermplasm;
             newEmployee.OECDInvoicePrinter =employee.OECDInvoicePrinter;
+            newEmployee.NewBlend = employee.NewBlend;
 
             if(ModelState.IsValid){ 
                 _dbContext.Add(newEmployee);                              
@@ -134,6 +135,7 @@ namespace CCIA.Controllers
             employeeToUpdate.HeritageGrainQA = employee.HeritageGrainQA;
             employeeToUpdate.PrevarietyGermplasm = employee.PrevarietyGermplasm;
             employeeToUpdate.OECDInvoicePrinter =employee.OECDInvoicePrinter;
+            employeeToUpdate.NewBlend = employee.NewBlend;
 
 
             if(ModelState.IsValid){                               

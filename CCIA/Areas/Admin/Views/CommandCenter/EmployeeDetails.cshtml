@@ -41,7 +41,11 @@
             <div class="form-group row">                
                 <label asp-for="HeritageGrainQA" class="col-sm-6 col-form-label"></label>
                 <input type="checkbox" asp-for="HeritageGrainQA" class="col-sm-3 form-control">
-            </div>            
+            </div>   
+            <div class="form-group row">
+                <label asp-for="NewBlend" class="col-sm-6 col-form-label"></label>
+                <input type="checkbox" asp-for="NewBlend" class="col-sm-3 form-control">
+            </div>         
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
@@ -126,7 +130,7 @@
     </div>
 </div>
 
-@await Html.PartialAsync("_RoleExplaination")
+@await Html.PartialAsync("_RoleExplanation")
 
 @section Scripts {
     <script>
