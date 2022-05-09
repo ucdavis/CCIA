@@ -19,12 +19,14 @@ namespace CCIA.Controllers.Client.Client
 
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
+         private readonly INotificationService _notificationService;
 
-        public BlendController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService)
+        public BlendController(CCIAContext dbContext, IFullCallService helper, IFileIOService fileService, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
             _fileService = fileService;
+            _notificationService = notificationService;
         }
 
         
@@ -668,6 +670,35 @@ namespace CCIA.Controllers.Client.Client
 
           return RedirectToAction(nameof(Details), new { id = blendId });  
 
+       }
+
+       [HttpPost]
+       public async Task<IActionResult> Submit(int Id)
+       {
+           var blend = await _dbContext.BlendRequests.Where(b => b.Id == Id).FirstOrDefaultAsync();
+           if(blend == null)
+           {
+               ErrorMessage = "Blend not found!";
+               return RedirectToAction(nameof(Index));
+           }
+           if(blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+           {
+               ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+               return RedirectToAction(nameof(Index));
+           }      
+           if(blend.Status != BlendStatus.Initiated.GetDisplayName() || blend.Submitted.Value)
+           {
+               ErrorMessage = "That blend is not ready to submit";
+               return RedirectToAction(nameof(Details), new { id = Id });
+           }
+           await _notificationService.BlendRequestSubmitted(blend);
+           blend.Status = BlendStatus.PendingAcceptance.GetDisplayName();
+           blend.DateSubmitted = DateTime.Now;
+           blend.Submitted = true;
+           await _dbContext.SaveChangesAsync();
+
+           Message = "Blend request submitted for approval";
+           return RedirectToAction(nameof(Details), new { id = Id });
        }
 
     }

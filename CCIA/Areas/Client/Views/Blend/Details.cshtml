@@ -6,7 +6,16 @@
         <div class="col-sm-12">
             <h2>Blend Request Details</h2>            
         </div>            
-    </div>          
+    </div> 
+    @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+    {  
+        <div class="row">
+            <form action="Submit">
+                <input type="hidden" id="Id" name="Id" value="@Model.blend.Id">
+                <input type="submit" class="btn btn-primary" value="Submit for approval">
+            </form>
+        </div>       
+    }
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">

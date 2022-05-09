@@ -25,6 +25,8 @@ namespace CCIA.Services
 
         Task BlendRequestApproved(BlendRequests blend);
 
+        Task BlendRequestSubmitted(BlendRequests blend);
+
         Task TagApproved(Tags tag);
 
         Task TagApprovedForConditionerPrint(Tags tag);
@@ -207,6 +209,23 @@ namespace CCIA.Services
                 };
                 _dbContext.Notifications.Add(notification);      
             }
+        }
+
+        public async Task BlendRequestSubmitted(BlendRequests blend)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewBlend && !string.IsNullOrEmpty(e.UCDMaildID)).Select(e => e.Email).ToListAsync();
+
+            foreach (var user in admins)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    BlendId = blend.Id,
+                    Message = "Blend submitted by conditioner"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+
         }
 
         public async Task TagApproved(Tags tag)
