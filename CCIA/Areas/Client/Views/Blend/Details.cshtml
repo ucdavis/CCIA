@@ -10,9 +10,9 @@
     @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
     {  
         <div class="row">
-            <form action="Submit">
+            <form asp-action="Submit">
                 <input type="hidden" id="Id" name="Id" value="@Model.blend.Id">
-                <input type="submit" class="btn btn-primary" value="Submit for approval">
+                <input type="submit" class="btn btn-primary" onClick="return confirm('Really submit this blend? No further changes are possible.');" value="Submit for approval">
             </form>
         </div>       
     }
@@ -175,7 +175,12 @@
                             <td>@row.CertificationResults</td> 
                             @if(row.CompId > 0)
                             {
-                               <td><form asp-action="DeleteLot"><input type="hidden" id="id" name="id" value="@row.CompId"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form></td>
+                               <td>
+                                   @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                                    {
+                                        <form asp-action="DeleteLot"><input type="hidden" id="id" name="id" value="@row.CompId"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form>                                     
+                                    }
+                                </td>
                             } else
                             {
                                 <td></td>
