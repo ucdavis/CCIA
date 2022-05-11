@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
-
-
+using CCIA.Services;
 
 namespace CCIA.Controllers.Client
 {
@@ -19,9 +18,12 @@ namespace CCIA.Controllers.Client
         // TODO Get shipping location from address w/ Facility
         private readonly CCIAContext _dbContext;
 
-        public SeedTransferController(CCIAContext dbContext)
+        private readonly IFullCallService _helper;
+
+        public SeedTransferController(CCIAContext dbContext, IFullCallService helper)
         {
             _dbContext = dbContext;
+            _helper = helper;
         }
 
         
@@ -44,8 +46,19 @@ namespace CCIA.Controllers.Client
         }
 
         // GET: Application/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {           
+             var model = await _helper.FullSeedTransfers().Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Seed Transfer not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        public ActionResult Initiate()
+        {
             return View();
         }
 
@@ -72,50 +85,15 @@ namespace CCIA.Controllers.Client
             }
         }
 
-        // GET: Application/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Certificate(int id)
         {
-            return View();
-        }
-
-        // POST: Application/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            var model = await _helper.FullSeedTransfers().Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(model == null)
             {
-                // TODO: Add update logic here
-
+                ErrorMessage = "Seed Transfer not found!";
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Application/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Application/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View("~/Areas/Admin/Views/SeedTransfers/Certificate.cshtml",model);            
         }
     }
 }

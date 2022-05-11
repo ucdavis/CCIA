@@ -181,10 +181,25 @@ table{background-color:transparent}table{border-spacing:0;border-collapse:collap
                         </tr>
                         <tr><td>&nbsp;</td></tr>
                         <tr>
-                            <td colspan="2">@Model.AgricultureCommissionerContactRespond.Name<br/>
-                                Approved by Agricultural Commissioner/County
+                            <td colspan="2">
+                                @if(Model.AgricultureCommissionerContactRespond == null)
+                                {
+                                    <span>NOT YET APPROVED!</span>
+                                } else
+                                {
+                                    @Model.AgricultureCommissionerContactRespond.Name<br/>
+                                    <span>Approved by Agricultural Commissioner/County</span>
+                                }                                
                             </td>
-                            <td>Date: @Model.AgricultureCommissionerDateRespond.Value.ToShortDateString()</td>
+                            <td>Date: 
+                                 @if(Model.AgricultureCommissionerContactRespond == null)
+                                {
+                                    <span>PENDING</span>
+                                } else
+                                {
+                                     @Model.AgricultureCommissionerDateRespond.Value.ToShortDateString()
+                                }   
+                            </td>
                         </tr>
                     </table>
                 </td>
