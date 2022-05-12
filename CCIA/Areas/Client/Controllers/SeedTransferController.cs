@@ -62,28 +62,14 @@ namespace CCIA.Controllers.Client
             return View();
         }
 
-        // GET: Application/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Application/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(int Id, string Target)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var model = await SeedTransferRequestModel.Create(_dbContext, _helper, Id, Target);            
+            return View(model);
         }
+
+        
 
         public async Task<IActionResult> Certificate(int id)
         {
