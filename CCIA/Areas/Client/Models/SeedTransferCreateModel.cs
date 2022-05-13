@@ -18,14 +18,24 @@ namespace CCIA.Models
         public SeedTransferRequest request { get; set; }  
         public SeedTransfers transfer { get; set; }
                
-        public static async Task<SeedTransferRequestModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id, string Target)
+        public static async Task<SeedTransferRequestModel> Create(CCIAContext _dbContext, IFullCallService _helper , int id, string Target, int OrgId)
         {                   
             var model = new SeedTransferRequestModel();
+            var customers = await _dbContext.MyCustomers.Where(c => c.OrganizationId == OrgId).ToListAsync();
+            customers.Insert(0, new MyCustomers { Id=0, Name="Select customer..."});
+            var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
+            counties.Insert(0, new County { CountyId=0, Name="Select county..."});
             
+            var request = new SeedTransferRequest
+            {
+                Id = id,
+                Target = Target,
+                states =  await _dbContext.StateProvince.Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),               
+                countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                customers = customers,
+                counties = counties,
+            };
             
-            var request = new SeedTransferRequest();
-            request.Id = id;
-            request.Target = Target;
 
             if(Target == "SID")
             {
@@ -55,37 +65,27 @@ namespace CCIA.Models
                 request.app = app;
             }            
             model.request = request;  
-            model.transfer = new SeedTransfers();                      
+            model.transfer = new SeedTransfers();     
+            model.transfer.CertificateDate = DateTime.Now;
+            model.transfer.SubmittedForAnalysis = false;                 
             return model;
         }        
     } 
 
     public class SeedTransferRequest
     {
-        public SeedTransferRequest() 
-        {
-           SubmittedForAnalysis = false;
-           CertificateDate = DateTime.Now;
-        }
-
-
         [Display(Name ="SID/BID/AppID")]
         public int Id { get; set; }
         public string Target { get; set; }
         public Applications app { get; set; }
         public Seeds seed { get; set; }
         public BlendRequests blend { get; set; }
+        public List<MyCustomers> customers { get; set; }
+        public List<County> counties { get; set; }
+        public List<StateProvince> states { get; set; }
+        public List<Countries> countries { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
-        [Display(Name ="Transfer Weight")]
-        public Decimal Pounds { get; set; }
-        [Display(Name="Planting Stock Lot No.")]
-        public string SeedstockLotNumbers { get; set; }
-        [Display(Name ="Submitted for Analysis?")]
-        public bool SubmittedForAnalysis { get; set; }
 
-        [Display(Name="Certificate Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
-        public DateTime CertificateDate { get; set; }
+        
     }   
 }

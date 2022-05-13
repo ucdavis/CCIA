@@ -162,219 +162,267 @@
 <form asp-action="SubmitSeedTransfer">
 <input type="hidden" asp-for="request.Id">
 <input type="hidden" asp-for="request.Target">
-@* <div>
-    <div class="form-group row">
-        <label asp-for="request.Alias" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.Alias" class="form-control col-sm-2">        
-        <span class="field-validation-valid text-danger" asp-validation-for="request.Alias" data-valmsg-replace="true"></span>
-        (leave blank for listed variety name)
-    </div>    
+<div>
     <div class="form-group row required">
-        <label asp-for="request.CountRequested" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.CountRequested" class="form-control col-sm-2" onchange="WeightChange()">
-        <span class="field-validation-valid text-danger" asp-validation-for="request.CountRequested" data-valmsg-replace="true"></span>
+        <label asp-for="transfer.Pounds" class="col-sm-3 col-form-label">Transfer Weight (LBS)</label>
+        <input asp-for="transfer.Pounds" class="form-control col-sm-2" data-val="true" data-val-required="Please provide transfer weight" data-val-number="Transfer weight must be a number">        
+        <span class="field-validation-valid text-danger" asp-validation-for="transfer.Pounds"></span>
+        <span>(use estimate if needed for transfers from field)</span>
+    </div> 
+    @if(Model.request.Target != "BID")
+    {  
+        <div class="form-group row">
+            <label asp-for="transfer.SeedstockLotNumbers" class="col-sm-3 col-form-label">Planting Stock Lot#</label>
+            <input asp-for="transfer.SeedstockLotNumbers" class="form-control col-sm-2">
+            <span class="field-validation-valid text-danger" asp-validation-for="transfer.SeedstockLotNumbers"></span>
+            <input type="button" value="Retrieve From ID" onclick="GetPS()" class="btn btn-info">
+            <span>(required for OECD certification of seed destined for EC countries)</span>
+        </div> 
+    } 
+    <div class="form-group row required">
+        <label asp-for="transfer.SubmittedForAnalysis" class="col-sm-4 col-form-label">Sample submitted for Analysis?</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input lgRadio" type="radio" asp-for="transfer.SubmittedForAnalysis" value="true" data-val="true" data-val-required="Please select what class you are planting" >
+            <label class="form-check-label" for="true">Yes</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input lgRadio" type="radio" asp-for="transfer.SubmittedForAnalysis" value="false" data-val="true" data-val-required="Please select if sample was submitted for analysis." >
+            <label class="form-check-label" for="false">No</label>
+        </div>
+        <span class="field-validation-valid text-danger" data-valmsg-for="transfer.SubmittedForAnalysis"></span>
     </div> 
     <div class="form-group row required">
-        <label asp-for="request.BagSize" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.BagSize" class="form-control col-sm-2" onchange="WeightChange()">
-        <span class="field-validation-valid text-danger" asp-validation-for="request.BagSize" data-valmsg-replace="true"></span>
-        <div class="col-sm-1"></div>
-        <select asp-for="request.WeightUnit" onchange="WeightChange()">
-            <option value="L">Pounds</option> 
-            <option value="K">Kilograms</option>
-        </select>
-    </div> 
-    <div class="form-group row">
-        <label class="col-sm-3 col-form-label" for="weightOfRequest">Weight of this request</label>
-        <div id="weightOfRequest" class="form-control-plaintext col-sm-2"></div>
+        <label asp-for="transfer.CertificateDate" class="col-sm-4 col-form-label">Certificate Date</label>
+        <input type="text" class="form-control col-sm-2 datepicker" asp-for="transfer.CertificateDate">
+        <span class="field-validation-valid text-danger" asp-validation-for="transfer.CertificateDate"></span>
     </div>
-    <div class="form-group required row">
-        <label asp-for="request.CoatingPercent" class="col-form-label col-sm-2"></label> 
-        <div class="col-sm-9">      
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0" data-val="true" data-val-required="Please coating percentage" >
-                <label class="form-check-label" for="0">No coating</label>                    
+    
+</div>
+<section id="planting-stock" class="rounded-section off-white">
+    <h4>Planting StockTransfer To:</h4>
+    <section class="rounded-section light-grey">
+        <div>
+            <div class="form-group row">
+                <label for="myCustomers" class="col-sm-3 col-form-label">Select <i>My Customers</i></label>
+            <select name="myCustomers" id="myCustomers" class="form-control col-sm-3"  asp-items="@(new SelectList(Model.request.customers, "Id", "Name"))"></select>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.34" data-val="true" data-val-required="Please coating percentage" >
-                <label class="form-check-label" for="0.34">34%</label>                    
+        </div>
+        <h4>Or...</h4>
+    </section>
+    <hr>
+    <section class="rounded-section light-grey">
+        <div>
+            <div class="form-group row">
+                <label for="orgId" class="col-sm-3 col-form-label">Retrieve from Org ID</label>
+                <input class="form-control col-sm-2" name="OrgId" id="OrgId">
+                <input type="button" class="btn btn-info" value="Retrieve Org Info" onclick="GetCustomerFromOrg()">
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.CoatingPercent" onclick="WeightChange()" value="0.5" data-val="true" data-val-required="Please coating percentage" >
-                <label class="form-check-label" for="0.5">50%</label>                    
-            </div>  
-            <span class="field-validation-valid text-danger" asp-validation-for="request.CoatingPercent" data-valmsg-replace="true"></span>       
-        </div>         
-    </div>
-    <div class="form-group required row">
-        <label asp-for="request.TagClass" class="col-form-label col-sm-3"></label> 
-        <div class="col-sm-9">             
-            @if(Model.request.Program != "Potato")
-            {      
-                @foreach (var item in Model.possibleClasses) 
-                {
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.Id" data-val="true" data-val-required="Please select what class for this tag" >
-                        <label class="form-check-label" for="@item.Id">@item.CertClass</label>                    
-                    </div>
+        </div>
+        <h4>Or...just fill in the appropriate fields below</h4>
+    </section>
+    <hr>
+    <section class="rounded-section light-grey">
+        <h5></h5>
+        <div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserName" class="col-sm-3 col-form-label">Name</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserName">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserName"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserAddressLine1" class="col-sm-3 col-form-label">Address Line 1</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserAddressLine1">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserAddressLine1"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserAddressLine2" class="col-sm-3 col-form-label">Address Line 2</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserAddressLine2">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserAddressLine2"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCity" class="col-sm-3 col-form-label">City</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserCity">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserCity"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCountryId" class="col-sm-3 col-form-label">Country</label>
+                <select asp-for="transfer.PurchaserCountryId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.countries, "Id","Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserStateId" class="col-sm-3 col-form-label">State</label>
+                <select asp-for="transfer.PurchaserStateId" class="form-control col-sm-4" asp-items="@(new SelectList(Model.request.states, "StateProvinceId","StateWithCountry"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCountyId" class="col-sm-3 col-form-label">CA County</label>
+                <select asp-for="transfer.PurchaserCountyId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.counties, "CountyId","Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserZip" class="col-sm-3 col-form-label">Zip</label>
+                <input class="form-control col-sm-2" asp-for="transfer.PurchaserZip">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserZip"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserPhone" class="col-sm-3 col-form-label">Phone</label>
+                <input class="form-control col-sm-2" asp-for="transfer.PurchaserPhone">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserPhone"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserEmail" class="col-sm-3 col-form-label">Email</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserEmail">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserEmail"></span>
+            </div>
+        </div>
+    </section>
+</section>
+<div class="form-group row">
+    <input type="submit" value="Create Tag Request" class="btn btn-primary">
+</div> 
+</form>
+
+
+
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();  
+            $('#myCustomers').change(() => { getCustomer()});
+            $('#transfer_PurchaserCountryId').change(function () {                
+                SetStatesForCountry();
+            });
+        });
+
+        function getCustomer()
+        {
+            var Id = $("#myCustomers").val();
+            let data = {
+                Id: Id,
+            }
+            $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPurchaserFromCustomer",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: customer info not found."); 
+                    }
+                    populatePurchaser(res);                   
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
                 }
-            } else 
-            {
-                 @foreach (var item in Model.potatoClasses) 
+            });
+        }
+
+        function GetCustomerFromOrg()
+        {
+            var Id = $("#OrgId").val();
+            let data = {
+                Id: Id,
+            }
+            $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPurchaserFromOrganization",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: customer info not found."); 
+                    }
+                    populatePurchaser(res);                   
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+
+        }
+
+       function GetPS()
+       {           
+           var Id = @Model.request.Id;
+           var Target = "@Model.request.Target";          
+           let data = {
+                Id: Id,
+                Target: Target,
+            };
+           $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPS",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: No Planting Stock Numbers found. Please double check this is accurate."); 
+                    }
+                    $("#transfer_SeedstockLotNumbers").val(res);                 
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        }
+
+        function populatePurchaser(cust)
+        {
+            console.log(cust);
+            $("#transfer_PurchaserName").val(cust.name);
+            $("#transfer_PurchaserAddressLine1").val(cust.address1);
+            $("#transfer_PurchaserAddressLine2").val(cust.address2);
+            $("#transfer_PurchaserCity").val(cust.city);
+            $("#transfer_PurchaserCountyId").val(cust.countyId);
+            $("#transfer_PurchaserStateId").val(cust.stateId);
+            $("#transfer_PurchaserCountryId").val(cust.countryId);
+            $("#transfer_PurchaserZip").val(cust.zip);
+            $("#transfer_PurchaserPhone").val(cust.phone);
+            $("#transfer_PurchaserEmail").val(cust.email);
+        }
+
+         function SetStatesForCountry() 
+        {
+            var country = $("#transfer_PurchaserCountryId option:selected");
+
+                if(country.text() === "United States")
                 {
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input lgRadio" type="radio" asp-for="request.TagClass" onclick="ClassOrTagChange()" value="@item.ClassProducedId" data-val="true" data-val-required="Please select what class for this tag" >
-                        <label class="form-check-label" for="@item.ClassProducedId">@item.ClassProducedTrans</label>                    
-                    </div>
+                    showStates("USA");
+                } else  if(country.text() === "Canada")
+                {
+                    showStates("Canada");
+                } else 
+                {
+                    showStates("Outside");
                 }
 
+        };
+
+        function showStates(country)
+        {   
+            $("#transfer_PurchaserStateId option").filter(function(index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+            var selectText, indexText ;
+            if(country === "USA")
+            {   
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if(country === "Canada"){
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";               
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";                   
             }
-            <span class="field-validation-valid text-danger" asp-validation-for="request.TagClass" data-valmsg-replace="true"></span>
-        </div>         
-    </div>
-    <div class="form-group required row">
-        <label asp-for="request.TagType" class="col-form-label col-sm-3"></label> 
-        <div class="col-sm-9">         
-            @foreach (var item in Model.TagTypes) 
-            {
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.TagType" value="@item.Id" data-val="true" data-val-required="Please select tag type" onclick="ClassOrTagChange()" >
-                    <label class="form-check-label" for="@item.Id">@item.TagTypeTrans</label>                    
-                </div>
-            } 
-            <span class="field-validation-valid text-danger" asp-validation-for="request.TagType" data-valmsg-replace="true"></span>
-        </div>         
-    </div>
-    @if(Model.AllowPreTag)
-    {
-        <div class="form-group row">
-            <label asp-for="request.Pretagging" class="col-form-label col-sm-3"></label>
-            <div class="col-sm-8">      
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.Pretagging" value="true" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="true">Yes</label>                    
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.Pretagging" value="false" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="false">No</label>                    
-                </div>
-            </div> 
-        </div>
-    }
-    @if(Model.AllowSeries)
-    {
-        <div class="form-group row">
-            <label asp-for="request.SeriesRequest" class="col-form-label col-sm-3"></label>
-            <div class="col-sm-8">      
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.SeriesRequest" value="true" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="true">Yes</label>                    
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.SeriesRequest" value="false" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="false">No</label>                    
-                </div>
-            </div> 
-        </div>
-    }
-    @if(Model.AllowAnalysis)
-    {
-        <div class="form-group row">
-            <label asp-for="request.AnalysisRequested" class="col-form-label col-sm-3"></label>
-            <div class="col-sm-8">      
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.AnalysisRequested" value="true" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="true">Yes</label>                    
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.AnalysisRequested" value="false" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="false">No</label>                    
-                </div>
-            </div> 
-        </div>
-    }
-    @if(Model.request.AllowOECD)
-    {
-        <div class="form-group required row">
-            <label asp-for="request.OECD" class="col-form-label col-sm-3">Is this an OECD Request?</label> 
-            <div class="col-sm-8">      
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.OECD" onclick="OECDChange('true')" value="true" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="true">Yes</label>                    
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input lgRadio" type="radio" asp-for="request.OECD" onclick="OECDChange('false')" value="false" data-val="true" data-val-required="Please coating percentage" >
-                    <label class="form-check-label" for="false">No</label>                    
-                </div>
-            </div>         
-        </div>   
-        <div class="collapse rounded-section light-grey" id="OECD">
-            <div class="form-group row">
-                <label asp-for="request.PlantingStockLotNumber" class="col-sm-4 col-form-label"></label>
-                <input asp-for="request.PlantingStockLotNumber" class="form-control col-sm-2">                    
-                <span class="field-validation-valid text-danger" asp-validation-for="request.PlantingStockLotNumber" data-valmsg-replace="true"></span>
-                <span>(Type "Blend" if this is a blend)</span>
-            </div>    
-            <div class="form-group required row">
-                <label asp-for="request.OECDTagType" class="col-form-label col-sm-3"></label> 
-                <div class="col-sm-9">         
-                    @foreach (var item in Model.OECDTagTypes) 
-                    {
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input lgRadio" type="radio" asp-for="request.OECDTagType" value="@item.Id" data-val="true" data-val-required="Please select tag type"  >
-                            <label class="form-check-label" for="@item.Id">@item.Class</label>                    
-                        </div>
-                    } 
-                    <span class="field-validation-valid text-danger" asp-validation-for="request.OECDTagType" data-valmsg-replace="true"></span>
-                </div>         
-            </div>
-            <div class="form-group row required">
-                <label asp-for="request.DateSealed" class="col-sm-2 col-form-label"></label>
-                <input asp-for="request.DateSealed" class="form-control col-sm-2 datepicker" type="text">        
-                <span class="field-validation-valid text-danger" asp-validation-for="request.DateSealed" data-valmsg-replace="true"></span>
-            </div>         
-            <div class="form-group row required">
-                <label asp-for="request.OECDCountryId" class="col-sm-2 col-form-label">Country</label>
-                <select asp-for="request.OECDCountryId" class="form-control col-sm-2" asp-items="@(new SelectList(Model.Countries, "Id", "Name"))"></select>
-                <span class="field-validation-valid text-danger" asp-validation-for="request.OECDCountryId" data-valmsg-replace="true"></span>
-            </div>
-        </div> 
-    }   
-    <div class="form-group row required">
-        <label asp-for="request.DateNeeded" class="col-sm-2 col-form-label"></label>
-        <input asp-for="request.DateNeeded" class="form-control col-sm-2 datepicker" type="text">        
-        <span class="field-validation-valid text-danger" asp-validation-for="request.DateNeeded" data-valmsg-replace="true"></span>
-        <span>(please allow 24-48 hours)</span>
-    </div> 
-    <div class="form-group row required">
-        <label asp-for="request.HowDeliver" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-9">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Ground" data-val="true" data-val-required="Please select delivery method">
-                <label class="form-check-label" for="UPS Ground">UPS Ground</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="UPS Overnight" data-val="true" data-val-required="Please select delivery method">
-                <label class="form-check-label" for="UPS Overnight">UPS Overnight</label>
-            </div> 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Pick-up at Parsons Building" data-val="true" data-val-required="Please select delivery method">
-                <label class="form-check-label" for="Pick-up at Parsons Building">Pick-up at Parsons Building</label>
-            </div> 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input lgRadio" type="radio" asp-for="request.HowDeliver" onclick="DeliveryChange()" value="Other" data-val="true" data-val-required="Please select delivery method">
-                <label class="form-check-label" for="Other">Other</label>
-            </div> 
-            <span class="field-validation-valid text-danger" asp-validation-for="request.HowDeliver" data-valmsg-replace="true"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="request.Comments" class="col-sm-2 col-form-label"></label>
-        <textarea asp-for="request.Comments" class="form-control col-sm-8" rows="3"></textarea>        
-        <span class="field-validation-valid text-danger" asp-validation-for="request.Comments" data-valmsg-replace="true"></span>       
-    </div> 
-     <div class="form-group row">
-        <input type="submit" value="Create Tag Request" class="btn btn-primary">
-    </div> 
-</div> *@
-</form>
+           
+            $("#transfer_PurchaserStateId > option").each(function() {
+                if(~this.text.indexOf(indexText))
+                {
+                    $("#transfer_PurchaserStateId option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#transfer_PurchaserStateId option[value*='" + this.value + "']").prop('disabled', true); 
+                }
+            });
+             
+            $("#transfer_PurchaserStateId option").removeAttr("selected");            
+        };
+
+
+    </script>  
+} 
