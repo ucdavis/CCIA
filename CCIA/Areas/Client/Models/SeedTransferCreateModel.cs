@@ -25,6 +25,10 @@ namespace CCIA.Models
             customers.Insert(0, new MyCustomers { Id=0, Name="Select customer..."});
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
             counties.Insert(0, new County { CountyId=0, Name="Select county..."});
+
+
+            var p0 = new SqlParameter("@id", id);
+            var p1 = new SqlParameter("@class_type", Target);
             
             var request = new SeedTransferRequest
             {
@@ -34,6 +38,7 @@ namespace CCIA.Models
                 countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
                 customers = customers,
                 counties = counties,
+                classes = await _dbContext.AbbrevClassSeeds.FromSqlRaw($"EXEC mvc_class_producable_from_id @id, @class_type", p0, p1).ToListAsync(),
             };
             
 
@@ -69,7 +74,63 @@ namespace CCIA.Models
             model.transfer.CertificateDate = DateTime.Now;
             model.transfer.SubmittedForAnalysis = false;                 
             return model;
-        }        
+        }   
+
+        public static async Task<SeedTransferRequestModel> Retry(CCIAContext _dbContext, IFullCallService _helper , int id, string Target, int OrgId, SeedTransfers transfer)
+        {                   
+            var model = new SeedTransferRequestModel();
+            var customers = await _dbContext.MyCustomers.Where(c => c.OrganizationId == OrgId).ToListAsync();
+            customers.Insert(0, new MyCustomers { Id=0, Name="Select customer..."});
+            var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
+            counties.Insert(0, new County { CountyId=0, Name="Select county..."});
+
+
+            var p0 = new SqlParameter("@id", id);
+            var p1 = new SqlParameter("@class_type", Target);
+            
+            var request = new SeedTransferRequest
+            {
+                Id = id,
+                Target = Target,
+                states =  await _dbContext.StateProvince.Select(s => new StateProvince{ StateProvinceId = s.StateProvinceId, Name = s.Name, CountryId = s.CountryId}).OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync(),               
+                countries = await _dbContext.Countries.OrderByDescending(c => c.US).ThenBy(c => c.Name).Select(c => new Countries { Id = c.Id, Name = c.Name}).ToListAsync(),
+                customers = customers,
+                counties = counties,
+                classes = await _dbContext.AbbrevClassSeeds.FromSqlRaw($"EXEC mvc_class_producable_from_id @id, @class_type", p0, p1).ToListAsync(),
+            };
+            
+
+            if(Target == "SID")
+            {
+                var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
+                if(seed == null)
+                {
+                    return model;
+                }    
+                request.seed = seed;            
+            }
+            if(Target == "BID")
+            {
+                var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
+                if(blend == null)
+                {
+                    return model;
+                }                
+                request.blend = blend;
+            }
+            if(Target == "AppId")
+            {
+                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                if(app == null)
+                {
+                    return model;
+                }                
+                request.app = app;
+            }            
+            model.request = request;  
+            model.transfer = transfer;             
+            return model;
+        }      
     } 
 
     public class SeedTransferRequest
@@ -84,6 +145,8 @@ namespace CCIA.Models
         public List<County> counties { get; set; }
         public List<StateProvince> states { get; set; }
         public List<Countries> countries { get; set; }
+        public List<AbbrevClassSeeds> classes { get; set; }
+        public int? OrgId { get; set; }
 
 
         

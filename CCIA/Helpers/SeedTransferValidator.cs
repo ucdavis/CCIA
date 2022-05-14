@@ -90,7 +90,27 @@ namespace CCIA.Helpers
             {
                 returnList.HasWarnings = true;
                 returnList.Error = returnList.Error + "If any seed status is checked, you must select Certified seed; ";
-            }       
+            }   
+            if(stc.Pounds < 1)    
+            {
+                returnList.HasWarnings = true;
+                returnList.Error = returnList.Error + "Pounds Transferred must be a positive number; ";
+            }
+            if(string.IsNullOrWhiteSpace(stc.PurchaserName))    
+            {
+                returnList.HasWarnings = true;
+                returnList.Error = returnList.Error + "Purchaser Name must be supplied; ";
+            }
+            if(string.IsNullOrWhiteSpace(stc.PurchaserAddressLine1))    
+            {
+                returnList.HasWarnings = true;
+                returnList.Error = returnList.Error + "Purchaser Address Line 1 must be supplied; ";
+            }
+            if(string.IsNullOrWhiteSpace(stc.PurchaserCity))    
+            {
+                returnList.HasWarnings = true;
+                returnList.Error = returnList.Error + "Purchaser City must be supplied; ";
+            }
 
             return returnList;
         }

@@ -72,6 +72,107 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SubmitSeedTransfer(SeedTransferRequestModel vm)
+        {
+            var submittedTransfer = vm.transfer;
+            var transferToCreate = new SeedTransfers();
+            var errors = SeedTransferValidator.CheckStandards(submittedTransfer);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value); 
+
+            if (errors.HasWarnings)
+            {
+                ModelState.AddModelError("transfer.StageFromFieldNumberOfAcres", errors.Error);
+                var retryModel = await SeedTransferRequestModel.Retry(_dbContext, _helper, vm.request.Id, vm.request.Target, orgId, submittedTransfer); 
+                return View("Create", retryModel);
+            }
+
+            if(vm.request.Target == "SID")
+            {
+                transferToCreate.SeedsID = vm.request.Id;
+            }
+            
+            if(vm.request.Target == "AppId")
+            {
+                transferToCreate.ApplicationId = vm.request.Id;
+            }
+            
+            if(vm.request.Target == "BID")
+            {
+                transferToCreate.BlendId = vm.request.Id;
+            }
+
+
+
+            if(vm.request.Target == "AppId" && submittedTransfer.StageFromField)
+            {
+                transferToCreate.OriginatingCountyId = await _dbContext.Applications.Where(a => a.Id == vm.request.Id).Select(a => a.FarmCounty).FirstOrDefaultAsync();
+            } else {
+                transferToCreate.OriginatingCountyId = await _dbContext.Organizations.Where(o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
+            }
+
+            if(transferToCreate.OriginatingCountyId == submittedTransfer.PurchaserCountryId)
+            {
+                transferToCreate.Type = SeedTransferTypes.IntraCounty.GetDisplayName();
+            } else if(submittedTransfer.PurchaserStateId == 102) {
+                transferToCreate.Type = SeedTransferTypes.InterCounty.GetDisplayName();
+            } else {
+                transferToCreate.Type = SeedTransferTypes.InterAgency.GetDisplayName();
+            }
+
+            transferToCreate.SubmittedForAnalysis = submittedTransfer.SubmittedForAnalysis ? true : false ;            
+            transferToCreate.CreatedById =  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            transferToCreate.CreatedOn = DateTime.Now;
+            transferToCreate.TransferClassId = submittedTransfer.TransferClassId;
+            transferToCreate.OriginatingOrganizationId = orgId;
+            transferToCreate.CertificateDate = submittedTransfer.CertificateDate;           
+            transferToCreate.Pounds = submittedTransfer.Pounds;
+            transferToCreate.DestinationOrganizationId = vm.request.OrgId.HasValue ? vm.request.OrgId.Value : null;
+            transferToCreate.PurchaserName = submittedTransfer.PurchaserName;
+            transferToCreate.PurchaserAddressLine1 = submittedTransfer.PurchaserAddressLine1;
+            transferToCreate.PurchaserAddressLine2 = submittedTransfer.PurchaserAddressLine2;
+            transferToCreate.PurchaserCity = submittedTransfer.PurchaserCity;
+            transferToCreate.PurchaserCountryId = submittedTransfer.PurchaserCountryId;
+            transferToCreate.PurchaserEmail = submittedTransfer.PurchaserEmail;
+            transferToCreate.PurchaserPhone = submittedTransfer.PurchaserPhone;
+            transferToCreate.PurchaserStateId = submittedTransfer.PurchaserStateId;
+            transferToCreate.PurchaserCountyId = submittedTransfer.PurchaserCountyId;
+            transferToCreate.PurchaserZip = submittedTransfer.PurchaserZip;            
+            transferToCreate.SeedstockLotNumbers = submittedTransfer.SeedstockLotNumbers;
+            transferToCreate.StageInDirt = submittedTransfer.StageInDirt;
+            transferToCreate.StageFromField = submittedTransfer.StageFromField;
+            transferToCreate.StageFromStorage = submittedTransfer.StageFromStorage;
+            transferToCreate.TypeRetail = submittedTransfer.TypeRetail;
+            transferToCreate.TypeTote = submittedTransfer.TypeTote;
+            transferToCreate.TypeBulk = submittedTransfer.TypeBulk;
+            transferToCreate.StageConditioned = submittedTransfer.StageConditioned;
+            transferToCreate.StageNotFinallyCertified = submittedTransfer.StageNotFinallyCertified;
+            transferToCreate.NumberOfTrucks  = submittedTransfer.NumberOfTrucks;
+            transferToCreate.StageCertifiedSeed = submittedTransfer.StageCertifiedSeed;
+            transferToCreate.StageTreatment = submittedTransfer.StageTreatment;
+            transferToCreate.StageTagging = submittedTransfer.StageTagging;
+            transferToCreate.StageBagging = submittedTransfer.StageBagging;
+            transferToCreate.StageBlending = submittedTransfer.StageBlending;
+            transferToCreate.StageStorage = submittedTransfer.StageStorage;
+            transferToCreate.StageOther = submittedTransfer.StageOther;
+            transferToCreate.StageOtherValue = submittedTransfer.StageOtherValue;
+            transferToCreate.StageFromFieldNumberOfAcres = submittedTransfer.StageFromFieldNumberOfAcres;
+            transferToCreate.AdminUpdated = true;
+
+            if(ModelState.IsValid){
+                _dbContext.Add(transferToCreate);
+                await _dbContext.SaveChangesAsync();
+                //Notification
+                Message = "Seed Transfer Certificate Created";
+            } else {
+                ErrorMessage = "Something went wrong.";
+                var retryModel = await SeedTransferRequestModel.Retry(_dbContext, _helper, vm.request.Id, vm.request.Target, orgId, submittedTransfer); 
+                return View("Create", retryModel); 
+            }
+
+            return RedirectToAction(nameof(Details), new { id = transferToCreate.Id });  
+        }
+
         
 
         public async Task<IActionResult> Certificate(int id)

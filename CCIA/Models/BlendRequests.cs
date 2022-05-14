@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CCIA.Models
 {
-     public enum BlendStatus
+    public enum BlendStatus
     { 
         [Display(Name="Initiated")]
         Initiated,

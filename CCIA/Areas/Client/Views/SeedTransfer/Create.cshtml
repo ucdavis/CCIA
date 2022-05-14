@@ -162,6 +162,11 @@
 <form asp-action="SubmitSeedTransfer">
 <input type="hidden" asp-for="request.Id">
 <input type="hidden" asp-for="request.Target">
+<div class="row">
+            <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>   
 <div>
     <div class="form-group row required">
         <label asp-for="transfer.Pounds" class="col-sm-3 col-form-label">Transfer Weight (LBS)</label>
@@ -214,7 +219,7 @@
         <div>
             <div class="form-group row">
                 <label for="orgId" class="col-sm-3 col-form-label">Retrieve from Org ID</label>
-                <input class="form-control col-sm-2" name="OrgId" id="OrgId">
+                <input class="form-control col-sm-2" asp-for="request.OrgId">
                 <input type="button" class="btn btn-info" value="Retrieve Org Info" onclick="GetCustomerFromOrg()">
             </div>
         </div>
@@ -274,6 +279,73 @@
         </div>
     </section>
 </section>
+<div><hr></div>
+<div class="form-group row">
+    <label asp-for="transfer.TransferClassId" class="col-sm-3 col-form-label">Class Sold</label>
+    <select asp-for="transfer.TransferClassId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.classes, "Id","CertClass"))"></select>
+</div>
+<hr/>
+<div class="row col-sm-12">
+    <table border="0">                        
+        <tr>
+            <th colspan="4">Stage of Conditioning:</th>
+            <td rowspan="6">&nbsp;</td>
+            <th colspan="2">Seed Container Information:</th>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageInDirt" /> Indirt/Field Run (passed field inspection) for conditioning and final certification</td>
+            <td colspan="2">Type:</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageFromField" /> From Field of <input asp-for="transfer.StageFromFieldNumberOfAcres" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" sp-validation-for="transfer.StageFromFieldNumberOfAcres"></span> acres</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeRetail" /> Retail bags</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageFromStorage" /> From storage</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeTote" /> Tote bags</td>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageConditioned" /> Conditioned (passed field inspection and cleaned)</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeBulk" /> Bulk</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageNotFinallyCertified" /> Not finally certified (subject to sampling and lab analysis</td>
+            <td>&nbsp;</td>
+            <td>Number of trucks: <input asp-for="transfer.NumberOfTrucks" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="transfer.NumberOfTrucks" data-valmsg-replace="true"></span></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="6"><input type="checkbox" asp-for="transfer.StageCertifiedSeed" /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageTreatment" /> Treatment - coating, inoculation, etc.</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageBlending" /> Blending</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageBagging" /> Bagging</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageStorage" /> Storage</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageTagging" /> Tagging</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageOther" />Other: <input asp-for="transfer.StageOtherValue" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="transfer.StageOtherValue" data-valmsg-replace="true"></span></td>
+        </tr>
+    </table>
+</div>
 <div class="form-group row">
     <input type="submit" value="Create Tag Request" class="btn btn-primary">
 </div> 
@@ -318,7 +390,7 @@
 
         function GetCustomerFromOrg()
         {
-            var Id = $("#OrgId").val();
+            var Id = $("#request_OrgId").val();
             let data = {
                 Id: Id,
             }
