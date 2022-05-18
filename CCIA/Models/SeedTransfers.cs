@@ -302,6 +302,14 @@ namespace CCIA.Models
             return "";
         }
 
+        public string GetOriginatingOrgName()
+        {
+            if(OriginatingOrganization != null)
+            {
+                return OriginatingOrganization.Name;
+            }
+            return "";
+        }       
 
         public string GetStateOfOrigin()
         {

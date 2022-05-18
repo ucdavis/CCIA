@@ -94,7 +94,7 @@ namespace CCIA.Models
             {
                 return Variety.Name;
             }
-            if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
+            if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds != null && LotBlends.First().Seeds.Variety != null)
             {
                 return LotBlends.First().Seeds.Variety.Name;
             }          
