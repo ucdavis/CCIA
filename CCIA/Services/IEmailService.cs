@@ -289,6 +289,41 @@ namespace CCIA.Services
 
         }
 
+        public async Task SendPendingSeedTransferSubmitNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.StId != 0 && n.IsAdmin).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+            
+            var stIdNotifications = notifications.Select(n => n.StId).Distinct().ToList();
+            foreach(var thisNotice in stIdNotifications)
+            {
+                var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Organization changes"};    
+                var seedTransfer = await _dbContext.SeedTransfers
+                    .Include(st => st.OriginatingOrganization)
+                    .Include(st => st.OriginatingCounty)
+                    .Include(st => st.PurchaserCounty)
+                    .Where(st => st.Id == thisNotice).FirstOrDefaultAsync();
+                var recipients = notifications.Where(n => n.StId == thisNotice).ToList();
+                // TODO uncomment to send to each person
+                foreach(var address in recipients)
+                {
+                    //message.To.Add(address.Email);
+                    message.To.Add("jscubbage@ucdavis.edu");
+                }
+                message.Body = "A new Seed Transfer request has been made. Please visit CCIA website for details";
+                var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedTransferAdminNotice.cshtml", seedTransfer), new ContentType(MediaTypeNames.Text.Html));
+                message.AlternateViews.Add(htmlView);
+                await _client.SendMailAsync(message);
+            }            
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+
+        }
+
         public async Task SendPendingOrganizationNotices(string password)
         {
             ConfigureSMTPClient(password);
