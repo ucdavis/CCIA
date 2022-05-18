@@ -22,10 +22,13 @@ namespace CCIA.Controllers.Client
 
         private readonly IFullCallService _helper;
 
-        public SeedTransferController(CCIAContext dbContext, IFullCallService helper)
+        private readonly INotificationService _notificationService;
+
+        public SeedTransferController(CCIAContext dbContext, IFullCallService helper,INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         
@@ -111,7 +114,7 @@ namespace CCIA.Controllers.Client
                 transferToCreate.OriginatingCountyId = await _dbContext.Organizations.Where(o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
             }
 
-            if(transferToCreate.OriginatingCountyId == submittedTransfer.PurchaserCountryId)
+            if(transferToCreate.OriginatingCountyId == submittedTransfer.PurchaserCountyId)
             {
                 transferToCreate.Type = SeedTransferTypes.IntraCounty.GetDisplayName();
             } else if(submittedTransfer.PurchaserStateId == 102) {
@@ -162,7 +165,8 @@ namespace CCIA.Controllers.Client
             if(ModelState.IsValid){
                 _dbContext.Add(transferToCreate);
                 await _dbContext.SaveChangesAsync();
-                //Notification
+                await _notificationService.SeedTransferSubmitted(transferToCreate);
+                await _dbContext.SaveChangesAsync();
                 Message = "Seed Transfer Certificate Created";
             } else {
                 ErrorMessage = "Something went wrong.";
