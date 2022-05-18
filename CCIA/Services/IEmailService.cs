@@ -61,6 +61,7 @@ namespace CCIA.Services
             await SendPendingTagNotices(password);
             await SendPendingOrganizationNotices(password);
             await SendPendingOECDNotices(password);
+            await SendPendingSeedTransferSubmitNotices(password);
         }
 
         public  async Task SendWeeklyApplicationNotices(string password)
