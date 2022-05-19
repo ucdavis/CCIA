@@ -1,5 +1,8 @@
 @model CCIA.Models.Applications
 @using CCIA.Helpers;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+ 
 @{
     bool showPurchasedFrom = false;
     bool showPounds = false;
@@ -165,6 +168,7 @@
         
         <input id="file" name="file" type="file">            
         <input class="btn btn-primary" type="submit" value="Upload" disabled />
+        <br>Allowed files: @Configuration["AllowedFiles"]
     </form>
     <hr>
     @if(Model.PlantingStocks.Any())
