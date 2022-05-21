@@ -83,15 +83,23 @@
                                                                 <ul>
                                                                     <li>Seed Transfer ID: @Model.Id</li>
                                                                     <li>Transfer Type: @Model.Type</li>                                                                        
-                                                                    @Model.OriginatingOrganization != null ? <li>Requesting Org: @Model.OriginatingOrganization.NameAndId</li>  : ""
+                                                                    @{
+                                                                        var origOrg = Model.OriginatingOrganization != null ? Model.OriginatingOrganization.NameAndId  : "";
+                                                                    }
+                                                                    <li>Originating Org: @origOrg</li>
                                                                     <li>@Model.IdType: @Model.LinkId</li>
-                                                                    @Model.OriginatingCounty != null ? <il>Originating County:  @Model.OriginatingCounty.Name</li> : ""
-                                                                    @Model.PurchaserCounty != null ? <li>Destination County: @Model.PurchaserCounty.Name : ""</li>
+                                                                    @{
+                                                                        var origCounty = Model.OriginatingCounty != null ? Model.OriginatingCounty.Name : "";
+                                                                    }
+                                                                    <li>Originating County: @origCounty</li>
+                                                                    @{
+                                                                        var purchCounty = Model.PurchaserCounty != null ? Model.PurchaserCounty.Name  : "";
+                                                                    }
+                                                                    <li>Destination County: @purchCounty </li>
+                                                                    <li>@Model.PurchaserCity</li>
                                                                 </ul>
                                                                 <br/><br/>
-                                                                <p>
-                                                                    "Seed Transfers must be reviewed and approved by the originating county's Ag Commissioner. To view the details of this transfer, please visit the CCIA website.")
-                                                                </p>                                                                   
+                                                                <p>Seed Transfers must be reviewed and approved by the originating county's Ag Commissioner. To view the details of this transfer, please visit the CCIA website.</p>                                                                   
                                                         </th>
                                                     </tr>
                                                 </tbody>
