@@ -19,6 +19,7 @@ function loadMapScenario() {
         processRequest();
         setMapView();
     });
+    checkPrezoom();
 
     lblIDs = $("#lblIDs");
 
@@ -198,7 +199,7 @@ function setMapView() {
      };
     var viewRect = Microsoft.Maps.LocationRect.fromLocations(pins);
     map.setView({ bounds: viewRect });
-    map.setView({ zoom: 9 });
+    //map.setView({ zoom: 9 });
 }
 
 function beginDraw() {
@@ -259,6 +260,24 @@ function Panmap () {
         });
         
      }
+ }
+
+ function  checkPrezoom() {
+     var loc = $("#existingCenter").val();
+     if(loc !== undefined && loc !== null && loc !== "")
+     {
+        loc = loc.replace("POINT (","")
+        loc = loc.replace(")","");     
+        var x = loc.substring(loc.indexOf(" ")+1);
+        var y = loc.substring(0,loc.indexOf(" ")-1)  
+        //alert(x);
+        //alert(y);   
+        map.setView({           
+            center: new Microsoft.Maps.Location(x,y),
+            zoom: 14,
+        });
+        alert("Zoomed to old field location");
+    }
  }
 
 

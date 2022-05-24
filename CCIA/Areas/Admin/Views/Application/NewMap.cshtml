@@ -103,9 +103,12 @@
             <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
         
 </div>
+@if(Model.application.GeoField != null)
+{
+    <input type="text" value="@Model.application.GeoField.Centroid" id="existingCenter">
+}
 
-@section Scripts {
-    
+@section Scripts {    
     <script>
         $("#newMap").submit(function() {
             var textVal = $("#map").val();
@@ -113,7 +116,7 @@
                 alert('No field mapped');
                 return false;
             }
-        });
+        });       
     </script>
     <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
     <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
