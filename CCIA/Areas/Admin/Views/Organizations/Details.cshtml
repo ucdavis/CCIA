@@ -306,6 +306,7 @@
                 <th>Email</th>
                 <th>Business Phone</th>
                 <th>Cell Phone</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -324,6 +325,7 @@
                         }
                     </td>
                     <td nowrap>@employee.MobilePhone</td>
+                    <td><a asp-action="Emulate" asp-controller="Account" asp-area="" class="btn btn-warning" asp-route-id="@employee.Id">Emulate</a></td>
                 </tr>
             }
         </tbody>
