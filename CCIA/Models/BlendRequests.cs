@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CCIA.Models
 {
-     public enum BlendStatus
+    public enum BlendStatus
     { 
         [Display(Name="Initiated")]
         Initiated,
@@ -15,6 +15,16 @@ namespace CCIA.Models
         [Display(Name="Approved")]
         Approved,        
     } 
+
+    public enum BlendType
+    {
+        [Display(Name="Lot")]
+        Lot,
+        [Display(Name="Varietal")]
+        Varietal,
+        [Display(Name="In Dirt")]
+        InDirt,
+    }
 
     public partial class BlendRequests
     {
@@ -84,7 +94,7 @@ namespace CCIA.Models
             {
                 return Variety.Name;
             }
-            if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds.Variety != null)
+            if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds != null && LotBlends.First().Seeds.Variety != null)
             {
                 return LotBlends.First().Seeds.Variety.Name;
             }          

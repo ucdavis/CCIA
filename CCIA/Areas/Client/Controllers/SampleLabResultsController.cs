@@ -3,7 +3,13 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
 using CCIA.Models.SampleLabResultsViewModel;
 using CCIA.Helpers;
-
+using System.Linq;
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using CCIA.Models.DetailsViewModels;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Controllers.Client
 {
@@ -26,19 +32,20 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> Edit(int id, SampleLabResultsViewModel results)
         {
-            results.Labs.PurityPercent = results.Labs.PurityPercent / 100;
-            results.Labs.InertPercent = results.Labs.InertPercent / 100;
-            results.Labs.OtherCropPercent = results.Labs.OtherCropPercent / 100;
-            results.Labs.OtherVarietyPercent = results.Labs.OtherVarietyPercent / 100;
-            results.Labs.WeedSeedPercent = results.Labs.WeedSeedPercent / 100;
-            results.Labs.GermPercent = results.Labs.GermPercent / 100;
-            results.Labs.HardSeedPercent = results.Labs.HardSeedPercent / 100;
-            results.Labs.BadlyDiscoloredPercent = results.Labs.BadlyDiscoloredPercent / 100;
-            results.Labs.ForeignMaterialPercent = results.Labs.ForeignMaterialPercent / 100;
-            results.Labs.SplitsAndCracksPercent = results.Labs.SplitsAndCracksPercent / 100;
-            results.Labs.ChewingInsectDamagePercent = results.Labs.ChewingInsectDamagePercent / 100;
+            var labs = results.Labs;
+            labs.PurityPercent = labs.PurityPercent / 100;
+            labs.InertPercent = labs.InertPercent / 100;
+            labs.OtherCropPercent = labs.OtherCropPercent / 100;
+            labs.OtherVarietyPercent = labs.OtherVarietyPercent / 100;
+            labs.WeedSeedPercent = labs.WeedSeedPercent / 100;
+            labs.GermPercent = labs.GermPercent / 100;
+            labs.HardSeedPercent = labs.HardSeedPercent / 100;
+            labs.BadlyDiscoloredPercent = labs.BadlyDiscoloredPercent / 100;
+            labs.ForeignMaterialPercent = labs.ForeignMaterialPercent / 100;
+            labs.SplitsAndCracksPercent = labs.SplitsAndCracksPercent / 100;
+            labs.ChewingInsectDamagePercent = labs.ChewingInsectDamagePercent / 100;
 
-            var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, results.Labs);
+            var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, labs);
 
             if (errorList.HasWarnings)
             {
@@ -106,6 +113,54 @@ namespace CCIA.Controllers.Client
 
                 var errorModel = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
                 return View(errorModel);
+            }
+
+            // Passed verification, save and redirect
+            var labsToUpdate = await _dbContext.SampleLabResults.Where(l => l.SeedsId == results.Labs.SeedsId).FirstOrDefaultAsync();
+            labsToUpdate.AssayResults = labs.AssayResults;
+            labsToUpdate.AssayTest = labs.AssayTest;
+            labsToUpdate.BadlyDiscoloredPercent = labs.BadlyDiscoloredPercent;
+            labsToUpdate.BushelWeight = labs.BushelWeight;
+            labsToUpdate.ChewingInsectDamagePercent = labs.ChewingInsectDamagePercent;
+            labsToUpdate.Comments = labs.Comments;
+            labsToUpdate.PrivateLabDate = labs.PrivateLabDate;
+            labsToUpdate.DodderGrams = labs.DodderGrams;
+            labsToUpdate.ForeignMaterialPercent = labs.ForeignMaterialPercent;
+            labsToUpdate.ForeignMaterialsComments = labs.ForeignMaterialsComments;
+            labsToUpdate.GermPercent = labs.GermPercent;
+            labsToUpdate.GermResults = labs.GermResults;
+            labsToUpdate.HardSeedPercent = labs.HardSeedPercent;
+            labsToUpdate.InertComments = labs.InertComments;
+            labsToUpdate.InertPercent = labs.InertPercent;
+            labsToUpdate.NoxiousComments = labs.NoxiousComments;
+            labsToUpdate.NoxiousCount = labs.NoxiousCount;
+            labsToUpdate.NoxiousGrams = labs.NoxiousGrams;
+            labsToUpdate.OtherCropComments = labs.OtherCropComments;
+            labsToUpdate.OtherCropCount = labs.OtherCropCount;
+            labsToUpdate.OtherCropPercent = labs.OtherCropPercent;
+            labsToUpdate.OtherKindComments = labs.OtherKindComments;
+            labsToUpdate.OtherKindPercent = labs.OtherKindPercent;
+            labsToUpdate.OtherVarietyComments = labs.OtherVarietyComments;
+            labsToUpdate.OtherVarietyCount = labs.OtherVarietyCount;
+            labsToUpdate.OtherVarietyPercent = labs.OtherVarietyPercent;
+            labsToUpdate.PrivateLabDate =labs.PrivateLabDate;
+            labsToUpdate.PrivateLabId = labs.PrivateLabId;
+            labsToUpdate.PrivateLabNumber = labs.PrivateLabNumber;
+            labsToUpdate.PurityComments = labs.PurityComments;
+            labsToUpdate.PurityGrams = labs.PurityGrams;
+            labsToUpdate.PurityPercent = labs.PurityPercent;
+            labsToUpdate.PurityResults = labs.PurityResults;
+            labsToUpdate.SplitsAndCracksPercent = labs.SplitsAndCracksPercent;
+            labsToUpdate.WeedSeedComments = labs.WeedSeedComments;
+            labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
+            labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
+
+             if(ModelState.IsValid){
+                await _dbContext.SaveChangesAsync();
+                Message = "Lab Results Updated";
+                return RedirectToAction("Details", "Seeds", new { id = labs.SeedsId }); 
+            } else {
+                ErrorMessage = "Something went wrong";                         
             }
 
             var model = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);

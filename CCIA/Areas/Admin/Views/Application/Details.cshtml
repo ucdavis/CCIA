@@ -1,3 +1,5 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model CCIA.Models.DetailsViewModels.AdminViewModel
 
 @{
@@ -384,7 +386,8 @@
             </div>
         
         <input id="file" name="file" type="file">            
-        <input class="btn btn-primary" type="submit" value="Upload" disabled />
+        <input class="btn btn-primary" type="submit" value="Upload" disabled />        
+        <br>Allowed files: @Configuration["AllowedFiles"]
     </form>
     <hr>
     @if(Model.application.PlantingStocks.Any())
@@ -442,9 +445,11 @@
                             {
                                 <td>@row.PlantsPerAcre</td>
                             }                        
-                            <td>@row.PsClassNavigation.ClassProducedTrans
-                                @if(row.PsAccession != null){
-                                    <span>- @row.PsAccession</span>
+                            <td>@if(row.PsClassNavigation != null)
+                                {@row.PsClassNavigation.ClassProducedTrans
+                                    @if(row.PsAccession != null){
+                                        <span>- @row.PsAccession</span>
+                                    }
                                 }
                             </td>
                             @if(@row.TaggedStateProvince != null)

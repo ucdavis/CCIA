@@ -26,7 +26,7 @@
             <div class="navbar-collapse collapse navbars" id="navbar2">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" asp-area="client" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Field Applications</a>
+                        <a class="nav-link dropdown-toggle" asp-area="client" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Field Apps</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" asp-area="client" asp-controller="Application" asp-action="Index">Application Home</a>
                             <div class="dropdown-divider"></div>
@@ -44,7 +44,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="client" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Certify Seed Lots</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="client" asp-controller="Seeds" asp-action="Index" aria-haspopup="true" aria-expanded="false">Seed Lots</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" asp-area="client" asp-controller="Seeds" asp-action="Index">Seeds Home</a>
                             <a class="dropdown-item" asp-area="client" asp-controller="Seeds" asp-action="SelectOrigin">New Certified Seed Lot</a>
@@ -65,9 +65,9 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="client" asp-controller="Blend" asp-action="Index" aria-haspopup="true" aria-expanded="false">Blends</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="Index">Blends Home</a>
-                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="Index">New Lot Blend</a>
-                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="Index">New Varietal Blend</a>
-                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="Index">New InDirt Blend</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="StartNewLotBlend">New Lot Blend</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="StartNewVarietalBlend">New Varietal Blend</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="Blend" asp-action="StartNewInDirtBlend">New InDirt Blend</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -75,12 +75,13 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" asp-area="client" asp-controller="BulkSalesCertificates" asp-action="Create">New Bulks Sales Certificate</a>
                             <a class="dropdown-item" asp-area="client" asp-controller="BulkSalesCertificates" asp-action="Index">Completed Bulk Sales Certificates</a>
-                            <a class="dropdown-item" asp-area="client" asp-controller="SeedTransfers" asp-action="Create">New Seed Transfer Certificate</a>
-                            <a class="dropdown-item" asp-area="client" asp-controller="SeedTransfers" asp-action="Index">Completed Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="SeedTransfer" asp-action="Initiate">New Seed Transfer Certificate</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="SeedTransfer" asp-action="Index">Completed Seed Transfer Certificate</a>
                             <a class="dropdown-item" asp-area="client" asp-controller="MyCustomers" asp-action="Index">My Customers</a>
                         </div>
                     </li>
-                    <a class="nav-link" asp-area="client" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Harvest Certificates</a>
+                    <a class="nav-link" asp-area="client" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certs</a>
+                    <a class="nav-link" asp-area="client" asp-controller="Organization" asp-action="Index">Org</a>
                     <a class="nav-link" asp-controller="Account" asp-action="Login">Logout</a>
                 </ul>
             </div>

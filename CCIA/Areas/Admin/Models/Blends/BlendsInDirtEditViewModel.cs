@@ -23,6 +23,9 @@ namespace CCIA.Models
        public List<StateProvince> stateProvinces { get; set; }
 
        public List<AbbrevClassProduced> classSeeds { get; set; }
+       public string origin { get; set; }
+
+       public int blendId { get; set; }
 
         public static async Task<AdminBlendsInDirtEditViewModel> Create(CCIAContext _dbContext, int id)
         {    
@@ -35,7 +38,7 @@ namespace CCIA.Models
             {
                 thisComp.StateOfOrigin = 0;
             }
-            var states = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();            
+            var states = await _dbContext.StateProvince.OrderBy(s => s.CountryId).ThenBy(s => s.Name).ToListAsync();            
             states.Insert(0, new StateProvince{ StateProvinceId = 0, Name=""});
 
             if(thisComp.CropId == null)
@@ -67,6 +70,7 @@ namespace CCIA.Models
                     countries = countryList,
                     stateProvinces = states,
                     classSeeds = classes,
+                    origin = "",
                 };
             
             return model;

@@ -91,6 +91,9 @@ namespace CCIA.Models
         [Display(Name="Map Permissions Update?")]
         public bool UpdateMapPermissions { get; set; }
 
+        [Display(Name="New Blend Inform")]
+        public bool NewBlend { get; set; }
+
         [ForeignKey("EmployeeId")]
         public ICollection<CropAssignments> AssignedCrops { get; set; }
         

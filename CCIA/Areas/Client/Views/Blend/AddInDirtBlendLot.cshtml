@@ -1,0 +1,20 @@
+@model CCIA.Models.AdminBlendsInDirtEditViewModel
+
+<div class="container col-sm-12">      
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Add Lot to In-Dirt Blend</h2>
+        </div>            
+    </div>
+    <form asp-action="StartNewInDirtBlend"> 
+        <input type="hidden" asp-for="blendId">
+         @{await Html.RenderPartialAsync("_InDirtForm", Model);}
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} 
+    <script type="text/javascript" src="/js/Blends/InDirt.js"></script>    
+}
+

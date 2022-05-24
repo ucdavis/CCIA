@@ -102,6 +102,7 @@ namespace CCIA.Controllers.Admin
             stcToUpdate.PurchaserEmail = update.PurchaserEmail;
             stcToUpdate.PurchaserPhone = update.PurchaserPhone;
             stcToUpdate.PurchaserStateId = update.PurchaserStateId;
+            stcToUpdate.PurchaserCountyId = update.PurchaserCountyId;
             stcToUpdate.PurchaserZip = update.PurchaserZip;
             stcToUpdate.AdminUpdatedDate = DateTime.Now;
             stcToUpdate.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
@@ -129,7 +130,7 @@ namespace CCIA.Controllers.Admin
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
-                Message = "Bulk Sales Certificate Updated";
+                Message = "Seed Transfer Certificate Updated";
             } else {
                 ErrorMessage = "Something went wrong.";
                 var model = await AdminBSeedTransfersEditViewModel.Create(_dbContext, id, _helper);

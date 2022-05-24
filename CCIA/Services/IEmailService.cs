@@ -14,20 +14,7 @@ namespace CCIA.Services
 {
     public interface IEmailService
     {
-        Task SendWeeklyApplicationNotices(string password);
-
-        Task SendPendingSeedNotices(string password);
-
-        Task SendPendingBlendNotices(string password);
-
-        Task SendPendingTagNotices(string password);
-
-        Task SendPendingOrganizationNotices(string password);
-
-        Task SendPendingOECDNotices(string password);
-
-        Task SendPendingAdminAppNotices(string password);
-        Task SendPendingAdminSeedNotices(string password);
+        Task SendWeeklyApplicationNotices(string password);        
 
         Task SendNotices(string password);
     }
@@ -47,7 +34,7 @@ namespace CCIA.Services
         
          private void ConfigureSMTPClient(string password)
         {
-            _client = new SmtpClient("ucdavis-edu.mail.protection.outlook.com",25) {Credentials = new NetworkCredential("ad3/jscub", password), EnableSsl = true};
+            _client = new SmtpClient("pricklypear.plantsciences.ucdavis.edu",25) {Credentials = new NetworkCredential("ccia", password), EnableSsl = true};
         }
 
         public async Task SendNotices(string password)
@@ -61,6 +48,8 @@ namespace CCIA.Services
             await SendPendingTagNotices(password);
             await SendPendingOrganizationNotices(password);
             await SendPendingOECDNotices(password);
+            await SendPendingSeedTransferSubmitNotices(password);
+            await SendPendingSeedTransferResponseNotices(password);
         }
 
         public  async Task SendWeeklyApplicationNotices(string password)
@@ -77,9 +66,10 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA application status changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA application status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
+                    // TODO update to use thisNotices.email instead of ^
                     message.Body = "An application status has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -90,7 +80,7 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();          
         }
 
-        public async Task SendPendingAdminAppNotices(string password)
+        private async Task SendPendingAdminAppNotices(string password)
         {
              ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0 && n.IsAdmin).ToListAsync();
@@ -104,12 +94,13 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Application Notices"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Application Notices"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
+                    // TODO: use real email not ^
                     //message.To.Add(address);
                     message.Body = "An Application has been updated. Please visit CCIA website for details";
-                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));                    
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }
@@ -118,7 +109,7 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();  
         }
 
-        public async Task SendPendingAdminNFCNotices(string password)
+        private async Task SendPendingAdminNFCNotices(string password)
         {
              ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId != 0).ToListAsync();
@@ -132,7 +123,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Seed Notices"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Seed Notices"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -146,7 +137,7 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();  
         }
 
-        public async Task SendPendingAdminSeedNotices(string password)
+        private async Task SendPendingAdminSeedNotices(string password)
         {
              ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId == 0).ToListAsync();
@@ -160,7 +151,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Seed Notices"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Seed Notices"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -174,7 +165,7 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();  
         }
 
-        public async Task SendPendingSeedNotices(string password)
+        private async Task SendPendingSeedNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0).ToListAsync();
@@ -188,7 +179,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA SID status changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA SID status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -202,7 +193,7 @@ namespace CCIA.Services
             await _dbContext.SaveChangesAsync();   
         }
 
-        public async Task SendPendingBlendNotices(string password)
+        private async Task SendPendingBlendNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.BlendId != 0).ToListAsync();
@@ -216,7 +207,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Blend status changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Blend status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -231,7 +222,7 @@ namespace CCIA.Services
 
         }
 
-        public async Task SendPendingAdminTagNotices(string password)
+        private async Task SendPendingAdminTagNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.TagId != 0 && n.IsAdmin).ToListAsync();
@@ -245,7 +236,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Tag status changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Tag status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -260,7 +251,7 @@ namespace CCIA.Services
 
         }
 
-        public async Task SendPendingTagNotices(string password)
+        private async Task SendPendingTagNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.TagId != 0).ToListAsync();
@@ -274,7 +265,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Tag status changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Tag status changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -289,7 +280,79 @@ namespace CCIA.Services
 
         }
 
-        public async Task SendPendingOrganizationNotices(string password)
+        private async Task SendPendingSeedTransferSubmitNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.StId != 0 && n.IsAdmin).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+            
+            var stIdNotifications = notifications.Select(n => n.StId).Distinct().ToList();
+            foreach(var thisNotice in stIdNotifications)
+            {
+                var message = new MailMessage();
+                message.From = new MailAddress("ccia@ucdavis.edu");
+                message.Subject = "CCIA New Seed Transfer Submitted";
+                var seedTransfer = await _dbContext.SeedTransfers
+                    .Include(st => st.OriginatingOrganization)
+                    .Include(st => st.OriginatingCounty)
+                    .Include(st => st.PurchaserCounty)
+                    .Where(st => st.Id == thisNotice).FirstOrDefaultAsync();
+                var recipients = notifications.Where(n => n.StId == thisNotice).ToList();                
+                foreach(var address in recipients)
+                {
+                    //message.To.Add(address.Email);
+                    message.To.Add("jscubbage@ucdavis.edu");                    
+                }
+                message.Body = "A new Seed Transfer request has been made. Please visit CCIA website for details";
+                var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedTransferAdminNotice.cshtml", seedTransfer), new ContentType(MediaTypeNames.Text.Html));
+                message.AlternateViews.Add(htmlView);
+                await _client.SendMailAsync(message);
+            }            
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+
+        }
+
+        private async Task SendPendingSeedTransferResponseNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.StId != 0 && !n.IsAdmin).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+            
+            var stIdNotifications = notifications.Select(n => n.StId).Distinct().ToList();
+            foreach(var thisNotice in stIdNotifications)
+            {
+                var message = new MailMessage();
+                message.From = new MailAddress("ccia@ucdavis.edu");
+                message.Subject = "CCIA New Seed Transfer Submitted";
+                var seedTransfer = await _dbContext.SeedTransfers
+                    .Include(st => st.OriginatingOrganization)
+                    .Include(st => st.OriginatingCounty)
+                    .Include(st => st.PurchaserCounty)
+                    .Include(st => st.AgricultureCommissionerContactRespond)
+                    .Where(st => st.Id == thisNotice).FirstOrDefaultAsync();
+                var recipients = notifications.Where(n => n.StId == thisNotice).ToList();                
+                foreach(var address in recipients)
+                {
+                    //message.To.Add(address.Email);
+                    message.To.Add("jscubbage@ucdavis.edu");                    
+                }
+                message.Body = "A Seed Transfer request has been responded to. Please visit CCIA website for details";
+                var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedTransferResponseNotice.cshtml", seedTransfer), new ContentType(MediaTypeNames.Text.Html));
+                message.AlternateViews.Add(htmlView);
+                await _client.SendMailAsync(message);
+            }            
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();   
+        }
+
+        private async Task SendPendingOrganizationNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.OrgId != 0).ToListAsync();
@@ -303,7 +366,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA Organization changes"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Organization changes"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);
@@ -318,7 +381,7 @@ namespace CCIA.Services
 
         }
 
-        public async Task SendPendingOECDNotices(string password)
+        private async Task SendPendingOECDNotices(string password)
         {
             ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.OecdId != 0).ToListAsync();
@@ -332,7 +395,7 @@ namespace CCIA.Services
             {
                 var thisNotices = notifications.Where(n => n.Email == address).ToList();                
 
-                using (var message = new MailMessage {From = new MailAddress("jscubbage@ucdavis.edu", "James Cubbage"), Subject = "CCIA OECD Certificates printed/charged"})
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA OECD Certificates printed/charged"})
                 {
                     message.To.Add("jscubbage@ucdavis.edu");
                     //message.To.Add(address);

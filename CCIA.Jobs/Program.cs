@@ -22,15 +22,14 @@ namespace CCIA.Jobs
             var provider = ConfigureServices(); 
             var context = provider.GetService<CCIAContext>();
             var emailService = provider.GetService<IEmailService>();
-            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();
+            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();            
             if(appNotices.Count > 0)
             {
                 Console.WriteLine("Running weekly app notices");                            
                 emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
                 var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
                 context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);  
-            }
-
+            }            
             emailService.SendNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
                       
             Console.WriteLine("End?");

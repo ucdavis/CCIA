@@ -1,0 +1,500 @@
+@model CCIA.Models.SeedTransferRequestModel
+
+@if(Model.request.Target == "AppId")
+{
+    <div class="row">
+        <div class="col-lg-6"> @* FIRST Column *@
+            <div class="form-group row">
+                <label asp-for="request.Id" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Html.DisplayFor(x => x.request.Id) @Model.request.Target
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Crop</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.CropName
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Applicant</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.ApplicantOrganization.NameAndId
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Cert Number</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.CertNum
+                </div>
+            </div>    
+        </div>
+        <div class="col-lg-6"> @* Second Column *@
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Program</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.AppTypeTrans.AppTypeTrans
+                </div>
+            </div>
+                <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Variety</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.VarietyName
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Grower</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.GrowerOrganization.NameAndId
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Field Name</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.app.FieldName
+                </div>
+            </div>
+        </div>     
+    </div>
+}
+@if(Model.request.Target == "SID")
+{
+    <div class="row">
+        <div class="col-lg-6"> @* FIRST Column *@
+            <div class="form-group row">
+                <label asp-for="request.Id" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Html.DisplayFor(x => x.request.Id) @Model.request.Target
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Crop</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.GetCropName()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Applicant</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.ApplicantOrganization.NameAndId
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Cert Number</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.CertNumber
+                </div>
+            </div>    
+        </div>
+        <div class="col-lg-6"> @* Second Column *@
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Program</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.AppTypeTrans.AppTypeTrans
+                </div>
+            </div>
+                <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Variety</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.GetVarietyName()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Conditioner</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.ConditionerOrganization.NameAndId
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Lot Number</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.seed.LotNumber
+                </div>
+            </div>
+        </div>     
+    </div>
+}
+@if(Model.request.Target == "BID")
+{
+    <div class="row">
+        <div class="col-lg-6"> @* FIRST Column *@
+            <div class="form-group row">
+                <label asp-for="request.Id" class="col-sm-4 col-form-label"></label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Html.DisplayFor(x => x.request.Id) @Model.request.Target
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Crop</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.blend.GetCrop()
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Conditioner</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.blend.Conditioner.NameAndId
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Cert Number</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.blend.CertNumber
+                </div>
+            </div>    
+        </div>
+        <div class="col-lg-6"> @* Second Column *@
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Program</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.blend.BlendType
+                </div>
+            </div>
+                <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Variety</label>
+                <div class="col-sm-8 form-control-plaintext">
+                    @Model.request.blend.GetVarietyName()
+                </div>
+            </div>  
+        </div>     
+    </div>
+}
+<form asp-action="SubmitSeedTransfer">
+<input type="hidden" asp-for="request.Id">
+<input type="hidden" asp-for="request.Target">
+<div class="row">
+            <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>   
+<div>
+    <div class="form-group row required">
+        <label asp-for="transfer.Pounds" class="col-sm-3 col-form-label">Transfer Weight (LBS)</label>
+        <input asp-for="transfer.Pounds" class="form-control col-sm-2" data-val="true" data-val-required="Please provide transfer weight" data-val-number="Transfer weight must be a number">        
+        <span class="field-validation-valid text-danger" asp-validation-for="transfer.Pounds"></span>
+        <span>(use estimate if needed for transfers from field)</span>
+    </div> 
+    @if(Model.request.Target != "BID")
+    {  
+        <div class="form-group row">
+            <label asp-for="transfer.SeedstockLotNumbers" class="col-sm-3 col-form-label">Planting Stock Lot#</label>
+            <input asp-for="transfer.SeedstockLotNumbers" class="form-control col-sm-2">
+            <span class="field-validation-valid text-danger" asp-validation-for="transfer.SeedstockLotNumbers"></span>
+            <input type="button" value="Retrieve From ID" onclick="GetPS()" class="btn btn-info">
+            <span>(required for OECD certification of seed destined for EC countries)</span>
+        </div> 
+    } 
+    <div class="form-group row required">
+        <label asp-for="transfer.SubmittedForAnalysis" class="col-sm-4 col-form-label">Sample submitted for Analysis?</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input lgRadio" type="radio" asp-for="transfer.SubmittedForAnalysis" value="true" data-val="true" data-val-required="Please select what class you are planting" >
+            <label class="form-check-label" for="true">Yes</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input lgRadio" type="radio" asp-for="transfer.SubmittedForAnalysis" value="false" data-val="true" data-val-required="Please select if sample was submitted for analysis." >
+            <label class="form-check-label" for="false">No</label>
+        </div>
+        <span class="field-validation-valid text-danger" data-valmsg-for="transfer.SubmittedForAnalysis"></span>
+    </div> 
+    <div class="form-group row required">
+        <label asp-for="transfer.CertificateDate" class="col-sm-4 col-form-label">Certificate Date</label>
+        <input type="text" class="form-control col-sm-2 datepicker" asp-for="transfer.CertificateDate">
+        <span class="field-validation-valid text-danger" asp-validation-for="transfer.CertificateDate"></span>
+    </div>
+    
+</div>
+<section id="planting-stock" class="rounded-section off-white">
+    <h4>Planting StockTransfer To:</h4>
+    <section class="rounded-section light-grey">
+        <div>
+            <div class="form-group row">
+                <label for="myCustomers" class="col-sm-3 col-form-label">Select <i>My Customers</i></label>
+            <select name="myCustomers" id="myCustomers" class="form-control col-sm-3"  asp-items="@(new SelectList(Model.request.customers, "Id", "Name"))"></select>
+            </div>
+        </div>
+        <h4>Or...</h4>
+    </section>
+    <hr>
+    <section class="rounded-section light-grey">
+        <div>
+            <div class="form-group row">
+                <label for="orgId" class="col-sm-3 col-form-label">Retrieve from Org ID</label>
+                <input class="form-control col-sm-2" asp-for="request.OrgId">
+                <input type="button" class="btn btn-info" value="Retrieve Org Info" onclick="GetCustomerFromOrg()">
+            </div>
+        </div>
+        <h4>Or...just fill in the appropriate fields below</h4>
+    </section>
+    <hr>
+    <section class="rounded-section light-grey">
+        <h5></h5>
+        <div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserName" class="col-sm-3 col-form-label">Name</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserName">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserName"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserAddressLine1" class="col-sm-3 col-form-label">Address Line 1</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserAddressLine1">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserAddressLine1"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserAddressLine2" class="col-sm-3 col-form-label">Address Line 2</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserAddressLine2">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserAddressLine2"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCity" class="col-sm-3 col-form-label">City</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserCity">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserCity"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCountryId" class="col-sm-3 col-form-label">Country</label>
+                <select asp-for="transfer.PurchaserCountryId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.countries, "Id","Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserStateId" class="col-sm-3 col-form-label">State</label>
+                <select asp-for="transfer.PurchaserStateId" class="form-control col-sm-4" asp-items="@(new SelectList(Model.request.states, "StateProvinceId","StateWithCountry"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserCountyId" class="col-sm-3 col-form-label">CA County</label>
+                <select asp-for="transfer.PurchaserCountyId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.counties, "CountyId","Name"))"></select>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserZip" class="col-sm-3 col-form-label">Zip</label>
+                <input class="form-control col-sm-2" asp-for="transfer.PurchaserZip">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserZip"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserPhone" class="col-sm-3 col-form-label">Phone</label>
+                <input class="form-control col-sm-2" asp-for="transfer.PurchaserPhone">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserPhone"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="transfer.PurchaserEmail" class="col-sm-3 col-form-label">Email</label>
+                <input class="form-control col-sm-4" asp-for="transfer.PurchaserEmail">
+                <span class="field-validation-valid text-danger" asp-validation-for="transfer.PurchaserEmail"></span>
+            </div>
+        </div>
+    </section>
+</section>
+<div><hr></div>
+<div class="form-group row">
+    <label asp-for="transfer.TransferClassId" class="col-sm-3 col-form-label">Class Sold</label>
+    <select asp-for="transfer.TransferClassId" class="form-control col-sm-3" asp-items="@(new SelectList(Model.request.classes, "Id","CertClass"))"></select>
+</div>
+<hr/>
+<div class="row col-sm-12">
+    <table border="0">                        
+        <tr>
+            <th colspan="4">Stage of Conditioning:</th>
+            <td rowspan="6">&nbsp;</td>
+            <th colspan="2">Seed Container Information:</th>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageInDirt" /> Indirt/Field Run (passed field inspection) for conditioning and final certification</td>
+            <td colspan="2">Type:</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageFromField" /> From Field of <input asp-for="transfer.StageFromFieldNumberOfAcres" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" sp-validation-for="transfer.StageFromFieldNumberOfAcres"></span> acres</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeRetail" /> Retail bags</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageFromStorage" /> From storage</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeTote" /> Tote bags</td>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageConditioned" /> Conditioned (passed field inspection and cleaned)</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.TypeBulk" /> Bulk</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="3"><input type="checkbox" asp-for="transfer.StageNotFinallyCertified" /> Not finally certified (subject to sampling and lab analysis</td>
+            <td>&nbsp;</td>
+            <td>Number of trucks: <input asp-for="transfer.NumberOfTrucks" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="transfer.NumberOfTrucks" data-valmsg-replace="true"></span></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td colspan="6"><input type="checkbox" asp-for="transfer.StageCertifiedSeed" /> Certified seed (sample and lab analysis performed) for: (check all that apply)</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageTreatment" /> Treatment - coating, inoculation, etc.</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageBlending" /> Blending</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageBagging" /> Bagging</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageStorage" /> Storage</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" asp-for="transfer.StageTagging" /> Tagging</td>
+            <td colspan="4"><input type="checkbox" asp-for="transfer.StageOther" />Other: <input asp-for="transfer.StageOtherValue" class="col-sm-3 col-form-label"></input> 
+            <span class="field-validation-valid text-danger" data-valmsg-for="transfer.StageOtherValue" data-valmsg-replace="true"></span></td>
+        </tr>
+    </table>
+</div>
+<div class="form-group row">
+    <input type="submit" value="Create Tag Request" class="btn btn-primary">
+</div> 
+</form>
+
+
+
+
+@section Scripts {
+     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();  
+            $('#myCustomers').change(() => { getCustomer()});
+            $('#transfer_PurchaserCountryId').change(function () {                
+                SetStatesForCountry();
+            });
+        });
+
+        function getCustomer()
+        {
+            var Id = $("#myCustomers").val();
+            let data = {
+                Id: Id,
+            }
+            $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPurchaserFromCustomer",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: customer info not found."); 
+                    }
+                    populatePurchaser(res);                   
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        }
+
+        function GetCustomerFromOrg()
+        {
+            var Id = $("#request_OrgId").val();
+            let data = {
+                Id: Id,
+            }
+            $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPurchaserFromOrganization",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: customer info not found."); 
+                    }
+                    populatePurchaser(res);                   
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+
+        }
+
+       function GetPS()
+       {           
+           var Id = @Model.request.Id;
+           var Target = "@Model.request.Target";          
+           let data = {
+                Id: Id,
+                Target: Target,
+            };
+           $.ajax({
+                type: "GET",
+                url: "/client/SeedTransfer/GetPS",
+                data: data,
+                success: function (res) {                       
+                    if (res.length === 0) {
+                        alert("Warning: No Planting Stock Numbers found. Please double check this is accurate."); 
+                    }
+                    $("#transfer_SeedstockLotNumbers").val(res);                 
+                },
+                error: function (res) {
+                    alert("There was an error processing the request");
+                }
+            });
+        }
+
+        function populatePurchaser(cust)
+        {
+            console.log(cust);
+            $("#transfer_PurchaserName").val(cust.name);
+            $("#transfer_PurchaserAddressLine1").val(cust.address1);
+            $("#transfer_PurchaserAddressLine2").val(cust.address2);
+            $("#transfer_PurchaserCity").val(cust.city);
+            $("#transfer_PurchaserCountyId").val(cust.countyId);
+            $("#transfer_PurchaserStateId").val(cust.stateId);
+            $("#transfer_PurchaserCountryId").val(cust.countryId);
+            $("#transfer_PurchaserZip").val(cust.zip);
+            $("#transfer_PurchaserPhone").val(cust.phone);
+            $("#transfer_PurchaserEmail").val(cust.email);
+        }
+
+         function SetStatesForCountry() 
+        {
+            var country = $("#transfer_PurchaserCountryId option:selected");
+
+                if(country.text() === "United States")
+                {
+                    showStates("USA");
+                } else  if(country.text() === "Canada")
+                {
+                    showStates("Canada");
+                } else 
+                {
+                    showStates("Outside");
+                }
+
+        };
+
+        function showStates(country)
+        {   
+            $("#transfer_PurchaserStateId option").filter(function(index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+            var selectText, indexText ;
+            if(country === "USA")
+            {   
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if(country === "Canada"){
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";               
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";                   
+            }
+           
+            $("#transfer_PurchaserStateId > option").each(function() {
+                if(~this.text.indexOf(indexText))
+                {
+                    $("#transfer_PurchaserStateId option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#transfer_PurchaserStateId option[value*='" + this.value + "']").prop('disabled', true); 
+                }
+            });
+             
+            $("#transfer_PurchaserStateId option").removeAttr("selected");            
+        };
+
+
+    </script>  
+} 

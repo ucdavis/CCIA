@@ -1,4 +1,6 @@
 @using CCIA.Helpers;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model CCIA.Models.DetailsViewModels.AdminViewModel
 
 
@@ -230,6 +232,7 @@
         
         <input id="file" name="file" type="file">            
         <input class="btn btn-primary" type="submit" value="Upload" disabled />
+        <br>Allowed files: @Configuration["AllowedFiles"]
     </form>
     <hr>
 </div>

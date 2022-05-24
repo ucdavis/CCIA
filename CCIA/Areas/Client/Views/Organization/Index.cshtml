@@ -1,0 +1,165 @@
+@model CCIA.Models.Organizations
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Organization Details</h2> 
+        </div>            
+    </div>   
+    <div class="row">
+    <div class="col-sm-12">
+        <a class="btn btn-primary" asp-action="Edit" asp-controller="Organization">Edit</a> <br><br>
+    </div>            
+</div>   
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Email)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label">Member Representative</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.RepresentativeContact.Name)
+                </div>
+            </div>                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Name)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="Phone" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Phone)
+                </div>
+            </div> 
+                                                       
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label asp-for="Fax" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Fax)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Website" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.Website)
+                </div>
+            </div>     
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <hr>
+        <h3>Address</h3> 
+        <div>
+            <a asp-action="AddAddress" asp-route-id="@Model.Id" class="btn btn-primary">Add Address</a>                               
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Address1</th>
+                        <th>Address2</th>
+                        <th>City</th>
+                        <th>County</th>
+                        <th>State</th>
+                        <th>Zip</th>
+                        <th>Country</th>
+                        <th>Mailing</th>
+                        <th>Billing</th>
+                        <th>Delivery</th>
+                        <th>Physical Location</th>
+                        <th>Facility</th>
+                        <th>Active</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var add in Model.Addresses)
+                    {
+                        <tr>
+                            <th>
+                                <a class="btn btn-primary" asp-action="EditAddress" asp-route-id="@add.Id">Edit</a>                               
+                            </th>
+                            <th>@add.Address.Address1</th>
+                            <th>@add.Address.Address2</th>
+                            <th>@add.Address.City</th>
+                            <th>@add.Address.CountyName</th>
+                            <th>@add.Address.StateName</th>
+                            <th>@add.Address.PostalCode</th>
+                            <th>@add.Address.CountryName</th>
+                            <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                            <td>@Html.CheckBoxFor(x => add.Billing)</td>
+                            <td>@Html.CheckBoxFor(x => add.Delivery)</td>
+                            <td>@Html.CheckBoxFor(x => add.Physical)</td>
+                            <td>@Html.CheckBoxFor(x => add.Facility)</td>
+                            <td>@Html.CheckBoxFor(x => add.Active)</td>
+                            <th>
+                                <a class="btn btn-danger" asp-action="DeleteAddress" asp-route-id="@add.Id">Delete</a>
+                                <a class="btn btn-primary" asp-action="SetActive" asp-route-id="@add.Id" onclick="return confirm('Set this as Active/Primary Address?');">Set Active</a>
+                            </th>
+                        </tr>                    
+                    }
+                </tbody>
+            </table>
+        </div>        
+    </div>
+    <div class="col-sm-6">
+        <hr>
+        <h3>Employees</h3>       
+            <a class="btn btn-primary" asp-action="NewEmployee" asp-controller="Organization" asp-route-id="@Model.Id">Add Employee</a>                
+        <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Business Phone</th>
+                <th>Cell Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <td><a asp-action="EmployeeDetails" asp-controller="Organization" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
+                    <td>@employee.Title</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Email</td>
+                    <td nowrap>@employee.BusinessPhone 
+                        @if(employee.BusinessPhoneExtension != null)
+                        {
+                            <span>Ext: @employee.BusinessPhoneExtension</span>
+                        }
+                    </td>
+                    <td nowrap>@employee.MobilePhone</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    
+</div>
+
+@section Scripts {
+    <script>
+        $(":checkbox").on("click", false);
+    </script>
+   
+}

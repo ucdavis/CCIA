@@ -1,0 +1,28 @@
+
+<h2>Start New Lot Blend</h2>
+
+<form asp-action="StartNewLotBlend">
+    <div class="row">
+            <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    </div>
+    <div class="form-group row required">
+        <label for="sid" class="col-sm-3 col-form-label">SID</label>
+        <input type="text" class="col-sm-2 form-control" id="sid" name="sid" data-val="true" data-val-required="Please enter SID" data-val-number="SID must be a number">
+        <span class="field-validation-valid text-danger" data-valmsg-for="sid" data-valmsg-replace="true"></span>
+    </div>
+    <div class="form-group row required">
+        <label for="weight" class="col-sm-3 col-form-label">Weight</label>
+        <input type="text" class="col-sm-2 form-control" id="weight" name="weight" data-val="true" data-val-required="Please enter Weight" data-val-number="Weight must be a number">
+        <span class="field-validation-valid text-danger" data-valmsg-for="weight" data-valmsg-replace="true"></span>
+    </div>
+    <div class="form-group row">
+        <input type="submit" class="btn btn-primary" value="Create Blend">
+    </div>
+</form>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}    
+}

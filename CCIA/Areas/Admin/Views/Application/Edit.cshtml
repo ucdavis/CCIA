@@ -354,7 +354,10 @@
                                 <td>@row.PlantsPerAcre</td>
                             }                        
                             <td>
-                                @row.PsClassNavigation.ClassProducedTrans
+                                @if(row.PsClassNavigation != null)
+                                {
+                                    @row.PsClassNavigation.ClassProducedTrans
+                                }                                
                                 @if(row.PsAccession != null){
                                     <span>- @row.PsAccession</span>
                                 }

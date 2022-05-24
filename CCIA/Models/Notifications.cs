@@ -15,6 +15,8 @@ namespace CCIA.Models
             BlendId = 0;
             TagId = 0;
             OrgId = 0;
+            OecdId = 0;
+            StId = 0;
             IsAdmin = false;
         }
 
@@ -32,6 +34,8 @@ namespace CCIA.Models
         public int? OrgId { get; set; }
 
         public int? OecdId { get; set; }
+
+        public int? StId { get; set;}
 
         public string Message { get; set; }
 

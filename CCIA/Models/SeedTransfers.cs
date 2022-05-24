@@ -6,8 +6,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
+    public enum SeedTransferTypes
+    { 
+        [Display(Name="Intra-county")]
+        IntraCounty,
+        [Display(Name="Inter-county")]
+        InterCounty,
+        [Display(Name="Inter-agency (state)")]
+        InterAgency,        
+    } 
+
     public partial class SeedTransfers
     {
+        public SeedTransfers() {
+            AgricultureCommissionerAccurate = false;
+            AgricultureCommissionerApprove = false;
+            AgricultureCommissionerInaccurate = false;
+            AdminUpdated = false;
+        }
+
         [Display(Name="STId")]
         public int Id { get; set; }
 
@@ -285,6 +302,14 @@ namespace CCIA.Models
             return "";
         }
 
+        public string GetOriginatingOrgName()
+        {
+            if(OriginatingOrganization != null)
+            {
+                return OriginatingOrganization.Name;
+            }
+            return "";
+        }       
 
         public string GetStateOfOrigin()
         {

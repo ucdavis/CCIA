@@ -27,7 +27,7 @@
             @foreach (var transfer in Model.seedsTransfers)
             {
             <tr>
-                <td><a asp-action="Details" asp-controller="SeedTransfer" asp-route-id="@transfer.Id">Details</a></td>
+                <td><a class="btn btn-info" asp-action="Details" asp-controller="SeedTransfer" asp-route-id="@transfer.Id">Details</a></td>
                 <td>@transfer.Id</td>
                 <td>@transfer.Type</td>
                 <td>@transfer.LinkId</td>
@@ -48,3 +48,28 @@
         </tbody>
     </table>
 </div>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
+                pageLength: 50,
+            });
+            
+        } );
+       
+    </script>
+}

@@ -38,15 +38,7 @@ namespace CCIA.Controllers.Admin
         public IActionResult Lookup()
         {
             return View();
-        }
-
-        // public async Task<IActionResult> ByStatus(string status = "Approved")
-        // {
-        //     var blendStatus = (BlendStatus) Enum.Parse(typeof(BlendStatus), status);
-        //     var model = await _helper.FullBlendRequest().Where(b => b.Status == blendStatus.GetDisplayName()).ToListAsync();
-        //     ViewBag.Status = status;
-        //     return View(model);
-        // }
+        }       
 
         public async Task<IActionResult> ByStatus()
         {
@@ -310,7 +302,7 @@ namespace CCIA.Controllers.Admin
        [HttpPost]      
        public async Task<IActionResult> EditLot(int id, LotBlends blend)
        {
-           var lotToUpdate = await _dbContext.LotBlends.Where(lb => blend.CompId == id).FirstOrDefaultAsync();
+           var lotToUpdate = await _dbContext.LotBlends.Where(lb => lb.CompId == id).FirstOrDefaultAsync();
            if(lotToUpdate == null)
            {
                ErrorMessage = "Component not found!";

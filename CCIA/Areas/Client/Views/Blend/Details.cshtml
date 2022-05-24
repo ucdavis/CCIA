@@ -1,0 +1,327 @@
+@model CCIA.Models.AdminBlendsDetailsViewModel
+@using CCIA.Helpers
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+ 
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Blend Request Details</h2>            
+        </div>            
+    </div> 
+    @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+    {  
+        <div class="row">
+            <form asp-action="Submit">
+                <input type="hidden" id="Id" name="Id" value="@Model.blend.Id">
+                <input type="submit" class="btn btn-primary" onClick="return confirm('Really submit this blend? No further changes are possible.');" value="Submit for approval">
+            </form>
+        </div>       
+    }
+    <div class="row"> 
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="blend.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.Id)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="blend.Conditioner.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.Conditioner.NameAndId)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="blend.RequestStarted" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.RequestStarted)
+                </div>
+            </div>                                     
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="blend.BlendType" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.BlendType)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="blend.Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.Status)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="blend.ApproveDate" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.ApproveDate)
+                </div>
+            </div>         
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Variety</label>
+                <div class="col-sm-7 form-control-plaintext">
+                    @Model.blend.GetVarietyName()
+                </div>
+                @if(Model.blend.BlendType == "Varietal" && Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                {
+                    <a asp-action="EditVariety" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Variety</a>
+                }                
+            </div>
+            <div class="form-group row">
+                <label asp-for="blend.CertNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.CertNumber)
+                </div>
+            </div>  
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <h3>Components</h3>
+        @if(Model.blend.BlendType == "Lot" || Model.blend.BlendType == "Varietal")
+        {
+            @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+            {               
+                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#newLot" aria-expanded="false" aria-controls="newLot">Add new lot</button>
+                <div class="collapse" id="newLot">
+                   <form asp-action="AddLot">
+                       <input type="hidden" id="blendId" name="blendId" value="@Model.blend.Id">                        
+                        <div class="form-group row">
+                            <label for="sid" class="col-sm-3 col-form-label">SID</label>
+                            <input type="text" class="col-sm-2 form-control" id="sid" name="sid" data-val="true" data-val-required="Please enter SID" data-val-number="SID must be a number">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="sid" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label for="weight" class="col-sm-3 col-form-label">Weight</label>
+                            <input type="text" class="col-sm-2 form-control" id="weight" name="weight" data-val="true" data-val-required="Please enter Weight" data-val-number="Weight must be a number">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="weight" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="form-group row">
+                            <input type="submit" class="btn btn-primary" value="Add to Blend">
+                        </div>
+                    </form>
+                </div>
+            }
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Component ID</th>
+                        <th>SID</th>
+                        <th>Lot#</th>
+                        <th>Variety</th>
+                        <th>Weight</th>
+                        @if(Model.blend.BlendType == "Varietal")
+                        {
+                            <th>Percent</th>
+                        }
+                        <th>Class</th>
+                        <th>Germ</th>
+                        <th>Hard</th>
+                        <th>TotalGerm</th>
+                        <th>Purity</th>
+                        <th>Other Crop</th>
+                        <th>Inert</th>
+                        <th>Weed</th>
+                        <th>Lab Date</th>
+                        <th>Link</th>
+                        <th>Cert Results</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.components)
+                    {
+                        <tr>
+                            @if(row.CompId > 0)
+                            {
+                                <td>
+                                    @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                                    {
+                                        <a asp-action="EditLot" asp-route-id="@row.CompId" class="btn btn-info">Edit</a>
+                                    }
+                                </td>
+                                <td>@row.CompId</td>
+                            } else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+                            
+                            <td>@row.Sid</td>
+                            <td>@row.LotNumber</td>
+                            <td>@row.VarietyName</td>
+                            <td>@row.Weight</td>
+                            @if(Model.blend.BlendType == "Varietal")
+                            {
+                                <td>@row.ComponentPercent</td>
+                            }
+                            <td>@row.ClassName</td>
+                            <td>@row.GermValue</td>
+                            <td>@row.HardValue</td>
+                            <td>@row.TotalGermValue</td>
+                            <td>@row.PurityValue</td>
+                            <td>@row.OtherCropValue</td>
+                            <td>@row.InertValue</td>
+                            <td>@row.WeedValue</td>
+                            <td>@row.LabDate</td>                           
+                            @if(row.CompId > 0)
+                            {
+                                <td><a asp-action="Details" asp-controller="Seeds" asp-route-id="@row.Sid" class="btn btn-info">SID</a></td>
+                            } else
+                            {
+                                <td></td>
+                            }       
+                            <td>@row.CertificationResults</td> 
+                            @if(row.CompId > 0)
+                            {
+                               <td>
+                                   @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                                    {
+                                        <form asp-action="DeleteLot"><input type="hidden" id="id" name="id" value="@row.CompId"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form>                                     
+                                    }
+                                </td>
+                            } else
+                            {
+                                <td></td>
+                            }                                                        
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        } else
+        {
+            <a asp-action="AddInDirtBlendLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Component ID</th>
+                        <th>AppId</th>
+                        <th>Cert#</th>
+                        <th>Variety</th>                        
+                        <th>Class</th>
+                        <th>Weight</th>                        
+                        <th>Percent</th>
+                        <th>Link</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.dirtComponents)
+                    {
+                        <tr>
+                            <td>
+                                @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                                {
+                                    <a asp-action="EditDirtLot" asp-route-id="@row.Id" class="btn btn-info">Edit</a>
+                                }
+                            </td>
+                            <td>@row.Id</td>                                                  
+                            <td>@row.AppId</td>
+                            <td>@row.CertNumber</td>
+                            <td>@row.Variety</td>
+                            <td>@row.ClassName</td>
+                            <td>@row.Weight</td>
+                            <td>@row.Percent</td>
+                            @if(row.AppId != "OOS")
+                            {
+                                <td><a asp-action="Details" asp-controller="Application" asp-route-id="@row.AppId" class="btn btn-info">App</a></td>
+                            } else
+                            {
+                                <td></td>
+                            } 
+                            <td><form asp-action="DeleteDirtLot"><input type="hidden" id="id" name="id" value="@row.Id"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form></td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+
+        }        
+        <div><hr></div>
+        <div class="col-sm-3">
+        @if(Model.blend.BlendType == "Varietal")
+        {
+            <h3>@Model.blend.GetVarietyName() Components</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>VarId</th>
+                        <th>Variety</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.varietalComponents)
+                    {
+                        <tr>
+                            <td>@row.ComponentVarietyId</td>
+                            <td>@row.ComponentVariety.Name</td>
+                            <td>@row.ComponentPercent</td>
+                        </tr>                        
+                    }
+                </tbody>
+            </table>
+        }
+        </div>
+        <div><hr></div>
+        <div class="col-sm-8">        
+            <h3>Supporting Documentation</h3>
+            @if(Model.documents.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.documents)
+                        {
+                            <tr>
+                                <td>@row.Name</td>
+                                <td><a asp-action="GetBlendFile" asp-route-id="@row.Id">@row.Link</a></td>
+                            </tr>                        
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>       
+        <div class="col-sm-8">
+            <form enctype="multipart/form-data" method="post" asp-action="UploadBlendDocument">
+                <h4>Upload new Document</h4>
+                <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Document Name</label>
+                    <input id="docName" name="docName" class="col-form">
+                </div>                            
+                <input id="file" name="file" type="file">            
+                <input class="btn btn-primary" type="submit" value="Upload" disabled />
+                <br>Allowed files: @Configuration["AllowedFiles"]
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
+    <script type="text/javascript">
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(":checkbox").on("click", false);
+        });
+    </script>
+   
+}
+

@@ -42,7 +42,7 @@ namespace CCIA.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MakePasswords(int id)
         {
-            var test = await _dbContext.Contacts.Where(c => c.PasswordHash == null).Take(50).ToListAsync();
+            var test = await _dbContext.Contacts.Where(c => c.PasswordHash == null && c.Password != null && c.Salt != null).Take(500).ToListAsync();
             foreach (Contacts cont in test)
             {
                 byte[] hashed = KeyDerivation.Pbkdf2(

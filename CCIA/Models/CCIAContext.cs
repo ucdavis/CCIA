@@ -32,6 +32,7 @@ namespace CCIA.Models
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
 
         public virtual DbSet<ProcessTag> ProcessTag { get; set;}
+        public virtual DbSet<LandingStats> LandingStats { get; set; }
         public virtual DbSet<VarCountries> VarCountires { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
@@ -366,6 +367,10 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
+            });
+
+             modelBuilder.Entity<LandingStats>(entity => {
                 entity.HasNoKey();
             });
 
@@ -1034,6 +1039,7 @@ namespace CCIA.Models
                 entity.Property(e => e.OECDInvoicePrinter).HasColumnName("oecd_invoice_printer");
 
                 entity.Property(e => e.Admin).HasColumnName("admin");
+                entity.Property(e => e.NewBlend);
 
                 entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
 
