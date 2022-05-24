@@ -141,10 +141,7 @@
     <div>
         <hr>
         <h3>Address</h3>
-        @if(this.User.IsInRole("CoreStaff"))
-        {
-            <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Add New Address</a>
-        }        
+        <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organization" asp-route-id="@Model.Id">Add New Address</a>                
         <table class="table">
             <thead>
                 <tr>
@@ -168,10 +165,7 @@
                 {
                     <tr>
                         <th>
-                            @if(this.User.IsInRole("CoreStaff"))
-                            {
-                                <a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a>
-                            }
+                            <a class="btn btn-primary" asp-action="EditEmployeeAddress" asp-controller="Organization" asp-route-id="@add.Id">Edit</a>                            
                         </th>
                         <th>@add.Address.Address1</th>
                         <th>@add.Address.Address2</th>
@@ -185,10 +179,7 @@
                         <td>@Html.CheckBoxFor(x => add.Delivery)</td>
                         <td>@Html.CheckBoxFor(x => add.PhysicalLoc)</td>
                         <th>
-                            @if(this.User.IsInRole("CoreStaff"))
-                            {
-                                <a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Delete</a>
-                            }
+                            <a class="btn btn-danger" asp-action="DeleteEmployeeAddress" asp-controller="Organization" asp-route-id="@add.Id">Delete</a>                            
                         </th>
                     </tr>                    
                 }
