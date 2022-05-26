@@ -131,7 +131,8 @@ namespace CCIA.Controllers.Client
                 org.District = county.District;
                 org.CountyId = county.CountyId;
                 addressToAdd.Address.CountyId = newAddress.Address.CountyId;
-                addressToAdd.Active = true;                
+                addressToAdd.Active = true;   
+                await _notification.OrgUpdated(org);
             } else
             {
                 addressToAdd.Active = false;
@@ -184,6 +185,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> SetActive(int id)
         {
             var orgAddress = await _dbContext.OrganizationAddress.Where(oa => oa.Id == id).FirstOrDefaultAsync();
+            var org = await _dbContext.Organizations.Where(o => o.Id == orgAddress.OrgId).FirstOrDefaultAsync();
             if(orgAddress == null)
             {
                 ErrorMessage = "Address not found!";
@@ -192,6 +194,7 @@ namespace CCIA.Controllers.Client
             var otherAddress = await _dbContext.OrganizationAddress.Where(oa => oa.OrgId == orgAddress.OrgId && oa.Id != id).ToListAsync();
             orgAddress.Active = true;
             otherAddress.ForEach(a => a.Active = false);
+            await _notification.OrgUpdated(org);
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -300,8 +303,7 @@ namespace CCIA.Controllers.Client
             {
                 ErrorMessage = "Address not found!";
                 return RedirectToAction(nameof(Index));
-            }
-            var org = orgAddress.OrgId;
+            }            
             if(orgAddress.Active)
             {
                 ErrorMessage = "Cannot delete Active Address! Set another address to active first";
@@ -309,6 +311,8 @@ namespace CCIA.Controllers.Client
             }            
             if(Delete == "Delete")
             {
+                var org = await _dbContext.Organizations.Where(o => o.Id == orgAddress.OrgId).FirstOrDefaultAsync();
+                await _notification.OrgUpdated(org);
                 _dbContext.Remove(orgAddress);
                 await _dbContext.SaveChangesAsync();
                 Message = "Address removed!";               

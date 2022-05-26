@@ -6,10 +6,11 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    <div>Summary of last 2 cert years</div>
 </div>
 
 <table class="table">
-    <tr><td><h3>Applications</h3></td><td colspan="2">(last 2 cert years)</td></tr>
+    <tr><td><h3>Applications</h3></td><td colspan="2"></td></tr>
     <tr>
         <th>Status</th>
         <th>Year</th>
@@ -27,7 +28,7 @@
         }         
     } else { <tr><td colspan="3"><b>None Found</b></td></tr>}
     <tr><td colspan="3"><hr></td></tr>
-    <tr><td><h3>Seeds</h3></td><td colspan="2">(last calendar year)</td></tr>
+    <tr><td><h3>Seeds</h3></td><td colspan="2"></td></tr>
     @if(Model.Where(m => m.Type == "seeds").Any())
     {        
         @foreach (var row in Model.Where(m => m.Type == "seeds"))
@@ -40,7 +41,7 @@
         } 
     }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
     <tr><td colspan="3"><hr></td></tr>
-    <tr><td><h3>Tags</h3></td><td colspan="2">(last calendar year)</td></tr>
+    <tr><td><h3>Tags</h3></td><td colspan="2"></td></tr>
     @if(Model.Where(m => m.Type == "tags").Any())
     {        
         @foreach (var row in Model.Where(m => m.Type == "tags"))
@@ -53,7 +54,7 @@
         } 
     }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
     <tr><td colspan="3"><hr></td></tr>
-    <tr><td><h3>OECD</h3></td><td colspan="2">(last calendar year)</td></tr>
+    <tr><td><h3>OECD</h3></td><td colspan="2"></td></tr>
     @if(Model.Where(m => m.Type == "oecd").Any())
     {        
         @foreach (var row in Model.Where(m => m.Type == "oecd"))
@@ -66,7 +67,7 @@
         } 
     }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
     <tr><td colspan="3"><hr></td></tr>
-    <tr><td><h3>Blends</h3></td><td colspan="2">(last calendar year)</td></tr>
+    <tr><td><h3>Blends</h3></td><td colspan="2"></td></tr>
     @if(Model.Where(m => m.Type == "blends").Any())
     {        
         @foreach (var row in Model.Where(m => m.Type == "blends"))
@@ -79,7 +80,7 @@
         } 
     }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
     <tr><td colspan="3"><hr></td></tr>
-    <tr><td><h3>Seed Transfers</h3></td><td colspan="2">(last calendar year)</td></tr>
+    <tr><td><h3>Seed Transfers</h3></td><td colspan="2"></td></tr>
     @if(Model.Where(m => m.Type == "seedTransfers").Any())
     {        
         @foreach (var row in Model.Where(m => m.Type == "seedTransfers"))
