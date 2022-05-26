@@ -105,7 +105,7 @@
 </div>
 @if(Model.application.GeoField != null)
 {
-    <input type="text" value="@Model.application.GeoField.Centroid" id="existingCenter">
+    <input type="hidden" value="@Model.application.GeoField.Centroid" id="existingCenter">
 }
 
 @section Scripts {    
