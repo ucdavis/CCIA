@@ -1,0 +1,92 @@
+
+@model CCIA.Models.Organizations
+
+<section class="rounded-section light-grey">
+<h4>The following application and agreement must be completed/updated each year prior to submitting applications or seed lots for certification.</h4>
+</section>    
+<p align="center">
+        <b>CALIFORNIA CROP IMPROMEMENT ASSOCIATION
+        </b></p>
+    <p align="center">
+        <b>MEMBERSHIP APPLICATION AND AGREEMENT</b></p>
+    <p align="center">
+        <b>APPLICATION</b></p>
+    
+    <p>The qualifications for membership in the California Crop Improvement Association (CCIA) are as follows:</p>
+    <p><u>Qualifications and Rights of Voting Membership.</u> The Association is organized with members, but without capital stock. Any producer or conditioner, as defined in the CCIA Bylaws, who has produced or conditioned seed within the last four crop years, shall be eligible for voting membership on approval by the Board or its designee of a membership application and signing of a membership agreement and the payment of such fees and dues as the Board may fix from time to time, if any.</p>
+    <p>Each voting member who is not a natural person shall designate in writing the individual who shall exercise the voting rights and be eligible to serve on the Board on behalf of the member.  The designation shall be filed with the Secretary of the corporation and shall be maintained with the corporate records.  Said designation may be changed by written notice to the Secretary of the corporation. </p>
+    <p><u>Qualifications and Rights of Non-voting Members.</u>  The Association may also admit Associate Members who shall be non-voting members of the corporation.  Any person who is interested in the purposes of the Association shall be eligible for non-voting membership on approval by the Board or its designee of a membership application and the payment of such fees and dues as the Board may fix from time to time.  Associate members shall not have any of the voting or other rights afforded voting members under the California Nonprofit Mutual Benefit Corporation Law.</p>
+    <p><b>I hereby apply for membership in CCIA as a</b>
+    <select asp-for="MemberType">
+        <option value="0">Select member type</option>
+        <option value="Voting Member">Voting Member</option>
+        <option value="Non-voting Member">Non-voting Member</option>
+        <option value="I do not wish to apply for membership">I do not wish to apply for membership</option>
+    </select>
+     
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlMemberType" ErrorMessage="Member Type is required" InitialValue="0"></asp:RequiredFieldValidator>
+    </p>
+    <p>NOTE:  Completing and submitting this application does not guarantee you will be accepted into membership in CCIA.  However, if you are accepted to membership, the following Membership Agreement will apply to your membership immediately.  The Agreement below must be signed in order to be considered for membership, but will only take effect on the date CCIA signs and accepts you as a member.</p>
+    <p align="center">
+        <b>MEMBERSHIP AGREEMENT</b></p>
+    <p>THIS MEMBERSHIP AGREEMENT is made by and between the CALIFORNIA CROP IMPROVEMENT ASSOCIATION (hereinafter “CCIA”) and the undersigned individual or company (hereinafter "MEMBER").</p>
+    <p>WHEREAS, CCIA is a nonprofit mutual benefit corporation organized and existing under the laws of the State of California for the purpose of certifying agricultural seed.</p>
+    <p>NOW, THEREFORE, in consideration of the promises and of the mutual covenants of the parties, the parties hereto do hereby agree:</p>
+    <p>1.	<u>MEMBERSHIP.</u>  The signing of this Agreement by the undersigned applicant shall constitute the undersigned’s application for membership in CCIA.  The undersigned applicant shall become a member of CCIA upon acceptance of this application/agreement by an authorized representative of CCIA.  Upon acceptance by CCIA, MEMBER shall be deemed a member of the corporation (either voting or non-voting as applicable).  </p>
+    <p>2.	<u>MEMBER'S QUALIFICATION.</u>  MEMBER represents, and CCIA relies on MEMBER'S representation in accepting the application for membership, that MEMBER is an individual or entity that meets the definition of a voting or non-voting member in CCIA’s bylaws.</p>
+    <p>3.	<u>TERM/TERMINATION.</u>  The term of this Agreement shall begin on the date this application and Agreement are confirmed as accepted by an authorized representative of CCIA, and shall continue until the MEMBER resigns or the Agreement is terminated as described below.  MEMBER may resign at any time by giving written notice to the Association President or Executive Director.  Resignation will take effect either on the date notice is received or on such other date as may be stated in the written notice.  Though rare, memberships may be terminated or a member expelled in accordance with the procedures in the Bylaws.</p>
+    <p>4.	<u>MEMBERSHIP DUES AND CERTIFICATION FEES.</u>  Dues may be established from time to time by the Board of Directors, including the decision to charge no dues.  Fees for certification of seed shall be established by the Board.</p>
+    <p>5.	<u>BYLAWS, RULES AND PROCEDURES.</u>  MEMBER hereby accepts and consents to be bound by, and promises and agrees to conform to and observe the bylaws of CCIA and the rules and procedures of CCIA promulgated by its Board of Directors as authorized in the bylaws which are now in force and effect and as the same may hereafter be changed or amended.  </p>
+    <p>6.	<u>INDEMNIFICATION/HOLD HARMLESS.</u>  MEMBER shall indemnify and hold CCIA and its officers, directors, other members, and staff harmless from any and all claims, liabilities, judgments, costs, and expenses, including but not limited to reasonable attorneys’ and other professionals’ fees, incurred or paid by CCIA or its officers, directors, other members or staff as a result of, or arising out of or related to, MEMBER’S acts, actions, or omissions.</p>
+    <p>7.	<u>NOTICES.</u>  All notices to be given under this Agreement shall be considered delivered when deposited in the U.S. Mail, or by email when confirmed sent, or with an express mail carrier, postage prepaid, to the parties addressed as follows:</p>
+    <p align="center">
+    <table>
+        <tr>
+            <th>CCIA</th>
+            <th>Member</th>
+        </tr>
+        <tr valign="top">
+            <td>
+                California Crop Improvement Association<br/>Parsons Seed Certification Center<br/>University of California<br/>One Shields Avenue<br/>Davis, CA 95616-8541<br/>
+                <br/>
+                Email: ccia@ucdavis.edu
+            </td>
+            <td>@Model.Name<br/>
+                @Model.Address.AddressLines<br>
+                @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
+                <br/><br/>
+                Email: @Model.Email
+            </td>
+            <tr>
+                <td colspan="2"><hr />Corrections to your company's address can be made at <a asp-action="Index">Update Company Profile</a> or contacting CCIA. Note you must have Update Org permissions to access page.</td>
+            </tr>
+        </tr>
+    </table></p>
+    <p>or to such other places as the parties may by written notice designate, or by personal delivery, or in any other manner provided by law.</p>
+    <p>8.	<u>SEVERABILITY.</u>  Should any portion of this Agreement be determined to be unlawful, provided that such portion of this Agreement is severable, it shall be eliminated from this Agreement and the other provisions of this Agreement shall continue in effect.</p>
+    <p>9.	<u>ASSIGNMENT.</u>  This Agreement shall not be assignable by either party without the prior written consent of the other party.</p>
+    <p>10.	<u>SUCCESSORS AND ASSIGNS.</u> Subject to the foregoing limitation on assignment, this Agreement shall be binding upon and inure to the benefit of the permitted successors and assigns of the respective parties hereto.</p>
+    <p>11.	<u>GOVERNING LAW.</u>  This Agreement shall be subject to, construed, enforced and governed by the laws of the State of California. </p>
+    <p>IN WITNESS WHEREOF, the parties hereto have executed this Agreement, effective on the day and in the year first set forth above.</p>
+            <p>@Model.Name<br/>
+                @Model.Address.AddressLines<br>
+                @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
+                <br/>
+                <br/>
+                Telephone: @Model.Phone <br/>
+                Fax: @Model.Fax <br/>
+                Email: @Model.Email<br/><br>
+                Please visit <a asp-action="Index">Update Company Profile</a> or contact CCIA to make corrections to the above contact data.Note you must have Update Org permissions to access page.<br/><br/>
+                <b>Please select the person representing this organization in the coming year: </b>
+                <select asp-for="RepresentativeContactId">
+                    @foreach (var employee in Model.Employees)
+                    {
+                        <option value="@employee.Id">@employee.FullName()</option>
+                    }
+                </select>
+                <asp:DropDownList runat="server" ID="ddlRep" DataSourceID="sdsEmployees" DataTextField="full_name" DataValueField="contact_id" SelectedValue='<%# Bind("member_rep_id") %>'></asp:DropDownList>
+                &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlMemberType" ErrorMessage="Company representative is required." InitialValue="0"></asp:RequiredFieldValidator>
+            </p>
+            <p>
+                By submitted this form, I am agreeing to the above application and certifying I am authorized to complete this information on behalf of the listed company.</p>
+            <asp:Button runat="server" Text="Submit Application" CommandName="Update"/>

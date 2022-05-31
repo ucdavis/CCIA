@@ -45,6 +45,17 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        public async Task<IActionResult> Membership()
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var model = await _dbContext.Organizations
+                .Include(o => o.Employees)
+                .Include(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Where(o => o.Id == orgId).FirstOrDefaultAsync();
+            return View(model);
+        }
+
         public async Task<IActionResult> Edit()
         {
             if(!(await CheckOrgPermission()))
