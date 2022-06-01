@@ -81,6 +81,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> InitiateBulk()
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }      
             if(!(await checkBulkPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
             {
                 ErrorMessage = "You do not have current permission to request bulk tags. Please contact CCIA staff to correct.";
@@ -168,6 +174,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> Initiate()
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }      
             if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
             {
                 ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";
@@ -276,7 +288,13 @@ namespace CCIA.Controllers.Client
         }
 
         public async Task<IActionResult> SelectOrigin()
-        {            
+        {     
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }       
             if(!(await checkTagPermission(int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))))
             {
                 ErrorMessage = "You do not have current permission to request tags. Please contact CCIA staff to correct.";

@@ -105,6 +105,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> CreateHempApplication(int growerId, int appTypeId, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             if(growerId == 0)
             {
                 return RedirectToAction(nameof(GrowerLookup), new { appTypeID = 10});
@@ -734,6 +740,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> Renewals()
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             var certYear = CertYearFinder.CertYear;
             var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
             return View(model);

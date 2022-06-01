@@ -3,7 +3,9 @@
 
 <section class="rounded-section light-grey">
 <h4>The following application and agreement must be completed/updated each year prior to submitting applications or seed lots for certification.</h4>
-</section>    
+</section>   
+
+<form asp-action="Membership">
 <p align="center">
         <b>CALIFORNIA CROP IMPROMEMENT ASSOCIATION
         </b></p>
@@ -18,13 +20,11 @@
     <p><u>Qualifications and Rights of Non-voting Members.</u>  The Association may also admit Associate Members who shall be non-voting members of the corporation.  Any person who is interested in the purposes of the Association shall be eligible for non-voting membership on approval by the Board or its designee of a membership application and the payment of such fees and dues as the Board may fix from time to time.  Associate members shall not have any of the voting or other rights afforded voting members under the California Nonprofit Mutual Benefit Corporation Law.</p>
     <p><b>I hereby apply for membership in CCIA as a</b>
     <select asp-for="MemberType">
-        <option value="0">Select member type</option>
+        <option value="0">Select member type...</option>
         <option value="Voting Member">Voting Member</option>
         <option value="Non-voting Member">Non-voting Member</option>
         <option value="I do not wish to apply for membership">I do not wish to apply for membership</option>
     </select>
-     
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlMemberType" ErrorMessage="Member Type is required" InitialValue="0"></asp:RequiredFieldValidator>
     </p>
     <p>NOTE:  Completing and submitting this application does not guarantee you will be accepted into membership in CCIA.  However, if you are accepted to membership, the following Membership Agreement will apply to your membership immediately.  The Agreement below must be signed in order to be considered for membership, but will only take effect on the date CCIA signs and accepts you as a member.</p>
     <p align="center">
@@ -68,25 +68,47 @@
     <p>10.	<u>SUCCESSORS AND ASSIGNS.</u> Subject to the foregoing limitation on assignment, this Agreement shall be binding upon and inure to the benefit of the permitted successors and assigns of the respective parties hereto.</p>
     <p>11.	<u>GOVERNING LAW.</u>  This Agreement shall be subject to, construed, enforced and governed by the laws of the State of California. </p>
     <p>IN WITNESS WHEREOF, the parties hereto have executed this Agreement, effective on the day and in the year first set forth above.</p>
-            <p>@Model.Name<br/>
-                @Model.Address.AddressLines<br>
-                @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
-                <br/>
-                <br/>
-                Telephone: @Model.Phone <br/>
-                Fax: @Model.Fax <br/>
-                Email: @Model.Email<br/><br>
-                Please visit <a asp-action="Index">Update Company Profile</a> or contact CCIA to make corrections to the above contact data.Note you must have Update Org permissions to access page.<br/><br/>
-                <b>Please select the person representing this organization in the coming year: </b>
-                <select asp-for="RepresentativeContactId">
-                    @foreach (var employee in Model.Employees)
-                    {
-                        <option value="@employee.Id">@employee.FullName()</option>
-                    }
-                </select>
-                <asp:DropDownList runat="server" ID="ddlRep" DataSourceID="sdsEmployees" DataTextField="full_name" DataValueField="contact_id" SelectedValue='<%# Bind("member_rep_id") %>'></asp:DropDownList>
-                &nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlMemberType" ErrorMessage="Company representative is required." InitialValue="0"></asp:RequiredFieldValidator>
-            </p>
-            <p>
-                By submitted this form, I am agreeing to the above application and certifying I am authorized to complete this information on behalf of the listed company.</p>
-            <asp:Button runat="server" Text="Submit Application" CommandName="Update"/>
+    <p>@Model.Name<br/>
+        @Model.Address.AddressLines<br>
+        @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
+        <br/>
+        <br/>
+        Telephone: @Model.Phone <br/>
+        Fax: @Model.Fax <br/>
+        Email: @Model.Email<br/><br>
+        Please visit <a asp-action="Index">Update Company Profile</a> or contact CCIA to make corrections to the above contact data.Note you must have Update Org permissions to access page.<br/><br/>
+        <b>Please select the person representing this organization in the coming year: </b>
+        <select asp-for="RepresentativeContactId">
+            <option value="0">Select representative...</option>
+            @foreach (var employee in Model.Employees)
+            {
+                <option value="@employee.Id">@employee.FullName()</option>
+            }
+        </select>        
+    </p>
+    <p>By submitted this form, I am agreeing to the above application and certifying I am authorized to complete this information on behalf of the listed company.</p>
+    <br><br>
+    <input type="submit" class="btn btn-primary" value="Accept"  onClick="return check_accept();">
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        function check_accept () {
+
+           var voteType = $("#MemberType").val();
+           var rep = $("#RepresentativeContactId").val();
+
+           if(voteType === "0")
+           {
+               alert("Select vote type");
+               return false;
+           } 
+           if(rep === "0")
+           {
+               alert("Select representative");
+               return false;
+           } 
+           return true;            
+        }      
+    </script>   
+} 

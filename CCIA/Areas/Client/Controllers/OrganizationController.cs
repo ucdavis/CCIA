@@ -56,6 +56,26 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Membership(Organizations org)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var orgToUpdate = await _dbContext.Organizations.Where(o => o.Id == orgId).FirstOrDefaultAsync();
+            
+            orgToUpdate.MemberType = org.MemberType;
+            orgToUpdate.MemberYear = CertYearFinder.CertYear;
+            orgToUpdate.Member = true;
+            orgToUpdate.LastMemberAgreement = DateTime.Now;
+            orgToUpdate.RepresentativeContactId = org.RepresentativeContactId;
+            if(!orgToUpdate.MemberSince.HasValue)
+            {
+                orgToUpdate.MemberSince = DateTime.Now;
+            }
+            await _dbContext.SaveChangesAsync();
+            Message = "Agreement updated.";
+            return RedirectToAction("Index","Home");
+        }
+
         public async Task<IActionResult> Edit()
         {
             if(!(await CheckOrgPermission()))
