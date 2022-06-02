@@ -91,7 +91,13 @@ namespace CCIA.Controllers.Client
         } 
        
         public async Task<IActionResult> SelectOrigin()
-        {            
+        {     
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }       
             var permissionOk = await CheckConditionerPermission();
             if(!permissionOk)
             {
@@ -156,6 +162,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<ActionResult> CreateQALot()
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             var model = await SeedsCreateQAViewModel.Create(_dbContext);
             return View(model);
         }

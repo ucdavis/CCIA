@@ -89,6 +89,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             if(appTypeId == 10)
             {
                 return RedirectToAction(nameof(HempInfo), new { growerId = growerId, appTypeId = appTypeId});
@@ -99,6 +105,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> CreateHempApplication(int growerId, int appTypeId, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             if(growerId == 0)
             {
                 return RedirectToAction(nameof(GrowerLookup), new { appTypeID = 10});
@@ -728,6 +740,12 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> Renewals()
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             var certYear = CertYearFinder.CertYear;
             var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
             return View(model);
@@ -1177,6 +1195,12 @@ namespace CCIA.Controllers.Client
         // GET: Application/GrowerLookup
         public async Task<IActionResult> GrowerLookup(int appTypeId)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }
             var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             var contact = await _dbContext.Contacts
                                 .Where(c => c.Id == contactId)
@@ -1187,8 +1211,7 @@ namespace CCIA.Controllers.Client
                             .Where(a => a.AppTypeId == appTypeId)
                             .FirstOrDefaultAsync();
             if (abbrevAppType.GrowerSameAsApplicant)
-            {
-                int orgId = Convert.ToInt32(contact.OrgId);
+            {                
                 return RedirectToAction("CreateApplication", new { growerId = orgId, appTypeId = appTypeId });
             }
             else

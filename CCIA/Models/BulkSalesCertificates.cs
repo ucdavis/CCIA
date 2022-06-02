@@ -11,6 +11,7 @@ namespace CCIA.Models
         public BulkSalesCertificates() {
             Date = DateTime.Now.Date;
             PurchaserStateId = 102;
+            PurchaserCountryId = 58;
         }
         public int Id { get; set; }
         public int ConditionerOrganizationId { get; set; }
@@ -67,7 +68,7 @@ namespace CCIA.Models
         public StateProvince PurchaserState { get; set; }
 
         
-        [Display(Name="County")]
+        [Display(Name="Country")]
         public int? PurchaserCountryId { get; set; }
 
         public Countries PurchaserCountry { get; set; }

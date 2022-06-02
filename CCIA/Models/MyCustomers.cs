@@ -6,6 +6,11 @@ namespace CCIA.Models
 {
     public partial class MyCustomers
     {
+         public MyCustomers() {
+           CountryId = 58;
+           StateId = 102;
+        }
+
         public int Id { get; set; }
         public int OrganizationId { get; set; }
         [ForeignKey("OrganizationId")]

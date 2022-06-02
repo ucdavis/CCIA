@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 namespace CCIA.Controllers
 {
     [Authorize]
-    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
          public string Message
@@ -167,8 +166,6 @@ namespace CCIA.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
@@ -190,19 +187,19 @@ namespace CCIA.Controllers
                 if(contact == null)
                 {
                     Message = "Contact not found";
-                    return RedirectToAction("Index", "Home");
+                   return RedirectToAction("Index", "AdminHome", new { Area = "Admin"});
                 }
                 
-                EmulationMessage = string.Format("Emulating {0}.  To exit emulation use <a href='/Account/EndEmulate'>/Account/EndEmulate", contact.Name);
+                EmulationMessage = string.Format("Emulating {0}.  <a class='btn btn-dark' href='/Account/EndEmulate'>Exit</a>", contact.Name);
                 await CompleteSignin(contact, true);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { Area = "Client"});
             }
             else
             {
                 Message = "Login ID not provided.  Use /Emulate/login";
             }
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "AdminHome", new { Area = "Admin"});
         }
 
         public async Task<RedirectToActionResult> EndEmulate()

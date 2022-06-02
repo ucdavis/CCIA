@@ -92,7 +92,7 @@ function searchVarieties(dropdownId, varietyInputId, selectVarietyCallback, rema
     // Take text in input box and autofill input with the variety name that most closely matches it
     $.ajax({
         type: "GET",
-        url: "/Application/FindVariety",
+        url: "/client/Application/FindVariety",
         data: data,
         success: function (res) {
             vs.innerHTML = "";

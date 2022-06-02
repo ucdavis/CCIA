@@ -117,7 +117,7 @@
 
                 $.ajax({
                     method: 'Get',
-                    url: '/BulkSalesCertificates/GetAvailableClasses',
+                    url: '/client/BulkSalesCertificates/GetAvailableClasses',
                      data: {
                         id: id,
                         lookupType: idType
@@ -140,7 +140,7 @@
 
                 $.ajax({
                     method: 'GET',
-                    url: '/BulkSalesCertificates/GetSidOrBlend',
+                    url: '/client/BulkSalesCertificates/GetSidOrBlend',
                     data: {
                         id: id,
                         lookupType: idType
@@ -170,7 +170,7 @@
                 var id = $('#MyCustomerSelect').val();
                 $.ajax({
                     method: 'Get',
-                    url: '/BulkSalesCertificates/GetMyCustomerInfo',
+                    url: '/client/BulkSalesCertificates/GetMyCustomerInfo',
                     data: {
                         id: id,
                     }
@@ -189,7 +189,7 @@
                 var id = $('#OrgId').val();
                 $.ajax({
                     method: 'Get',
-                    url: '/BulkSalesCertificates/GetMyCustomerFromOrgId',
+                    url: '/client/BulkSalesCertificates/GetMyCustomerFromOrgId',
                     data: { id: id,}
                 })
                 .done(function(data){
