@@ -23,6 +23,8 @@ namespace CCIA.Models
             AgricultureCommissionerApprove = false;
             AgricultureCommissionerInaccurate = false;
             AdminUpdated = false;
+            PurchaserCountryId = 58;
+            PurchaserStateId = 102;
         }
 
         [Display(Name="STId")]
