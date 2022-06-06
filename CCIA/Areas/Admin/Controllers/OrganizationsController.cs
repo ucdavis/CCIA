@@ -517,6 +517,7 @@ namespace CCIA.Controllers
             var employeeToAdd = new Contacts();
 
             employeeToAdd.OrgId = id;
+            employeeToAdd.Active = true;
             employeeToAdd.FirstName = employee.FirstName;
             employeeToAdd.Title = employee.Title;
             employeeToAdd.BusinessPhone = employee.BusinessPhone;
@@ -571,6 +572,7 @@ namespace CCIA.Controllers
             }
 
             employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.Active = employee.Active;
             employeeToUpdate.Title = employee.Title;
             employeeToUpdate.BusinessPhone = employee.BusinessPhone;
             employeeToUpdate.FaxNumber = employee.FaxNumber;

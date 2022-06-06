@@ -404,6 +404,7 @@ namespace CCIA.Controllers.Client
             var employeeToAdd = new Contacts();
 
             employeeToAdd.OrgId = orgId;
+            employeeToAdd.Active = true;
             employeeToAdd.FirstName = employee.FirstName;
             employeeToAdd.Title = employee.Title;
             employeeToAdd.BusinessPhone = employee.BusinessPhone;
