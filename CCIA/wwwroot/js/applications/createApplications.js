@@ -29,6 +29,22 @@ $("#add-second-ps").click(function() {
     $("#add-second-ps").collapse('hide');
 });
 
+function show(e)
+{
+    //alert(e);
+    if(e=="down")
+    {
+        $("#sectionAgreement").collapse("show");
+        $("#downArrow").collapse("hide");
+    }
+    if(e=="up")
+    {
+        $("#sectionAgreement").collapse("hide");
+        $("#downArrow").collapse("show");
+    }
+
+}
+
 // Click handler for removing the second planting stocks record
 function removeSecondPSEntry() {
     $("#second-ps").collapse('hide');

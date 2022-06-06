@@ -1,0 +1,68 @@
+@model CCIA.Models.ApplicationViewModel
+@using CCIA.Helpers
+
+@{   
+    var classAgreement = Model.LastAgreementYear >= CertYearFinder.CertYear ? "collapse" : "show";
+    var classDown = Model.LastAgreementYear >= CertYearFinder.CertYear ? "show" : "collapse";
+}
+
+ <section class="rounded-section off-white">
+     <div class="row">
+         <div class="col-sm-11"><h4>Agreement</h4></div>
+         <div class="col-sm-1 float-right"><a href="#" class="@classDown" id="downArrow" onclick="show('down')"><i class="fa fa-angle-double-down"></i></a></div>
+     </div>   
+    <section class="rounded-section light-grey @classAgreement" id="sectionAgreement">
+        <div class="row">
+            <div class="col-sm-11">Before submitting your first application in the new crop year you MUST accept the agreement stated below and choose if you would like to become a member of CCIA. 
+                Subsequent applications will presume that you continue to accept the agreement and you will not need to select it again. 
+                The agreement will always be available for you to view at the top of the application. 
+                If you have any questions about the agreement or membership with CCIA please call 530-752-0544 or email <a href="mailto:ccia@ucdavis.edu">ccia@ucdavis.edu</a>. 
+                <br><br>
+                By submitting this application, you agree to the following:</div>
+            <div class="col-sm-1"><div class="float-right"><a href="#" onclick="show('up')"><i class="fa fa-angle-double-up"></i></a></div></div>
+        </div>
+        <hr />
+        <p>
+            I/We request permission from the California Crop Improvement Association (CCIA) to produce @Model.AppType.WhatProduced
+                and agree that I am/we are responsible for seeing that all planting,
+                harvesting and transporting equipment is clean and inspected; and for maintaining
+                the lot and varietal identity and purity of the crop until it is delivered to a
+                conditioning facility approved by the CCIA.I/We understand and agree that by requesting certification
+                    from CCIA, we are responsible for payment of all required fees established by CCIA,
+                    and for complying with CCIA’s bylaws and with any and all laws, regulations, and
+                    standards applicable to CCIA and to growers of @Model.AppType.WhatProduced.</p>
+        <p>If I am both the applicant and grower for this application, I hereby agree and consent
+                that CCIA may enter the property referenced below for purposes of inspecting the
+                seed production.</p>
+       <ul style="width:90%;">
+            <li>If I am the applicant
+                only (not the grower) for purposes of this application, I hereby agree to 
+                have in my files written consent from the grower that CCIA may enter the property
+                referenced below for purposes of inspecting the seed production. 
+                (Download <a target="_blank" href="https://ccia.ucdavis.edu/sites/g/files/dgvnsk5326/files/files/page/GrowerSignatureForm_0.pdf">grower permission form</a>)
+            </li>
+        </ul>                      
+       <p>I/we understand and agree
+                that under no circumstances, including, but not limited to, negligence, shall CCIA
+                or its directors, officers, members, employees, agents, attorneys, or contractors
+                be liable to me/us for any direct, indirect, incidental, special, exemplary, or
+                consequential damages, including but not limited to damages for loss of profits,
+                goodwill, or other intangible losses, which may result, directly or indirectly, from the application process.</p>
+        <p>I/we specifically agree to
+                indemnify, defend, and hold CCIA, its directors, officers, members, employees, agents,
+                attorneys, and contractors harmless from any loss, liability, claim, or demand,
+                including reasonable attorneys’ fees and costs, made by any third party due to or
+                arising out of the certification process.</p>                
+        <p>I/we specifically agree that
+                if an action at law or in equity is necessary to enforce or interpret the terms
+                of this Agreement, the prevailing party shall be entitled to recover its reasonable
+                attorneys’ fees and costs from the non-prevailing party in addition to any other
+                reasonable relief to which it may be entitled. With respect to any suit,
+                        action or proceeding arising out of or related to this policy agreement, or the
+                        documentation related hereto, the parties hereby submit to the jurisdiction and
+                        venue of the appropriate court in the County of Yolo, State of California for any proceeding arising hereunder.</p>
+        <p>Contributions
+                or gifts to CCIA are not deductible as charitable contributions on your state or
+                federal tax returns.</p>
+    </section>
+ </section>

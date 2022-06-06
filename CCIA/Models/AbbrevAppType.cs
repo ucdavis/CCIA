@@ -28,6 +28,7 @@ namespace CCIA.Models
         public string PlantingStockCertNumberLabel { get; set; }
 
         public bool ShowPSTagIssued { get; set; }
+        public string WhatProduced { get; set; }
 
         public ICollection<BulkSalesCertificates> BulkSalesCertificate { get; set; }
         public ICollection<Applications> Application { get; set; }

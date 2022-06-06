@@ -8,6 +8,8 @@
     <h2>Application to @Model.AppType.CertificateTitle</h2>
     <h5>@Model.Application.ApplicantOrganization.Name</h5>
 </section>
+
+ @await Html.PartialAsync("_Agreement.cshtml", Model)
  
 <div id="errors" class="text-danger">
     @Html.ValidationSummary()

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CCIA.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace CCIA.Models
@@ -47,8 +48,9 @@ namespace CCIA.Models
         public FieldHistory FieldHistory4 { get; set; }
         public FieldHistory FieldHistory5 { get; set; }
         // Maximum number of field history records allowed for a specified app type
+        public int LastAgreementYear { get; set; }
 
-        public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
+        public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction, int contactId)
         {
 
             // TODO get rid of all the separate app stuff. Views, model stuff, controller entries.
@@ -143,13 +145,14 @@ namespace CCIA.Models
                 WhereProduction = whereProduction, 
                 PlantingStock1 = new PlantingStocks(),
                 PlantingStock2 = new PlantingStocks(),
+                LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
             };
 
             return model;
 
         }
 
-        public static async Task<ApplicationViewModel> CreateRetryModel(CCIAContext _dbContext, ApplicationViewModel submittedModel, int applicantId)
+        public static async Task<ApplicationViewModel> CreateRetryModel(CCIAContext _dbContext, ApplicationViewModel submittedModel, int applicantId, int contactId)
         {
             var abbrevAppType = await _dbContext.AbbrevAppType.Where(a => a.Abbreviation == submittedModel.Application.AppType).FirstOrDefaultAsync();
             var app = submittedModel.Application;
@@ -237,6 +240,7 @@ namespace CCIA.Models
                 WhereProduction = submittedModel.WhereProduction, 
                 PlantingStock1 = submittedModel.PlantingStock1,
                 PlantingStock2 = submittedModel.PlantingStock2,
+                LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
             };
 
             return model;
@@ -346,6 +350,7 @@ namespace CCIA.Models
                 WhereProduction = app.IsSquareFeet ? "Outdoors" : "Indoors", 
                 PlantingStock1 = ps1,
                 PlantingStock2 = ps2,
+                LastAgreementYear = CertYearFinder.CertYear,
             };
 
             return model;
