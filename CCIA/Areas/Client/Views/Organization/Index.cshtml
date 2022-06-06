@@ -91,26 +91,26 @@
                     @foreach (var add in Model.Addresses)
                     {
                         <tr>
-                            <th>
+                            <td>
                                 <a class="btn btn-primary" asp-action="EditAddress" asp-route-id="@add.Id">Edit</a>                               
-                            </th>
-                            <th>@add.Address.Address1</th>
-                            <th>@add.Address.Address2</th>
-                            <th>@add.Address.City</th>
-                            <th>@add.Address.CountyName</th>
-                            <th>@add.Address.StateName</th>
-                            <th>@add.Address.PostalCode</th>
-                            <th>@add.Address.CountryName</th>
-                            <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                            </td>
+                            <td>@add.Address.Address1</td>
+                            <td>@add.Address.Address2</td>
+                            <td>@add.Address.City</td>
+                            <td>@add.Address.CountyName</td>
+                            <td>@add.Address.StateName</td>
+                            <td>@add.Address.PostalCode</td>
+                            <td>@add.Address.CountryName</td>
+                            <td>@Html.CheckBoxFor(x => add.Mailing)</td>
                             <td>@Html.CheckBoxFor(x => add.Billing)</td>
                             <td>@Html.CheckBoxFor(x => add.Delivery)</td>
                             <td>@Html.CheckBoxFor(x => add.Physical)</td>
                             <td>@Html.CheckBoxFor(x => add.Facility)</td>
                             <td>@Html.CheckBoxFor(x => add.Active)</td>
-                            <th>
+                            <td>
                                 <a class="btn btn-danger" asp-action="DeleteAddress" asp-route-id="@add.Id">Delete</a>
                                 <a class="btn btn-primary" asp-action="SetActive" asp-route-id="@add.Id" onclick="return confirm('Set this as Active/Primary Address?');">Set Active</a>
-                            </th>
+                            </td>
                         </tr>                    
                     }
                 </tbody>
@@ -131,10 +131,11 @@
                 <th>Email</th>
                 <th>Business Phone</th>
                 <th>Cell Phone</th>
+                <th>Active</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Model.Employees)
+            @foreach (var employee in Model.Employees.OrderByDescending(e => e.Active))
             {
                 <tr>
                     <td><a asp-action="EmployeeDetails" asp-controller="Organization" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
@@ -149,6 +150,7 @@
                         }
                     </td>
                     <td nowrap>@employee.MobilePhone</td>
+                    <td>@Html.CheckBoxFor(x => employee.Active)</td>
                 </tr>
             }
         </tbody>

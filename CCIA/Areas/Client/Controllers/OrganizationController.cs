@@ -470,6 +470,7 @@ namespace CCIA.Controllers.Client
             }
 
             employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.Active = employee.Active;
             employeeToUpdate.Title = employee.Title;
             employeeToUpdate.BusinessPhone = employee.BusinessPhone;
             employeeToUpdate.FaxNumber = employee.FaxNumber;

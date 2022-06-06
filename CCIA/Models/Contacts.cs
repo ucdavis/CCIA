@@ -57,6 +57,8 @@ namespace CCIA.Models
         public bool AllowSeeds { get; set; }
         [Display(Name="Allow Org Update")]
         public bool AllowOrgUpdate { get; set; }
+        [Display(Name="Allow Login")]
+        public bool Active { get; set; }
 
         
         [Display(Name="Rec. App. Notices")]
