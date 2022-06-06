@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using CCIA.Helpers;
 
 namespace CCIA.Controllers
 {
@@ -189,6 +190,7 @@ namespace CCIA.Controllers
         {
             var model = new CondStatus();
             model.OrgId = id;
+            model.Year = CertYearFinder.ConditionerYear;
 
             return View(model);
         }
@@ -517,6 +519,7 @@ namespace CCIA.Controllers
             var employeeToAdd = new Contacts();
 
             employeeToAdd.OrgId = id;
+            employeeToAdd.Active = true;
             employeeToAdd.FirstName = employee.FirstName;
             employeeToAdd.Title = employee.Title;
             employeeToAdd.BusinessPhone = employee.BusinessPhone;
@@ -571,6 +574,7 @@ namespace CCIA.Controllers
             }
 
             employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.Active = employee.Active;
             employeeToUpdate.Title = employee.Title;
             employeeToUpdate.BusinessPhone = employee.BusinessPhone;
             employeeToUpdate.FaxNumber = employee.FaxNumber;

@@ -41,17 +41,17 @@
                 <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
+                <label asp-for="Active" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Active" class="col-sm-6 form-control">
+            </div>
+            <div class="form-group row">
                 <label asp-for="ApplicationNotices" class="col-sm-3 col-form-label"></label>
                 <input asp-for="ApplicationNotices" class="col-sm-6 form-control">
             </div>  
             <div class="form-group row">
                 <label asp-for="OECDNotices" class="col-sm-3 col-form-label"></label>
                 <input asp-for="OECDNotices" class="col-sm-6 form-control">
-            </div>  
-            <div class="form-group row">
-                <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
-                <input asp-for="TransferNotices" class="col-sm-6 form-control">
-            </div>                                 
+            </div>                                
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
@@ -124,7 +124,11 @@
             <div class="form-group row">
                 <label asp-for="BulkSalesNotices" class="col-sm-3 col-form-label"></label>
                 <input asp-for="BulkSalesNotices" class="col-sm-6 form-control">
-            </div>               
+            </div> 
+            <div class="form-group row">
+                <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="TransferNotices" class="col-sm-6 form-control">
+            </div>              
         </div>
     </div> 
     <div class="row">

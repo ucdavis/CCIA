@@ -109,7 +109,7 @@ namespace CCIA.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var test = await _dbContext.Contacts.Where(c => c.Email == email).ToListAsync();
+                var test = await _dbContext.Contacts.Where(c => c.Email == email && c.Active).ToListAsync();
                 foreach (Contacts contact in test)
                 {
                     if (VerifyPassword(password, contact))
@@ -121,13 +121,11 @@ namespace CCIA.Controllers
                             return LocalRedirect(returnUrl);
                         }
                         return RedirectToAction("Index", "Home", new { area = "Client" });
-
                     }
                 }               
             }
-
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Invalid username or password");
+            ModelState.AddModelError("", "Invalid username or password or account not set to active.");
             return View();
         }
 
@@ -144,6 +142,14 @@ namespace CCIA.Controllers
             if(isEmulation)
             {
                 claims.Add(new Claim("role", "Emulated"));
+            }
+            if(contact.AllowApps)
+            {
+                claims.Add(new Claim("role","AllowApps"));
+            }
+            if(contact.AllowSeeds)
+            {
+                claims.Add(new Claim("role","AllowSeeds"));
             }
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
@@ -183,10 +189,10 @@ namespace CCIA.Controllers
         {
             if (id != 0)
             {
-                var contact = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+                var contact = await _dbContext.Contacts.Where(c => c.Id == id && c.Active).FirstOrDefaultAsync();
                 if(contact == null)
                 {
-                    Message = "Contact not found";
+                    Message = "Contact not found or not active";
                    return RedirectToAction("Index", "AdminHome", new { Area = "Admin"});
                 }
                 

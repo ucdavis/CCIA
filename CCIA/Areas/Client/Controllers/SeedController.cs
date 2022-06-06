@@ -15,10 +15,12 @@ using CCIA.Models.ViewModels;
 using CCIA.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA.Controllers.Client
 {
     
+    [Authorize(Roles = "AllowSeeds")]
     public class SeedsController : ClientController
     {
         private readonly CCIAContext _dbContext;

@@ -64,7 +64,14 @@ namespace CCIA.Controllers.Client
             
             orgToUpdate.MemberType = org.MemberType;
             orgToUpdate.MemberYear = CertYearFinder.CertYear;
-            orgToUpdate.Member = true;
+            if(org.MemberType == "Voting Member" || org.MemberType == "Non-voting Member")
+            {
+                orgToUpdate.Member = true;
+            } else
+            {
+                orgToUpdate.Active = false;
+            }
+            
             orgToUpdate.LastMemberAgreement = DateTime.Now;
             orgToUpdate.RepresentativeContactId = org.RepresentativeContactId;
             if(!orgToUpdate.MemberSince.HasValue)
@@ -397,6 +404,7 @@ namespace CCIA.Controllers.Client
             var employeeToAdd = new Contacts();
 
             employeeToAdd.OrgId = orgId;
+            employeeToAdd.Active = true;
             employeeToAdd.FirstName = employee.FirstName;
             employeeToAdd.Title = employee.Title;
             employeeToAdd.BusinessPhone = employee.BusinessPhone;
@@ -463,6 +471,7 @@ namespace CCIA.Controllers.Client
             }
 
             employeeToUpdate.FirstName = employee.FirstName;
+            employeeToUpdate.Active = employee.Active;
             employeeToUpdate.Title = employee.Title;
             employeeToUpdate.BusinessPhone = employee.BusinessPhone;
             employeeToUpdate.FaxNumber = employee.FaxNumber;

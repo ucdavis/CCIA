@@ -256,34 +256,34 @@
                     @foreach (var add in Model.org.Addresses)
                     {
                         <tr>
-                            <th>
+                            <td>
                                 @if(this.User.IsInRole("Admin"))
                                 {
                                     <a class="btn btn-primary" asp-action="EditAddress" asp-controller="Organizations" asp-area="Admin" asp-route-id="@add.Id">Edit</a>
                                 }
-                            </th>
-                            <th>@add.Address.Address1</th>
-                            <th>@add.Address.Address2</th>
-                            <th>@add.Address.City</th>
-                            <th>@add.Address.CountyName</th>
-                            <th>@add.Address.StateName</th>
-                            <th>@add.Address.PostalCode</th>
-                            <th>@add.Address.CountryName</th>
-                            <th>@Html.CheckBoxFor(x => add.Mailing)</th>
+                            </td>
+                            <td>@add.Address.Address1</td>
+                            <td>@add.Address.Address2</td>
+                            <td>@add.Address.City</td>
+                            <td>@add.Address.CountyName</td>
+                            <td>@add.Address.StateName</td>
+                            <td>@add.Address.PostalCode</td>
+                            <td>@add.Address.CountryName</td>
+                            <td>@Html.CheckBoxFor(x => add.Mailing)</td>
                             <td>@Html.CheckBoxFor(x => add.Billing)</td>
                             <td>@Html.CheckBoxFor(x => add.Delivery)</td>
                             <td>@Html.CheckBoxFor(x => add.Physical)</td>
                             <td>@Html.CheckBoxFor(x => add.Facility)</td>
                             <td>@Html.CheckBoxFor(x => add.Active)</td>
-                            <th>
+                            <td>
                                 @if(this.User.IsInRole("Admin") && !add.Active)
                                 {   
                                     <a class="btn btn-danger" asp-action="DeleteAddress" asp-route-id="@add.Id">Delete</a>
                                     <a class="btn btn-primary" asp-action="SetActive" asp-route-id="@add.Id" onclick="return confirm('Set this as Active/Primary Address?');">Set Active</a>
                                                                         
                                 }
-                            </th>
-                        </tr>                    
+                            </td>
+                        </tr>                 
                     }
                 </tbody>
             </table>
@@ -306,11 +306,12 @@
                 <th>Email</th>
                 <th>Business Phone</th>
                 <th>Cell Phone</th>
+                <th>Active</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Model.org.Employees)
+            @foreach (var employee in Model.org.Employees.OrderByDescending(e => e.Active))
             {
                 <tr>
                     <td><a asp-action="EmployeeDetails" asp-controller="Organizations" asp-area="Admin" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
@@ -325,7 +326,13 @@
                         }
                     </td>
                     <td nowrap>@employee.MobilePhone</td>
-                    <td><a asp-action="Emulate" asp-controller="Account" asp-area="" class="btn btn-warning" asp-route-id="@employee.Id">Emulate</a></td>
+                     <td>@Html.CheckBoxFor(x => employee.Active)</td>
+                    <td>
+                        @if(employee.Active)
+                        {
+                            <a asp-action="Emulate" asp-controller="Account" asp-area="" class="btn btn-warning" asp-route-id="@employee.Id">Emulate</a>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

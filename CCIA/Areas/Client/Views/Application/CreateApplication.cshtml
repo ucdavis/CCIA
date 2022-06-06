@@ -1,5 +1,6 @@
 @model CCIA.Models.ApplicationViewModel
 
+
 @{
     ViewData["Title"] = @Model.AppType.AppTypeTrans +  "Application";
 }
@@ -8,6 +9,8 @@
     <h2>Application to @Model.AppType.CertificateTitle</h2>
     <h5>@Model.Application.ApplicantOrganization.Name</h5>
 </section>
+
+ @await Html.PartialAsync("_Agreement.cshtml", Model)
  
 <div id="errors" class="text-danger">
     @Html.ValidationSummary()
@@ -172,11 +175,14 @@
                @if(Model.AppType.Abbreviation != "LT")
                {
                     <div class="row">
-                        <div class="form-group required col-sm-5">
-                            <label asp-for="PlantingStock1.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
-                            <input type="text" asp-for="PlantingStock1.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel" data-val="true" data-val-required="Please enter Planting Stock Variety" > 
-                            <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsEnteredVariety" data-valmsg-replace="true"></span>
-                        </div>
+                        @if(Model.AppType.Abbreviation != "PO")
+                            {
+                                <div class="form-group required col-sm-5">                           
+                                    <label asp-for="PlantingStock1.PsEnteredVariety" class="col-form-label">@Model.AppType.VarietyLabel</label>
+                                    <input type="text" asp-for="PlantingStock1.PsEnteredVariety" class="form-control col-sm-5" placeholder="@Model.AppType.VarietyLabel" data-val="true" data-val-required="Please enter Planting Stock Variety" > 
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsEnteredVariety" data-valmsg-replace="true"></span>                            
+                                </div>
+                        }
                         <div class="form-group required col-sm-7">
                             <label asp-for="PlantingStock1.PsCertNum" class="col-form-label">@Model.AppType.PlantingStockCertNumberLabel</label>
                             <input type="text"  asp-for="PlantingStock1.PsCertNum" class="form-control" placeholder="@Model.AppType.PlantingStockCertNumberLabel"> 
@@ -189,7 +195,7 @@
                     {                   
                         <div class="form-group required col-sm-6">
                             <label class="col-form-label" asp-for="PlantingStock1.PsClass">Class Planted</label>
-                            <select id="ps1_PsClass" asp-for="PlantingStock1.PsClass" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))" onchange="PSClassChange"></select>                             
+                            <select id="ps1_PsClass" asp-for="PlantingStock1.PsClass" asp-items="@(new SelectList(Model.ClassPlantedList,"ClassProducedId","ClassProducedTrans"))" onchange="ClassChange()"></select>                             
                             <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PsClass" data-valmsg-replace="true"></span>
                         </div>   
                     }                 

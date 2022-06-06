@@ -14,10 +14,12 @@ using CCIA.Services;
 using System.IO;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA.Controllers.Client
 {
 
+    [Authorize(Roles = "AllowApps")]
     public class ApplicationController : ClientController
     {
         private readonly CCIAContext _dbContext;
@@ -90,6 +92,7 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             var checker = await MembershipChecker.Check(_dbContext, orgId);
             if(!checker.CurrentMember)
             {
@@ -99,13 +102,14 @@ namespace CCIA.Controllers.Client
             {
                 return RedirectToAction(nameof(HempInfo), new { growerId = growerId, appTypeId = appTypeId});
             }
-            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), null, null, null, null);
+            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, orgId, null, null, null, null, contactId);
             return View(model);
         }
 
         public async Task<IActionResult> CreateHempApplication(int growerId, int appTypeId, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             var checker = await MembershipChecker.Check(_dbContext, orgId);
             if(!checker.CurrentMember)
             {
@@ -119,7 +123,7 @@ namespace CCIA.Controllers.Client
             {
                 return RedirectToAction(nameof(HempInfo), new { growerId = growerId, appTypeId = appTypeId});
             }
-            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value), whatPlanted, whatProduced, producingSeedType, whereProduction);
+            var model = await ApplicationViewModel.CreateGeneric(_dbContext, growerId, appTypeId, orgId, whatPlanted, whatProduced, producingSeedType, whereProduction, contactId);
             return View(nameof(CreateApplication), model);
         }
 
@@ -128,6 +132,10 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> CreateApplication(ApplicationViewModel model)
         {           
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contact = await _dbContext.Contacts.Where(c => c.Id == contactId).FirstOrDefaultAsync();
+            contact.LastApplicationAgreementYear = CertYearFinder.CertYear;
             var newPS2 = new PlantingStocks();
             List<FieldHistory> newFieldHistories = new List<FieldHistory>();
             var newFieldHistory = new FieldHistory();
@@ -136,7 +144,7 @@ namespace CCIA.Controllers.Client
             newApp.AppType = submittedApp.AppType;
             newApp.CertYear = submittedApp.CertYear;
             newApp.OriginalCertYear = submittedApp.CertYear;
-            newApp.UserDataentry = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            newApp.UserDataentry = contactId;
             newApp.EnteredVariety = submittedApp.EnteredVariety;
             newApp.Received = DateTime.Now;
             newApp.Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName();
@@ -146,7 +154,7 @@ namespace CCIA.Controllers.Client
             newApp.AcresApplied = submittedApp.AcresApplied;
             newApp.ApplicantComments = submittedApp.ApplicantComments;
             newApp.CropId = submittedApp.CropId;
-            newApp.ApplicantId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            newApp.ApplicantId = orgId;
             newApp.GrowerId = submittedApp.GrowerId;
             newApp.FarmCounty = submittedApp.FarmCounty;
             newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
@@ -166,6 +174,11 @@ namespace CCIA.Controllers.Client
             {
                 newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
             }  
+            if(submittedApp.AppType == "PO")
+            {
+                newPS1.OfficialVarietyId = int.Parse(submittedApp.EnteredVariety);
+                newApp.SelectedVarietyId = int.Parse(submittedApp.EnteredVariety);
+            }
 
             if(model.PlantingStock2 != null && !string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
             {
@@ -266,7 +279,7 @@ namespace CCIA.Controllers.Client
                 return RedirectToAction("Details", new { id = newApp.Id });
             }
             
-            var retryModel = await ApplicationViewModel.CreateRetryModel(_dbContext, model,  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value));   
+            var retryModel = await ApplicationViewModel.CreateRetryModel(_dbContext, model,  orgId, contactId);   
             return View(retryModel);
         }
 
@@ -503,7 +516,6 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
         {
              var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
@@ -543,7 +555,6 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
         {
              var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();

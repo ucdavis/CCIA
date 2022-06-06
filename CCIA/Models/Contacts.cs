@@ -57,6 +57,8 @@ namespace CCIA.Models
         public bool AllowSeeds { get; set; }
         [Display(Name="Allow Org Update")]
         public bool AllowOrgUpdate { get; set; }
+        [Display(Name="Allow Login")]
+        public bool Active { get; set; }
 
         
         [Display(Name="Rec. App. Notices")]
@@ -77,6 +79,7 @@ namespace CCIA.Models
         public int? AlfalfaLastYearAgreement { get; set; }
         public int? SweetCornLastYearAgreement { get; set; }
         public int? IdahoVegetableLastYearAgreement { get; set; }
+        public int? LastApplicationAgreementYear { get; set; }
 
         [ForeignKey("ContactId")]
         public ICollection<ContactAddress> Addresses { get; set; }
