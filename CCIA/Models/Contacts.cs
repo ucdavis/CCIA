@@ -7,6 +7,11 @@ namespace CCIA.Models
 {
     public partial class Contacts
     {
+
+        public Contacts()
+        {
+            LastApplicationAgreementYear = 0;
+        }
         public int Id { get; set; }
         
         public int OrgId { get; set; }

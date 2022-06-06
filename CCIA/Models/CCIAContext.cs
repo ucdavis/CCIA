@@ -2592,7 +2592,8 @@ namespace CCIA.Models
                     .HasColumnName("password_hash");
 
                 entity.Property(e => e.Salt)
-                    .HasColumnName("salt");
+                    .HasColumnName("salt")
+                    .ValueGeneratedOnAdd();
               
                 entity.Property(e => e.Suffix)
                     .HasColumnName("suffix")
