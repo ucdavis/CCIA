@@ -14,10 +14,12 @@ using CCIA.Services;
 using System.IO;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CCIA.Controllers.Client
 {
 
+    [Authorize(Roles = "AllowApps")]
     public class ApplicationController : ClientController
     {
         private readonly CCIAContext _dbContext;
@@ -514,7 +516,6 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
         {
              var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
@@ -554,7 +555,6 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
         {
              var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();

@@ -145,6 +145,14 @@ namespace CCIA.Controllers
             {
                 claims.Add(new Claim("role", "Emulated"));
             }
+            if(contact.AllowApps)
+            {
+                claims.Add(new Claim("role","AllowApps"));
+            }
+            if(contact.AllowSeeds)
+            {
+                claims.Add(new Claim("role","AllowSeeds"));
+            }
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
 
