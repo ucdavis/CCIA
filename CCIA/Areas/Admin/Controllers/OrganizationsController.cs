@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using CCIA.Helpers;
 
 namespace CCIA.Controllers
 {
@@ -189,6 +190,7 @@ namespace CCIA.Controllers
         {
             var model = new CondStatus();
             model.OrgId = id;
+            model.Year = CertYearFinder.ConditionerYear;
 
             return View(model);
         }
