@@ -742,6 +742,7 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(EmployeeDetails), new { id = id });
         }
 
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> ResetPassword(int id)
         {
             var contact = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
