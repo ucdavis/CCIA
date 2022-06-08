@@ -10,6 +10,7 @@ using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using CCIA.Helpers;
+using System.Security.Cryptography;
 
 namespace CCIA.Controllers
 {
@@ -751,9 +752,9 @@ namespace CCIA.Controllers
             }
             contact.Password = null;
             contact.PasswordHash = null;
-            byte[] b = System.Security.Cryptography.RandomNumberGenerator.GetBytes(32);
-                 
-            contact.ResetPin = Convert.ToBase64String(b);
+            byte[] b = System.Security.Cryptography.RandomNumberGenerator.GetBytes(12);                                         
+            contact.ResetPin = b;
+            contact.ResetExpiration = DateTime.Now.AddDays(5);
             _notification.ResetPassword(contact);
             await _dbContext.SaveChangesAsync();
             Message = "Password reset and email instructions pending.";

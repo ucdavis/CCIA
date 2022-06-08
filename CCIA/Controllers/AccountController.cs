@@ -12,7 +12,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-
+using System;
+using CCIA.Models.AccountViewModels;
 
 namespace CCIA.Controllers
 {
@@ -214,6 +215,62 @@ namespace CCIA.Controllers
             EmulationMessage = "";
 
             return RedirectToAction("CasLogin");
+        }
+
+         [AllowAnonymous]
+         public async Task<IActionResult> Reset (int id, string key)
+        {
+            
+            string codeBase64 = key.Replace( '-', '+' ).Replace( '_', '/' );
+            Byte[] providedCode = Convert.FromBase64String(codeBase64);
+           
+
+            var contact = await _dbContext.Contacts.Where(c => c.Id == id && c.ResetPin == providedCode).FirstOrDefaultAsync();
+            if(contact == null)
+            {
+                ErrorMessage = "Contact not found or key does not match.";
+                return RedirectToAction("Index","Root");
+            }  
+            if(contact.ResetExpiration < DateTime.Now)
+            {
+                ErrorMessage = "Reset link has expired. Please request a new password reset.";
+                return RedirectToAction("Index","Root");
+            }   
+            var model = new ResetPasswordViewModel();  
+            model.Id = contact.Id;
+            model.ResetPin = contact.ResetPin;            
+                 
+            return View(model);
+
+        }
+
+        [HttpPost]
+         [AllowAnonymous]
+        public async Task<IActionResult> Reset (ResetPasswordViewModel vm)
+        {
+            var contact = await _dbContext.Contacts.Where(c => c.Id == vm.Id && c.ResetPin == vm.ResetPin).FirstOrDefaultAsync();
+            if(contact == null)
+            {
+                ErrorMessage = "Contact not found or key does not match.";
+                return RedirectToAction("Index","Root");
+            }
+            if(contact.ResetExpiration < DateTime.Now)
+            {
+                ErrorMessage = "Reset link has expired. Please request a new password reset.";
+                return RedirectToAction("Index","Root");
+            }   
+            contact.Password = vm.Password;        
+            byte[] hashed = KeyDerivation.Pbkdf2(
+                password: vm.Password,
+                salt: contact.Salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 32);
+            contact.PasswordHash = hashed;
+            contact.ResetPin = null;            
+            await _dbContext.SaveChangesAsync();
+            Message = "Password initiated/reset. Please login now.";
+            return RedirectToAction("Index","Root");
         }
 
         
