@@ -10,9 +10,10 @@
         <div class="col-sm-12">
             @if(this.User.IsInRole("CoreStaff"))
             {
-                <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
+                <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organizations" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> @:&nbsp;&nbsp;
             }            
-            <a class="btn btn-info" asp-area="Admin" asp-action="Details" asp-controller="Organizations" asp-route-id="@Model.OrgId">Return to Org Details</a>
+            <a class="btn btn-info" asp-area="Admin" asp-action="Details" asp-controller="Organizations" asp-route-id="@Model.OrgId">Return to Org Details</a>&nbsp;&nbsp;
+            <a class="btn btn-dark" asp-action="ResetPassword" asp-route-id="@Model.Id" onClick="return confirm('Are you sure you wish to reset password? User will not be able to log in until completed');">Send Password Reset</a>
         </div>            
     </div>     
     <div class="row">

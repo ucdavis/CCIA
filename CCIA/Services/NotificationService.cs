@@ -49,6 +49,8 @@ namespace CCIA.Services
 
         Task NFCSubmitted(Tags tag);
 
+        void ResetPassword(Contacts contact);
+
     }
 
     public class NotificationService : INotificationService
@@ -59,6 +61,17 @@ namespace CCIA.Services
         public NotificationService(CCIAContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public void ResetPassword(Contacts contact)
+        {
+            var notification = new Notifications
+            {
+                ContactId = contact.Id,
+                Email = contact.Email,
+                Message = "Password reset"
+            };
+            _dbContext.Notifications.Add(notification);
         }
         
         public async Task ApplicationAccepted(Applications app)
@@ -415,7 +428,7 @@ namespace CCIA.Services
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     OrgId = org.Id,
                     Message = "Organization updated"
                 };

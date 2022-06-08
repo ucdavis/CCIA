@@ -49,7 +49,7 @@ namespace CCIA.Controllers
                     salt: cont.Salt,
                     prf: KeyDerivationPrf.HMACSHA1,
                     iterationCount: 10000,
-                    numBytesRequested: 256 / 8);
+                    numBytesRequested: 32);
                 cont.PasswordHash = hashed;
                 _dbContext.Update(cont);
             }

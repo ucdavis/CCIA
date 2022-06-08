@@ -52,7 +52,8 @@ namespace CCIA.Models
 
         public Byte[] PasswordHash { get; set; }
         
-        public Byte[] Salt { get; set; }        
+        public Byte[] Salt { get; set; }    
+        public string ResetPin { get; set; }    
         
         [Display(Name="Can Pin?")]
         public bool AllowPinning { get; set; }

@@ -741,6 +741,26 @@ namespace CCIA.Controllers
             return RedirectToAction(nameof(EmployeeDetails), new { id = id });
         }
 
+        public async Task<IActionResult> ResetPassword(int id)
+        {
+            var contact = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(contact == null)
+            {
+                ErrorMessage = "Contact not found";
+                return RedirectToAction(nameof(Index));
+            }
+            contact.Password = null;
+            contact.PasswordHash = null;
+            byte[] b = System.Security.Cryptography.RandomNumberGenerator.GetBytes(32);
+                 
+            contact.ResetPin = Convert.ToBase64String(b);
+            _notification.ResetPassword(contact);
+            await _dbContext.SaveChangesAsync();
+            Message = "Password reset and email instructions pending.";
+
+            return RedirectToAction(nameof(EmployeeDetails), new { id = id});
+        }
+
        
        
     }
