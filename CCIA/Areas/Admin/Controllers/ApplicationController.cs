@@ -223,7 +223,7 @@ namespace CCIA.Controllers.Admin
             _dbContext.Update(renew);
             await _dbContext.SaveChangesAsync();
 
-             var newFIR = new FieldInspectionReport();
+            var newFIR = new FieldInspectionReport();
             newFIR.AppId = newApp.Id;                        
             _dbContext.Add(newFIR);
 

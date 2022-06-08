@@ -54,7 +54,14 @@ namespace CCIA.Models.DetailsViewModels
             {
                 application =  await _helper.FIRApplications().Where(a => a.Id == id).FirstOrDefaultAsync(),    
                 documents = await _dbContext.FIRDocuments.Where(d => d.AppId == id).ToListAsync(),
-            };           
+            };    
+            if(viewModel.application.FieldInspectionReport == null)
+            {
+                var newFIR = new FieldInspectionReport();
+                newFIR.AppId = viewModel.application.Id;                        
+                _dbContext.Add(newFIR);
+                viewModel.application = await _helper.FIRApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+            }       
 
             return viewModel;
         }
