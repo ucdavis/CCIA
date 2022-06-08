@@ -572,6 +572,12 @@
                         @row.Insects
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label asp-for="@row.Weeds" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Weeds
+                    </div>
+                </div>
             } else {
                 <div class="form-group row">
                     <label asp-for="@row.Maturity" class="col-sm-3 col-form-label"></label>
@@ -604,6 +610,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label asp-for="@row.Weeds" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @row.Weeds
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label asp-for="@row.Disease" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
                         @row.Disease
@@ -616,12 +628,6 @@
                     </div>
                 </div>
             }
-                <div class="form-group row">
-                    <label asp-for="@row.Weeds" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @row.Weeds
-                    </div>
-                </div>
                 <div class="form-group row">
                     <label asp-for="@row.Comments" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
