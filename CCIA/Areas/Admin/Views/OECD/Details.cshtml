@@ -24,9 +24,12 @@
             </div>
             <div class="form-group row">
                 <label asp-for="DateRequested" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Model.DateRequested.Value.ToShortDateString()
-                </div>
+                @if(Model.DateRequested.HasValue)
+                {
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Model.DateRequested.Value.ToShortDateString()
+                    </div>
+                }                
             </div> 
             <div class="form-group row">
                 <label asp-for="ShipperOrganization.NameAndId" class="col-sm-3 col-form-label">Shipper</label>
