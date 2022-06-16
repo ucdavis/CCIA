@@ -57,7 +57,7 @@ namespace CCIA.Models
                 }
                 if(vm.searchId !=0)
                 {
-                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.Id.ToString(), "%" + vm.searchBid + '%'));                    
+                    stcToFind = stcToFind.Where(b => EF.Functions.Like(b.Id.ToString(), "%" + vm.searchId + '%'));                    
                 }
                 if(vm.searchYearsCreated != null && vm.searchYearsCreated.Count > 0)
                 {

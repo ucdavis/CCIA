@@ -50,6 +50,7 @@ namespace CCIA.Services
             await SendPendingOECDNotices(password);
             await SendPendingSeedTransferSubmitNotices(password);
             await SendPendingSeedTransferResponseNotices(password);
+            await SendPendingPasswordResetNotices(password);
         }
 
         public  async Task SendWeeklyApplicationNotices(string password)
@@ -101,6 +102,34 @@ namespace CCIA.Services
                     //message.To.Add(address);
                     message.Body = "An Application has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));                    
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
+            notifications.ForEach(n => {n.Pending = false; n.Sent = System.DateTime.Now;}); 
+            await _dbContext.SaveChangesAsync();  
+        }
+
+        private async Task SendPendingPasswordResetNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.ContactId != 0).ToListAsync();
+            if(notifications.Count == 0)
+            {
+                return;
+            }
+            
+            foreach(var notice in notifications)
+            {
+                var contact = await _dbContext.Contacts.Where(c => c.Id == notice.ContactId).FirstOrDefaultAsync();                             
+
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Account Password Reset Instructions"})
+                {
+                    message.To.Add("jscubbage@ucdavis.edu");
+                    // TODO: use real email not ^
+                    //message.To.Add(address);
+                    message.Body = "Reset password instructions. Please visit CCIA website for details";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/PasswordReset.cshtml", contact), new ContentType(MediaTypeNames.Text.Html));                    
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }

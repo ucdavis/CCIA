@@ -7,6 +7,11 @@ namespace CCIA.Models
 {
     public partial class Contacts
     {
+
+        public Contacts()
+        {
+            LastApplicationAgreementYear = 0;
+        }
         public int Id { get; set; }
         
         public int OrgId { get; set; }
@@ -47,7 +52,9 @@ namespace CCIA.Models
 
         public Byte[] PasswordHash { get; set; }
         
-        public Byte[] Salt { get; set; }        
+        public Byte[] Salt { get; set; }    
+        public Byte[] ResetPin { get; set; }    
+        public DateTime? ResetExpiration { get; set; }
         
         [Display(Name="Can Pin?")]
         public bool AllowPinning { get; set; }

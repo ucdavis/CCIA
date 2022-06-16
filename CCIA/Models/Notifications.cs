@@ -17,6 +17,7 @@ namespace CCIA.Models
             OrgId = 0;
             OecdId = 0;
             StId = 0;
+            ContactId = 0;
             IsAdmin = false;
         }
 
@@ -36,6 +37,7 @@ namespace CCIA.Models
         public int? OecdId { get; set; }
 
         public int? StId { get; set;}
+        public int? ContactId { get; set;}
 
         public string Message { get; set; }
 

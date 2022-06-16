@@ -10,6 +10,7 @@ using CCIA.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using CCIA.Helpers;
+using System.Security.Cryptography;
 
 namespace CCIA.Controllers
 {
@@ -739,6 +740,27 @@ namespace CCIA.Controllers
                 return View(model); 
             }
             return RedirectToAction(nameof(EmployeeDetails), new { id = id });
+        }
+
+        [Authorize(Roles = "CoreStaff")]
+        public async Task<IActionResult> ResetPassword(int id)
+        {
+            var contact = await _dbContext.Contacts.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(contact == null)
+            {
+                ErrorMessage = "Contact not found";
+                return RedirectToAction(nameof(Index));
+            }
+            contact.Password = null;
+            contact.PasswordHash = null;
+            byte[] b = System.Security.Cryptography.RandomNumberGenerator.GetBytes(12);                                         
+            contact.ResetPin = b;
+            contact.ResetExpiration = DateTime.Now.AddDays(5);
+            _notification.ResetPassword(contact);
+            await _dbContext.SaveChangesAsync();
+            Message = "Password reset and email instructions pending.";
+
+            return RedirectToAction(nameof(EmployeeDetails), new { id = id});
         }
 
        

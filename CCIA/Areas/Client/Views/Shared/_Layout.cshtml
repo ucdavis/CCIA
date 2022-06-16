@@ -81,7 +81,13 @@
                         </div>
                     </li>
                     <a class="nav-link" asp-area="client" asp-controller="TurfgrassCertificate" asp-action="Index">Turfgrass Certs</a>
-                    <a class="nav-link" asp-area="client" asp-controller="Organization" asp-action="Index">Org</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="client" asp-controller="Organization" asp-action="Index" aria-haspopup="true" aria-expanded="false">Org</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="client" asp-controller="Organization" asp-action="Index">Org Details</a>
+                            <a class="dropdown-item" asp-area="client" asp-controller="Organization" asp-action="Membership">CCIA Membership</a>                            
+                        </div>
+                    </li>
                     <a class="nav-link" asp-controller="Account" asp-action="Logout" asp-area="">Logout</a>
                 </ul>
             </div>

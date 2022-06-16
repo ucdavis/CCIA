@@ -4,14 +4,14 @@
 @inject IConfiguration Configuration
 
 <div class="container col-sm-12">    
-    <div class="row">
+    <div class="row ">
         <div class="col-sm-12">
             <h2>Tag Details</h2> 
             <a asp-action="Previous" asp-route-id="@Model.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.Id"  class="btn btn-light">Next</a>
             <hr>
         </div>            
     </div>
-     <div class="row">
+     <div class="row ">
         <div class="col-sm-12">
             <a class="btn btn-primary" asp-action="Edit" asp-controller="Tags" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> <br><br>
         </div>            
@@ -62,8 +62,8 @@
             </div>            
         </div>
     }
-    <div class="row">
-        <div class="col-md-6 col-xl-4"> @* First column *@
+    <div class="row  align-text-top">
+        <div class="col-md-6 col-xl-4 align-top"> @* First column *@
             <div class="form-group row">
                 <label asp-for="Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -129,10 +129,7 @@
                 <input type="checkbox" asp-for="SeriesRequest" class="col-sm-3 form-control disabled">
             </div>             
         </div>
-        <div class="col-md-6 col-xl-4"> @* Second column *@ 
-            <div class="form-group row">&nbsp;</div>
-            <div class="form-group row">&nbsp;</div>
-            <div class="row">&nbsp;</div>
+        <div class="col-md-6 col-xl-4 "> @* Second column *@             
             <div class="form-group row">
                 <label asp-for="LinkId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -163,6 +160,10 @@
                     @Html.DisplayFor(x => x.CropName)
                 </div>
             </div>
+            <div class="form-group row">&nbsp;</div>
+            <div class="form-group row">&nbsp;</div>
+            <div class="form-group row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
             <div class="form-group row">
                 <label asp-for="PrintedDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -186,7 +187,7 @@
                 <input type="checkbox" asp-for="Bulk" class="col-sm-3 form-control disabled">
             </div>                                                         
         </div>
-        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+        <div class="col-md-6 col-xl-4 align-top"> @* Third Col *@ 
             <div class="form-group row">
                 <label asp-for="Stage" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
