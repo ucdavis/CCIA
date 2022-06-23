@@ -249,7 +249,7 @@ namespace CCIA.Models
 
                 entity.HasOne(s => s.ClassProduced);
 
-                entity.HasOne(s => s.LabResults);
+                entity.HasOne(s => s.LabResults).WithOne(l => l.SID).IsRequired(false);
 
                 entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Seed).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.CertProgram);
                 

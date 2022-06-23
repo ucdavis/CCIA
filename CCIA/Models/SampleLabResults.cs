@@ -272,6 +272,8 @@ namespace CCIA.Models
             } 
         }
 
+        public Seeds SID { get; set; }
+
 
     }
 }
