@@ -96,7 +96,7 @@ namespace CCIA.Controllers
         [Authorize(Roles = "CoreStaff,Admin")]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _dbContext.Organizations.Where(o => o.Id == id).FirstOrDefaultAsync();            
+            var model = await _dbContext.Organizations.Include(o => o.Employees).Where(o => o.Id == id).FirstOrDefaultAsync();            
             if(model == null)
             {
                 ErrorMessage = "Org not found!";
@@ -129,6 +129,13 @@ namespace CCIA.Controllers
             orgToUpdate.DateModified = DateTime.Now;
             orgToUpdate.Notes = org.Notes;
             orgToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
+            
+            if(User.IsInRole("Admin"))
+            {
+                orgToUpdate.MemberType = org.MemberType;
+                orgToUpdate.RepresentativeContactId = org.RepresentativeContactId;
+            }
+            
 
              if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();

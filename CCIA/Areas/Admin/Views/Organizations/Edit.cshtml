@@ -29,12 +29,23 @@
              <div class="form-group row">                
                     <label asp-for="Member" class="col-sm-3 col-form-label"></label>
                     <input type="checkbox" asp-for="Member" class="col-sm-3 form-control">
-            </div>              
-            <div class="form-group row">
-                <label asp-for="MemberType" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.MemberType)
-                </div>
+            </div> 
+            <div class="form-group row">                
+                <label asp-for="MemberType" class="col-sm-4 col-form-label"></label>
+                @if(this.User.IsInRole("Admin"))
+                {
+                   <select asp-for="MemberType" class="col-sm-7 form-control">
+                        <option value="">Select type...</option>
+                        <option value="Non-voting Member">Non-voting Member</option>
+                        <option value="Voting Member">Voting Member</option>
+                        <option value="I do not wish to apply for membership">I do not wish to apply for membership</option>
+                    </select>
+                } else
+                {
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.MemberType)
+                    </div>
+                }
             </div>
             <div class="form-group row">                
                     <label asp-for="GermLab" class="col-sm-3 col-form-label"></label>
@@ -55,12 +66,23 @@
              <div class="form-group row">                
                     <label asp-for="Active" class="col-sm-3 col-form-label"></label>
                     <input type="checkbox" asp-for="Active" class="col-sm-3 form-control">
-            </div>                    
+            </div> 
             <div class="form-group row">
-                <label asp-for="RepresentativeContactId" class="col-sm-3 col-form-label">Member Representative</label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.RepresentativeContact.Name)
-                </div>
+                <label asp-for="RepresentativeContactId" class="col-sm-5 col-form-label">Member Representative</label>
+                @if(this.User.IsInRole("Admin"))
+                {
+                    <select asp-for="RepresentativeContactId" class="col-sm-6 form-control">
+                        @foreach (var emp in Model.Employees)
+                        {
+                            <option value="@emp.Id">@emp.FirstName @emp.LastName</option>                        
+                        }
+                    </select>
+                } else
+                {
+                    <div class="col-sm-5 form-control-plaintext">
+                        @Html.DisplayFor(x => x.RepresentativeContact.Name)
+                    </div>
+                }
             </div>
              <div class="form-group row">                
                     <label asp-for="DiagnosticLab" class="col-sm-3 col-form-label"></label>
