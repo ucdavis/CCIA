@@ -65,7 +65,7 @@ namespace CCIA.Models
         [Display(Name="Lot Number")]        
         public string LotNumber { get; set; }
         [Display(Name="Lot Weight (pounds)")]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:N1}")]
         public decimal PoundsLot { get; set; }
 
         [ForeignKey("Class")]
@@ -140,13 +140,14 @@ namespace CCIA.Models
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
+        public string certYearAbbrev => CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+
         // NO lot number included
         [Display(Name = "Cert#")]
         public string CertNumber
         {
             get
-            {
-                string certYearAbbrev = CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+            {                
                 if (OriginState != 102 || AppId != null)
                 {
                     if (AppId != null)
@@ -235,6 +236,32 @@ namespace CCIA.Models
             }
             return "REJECTED";
         }
+
+        public string CertificateCornerLabel()
+        {            
+            int end = SampleId.HasValue ? SampleId.Value : 0;
+
+            return $"{certYearAbbrev}-{FormNumber}-{end}";
+
+
+        }
+
+        public string FormNumber()
+        {
+            string IdString = "";
+            
+            if(SampleFormNumber.HasValue)
+            {
+                IdString =SampleFormNumber.Value.ToString();
+            } else 
+            {
+                IdString = $"SID {Id}";
+            }
+            return IdString;
+
+        }
+
+
 
 
 

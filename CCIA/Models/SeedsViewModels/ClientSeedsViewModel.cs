@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.Collections.Generic;
+using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Models.SeedsViewModels
 {
@@ -13,6 +15,9 @@ namespace CCIA.Models.SeedsViewModels
 
         public List<SeedDocuments>  Documents { get; set;}
         public List<SeedsDocumentTypes> documentTypes { get; set; }
+
+        public string StandardsMessage { get; set; }
+        public string AssayMessage { get; set; }
        
 
         public static async Task<ClientSeedsViewModel> Create(CCIAContext _dbContext, int orgId, int sid)
@@ -53,6 +58,16 @@ namespace CCIA.Models.SeedsViewModels
                 LabsAndStandards = labsAndStandards,
                 Documents = await _dbContext.SeedDocuments.Where(d => d.SeedsId == sid).ToListAsync(),
                 documentTypes = await _dbContext.SeedsDocumentTypes.ToListAsync(),                
+            };
+        }
+
+        public static async Task<ClientSeedsViewModel> CreateSIR(CCIAContext _dbContext, IFullCallService _helper, int sid)
+        {
+            return new ClientSeedsViewModel
+            {
+                seed = await _helper.FullSeeds().Where(s => s.Id == sid).FirstOrDefaultAsync(),
+                StandardsMessage = await _dbContext.Seeds.Where(x => x.Id == sid).Select(d => CCIAContext.GetStandardsMessage(d.Id)).FirstOrDefaultAsync(),
+                AssayMessage = await _dbContext.Seeds.Where(x => x.Id == sid).Select(d => CCIAContext.GetAssayMessage(d.Id)).FirstOrDefaultAsync(),                                       
             };
         }
     }

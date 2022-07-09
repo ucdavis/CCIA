@@ -84,7 +84,11 @@ namespace CCIA.Services
         {
             var seed = _context.Seeds
                 .Include(s => s.ApplicantOrganization)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.StateProvince)
                 .Include(s => s.ConditionerOrganization)
+                .ThenInclude(a => a.Address)
+                .ThenInclude(a => a.StateProvince)
                 .Include(s => s.AppTypeTrans)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
