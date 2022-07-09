@@ -22,6 +22,12 @@
             </form>       
         </div>
     }
+    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && !Model.LabsAndStandards.Labs.CciaConfirmed)
+    {
+        <div class="row col-sm-12">
+            <b>Must confirm the lab results before you can accept this lot.</b>
+        </div>
+    }
     <div class="row">
         <div class="col-sm-6"> @* First column *@
             <div class="form-group row">
