@@ -68,13 +68,13 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> SIR(int id)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
-            var model = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync();            
-            if(model == null)
+            var model = await ClientSeedsViewModel.CreateSIR(_dbContext, _helper, id);
+            if(model.seed == null)
             {
                 ErrorMessage = "Seed lot not found.";
                 return RedirectToAction(nameof(Index));
             }
-            if(model.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            if(model.seed.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
             {
                 ErrorMessage = "You are not the conditioner of that seed lot";
                 return RedirectToAction(nameof(Index));

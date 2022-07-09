@@ -51,7 +51,7 @@
                                         </td>
                                         <td align="right" valign="top">
                                             Date:
-                                            @if(Model.ConfirmedAt.HasValue)
+                                            @if(Model.seed.ConfirmedAt.HasValue)
                                             {
                                                 <span class="labelnoline">@Model.seed.ConfirmedAt.Value.ToShortDateString()</span>
                                             }
@@ -152,11 +152,7 @@
                         </tr>
                         <tr class="doublespace">
                             <td colspan="3">
-                                Remarks: @Model.seed.Remarks <br> @Model.AssayMessage
-                                <asp:Label ID="Label18" runat="server" CssClass="labelnoline" Text='<%# Eval("remarks") %>'></asp:Label><br />
-                                <asp:Label ID="Label19" runat="server" CssClass="labelnoline" Text='<%# Eval("assay_remarks") %>'></asp:Label><br />
-                                <asp:Label ID="Label7" runat="server" CssClass="labelnoline" Text='<%# Eval("sample_comments") %>'></asp:Label><br />
-                                <asp:Label ID="Label8" runat="server" CssClass="labelnoline" Text='<%# Eval("var_approve_comment") %>'></asp:Label></td>
+                                Remarks: @Model.seed.Remarks <br> @Model.AssayMessage <br> @Model.StandardsMessage <br> @Model.seed.LabResults.Comments <br> @Model.seed.VarietyComment()</td>
                         </tr>
                         <tr class="doublespace">                                    
                             <td>&nbsp;
@@ -170,28 +166,52 @@
                             <td>
                             </td>
                             <td align="right">
-                                <table runat="server" id="tblCharges" Visible='<%# If(Eval("cert_program") = "GQ", "false", "true") %>'>
-                                    <tr>
-                                        <td>
-                                            <asp:Label ID="cert_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("cert_fee") %>'></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:Label ID="crop_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("crop_fee") %>'></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:Label ID="research_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("research_fee") %>'></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:Label ID="min_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("min_fee") %>'></asp:Label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="overline">
-                                            <asp:Label ID="total_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("total_fee") %>'></asp:Label></td>
-                                    </tr>
-                                </table>
+                                @if(Model.seed.CertProgram != "GQ")
+                                {
+                                    <table class="table">
+                                        <tr>
+                                            <td align="right">
+                                                @if(Model.seed.CertFee.HasValue && Model.seed.CertFee != 0)
+                                                {
+                                                    <span class="labelnoline">Cert Fee = @Html.DisplayFor(x => x.seed.CertFee)</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                @if(Model.seed.CropFee.HasValue && Model.seed.CropFee != 0)
+                                                {
+                                                    <span class="labelnoline">@Model.seed.CropFeeLabel() = @Html.DisplayFor(x => x.seed.CropFee)</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                 @if(Model.seed.ResearchFee.HasValue && Model.seed.ResearchFee != 0)
+                                                {
+                                                    <span class="labelnoline">Research Fee = @Html.DisplayFor(x => x.seed.ResearchFee)</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <td align="right">
+                                                 @if(Model.seed.MinimumFee.HasValue && Model.seed.MinimumFee != 0)
+                                                {
+                                                    <span class="labelnoline">Minimum Sample Fee = @Html.DisplayFor(x => x.seed.MinimumFee)</span>
+                                                }
+                                            </td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td class="overline" align="right">
+                                                @if(Model.seed.TotalFee.HasValue && Model.seed.TotalFee != 0)
+                                                {
+                                                    <span class="labelnoline">Total Charges = @Html.DisplayFor(x => x.seed.TotalFee)</span>
+                                                }
+                                                <asp:Label ID="total_feeLabel" runat="server" CssClass="labelnoline" Text='<%# Bind("total_fee") %>'></asp:Label></td>
+                                        </tr>
+                                    </table>
+                                }
+                                
                             </td>
                             <td>
                             </td>
@@ -210,7 +230,7 @@
                 <td> </td>
                 <td style="width: 30px">
                 </td>                        
-                <td valign="top" rowspan="2" align="right"><img width="250px" src="port_signature.jpg" alt="Palmer Signature" /></td>
+                <td valign="top" rowspan="2" align="right"><img width="250px" src="/images/ExecutiveDirector_signature.JPG" alt="Executive Director Signature" /></td>
             </tr>
             <tr><td>Invoice Copy</td></tr>
         </table> 

@@ -11,7 +11,7 @@ namespace CCIA.Models.SeedsViewModels
     public class ClientSeedsViewModel
     {
         public Seeds seed { get; set; }
-        public LabsAndStandards LabsAndStandards { get; set; }
+        public LabsAndStandards LabsAndStandards { get; set; }       
 
         public List<SeedDocuments>  Documents { get; set;}
         public List<SeedsDocumentTypes> documentTypes { get; set; }

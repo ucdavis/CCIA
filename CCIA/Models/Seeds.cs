@@ -101,10 +101,24 @@ namespace CCIA.Models
         public bool InDirt { get; set; }
         public int? BlendNumber { get; set; }
         public DateTime? DateSampleReceived { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
         public decimal? CropFee { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
         public decimal? CertFee { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
         public decimal? ResearchFee { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
         public decimal? MinimumFee { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
+        public decimal? TotalFee
+        {
+            get
+            {
+                return CropFee.Value + CertFee.Value + ResearchFee.Value + MinimumFee.Value;
+            }
+
+        } 
         
         public bool LotCertOk { get; set; }
         [Display(Name="Entered By")]
@@ -237,6 +251,20 @@ namespace CCIA.Models
             return "REJECTED";
         }
 
+        public string VarietyComment()
+        {
+            if(CertProgram == "GQ" || CertProgram == "PV" || CertProgram == "RQ" || CertProgram == "LT")
+            {
+                return "";
+            }
+            if(Variety != null && Variety.Certified)
+            {
+                return "";
+            }
+            return "Variety pending CCIA Board Approval - no tags can be issued until variety approval is complete";
+        }
+
+
         public string CertificateCornerLabel()
         {            
             int end = SampleId.HasValue ? SampleId.Value : 0;
@@ -260,6 +288,26 @@ namespace CCIA.Models
             return IdString;
 
         }
+
+        public string CropFeeLabel()
+        {
+            if(!CropFee.HasValue || CropFee.Value == 0)
+            {
+                return "";
+            }
+            if(Variety != null && Variety.CropId == 1)
+            {
+                return "National Alfalfa Alliance Fee";
+            }
+            if(Variety != null && Variety.Crop != null)
+            {
+                return $"{Variety.Crop.Name} Fee";
+            }
+            return "";
+
+        }
+
+        
 
 
 
