@@ -269,7 +269,7 @@ namespace CCIA.Models
         {            
             int end = SampleId.HasValue ? SampleId.Value : 0;
 
-            return $"{certYearAbbrev}-{FormNumber}-{end}";
+            return $"{certYearAbbrev}-{FormNumber()}-{end}";
 
 
         }
