@@ -115,7 +115,7 @@ namespace CCIA.Models
         {
             get
             {
-                return CropFee.Value + CertFee.Value + ResearchFee.Value + MinimumFee.Value;
+                return CropFee.GetValueOrDefault() + CertFee.GetValueOrDefault() + ResearchFee.GetValueOrDefault() + MinimumFee.GetValueOrDefault();
             }
 
         } 
