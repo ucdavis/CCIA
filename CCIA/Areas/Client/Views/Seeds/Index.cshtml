@@ -39,7 +39,7 @@
                 <td>@seeds.ClassProduced.CertClass</td>
                 <td>@seeds.LotNumber</td>
                 <td>@Html.CheckBoxFor(m => @seeds.HasLabs)</td>
-                <td>@if(seeds.LabResults.PrivateLabDate.HasValue){
+                <td>@if(seeds.LabResults != null && seeds.LabResults.PrivateLabDate.HasValue){
                     @seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
                     }
                     </td>

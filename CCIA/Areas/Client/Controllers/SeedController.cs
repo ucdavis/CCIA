@@ -65,6 +65,23 @@ namespace CCIA.Controllers.Client
             return View(model);
         }      
 
+        public async Task<IActionResult> SIR(int id)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var model = await ClientSeedsViewModel.CreateSIR(_dbContext, _helper, id);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            if(model.seed.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner of that seed lot";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }    
+
         [HttpPost]
         public async Task<IActionResult> Submit(int id)
         {

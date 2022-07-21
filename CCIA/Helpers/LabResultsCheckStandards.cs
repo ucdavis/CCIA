@@ -29,10 +29,13 @@ namespace CCIA.Helpers
         public string Assay1Error { get; set; }
         // public string Assay2Error { get; set; }
 
+        public bool AssayNeeded { get; set; }
+
 
         public LabResultsCheckStandards()
         {
             HasWarnings = false;
+            AssayNeeded = false;
         }
 
         public static async Task<LabResultsCheckStandards> CheckStandardsFromLabs(CCIAContext _dbContext, SampleLabResults labs)
@@ -219,6 +222,7 @@ namespace CCIA.Helpers
             {
                 if (cs.Any(c => c.Name == "assay_required"))
                 {
+                    returnList.AssayNeeded = true;
                     standard = cs.First(c => c.Name == "assay_required");
                     decimal assayResult = labs.AssayTest.Value ? 1 : 0;
                     if (assayResult > standard.MaxValue || assayResult < standard.MinValue)
@@ -228,6 +232,8 @@ namespace CCIA.Helpers
                     }                
                 }
             }
+
+            
 
             return returnList;
         }

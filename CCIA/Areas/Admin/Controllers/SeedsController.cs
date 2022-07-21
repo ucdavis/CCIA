@@ -11,6 +11,7 @@ using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Security.Claims;
+using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers.Admin
 {
@@ -155,6 +156,28 @@ namespace CCIA.Controllers.Admin
         {
             return View();
         }
+
+        public async Task<IActionResult> SIR(int id)
+        {           
+            var model = await ClientSeedsViewModel.CreateSIR(_dbContext, _helper, id);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View("~/Areas/Client/Views/Seeds/SIR.cshtml",model);  
+        }
+
+        public async Task<IActionResult> ChargeSIR(int id)
+        {
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed Accepted";
+           
+            var p0 = new SqlParameter("@seeds_id", id);
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @seeds_id", p0);
+
+            return  RedirectToAction(nameof(SIR), new {id = id});            
+        }    
 
         
         public async Task<IActionResult> Details(int id)

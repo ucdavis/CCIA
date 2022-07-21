@@ -122,8 +122,14 @@ namespace CCIA.Controllers.Admin
 
             // Passed verification, save and redirect
             var labsToUpdate = await _dbContext.SampleLabResults.Where(l => l.SeedsId == results.Labs.SeedsId).FirstOrDefaultAsync();
-            labsToUpdate.AssayResults = labs.AssayResults;
-            labsToUpdate.AssayTest = labs.AssayTest;
+            if(errorList.AssayNeeded)
+            {
+                labsToUpdate.AssayResults = labs.AssayResults;
+                labsToUpdate.AssayTest = labs.AssayTest;
+            } else {
+                labsToUpdate.AssayResults = "N";
+            }
+            
             labsToUpdate.BadlyDiscoloredPercent = labs.BadlyDiscoloredPercent;
             labsToUpdate.BushelWeight = labs.BushelWeight;
             if(!labsToUpdate.CciaConfirmed && labs.CciaConfirmed){
@@ -166,6 +172,8 @@ namespace CCIA.Controllers.Admin
             labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
             labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
             labsToUpdate.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
+
+            
 
              if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();

@@ -13,13 +13,43 @@
     <div class="row col-sm-12">
          <a asp-action="Edit" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit SID</a>
     </div>
-    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && Model.LabsAndStandards.Labs.CciaConfirmed)
+    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && (Model.LabsAndStandards.Labs.CciaConfirmed || Model.seed.NotFinallyCertified))
     {
         <div class="row col-sm-12">
             <form asp-action="AcceptSeed">
                 @Html.HiddenFor(x => x.seed.Id)
                 <input type="submit" class="btn btn-success" value="Accept Seed">
             </form>       
+        </div>
+    }
+    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && !Model.LabsAndStandards.Labs.CciaConfirmed)
+    {
+        <div class="row col-sm-12">
+            <b>Must confirm the lab results before you can accept this lot unless it is NFC.</b>
+        </div>
+    }
+    @if(Model.seed.Status == null)
+    {
+        <hr class="col-xs-11">
+        <div class="row">
+            <div class="row col-sm-4"><hr>
+                <a asp-action="ChargeSIR" asp-area="Admin" asp-route-id="@Model.seed.Id" class="btn btn-info">Seed Inspection Report (w/charge)</a>
+            </div>
+            <div class="col-sm-4">
+                &nbsp;
+            </div>
+            <div class="col-sm-4">
+                <a asp-action="SIR" asp-area="Admin" asp-route-id="@Model.seed.Id" class="btn btn-info">Inspection Report Preview (no charge)</a>
+            </div>
+        </div>
+       <hr class="col-xs-11">
+    }
+    @if(Model.seed.Status == SeedsStatus.SIRReady.GetDisplayName())
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <a asp-action="SIR" asp-area="Admin" asp-route-id="@Model.seed.Id" class="btn btn-info">View Seed Inspection Report</a> 
+            </div>
         </div>
     }
     <div class="row">
