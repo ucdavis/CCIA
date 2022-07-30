@@ -37,7 +37,13 @@ namespace CCIA.Controllers
             {
                 return View(null);
             }
-            var model = await _helper.FullOrg().Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term + "%") || EF.Functions.Like(o.Name, "%" + term + "%")).ToListAsync();
+            
+            var model = await _dbContext.Organizations
+                .Include(o => o.Address)
+                .ThenInclude(a => a.County)
+                .Include(o => o.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term + "%") || EF.Functions.Like(o.Name, "%" + term + "%")).ToListAsync();
 
             return View(model);
         }
