@@ -19,7 +19,7 @@
         <div class="col-md-6 col-xl-3">@* First column*@
             <div class="form-group row">
                 <label asp-for="cropsReport" class="col-sm-3 col-form-label">Crops</label>
-                <select asp-for="cropsReport" size="8" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.crops, "CropId","Name"))"></select>   
+                <select asp-for="cropsReport" size="8" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.crops, nameof(Crops.CropId), nameof(Crops.CropsAndKind)))"></select>   
                  <div class="col-sm-1">&dagger;</div>             
             </div>                         
         </div>
