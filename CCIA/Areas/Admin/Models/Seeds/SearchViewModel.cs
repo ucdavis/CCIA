@@ -138,7 +138,7 @@ namespace CCIA.Models
                 {
                     seeds = await seedToFind.ToListAsync(),  
                     yearsToSelectFrom = CertYearFinder.certYearListReverse, 
-                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                     AppTypes = appTypes,
                     
@@ -151,7 +151,7 @@ namespace CCIA.Models
             {
                 seeds = new List<Seeds>(), 
                 yearsToSelectFrom = CertYearFinder.certYearListReverse,              
-                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
+                crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                 AppTypes = appTypes,
             };           
