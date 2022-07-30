@@ -36,7 +36,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="searchCrops" class="col-sm-3 col-form-label"></label>
-                <select multiple="multiple" asp-for="searchCrops" class="col-sm-5 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, "CropId", "Name"))"></select>
+                <select multiple="multiple" asp-for="searchCrops" class="col-sm-5 form-control multi-select" size="10" asp-items="@(new SelectList(Model.crops, nameof(Crops.CropId), nameof(Crops.CropsAndKind)))"></select>
                 <div class="col-sm-2">
                     &dagger;
                 </div>
