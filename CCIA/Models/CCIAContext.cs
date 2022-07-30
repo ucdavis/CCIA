@@ -376,6 +376,11 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ApplicationReport>(entity => {
                 entity.HasNoKey();
+                entity.Property(e => e.acres_applied).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_approved).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_cancelled).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_no_crop).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_rejected).HasColumnType("decimal(14,2)");
             });
 
             modelBuilder.Entity<SeedsReport>(entity => {
