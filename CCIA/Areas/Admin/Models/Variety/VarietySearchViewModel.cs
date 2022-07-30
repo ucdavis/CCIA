@@ -82,7 +82,7 @@ namespace CCIA.Models
             {
                 varieties = await varietySearch.ToListAsync(), 
                 typeOptions = EnumHelper.GetListOfDisplayNames<VarietyTypes>(), 
-                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
+                crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                 statusOptions = new List<string> {  "Both", "Certified", "Pending"}, 
                 categoryOptions = new List<string> { "Both","Proprietary", "Public" }, 
             };
