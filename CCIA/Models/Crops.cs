@@ -22,9 +22,9 @@ namespace CCIA.Models
         public string QbClass { get; set; }
         public string QbInvitem { get; set; }
         public string ReportGroup { get; set; }
-        public bool? CertifiedCrop { get; set; }
-        public bool? Heritage { get; set; }
-        public bool? PreVarietyGermplasm { get; set; }
+        public bool CertifiedCrop { get; set; }
+        public bool Heritage { get; set; }
+        public bool PreVarietyGermplasm { get; set; }
         public bool? Fov4Map { get; set; }
         public bool? IsolationCrop { get; set; }
         public bool? IdahoVegetable { get; set; }
@@ -51,6 +51,10 @@ namespace CCIA.Models
         [StringLength(256)]
         [Display(Name = "Crop")]
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
+
+        
+        [Display(Name = "Crop and Kind")]
+        public string CropsAndKind => CropKind == null ? Crop : Crop + ", " + CropKind;
 
 
         

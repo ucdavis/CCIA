@@ -92,7 +92,7 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "You do not have current permission to request bulk tags. Please contact CCIA staff to correct.";
                 return RedirectToAction(nameof(Index));
             }
-            var model = await _dbContext.Crops.Where(c => c.CertifiedCrop.Value).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+            var model = await _dbContext.Crops.Where(c => c.CertifiedCrop).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
             return View(model);
         }
 

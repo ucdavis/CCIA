@@ -41,7 +41,7 @@ namespace CCIA.Models.DetailsViewModels
             {
                 application =  await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync(),
                 AppTypes = await _dbContext.AbbrevAppType.Select(a => a.Abbreviation).ToListAsync(),
-                Crops = await _dbContext.Crops.ToListAsync(),   
+                Crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),   
                 Counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync(),     
             };           
 

@@ -73,7 +73,7 @@ namespace CCIA.Models
                 model = new AdminApplicationReportViewModel
                 { 
                     reports = reportsFound,
-                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                     appTypes = apptypes,
                     certYears = CertYearFinder.certYearListReverse,
                     counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).OrderBy(c => c.Name).ToListAsync(),
@@ -90,7 +90,7 @@ namespace CCIA.Models
                 model = new AdminApplicationReportViewModel
                 { 
                     reports = reportsFound,
-                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(), 
                     appTypes = apptypes,
                     certYearsReport = new List<int>(new int[] { CertYearFinder.CertYear - 1 }),
                     certYears = CertYearFinder.certYearListReverse,

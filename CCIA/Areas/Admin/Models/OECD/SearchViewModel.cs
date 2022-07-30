@@ -111,7 +111,7 @@ namespace CCIA.Models
                 {
                     oecds = await oecdToFind.ToListAsync(),  
                     yearsToSelectFrom = CertYearFinder.certYearListReverse, 
-                    crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c=> c.CropKind).ToListAsync(),
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                     classOptions = classList,
                     
                 };  
@@ -123,7 +123,7 @@ namespace CCIA.Models
             {
                 oecds = new List<OECD>(), 
                 yearsToSelectFrom = CertYearFinder.certYearListReverse,              
-                crops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
+                crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 classOptions = classList,
             };           
 

@@ -254,14 +254,18 @@ namespace CCIA.Models
         { 
             get
             {
-                if(AppType=="PV" || SelectedVarietyId == null)
-                {
-                    return PvgSelectionId;
-                }
                 if (Variety != null)
                 {
                     return Variety.Name;
                 }
+                if(AppType=="PV" || SelectedVarietyId == null)
+                {
+                    return PvgSelectionId;
+                }
+                if(EnteredVariety != null)
+                {
+                    return EnteredVariety;
+                }                
                 return "";
             } 
         }
