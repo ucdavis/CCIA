@@ -42,7 +42,7 @@ namespace CCIA.Models
         [ForeignKey("OriginatingCountyId")]
         public County OriginatingCounty { get; set; }
                 
-        [Display(Name="Certificate Date")]
+        [Display(Name="Certificate/Transfer Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime CertificateDate { get; set; }
         public int? SeedsID { get; set; }
