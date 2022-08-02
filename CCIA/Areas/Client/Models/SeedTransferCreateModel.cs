@@ -41,6 +41,9 @@ namespace CCIA.Models
                 classes = await _dbContext.AbbrevClassSeeds.FromSqlRaw($"EXEC mvc_class_producable_from_id @id, @class_type", p0, p1).ToListAsync(),
             };
             
+            model.transfer = new SeedTransfers();     
+            model.transfer.CertificateDate = DateTime.Now;
+            model.transfer.SubmittedForAnalysis = false;            
 
             if(Target == "SID")
             {
@@ -68,11 +71,11 @@ namespace CCIA.Models
                     return model;
                 }                
                 request.app = app;
+                model.transfer.StageFromFieldNumberOfAcres = app.AcresApplied.Value;
             }            
             model.request = request;  
-            model.transfer = new SeedTransfers();     
-            model.transfer.CertificateDate = DateTime.Now;
-            model.transfer.SubmittedForAnalysis = false;                 
+                 
+                       
             return model;
         }   
 
