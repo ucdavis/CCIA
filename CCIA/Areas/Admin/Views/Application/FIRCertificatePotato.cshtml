@@ -1,0 +1,464 @@
+@model CCIA.Models.DetailsViewModels.AdminViewModel
+
+@{
+    Layout = null;
+    int rowNumber = 1;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+</head>
+<body style="font-size: smaller">
+
+   <p style="text-align:center">
+        California Crop Improvement Association<br />
+        Frank G. Parsons Seed Certification Center
+        University of California,
+        One Shields Avenue<br />
+        Davis, California 95616-8541 Office (530) 752-0544 Fax (530) 752-4735
+    </p>
+    <table width="100%">
+        <tr>
+            <td style="width: 100%" align="center" class="title">
+                POTATO FIELD INSPECTION REPORTS</td>
+            <td style="white-space:nowrap; text-align: right">No. @Model.application.Id</td>
+        </tr>
+    </table>
+    <table width="100%" border="0">
+        <tr>
+            <td style="width: 1px" valign="top">
+                Applicant:</td>
+            <td style="width: 3px" valign="top">
+                &nbsp;</td>
+            <td valign="top">
+                @Model.application.ApplicantOrganization.Name
+            </td>
+            <td valign="top">
+                Account: @Model.application.ApplicantOrganization.Id
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 1px" valign="top">
+                Grower:
+            </td>
+            <td style="width: 3px" valign="top">
+            </td>
+            <td valign="top">
+                @Model.application.GrowerOrganization.Name
+            </td>
+            <td valign="top">
+                Account: @Model.application.GrowerOrganization.Id
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 1px" valign="top">
+                Address:</td>
+            <td style="width: 3px" valign="top">
+            </td>
+            <td valign="top">@if(Model.application.ApplicantOrganization.Address != null){
+                @if(Model.application.ApplicantOrganization.Address.Address1 != null){
+                    @Model.application.ApplicantOrganization.Address.Address1<br>
+                }
+               
+               @if(Model.application.ApplicantOrganization.Address.Address2 != null)
+               {
+                   @Model.application.ApplicantOrganization.Address.Address2<br>
+               }
+               <span>@Model.application.ApplicantOrganization.Address.City,&nbsp; @Model.application.ApplicantOrganization.Address.StateProvince.StateProvinceCode </span>
+                @Model.application.ApplicantOrganization.Address.PostalCode
+                }
+            </td>
+            <td valign="top">
+                Phone: @Model.application.ApplicantOrganization.Phone<br />
+                Fax: @Model.application.ApplicantOrganization.Fax
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4"><hr /></td>
+        </tr>
+    </table>
+    <table width="100%" border="0">
+        <tr>
+            <td style="width: 1px">Variety:</td>
+            <td> @Model.application.Variety.Name</td>
+            <td>Date Planted:&nbsp; @Model.application.DatePlanted.Value.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td style="white-space:nowrap">Class Planted:</td>
+            <td>@Model.application.PlantingStocks.First().PsClassNavigation.ClassProducedTrans</td>
+            <td>
+                Class Requested:&nbsp; @Model.application.ClassProducedName</td>
+        </tr>
+        <tr>
+            <td style="white-space:nowrap">Field Name/Number:</td>
+            <td>@Model.application.FieldName</td>
+            <td>
+                Potato Acres: &nbsp; @Model.application.AcresApplied</td>
+        </tr>
+        <tr>
+            <td colspan="3"><hr /></td>
+        </tr>
+    </table>
+    <span class="title" >Field/Greenhouse Inspection<br />
+    </span>
+    <table width="100%" class="table" >
+        <tr>
+            <td>&nbsp;</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                @if(rowNumber == 1)
+                {
+                    <td>1st inspection</td>
+                }   
+                @if(rowNumber == 2)
+                {
+                    <td>2nd inspection</td>
+                }
+                @if(rowNumber == 3)
+                {
+                    <td>3rd inspection</td>
+                }              
+                rowNumber++;
+            }
+        </tr>
+        <tr>
+            <td>Date</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>@row.DateInspected.Value.ToShortDateString()</td>                
+            }
+        </tr>
+        <tr>
+            <td>Inspector</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @if(row.InspectorEmployee != null)
+                    {
+                        @row.InspectorEmployee.Initials
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Stages of Growth (days)</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @((row.DateInspected.Value - Model.application.DatePlanted.Value).Days)
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>Count &nbsp;&nbsp;&nbsp;&nbsp;%</td>                
+            }
+        </tr>
+        <tr>
+            <td>Total Plants Inspected</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.TotalPlantsInspected
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Other Varieties</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.OtherVarieties &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    @if(row.OtherVarietiesPercent > 0)
+                    {
+                        @row.OtherVarietiesPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Mosaic</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Mosaic &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    @if(row.MosaicPercent > 0)
+                    {
+                        @row.MosaicPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Leafroll</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Leafroll &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    @if(row.LeafrollPercent > 0)
+                    {
+                        @row.LeafrollPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Blackleg</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Blackleg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+                    @if(row.BlacklegPercent > 0)
+                    {
+                        @row.BlacklegPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Calico</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Calico &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    @if(row.CalicoPercent > 0)
+                    {
+                        @row.CalicoPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Other Diseases</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.OtherDiseases &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    @if(row.OtherDiseasesPercent > 0)
+                    {
+                        @row.OtherDiseasesPercent.ToString("0.00")
+                    } else
+                    {
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;0</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Weeds</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Weeds
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Insects</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @row.Insects
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Applicant Contacted?</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @if(row.ApplicantContacted)
+                    {
+                        <span>Yes</span>
+                    } else 
+                    {
+                        <span>No</span>
+                    }
+                </td>                
+            }
+        </tr>
+        <tr>
+            <td>Applicant Present?</td>
+            @foreach (var row in Model.application.FieldInspection)
+            {
+                <td>
+                    @if(row.ApplicantPresent)
+                    {
+                        <span>Yes</span>
+                    } else 
+                    {
+                        <span>No</span>
+                    }
+                </td>                
+            }
+        </tr>        
+    </table>    
+    Comments: @Model.application.FieldInspectionReport.Comments
+    <br />
+    <table width="100%" border="0">
+        <tr>
+            <td colspan="5" class="title">
+                <hr />
+                Pathogen testing (for PN and N generations only)</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                Date of Sampling:
+                @if(Model.application.FieldInspectionReport.PathDate.HasValue)
+                {
+                    @Model.application.FieldInspectionReport.PathDate.Value.ToShortDateString()
+                }
+                &nbsp; &nbsp; &nbsp;
+                # of Samples:
+                @Model.application.FieldInspectionReport.PathNumSamples
+                &nbsp;&nbsp;
+                # of Plants/Sample:
+                @Model.application.FieldInspectionReport.PathNumPlants
+                <br />
+                <table width="100%">
+                    <tr>
+                        <td>
+                Bacteria (Cms)</td>
+                        <td>@Model.application.FieldInspectionReport.PathCmsValue</td>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                Virus PVA</td>
+                        <td>@Model.application.FieldInspectionReport.PathPvaValue</td>
+                        <td>
+                            &nbsp;</td>
+                        <td>
+                Virus PVS</td>
+                        <td>@Model.application.FieldInspectionReport.PathPvsValue</td>
+                    </tr>
+                    <tr>
+                        <td>
+                Bacteria (Erw)</td>
+                        <td>@Model.application.FieldInspectionReport.PathErwValue</td>
+                        <td>
+                        </td>
+                        <td>
+                Virus PVM</td>
+                        <td>@Model.application.FieldInspectionReport.PathPvmValue</td>
+                        <td>
+                        </td>
+                        <td>
+                Virus PVX</td>
+                        <td>@Model.application.FieldInspectionReport.PathPvxValue</td>
+                    </tr>
+                    <tr>
+                        <td>
+                Viroid PSTVd</td>
+                        <td>@Model.application.FieldInspectionReport.PathPstvdValue</td>
+                        <td>
+                        </td>
+                        <td>
+                            Virus PLRV</td>
+                        <td>@Model.application.FieldInspectionReport.PathPlrvValue</td>
+                        <td>
+                        </td>
+                        <td>
+                Virus PVY</td>
+                        <td>@Model.application.FieldInspectionReport.PathPvyValue</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Laboratory:</td>
+            <td colspan="4">@Model.application.FieldInspectionReport.PathLab
+                &nbsp; &nbsp;&nbsp;
+                Sent Via: @Model.application.FieldInspectionReport.PathSentVia</td>
+        </tr>
+        <tr>
+            <td>
+                Comments:</td>
+            <td colspan="4">@Model.application.FieldInspectionReport.PathComments</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <hr />
+            </td>
+        </tr>
+                            </table>
+    <table width="100%" border="0">
+        <tr>
+            <td style="white-space: nowrap; vertical-align: top; width: 30%">
+                Date Report Printed: @DateTime.Now.ToShortDateString()</td>
+            
+            <td align="left" style="white-space: nowrap; width: 30%">
+                Inspectors:
+            </td>
+            <td rowspan="3" valign="bottom"style="width: 30%"> @if(Model.application.FieldInspectionReport.Complete)
+                {
+                    <img width="250px" src="/images/ExecutiveDirector_signature.JPG" alt="Executive Director Signature" />
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>            
+            <td class="bottom">
+                @{
+                    var inspectorList = Model.application.FieldInspection.Select(i => i.InspectorEmployee).Distinct();
+                }
+                @if(inspectorList.Any())
+                {
+                    @foreach (var row in inspectorList)
+                    {
+                        @if(row != null)
+                        {
+                            <span>@row.FirstName @row.LastName (@row.Initials)</span>
+                        }
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Pass As:
+                @if(Model.application.FieldInspectionReport.PassClassTrans == "As applied")
+                {
+                    @Model.application.ClassProducedName
+                } else
+                {
+                    @Model.application.FieldInspectionReport.PassClassTrans 
+                }
+                (Generation)</td>
+            
+            <td style="white-space: nowrap">
+                Certification Number:
+                @if(Model.application.FieldInspectionReport.Complete && Model.application.FieldInspectionReport.PassClass != 255)
+                {
+                    @Model.application.FullCert
+                } else
+                {
+                    <span>Rejected</span>
+                }
+    <asp:Label ID="cert_numLabel" runat="server" Text='<%# Bind("cert_num") %>'></asp:Label></td>
+        </tr>
+    </table>         
+</body>
+</html>

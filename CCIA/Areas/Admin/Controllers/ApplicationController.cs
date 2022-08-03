@@ -540,6 +540,10 @@ namespace CCIA.Controllers.Admin
         public async Task<ActionResult> FIRCertificate(int id)
         {
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            if(model.application.AppType == AppTypes.Potato.GetDisplayName())
+            {
+                return View("FIRCertificatePotato", model);
+            }
             return View(model);
         }
        // Add ability to upload documentation for FIR

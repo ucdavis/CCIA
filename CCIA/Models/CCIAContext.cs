@@ -552,7 +552,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ApplicantPresent).HasColumnName("applicant_present");
 
-                entity.Property(e => e.Weeds).HasColumnName("weed_comment");
+                entity.Property(e => e.Weeds).HasColumnName("weeds");
+
+                entity.Property(e => e.WeedsComments).HasColumnName("weed_comment");
 
                 entity.Property(e => e.Comments).HasColumnName("insp_comments");
 
