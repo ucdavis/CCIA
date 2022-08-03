@@ -47,7 +47,7 @@ namespace CCIA.Controllers.Client
             {
                 certYearToUse = CertYearFinder.CertYear;
             }           
-            var model = await TagIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value);            
+            var model = await TagIndexViewModel.Create(_dbContext, orgId, certYearToUse.Value, _helper);            
             return View(model);
         }
 

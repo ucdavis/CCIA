@@ -265,49 +265,11 @@ namespace CCIA.Models.IndexViewModels
     {
         public List<Tags> tags { get; set; }
 
-        public static async Task<TagIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear)
+        public static async Task<TagIndexViewModel> Create(CCIAContext _dbContext, int orgId, int certYear, IFullCallService _helper)
         {
             var viewModel = new TagIndexViewModel
             {
-                tags = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.Variety)                
-                .ThenInclude(v => v.Crop)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.ClassProduced)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.Application)
-                .ThenInclude(a => a.Variety)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.Application)
-                .ThenInclude(a => a.Crop)
-                .Include(t => t.Blend) 
-                .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
-                .ThenInclude(l => l.Seeds)
-                .ThenInclude(s => s.Variety)
-                .ThenInclude(v => v.Crop)
-                .Include(t => t.Blend)
-                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
-                .ThenInclude(i => i.Application)
-                .ThenInclude(a => a.Variety)
-                .Include(t => t.Blend)
-                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
-                .ThenInclude(i => i.Application) 
-                .ThenInclude(a => a.Crop)
-                .Include(t => t.Blend)
-                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
-                .ThenInclude(i => i.Crop)
-                .Include(t => t.Blend)
-                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
-                .ThenInclude(i => i.Variety)
-                .Include(t => t.Blend)
-                .ThenInclude(b => b.Variety) // blendrequest (varietal) => variety => crop
-                .ThenInclude(v => v.Crop)
-                .Include(t => t.TagAbbrevClass)
-                .Include(t => t.AbbrevTagType)
-                .Include(t => t.BulkCrop)
-                .Include(t => t.BulkVariety)
-                .ToListAsync(),
+                tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear).ToListAsync(),
                 certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested != null).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
