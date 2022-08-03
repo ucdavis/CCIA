@@ -30,6 +30,7 @@ namespace CCIA.Models
         public bool ApplicantPresent { get; set; }
 
         public string Weeds { get; set; }
+        public string WeedsComments { get; set; }
 
         public string Comments { get; set; }
 
@@ -57,6 +58,43 @@ namespace CCIA.Models
         public string OtherCrop { get; set; }
         public string Disease { get; set; }
         public string Appearance { get; set; }
+
+       
+        public double OtherVarietiesPercent { 
+            get {
+                return ((double)OtherVarieties.Value / TotalPlantsInspected.Value) *100;
+            }
+        }
+
+        public double MosaicPercent { 
+            get {
+                return ((double)Mosaic.Value / TotalPlantsInspected.Value) *100;
+            }
+        }
+
+        public double LeafrollPercent { 
+            get {
+                return ((double)Leafroll.Value / TotalPlantsInspected.Value) *100;
+            }
+        }
+
+        public double BlacklegPercent { 
+            get {
+                return ((double)Blackleg.Value / TotalPlantsInspected.Value) *100;
+            }
+        }
+       
+        public double CalicoPercent { 
+            get {
+                return ((double)Calico.Value / (double)TotalPlantsInspected.Value) *100;
+            }
+        }
+
+        public double OtherDiseasesPercent { 
+            get {
+                return ((double)OtherDiseases.Value / TotalPlantsInspected.Value) *100;
+            }
+        }
 
 
         [ForeignKey("InspectorId")]

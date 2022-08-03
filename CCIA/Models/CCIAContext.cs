@@ -376,6 +376,11 @@ namespace CCIA.Models
 
             modelBuilder.Entity<ApplicationReport>(entity => {
                 entity.HasNoKey();
+                entity.Property(e => e.acres_applied).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_approved).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_cancelled).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_no_crop).HasColumnType("decimal(14,2)");
+                entity.Property(e => e.acres_rejected).HasColumnType("decimal(14,2)");
             });
 
             modelBuilder.Entity<SeedsReport>(entity => {
@@ -547,7 +552,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ApplicantPresent).HasColumnName("applicant_present");
 
-                entity.Property(e => e.Weeds).HasColumnName("weed_comment");
+                entity.Property(e => e.Weeds).HasColumnName("weeds");
+
+                entity.Property(e => e.WeedsComments).HasColumnName("weed_comment");
 
                 entity.Property(e => e.Comments).HasColumnName("insp_comments");
 
@@ -1611,7 +1618,7 @@ namespace CCIA.Models
 
             entity.Property(e => e.GrowerSameAsApplicant).HasColumnName("grower_same_as_applicant");
 
-            entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValueSql("((0))");
+            entity.Property(e => e.QAProgram).HasColumnName("qa_program").HasDefaultValue(false);
             
         });
 
@@ -1746,7 +1753,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Approved)
                     .HasColumnName("app_approved")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Approver)
                     .HasColumnName("app_approver")
@@ -1755,7 +1762,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Cancelled)
                     .HasColumnName("app_cancelled")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CancelledBy)
                     .HasColumnName("app_cancelled_by")
@@ -1781,7 +1788,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Denied)
                     .HasColumnName("app_denied")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Fee)
                     .HasColumnName("app_fee")
@@ -1791,7 +1798,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PackageComplete)
                     .HasColumnName("app_pkg_complete")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Postmark)
                     .HasColumnName("app_postmark")
@@ -1808,7 +1815,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Submitable)
                     .HasColumnName("app_submitable")
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValue(true);
 
                 entity.Property(e => e.AppType)
                     .HasColumnName("app_type")
@@ -1829,7 +1836,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Billable)
                     .HasColumnName("billable")
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValue(true);
 
                 entity.Property(e => e.CertNum).HasColumnName("cert_num");
 
@@ -1837,7 +1844,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Charged)
                     .HasColumnName("charged")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.ClassProducedAccession).HasColumnName("class_produced_accession");
 
@@ -1914,13 +1921,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.MapVe)
                     .HasColumnName("map_ve")
-                    .HasDefaultValueSql("((0))");  
+                    .HasDefaultValue(false);  
 
                 entity.Property(e => e.GeoField).HasColumnName("geo_field");
 
                 entity.Property(e => e.Maps)
                     .HasColumnName("maps")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.MapsSubmissionDate)
                     .HasColumnName("maps_sub_dt")
@@ -1932,11 +1939,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.NotifyNeeded)
                     .HasColumnName("notify_needed")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.OverrideLateFee)
                     .HasColumnName("override_late_fee")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.PaperAppNum).HasColumnName("paper_app_num");
 
@@ -1957,7 +1964,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Renewal)
                     .HasColumnName("renewal")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                
                 entity.Property(e => e.SelectedVarietyId).HasColumnName("selected_variety_id");
@@ -1969,7 +1976,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Tags)
                     .HasColumnName("tags")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.TextField)
                     .HasColumnName("text_field")
@@ -1997,7 +2004,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.WarningFlag)
                     .HasColumnName("warning_flag")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.HempWhatPlanted);
                 entity.Property(e =>e.HempWhatProduced);
@@ -2055,7 +2062,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Approved)
                     .HasColumnName("approved")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.ApprovedBy)
                     .HasColumnName("approved_by")
@@ -2111,7 +2118,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Submitted)
                     .HasColumnName("submitted")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.TagCountRequested).HasColumnName("tag_count_requested");
 
@@ -2189,7 +2196,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Completed)
                     .HasColumnName("completed")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CompletedDate)
                     .HasColumnName("completed_date")
@@ -2222,7 +2229,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Approval)
                     .HasColumnName("approval")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Approver)
                     .HasColumnName("approver")
@@ -2246,7 +2253,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Correction)
                     .HasColumnName("correction")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.DateApplied)
                     .HasColumnName("date_applied")
@@ -2258,7 +2265,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Deletecharge)
                     .HasColumnName("delcharge")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
@@ -2267,7 +2274,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.HoldCheck)
                     .HasColumnName("holdchk")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.HoldDate)
                     .HasColumnName("holddt")
@@ -2298,7 +2305,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AllowPretag)
                     .HasColumnName("allow_pretag")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Status)
                     .IsRequired()
@@ -2320,11 +2327,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PrintSeries)
                     .HasColumnName("print_series")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.RequestCciaPrintSeries)
                     .HasColumnName("request_ccia_print_series")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<ContactAddress>(entity =>
@@ -2344,7 +2351,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Billing)
                     .HasColumnName("billing")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Id)
                     .HasColumnName("contadd_id")
@@ -2356,15 +2363,15 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Delivery)
                     .HasColumnName("delivery")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Mailing)
                     .HasColumnName("mailing")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.PhysicalLoc)
                     .HasColumnName("physical_loc")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.UserModified)
                     .HasColumnName("user_modified")
@@ -2387,7 +2394,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Billing)
                     .HasColumnName("billing")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -2395,15 +2402,15 @@ namespace CCIA.Models
                
                 entity.Property(e => e.Delivery)
                     .HasColumnName("delivery")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Mailing)
                     .HasColumnName("mailing")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Physical)
                     .HasColumnName("physical")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
                
             });
 
@@ -2514,15 +2521,15 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AllowApps)
                     .HasColumnName("allow_apps")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.AllowPinning)
                     .HasColumnName("allow_pinning")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.AllowSeeds)
                     .HasColumnName("allow_seeds")
-                    .HasDefaultValueSql("((0))");              
+                    .HasDefaultValue(false);              
 
                 entity.Property(e => e.BusinessPhone)
                     .HasColumnName("bus_phone")
@@ -2630,9 +2637,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OecdMember)
                     .HasColumnName("oecd_member")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
-                entity.Property(e => e.US).HasColumnName("us").HasDefaultValueSql("((0))");
+                entity.Property(e => e.US).HasColumnName("us").HasDefaultValue(false);
             });
 
             modelBuilder.Entity<County>(entity =>
@@ -2688,7 +2695,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.CertifiedCrop)
                     .HasColumnName("certified_crop")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Crop)
                     .HasColumnName("crop")
@@ -2712,7 +2719,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Fov4Map)
                     .HasColumnName("fov4_map")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Genus)
                     .IsRequired()
@@ -2722,7 +2729,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Heritage)
                     .HasColumnName("heritage")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.IdahoCropName)
                     .HasColumnName("idaho_crop_name")
@@ -2736,7 +2743,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.IdahoVegetable)
                     .HasColumnName("idaho_vegetable")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.IsolationCertified)
                     .HasColumnName("isolation_certified")
@@ -2744,7 +2751,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.IsolationCrop)
                     .HasColumnName("isolation_crop")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.IsolationFoundation)
                     .HasColumnName("isolation_foundation")
@@ -2772,7 +2779,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PreVarietyGermplasm)
                     .HasColumnName("pre_variety_germplasm")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.QbClass)
                     .HasColumnName("qb_class")
@@ -2909,7 +2916,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.DateModified)
                     .HasColumnName("date_modified")
@@ -2986,7 +2993,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Complete)
                     .HasColumnName("complete")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CompleteBy)
                     .HasColumnName("complete_by")
@@ -3072,7 +3079,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ReportGenerated)
                     .HasColumnName("report_generated")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.HasOne(e => e.CompleteEmployee);
 
@@ -3142,7 +3149,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PvxTest)
                     .HasColumnName("PVX_test")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.SeedPurchasedFrom)
                     .HasColumnName("seed_purchased_from")
@@ -3164,7 +3171,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.WinterTest)
                     .HasColumnName("winter_test")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.ThcPercent).HasColumnName("thc_percent");
 
@@ -3190,7 +3197,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Active)
                     .HasColumnName("active")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Comments)
                     .HasColumnName("comments")
@@ -3321,7 +3328,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.CciaConfirmed)
                     .HasColumnName("ccia_confirmed")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
                 
                 entity.Property(e => e.ChewingInsectDamagePercent)
                     .HasColumnName("chewing_insect_damage_percent")
@@ -3496,11 +3503,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Alias)
                     .HasColumnName("alias")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Confidential)
                     .HasColumnName("confidential")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.DateEntered)
                     .HasColumnName("date_entered")
@@ -3517,7 +3524,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Experimental)
                     .HasColumnName("experimental")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.InUse)
                     .HasColumnName("in_use")
@@ -3525,7 +3532,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.OecdCountry).HasColumnName("oecd_country");
 
@@ -3533,7 +3540,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PrivateCode)
                     .HasColumnName("private_code")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.UpdateComments)
                     .HasColumnName("update_comments")
@@ -3595,7 +3602,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.CCIACertified)
                     .HasColumnName("ccia_certified")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CCIACertifiedDate)
                     .HasColumnName("ccia_certified_date")
@@ -3613,13 +3620,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Confidential)
                     .HasColumnName("confidential")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CropId).HasColumnName("crop_id");
 
                 entity.Property(e => e.CtcApproved)
                     .HasColumnName("ctc_approved")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.CtcDateApproved)
                     .HasColumnName("ctc_date_approved")
@@ -3640,17 +3647,17 @@ namespace CCIA.Models
 
                 entity.Property(e => e.DescriptionOnFile)
                     .HasColumnName("description_on_file")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Experimental)
                     .HasColumnName("experimental")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                
 
                 entity.Property(e => e.GermplasmEntity)
                     .HasColumnName("germplasm_entity")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.HistoricalName)
                     .HasColumnName("historical_name")
@@ -3659,7 +3666,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.OECD)
                     .HasColumnName("oecd")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.OtherStateCert)
                     .HasColumnName("other_state_cert")
@@ -3670,11 +3677,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PendingCertification)
                     .HasColumnName("pending_certification")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.PlantPatent)
                     .HasColumnName("plant_patent")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.PlantPatentDate)
                     .HasColumnName("plant_patent_date")
@@ -3684,13 +3691,13 @@ namespace CCIA.Models
 
                 entity.Property(e => e.PrivateCode)
                     .HasColumnName("private_code")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.ProducerId).HasColumnName("producer_id");
 
                 entity.Property(e => e.Pvp)
                     .HasColumnName("pvp")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.PvpDate)
                     .HasColumnName("pvp_date")
@@ -3711,7 +3718,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.RiceQa)
                     .HasColumnName("rice_qa")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.RiceQaColor)
                     .HasColumnName("rice_qa_color")
@@ -3720,11 +3727,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TitleV)
                     .HasColumnName("title_v")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.Turfgrass)
                     .HasColumnName("turfgrass")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.UserEntered)
                     .HasColumnName("user_entered")
@@ -3749,7 +3756,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.VarReviewBoard)
                     .HasColumnName("var_review_board")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.VarReviewBoardDate)
                     .HasColumnName("var_review_board_date")

@@ -28,6 +28,12 @@ namespace CCIA.Models
             }
         }
 
+        public string Initials { 
+            get {
+                return $"{FirstName.Substring(0,1)}{LastName.Substring(0,1)}";
+            }
+        }
+
         [Display(Name="Email ID")]
         public string UCDMaildID { get; set; }
 

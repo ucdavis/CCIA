@@ -252,6 +252,8 @@ namespace CCIA.Services
                 .Include(a => a.ApplicantOrganization)
                 .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
+                .Include(a => a.PlantingStocks)
+                .ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.Crop)
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)

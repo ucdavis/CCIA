@@ -298,7 +298,12 @@
             {
                 <tr>                    
                     <td>@row.Year</td>
-                    <td>@row.FHCrops.Name</td>
+                    <td>
+                        @if(row.FHCrops != null)
+                        {
+                            @row.FHCrops
+                        }
+                    </td>
                     <td>@row.Variety</td>
                     <td>@row.AppNumber</td>
                 </tr>
