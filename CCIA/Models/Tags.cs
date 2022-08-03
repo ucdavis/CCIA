@@ -245,6 +245,10 @@ namespace CCIA.Models
                 {
                     return "";
                 }
+                if(AppId.HasValue && Application != null)
+                {
+                    return Application.FullCert;
+                }
                 return "Unknown";
             }
         }
