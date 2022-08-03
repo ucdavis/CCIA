@@ -746,6 +746,10 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
             }
+            if(model.application.AppType == AppTypes.Potato.GetDisplayName())
+            {
+                return View("~/Areas/Admin/Views/Application/FIRCertificatePotato.cshtml", model);
+            }
             return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
 
