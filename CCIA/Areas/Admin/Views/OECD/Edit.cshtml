@@ -147,14 +147,29 @@
             </div> 
             <div class="form-group row">
                 <label asp-for="oecd.CertNumber" class="col-sm-3 col-form-label"></label>
-                <input asp-for="oecd.CertNumber" class="col-sm-3 col-form">
+                <input asp-for="oecd.CertNumber" class="col-sm-5 col-form">
             </div> 
             <div class="form-group row">
-                <label asp-for="oecd.LotReferenceNumber" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.oecd.LotReferenceNumber)
-                </div>
+                <label asp-for="oecd.OECDNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="oecd.OECDNumber" class="col-sm-8 col-form">
+                <label class="col-sm-1 btn btn-info" data-toggle="collapse" data-target="#oecdNumberPanel" >?</label>
             </div>  
+            <div class="collapse" id="oecdNumberPanel">
+                <dl>
+                    <dt>1.	Certified: <span class="fixed">USA-CA-</span><span class="variable">[cert number]</span>-[lot number]</dt>
+                    <dd>Example – <span class="fixed">USA-CA-</span><span class="variable">10CA-123-45678</span></dd>
+                    <br />
+                    <dt>2.	Blends: <span class="fixed">USA-CA-10</span><span class="variable">[blend number]</span>-[lot number]</dt>
+                    <dd>Example – <span class="fixed">USA-CA-10</span><span class="variable">CA-V12345</span></dd>
+                    <br />
+                    <dt>3.	Out of state: state cert number</dt>
+                    <dd>Example – <span class="fixed">USA-CA/</span><span class="variable">ID-10-PB1234</span>-[lot number]</dd>
+                    <br />
+                    <dt>4.	Out of country: <span class="fixed">USA-CA/CNT-10-[county cert number]</span>-[lot number]</dt>
+                    <dd>Example – <span class="fixed">USA-CA/</span><span class="variable">CAN-10-123456</span></dd>
+                    <br />
+                </dl>
+            </div>
             <div class="form-group row">
                 <label asp-for="oecd.Seeds.ClassProduced.CertClass" class="col-sm-3 col-form-label">Seed Class</label>
                 <div class="col-sm-9 form-control-plaintext">
