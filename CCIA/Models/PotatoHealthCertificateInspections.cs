@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -9,6 +10,7 @@ namespace CCIA.Models
 
         public string InspectionNumberText { get; set; }       
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal RowNumber { get; set; }
 
         public string LeafrollPercent { get; set; }

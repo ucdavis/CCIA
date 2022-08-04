@@ -205,7 +205,7 @@ namespace CCIA.Models
                 entity.Property(e => e.SampleFormVarietyId).HasColumnName("sx_form_variety_id");
                 entity.Property(e => e.OfficialVarietyId).HasColumnName("official_variety_id");
                 entity.Property(e => e.LotNumber).HasColumnName("lot_num");
-                entity.Property(e => e.PoundsLot).HasColumnName("lbs_lot");
+                entity.Property(e => e.PoundsLot).HasColumnName("lbs_lot").HasColumnType("numeric(16,2)");
                 entity.Property(e => e.Class).HasColumnName("class");
                 entity.Property(e => e.ClassAccession).HasColumnName("class_produced_accession");
                 entity.Property(e => e.Status).HasColumnName("status");
@@ -227,10 +227,10 @@ namespace CCIA.Models
                 entity.Property(e => e.InDirt).HasColumnName("in_dirt");
                 entity.Property(e => e.BlendNumber).HasColumnName("blend_num");
                 entity.Property(e => e.DateSampleReceived).HasColumnName("date_sample_recd");
-                entity.Property(e => e.CropFee).HasColumnName("crop_fee");
-                entity.Property(e => e.CertFee).HasColumnName("cert_fee");
-                entity.Property(e => e.ResearchFee).HasColumnName("research_fee");
-                entity.Property(e => e.MinimumFee).HasColumnName("min_fee");
+                entity.Property(e => e.CropFee).HasColumnName("crop_fee").HasColumnType("decimal(19,4)");
+                entity.Property(e => e.CertFee).HasColumnName("cert_fee").HasColumnType("decimal(19,4)");
+                entity.Property(e => e.ResearchFee).HasColumnName("research_fee").HasColumnType("decimal(19,4)");
+                entity.Property(e => e.MinimumFee).HasColumnName("min_fee").HasColumnType("decimal(19,4)");
                 entity.Property(e => e.LotCertOk).HasColumnName("lot_cert_cert_ok");
                 entity.Property(e => e.UserEntered).HasColumnName("user_entered");
                 entity.Property(e => e.Submitted).HasColumnName("submitted");
@@ -276,7 +276,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TagId).HasColumnName("tag_id");
 
-                entity.Property(e => e.TotalBagged).HasColumnName("total_bagged");
+                entity.Property(e => e.TotalBagged).HasColumnName("total_bagged").HasColumnType("decimal(38,1)");
 
             });
 
@@ -336,8 +336,8 @@ namespace CCIA.Models
                 entity.Property(e => e.PostHarvestOtherVarieties).HasColumnName("ph_other_varieties");
                 entity.Property(e => e.PostHarvestSampleNumber).HasColumnName("ph_sample_no");
                 entity.Property(e => e.PostHarvestPlantCount).HasColumnName("ph_plant_count");
-                entity.Property(e => e.PercentPVY).HasColumnName("percent_pvy");
-                entity.Property(e => e.PercentPVX).HasColumnName("percent_pvx");
+                entity.Property(e => e.PercentPVY).HasColumnName("percent_pvy").HasColumnType("decimal(7,2)");
+                entity.Property(e => e.PercentPVX).HasColumnName("percent_pvx").HasColumnType("decimal(7,2)");
                 entity.Property(e => e.BacterialRingRot).HasColumnName("bact_ring_rot");
                 entity.Property(e => e.GoldenNematode).HasColumnName("golden_nematode");
                 entity.Property(e => e.LateBlight).HasColumnName("late_blight");
@@ -517,11 +517,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Description).HasColumnName("std_desc");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value).HasColumnName("value").HasColumnType("decimal(8,4)");
 
-                entity.Property(e => e.MinValue).HasColumnName("min_value");
+                entity.Property(e => e.MinValue).HasColumnName("min_value").HasColumnType("decimal(8,5)");
 
-                entity.Property(e => e.MaxValue).HasColumnName("max_value");
+                entity.Property(e => e.MaxValue).HasColumnName("max_value").HasColumnType("decimal(8,5)");
 
                 entity.Property(e => e.ValueType).HasColumnName("value_type");
 
@@ -871,7 +871,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.CreatedOn).HasColumnName("created_on");
 
-                entity.Property(e => e.Pounds).HasColumnName("transfer_lbs");
+                entity.Property(e => e.Pounds).HasColumnName("transfer_lbs").HasColumnType("numeric(16,2)");
 
                 entity.Property(e => e.TransferClassId).HasColumnName("transfer_class");
 
@@ -905,7 +905,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.StageFromField).HasColumnName("stage_from_field");
 
-                entity.Property(e => e.StageFromFieldNumberOfAcres).HasColumnName("stage_from_field_num_acres");
+                entity.Property(e => e.StageFromFieldNumberOfAcres).HasColumnName("stage_from_field_num_acres").HasColumnType("numeric(8,2)");
 
                 entity.Property(e => e.StageFromStorage).HasColumnName("stage_from_storage");
 
@@ -1178,7 +1178,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.DateRequested).HasColumnName("date_requested");
 
-                entity.Property(e => e.TotalFee).HasColumnName("total_fee");
+                entity.Property(e => e.TotalFee).HasColumnName("total_fee").HasColumnType("decimal(19,4)");
 
                 entity.Property(e => e.NotCertified).HasColumnName("not_cert");
 
@@ -1208,11 +1208,11 @@ namespace CCIA.Models
 
                 entity.Property(e => e.TagsRequested).HasColumnName("tags_requested");
 
-                entity.Property(e => e.CertificateFee).HasColumnName("certificate_fee");
+                entity.Property(e => e.CertificateFee).HasColumnName("certificate_fee").HasColumnType("decimal(19,4)");
 
-                entity.Property(e => e.OECDFee).HasColumnName("oecd_fee");
+                entity.Property(e => e.OECDFee).HasColumnName("oecd_fee").HasColumnType("decimal(19,4)");
 
-                entity.Property(e => e.NotFinallyCertifiedFee).HasColumnName("nfc_fee");
+                entity.Property(e => e.NotFinallyCertifiedFee).HasColumnName("nfc_fee").HasColumnType("decimal(19,4)");
 
                 entity.Property(e => e.ClientNotified).HasColumnName("client_notified");
 
@@ -1269,7 +1269,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.AppId).HasColumnName("app_id");
 
-                entity.Property(e => e.Weight).HasColumnName("weight");
+                entity.Property(e => e.Weight).HasColumnName("weight").HasColumnType("numeric(16,2)");
 
                 entity.Property(e => e.ApplicantId).HasColumnName("applicant_id");
 
@@ -1312,7 +1312,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ComponentVarietyId).HasColumnName("comp_var_id");
 
-                entity.Property(e => e.ComponentPercent).HasColumnName("comp_percent");
+                entity.Property(e => e.ComponentPercent).HasColumnName("comp_percent").HasColumnType("numeric(7,2)");
 
             });
 
@@ -1374,9 +1374,9 @@ namespace CCIA.Models
 
                 entity.Property(e => e.DateRun).HasColumnName("date_run");
 
-                entity.Property(e => e.LotWeightBagged).HasColumnName("lot_weight_bagged");
+                entity.Property(e => e.LotWeightBagged).HasColumnName("lot_weight_bagged").HasColumnType("numeric(16,2)");
 
-                entity.Property(e => e.CoatingPercent).HasColumnName("coating_percent");
+                entity.Property(e => e.CoatingPercent).HasColumnName("coating_percent").HasColumnType("numeric(3,2)");
 
                 entity.Property(e => e.CountRequested).HasColumnName("count_requested");
 
@@ -1388,7 +1388,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.Statement).HasColumnName("tag_statement");
 
-                entity.Property(e => e.BagSize).HasColumnName("bag_size");
+                entity.Property(e => e.BagSize).HasColumnName("bag_size").HasColumnType("numeric(8,2)");
 
                 entity.Property(e => e.WeightUnit).HasColumnName("weight_unit");
 
@@ -3175,7 +3175,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.ThcPercent).HasColumnName("thc_percent");
 
-                entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre");
+                entity.Property(e => e.PlantsPerAcre).HasColumnName("plants_per_acre").HasColumnType("decimal(14,2)");
 
                 entity.HasOne(d => d.PsClassNavigation);
 
