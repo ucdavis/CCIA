@@ -149,7 +149,7 @@ namespace CCIA.Controllers.Admin
             var p0 = new SqlParameter("@seeds_id", id);
             await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @seeds_id", p0);
 
-            return  RedirectToAction(nameof(Pending));
+           return  RedirectToAction(nameof(SIR), new {id = id}); 
         }
 
         public ActionResult Index()
