@@ -55,7 +55,12 @@
                         @tag.DateSealed.Value.ToShortDateString()
                     }
                 </td>
-                <td>Link to OECD Cert</td>
+                <td>
+                    @if(tag.OECDId.HasValue)
+                    {
+                        <a class="btn btn-info" asp-action="Certificate" asp-controller="OECD" asp-route-id="@tag.OECDId">cert</a>
+                    }
+                </td>
                 <td>@tag.AbbrevTagType.TagTypeTrans</td>
                 <td>@tag.DateRequested.Value.ToShortDateString()
                 </td>
