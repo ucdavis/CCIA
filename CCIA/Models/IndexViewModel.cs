@@ -37,7 +37,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .ToListAsync(),
-                certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Applications",
                 DropDownText = "Display Apps for Cert Year:",
@@ -58,7 +58,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .ToListAsync(),
-                certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.Applications.Where(a => a.ApplicantId == orgId).Select(a => a.CertYear).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Applications FIR Summary",
                 DropDownText = "Display Apps for Cert Year:",
@@ -122,7 +122,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
                 .ToListAsync(),
-                certYears = await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.RequestStarted.Year).Select(a => a.RequestStarted.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).Select(a => a.RequestStarted.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Blends",
                 DropDownText = "Display Blends for Cert Year:"
@@ -151,7 +151,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(b => b.AdminEmployee)
                 .Include(b => b.BulkSalesCertificatesShares)
                 .ToListAsync(),
-                certYears = await _dbContext.BulkSalesCertificates.Where(a => a.ConditionerOrganizationId == orgId).OrderByDescending(a => a.Date.Year).Select(a => a.Date.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.BulkSalesCertificates.Where(a => a.ConditionerOrganizationId == orgId).Select(a => a.Date.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Bulk Sales Certificates",
                 DropDownText = "Display Sales Certificates for Year:"
@@ -197,7 +197,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(o => o.Class)
                 .Include(o => o.Country)
                 .ToListAsync(),
-                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId && a.DataEntryDate != null).OrderByDescending(a => a.DataEntryDate.Value.Year).Select(a => a.DataEntryDate.Value.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.OECD.Where(a => a.ConditionerId == orgId && a.DataEntryDate != null).Select(a => a.DataEntryDate.Value.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "OECD",
                 DropDownText = "Display OECD Forms for Data Entry Year:"
@@ -227,7 +227,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(c => c.ClassProduced)
                 .Include(l => l.LabResults)
                 .ToListAsync(),
-                certYears = await _dbContext.Seeds.Where(a => a.ConditionerId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear.Value).Distinct().ToListAsync(),
+                certYears = await _dbContext.Seeds.Where(a => a.ConditionerId == orgId && a.CertYear.HasValue).Select(a => a.CertYear.Value).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Seeds",
                 DropDownText = "Display SID for Cert Year:"
@@ -251,7 +251,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(st => st.Application)
                 .ThenInclude(a => a.ClassProduced)
                 .ToListAsync(),
-                certYears = await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).OrderByDescending(a => a.CertificateDate.Year).Select(a => a.CertificateDate.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.SeedTransfers.Where(a => a.OriginatingOrganizationId == orgId).Select(a => a.CertificateDate.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Seed Transfer Certificates",
                 DropDownText = "Display Seed Transfer Certificates for Creation Year:"
@@ -270,7 +270,7 @@ namespace CCIA.Models.IndexViewModels
             var viewModel = new TagIndexViewModel
             {
                 tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear).ToListAsync(),
-                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested != null).OrderByDescending(a => a.DateRequested.Value.Year).Select(t => t.DateRequested.Value.Year).Distinct().ToListAsync(),
+                certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested.HasValue).Select(t => t.DateRequested.Value.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
                 DropDownText = "Display Tags Requested in Calendar Year:"
@@ -296,7 +296,7 @@ namespace CCIA.Models.IndexViewModels
                 .Include(a => a.ClassProduced)
                 .Include(a => a.TurfgrassCertificates)
                 .ToListAsync(),
-                certYears = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).OrderByDescending(a => a.CertYear).Select(a => a.CertYear).Distinct().ToListAsync(),
+                certYears = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId).Select(a => a.CertYear).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Turfgrass Certificates",
                 DropDownText = "Display Certificates for Apps from Cert Year:"
