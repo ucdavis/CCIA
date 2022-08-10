@@ -224,7 +224,7 @@ namespace CCIA.Models
         {
             get
             {
-                return $"{VarietyId.ToString()} {VarietyName}";
+                return $"{VarietyId.ToString()} <span class='border p-2'>{VarietyName}</span>";
             }
         }
 

@@ -42,7 +42,7 @@
             <div class="form-group row">
                 <label asp-for="tag.VarietyIdandName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.VarietyIdandName)
+                    @Html.Raw(Model.tag.VarietyIdandName)
                 </div>
             </div>
             <div class="form-group row">
