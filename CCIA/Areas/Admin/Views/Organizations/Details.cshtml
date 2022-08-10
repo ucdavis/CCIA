@@ -295,6 +295,10 @@
         @if(this.User.IsInRole("CoreStaff"))
         {
             <a class="btn btn-primary" asp-action="NewEmployee" asp-area="Admin" asp-controller="Organizations" asp-route-id="@Model.org.Id">Add Employee</a>
+            @if(Model.org.Employees.Where(e => !e.Active).Any())              
+            {
+                <a class="btn btn-info" asp-action="InactiveEmployees" asp-controller="Organizations" asp-route-id="@Model.org.Id">Inactive Employees</a>
+            }
         }        
         <table class="table">
         <thead>
@@ -311,7 +315,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Model.org.Employees.OrderByDescending(e => e.Active))
+            @foreach (var employee in Model.org.Employees.Where(o => o.Active))
             {
                 <tr>
                     <td><a asp-action="EmployeeDetails" asp-controller="Organizations" asp-area="Admin" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>

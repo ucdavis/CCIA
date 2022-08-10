@@ -120,7 +120,11 @@
     <div class="col-sm-6">
         <hr>
         <h3>Employees</h3>       
-            <a class="btn btn-primary" asp-action="NewEmployee" asp-controller="Organization" asp-route-id="@Model.Id">Add Employee</a>                
+            <a class="btn btn-primary" asp-action="NewEmployee" asp-controller="Organization" asp-route-id="@Model.Id">Add Employee</a>  
+            @if(Model.Employees.Where(e => !e.Active).Any())              
+            {
+                <a class="btn btn-info" asp-action="InactiveEmployees" asp-controller="Organization">Inactive Employees</a>
+            }
         <table class="table">
         <thead>
             <tr>
@@ -135,7 +139,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Model.Employees.OrderByDescending(e => e.Active))
+            @foreach (var employee in Model.Employees.Where(e => e.Active))
             {
                 <tr>
                     <td><a asp-action="EmployeeDetails" asp-controller="Organization" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
