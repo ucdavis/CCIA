@@ -11,6 +11,7 @@ namespace CCIA.Models
     {
         public int CompId { get; set; }
         public string Sid { get; set; }
+        [Column(TypeName ="numeric(16,2)")]
         public decimal Weight { get; set; }
 
         public string LotNumber { get; set; }
@@ -19,18 +20,25 @@ namespace CCIA.Models
 
         public string ClassName { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? GermValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? HardValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? TotalGermValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? PurityValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? OtherCropValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? InertValue { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal? WeedValue { get; set; }
 
         public string  LabDate { get; set; }
@@ -39,6 +47,7 @@ namespace CCIA.Models
 
         public string CertificationResults { get; set; }  
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal ComponentPercent { get; set; }     
        
         

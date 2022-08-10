@@ -1,0 +1,52 @@
+@model List<CCIA.Models.Contacts>
+
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Inactive Employees</h2> 
+        </div>            
+    </div>   
+    <div class="row">        
+</div>  
+
+<table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Business Phone</th>
+                <th>Cell Phone</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td><a asp-action="EmployeeDetails" asp-controller="Organizations" asp-area="Admin" class="btn btn-info" asp-route-id="@employee.Id">Details</a></td>
+                    <td>@employee.Title</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Email</td>
+                    <td nowrap>@employee.BusinessPhone 
+                        @if(employee.BusinessPhoneExtension != null)
+                        {
+                            <span>Ext: @employee.BusinessPhoneExtension</span>
+                        }
+                    </td>
+                    <td nowrap>@employee.MobilePhone</td>
+                     <td>@Html.CheckBoxFor(x => employee.Active)</td>
+                    <td>
+                        @if(employee.Active)
+                        {
+                            <a asp-action="Emulate" asp-controller="Account" asp-area="" class="btn btn-warning" asp-route-id="@employee.Id">Emulate</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

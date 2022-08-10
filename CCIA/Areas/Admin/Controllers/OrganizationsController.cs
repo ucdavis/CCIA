@@ -48,6 +48,14 @@ namespace CCIA.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "CoreStaff,Admin")]
+        public async Task<IActionResult> InactiveEmployees(int id)
+        {   
+            var model = await _dbContext.Contacts.Where(c => c.OrgId == id && !c.Active).ToListAsync();
+            return View(model);
+
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var model = await AdminOrgDetailsViewModel.Create(_dbContext, _helper, id);            

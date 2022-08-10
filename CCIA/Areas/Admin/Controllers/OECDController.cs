@@ -98,6 +98,7 @@ namespace CCIA.Controllers.Admin
             oecdToCreate.ReferenceNumber = create.ReferenceNumber;
             oecdToCreate.USDAReported = false;
             oecdToCreate.TagsRequested = create.TagsRequested;
+            oecdToCreate.OECDNumber = GetInitialOECDNumber(seed.CertYear.Value, seed.CertNumber, seed.LotNumber);
 
             if(ModelState.IsValid){
                 _dbContext.Add(oecdToCreate);
@@ -144,11 +145,30 @@ namespace CCIA.Controllers.Admin
             oecdToUpdate.Canceled = edit.Canceled;
             oecdToUpdate.Comments = edit.Comments;
             oecdToUpdate.AdminComments = edit.AdminComments;
+            oecdToUpdate.OECDNumber = edit.OECDNumber;
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "OECD Updated";
             } else {
+                if(ModelState.ErrorCount ==1)
+                {
+                    foreach(var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach(var error in modelStateVal.Errors)
+                        {
+                            var key = modelStateKey;
+                            if(key == "oecd.Variety.Name")
+                            {
+                                await _dbContext.SaveChangesAsync();
+                                Message = "OECD Updated";
+                                return RedirectToAction(nameof(Details), new { id = oecdToUpdate.Id }); 
+                            }
+                        }
+                    }                    
+                    
+                }
                 ErrorMessage = "Something went wrong.";
                 var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
                 return View(model); 
@@ -219,6 +239,13 @@ namespace CCIA.Controllers.Admin
             var model = await AdminOECDReportingViewModel.Create(_dbContext, vm);
             return View(model);
         }
+
+        public String GetInitialOECDNumber(int certYear, string CertNumber, string LotNumber)
+        {
+            string certYearAbbrev = certYear.ToString().Substring(certYear.ToString().Length - 2);
+            return $"USA-CA-{certYearAbbrev}CA-{CertNumber}-{LotNumber}";
+        }
+
 
        
     }

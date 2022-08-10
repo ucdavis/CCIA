@@ -45,6 +45,19 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        public async Task<IActionResult> InactiveEmployees()
+        {
+            if(!(await CheckOrgPermission()))
+            {
+                ErrorMessage = "You do not have permission to update Org info.";
+                return RedirectToAction(nameof(Index), "Home");
+            }
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var model = await _dbContext.Contacts.Where(c => c.OrgId == orgId && !c.Active).ToListAsync();
+            return View(model);
+
+        }
+
         public async Task<IActionResult> Membership()
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);

@@ -13,7 +13,7 @@
         </div>
         <div>
             <button class="btn btn-primary" onclick="return confirm('Delete customer?')" type="submit" asp-action="Delete" asp-controller="MyCustomers" asp-route-id="@Model.MyCustomer.Id">Delete</button>
-            <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.MyCustomer.Id">Cancel</a>
+            <a class="btn btn-primary" asp-action="Details" asp-controller="MyCustomers" asp-route-id="@Model.MyCustomer.Id">Cancel Deletion</a>
         </div>
     </form>
 </div>

@@ -13,6 +13,7 @@ namespace CCIA.Models
 
         public string AppId { get; set; }
 
+        [Column(TypeName ="numeric(12,2)")]
         public decimal Weight { get; set; }
 
         public string Variety { get; set; }
@@ -22,6 +23,7 @@ namespace CCIA.Models
         
         public string CertNumber { get; set; }
 
+        [Column(TypeName ="decimal(18,1)")]
         public decimal Percent { get; set; }
 
         

@@ -23,6 +23,7 @@ namespace CCIA.Models
 
         public string TagClass { get; set; }
 
+        [Column(TypeName ="numeric(34,12)")]
         public decimal? Pounds { get; set; }
 
         public string TagType { get; set; }
