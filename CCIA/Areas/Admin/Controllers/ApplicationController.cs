@@ -865,6 +865,19 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> ToggleFollowup(int id)
+        {
+            var appToToggle = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(appToToggle == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            appToToggle.FollowUp = !appToToggle.FollowUp;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         [HttpPost]
         public async Task<IActionResult> PotatoHealthCertificateDetails(int id,AdminPotatoHealthCertificateViewModel vm)
         {
