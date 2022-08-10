@@ -53,6 +53,8 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public Applications Application {get; set;}
 
+        public bool FollowUp { get; set; }
+
         
         public TagBagging TagBagging { get; set; }
 
