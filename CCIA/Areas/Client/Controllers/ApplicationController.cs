@@ -668,6 +668,11 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
             }
+           if(string.IsNullOrWhiteSpace(certName))
+            {                
+                ErrorMessage = "Must provide a certificate name for this file!";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
            
            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
 
