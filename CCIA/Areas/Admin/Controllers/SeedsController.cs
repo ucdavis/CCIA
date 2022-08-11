@@ -99,6 +99,11 @@ namespace CCIA.Controllers.Admin
                ErrorMessage = "SID not found";
                return RedirectToAction(nameof(Index));
            }
+           if(string.IsNullOrWhiteSpace(certName))
+           {                
+            ErrorMessage = "Must provide a certificate name for this file!";
+            return RedirectToAction(nameof(Details), new { id = id });
+           }
            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
 
            if(_fileService.CheckDeniedExtension(ext))
