@@ -409,6 +409,30 @@ namespace CCIA.Models
         }
         [NotMapped]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [Display(Name = "Bag Size (Kilograms)")] 
+        public decimal? BagSizeKilos
+        {
+            get
+            {
+                decimal k = 2.20462262M;
+                if (!BagSize.HasValue)
+                {
+                    return null;
+                }
+                else
+                {
+                    switch (WeightUnit)
+                    {
+                        case "L":
+                            return BagSize.Value / k;
+                        default:
+                            return BagSize.Value;
+                    }
+                }
+            }
+        }
+        [NotMapped]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public decimal? LotWeightRequested
         {
             get

@@ -94,12 +94,24 @@
                     @Html.Raw(Model.VarietyIdandName) 
                 </div>
             </div>
+            @if(Model.OECD)
+            {
+                <div class="form-group row">
+                <label asp-for="BagSizeKilos" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.BagSizeKilos)
+                </div>
+            </div> 
+
+            } else
+            {
             <div class="form-group row">
                 <label asp-for="BagSizePounds" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.BagSizePounds)
                 </div>
             </div> 
+            }
             <div class="form-group row">
                 <label asp-for="SourceLotWeight" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
