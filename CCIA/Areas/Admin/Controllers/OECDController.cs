@@ -178,6 +178,19 @@ namespace CCIA.Controllers.Admin
 
         }
 
+        public async Task<IActionResult> ToggleFollowup(int id)
+        {
+            var oecdToToggle = await _dbContext.OECD.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(oecdToToggle == null)
+            {
+                ErrorMessage = "OECD File not found";
+                return RedirectToAction(nameof(Index));
+            }
+            oecdToToggle.FollowUp = !oecdToToggle.FollowUp;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         public async Task<IActionResult> Certificate(int id, bool charge)
         {
             var oecd = _helper.FullOECD();
