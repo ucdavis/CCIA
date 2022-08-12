@@ -7,8 +7,22 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>Blend Request Details</h2>
-            <a asp-action="Previous" asp-route-id="@Model.blend.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.blend.Id"  class="btn btn-light">Next</a><hr> 
-        </div>            
+        </div>
+    </div>
+    <div class="row">        
+            <div class="col-sm-6"><a asp-action="Previous" asp-route-id="@Model.blend.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.blend.Id"  class="btn btn-light">Next</a></div>
+            <div class="col-sm-6">
+                @if(Model.blend.FollowUp)
+                {
+                    <b>Blend Flagged for Follow-up</b>
+                }
+                <a asp-action="ToggleFollowup" asp-route-id="@Model.blend.Id" class="btn btn-dark">Toggle Follow-up</a>
+            </div>                  
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <hr>
+        </div>
     </div>
     @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
          {             
