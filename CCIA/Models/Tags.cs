@@ -15,6 +15,8 @@ namespace CCIA.Models
         PendingFile,
         [Display(Name="Complete")]
         Complete,
+        [Display(Name="Follow-Up")]
+        followup
     } 
 
     public enum TagHowPickUp

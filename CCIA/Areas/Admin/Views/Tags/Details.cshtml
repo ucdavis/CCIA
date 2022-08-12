@@ -443,10 +443,11 @@
         <div class="form-group row">
             <label asp-for="TaggingOrganization.Address.Address1" class="col-sm-3 col-form-label">Address</label>
             <div class="col-sm-9 form-control-plaintext">
-                @Model.TaggingOrganization.Address.Address1 <br/> 
-                @(!string.IsNullOrWhiteSpace(Model.TaggingOrganization.Address.Address2) ? $"{Model.TaggingOrganization.Address.Address2} <br/>" : "")
-                @(!string.IsNullOrWhiteSpace(Model.TaggingOrganization.Address.Address3) ? $"{Model.TaggingOrganization.Address.Address3} <br/>" : "")
-                @Model.TaggingOrganization.Address.City, @Model.TaggingOrganization.Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Address.PostalCode
+                @if(Model.TaggingOrganization.Address != null)
+                {
+                    @Model.TaggingOrganization.Address.AddressLines<br>
+                    @Model.TaggingOrganization.Address.City<span>,</span> @Model.TaggingOrganization.Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Address.PostalCode
+                }
             </div>
         </div>
         <div class="row">
