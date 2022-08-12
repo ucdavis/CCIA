@@ -64,6 +64,9 @@ namespace CCIA.Models
         [Display(Name="Accepted?")]
         public int accepted { get; set; }
 
+        [Display(Name="Follow-up?")]
+        public int followUp { get; set; }
+
         [Display(Name="Cancelled?")]
         public int cancelled { get; set; }
 
@@ -139,6 +142,10 @@ namespace CCIA.Models
                 {
                     appsToFind = appsToFind.Where(a => (a.Approved && vm.accepted == 1) || (!a.Approved && vm.accepted == 0));
                 }
+                if(vm.followUp != 2)
+                {
+                    appsToFind = appsToFind.Where(a => (a.FollowUp && vm.followUp == 1) || (!a.FollowUp && vm.followUp == 0));
+                }
                 if(vm.cancelled != 2)
                 {
                     appsToFind = appsToFind.Where(a => (a.Cancelled && vm.cancelled == 1) || (!a.Cancelled && vm.cancelled == 0));
@@ -177,6 +184,7 @@ namespace CCIA.Models
                 statusOptions = EnumHelper.GetListOfDisplayNames<ApplicationStatus>(),
                 CertYear = CertYearFinder.CertYear,
                 accepted = 2,
+                followUp = 2,
                 cancelled = 0,
                 veMap = 2, 
                 includeMapOptions = false,               
