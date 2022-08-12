@@ -24,7 +24,10 @@ namespace CCIA.Models
          public List<string> statusOptions { get; set; } 
 
         [Display(Name="Status")]
-        public List<string> searchStatus { get; set; }       
+        public List<string> searchStatus { get; set; }   
+
+         [Display(Name="Follow-up?")]
+        public int followUp { get; set; }    
 
 
 
@@ -49,6 +52,10 @@ namespace CCIA.Models
                 {
                     blendsToFind = blendsToFind.Where(b => EF.Functions.Like(b.Conditioner.Name, "%" + vm.conditionerSearchTerm + "%") || b.ConditionerId.ToString() == vm.conditionerSearchTerm);
                 }
+                if(vm.followUp != 2)
+                {
+                    blendsToFind = blendsToFind.Where(a => (a.FollowUp && vm.followUp == 1) || (!a.FollowUp && vm.followUp == 0));
+                }
                 
                 
                 var viewModel = new AdminBlendsSearchViewModel
@@ -67,6 +74,7 @@ namespace CCIA.Models
                 blends = new List<BlendRequests>(),
                 blendTypes = typeList,
                 typeSearchValue = "Any",
+                followUp = 2,
                 statusOptions = EnumHelper.GetListOfDisplayNames<BlendStatus>(),
             };           
 
