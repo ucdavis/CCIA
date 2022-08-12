@@ -29,6 +29,8 @@ namespace CCIA.Models
         public List<int> certYearsToSearch { get; set; }
 
         public List<int> yearsToSelectFrom { get; set; }
+        [Display(Name="Follow-up?")]
+        public int followUp { get; set; }
        
         
         public List<Crops> crops { get; set; }
@@ -86,6 +88,10 @@ namespace CCIA.Models
                 {
                     oecdToFind = oecdToFind.Where(s => vm.certYearsToSearch.Contains(s.Seeds.CertYear.Value));
                 }
+                if(vm.followUp != 2)
+                {
+                    oecdToFind = oecdToFind.Where(a => (a.FollowUp && vm.followUp == 1) || (!a.FollowUp && vm.followUp == 0));
+                }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
                     oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
@@ -125,6 +131,7 @@ namespace CCIA.Models
                 yearsToSelectFrom = CertYearFinder.certYearListReverse,              
                 crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 classOptions = classList,
+                followUp = 2,
             };           
 
             return freshModel;

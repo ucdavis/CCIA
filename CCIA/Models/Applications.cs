@@ -225,6 +225,8 @@ namespace CCIA.Models
         [ForeignKey("AppId")]
         public ICollection<AppChanges> Changes { get; set; }
 
+        public bool FollowUp { get; set; }
+
         public string CropName 
         { 
             get

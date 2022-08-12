@@ -33,6 +33,19 @@ namespace CCIA.Controllers.Admin
             _fileService = fileIOService;
         }
 
+         public async Task<IActionResult> ToggleFollowup(int id)
+        {
+            var seedToToggle = await _dbContext.Seeds.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(seedToToggle == null)
+            {
+                ErrorMessage = "Seed not found";
+                return RedirectToAction(nameof(Index));
+            }
+            seedToToggle.FollowUp = !seedToToggle.FollowUp;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         public async Task<IActionResult> Create()
         {
             var model = await AdminSeedsViewModel.CreateNew(_dbContext);

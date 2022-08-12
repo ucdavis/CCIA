@@ -45,6 +45,19 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
+        public async Task<IActionResult> ToggleFollowup(int id)
+        {
+            var tagToToggle = await _dbContext.Tags.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(tagToToggle == null)
+            {
+                ErrorMessage = "Tag not found";
+                return RedirectToAction(nameof(Index));
+            }
+            tagToToggle.FollowUp = !tagToToggle.FollowUp;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         public async Task<IActionResult> Create()
         {
             var model = await TagCreateEditViewModel.Create(_dbContext, _helper, 0);

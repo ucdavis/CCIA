@@ -38,7 +38,20 @@ namespace CCIA.Controllers.Admin
         public IActionResult Lookup()
         {
             return View();
-        }       
+        }   
+
+        public async Task<IActionResult> ToggleFollowup(int id)
+        {
+            var blendToToggle = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(blendToToggle == null)
+            {
+                ErrorMessage = "Blend not found";
+                return RedirectToAction(nameof(Index));
+            }
+            blendToToggle.FollowUp = !blendToToggle.FollowUp;
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new {id = id});
+        }    
 
         public async Task<IActionResult> ByStatus()
         {

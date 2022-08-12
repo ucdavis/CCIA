@@ -6,9 +6,23 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>OECD Details</h2> 
-            <a asp-action="Previous" asp-route-id="@Model.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.Id"  class="btn btn-light">Next</a><hr>
-        </div>            
-    </div>  
+        </div>
+    </div>
+    <div class="row">        
+            <div class="col-sm-6"><a asp-action="Previous" asp-route-id="@Model.Id" class="btn btn-light">Previous</a> |  <a asp-action="Next" asp-route-id="@Model.Id"  class="btn btn-light">Next</a></div>
+            <div class="col-sm-6">
+                @if(Model.FollowUp)
+                {
+                    <b>OECD File Flagged for Follow-up</b>
+                }
+                <a asp-action="ToggleFollowup" asp-route-id="@Model.Id" class="btn btn-dark">Toggle Follow-up</a>
+            </div>                  
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <hr>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <a class="btn btn-primary" asp-action="Edit" asp-controller="OECD" asp-area="Admin" asp-route-id="@Model.Id">Edit</a> 

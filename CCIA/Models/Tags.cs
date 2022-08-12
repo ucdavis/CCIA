@@ -15,6 +15,8 @@ namespace CCIA.Models
         PendingFile,
         [Display(Name="Complete")]
         Complete,
+        [Display(Name="Follow-Up")]
+        followup
     } 
 
     public enum TagHowPickUp
@@ -52,6 +54,8 @@ namespace CCIA.Models
         public int? AppId { get; set; }
         [ForeignKey("AppId")]
         public Applications Application {get; set;}
+
+        public bool FollowUp { get; set; }
 
         
         public TagBagging TagBagging { get; set; }

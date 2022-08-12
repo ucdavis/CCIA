@@ -193,6 +193,7 @@ namespace CCIA.Models
                 entity.Property(e => e.Id).HasColumnName("seeds_id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CertProgram).HasColumnName("cert_program");
+                entity.Property(e => e.FollowUp).HasDefaultValue(false);
                 entity.Property(e => e.AppId).HasColumnName("app_id");
                 entity.Property(e => e.SampleFormNumber).HasColumnName("sx_form_no");
                 entity.Property(e => e.SampleFormDate).HasColumnName("sx_form_date");
@@ -1151,6 +1152,7 @@ namespace CCIA.Models
                 entity.Property(e => e.Id).HasColumnName("file_num");
 
                 entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+                entity.Property(e => e.FollowUp).HasDefaultValue(false);
 
                 entity.Property(e => e.VarietyId).HasColumnName("variety_id");
 
@@ -1357,6 +1359,7 @@ namespace CCIA.Models
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Id).HasColumnName("tag_id");
+                entity.Property(e => e.FollowUp).HasDefaultValue(false);
 
                 entity.Property(e => e.SeedsID).HasColumnName("seeds_id");
 
@@ -1800,6 +1803,8 @@ namespace CCIA.Models
                     .HasColumnName("app_pkg_complete")
                     .HasDefaultValue(false);
 
+                entity.Property(e => e.FollowUp).HasDefaultValue(false);
+
                 entity.Property(e => e.Postmark)
                     .HasColumnName("app_postmark")
                     .HasColumnType("smalldatetime");
@@ -2055,6 +2060,7 @@ namespace CCIA.Models
                 entity.ToTable("blend_requests");
 
                 entity.Property(e => e.Id).HasColumnName("blend_id");
+                entity.Property(e => e.FollowUp).HasDefaultValue(false);
 
                 entity.Property(e => e.ApproveDate)
                     .HasColumnName("approve_date")

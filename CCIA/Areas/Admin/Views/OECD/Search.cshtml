@@ -49,6 +49,10 @@
                     (accepts partials)
                 </div>
             </div>
+            <div class="form-group row">
+                <label asp-for="followUp" class="col-sm-3 col-form-label"></label>
+                <select asp-for="followUp" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
+            </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 3rd column*@ 
             <div class="form-group row">

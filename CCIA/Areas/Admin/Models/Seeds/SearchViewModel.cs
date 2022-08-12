@@ -31,6 +31,8 @@ namespace CCIA.Models
         
         [Display(Name="Crop(s)")]
         public List<int> searchCrops { get; set; }
+        [Display(Name="Follow-up?")]
+        public int followUp { get; set; }
         
         [Display(Name="Lot Number")]
         public string lotNumber { get; set; }
@@ -100,6 +102,10 @@ namespace CCIA.Models
                 {
                     seedToFind = seedToFind.Where(s => vm.certYearsToSearch.Contains(s.CertYear.Value));
                 }
+                 if(vm.followUp != 2)
+                {
+                    seedToFind = seedToFind.Where(a => (a.FollowUp && vm.followUp == 1) || (!a.FollowUp && vm.followUp == 0));
+                }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
                     seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
@@ -154,6 +160,7 @@ namespace CCIA.Models
                 crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                 AppTypes = appTypes,
+                followUp = 2,
             };           
 
             return freshModel;

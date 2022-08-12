@@ -65,6 +65,8 @@ namespace CCIA.Models
         [ForeignKey("ConditionerId")]
         public Organizations Conditioner { get; set; }
 
+        public bool FollowUp { get; set; }
+
         [Display(Name ="Crop")]
         public string GetCrop()
         {

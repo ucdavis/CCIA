@@ -68,6 +68,8 @@ namespace CCIA.Models
         [Display(Name ="Entered")]
         public DateTime? DataEntryDate { get; set; }
 
+        public bool FollowUp { get; set; }
+
         public int DataEntryYear
         {
             get
