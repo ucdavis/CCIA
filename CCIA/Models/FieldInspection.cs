@@ -62,37 +62,66 @@ namespace CCIA.Models
        
         public double OtherVarietiesPercent { 
             get {
-                return ((double)OtherVarieties.Value / TotalPlantsInspected.Value) *100;
+                if(OtherVarieties.HasValue)
+                {
+                    return ((double)OtherVarieties.Value / TotalPlantsInspected.Value) *100;
+                }
+                return 0;                
             }
         }
 
         public double MosaicPercent { 
             get {
-                return ((double)Mosaic.Value / TotalPlantsInspected.Value) *100;
+                if(Mosaic.HasValue)
+                {
+                    return ((double)Mosaic.Value / TotalPlantsInspected.Value) *100;
+                }
+                return 0; 
+                
             }
         }
 
         public double LeafrollPercent { 
             get {
-                return ((double)Leafroll.Value / TotalPlantsInspected.Value) *100;
+                if(Leafroll.HasValue)
+                {
+                    return ((double)Leafroll.Value / TotalPlantsInspected.Value) *100;
+                }
+                return 0; 
+               
             }
         }
 
         public double BlacklegPercent { 
             get {
-                return ((double)Blackleg.Value / TotalPlantsInspected.Value) *100;
+                if(Blackleg.HasValue)
+                {
+                    return ((double)Blackleg.Value / TotalPlantsInspected.Value) *100;
+                }
+                return 0; 
+                
             }
         }
        
         public double CalicoPercent { 
             get {
-                return ((double)Calico.Value / (double)TotalPlantsInspected.Value) *100;
+                if(Calico.HasValue)
+                {
+                    return ((double)Calico.Value / (double)TotalPlantsInspected.Value) *100;
+                }
+                return 0; 
+                
             }
         }
 
         public double OtherDiseasesPercent { 
             get {
-                return ((double)OtherDiseases.Value / TotalPlantsInspected.Value) *100;
+                if(OtherDiseases.HasValue)
+                {
+                    return ((double)OtherDiseases.Value / TotalPlantsInspected.Value) *100;
+                }
+                return 0; 
+                
             }
         }
 
