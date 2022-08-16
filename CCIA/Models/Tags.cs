@@ -388,7 +388,7 @@ namespace CCIA.Models
         public int? ExtrasOverrun { get; set; }
         public decimal? BagSize { get; set; }
         [NotMapped]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.00}")]
         [Display(Name = "Bag Size (Pounds)")] 
         public decimal? BagSizePounds
         {
@@ -412,7 +412,7 @@ namespace CCIA.Models
             }
         }
         [NotMapped]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.00}")]
         [Display(Name = "Bag Size (Kilograms)")] 
         public decimal? BagSizeKilos
         {

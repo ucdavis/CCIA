@@ -438,7 +438,7 @@ namespace CCIA.Controllers.Admin
             fiToUpdate.InspectorId = fi.InspectorId;
             fiToUpdate.ApplicantContacted = fi.ApplicantContacted;
             fiToUpdate.ApplicantPresent = fi.ApplicantPresent;
-            fiToUpdate.Weeds = fi.Weeds;
+            fiToUpdate.WeedsComments = fi.WeedsComments;
             fiToUpdate.Comments = fi.Comments;
             if(poApp)
             {
@@ -450,6 +450,7 @@ namespace CCIA.Controllers.Admin
                 fiToUpdate.Calico = fi.Calico;
                 fiToUpdate.OtherDiseases = fi.OtherDiseases;
                 fiToUpdate.Insects = fi.Insects;
+                fiToUpdate.Weeds = fi.Weeds;
             } else
             {
                 fiToUpdate.Maturity = fi.Maturity;
@@ -485,7 +486,7 @@ namespace CCIA.Controllers.Admin
             fiToUpdate.InspectorId = fi.InspectorId;
             fiToUpdate.ApplicantContacted = fi.ApplicantContacted;
             fiToUpdate.ApplicantPresent = fi.ApplicantPresent;
-            fiToUpdate.Weeds = fi.Weeds;
+            fiToUpdate.WeedsComments = fi.WeedsComments;
             fiToUpdate.Comments = fi.Comments;
             if(poApp)
             {
@@ -497,6 +498,7 @@ namespace CCIA.Controllers.Admin
                 fiToUpdate.Calico = fi.Calico;
                 fiToUpdate.OtherDiseases = fi.OtherDiseases;
                 fiToUpdate.Insects = fi.Insects;
+                fiToUpdate.Weeds = fi.Weeds;
             } else
             {
                 fiToUpdate.Maturity = fi.Maturity;
