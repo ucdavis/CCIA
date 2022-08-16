@@ -110,12 +110,17 @@ namespace CCIA.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var test = await _dbContext.Contacts.Where(c => c.Email == email && c.Active).ToListAsync();
+                var test = await _dbContext.Contacts.Where(c => c.Email == email && c.Active).ToListAsync();            
                 foreach (Contacts contact in test)
                 {
                     if (VerifyPassword(password, contact))
                     {
-                        await CompleteSignin(contact, false);
+                        var agComm = await _dbContext.Organizations.Where(o => o.Id == contact.OrgId && o.AgCommissioner).AnyAsync();
+                        await CompleteSignin(contact, false, agComm);
+                        if(agComm)
+                        {
+                            return RedirectToAction("Index", "AgCommHome", new { area = "AgComm"});
+                        }                        
 
                         if (returnUrl != null)
                         {
@@ -130,7 +135,7 @@ namespace CCIA.Controllers
             return View();
         }
 
-        public async Task CompleteSignin(Contacts contact, bool isEmulation)
+        public async Task CompleteSignin(Contacts contact, bool isEmulation, bool agComm)
         {
             var claims = new List<Claim>
             {
@@ -151,6 +156,10 @@ namespace CCIA.Controllers
             if(contact.AllowSeeds)
             {
                 claims.Add(new Claim("role","AllowSeeds"));
+            }
+            if(agComm)
+            {
+                claims.Add(new Claim("role","AgComm"));
             }
 
             await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "role")));
@@ -191,6 +200,7 @@ namespace CCIA.Controllers
             if (id != 0)
             {
                 var contact = await _dbContext.Contacts.Where(c => c.Id == id && c.Active).FirstOrDefaultAsync();
+                var agComm = await _dbContext.Organizations.Where(o => o.Id == contact.OrgId && o.AgCommissioner).AnyAsync();
                 if(contact == null)
                 {
                     Message = "Contact not found or not active";
@@ -198,7 +208,7 @@ namespace CCIA.Controllers
                 }
                 
                 EmulationMessage = string.Format("Emulating {0}.  <a class='btn btn-dark' href='/Account/EndEmulate'>Exit</a>", contact.Name);
-                await CompleteSignin(contact, true);
+                await CompleteSignin(contact, true, agComm);
                 return RedirectToAction("Index", "Home", new { Area = "Client"});
             }
             else

@@ -36,12 +36,12 @@ namespace CCIA
             
             IMvcBuilder builder = services.AddRazorPages(); 
 
-            #if DEBUG
-                if (Env.IsDevelopment())
-                {
-                    builder.AddRazorRuntimeCompilation();
-                }
-            #endif    
+            // #if DEBUG
+            //     if (Env.IsDevelopment())
+            //     {
+            //         builder.AddRazorRuntimeCompilation();
+            //     }
+            // #endif    
             
             services.AddDbContextPool<CCIAContext>( o =>
             {
@@ -168,6 +168,12 @@ namespace CCIA
                    name: "Client_route",
                    areaName: "Client",
                    pattern:  "client/{controller}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapAreaControllerRoute(
+                   name: "AgComm_route",
+                   areaName: "AgComm",
+                   pattern:  "AgComm/{controller}/{action=Index}/{id?}"
                 );
 
                 endpoints.MapAreaControllerRoute(
