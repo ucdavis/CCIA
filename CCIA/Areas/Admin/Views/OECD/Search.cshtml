@@ -13,7 +13,7 @@
         <div class="col-md-6 col-xl-4">@* First column*@
             <div class="form-group row">
                 <label asp-for="sid" class="col-sm-3 col-form-label"></label>
-                <input asp-for="sid" class="col-sm-2 form-control">
+                <input asp-for="sid" class="col-sm-3 form-control">
             </div>  
            
             <div class="form-group row">
@@ -39,7 +39,7 @@
             </div>            
             <div class="form-group row">
                 <label asp-for="certYearsToSearch" class="col-sm-3 col-form-label"></label>
-                <select asp-for="certYearsToSearch" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
+                <select asp-for="certYearsToSearch" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.yearsToSelectFrom))"></select>
                 <div class="col-sm-1">&dagger;</div>
             </div> 
             <div class="form-group row">
