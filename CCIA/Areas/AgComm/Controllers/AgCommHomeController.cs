@@ -11,12 +11,12 @@ using Microsoft.Data.SqlClient;
 
 namespace CCIA.Controllers.AgComm
 {
-    public class AgConmmHomeController : AgCommController
+    public class AgCommHomeController : AgCommController
     {
 
         private readonly CCIAContext _dbContext;        
 
-        public AgConmmHomeController(CCIAContext dbContext)
+        public AgCommHomeController(CCIAContext dbContext)
         {
             _dbContext = dbContext;            
         }
