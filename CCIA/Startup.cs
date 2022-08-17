@@ -36,12 +36,12 @@ namespace CCIA
             
             IMvcBuilder builder = services.AddRazorPages(); 
 
-            // #if DEBUG
-            //     if (Env.IsDevelopment())
-            //     {
-            //         builder.AddRazorRuntimeCompilation();
-            //     }
-            // #endif    
+            #if DEBUG
+                if (Env.IsDevelopment())
+                {
+                    builder.AddRazorRuntimeCompilation();
+                }
+            #endif    
             
             services.AddDbContextPool<CCIAContext>( o =>
             {
