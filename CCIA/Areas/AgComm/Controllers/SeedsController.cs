@@ -4,6 +4,8 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Services;
+using CCIA.Models.AgComm;
+using CCIA.Models.SeedsViewModels;
 
 namespace CCIA.Controllers.AgComm
 {
@@ -32,6 +34,28 @@ namespace CCIA.Controllers.AgComm
                 var model = await AgCommSeedSearchViewModel.Create(_dbContext, vm);                
                 return View(model);            
         }
+
+        public async Task<IActionResult> Details(int id)
+        {            
+            var model = await AgCommSeedsViewModel.Create(_dbContext, id);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }            
+            return View(model);
+        }    
+
+        public async Task<IActionResult> SIR(int id)
+        {            
+            var model = await ClientSeedsViewModel.CreateSIR(_dbContext, _helper, id);
+            if(model.seed == null)
+            {
+                ErrorMessage = "Seed lot not found.";
+                return RedirectToAction(nameof(Index));
+            }            
+            return View("~/Areas/Client/Views/Seeds/SIR.cshtml",model);
+        }      
 
     }
 }

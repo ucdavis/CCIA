@@ -31,18 +31,6 @@ namespace CCIA.Models.AgComm
         
         [Display(Name="Crop(s)")]
         public List<int> searchCrops { get; set; }
-        [Display(Name="Follow-up?")]
-        public int followUp { get; set; }
-        
-        [Display(Name="Lot Number")]
-        public string lotNumber { get; set; }
-
-        public string appId { get; set; }              
-
-        public List<string> statusOptions { get; set; } 
-        
-        [Display(Name="Status")]
-        public List<string> searchStatus { get; set; }       
 
         [Display(Name="Applicant")]
         public string applicantName { get; set; }
@@ -50,24 +38,10 @@ namespace CCIA.Models.AgComm
         [Display(Name="Conditioner")]
         public string conditionerName { get; set; }
 
-        [Display(Name="Variety")]
-        public string variety { get; set; }
-
-      
+             
         public List<AbbrevAppType> AppTypes { get; set; }
 
-        [Display(Name="Program")]
-        public string ProgramToSearch { get; set; }
-
-
-
-           
-        
-
-        public AgCommSeedSearchViewModel() {
-            Search = false;
-        }
-        
+               
         public static async Task<AgCommSeedSearchViewModel> Create(CCIAContext _dbContext, AgCommSeedSearchViewModel vm)
         {   
             // var appTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeId).ToListAsync();
@@ -102,10 +76,7 @@ namespace CCIA.Models.AgComm
                 {
                     seedToFind = seedToFind.Where(s => vm.certYearsToSearch.Contains(s.CertYear.Value));
                 }
-                 if(vm.followUp != 2)
-                {
-                    seedToFind = seedToFind.Where(a => (a.FollowUp && vm.followUp == 1) || (!a.FollowUp && vm.followUp == 0));
-                }
+               
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
                     seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
@@ -117,35 +88,14 @@ namespace CCIA.Models.AgComm
                 if(vm.searchCrops != null && vm.searchCrops.Any())
                 {
                     seedToFind = seedToFind.Where(s => vm.searchCrops.Contains(s.Variety.CropId) || vm.searchCrops.Contains(s.Application.CropId.Value));
-                }
-                if(!string.IsNullOrWhiteSpace(vm.variety))
-                {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety + "%"));
-                }
-                if(!string.IsNullOrWhiteSpace(vm.lotNumber))
-                {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.LotNumber, "%" + vm.lotNumber.Trim() + "%"));
-                }
-                if(!string.IsNullOrWhiteSpace(vm.appId))
-                {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
-                }
-                if(vm.ProgramToSearch != "%")
-                {
-                    seedToFind = seedToFind.Where(s => s.CertProgram == vm.ProgramToSearch);
-                }
-                
-                if(vm.searchStatus != null && vm.searchStatus.Any())              
-                {
-                    seedToFind = seedToFind.Where(s => vm.searchStatus.Contains(s.Status));
-                }
+                }             
+                            
                 
                 var viewModel = new AgCommSeedSearchViewModel
                 {
                     seeds = await seedToFind.ToListAsync(),  
                     yearsToSelectFrom = CertYearFinder.certYearListReverse, 
                     crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
-                    statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                     AppTypes = appTypes,
                     
                 };  
@@ -158,9 +108,7 @@ namespace CCIA.Models.AgComm
                 seeds = new List<Seeds>(), 
                 yearsToSelectFrom = CertYearFinder.certYearListReverse,              
                 crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
-                statusOptions = EnumHelper.GetListOfDisplayNames<SeedsStatus>(),
                 AppTypes = appTypes,
-                followUp = 2,
             };           
 
             return freshModel;

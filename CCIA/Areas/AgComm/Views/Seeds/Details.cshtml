@@ -1,0 +1,190 @@
+@using Microsoft.Extensions.Configuration
+@using CCIA.Helpers
+@inject IConfiguration Configuration
+@model  CCIA.Models.AgComm.AgCommSeedsViewModel
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Seed Lot Details</h2>
+                </div>
+            </div>
+            @if(Model.seed.Status == SeedsStatus.SIRReady.GetDisplayName())
+            {
+                 <div class="row">
+                    <div class="col-sm-12">
+                        <a asp-action="SIR" asp-route-id="@Model.seed.Id" class="btn btn-info">View Seed Inspection Report</a> 
+                    </div>
+                </div>
+            }            
+            <div class="form-group row">
+                <label asp-for="seed.Id" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.Id)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.CertProgram" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.AppTypeTrans.AppTypeTrans)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.CertYear" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.CertYear)
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.ConditionerOrganization.NameAndId)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="seed.ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.ApplicantOrganization.NameAndId)
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Crop</label>
+                <div class="col-sm-9 form-control-plaintext">
+                   @Model.seed.GetCropName()
+                </div>
+            </div>   
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Variety</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.seed.GetVarietyName()
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="seed.ClassProduced.CertClass" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
+                </div>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="seed.CertNumber"  class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.seed.CertNumber
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="seed.LotNumber" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.LotNumber)
+                </div>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="seed.PoundsLot" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.PoundsLot)
+                </div>
+            </div> 
+                <div class="form-group row">
+                <label asp-for="seed.Remarks" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.Remarks)
+                </div>
+            </div> 
+                <div class="form-group row">
+                <label asp-for="seed.Status" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.Status)
+                </div>
+            </div>  
+            <div>
+                @if(Model.seed.SeedsApplications.Count > 0)
+                {
+                    @:Apps in this lot:
+                    <table class="table">
+                        <tr>
+                            <th>AppID</th>
+                            <th>Grower</th>
+                            <th>Acres</th>
+                        </tr>
+                        @foreach(var app in Model.seed.SeedsApplications)
+                        {
+                            <tr>
+                                <td>@app.Application.Id</td>
+                                <td>@app.Application.GrowerOrganization.Name</td>
+                                <td>@app.Application.AcresApplied 
+                                    @if(app.Application.IsSquareFeet)
+                                    {
+                                        <span>Square feet</span>
+                                    } 
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }           
+            </div>
+            <div class="col-sm-4">
+                <table>
+                    <tr>
+                        <td class="align-middle"> 
+                            @if(Model.Documents.Any())
+                            {
+                                <h3>Supporting Documents</h3>
+                                <table class="table">
+                                    <tr>
+                                        <th>File</th>
+                                        <th>Type</th>
+                                    </tr>
+                                    @foreach (var document in Model.Documents)
+                                    {
+                                        <tr>
+                                            <td><a asp-action="GetSeedFile" asp-route-id="@document.Id">@document.Link</a></td>
+                                            <td>@document.DocumentType.Name</td>
+                                        </tr>                                
+                                    }
+                                </table>
+                            }
+                        </td>
+                    </tr>
+                    <tr><td><hr><br></td></tr>                    
+                </table>
+            </div>
+        </div> 
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Lab Results</h2>
+                </div>
+            </div>
+            @if(Model.seed.Submitted == false)
+            {               
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-info">Edit Lab Results</a>
+                    </div>
+                </div>
+            }
+            @await Html.PartialAsync("../../../client/Views/SampleLabResults/_SampleLabResultsDetails.cshtml", Model.LabsAndStandards)
+                         
+        </div>       
+    </div>
+</div>
+
+@section Scripts {
+    <script>        
+        $(document).ready(
+            function(){
+                $('input:file').change(
+                    function(){
+                        if ($(this).val()) {
+                            $('input:submit').removeAttr('disabled'); 
+                        } 
+                    }
+                );
+            $(":checkbox").on("click", false);
+        });
+    </script>
+   
+}
+
