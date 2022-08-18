@@ -95,8 +95,13 @@
                             <a class="dropdown-item" asp-area="admin" asp-controller="Reports" asp-action="Member">Member Report</a>
                         </div>
                     </li>
-
-                    <a class="nav-link" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Admin</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" asp-area="admin" asp-controller="CommandCenter" asp-action="Index"  aria-haspopup="true" aria-expanded="false">Admin</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="admin" asp-controller="CommandCenter" asp-action="Index">Admin</a>
+                            <a class="dropdown-item" href="https://cciaweblibrary.ucdavis.edu" target="_blank">Web Library</a>
+                        </div>
+                    </li>
                     <a class="nav-link" asp-controller="Account" asp-action="Logout" asp-area="">Logout</a>
                 </ul>
             </div>
