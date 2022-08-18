@@ -1,10 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using CCIA.Helpers;
 using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CCIA.Models.IndexViewModels;
 using CCIA.Services;
 
 namespace CCIA.Controllers.AgComm
