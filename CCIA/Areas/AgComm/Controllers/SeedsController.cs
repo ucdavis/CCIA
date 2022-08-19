@@ -27,11 +27,17 @@ namespace CCIA.Controllers.AgComm
 
         public async Task<IActionResult> Index(int id, AgCommSeedSearchViewModel vm)
         {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var countyId = await _dbContext.Organizations.Where( o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
+            if(!countyId.HasValue)
+            {
+                countyId = 0;
+            }
             if(!vm.Search){
-                var freshmodel = await AgCommSeedSearchViewModel.Create(_dbContext, null);
+                var freshmodel = await AgCommSeedSearchViewModel.Create(_dbContext, null, countyId.Value);
                 return View(freshmodel);  
             }
-                var model = await AgCommSeedSearchViewModel.Create(_dbContext, vm);                
+                var model = await AgCommSeedSearchViewModel.Create(_dbContext, vm, countyId.Value);                
                 return View(model);            
         }
 
@@ -42,7 +48,19 @@ namespace CCIA.Controllers.AgComm
             {
                 ErrorMessage = "Seed lot not found.";
                 return RedirectToAction(nameof(Index));
-            }            
+            }    
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var countyId = await _dbContext.Organizations.Where( o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
+            if(!countyId.HasValue)
+            {
+                countyId = 0;
+            }
+            if(model.seed.ApplicantOrganization.CountyId != countyId.Value )
+            {
+                ErrorMessage = "Applicant not in your county.";
+                return RedirectToAction(nameof(Index));
+
+            }        
             return View(model);
         }    
 

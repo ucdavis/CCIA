@@ -42,7 +42,7 @@ namespace CCIA.Models.AgComm
         public List<AbbrevAppType> AppTypes { get; set; }
 
                
-        public static async Task<AgCommSeedSearchViewModel> Create(CCIAContext _dbContext, AgCommSeedSearchViewModel vm)
+        public static async Task<AgCommSeedSearchViewModel> Create(CCIAContext _dbContext, AgCommSeedSearchViewModel vm, int countyId)
         {   
             // var appTypes = await _dbContext.AbbrevAppType.OrderBy(a => a.AppTypeId).ToListAsync();
             // appTypes.Add(new AbbrevAppType { AppTypeId = 0, AppTypeTrans = "Any", Abbreviation = "Any"});
@@ -55,6 +55,7 @@ namespace CCIA.Models.AgComm
                 var seedToFind = _dbContext.Seeds
                     .Include(s => s.ConditionerOrganization)
                     .Include(s => s.ApplicantOrganization)
+                    .ThenInclude(a => a.Address)
                     .Include(s => s.AppTypeTrans)
                     .Include(s => s.Variety)
                     .ThenInclude(v => v.Crop)
@@ -63,6 +64,7 @@ namespace CCIA.Models.AgComm
                     .ThenInclude(l => l.LabOrganization)                   
                     .Include(s => s.Application)
                     .ThenInclude(a => a.Crop)
+                    .Where(s => s.ApplicantOrganization.CountyId == countyId)
                     .AsQueryable(); 
                 if(vm.sid.HasValue)
                 {
