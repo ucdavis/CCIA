@@ -73,7 +73,15 @@ namespace CCIA.Controllers.AgComm
                 return RedirectToAction(nameof(Index));
             }            
             return View("~/Areas/Client/Views/Seeds/SIR.cshtml",model);
-        }      
+        }  
+
+        public async Task<IActionResult> GetSeedFile(int id)
+        {
+            var doc = await _dbContext.SeedDocuments.Where(d => d.Id == id).Include(d => d.DocumentType).FirstOrDefaultAsync();
+            var certYear = await _dbContext.Seeds.Where(s => s.Id == doc.SeedsId).Select(s => s.CertYear).FirstOrDefaultAsync();
+            var contentType = "APPLICATION/octet-stream";
+            return File(_fileService.DownloadSeedFile(doc, certYear.Value), contentType, doc.Link);
+        }           
 
     }
 }
