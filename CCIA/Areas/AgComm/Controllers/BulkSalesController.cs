@@ -14,13 +14,11 @@ namespace CCIA.Controllers.AgComm
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
-        private readonly IFileIOService _fileService;
 
-        public BulkSalesController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService)
+        public BulkSalesController(CCIAContext dbContext, IFullCallService helper)
         {
             _dbContext = dbContext;
             _helper = helper;
-            _fileService = fileIOService;
 
         }
 
