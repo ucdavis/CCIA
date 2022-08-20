@@ -1,0 +1,145 @@
+@model CCIA.Models.AgComm.AgCommSeedTransferSearchViewModel
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+<h3>Seed Transfer Certificate Search</h3>
+<form asp-action="Index" method="POST">
+<div class="container col-sm-2">
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button>
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-6 col-xl-4">@* First column*@ 
+            <div class="form-group row">
+                <label asp-for="searchId" class="col-sm-3 col-form-label">StcID</label>
+                <input asp-for="searchId">
+            </div>
+            <div class="form-group row">
+                <label asp-for="searchSid" class="col-sm-3 col-form-label">SID</label>
+                <input asp-for="searchSid">
+            </div>            
+            <div class="form-group row">
+                <label asp-for="searchYearsCreated" class="col-sm-3 col-form-label">Year Created</label>
+                <select asp-for="searchYearsCreated" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.creationYears))"></select>
+               <div class="col-sm-1">&dagger;</div> 
+            </div>           
+        </div>
+        <div class="col-md-6 col-xl-4">@* 2nd column*@ 
+            <div class="form-group row">
+                <label asp-for="searchBid" class="col-sm-3 col-form-label">BID</label>
+                <input asp-for="searchBid">
+            </div>   
+            <div class="form-group row">
+                <label asp-for="approvedStatus" class="col-sm-3 col-form-label">Approved?</label>
+                <select asp-for="approvedStatus" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
+            </div>                
+        </div>
+        <div class="col-md-6 col-xl-4">@* 3rd column*@ 
+             <div class="form-group row">
+                <label asp-for="searchAppId" class="col-sm-3 col-form-label">AppId</label>
+                <input asp-for="searchAppId">
+            </div>
+            <div class="form-group row">
+                <label asp-for="searchConditioner" class="col-sm-3 col-form-label">Conditioner</label>
+                <input asp-for="searchConditioner" class="col-sm-4 form-control">
+                <div class="col-sm-5">
+                    (partial name or Id)
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>
+    <div class="col-sm-12">
+        <hr>
+        &dagger; Leave blank to search all values. Click on first value, then hold "shift" on second to select range.  Press "ctrl"/"control" to select multiple items, or toggle any single item.
+    </div>
+</div>
+<hr>
+</form>
+@if(Model.stc.Any())
+{
+   <table id="table" class="table datatable">
+        <thead> 
+            <th></th>          
+            <th>STCId</th>
+            <th>Org</th>
+            <th>Id/Type</th>
+            <th>Purchaser</th>
+            <th>Pounds</th>
+            <th>Date</th>
+            <th>Crop</th>
+            <th>Variety</th>
+            <th>Orig Class</th>
+            <th>Class Sold</th>
+            <th>Creator</th>
+        </thead>
+        <tbody>
+            @foreach (var stc in Model.stc)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-route-id="@stc.Id">Details</a></td>                
+                <td>@stc.Id</td>
+                <td>@stc.OriginatingOrganization.NameAndId</td>
+                <td>@stc.LinkId @stc.IdType</td>
+                <td>@stc.PurchaserName</td>
+                <td>@stc.Pounds</td>
+                <td data-sort="@string.Format("{0:yyyy/MM/dd}",stc.CertificateDate)">@stc.CertificateDate.ToShortDateString()</td>
+                <td>
+                    @if(stc.BlendId != null)
+                    {
+                        <span>Blend</span>
+                    } else
+                    {
+                        @stc.GetCrop()
+                    }                    
+                </td>
+                <td>
+                    @if(stc.BlendId != null)
+                    {
+                        <span>Blend</span>
+                    } else
+                    {
+                        @stc.GetVariety()
+                    }                    
+                </td>
+                <td>@stc.GetClass()</td>
+                <td>@stc.ClassTransferred()</td>
+                <td>@stc.CreatedByContact.Name</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+
+    <script>
+        var oTable;
+
+        $(document).ready( function () {            
+            
+            oTable = $('#table').dataTable({
+                 dom: 'lBfrtip',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                "pageLength": 50,
+                order: [[ 1, "asc"]],
+                columnDefs: [{ targets: 0, orderable: false}],
+            });           
+            
+        } );
+    </script>
+}
