@@ -193,5 +193,59 @@ namespace CCIA.Controllers.AgComm
 
             return RedirectToAction(nameof(Details), new { id = stcToUpdate.Id });  
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Approve (int id)
+        {
+            var stcToUpdate = await _dbContext.SeedTransfers.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var countyId = await _dbContext.Organizations.Where( o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
+            if(!countyId.HasValue)
+            {
+                countyId = 0;
+            }
+            if(stcToUpdate.OriginatingCountyId != countyId.Value)
+            {
+                ErrorMessage = "Seed Transfer Certificate not from your county. Only originating county Ag Comm can respond";
+                return RedirectToAction(nameof(Index));
+            }
+
+            stcToUpdate.AgricultureCommissionerAccurate = true;
+            stcToUpdate.AgricultureCommissionerInaccurate = false;
+            stcToUpdate.AgricultureCommissionerApprove = true;
+            stcToUpdate.AgricultureCommissionerDateRespond = DateTime.Now;
+            stcToUpdate.AgricultureCommissionerContactRespondId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = stcToUpdate.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> InAccurate (int id)
+        {
+            var stcToUpdate = await _dbContext.SeedTransfers.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var countyId = await _dbContext.Organizations.Where( o => o.Id == orgId).Select(o => o.CountyId).FirstOrDefaultAsync();
+            if(!countyId.HasValue)
+            {
+                countyId = 0;
+            }
+            if(stcToUpdate.OriginatingCountyId != countyId.Value)
+            {
+                ErrorMessage = "Seed Transfer Certificate not from your county. Only originating county Ag Comm can respond";
+                return RedirectToAction(nameof(Index));
+            }
+
+            stcToUpdate.AgricultureCommissionerAccurate = false;
+            stcToUpdate.AgricultureCommissionerInaccurate = true;
+            stcToUpdate.AgricultureCommissionerApprove = false;
+            stcToUpdate.AgricultureCommissionerDateRespond = DateTime.Now;
+            stcToUpdate.AgricultureCommissionerContactRespondId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = stcToUpdate.Id });
+        }
     }
 }

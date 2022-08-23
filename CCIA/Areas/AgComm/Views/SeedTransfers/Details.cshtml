@@ -358,6 +358,17 @@
                 @Html.DisplayFor(x => x.AgricultureCommissionerDateRespond)
             </div>
         </div>
+        <div class="row form-group">
+            <form asp-action="Aprove">
+                <input type="hidden" value="@Model.Id">
+                <input type="submit" class="btn btn-primary" value="Mark Approved/Accurate">
+            </form>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <form asp-action="InAccurate">
+                <input type="hidden" value="@Model.Id">
+                <input type="submit" class="btn btn-danger" value="Mark Inaccurate">
+            </form>
+        </div>
         <div><hr></div>
     </div>
      <div class="col-sm-8 row">
