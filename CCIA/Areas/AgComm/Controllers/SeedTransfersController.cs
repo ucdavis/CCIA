@@ -179,7 +179,7 @@ namespace CCIA.Controllers.AgComm
             stcToUpdate.StageOther = update.StageOther;
             stcToUpdate.StageOtherValue = update.StageOtherValue;
             stcToUpdate.StageFromFieldNumberOfAcres = update.StageFromFieldNumberOfAcres;
-            stcToUpdate.AdminUpdated = true;
+            stcToUpdate.AdminUpdated = false;
             stcToUpdate.OriginatingCountyId = update.OriginatingCountyId;
 
             if(ModelState.IsValid){

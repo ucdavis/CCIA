@@ -18,8 +18,13 @@ namespace CCIA.Models
         public DateTime DateChanged { get; set; }
         public bool userIsAdmin { get; set; }
 
+        public int? ContactId { get; set; }
+
         [ForeignKey("UserChange")]
         public CCIAEmployees Employee { get; set; }
+
+        [ForeignKey("ContactId")]
+        public Contacts UpdateContact { get; set; }
         
     }
 }

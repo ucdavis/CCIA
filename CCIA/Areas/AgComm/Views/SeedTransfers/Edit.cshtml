@@ -402,11 +402,13 @@
                             @if(row.userIsAdmin)
                             {
                                 <td>@row.Employee.Name</td>
+                            } else if(row.UpdateContact != null)
+                            {
+                                <td>@row.UpdateContact.Name</td>
                             } else
                             {
-                                <td>Contact</td>
-                            }
-                            
+                                <td>&nbsp; @row.ContactId</td>
+                            }   
                             <td>@row.DateChanged</td>
                         </tr>                        
                     }
