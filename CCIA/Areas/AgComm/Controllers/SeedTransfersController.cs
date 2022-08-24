@@ -18,10 +18,13 @@ namespace CCIA.Controllers.AgComm
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
 
-        public SeedTransfersController(CCIAContext dbContext, IFullCallService helper)
+        private readonly INotificationService _notification;
+
+        public SeedTransfersController(CCIAContext dbContext, IFullCallService helper, INotificationService notification)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notification = notification;
         }
 
         public async Task<IActionResult> Index()
@@ -242,6 +245,8 @@ namespace CCIA.Controllers.AgComm
             stcToUpdate.AgricultureCommissionerApprove = false;
             stcToUpdate.AgricultureCommissionerDateRespond = DateTime.Now;
             stcToUpdate.AgricultureCommissionerContactRespondId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+
+            await _notification.SeedTransferResponded(stcToUpdate);
 
             await _dbContext.SaveChangesAsync();
 
