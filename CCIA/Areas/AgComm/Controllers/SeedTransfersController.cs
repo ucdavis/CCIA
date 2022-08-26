@@ -218,6 +218,8 @@ namespace CCIA.Controllers.AgComm
             stcToUpdate.AgricultureCommissionerApprove = true;
             stcToUpdate.AgricultureCommissionerDateRespond = DateTime.Now;
             stcToUpdate.AgricultureCommissionerContactRespondId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            stcToUpdate.AdminUpdated =false;
+            stcToUpdate.AdminUpdatedId = User.Claims.FirstOrDefault(c => c.Type == "contactId").Value;
 
             await _dbContext.SaveChangesAsync();
 
@@ -245,6 +247,8 @@ namespace CCIA.Controllers.AgComm
             stcToUpdate.AgricultureCommissionerApprove = false;
             stcToUpdate.AgricultureCommissionerDateRespond = DateTime.Now;
             stcToUpdate.AgricultureCommissionerContactRespondId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            stcToUpdate.AdminUpdated =false;
+            stcToUpdate.AdminUpdatedId = User.Claims.FirstOrDefault(c => c.Type == "contactId").Value;
 
             await _notification.SeedTransferResponded(stcToUpdate);
 
