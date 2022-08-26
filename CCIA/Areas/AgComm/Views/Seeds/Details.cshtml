@@ -156,15 +156,7 @@
                 <div class="col-sm-12">
                     <h2>Lab Results</h2>
                 </div>
-            </div>
-            @if(Model.seed.Submitted == false)
-            {               
-                <div class="row">
-                    <div class="col-sm-12">
-                        <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-info">Edit Lab Results</a>
-                    </div>
-                </div>
-            }
+            </div>           
             @await Html.PartialAsync("../../../client/Views/SampleLabResults/_SampleLabResultsDetails.cshtml", Model.LabsAndStandards)
                          
         </div>       
