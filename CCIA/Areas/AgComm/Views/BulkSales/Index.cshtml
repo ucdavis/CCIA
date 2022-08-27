@@ -84,7 +84,7 @@
                 <td>@bsc.LinkId @bsc.IdType</td>
                 <td>@bsc.Program</td>
                 <td>@bsc.PurchaserName</td>
-                <td>@bsc.Pounds</td>
+                <td>@Html.DisplayFor(x => bsc.Pounds)</td>
                 <td data-sort="@string.Format("{0:yyyy/MM/dd}",bsc.Date)">@bsc.Date.ToShortDateString()</td>
                 <td>@bsc.CertNumber</td>
                 <td>@bsc.CropName</td>

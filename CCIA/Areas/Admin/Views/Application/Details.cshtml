@@ -348,8 +348,8 @@
                     {
                         <tr>
                             <td>@row.Id</td>
-                            <td>@row.Sprigs</td>
-                            <td>@row.Sod</td>
+                            <td>@Html.DisplayFor(x => row.Sprigs)</td>
+                            <td>@Html.DisplayFor(x => row.Sod)</td>
                             <td>@row.BillingInvoice</td>
                             <td>@row.HarvestDate</td>
                             <td>@row.HarvestNumber</td>
@@ -453,7 +453,7 @@
                             <td>@row.PsEnteredVariety</td>
                             @if(showPounds)
                             {
-                                <td>@row.PoundsPlanted</td>
+                                <td>@Html.DisplayFor(x => row.PoundsPlanted)</td>
                             }
                             @if(showPlantsPerAcre)
                             {

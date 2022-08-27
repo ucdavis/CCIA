@@ -33,7 +33,7 @@
                 <td>@transfer.LinkId</td>
                 <td>@transfer.IdType</td>
                 <td>@transfer.CertificateDate.ToShortDateString()</td>               
-                <td>@transfer.Pounds</td>
+                <td>@Html.DisplayFor(x => transfer.Pounds)</td>
                 <td>@transfer.TransferClass</td>
                 <td>@transfer.PurchaserName</td>
                 <td>@Html.DisplayFor(model => transfer.AgricultureCommissionerApprove)</td>
