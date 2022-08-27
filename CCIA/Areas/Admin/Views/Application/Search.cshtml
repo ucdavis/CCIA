@@ -3,10 +3,10 @@
 <h3>Application Search</h3>
 <form asp-action="Search" method="POST">
 <input type="hidden" id="Search" name="Search" value="True">
-<div class="container col-sm-2">
+<div class="container col-sm-8 text-center">
     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
     Hide Search
-  </button>
+  </button> | <input type="submit" value="Search" class="btn btn-primary"></input> 
 </div>
 <div class="container col-sm-10 collapse show" id="SearchCollapse">
     <div>&nbsp;</div>

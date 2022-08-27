@@ -5,11 +5,11 @@
 
 <h3>Seed Certification Report</h3>
 <form asp-action="Seeds" method="POST">
-<div class="container col-sm-2">
+<div class="container col-sm-6 text-center">
      <div asp-validation-summary="All" class="text-danger"></div>
     <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
     Hide Search
-  </button>
+  </button> | <input type="submit" value="Search" class="btn btn-primary"></input> 
 </div>
 <div class="container col-sm-10 collapse show" id="SearchCollapse">
     <div>&nbsp;</div>
