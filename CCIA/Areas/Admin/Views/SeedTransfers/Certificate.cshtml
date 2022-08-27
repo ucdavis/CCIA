@@ -39,7 +39,7 @@ table{background-color:transparent}table{border-spacing:0;border-collapse:collap
                 <td valign="top">
                     Date of seed transfer: @Model.CertificateDate.ToShortDateString()<br/>
                     Seed sample submitted for analysis? <input type="checkbox" asp-for="SubmittedForAnalysis"><br/>
-                    Total shipment weight: @Model.Pounds pounds
+                    Total shipment weight: @Html.DisplayFor(x => Model.Pounds) pounds
                 </td>
             </tr>
             <tr><td>&nbsp;</td></tr>

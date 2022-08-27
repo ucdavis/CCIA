@@ -171,6 +171,12 @@ namespace CCIA
                 );
 
                 endpoints.MapAreaControllerRoute(
+                   name: "AgComm_route",
+                   areaName: "AgComm",
+                   pattern:  "AgComm/{controller}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapAreaControllerRoute(
                     name: "Admin_route",
                    areaName: "Admin",
                    pattern:  "admin/{controller}/{action=Index}/{id?}"

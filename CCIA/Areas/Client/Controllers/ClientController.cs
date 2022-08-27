@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CCIA.Controllers.Client
 {
     [Area("Client")]
-    [Authorize(Roles = "conditioner")]  
+    [Authorize(Roles = "Member")]  
     public class ClientController : SuperController
     {
     }

@@ -459,6 +459,8 @@ namespace CCIA.Services
                 .ThenInclude(v => v.Crop)
                 .Include(b => b.Changes)
                 .ThenInclude(c => c.Employee)
+                .Include(b => b.Changes)
+                .ThenInclude(c => c.UpdateContact)
                 .Include(st => st.CreatedByContact)
                 .Include(st => st.SeedClass)
                 .Include(st => st.AppClass)

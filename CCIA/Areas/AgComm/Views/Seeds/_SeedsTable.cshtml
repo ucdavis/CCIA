@@ -1,0 +1,48 @@
+@model List<CCIA.Models.Seeds>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+    <table id="table" class="table datatable">
+        <thead> 
+            <th></th>          
+            <th>SeedsID</th>
+            <th>Program</th>
+            <th>Year</th>
+            <th>Applicant Id</th>
+            <th>Applicant</th>
+            <th>Conditioner ID</th>
+            <th>Conditioner</th>            
+            <th>Crop</th>
+            <th>Variety</th>  
+            <th>Pounds</th>
+            <th>Class</th>       
+        </thead>
+        <tbody>
+            @foreach (var seed in Model)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-controller="Seeds" asp-route-id="@seed.Id">Details</a></td>                
+                <td>@seed.Id</td>
+                <td>@seed.CertProgram</td>
+                <td>@seed.CertYear</td>
+                <td>@seed.ApplicantId</td>
+                <td>@if(seed.ApplicantOrganization != null)
+                    {
+                         @seed.ApplicantOrganization.Name
+                    }
+                </td>
+                <td>@seed.ConditionerId</td> 
+                <td>@seed.ConditionerOrganization.Name</td>
+                <td>@seed.GetCropName()</td>
+                <td>@seed.GetVarietyName()</td>     
+                <td>@Html.DisplayFor(x => seed.PoundsLot)</td>
+                <td>@seed.ClassProduced.CertClass</td>     
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

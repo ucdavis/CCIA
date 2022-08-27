@@ -11,8 +11,10 @@ namespace CCIA.Models
 
         public int AppId { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public int? Sprigs { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
         public int? Sod { get; set; }
 
         public string BillingInvoice { get; set; }

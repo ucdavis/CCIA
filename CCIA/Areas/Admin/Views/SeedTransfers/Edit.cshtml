@@ -28,8 +28,8 @@
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="stc.CertificateDate" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-3 input-group">
+                <label asp-for="stc.CertificateDate" class="col-sm-6 col-form-label"></label>
+                <div class="col-sm-5 input-group">
                     <input type="text" asp-for="stc.CertificateDate" class="datepicker form-control"></input>
                     <div class="input-group-append" onclick="$('.datepicker').focus();">             
                         <i class="fa fa-calendar input-group-text"></i>
@@ -402,11 +402,13 @@
                             @if(row.userIsAdmin)
                             {
                                 <td>@row.Employee.Name</td>
+                            } else if(row.UpdateContact != null)
+                            {
+                                <td>@row.UpdateContact.Name</td>
                             } else
                             {
-                                <td>Contact</td>
-                            }
-                            
+                                <td>&nbsp; @row.ContactId</td>
+                            }   
                             <td>@row.DateChanged</td>
                         </tr>                        
                     }

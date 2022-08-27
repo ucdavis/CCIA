@@ -63,7 +63,7 @@ namespace CCIA.Models
 
         public DateTime? CreatedOn { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,#.0}")]
         public Decimal Pounds { get; set; }
         
          public int? TransferClassId { get; set; }

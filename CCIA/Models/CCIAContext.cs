@@ -659,8 +659,10 @@ namespace CCIA.Models
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
 
                 entity.Property(e => e.userIsAdmin).HasColumnName("user_admin");
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
 
                 entity.HasOne(e => e.Employee);
+                entity.HasOne(e => e.UpdateContact);
             });
 
             modelBuilder.Entity<OECDChanges>(entity => {

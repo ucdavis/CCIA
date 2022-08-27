@@ -126,8 +126,8 @@
             {
                 <tr>
                     <td>@app.Id</td>
-                    <td>@app.Sprigs</td>
-                    <td>@app.Sod</td>
+                    <td>@Html.DisplayFor(x => app.Sprigs)</td>
+                    <td>@Html.DisplayFor(x => app.Sod)</td>
                     <td>@app.BillingInvoice</td>  
                     <td>@app.HarvestDate.ToString("MM/dd/yyyy")</td>
                     <td><a asp-action="Certificate" asp-controller="TurfgrassCertificate" asp-route-id="@Model.application.Id" asp-route-certId="@app.Id" class="btn btn-info">Certificate</a></td>

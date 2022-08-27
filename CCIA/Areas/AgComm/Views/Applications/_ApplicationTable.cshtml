@@ -1,0 +1,59 @@
+@model List<CCIA.Models.Applications>
+
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+    <table id="table" class="table datatable">
+        <thead>
+            <th></th>           
+        <th>AppId</th>
+        <th>Type</th>
+        <th>Applicant ID</th>
+        <th>Applicant Name</th>
+        <th>Grower ID</th>
+        <th>Grower</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Class</th>
+        <th>Field Name</th>
+        <th>Acres</th>
+        <th>Planting Date</th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+            <tr>
+                <td><a class="btn btn-info" asp-action="Details" asp-controller="Applications" asp-route-id="@app.Id">Details</a></td>               
+                <td>@app.Id</td>
+                <td>@app.AppType</td>
+                <td>@app.ApplicantId</td>
+                <td>@app.ApplicantName</td>
+                <td>@app.GrowerId</td>
+                <td>@app.GrowerName</td> 
+                <td>@app.Crop.Name</td>
+                <td>@app.VarietyName</td>
+                <td>@app.ClassProducedName</td>
+                <td>@app.FieldName</td>
+                <td>@app.AcresApplied
+                    @if(app.IsSquareFeet)
+                    {
+                        <span>Square feet</span>
+                    } 
+                </td>
+                @if(app.DatePlanted.HasValue)
+                {
+                    <td data-sort="@string.Format("{0:yyyy/MM/dd}" , app.DatePlanted.Value)">@app.DatePlanted.Value.ToShortDateString()</td>
+                } else
+                {
+                    <td></td>
+                }                                          
+                <td>@app.Status</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

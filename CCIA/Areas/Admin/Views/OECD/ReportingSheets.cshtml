@@ -58,7 +58,7 @@
                 <td>@oecd.ConditionerOrganization.Name</td>
                 <td>@oecd.Variety.Crop.GenusSpecies</td>
                 <td>@oecd.Variety.Name</td>
-                <td>@oecd.Pounds</td>                 
+                <td>@Html.DisplayFor(x => oecd.Pounds)</td>                 
                 <td>@oecd.TagsRequested</td>
                 <td>@oecd.CloseDate.Value.ToShortDateString()</td>
             </tr>
@@ -99,7 +99,7 @@
             <tr>                               
                 <td>@oecd.USDACertNumber</td>
                 <td>@oecd.LotReferenceNumber</td>
-                <td>@oecd.Pounds</td>
+                <td>@Html.DisplayFor(x => oecd.Pounds)</td>
                 <td>@oecd.TagsRequested</td>
                 <td>@oecd.ClassId</td>                 
                 <td>0</td>
