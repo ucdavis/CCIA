@@ -37,6 +37,8 @@ namespace CCIA.Services
         FileStream DownloadTagFile(TagDocuments doc, int certYear);
 
         Task SaveTagDocument(int tagId, int certYear, IFormFile file);
+
+        bool CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear);
        
     }
 
@@ -147,6 +149,25 @@ namespace CCIA.Services
         private string GetRoot()
         {
             return _configuration["FilePath"];
+        }
+
+        public bool CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear)
+        {
+            var originalFolder = $"{GetRoot()}/certyear{originalCertYear}/appId{appId}/";
+            var newFolder = $"{GetRoot()}/certyear{newCertYear}/appId{appId}/";
+
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(originalFolder, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(originalFolder, newFolder));
+            }
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(originalFolder, "*.*",SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(originalFolder, newFolder), true);
+            }
+            return true;
         }
        
     }

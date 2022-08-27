@@ -663,10 +663,19 @@ namespace CCIA.Controllers.Admin
         {
             var appToUpdate = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             var edit = vm.application;
+            bool changeCertYear = false;
+            int originalCertYear = 0;
+            int newCertYear = 0;
             appToUpdate.UserEmpDateMod = DateTime.Now;
             appToUpdate.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
             appToUpdate.AppType = edit.AppType;
-            appToUpdate.CertYear = edit.CertYear;
+            if(appToUpdate.CertYear != edit.CertYear)
+            {
+                changeCertYear = true;
+                originalCertYear = appToUpdate.CertYear;
+                newCertYear = edit.CertYear;
+                appToUpdate.CertYear = edit.CertYear;
+            }            
             if(appToUpdate.Postmark.HasValue && edit.Postmark.HasValue)
             {
                 if(appToUpdate.Postmark.Value.Date != edit.Postmark.Value.Date)
@@ -695,6 +704,10 @@ namespace CCIA.Controllers.Admin
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Application Updated";
+                if(changeCertYear)
+                {
+                   _fileService.CopyApplicationFilesAfterCertYearChange(appToUpdate.Id, originalCertYear, newCertYear);
+                }
             } else {
                 ErrorMessage = "Something went wrong.";
                 var model = await AdminViewModel.CreateEdit(_dbContext, id, _helper);
