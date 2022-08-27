@@ -338,7 +338,7 @@ namespace CCIA.Models
             }
         }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.0}")]
         [Display(Name = "Source Lot Weight")] 
         public decimal SourceLotWeight
         {
@@ -377,7 +377,7 @@ namespace CCIA.Models
         [Display(Name ="Date Needed")]
         public DateTime? DateNeeded { get; set; }
         public DateTime? DateRun { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.0}")]
         public decimal? LotWeightBagged { get; set; }
         [Display(Name = "Coating %")] 
         public decimal? CoatingPercent { get; set; }
@@ -436,7 +436,7 @@ namespace CCIA.Models
             }
         }
         [NotMapped]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.0}")]
         public decimal? LotWeightRequested
         {
             get

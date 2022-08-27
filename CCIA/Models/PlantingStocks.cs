@@ -23,7 +23,7 @@ namespace CCIA.Models
         public virtual string PsEnteredVariety { get; set; }
         public int? OfficialVarietyId { get; set; }
         
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00.0}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.0}")]
         public virtual decimal? PoundsPlanted { get; set; }
         public virtual int? PsClass { get; set; }
         public int? PsAccession { get; set; }

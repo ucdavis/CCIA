@@ -20,7 +20,7 @@ namespace CCIA.Models
 
         public int? TagId { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0}")]
         public int? Pounds { get; set; }
 
         [Display(Name ="Cert #")]

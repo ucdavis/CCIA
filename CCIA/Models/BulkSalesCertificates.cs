@@ -85,7 +85,7 @@ namespace CCIA.Models
          [Display(Name="Email")]
         public string PurchaserEmail { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,00}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0}")]
         public int Pounds { get; set; }
 
         
