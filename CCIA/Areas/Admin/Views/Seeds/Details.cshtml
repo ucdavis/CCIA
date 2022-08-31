@@ -204,6 +204,54 @@
             </div>
         </div>
     </div>
+    @if(Model.seed.Confirmed)
+    {
+        <div class="col-sm-12">
+            <div class="row"><h2>Fees</h2></div>
+            @if(Model.seed.CropFee > 0)
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.CropFee" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.CropFee)
+                    </div>
+                </div> 
+            }
+            @if(Model.seed.CertFee > 0)
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.CertFee" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.CertFee)
+                    </div>
+                </div> 
+            }
+            @if(Model.seed.ResearchFee > 0)
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.ResearchFee" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.ResearchFee)
+                    </div>
+                </div>
+            } 
+            @if(Model.seed.MinimumFee > 0)
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.MinimumFee" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.MinimumFee)
+                    </div>
+                </div>
+            } 
+            <div class="form-group row">
+                <label asp-for="seed.TotalFee" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.seed.TotalFee)
+                </div>
+            </div>         
+        </div>
+    }
     <div class="col-sm-12">
         @if(Model.seed.SeedsApplications.Count > 0)
         {
