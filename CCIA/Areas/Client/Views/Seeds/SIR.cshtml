@@ -60,8 +60,12 @@
                         <tr>
                             <td> </td>
                             <td colspan="2">
-                                @Model.seed.ApplicantOrganization.Address.AddressLines<br>
-                                @Model.seed.ApplicantOrganization.Address.City, @Model.seed.ApplicantOrganization.Address.StateName &nbsp; @Model.seed.ApplicantOrganization.Address.PostalCode</td>
+                                @if(Model.seed.ApplicantOrganization.Address != null)
+                                {    
+                                    @Html.Raw(Model.seed.ApplicantOrganization.Address.AddressLines) <br>
+                                    @Model.seed.ApplicantOrganization.Address.City<span>,</span> @Model.seed.ApplicantOrganization.Address.StateName @Model.seed.ApplicantOrganization.Address.PostalCode
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td>Conditioner: </td>
@@ -75,8 +79,12 @@
                          <tr>
                             <td> </td>
                             <td colspan="2">
-                                @Model.seed.ConditionerOrganization.Address.AddressLines<br>
-                                @Model.seed.ConditionerOrganization.Address.City, @Model.seed.ConditionerOrganization.Address.StateName &nbsp; @Model.seed.ConditionerOrganization.Address.PostalCode</td>
+                                @if(Model.seed.ConditionerOrganization.Address != null)
+                                {  
+                                    @Html.Raw(Model.seed.ConditionerOrganization.Address.AddressLines)<br>
+                                    @Model.seed.ConditionerOrganization.Address.City<span>,</span> @Model.seed.ConditionerOrganization.Address.StateName @Model.seed.ConditionerOrganization.Address.PostalCode
+                                }
+                            </td>
                         </tr>
                         <tr>
                             <td>
