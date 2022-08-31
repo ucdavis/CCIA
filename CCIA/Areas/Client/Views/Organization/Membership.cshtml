@@ -52,8 +52,11 @@
                 Email: ccia@ucdavis.edu
             </td>
             <td>@Model.Name<br/>
-                @Model.Address.AddressLines<br>
-                @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
+                @if(Model.Address != null)
+                {
+                    @Html.Raw(Model.Address.AddressLines)<br>
+                    @Model.Address.City<span>,</span> @Model.Address.StateProvince.Name @Model.Address.PostalCode
+                }
                 <br/><br/>
                 Email: @Model.Email
             </td>
@@ -69,8 +72,11 @@
     <p>11.	<u>GOVERNING LAW.</u>  This Agreement shall be subject to, construed, enforced and governed by the laws of the State of California. </p>
     <p>IN WITNESS WHEREOF, the parties hereto have executed this Agreement, effective on the day and in the year first set forth above.</p>
     <p>@Model.Name<br/>
-        @Model.Address.AddressLines<br>
-        @Model.Address.City, @Model.Address.StateProvince.Name @Model.Address.PostalCode
+        @if(Model.Address != null)
+        {
+            @Html.Raw(Model.Address.AddressLines)<br>
+            @Model.Address.City<span>,</span> @Model.Address.StateProvince.Name @Model.Address.PostalCode
+        }
         <br/>
         <br/>
         Telephone: @Model.Phone <br/>

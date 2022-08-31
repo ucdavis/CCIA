@@ -47,16 +47,16 @@ table{background-color:transparent}table{border-spacing:0;border-collapse:collap
                 <td valign="top">
                     <b>From: PRODUCER/SHIPPER/APPLICANT/GROWER</b><BR />
                     Name: @Model.OriginatingOrganization.Name<br/>
-                    Address: @Model.OriginatingOrganization.Address.AddressLines<br/>
+                    Address: @if(Model.OriginatingOrganization.Address != null){@Html.Raw(Model.OriginatingOrganization.Address.AddressLines)}<br/>
                     County: @Model.OriginatingCounty.Name<br/>
-                    City, State Zip: @Model.OriginatingOrganization.Address.City, @Model.OriginatingOrganization.Address.StateProvince.StateProvinceCode @Model.OriginatingOrganization.Address.PostalCode<br/>
+                    City, State Zip: @if(Model.OriginatingOrganization.Address != null){@Model.OriginatingOrganization.Address.City<span>,</span> @Model.OriginatingOrganization.Address.StateProvince.StateProvinceCode @Model.OriginatingOrganization.Address.PostalCode}<br/>
                     Phone: @Model.OriginatingOrganization.Phone<br/>
                     Email: @Model.OriginatingOrganization.Email<br/>
                 </td>
                 <td valign="top">
                     <b>To: CONSIGNEE/CONDITIONER/STORAGE</b><br/>
                     Name: @Model.PurchaserName <br/>
-                    Address: @Model.PurchaserAddressLines<br/>
+                    Address: @Html.Raw(Model.PurchaserAddressLines)<br/>
                     County: @(Model.PurchaserCounty != null ? @Model.PurchaserCounty.Name : "") <br/>
                     City, State Zip: @Model.PurchaserCity, @Model.PurchaserState.StateProvinceCode @Model.PurchaserZip<br/>
                     Phone: @Model.PurchaserPhone<br/>

@@ -60,10 +60,13 @@
                         <tr>
                             <td> </td>
                             <td colspan="2" class="labelnoline">
-                                @Model.ShipperOrganization.Address.AddressLines<br>
-                                @Model.ShipperOrganization.Address.City,
-                                @Model.ShipperOrganization.Address.StateProvince.StateProvinceCode
-                                @Model.ShipperOrganization.Address.PostalCode
+                                @if(Model.ShipperOrganization.Address != null)
+                                {
+                                    @Html.Raw(Model.ShipperOrganization.Address.AddressLines)<br>
+                                    @Model.ShipperOrganization.Address.City<span>,</span>
+                                    @Model.ShipperOrganization.Address.StateProvince.StateProvinceCode
+                                    @Model.ShipperOrganization.Address.PostalCode
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -77,10 +80,13 @@
                         <tr>
                             <td> </td>
                             <td colspan="2" class="labelnoline">
-                                @Model.ConditionerOrganization.Address.AddressLines<br>
-                                @Model.ConditionerOrganization.Address.City,
-                                @Model.ConditionerOrganization.Address.StateProvince.StateProvinceCode
-                                @Model.ConditionerOrganization.Address.PostalCode
+                                @if(Model.ConditionerOrganization.Address != null)
+                                {
+                                    @Html.Raw(Model.ConditionerOrganization.Address.AddressLines)<br>
+                                    @Model.ConditionerOrganization.Address.City<span>,</span>
+                                    @Model.ConditionerOrganization.Address.StateProvince.StateProvinceCode
+                                    @Model.ConditionerOrganization.Address.PostalCode
+                                }
                             </td>
                         </tr>
                         <tr>
