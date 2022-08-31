@@ -314,59 +314,62 @@
             </table>
         }
     </div> 
-    <div class="col-sm-12">
-        @if(Model.seedsPreviousTagBag.Count > 0)
-        {
-            <hr>
-            <h2>Previously Bagged/Tagged:</h2>
-            <table class="table">
-                <tr>
-                    <th>ID</th>
-                    <th>Weight</th>
-                    <th>Source</th>
-                    <th>Link</th>
-                </tr>
-                @foreach(var history in Model.seedsPreviousTagBag.Where(p => p.Id != -1))
-                {
+    @if(Model.seedsPreviousTagBag.Where(p => p.Id != -1).Any())
+    {
+        <div class="col-sm-12">
+            @if(Model.seedsPreviousTagBag.Count > 0)
+            {
+                <hr>
+                <h2>Previously Bagged/Tagged:</h2>
+                <table class="table">
                     <tr>
-                        <td>@history.Id</td>
-                        <td>@history.Weight</td>
-                        <td>@history.Source</td> 
-                        <td>
-                            @if(history.Source == "Tags")
-                            {
-                                <a asp-action="details" asp-controller="Tags" asp-route-id="@history.Id" class="btn btn-info">Tag</a>
-                            }
-                            @if(history.Source == "Blend")
-                            {
-                                <a asp-action="details" asp-controller="Blends" asp-route-id="@history.Id" class="btn btn-info">Blend</a>
-                            }
-                            @if(history.Source == "Bulk Sales")
-                            {
-                                <a asp-action="details" asp-controller="BulkSalesCertificates" asp-route-id="@history.Id" class="btn btn-info">BSC</a>
-                            }
-                        </td>                       
+                        <th>ID</th>
+                        <th>Weight</th>
+                        <th>Source</th>
+                        <th>Link</th>
                     </tr>
-                }
-                @foreach(var history in Model.seedsPreviousTagBag.Where(p => p.Id == -1))
-                {
-                    <tr>
-                        <td>Total</td>
-                        <td>
-                            @if(Model.seed.PoundsLot < history.Weight)
-                            {
-                                <span class="alert alert-danger" role="alert">@history.Weight</span>
-                            } else
-                            {
-                                @history.Weight
-                            }
-                        </td>
-                        <td></td>                        
-                    </tr>
-                }
-            </table>
-        }
-    </div> 
+                    @foreach(var history in Model.seedsPreviousTagBag.Where(p => p.Id != -1))
+                    {
+                        <tr>
+                            <td>@history.Id</td>
+                            <td>@history.Weight</td>
+                            <td>@history.Source</td> 
+                            <td>
+                                @if(history.Source == "Tags")
+                                {
+                                    <a asp-action="details" asp-controller="Tags" asp-route-id="@history.Id" class="btn btn-info">Tag</a>
+                                }
+                                @if(history.Source == "Blend")
+                                {
+                                    <a asp-action="details" asp-controller="Blends" asp-route-id="@history.Id" class="btn btn-info">Blend</a>
+                                }
+                                @if(history.Source == "Bulk Sales")
+                                {
+                                    <a asp-action="details" asp-controller="BulkSalesCertificates" asp-route-id="@history.Id" class="btn btn-info">BSC</a>
+                                }
+                            </td>                       
+                        </tr>
+                    }
+                    @foreach(var history in Model.seedsPreviousTagBag.Where(p => p.Id == -1))
+                    {
+                        <tr>
+                            <td>Total</td>
+                            <td>
+                                @if(Model.seed.PoundsLot < history.Weight)
+                                {
+                                    <span class="alert alert-danger" role="alert">@history.Weight</span>
+                                } else
+                                {
+                                    @history.Weight
+                                }
+                            </td>
+                            <td></td>                        
+                        </tr>
+                    }
+                </table>
+            }
+        </div> 
+    }
     <div class="col-sm-12">
         @if(Model.seed.Changes.Count > 0)
         {
