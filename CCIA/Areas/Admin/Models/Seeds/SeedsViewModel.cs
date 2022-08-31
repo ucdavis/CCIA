@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Models.ViewModels
 {   
@@ -29,6 +30,7 @@ namespace CCIA.Models.ViewModels
         public List<AbbrevAppType> certPrograms { get; set; }
 
         public List<County> counties { get; set; }
+        public List<SeedsPreviousTagBag> seedsPreviousTagBag { get; set; }
 
         public static async Task<AdminSeedsViewModel> CreateDetails(CCIAContext _dbContext, int sid, IFullCallService _helper)
         {
@@ -45,6 +47,7 @@ namespace CCIA.Models.ViewModels
                     .Include(r => r.LabOrganization)
                     .FirstOrDefaultAsync();
             labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid);
+            var p0 = new SqlParameter("@sid", sid); 
           
             var viewModel = new AdminSeedsViewModel
             {
@@ -52,6 +55,7 @@ namespace CCIA.Models.ViewModels
                 LabsAndStandards = labsAndStandards, 
                 Documents =  await _dbContext.SeedDocuments.Where(d => d.SeedsId == sid).Include(d => d.DocumentType).ToListAsync(),
                 documentTypes = await _dbContext.SeedsDocumentTypes.OrderBy(d => d.Order).ToListAsync(),
+                seedsPreviousTagBag =  await _dbContext.SeedPreviousTagBag.FromSqlRaw($"EXEC mvc_SeedsPreviousTagBag @sid", p0).ToListAsync(),
             };           
 
             return viewModel;

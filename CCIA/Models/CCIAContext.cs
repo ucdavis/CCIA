@@ -63,6 +63,7 @@ namespace CCIA.Models
         public virtual DbSet<BlendInDirtComponents> BlendInDirtComponents { get; set; }
         public virtual DbSet<LotBlendSummary> LotBlendSummary { get; set; }
         public virtual DbSet<InDirtBlendSummary> InDirtBlendSummary { get; set; }
+        public virtual DbSet<SeedsPreviousTagBag> SeedPreviousTagBag { get; set; }
         public virtual DbSet<VarietyBlendComponents> VarietyBlendComponents { get; set; }
         public virtual DbSet<BlendComponentChanges> BlendComponentChanges { get; set; }
         public virtual DbSet<BlendDocuments>   BlendDocuments { get; set; }
@@ -368,6 +369,18 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<SeedsPreviousTagBag>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<LotBlendSummary>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<InDirtBlendSummary>(entity => {
                 entity.HasNoKey();
             });
 
