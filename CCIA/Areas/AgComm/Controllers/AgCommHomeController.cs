@@ -21,9 +21,12 @@ namespace CCIA.Controllers.AgComm
             _dbContext = dbContext;            
         }
 
-        public ActionResult Index()
-        {     
-           return View();
+        public async Task<IActionResult> Index()
+        {    
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);       
+            var p0 = new SqlParameter("@org_id", orgId);
+            var model =  await _dbContext.LandingStats.FromSqlRaw($"EXEC mvc_agcomm_landstats @org_id", p0).ToListAsync();
+            return View(model);
         }
        
         
