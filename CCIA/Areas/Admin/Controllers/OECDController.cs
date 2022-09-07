@@ -246,7 +246,7 @@ namespace CCIA.Controllers.Admin
             {                
                 var p0 = new SqlParameter("@begin_date", vm.startDate);
                 var p1 = new SqlParameter("@end_date", vm.endDate);
-                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC usda_mark_certs @begin_date @end_date", p0, p1);
+                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC usda_mark_certs @begin_date, @end_date", p0, p1);
                 Message = "Lots marked as uploaded. Date clicked is recorded in case you need to reverse this. :)";
             }
             var model = await AdminOECDReportingViewModel.Create(_dbContext, vm);

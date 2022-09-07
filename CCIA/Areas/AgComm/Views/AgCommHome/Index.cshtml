@@ -1,0 +1,98 @@
+@model List<LandingStats>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div>Summary of last 2 cert years in your county</div>
+</div>
+
+<table class="table">
+    <tr><td><h3>Applications</h3></td><td colspan="2"></td></tr>
+    <tr>
+        <th>Status</th>
+        <th>Year</th>
+        <th>Count</th>
+    </tr>
+    @if(Model.Where(m => m.Type == "apps").Any())
+    {       
+        @foreach (var row in Model.Where(m => m.Type == "apps"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        }         
+    } else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+    <tr><td colspan="3"><hr></td></tr>
+    <tr><td><h3>Seeds</h3></td><td colspan="2"></td></tr>
+    @if(Model.Where(m => m.Type == "seeds").Any())
+    {        
+        @foreach (var row in Model.Where(m => m.Type == "seeds"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        } 
+    }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+    <tr><td colspan="3"><hr></td></tr>
+    <tr><td><h3>Tags</h3></td><td colspan="2"></td></tr>
+    @if(Model.Where(m => m.Type == "tags").Any())
+    {        
+        @foreach (var row in Model.Where(m => m.Type == "tags"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        } 
+    }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+    <tr><td colspan="3"><hr></td></tr>
+    <tr><td><h3>OECD</h3></td><td colspan="2"></td></tr>
+    @if(Model.Where(m => m.Type == "oecd").Any())
+    {        
+        @foreach (var row in Model.Where(m => m.Type == "oecd"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        } 
+    }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+    <tr><td colspan="3"><hr></td></tr>
+    <tr><td><h3>Blends</h3></td><td colspan="2"></td></tr>
+    @if(Model.Where(m => m.Type == "blends").Any())
+    {        
+        @foreach (var row in Model.Where(m => m.Type == "blends"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        } 
+    }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+    <tr><td colspan="3"><hr></td></tr>
+    <tr><td><h3>Seed Transfers</h3></td><td colspan="2"></td></tr>
+    @if(Model.Where(m => m.Type == "seedTransfers").Any())
+    {        
+        @foreach (var row in Model.Where(m => m.Type == "seedTransfers"))
+        {
+            <tr>
+                <td>@row.Status</td>
+                <td>@row.Year</td>
+                <td>@row.Count</td>
+            </tr>
+        } 
+    }  else { <tr><td colspan="3"><b>None Found</b></td></tr>}
+
+
+</table>
+

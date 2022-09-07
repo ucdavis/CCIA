@@ -209,6 +209,12 @@ namespace CCIA.Controllers
                 
                 EmulationMessage = string.Format("Emulating {0}.  <a class='btn btn-dark' href='/Account/EndEmulate'>Exit</a>", contact.Name);
                 await CompleteSignin(contact, true, agComm);
+
+                if(agComm)
+                {
+                    return RedirectToAction("Index", "AgCommHome", new { area = "AgComm"});
+                }     
+
                 return RedirectToAction("Index", "Home", new { Area = "Client"});
             }
             else
