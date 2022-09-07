@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -16,6 +17,9 @@ namespace CCIA.Models
         public int LinkId { get; set; }
         public string LinkType { get; set; }
         public int OrgId { get; set; }
+        [ForeignKey("OrgId")]
+        public Organizations Organization { get; set; }
+
         public string BatchNumber { get; set; }
         public string ChargeCategory { get; set; }
         public decimal? ChargeAmount { get; set; }

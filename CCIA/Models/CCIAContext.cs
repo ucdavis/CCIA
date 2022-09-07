@@ -2316,6 +2316,7 @@ namespace CCIA.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.OrgId).HasColumnName("org_id");
+                entity.HasOne(e => e.Organization);
             });
 
             modelBuilder.Entity<CondStatus>(entity =>

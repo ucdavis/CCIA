@@ -22,7 +22,13 @@ namespace CCIA.Controllers
         public IActionResult Index()
         {            
             return View();
-        }  
+        } 
+
+        public async Task<IActionResult> Charges(AdminChargesSearchViewModel vm)
+        {
+            var model = await AdminChargesSearchViewModel.Create(_dbContext, vm);
+            return View(model);
+        } 
 
         public async Task<IActionResult> Employees(bool showOnlyCurrent = true)
         {
