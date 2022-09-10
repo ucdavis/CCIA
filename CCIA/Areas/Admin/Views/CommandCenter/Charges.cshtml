@@ -29,8 +29,16 @@
             </div>    
         </div>
     </div>
-    <div>
-        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="submit" name="submit" value="Preview" class="btn btn-primary"></input>
+        </div>
+        <div class="col-sm-4">
+            <input type="submit" name="submit" value="Download" class="btn btn-primary"></input>
+        </div>
+        <div class="col-sm-4">
+            <input type="submit" name="submit" value="Mark" class="btn btn-primary"></input>
+        </div>
     </div>
     <div class="col-sm-12">
         <hr>
@@ -46,6 +54,7 @@
 <table id="table" class="table datatables">
     <thead>
         <tr>
+            <th></th>
             <th>LinkId</th>
             <th>LinkType</th>
             <th>OrgId</th>
@@ -60,6 +69,28 @@
         @foreach (var row in Model.charges)
         {
             <tr>
+                <td>
+                    @if(row.LinkType=="Applications")
+                    {
+                        <a asp-action="details" asp-controller="application" asp-route-id="@row.LinkId" class="btn btn-info" target="_blank">Details</a>
+                    }
+                    @if(row.LinkType=="Turfgrass Certificate")
+                    {
+                        <a asp-action="Certificate" asp-controller="Turfgrass" asp-route-id="@row.LinkId" class="btn btn-info" target="_blank">Details</a>                        
+                    }
+                    @if(row.LinkType=="Map")
+                    {
+                        <a href="https://ccia.ucdavis.edu/pinning-maps" class="btn btn-info" target="_blank">Maps</a>                        
+                    }
+                    @if(row.LinkType=="OECD")
+                    {
+                        <a asp-action="details" asp-controller="OECD" asp-route-id="@row.LinkId" class="btn btn-info" target="_blank">Details</a>                        
+                    }
+                    @if(row.LinkType=="Seeds")
+                    {
+                        <a asp-action="details" asp-controller="Seeds" asp-route-id="@row.LinkId" class="btn btn-info" target="_blank">Details</a>                        
+                    }
+                </td>
                 <td>@row.LinkId</td>
                 <td>@row.LinkType</td>
                 <td>@row.OrgId</td>
@@ -67,7 +98,7 @@
                 <td>@row.ChargeCategory</td>
                 <td>@row.ChargeAmount</td>
                 <td>@row.Description</td>
-                <td>@row.DateEntered</td>
+                <td>@row.DateEntered</td>                
             </tr>            
         }
     </tbody>

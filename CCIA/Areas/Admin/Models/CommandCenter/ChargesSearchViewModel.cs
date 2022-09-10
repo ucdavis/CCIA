@@ -39,7 +39,9 @@ namespace CCIA.Models
                 {
                     charges = await _dbContext.Charges
                         .Include(c => c.Organization)
-                        .Where(c => !c.HoldCheck && c.Deletecharge == 0 && c.DateApplied == null && !c.Correction).ToListAsync(),
+                        .Where(c => !c.HoldCheck && c.Deletecharge == 0 && 
+                        c.DateApplied == null && !c.Correction &&
+                        c.DateEntered.Value.Date <= vm.endDate && c.DateEntered.Value.Date >= vm.beginDate).ToListAsync(),
                     beginDate = vm.beginDate,
                     endDate = vm.endDate,
                     reportDate = vm.reportDate,

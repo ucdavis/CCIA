@@ -24,8 +24,18 @@ namespace CCIA.Controllers
             return View();
         } 
 
-        public async Task<IActionResult> Charges(AdminChargesSearchViewModel vm)
+        public async Task<IActionResult> Charges(AdminChargesSearchViewModel vm, string submit)
         {
+            switch (submit)
+            {
+                case "Preview" :
+                    break;
+                case "Download" :
+                    return Redirect(nameof(Index));
+                case "Mark" :
+                    var model1 = await AdminChargesSearchViewModel.Create(_dbContext, vm);
+                    return View(model1);
+            }
             var model = await AdminChargesSearchViewModel.Create(_dbContext, vm);
             return View(model);
         } 
