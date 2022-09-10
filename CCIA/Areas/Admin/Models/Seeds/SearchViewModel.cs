@@ -128,7 +128,8 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.appId))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
+                    var seedApps = await _dbContext.SeedsApplications.Where(sa => EF.Functions.Like(sa.AppId.ToString(),  "%" + vm.appId.Trim() + "%")).Select(sa => sa.SeedsId).ToListAsync();
+                    seedToFind = seedToFind.Where(s => seedApps.Contains(s.Id) || EF.Functions.Like(s.AppId.Value.ToString(), "%" + vm.appId.Trim() + "%"));
                 }
                 if(vm.ProgramToSearch != "%")
                 {
