@@ -162,6 +162,8 @@ namespace CCIA.Models
         public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
 
         public virtual DbSet<CropAssignments> CropAssignments { get; set; }
+
+        public virtual DbSet<ExportCharges> ExportCharges { get; set; }
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
@@ -369,6 +371,10 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<ExportCharges>(entity => {
                 entity.HasNoKey();
             });
 
