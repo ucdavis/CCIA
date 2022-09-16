@@ -538,7 +538,7 @@
         <div class="row">
             <h4>New Entry:</h4>
             <form asp-action="RecordSeries" class="form-inline">
-                @Html.HiddenFor(x => x.tag.Id)                
+               <input type="hidden" id="id" name="id" value="@Model.tag.Id">
                <label for="Letter" class="col-sm-1">Letter</label> 
                <input type="text" id="Letter" name="Letter" class="form-control col-sm-1" width="5px" />
                <label for="Star" class="col-sm-2">Start Number</label>
@@ -574,14 +574,6 @@
                             <td>@tagSeries.End</td>
                             <td><input type="checkbox" asp-for="tag.@tagSeries.Void" class="col-sm-3 form-control disabled"></td>
                             <td>@tagSeries.Count </td>
-                            <td><a asp-action="EditSeries" asp-route-id="@tagSeries.Id" class="btn btn-info">Edit</a></td>
-                            <td>                                
-                                <form asp-action="DeleteSeries">
-                                    <input type="hidden" value="@tagSeries.Id" name="id" id="id">
-                                    <input type="submit" class="btn btn-warning" value="Delete entry" onclick="return confirm('Are you sure you want to delete this entry?')">
-                                </form>
-                            </td>
-
                         </tr>
                     }
                 </tbody>
