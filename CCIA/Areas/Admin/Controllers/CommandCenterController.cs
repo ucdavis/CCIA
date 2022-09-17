@@ -53,20 +53,48 @@ namespace CCIA.Controllers
             p1.Value = endDate;
             var p2 = new SqlParameter("@rpt_date", System.Data.SqlDbType.DateTime);
             p2.Value = reportDate;
-            // var model = await _dbContext.ExportCharges.FromSqlRaw($"EXEC mvc_export_charges_to_iif @begin_date, @end_date, @rpt_date", p0, p1, p2).ToListAsync();
-
-            // var p0 = new SqlParameter("@begin_date", beginDate);
-            // var p1 = new SqlParameter("@end_date", endDate);
-            // var p2 = new SqlParameter("@rpt_date", reportDate);
             var model =  await _dbContext.ExportCharges.FromSqlRaw($"EXEC mvc_export_charges_to_iif @begin_date, @end_date, @rpt_date", p0, p1, p2).ToListAsync();
 
             StringBuilder sb = new StringBuilder();
+            bool fl = true;
             var s = "\t";
             sb.Append("!TRNS" + s + "TRNSTYPE" + s + "DATE" + s + "ACCNT" + s + "NAME" + s + "CLASS" + s + "AMOUNT" + s + "DOCNUM" + s + "MEMO" + s + "ADDR1");
-            sb.Append("\n");
+            sb.Append(Environment.NewLine);
             sb.Append("!SPL" + s + "TRNSTYPE" + s + "DATE" + s + "ACCNT" + s + "NAME" + s + "CLASS" + s + "AMOUNT" + s + "DOCNUM" + s + "MEMO" + s + "INVITEM");
-            sb.Append("\n");
-            sb.Append("!ENDTRNS \n");
+            sb.Append(Environment.NewLine);
+            sb.Append("!ENDTRNS" + Environment.NewLine);
+
+            foreach(var dr in model)
+            {
+                if(dr.TRNS == "TRNS" && !fl)
+                {
+                    sb.Append("ENDTRNS");
+                    sb.Append(Environment.NewLine);
+                }
+                if(fl)
+                {
+                    fl = false;
+                }
+                sb.Append(dr.TRNS + s);
+                sb.Append(dr.TrnsType + s);
+                sb.Append(dr.Date.ToShortDateString() + s);
+                sb.Append(dr.Accnt + s);
+                sb.Append(dr.Name + s);
+                sb.Append(dr.QBClass + s);
+                sb.Append(dr.Amount + s);
+                sb.Append(dr.DocNum + s);
+                sb.Append(dr.Memo + s);
+                if(dr.TRNS == "TRNS")
+                {
+                    sb.Append(dr.Name + s);
+                } else
+                {
+                    sb.Append(dr.InvItem + s);
+                }
+                sb.Append(Environment.NewLine);
+            }
+
+            sb.Append("ENDTRNS" + Environment.NewLine);
 
             var fileName = $"export{DateTime.Now.ToShortDateString()}.iif"; 
 
