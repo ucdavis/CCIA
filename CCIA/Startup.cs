@@ -121,6 +121,10 @@ namespace CCIA
                         {
                             identity.AddClaim(new Claim(ClaimTypes.Role, "EditVarieties"));
                         }
+                        if(user.BillingAccess)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "Billing"));
+                        }
 
                         context.Principal.AddIdentity(identity);
 

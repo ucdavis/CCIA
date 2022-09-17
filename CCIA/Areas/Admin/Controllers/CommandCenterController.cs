@@ -27,6 +27,7 @@ namespace CCIA.Controllers
             return View();
         } 
 
+        [Authorize(Roles = "Billing")]
         public async Task<IActionResult> Charges(AdminChargesSearchViewModel vm, string submit)
         {
             switch (submit)
@@ -52,6 +53,7 @@ namespace CCIA.Controllers
 
         
 
+        [Authorize(Roles = "Billing")]
         public async Task<IActionResult> ExportCharges(DateTime beginDate, DateTime endDate, DateTime reportDate)
         {
             var p0 = new SqlParameter("@begin_date", System.Data.SqlDbType.DateTime);
