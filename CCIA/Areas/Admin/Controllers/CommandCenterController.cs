@@ -35,15 +35,22 @@ namespace CCIA.Controllers
                     break;
                 case "Download" :
                     return RedirectToAction("ExportCharges", new {beginDate = vm.beginDate, endDate = vm.endDate, reportDate = vm.reportDate});
-                    // return RedirectToAction( "ExportCharges", new RouteValueDictionary( 
-                    //     new { controller = "CommandCenter", action = "ExportCharges", export = vm } ) );
                 case "Mark" :
-                    var model1 = await AdminChargesSearchViewModel.Create(_dbContext, vm);
-                    return View(model1);
+                    var p0 = new SqlParameter("@begin_date", System.Data.SqlDbType.DateTime);
+                    p0.Value = vm.beginDate;         
+                    var p1 = new SqlParameter("@end_date", System.Data.SqlDbType.DateTime);
+                    p1.Value = vm.endDate;
+                    var p2 = new SqlParameter("@rpt_date", System.Data.SqlDbType.DateTime);
+                    p2.Value = vm.reportDate;
+                    await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_mark_export_charges_to_iif @begin_date, @end_date, @rpt_date", p0, p1, p2); 
+                    Message = "Charges marked as complete";
+                    break;
             }
             var model = await AdminChargesSearchViewModel.Create(_dbContext, vm);
             return View(model);
         } 
+
+        
 
         public async Task<IActionResult> ExportCharges(DateTime beginDate, DateTime endDate, DateTime reportDate)
         {
