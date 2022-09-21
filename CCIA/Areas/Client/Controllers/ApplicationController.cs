@@ -772,7 +772,7 @@ namespace CCIA.Controllers.Client
                 return RedirectToAction("Membership","Organization");
             }
             var certYear = CertYearFinder.CertYear;
-            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
+            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0 && r.Application.ApplicantId == orgId).ToListAsync();
             return View(model);
         }
 
