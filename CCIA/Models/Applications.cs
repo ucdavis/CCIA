@@ -370,7 +370,7 @@ namespace CCIA.Models
                 }
                 if(AppType == "PO")
                 {
-                    return "";
+                    return "PO";
                 }
                 if(AppType == "PV")
                 {
@@ -391,7 +391,32 @@ namespace CCIA.Models
                 return $"{certYearAbbrev}CA-{rad}-{CertNum} for {ClassProduced.ClassProducedTrans}";
 
             }
-        }       
+        }   
+
+         public string CertNumberError
+        { 
+            get
+            {                
+                if(FieldInspectionReport == null || ClassProduced == null)
+                {
+                    return "No Inspection Report or Class";
+                }
+                if(ClassProduced.ClassProducedTrans == "Inspection Only")
+                {
+                    return "Inspection Only";
+                }
+                if(FieldInspectionReport.AcresApproved == 0)
+                {
+                    return "Zero Acres approved";
+                }
+                if(!FieldInspectionReport.Complete)
+                {
+                    return "Field Inspection Report not marked complete";
+                }
+                return "";
+
+            }
+        }           
 	
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

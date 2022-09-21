@@ -239,9 +239,12 @@
             <td>
             </td>
             <td colspan="4">
-                @if(Model.application.FieldInspectionReport.Complete)
+                @if(Model.application.FieldInspectionReport.Complete && Model.application.CertNumberError == "")
                 {
                     <span>Use @Model.application.AppTypeTrans.NumberTitle number @Model.application.CertNumberSent production.</span>
+                } else
+                {
+                    <span>@Model.application.CertNumberError</span>
                 }
             </td>
         </tr>

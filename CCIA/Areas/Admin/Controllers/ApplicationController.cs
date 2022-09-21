@@ -535,6 +535,7 @@ namespace CCIA.Controllers.Admin
                 ErrorMessage = "Application not found or no FIR ready (not accepted?)";
                 return RedirectToAction(nameof(Pending));
             }
+            
             return View(model);
         }
 
@@ -550,7 +551,7 @@ namespace CCIA.Controllers.Admin
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
-            }
+            }            
             return View(model);
         }
        // Add ability to upload documentation for FIR

@@ -755,6 +755,11 @@ namespace CCIA.Controllers.Client
             {
                 return View("~/Areas/Admin/Views/Application/FIRCertificatePotato.cshtml", model);
             }
+            if(model.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }            
             return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
 
@@ -767,7 +772,7 @@ namespace CCIA.Controllers.Client
                 return RedirectToAction("Membership","Organization");
             }
             var certYear = CertYearFinder.CertYear;
-            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0).ToListAsync();
+            var model = await _helper.FullRenewFields().Where(r => r.Year == certYear && r.Action == 0 && r.Application.ApplicantId == orgId).ToListAsync();
             return View(model);
         }
 
