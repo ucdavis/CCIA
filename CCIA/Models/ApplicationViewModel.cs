@@ -76,6 +76,7 @@ namespace CCIA.Models
                     varieties = await _dbContext.VarFull.Where(v => v.CropId == PotatoCropId).OrderBy(v => v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     app.CropId = PotatoCropId;
+                    planted = classes.Where(c => c.ClassProducedId != 11).ToList();
                     break;
                 // Heritage Grain QA
                 case 3:
