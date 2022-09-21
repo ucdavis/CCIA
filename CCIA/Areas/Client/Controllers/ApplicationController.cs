@@ -759,11 +759,7 @@ namespace CCIA.Controllers.Client
             {
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
-            }
-            if(model.application.CertNumberError != ""){
-                ErrorMessage = $"App did not pass: {model.application.CertNumberError}";
-                return  RedirectToAction(nameof(Index));
-            }
+            }            
             return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
 

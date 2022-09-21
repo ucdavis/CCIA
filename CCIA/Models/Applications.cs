@@ -396,39 +396,22 @@ namespace CCIA.Models
          public string CertNumberError
         { 
             get
-            {
+            {                
                 if(FieldInspectionReport == null || ClassProduced == null)
                 {
-                    return "No FIR or class";
+                    return "No Inspection Report or Class";
                 }
-                if(FieldInspectionReport.AcresApproved == 0 && FieldInspectionReport.AcresGrowout == 0)
+                if(ClassProduced.ClassProducedTrans == "Inspection Only")
                 {
-                    return "Acres approved equals 0";
+                    return "Inspection Only";
                 }
-                
-                if(AppType == "LT")
+                if(FieldInspectionReport.AcresApproved == 0)
                 {
-                    return "";
+                    return "Zero Acres approved";
                 }
-                if(AppType == "PO")
+                if(!FieldInspectionReport.Complete)
                 {
-                    return "PO";
-                }
-                if(AppType == "PV")
-                {
-                    return "";
-                }
-                if(AppType=="GQ")
-                {
-                    return "";
-                }
-                if(AppType=="RQ")
-                {
-                    return "";
-                }  
-                if(CertYear < 2007)
-                {
-                    return "";
+                    return "Field Inspection Report not marked complete";
                 }
                 return "";
 

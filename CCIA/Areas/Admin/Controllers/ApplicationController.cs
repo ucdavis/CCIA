@@ -551,11 +551,7 @@ namespace CCIA.Controllers.Admin
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
-            }
-            if(model.application.CertNumberError != ""){
-                ErrorMessage = $"App did not pass: {model.application.CertNumberError}";
-                return  RedirectToAction(nameof(Pending));
-            }
+            }            
             return View(model);
         }
        // Add ability to upload documentation for FIR
