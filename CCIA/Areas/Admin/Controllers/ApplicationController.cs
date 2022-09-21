@@ -535,6 +535,7 @@ namespace CCIA.Controllers.Admin
                 ErrorMessage = "Application not found or no FIR ready (not accepted?)";
                 return RedirectToAction(nameof(Pending));
             }
+            
             return View(model);
         }
 
@@ -550,6 +551,10 @@ namespace CCIA.Controllers.Admin
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
+            }
+            if(model.application.CertNumberError != ""){
+                ErrorMessage = $"App did not pass: {model.application.CertNumberError}";
+                return  RedirectToAction(nameof(Pending));
             }
             return View(model);
         }

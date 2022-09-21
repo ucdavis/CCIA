@@ -755,6 +755,15 @@ namespace CCIA.Controllers.Client
             {
                 return View("~/Areas/Admin/Views/Application/FIRCertificatePotato.cshtml", model);
             }
+            if(model.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            if(model.application.CertNumberError != ""){
+                ErrorMessage = $"App did not pass: {model.application.CertNumberError}";
+                return  RedirectToAction(nameof(Index));
+            }
             return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
 
