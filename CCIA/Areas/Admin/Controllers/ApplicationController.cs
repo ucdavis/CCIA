@@ -61,6 +61,7 @@ namespace CCIA.Controllers.Admin
             {
                 certYear = await _dbContext.Applications.MaxAsync(a => a.CertYear);
             }
+             ViewBag.AcresApproved = "Yes";
             var model = await AdminApplicationIndexViewModel.Create(_dbContext, certYear, true, _helper);
             return View("Index", model);
         }
@@ -372,6 +373,7 @@ namespace CCIA.Controllers.Admin
                 {
                     ViewBag.IncludeMapOptions = "Yes";
                 }
+                ViewBag.AcresApproved = "Yes";
                 return View(model);            
         }  
 
