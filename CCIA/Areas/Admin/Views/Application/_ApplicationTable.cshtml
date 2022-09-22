@@ -43,6 +43,7 @@
         <th>County</th>
         <th>Field Name</th>
         <th>Acres</th>
+        <th>Acres Approved</th>
         <th>Planting Date</th>
         <th>Map</th>
         <th>PO Lot</th>
@@ -80,6 +81,11 @@
                     {
                         <span>Square feet</span>
                     } 
+                </td>
+                <td>@if(app.FieldInspectionReport != null)
+                    {
+                        @app.FieldInspectionReport.AcresApproved
+                    }
                 </td>
                 @if(app.DatePlanted.HasValue)
                 {

@@ -212,6 +212,7 @@ namespace CCIA.Services
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .Include(a => a.FieldInspection)
+                .Include(a => a.FieldInspectionReport)
                 .AsQueryable();
             return app;
 
