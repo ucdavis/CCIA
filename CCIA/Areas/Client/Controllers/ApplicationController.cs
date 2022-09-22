@@ -1289,12 +1289,11 @@ namespace CCIA.Controllers.Client
         {
             var varieties = await _dbContext.VarFull
                 .Where(v => v.Name.Contains(name) && v.CropId == cropId)
-                .Select(v => new VarFull
+                .Select(v => new VarietyList
                 {
-                    CropId = v.CropId,
-                    //Crop = _dbContext.Crops.Select(c => new Crops { Crop = c.Crop, CropId = c.CropId }).Where(c => c.CropId == v.CropId).SingleOrDefault(),
+                    CropId = v.CropId,                    
                     Id = v.Id,
-                    Name = v.Name
+                    Name = v.Name,                    
                 })
                 .ToListAsync();
             return Json(varieties);
