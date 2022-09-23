@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CCIA.Helpers;
 
 namespace CCIA.Models
 {
@@ -351,6 +352,24 @@ namespace CCIA.Models
                 if(BlendId.HasValue && Blend != null && Blend.LbsLot.HasValue)
                 {
                     return Blend.LbsLot.Value;
+                }
+                if(BlendId.HasValue && Blend != null && (Blend.BlendType == BlendType.Varietal.GetDisplayName() || Blend.BlendType == BlendType.Lot.GetDisplayName()) && Blend.LotBlends != null)
+                {
+                    decimal varietalTotal = 0;
+                    foreach(var row in Blend.LotBlends)
+                    {
+                        varietalTotal += row.Weight;                        
+                    }
+                    return varietalTotal;
+                }
+                if(BlendId.HasValue && Blend != null && Blend.BlendType == BlendType.InDirt.GetDisplayName() && Blend.InDirtBlends != null)
+                {
+                    decimal inDirtTotal = 0;
+                    foreach(var row in Blend.InDirtBlends)
+                    {
+                        inDirtTotal += row.Weight;                        
+                    }
+                    return inDirtTotal;
                 }
                 return 0;
             }
