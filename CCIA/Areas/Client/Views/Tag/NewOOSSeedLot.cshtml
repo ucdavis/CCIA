@@ -329,13 +329,11 @@
                         //window[selectVarietyCallback](-1, varietyName);                      
                     }
                     // Populate dropdown with list of varieties
-                    res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
-                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
-                            varietySelected(el.id);
-                        });
+                   res.forEach((el) => {
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id} onClick="varietySelected(${el.id});">${el.name}</a>`;                       
+                       
                     })
-                },
+                },                
                 error: function (res) {
                     alert("There was an error processing the request");
                 }

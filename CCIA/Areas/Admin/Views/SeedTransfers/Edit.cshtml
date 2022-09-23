@@ -60,7 +60,7 @@
                    
             <div class="form-group row">
                 <label asp-for="stc.Pounds" class="col-sm-3 col-form-label"></label>
-                 <input asp-for="stc.Pounds" class="col-sm-3 col-form-label"></input>
+                <input asp-for="stc.Pounds" class="col-sm-3 col-form-label"></input>
                 <span class="field-validation-valid text-danger" data-valmsg-for="stc.Pounds" data-valmsg-replace="true"></span> 
             </div>                            
         </div>
@@ -103,10 +103,9 @@
             <h3>From: Producer/Shipper/Applicant/Grower</h3>
             <div class="form-group row">
                 <label asp-for="stc.OriginatingOrganizationId" class="col-sm-3 col-form-label">OrgId</label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganizationId)
-                </div>
-            </div>
+                <input asp-for="stc.OriginatingOrganizationId" class="col-sm-3 col-form-label"></input>
+                <span class="field-validation-valid text-danger" data-valmsg-for="stc.OriginatingOrganizationId" data-valmsg-replace="true"></span>
+           </div>
             <div class="form-group row">
                 <label asp-for="stc.OriginatingOrganization.Name" class="col-sm-3 col-form-label">Name</label>
                 <div class="col-sm-9 form-control-plaintext">

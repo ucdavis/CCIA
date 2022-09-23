@@ -271,14 +271,11 @@
                     // No varieties were found
                     if (res.length === 0) {
                         alert("Warning: No variety found. No variety with the entered name was found in our system. Please update and try again"); 
-                        //window[selectVarietyCallback](-1, varietyName);                      
                     }
                     // Populate dropdown with list of varieties
                     res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
-                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
-                            varietySelected(el.id);
-                        });
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id} onClick="varietySelected(${el.id});">${el.name}</a>`;                       
+                       
                     })
                 },
                 error: function (res) {
@@ -288,6 +285,7 @@
         }
 
         function varietySelected(varietyId) {
+            //alert(varietyId);
             $("#completeForm").show();            
             $("#Seed_SampleFormVarietyId").val(varietyId);                
         };

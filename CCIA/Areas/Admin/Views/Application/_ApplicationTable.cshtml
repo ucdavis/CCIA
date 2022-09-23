@@ -43,6 +43,10 @@
         <th>County</th>
         <th>Field Name</th>
         <th>Acres</th>
+        @if(ViewBag.AcresApproved != null)
+        {
+            <th>Acres Approved</th>
+        }        
         <th>Planting Date</th>
         <th>Map</th>
         <th>PO Lot</th>
@@ -81,6 +85,14 @@
                         <span>Square feet</span>
                     } 
                 </td>
+                @if(ViewBag.AcresApproved != null)
+                {
+                    <td>@if(app.FieldInspectionReport != null)
+                        {
+                            @app.FieldInspectionReport.AcresApproved
+                        }
+                    </td>
+                }                   
                 @if(app.DatePlanted.HasValue)
                 {
                     <td data-sort="@string.Format("{0:yyyy/MM/dd}" , app.DatePlanted.Value)">@app.DatePlanted.Value.ToShortDateString()</td>
