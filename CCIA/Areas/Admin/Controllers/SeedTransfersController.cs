@@ -94,6 +94,7 @@ namespace CCIA.Controllers.Admin
             stcToUpdate.ApplicationId = update.ApplicationId;
             stcToUpdate.CertificateDate = update.CertificateDate;           
             stcToUpdate.Pounds = update.Pounds;
+            stcToUpdate.OriginatingOrganizationId = update.OriginatingOrganizationId;
             stcToUpdate.PurchaserName = update.PurchaserName;
             stcToUpdate.PurchaserAddressLine1 = update.PurchaserAddressLine1;
             stcToUpdate.PurchaserAddressLine2 = update.PurchaserAddressLine2;
