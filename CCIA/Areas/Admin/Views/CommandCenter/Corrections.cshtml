@@ -1,55 +1,8 @@
-@model CCIA.Models.AdminChargesSearchViewModel
+@model List<CCIA.Models.Charges>
 
-<h3>Charges</h3>
-<form asp-action="Charges" method="POST">
-<div class="container col-sm-2">
-    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
-    Hide Search
-  </button>
-</div>
-<div class="container col-sm-10 collapse show" id="SearchCollapse">
-    <div>&nbsp;</div>
-    <div class="row">
-        <div class="col-md-6 col-xl-4">@* First column*@ 
-            <div class="form-group row">
-                <label asp-for="beginDate" class="col-sm-3 col-form-label">Begin Date</label>
-                <input type="text" asp-for="beginDate" class="form-control col-sm-4 datepicker">
-            </div>    
-        </div>
-        <div class="col-md-6 col-xl-4">@* Second column*@ 
-            <div class="form-group row">
-                <label asp-for="endDate" class="col-sm-3 col-form-label">End Date</label>
-                <input type="text" asp-for="endDate" class="form-control col-sm-4 datepicker">
-            </div>    
-        </div>
-        <div class="col-md-6 col-xl-4">@* Third column*@ 
-            <div class="form-group row">
-                <label asp-for="reportDate" class="col-sm-3 col-form-label">Report Date</label>
-                <input type="text" asp-for="reportDate" class="form-control col-sm-4 datepicker">
-            </div>    
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <input type="submit" name="submit" value="Preview" class="btn btn-primary"></input>
-        </div>
-        <div class="col-sm-3">
-            <input type="submit" name="submit" value="Download" class="btn btn-primary"></input>
-        </div>
-        <div class="col-sm-3">
-            <input type="submit" name="submit" value="Mark" class="btn btn-primary"></input>
-        </div>
-        <div class="col-sm-3">
-            <a asp-action="Corrections" class="btn btn-dark">Corrections</a>
-        </div>
-    </div>
-    <div class="col-sm-12">
-        <hr>
-    </div>
-</div>
+<h3>Corrected Charges</h3>
 <hr>
-</form>
-@if(Model.charges.Any())
+@if(Model.Count > 0)
 {
 <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
@@ -58,18 +11,20 @@
     <thead>
         <tr>
             <th></th>
-            <th>LinkId</th>
+            <th>Charge ID</th>
+            <th>Link ID</th>
             <th>LinkType</th>
             <th>OrgId</th>
             <th>Org</th>
             <th>Category</th>
             <th>Amount</th>
             <th>Description</th>
+            <th>Correction?</th>
             <th>Date</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var row in Model.charges)
+        @foreach (var row in Model)
         {
             <tr>
                 <td>
@@ -94,6 +49,7 @@
                         <a asp-action="details" asp-controller="Seeds" asp-route-id="@row.LinkId" class="btn btn-info" target="_blank">Details</a>                        
                     }
                 </td>
+                <td>@row.ChgId</td>
                 <td>@row.LinkId</td>
                 <td>@row.LinkType</td>
                 <td>@row.OrgId</td>
@@ -101,6 +57,7 @@
                 <td>@row.ChargeCategory</td>
                 <td>@row.ChargeAmount</td>
                 <td>@row.Description</td>
+                <th><input type="checkbox" checked=@row.Correction class="form-control"></th>
                 <td>@row.DateEntered</td>                
             </tr>            
         }
@@ -108,17 +65,23 @@
 </table>
 
 
+<form asp-action="MarkCorrections" method="POST">
+    <div class="col-sm-3">
+            <input type="submit" name="submit" value="Mark Complete" class="btn btn-primary"></input>
+        </div>
+</form>
+
+
 
 }
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>    
 
     <script>
         $(document).ready( function () {
-            $('.datepicker').datepicker();
+            $(":checkbox").on("click", false);            
             $('#table').DataTable({
                 dom: 'lfrtip',                
                 order: [[ 1, "asc"]],

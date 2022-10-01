@@ -19,6 +19,7 @@
 
     <script>
         $(document).ready( function () {
+            $(":checkbox").on("click", false);
             $('#table').DataTable({
                 dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],

@@ -38,7 +38,7 @@
                 <td>@seeds.GetVarietyName()</td>
                 <td>@seeds.ClassProduced.CertClass</td>
                 <td>@seeds.LotNumber</td>
-                <td>@Html.CheckBoxFor(m => @seeds.HasLabs)</td>
+                <td><input type="checkbox" checked=@seeds.HasLabs class="form-control"></td>
                 <td>@if(seeds.LabResults != null && seeds.LabResults.PrivateLabDate.HasValue){
                     @seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
                     }
@@ -62,6 +62,7 @@
 
     <script>
         $(document).ready( function () {
+            $(":checkbox").on("click", false);
             $('#table').DataTable({
                 dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],

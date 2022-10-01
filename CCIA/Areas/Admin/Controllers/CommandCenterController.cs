@@ -28,6 +28,33 @@ namespace CCIA.Controllers
         } 
 
         [Authorize(Roles = "Billing")]
+        public async Task<IActionResult> Corrections()
+        {
+            var model = await _dbContext.Charges
+                .Include(c => c.Organization)
+                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0).ToListAsync();
+            return View(model);
+        }
+
+        [Authorize(Roles = "Billing")]
+        [HttpPost]
+        public async Task<IActionResult> MarkCorrections()
+        {
+            var model = await _dbContext.Charges
+                .Include(c => c.Organization)
+                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0).ToListAsync();
+            model.ForEach(c => 
+                {
+                    c.BatchNumber = DateTime.Now.ToShortDateString();
+                    c.DateApplied = DateTime.Now;                    
+                });
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Corrections));
+        }
+
+
+
+        [Authorize(Roles = "Billing")]
         public async Task<IActionResult> Charges(AdminChargesSearchViewModel vm, string submit)
         {
             switch (submit)
