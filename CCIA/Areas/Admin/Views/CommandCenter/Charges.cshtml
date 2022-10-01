@@ -110,21 +110,20 @@
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
-    
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>    
 
     <script>
         $(document).ready( function () {
             $('.datepicker').datepicker();
             $('#table').DataTable({
-                dom: 'lBfrtip',
-                buttons: ['copyHtml5', 'csvHtml5'],
+                dom: 'lfrtip',                
                 order: [[ 1, "asc"]],
-                "pageLength": 50,
+                "pageLength": 1000,
+                lengthMenu: [
+                    [100, 500, 1000, -1],
+                    [100, 500, 1000, 'All'],
+                ],
             });
         } );
     </script>
