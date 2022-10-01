@@ -84,7 +84,7 @@
                 <td>@variety.Type</td>
                 <td>@variety.Category</td>
                 <td>@variety.Status</td>
-                <td><input type="checkbox" checked="@variety.Certified"></td>
+                <td><input type="checkbox" class="form-control" checked="@variety.Certified"></td>
                 <td>@variety.Crop.Crop</td>
                 <td>@variety.Crop.CropKind</td>
             </tr>
@@ -106,7 +106,8 @@
     <script>
         var oTable;
 
-        $(document).ready( function () {            
+        $(document).ready( function () { 
+            $(":checkbox").on("click", false);           
             
             oTable = $('#table').dataTable({
                 dom: 'lBfrtip',

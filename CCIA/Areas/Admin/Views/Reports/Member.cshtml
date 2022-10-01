@@ -129,7 +129,7 @@
                     
                     <td>@row.Email</td>
                     <td>@row.District</td>
-                    <td><input type="checkbox" checked="@row.Member"></td>
+                    <td><input type="checkbox" class="form-control" checked="@row.Member"></td>
                     <td>@row.MemberType</td>
                     <td>@row.MemberYear</td>
                     <td data-sort="@string.Format("{0:yyyy/MM/dd}",row.LastMemberAgreement)">@row.LastMemberAgreement</td>
@@ -150,6 +150,7 @@
 
      <script>
         $(document).ready( function () {
+            $(":checkbox").on("click", false);
             $('#table').DataTable({
                 dom: 'Brt',
                 buttons: ['copyHtml5', 'csvHtml5'],

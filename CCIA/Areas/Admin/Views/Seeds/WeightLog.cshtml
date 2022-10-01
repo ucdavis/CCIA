@@ -61,8 +61,8 @@
             }            
             <td>@seed.SampleFormDate</td>
             <td>@seed.Id</td>
-            <td><input type="checkbox" checked=@seed.HasOECDForm></td>
-            <td><input type="checkbox" checked=@seed.OECDLot></td>
+            <td><input type="checkbox" class="form-control" checked=@seed.HasOECDForm></td>
+            <td><input type="checkbox" class="form-control" checked=@seed.OECDLot></td>
             <th>@seed.ClassName</th>
             <th>@seed.CertYear</th>
             <th>@seed.CertNumber</th>
@@ -90,6 +90,7 @@
 
     <script>
         $(document).ready( function () {
+            $(":checkbox").on("click", false);
             $('#table').DataTable({
                 dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
