@@ -36,7 +36,7 @@
                 <td>@Html.DisplayFor(x => transfer.Pounds)</td>
                 <td>@transfer.TransferClass</td>
                 <td>@transfer.PurchaserName</td>
-                <td>@Html.DisplayFor(model => transfer.AgricultureCommissionerApprove)</td>
+                <td><input type="checkbox" checked=@transfer.AgricultureCommissionerApprove class="form-control"></td>
                 <td>
                     @if(@transfer.AgricultureCommissionerDateRespond.HasValue)
                     {
@@ -61,6 +61,7 @@
 
     <script>
         $(document).ready( function () {
+            $(":checkbox").on("click", false);
             $('#table').DataTable({
                 dom: 'lBfrtip',
                 buttons: ['copyHtml5', 'csvHtml5'],
