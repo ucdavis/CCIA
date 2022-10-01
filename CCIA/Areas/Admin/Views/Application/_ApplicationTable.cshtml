@@ -64,7 +64,7 @@
                 @if(ViewBag.IncludeMapOptions != null)
                 {
                 <td> 
-                    <input name="checkMap" type="checkbox" class="mapCheckbox" value="@app.Id" />
+                    <input name="checkMap" type="checkbox" class="form-control mapCheckbox" value="@app.Id" />
                     @{i =+ 1; }
                 </td>
                 }
@@ -100,7 +100,7 @@
                 {
                     <td></td>
                 }             
-                <td>@app.MapVe</td>
+                <td><input type="checkbox" checked=@app.MapVe class="form-control nocheck"></td>
                 <td>@app.PoLotNum</td> 
                 @if(ViewBag.HideFI == null)              
                 {
