@@ -717,12 +717,16 @@ namespace CCIA.Controllers.Client
                     ErrorMessage = "You are not the company that requested that tag";
                     return RedirectToAction(nameof(Index));
             }
-            var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
-            if(test)
+            if(!Void)
             {
-                ErrorMessage = "Tag Series already exists with that Letter & range";
-                return RedirectToAction(nameof(Details), new {id = id});
+                var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
+                if(test)
+                {
+                    ErrorMessage = "Tag Series already exists with that Letter & range";
+                    return RedirectToAction(nameof(Details), new {id = id});
+                }
             }
+            
             var series = new TagSeries();
             series.TagId = id;
             series.Letter = Letter;
