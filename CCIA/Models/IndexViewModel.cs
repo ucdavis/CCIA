@@ -215,7 +215,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new SeedsIndexViewModel
             {
-                seeds = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
+                seeds = await _dbContext.Seeds.Where(s => (s.CertYear == certYear || certYear == -1) && s.ConditionerId == orgId)
                 .Include(a => a.ApplicantOrganization)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
