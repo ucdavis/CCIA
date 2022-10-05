@@ -190,7 +190,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new OECDIndexViewModel
             {
-                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryDate.Value.Year == certYear)
+                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && (o.DataEntryDate.Value.Year == certYear || certYear == -1))
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
