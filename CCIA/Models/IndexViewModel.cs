@@ -30,7 +30,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new ApplicationIndexViewModel
             {
-                applications = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.ApplicantId == orgId)
+                applications = await _dbContext.Applications.Where(a => (a.CertYear == certYear || certYear == -1) && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
