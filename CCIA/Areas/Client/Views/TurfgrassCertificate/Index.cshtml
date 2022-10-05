@@ -36,8 +36,18 @@
                 <td>@app.FieldName</td>
                 <td>@app.AcresApplied</td>
                 <td>@app.County.Name</td>
-                <td>@app.Variety.Crop.Name</td>
-                <td>@app.Variety.Name</td>
+                <td>
+                    @if(app.Variety != null && app.Variety.Crop != null)
+                    {
+                        @app.Variety.Crop.Name
+                    }
+                </td>
+                <td>
+                     @if(app.Variety != null)
+                     {
+                        @app.Variety.Name
+                     }
+                </td>
                 <td>@app.ClassProduced.ClassProducedTrans</td>
                 <td>@app.TurfgrassCertificates.Count</td>
             </tr>
