@@ -32,7 +32,7 @@ namespace CCIA.Controllers
         {
             var model = await _dbContext.Charges
                 .Include(c => c.Organization)
-                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0).ToListAsync();
+                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0 && c.ChargeAmount.HasValue).ToListAsync();
             return View(model);
         }
 
@@ -42,7 +42,7 @@ namespace CCIA.Controllers
         {
             var model = await _dbContext.Charges
                 .Include(c => c.Organization)
-                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0).ToListAsync();
+                .Where(c => (c.Correction || c.LinkType == "Turfgrass Certificate") && c.BatchNumber == null && c.ChargeAmount != 0 && c.ChargeAmount.HasValue).ToListAsync();
             model.ForEach(c => 
                 {
                     c.BatchNumber = DateTime.Now.ToShortDateString();

@@ -33,7 +33,12 @@
                 <td>@seeds.Id</td>
                 <td>@seeds.CertProgram</td>
                 <td>@seeds.CertYear</td>
-                <td>@seeds.ApplicantOrganization.Name</td>
+                <td>
+                    @if(seeds.ApplicantOrganization != null)
+                    {
+                         @seeds.ApplicantOrganization.Name
+                    }
+                </td>
                 <td>@seeds.GetCropName()</td>
                 <td>@seeds.GetVarietyName()</td>
                 <td>@seeds.ClassProduced.CertClass</td>

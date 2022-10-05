@@ -30,7 +30,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new ApplicationIndexViewModel
             {
-                applications = await _dbContext.Applications.Where(a => a.CertYear == certYear && a.ApplicantId == orgId)
+                applications = await _dbContext.Applications.Where(a => (a.CertYear == certYear || certYear == -1) && a.ApplicantId == orgId)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.County)
                 .Include(a => a.Crop)
@@ -104,7 +104,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new BlendIndexViewModel
             {
-                blends = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && b.RequestStarted.Year == certYear)
+                blends = await _dbContext.BlendRequests.Where(b => b.ConditionerId == orgId && (b.RequestStarted.Year == certYear || certYear == -1))
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
@@ -141,7 +141,7 @@ namespace CCIA.Models.IndexViewModels
             var shares = await _dbContext.BulkSalesCertificatesShares.Where(s => s.ShareOrganizationId == orgId).Select(s => s.BulkSalesCertificatesId).ToListAsync();
             var viewModel = new BulkSalesCertificatesIndexViewModel
             {
-                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)) && b.Date.Year == certYear)
+                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)) && (b.Date.Year == certYear || certYear == -1))
                 .Include(b => b.Seeds)
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)
@@ -190,7 +190,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new OECDIndexViewModel
             {
-                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && o.DataEntryDate.Value.Year == certYear)
+                oecd = await _dbContext.OECD.Where(o => o.ConditionerId == orgId && (o.DataEntryDate.Value.Year == certYear || certYear == -1))
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
@@ -215,7 +215,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new SeedsIndexViewModel
             {
-                seeds = await _dbContext.Seeds.Where(s => s.CertYear == certYear && s.ConditionerId == orgId)
+                seeds = await _dbContext.Seeds.Where(s => (s.CertYear == certYear || certYear == -1) && s.ConditionerId == orgId)
                 .Include(a => a.ApplicantOrganization)
                 .Include(v => v.Variety)
                 .ThenInclude(v => v.Crop)
@@ -245,7 +245,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new SeedTransferIndexViewModel
             {
-                seedsTransfers = await _dbContext.SeedTransfers.Where(s => s.OriginatingOrganizationId == orgId && s.CertificateDate.Year == certYear)
+                seedsTransfers = await _dbContext.SeedTransfers.Where(s => s.OriginatingOrganizationId == orgId && (s.CertificateDate.Year == certYear || certYear == -1))
                 .Include(st => st.Seeds)
                 .ThenInclude(s => s.ClassProduced)
                 .Include(st => st.Application)
@@ -269,7 +269,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new TagIndexViewModel
             {
-                tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear).ToListAsync(),
+                tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && (t.DateRequested.Value.Year == certYear || certYear == -1)).ToListAsync(),
                 certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested.HasValue).Select(t => t.DateRequested.Value.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
@@ -288,7 +288,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new TurgrassCertificateIndexViewModel
             {
-                applications = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId && a.CertYear == certYear)                
+                applications = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.ApplicantId == orgId && (a.CertYear == certYear || certYear == -1))
                 .Include(a => a.GrowerOrganization)                
                 .Include(a => a.County)
                 .Include(a => a.Variety)

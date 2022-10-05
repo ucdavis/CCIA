@@ -11,7 +11,9 @@
             <div class="form-row">
             <div class="form-group">
                 <label for="CertYear">@Model.DropDownText</label>
-                <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, Model.CertYear))"></select>
+                <select asp-for="CertYear" class="form-control" asp-items="@(new SelectList(Model.certYears, Model.CertYear))">
+                    <option value="-1">Any</option>
+                </select>
             </div>
             <div class="form-group"> 
                 <i class="fa fa-refresh"></i><input type="submit" value="Update Table" class="btn btn-primary">                                           

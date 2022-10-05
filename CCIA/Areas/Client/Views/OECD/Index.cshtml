@@ -31,13 +31,33 @@
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
                 <td>@oecd.TagId</td>
-                <td>@oecd.Seeds.Variety.Crop.Name</td>               
-                <td>@oecd.Seeds.Variety.Name</td>
+                <td>
+                    @if(oecd.Seeds != null && oecd.Seeds.Variety != null)
+                    {
+                        @oecd.Seeds.Variety.Crop.Name
+                    }
+                </td>               
+                <td>
+                    @if(oecd.Seeds != null && oecd.Seeds.Variety != null)
+                    {
+                        @oecd.Seeds.Variety.Name
+                    }
+                </td>
                 <td>@oecd.LotReferenceNumber</td>
-                <td>@oecd.CloseDate.Value.ToShortDateString()</td>
+                <td>
+                    @if(oecd.CloseDate.HasValue)
+                    {
+                        @oecd.CloseDate.Value.ToShortDateString()
+                    }
+                </td>
                 <td>@Html.DisplayFor(x => oecd.Pounds)</td>
                 <td>@oecd.Class.Class</td>
-                <td>@oecd.Country.Name</td>
+                <td>
+                    @if(oecd.Country != null)
+                    {
+                        @oecd.Country.Name
+                    }
+                </td>
             </tr>
             }
         </tbody>
