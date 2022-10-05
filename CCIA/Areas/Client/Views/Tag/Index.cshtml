@@ -62,7 +62,11 @@
                     }
                 </td>
                 <td>@tag.AbbrevTagType.TagTypeTrans</td>
-                <td>@tag.DateRequested.Value.ToShortDateString()
+                <td>
+                    @if(tag.DateRequested.HasValue)
+                    {
+                        @tag.DateRequested.Value.ToShortDateString()
+                    }                    
                 </td>
                 <td>@tag.Alias</td>
                 <td>@tag.Stage</td>

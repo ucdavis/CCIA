@@ -269,7 +269,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new TagIndexViewModel
             {
-                tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && t.DateRequested.Value.Year == certYear).ToListAsync(),
+                tags = await _helper.FullTag().Where(t => t.TaggingOrg == orgId && (t.DateRequested.Value.Year == certYear || certYear == -1)).ToListAsync(),
                 certYears = await _dbContext.Tags.Where(t => t.TaggingOrg == orgId && t.DateRequested.HasValue).Select(t => t.DateRequested.Value.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
                 PageTitle = "Tags",
