@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <UserSecretsId>aspnet-CCIA-F378FD12-626C-45B9-A81F-8585601F8847</UserSecretsId>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
   <PropertyGroup>   
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
@@ -11,6 +12,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CCIA\CCIA.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+     
+
+      <Content Include="EmailTemplates\*" CopyToPublishDirectory="Always" />
+      <!-- CopyToPublishDirectory = { Always, PreserveNewest, Never } -->
   </ItemGroup>
 
   <ItemGroup>

@@ -117,8 +117,14 @@ namespace CCIA.Controllers.Client
 
             // Passed verification, save and redirect
             var labsToUpdate = await _dbContext.SampleLabResults.Where(l => l.SeedsId == results.Labs.SeedsId).FirstOrDefaultAsync();
-            labsToUpdate.AssayResults = labs.AssayResults;
-            labsToUpdate.AssayTest = labs.AssayTest;
+            if(errorList.AssayNeeded)
+            {
+                labsToUpdate.AssayResults = labs.AssayResults;
+                labsToUpdate.AssayTest = labs.AssayTest;
+            } else {
+                labsToUpdate.AssayResults = "N";
+            }
+            
             labsToUpdate.BadlyDiscoloredPercent = labs.BadlyDiscoloredPercent;
             labsToUpdate.BushelWeight = labs.BushelWeight;
             labsToUpdate.ChewingInsectDamagePercent = labs.ChewingInsectDamagePercent;
