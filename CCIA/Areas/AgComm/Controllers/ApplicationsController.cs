@@ -4,6 +4,8 @@ using CCIA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Services;
+using CCIA.Models.DetailsViewModels;
+using CCIA.Helpers;
 
 namespace CCIA.Controllers.AgComm
 {
@@ -117,6 +119,16 @@ namespace CCIA.Controllers.AgComm
             }
             var contentType = "APPLICATION/octet-stream";
             return File(_fileService.DownloadCertificateFile(app, link), contentType, link);
+        }
+
+         public async Task<ActionResult> FIRCertificate(int id)
+        {
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            if(model.application.AppType == AppTypes.Potato.GetDisplayName())
+            {
+                return View("~/Areas/Admin/Views/Application/FIRCertificatePotato.cshtml", model);
+            }            
+            return View("~/Areas/Admin/Views/Application/FIRCertificate.cshtml",model);
         }
     }
 }

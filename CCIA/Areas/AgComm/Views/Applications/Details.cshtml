@@ -12,6 +12,16 @@
 
 <h2>Application Details</h2> 
 <div class="container">
+     @if(Model.Status == "Field Inspection Report Ready")
+    {
+       <div class="row">
+           <div class="col-sm-12"><hr></div>
+            <div class="col-sm-12">
+                <a class="btn btn-info" asp-action="FIRCertificate" asp-route-id="@Model.Id">Field Inspection Report</a>                
+            </div>
+            <div class="col-sm-12"><hr></div>
+        </div>
+    }
     <div class="row">
         <div class="col-lg-6">
                 <div class="form-group row">
