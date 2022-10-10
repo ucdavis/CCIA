@@ -79,6 +79,13 @@ namespace CCIA.Controllers.Admin
                 ErrorMessage = "Seed Transfer Certificate not found";
                 return RedirectToAction(nameof(Lookup));
             }
+            var newOrg = await _dbContext.Organizations.Where(o => o.Id == update.OriginatingOrganizationId).FirstOrDefaultAsync();
+            if(newOrg == null)
+            {
+                ErrorMessage = "Originating Org not found; Org must exist!";
+                var orgErrorModel = await AdminBSeedTransfersEditViewModel.Create(_dbContext, id, _helper);
+                return View(orgErrorModel); 
+            }
 
             var errors = SeedTransferValidator.CheckStandards(update);
 
