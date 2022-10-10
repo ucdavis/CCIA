@@ -64,7 +64,7 @@ namespace CCIA.Models.AgComm
                     .ThenInclude(l => l.LabOrganization)                   
                     .Include(s => s.Application)
                     .ThenInclude(a => a.Crop)
-                    .Where(s => s.ApplicantOrganization.CountyId == countyId)
+                    .Where(s => s.ApplicantOrganization.CountyId == countyId || s.ConditionerOrganization.CountyId == countyId)
                     .AsQueryable(); 
                 if(vm.sid.HasValue)
                 {

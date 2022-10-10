@@ -55,7 +55,7 @@ namespace CCIA.Controllers.AgComm
             {
                 countyId = 0;
             }
-            if(model.seed.ApplicantOrganization.CountyId != countyId.Value )
+            if(model.seed.ApplicantOrganization.CountyId != countyId.Value && model.seed.ConditionerOrganization.CountyId != countyId.Value)
             {
                 ErrorMessage = "Applicant not in your county.";
                 return RedirectToAction(nameof(Index));
