@@ -360,12 +360,12 @@
         </div>
         <div class="row form-group">
             <form asp-action="Approve">
-                <input type="hidden" value="@Model.Id">
+                <input type="hidden" value="@Model.Id" name="id" id="id">
                 <input type="submit" class="btn btn-primary" value="Mark Approved/Accurate">
             </form>
             &nbsp;&nbsp;|&nbsp;&nbsp;
             <form asp-action="InAccurate">
-                <input type="hidden" value="@Model.Id">
+                <input type="hidden" value="@Model.Id" name="id" id="id">
                 <input type="submit" class="btn btn-danger" value="Mark Inaccurate">
             </form>
         </div>
