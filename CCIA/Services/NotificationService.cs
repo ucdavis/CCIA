@@ -97,13 +97,13 @@ namespace CCIA.Services
         public async Task ApplicationSubmitted(Applications app)
         {
             var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
-            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMaildID)).Distinct().ToListAsync();            
+            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();            
             
             foreach (var employee in inspectors)
             {                
                 var notification = new Notifications
                 {
-                    Email = employee.Email,
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
                     AppId = app.Id,
                     Message = "Application accepted",
                     IsAdmin = true,
@@ -196,13 +196,13 @@ namespace CCIA.Services
 
         public async Task SeedLotSubmitted(Seeds seed)
         {
-            var assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform && !string.IsNullOrWhiteSpace(e.UCDMaildID) && e.Current).ToListAsync();            
+            var assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform && !string.IsNullOrWhiteSpace(e.UCDMailID) && e.Current).ToListAsync();            
             
             foreach (var employee in assignments)
             {                
                 var notification = new Notifications
                 {
-                    Email = employee.Email,
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
                     SID = seed.Id,
                     Message = "Seed lot submitted",
                     IsAdmin = true,
@@ -222,7 +222,7 @@ namespace CCIA.Services
             {                
                 var notification = new Notifications
                 {
-                    Email = employee.Email,
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
                     StId = request.Id,
                     Message = "Seed Transfer request submitted",
                     IsAdmin = true,
@@ -251,7 +251,7 @@ namespace CCIA.Services
             {                
                 var notification = new Notifications
                 {
-                    Email = employee.Email,
+                    Email = $"{ employee.UCDMailID}@ucdavis.edu",
                     StId = request.Id,
                     Message = "Seed Transfer responded by Ag Commissioner",
                     IsAdmin = false,
@@ -291,13 +291,13 @@ namespace CCIA.Services
 
         public async Task BlendRequestSubmitted(BlendRequests blend)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewBlend && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewBlend && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     BlendId = blend.Id,
                     Message = "Blend submitted by conditioner"
                 };
@@ -308,13 +308,13 @@ namespace CCIA.Services
 
         public async Task TagApproved(Tags tag)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     Message = "Tag Approved and waiting to be printed"
                 };
@@ -341,13 +341,13 @@ namespace CCIA.Services
 
         public async Task TagPrinted(Tags tag)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.TagPrint && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     Message = "Tag printed and shipped"
                 };
@@ -357,13 +357,13 @@ namespace CCIA.Services
 
         public async Task TagSubmitted(Tags tag)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     Message = "Tag submitted by conditioner"
                 };
@@ -373,13 +373,13 @@ namespace CCIA.Services
 
         public async Task NFCSubmitted(Tags tag)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     SID = tag.SeedsID,
                     Message = $"NFC SID/Tag submitted by conditioner SID:{tag.SeedsID} TID:{tag.Id}"
@@ -390,13 +390,13 @@ namespace CCIA.Services
 
         public async Task TagFiled(Tags tag)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     Message = "Tag filed and now complete"
                 };
@@ -406,13 +406,13 @@ namespace CCIA.Services
 
         public async Task OrgCreated(Organizations org)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     OrgId = org.Id,
                     Message = "Organization created"
                 };
@@ -422,7 +422,7 @@ namespace CCIA.Services
 
         public async Task OrgUpdated(Organizations org)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.Admin && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
@@ -438,13 +438,13 @@ namespace CCIA.Services
 
         public async Task OECDCharged(OECD oecd)
         {
-            var admins = await _dbContext.CCIAEmployees.Where(e => e.OECDInvoicePrinter && !string.IsNullOrEmpty(e.UCDMaildID) && e.Current).Select(e => e.UCDMaildID).ToListAsync();
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.OECDInvoicePrinter && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
 
             foreach (var user in admins)
             {                
                 var notification = new Notifications
                 {
-                    Email = user,
+                    Email = $"{user}@ucdavis.edu",
                     OecdId = oecd.Id,
                     Message = "OECD Certificate printed/charged"
                 };
@@ -461,22 +461,22 @@ namespace CCIA.Services
                 var app = await _dbContext.Applications.Where(a => a.Id == request.ApplicationId).FirstOrDefaultAsync();
                 if(app.AppType == AppTypes.GrainQA.GetDisplayName())
                 {
-                    assignments = await _dbContext.CCIAEmployees.Where(e => e.HeritageGrainQA && e.Current && !string.IsNullOrWhiteSpace(e.UCDMaildID)).ToListAsync();
+                    assignments = await _dbContext.CCIAEmployees.Where(e => e.HeritageGrainQA && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).ToListAsync();
                 }
                 if(app.AppType == AppTypes.PrevarietyGermplasm.GetDisplayName())
                 {
-                    assignments = await _dbContext.CCIAEmployees.Where(e => e.PrevarietyGermplasm && e.Current && !string.IsNullOrWhiteSpace(e.UCDMaildID)).ToListAsync();
+                    assignments = await _dbContext.CCIAEmployees.Where(e => e.PrevarietyGermplasm && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).ToListAsync();
                 }
                 if(app.AppType == AppTypes.Seed.GetDisplayName())
                 {
                     var inspectors = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
-                    assignments = await _dbContext.CCIAEmployees.Where(e => inspectors.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMaildID)).Distinct().ToListAsync(); 
+                    assignments = await _dbContext.CCIAEmployees.Where(e => inspectors.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync(); 
                 }
 
             }
             if(request.SeedsID != null && request.SeedsID > 0)
             {
-                assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform && e.Current && !string.IsNullOrWhiteSpace(e.UCDMaildID)).ToListAsync(); 
+                assignments = await _dbContext.CCIAEmployees.Where(e => e.SeedLotInform && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).ToListAsync(); 
             }
             return assignments;
         }
