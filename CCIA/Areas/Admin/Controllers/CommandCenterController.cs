@@ -176,7 +176,7 @@ namespace CCIA.Controllers
             newEmployee.FirstName = employee.FirstName;
             newEmployee.LastName = employee.LastName;
             newEmployee.KerberosId = employee.KerberosId;
-            newEmployee.UCDMaildID = employee.UCDMaildID;
+            newEmployee.UCDMailID = employee.UCDMailID;
             newEmployee.CampusPhone = employee.CampusPhone;
             newEmployee.CellPhone = employee.CellPhone;
             newEmployee.Current = employee.Current;
@@ -232,7 +232,7 @@ namespace CCIA.Controllers
             employeeToUpdate.FirstName = employee.FirstName;
             employeeToUpdate.LastName = employee.LastName;
             employeeToUpdate.KerberosId = employee.KerberosId;
-            employeeToUpdate.UCDMaildID = employee.UCDMaildID;
+            employeeToUpdate.UCDMailID = employee.UCDMailID;
             employeeToUpdate.CampusPhone = employee.CampusPhone;
             employeeToUpdate.CellPhone = employee.CellPhone;
             employeeToUpdate.Current = employee.Current;

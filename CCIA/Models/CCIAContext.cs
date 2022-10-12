@@ -1031,7 +1031,7 @@ namespace CCIA.Models
 
                 entity.Property(e => e.LastName).HasColumnName("last_name");
 
-                entity.Property(e => e.UCDMaildID).HasColumnName("ucd_mailid");
+                entity.Property(e => e.UCDMailID).HasColumnName("ucd_mailid");
 
                 
 
