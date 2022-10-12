@@ -69,8 +69,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA application status changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    // TODO update to use thisNotices.email instead of ^
+                   // message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An application status has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -97,9 +97,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Application Notices"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    // TODO: use real email not ^
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An Application has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/ApplicationWeeklyNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));                    
                     message.AlternateViews.Add(htmlView);
@@ -125,9 +124,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Account Password Reset Instructions"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    // TODO: use real email not ^
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");                    
+                    message.To.Add(contact.Email);
                     message.Body = "Reset password instructions. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/PasswordReset.cshtml", contact), new ContentType(MediaTypeNames.Text.Html));                    
                     message.AlternateViews.Add(htmlView);
@@ -154,8 +152,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Seed Notices"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An Seed Lot has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/NFCAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -182,8 +180,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Seed Notices"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An Seed Lot has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -210,8 +208,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA SID status changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "A SID lot has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedClientNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -238,8 +236,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Blend status changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "A Blend has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/BlendClientNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -267,8 +265,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Tag status changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "A Tag has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/TagAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -296,8 +294,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Tag status changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "A Tag has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/TagNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -332,8 +330,8 @@ namespace CCIA.Services
                 var recipients = notifications.Where(n => n.StId == thisNotice).ToList();                
                 foreach(var address in recipients)
                 {
-                    //message.To.Add(address.Email);
-                    message.To.Add("jscubbage@ucdavis.edu");                    
+                    message.To.Add(address.Email);
+                    //message.To.Add("jscubbage@ucdavis.edu");                    
                 }
                 message.Body = "A new Seed Transfer request has been made. Please visit CCIA website for details";
                 var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedTransferAdminNotice.cshtml", seedTransfer), new ContentType(MediaTypeNames.Text.Html));
@@ -369,8 +367,8 @@ namespace CCIA.Services
                 var recipients = notifications.Where(n => n.StId == thisNotice).ToList();                
                 foreach(var address in recipients)
                 {
-                    //message.To.Add(address.Email);
-                    message.To.Add("jscubbage@ucdavis.edu");                    
+                    message.To.Add(address.Email);
+                    //message.To.Add("jscubbage@ucdavis.edu");                    
                 }
                 message.Body = "A Seed Transfer request has been responded to. Please visit CCIA website for details";
                 var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/SeedTransferResponseNotice.cshtml", seedTransfer), new ContentType(MediaTypeNames.Text.Html));
@@ -397,8 +395,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Organization changes"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An org has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/OrgNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -426,8 +424,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA OECD Certificates printed/charged"})
                 {
-                    message.To.Add("jscubbage@ucdavis.edu");
-                    //message.To.Add(address);
+                    //message.To.Add("jscubbage@ucdavis.edu");
+                    message.To.Add(address);
                     message.Body = "An org has been updated. Please visit CCIA website for details";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/OECDAdminNotices.cshtml", thisNotices), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
