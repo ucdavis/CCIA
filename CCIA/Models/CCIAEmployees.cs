@@ -35,11 +35,11 @@ namespace CCIA.Models
         }
 
         [Display(Name="Email ID")]
-        public string UCDMaildID { get; set; }
+        public string UCDMailID { get; set; }
 
         public string Email { 
             get{
-                return UCDMaildID + "@ucdavis.edu";
+                return UCDMailID + "@ucdavis.edu";
             } 
         }
 

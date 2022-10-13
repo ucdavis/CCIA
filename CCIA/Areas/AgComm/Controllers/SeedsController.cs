@@ -57,9 +57,12 @@ namespace CCIA.Controllers.AgComm
             }
             if(model.seed.ApplicantOrganization.CountyId != countyId.Value && model.seed.ConditionerOrganization.CountyId != countyId.Value)
             {
-                ErrorMessage = "Applicant not in your county.";
-                return RedirectToAction(nameof(Index));
-
+                var seedTransferApps = await _dbContext.SeedTransfers.Where(s => s.SeedsID.HasValue && s.SeedsID.Value == id && s.PurchaserCountyId == countyId).AnyAsync();
+                if(!seedTransferApps)
+                {
+                    ErrorMessage = "SID not in your county.";
+                    return RedirectToAction(nameof(Index));
+                }
             }        
             return View(model);
         }    
