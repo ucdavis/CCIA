@@ -504,7 +504,7 @@
 
         $('#account-lookup-btn').click(function(e){
             e.preventDefault();
-            var lookup = $("#account").val();
+            var lookup = escape($("#account").val());
             if (lookup === "") {
                 alert("This field cannot be empty.");
                 return;
@@ -520,7 +520,7 @@
 
         $("#variety-lookup-btn").click(function(e){
             e.preventDefault();
-            var lookup = $("#variety").val();
+            var lookup = escape($("#variety").val());
             if (lookup === "") {
                 alert("This field cannot be empty.");
                 return;

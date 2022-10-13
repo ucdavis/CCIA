@@ -71,6 +71,8 @@
             <th>Org</th>
             <th>Id/Type</th>
             <th>Purchaser</th>
+            <th>Orig County</th>
+            <th>Dest County</th>
             <th>Pounds</th>
             <th>Date</th>
             <th>Crop</th>
@@ -88,6 +90,8 @@
                 <td>@stc.OriginatingOrganization.NameAndId</td>
                 <td>@stc.LinkId @stc.IdType</td>
                 <td>@stc.PurchaserName</td>
+                <td>@(stc.OriginatingCounty != null ? @stc.OriginatingCounty.Name : "")</td>
+                <td>@(stc.PurchaserCounty != null ? @stc.PurchaserCounty.Name : "")</td>
                 <td>@Html.DisplayFor(x => stc.Pounds)</td>
                 <td data-sort="@string.Format("{0:yyyy/MM/dd}",stc.CertificateDate)">@stc.CertificateDate.ToShortDateString()</td>
                 <td>

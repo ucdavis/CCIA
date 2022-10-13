@@ -60,7 +60,7 @@
 
         $('#variety-lookup-btn').click(function(e){
             e.preventDefault();
-            var lookup = $("#variety").val();
+            var lookup = escape($("#variety").val());
             if (lookup === "") {
                 alert("This field cannot be empty.");
                 return;
