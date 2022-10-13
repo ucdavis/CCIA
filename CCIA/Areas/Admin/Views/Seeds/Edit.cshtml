@@ -249,23 +249,11 @@
             modal.find('#lookupType').val(recipient);
             modal.find("#account").val("");
             modal.find("#orgTable").empty();            
-        })
-
-        @* $('#lookupClassModal').on('show.bs.modal', function (event) {              
-            var modal = $(this)
-            var lookup = $("#application_AppType").val(); 
-            modal.find("#classTable").empty(); 
-            $("#classTable").load("/admin/Application/LookupClass?appType="+lookup, (response, status, xhr) => {
-                if ( status == "error" ) {
-                    var msg = "Sorry, the following error occurred: ";
-                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
-                }
-            });           
-        }) *@
+        })       
 
         $('#account-lookup-btn').click(function(e){
             e.preventDefault();
-            var lookup = $("#account").val();
+            var lookup = escape($("#account").val());
             if (lookup === "") {
                 alert("This field cannot be empty.");
                 return;
@@ -281,7 +269,7 @@
 
         $("#variety-lookup-btn").click(function(e){
             e.preventDefault();
-            var lookup = $("#variety").val();
+            var lookup = escape($("#variety").val());
             if (lookup === "") {
                 alert("This field cannot be empty.");
                 return;
