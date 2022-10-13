@@ -51,7 +51,8 @@ namespace CCIA.Controllers.AgComm
             {
                 countyId = 0;
             }
-            var model = await _dbContext.Applications.Where(a => a.Id == id && a.FarmCounty == countyId)
+            var seedTransferApps = await _dbContext.SeedTransfers.Where(s => s.ApplicationId.HasValue && s.ApplicationId.Value == id && s.PurchaserCountyId == countyId).AnyAsync();
+            var model = await _dbContext.Applications.Where(a => a.Id == id && (a.FarmCounty == countyId || seedTransferApps))
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.ApplicantOrganization)
                 .Include(a => a.County)
