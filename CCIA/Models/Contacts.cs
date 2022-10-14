@@ -91,6 +91,9 @@ namespace CCIA.Models
         [ForeignKey("ContactId")]
         public ICollection<ContactAddress> Addresses { get; set; }
 
+         [ForeignKey("ContactId")]
+        public ICollection<ContactMaps> MapPermissions { get; set; }
+
         
 
        

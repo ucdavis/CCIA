@@ -325,6 +325,7 @@ namespace CCIA.Services
                 .Include(c => c.Addresses)
                 .ThenInclude(a => a.Address)
                 .ThenInclude(a => a.Countries)
+                .Include(c => c.MapPermissions)
                 .AsQueryable();
 
             return contact;
