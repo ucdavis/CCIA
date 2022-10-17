@@ -1,4 +1,4 @@
-@model CCIA.Models.Contacts
+@model CCIA.Models.AdminContactDetailsViewModel
 
 <div class="container col-sm-12">    
     <div class="row">
@@ -8,144 +8,178 @@
     </div>
      <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organization" asp-route-id="@Model.Id">Edit</a> <br><br>                        
+            <a class="btn btn-primary" asp-action="EditEmployee" asp-controller="Organization" asp-route-id="@Model.contact.Id">Edit</a> <br><br>                        
             <a class="btn btn-info" asp-action="Index" asp-controller="Organization">Return to Org Details</a>
         </div>            
     </div>     
     <div class="row">
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
-                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.FirstName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.FirstName)
+                    @Html.DisplayFor(x => x.contact.FirstName)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="Title" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.Title" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Title)
+                    @Html.DisplayFor(x => x.contact.Title)
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="BusinessPhone" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.BusinessPhone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.BusinessPhone)
+                    @Html.DisplayFor(x => x.contact.BusinessPhone)
                 </div>
             </div>   
             <div class="form-group row">
-                <label asp-for="FaxNumber" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.FaxNumber" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.FaxNumber)
+                    @Html.DisplayFor(x => x.contact.FaxNumber)
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.Email" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Email)
+                    @Html.DisplayFor(x => x.contact.Email)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="Active" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="Active" class="col-sm-3 form-control">
+                <label asp-for="contact.Active" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.Active" class="col-sm-3 form-control">
             </div>            
             <div class="form-group row">                
-                <label asp-for="ApplicationNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="ApplicationNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.ApplicationNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.ApplicationNotices" class="col-sm-3 form-control">
             </div>
             <div class="form-group row">                
-                <label asp-for="OECDNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="OECDNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.OECDNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.OECDNotices" class="col-sm-3 form-control">
             </div>                                           
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@  
             <div class="form-group row">
-                <label asp-for="MiddleInitial" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.MiddleInitial" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.MiddleInitial)
+                    @Html.DisplayFor(x => x.contact.MiddleInitial)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="FormOfAddr" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.FormOfAddr" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.FormOfAddr)
+                    @Html.DisplayFor(x => x.contact.FormOfAddr)
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="BusinessPhoneExtension" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.BusinessPhoneExtension" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.BusinessPhoneExtension)
+                    @Html.DisplayFor(x => x.contact.BusinessPhoneExtension)
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="HomePhone" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.HomePhone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.HomePhone)
+                    @Html.DisplayFor(x => x.contact.HomePhone)
                 </div>
             </div> 
             <div class="form-group row">                
-                <label asp-for="AllowApps" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="AllowApps" class="col-sm-3 form-control">
+                <label asp-for="contact.AllowApps" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.AllowApps" class="col-sm-3 form-control">
             </div> 
             <div class="form-group row">                
-                <label asp-for="AllowOrgUpdate" class="col-sm-3 col-form-label">Update Org?</label>
-                <input type="checkbox" asp-for="AllowOrgUpdate" class="col-sm-3 form-control">
+                <label asp-for="contact.AllowOrgUpdate" class="col-sm-3 col-form-label">Update Org?</label>
+                <input type="checkbox" asp-for="contact.AllowOrgUpdate" class="col-sm-3 form-control">
             </div> 
             <div class="form-group row">                
-                <label asp-for="SeedNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="SeedNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.SeedNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.SeedNotices" class="col-sm-3 form-control">
             </div> 
             <div class="form-group row">                
-                <label asp-for="BlendNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="BlendNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.BlendNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.BlendNotices" class="col-sm-3 form-control">
             </div>                                                 
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
              <div class="form-group row">
-                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.LastName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.LastName)
+                    @Html.DisplayFor(x => x.contact.LastName)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="Suffix" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.Suffix" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Suffix)
+                    @Html.DisplayFor(x => x.contact.Suffix)
                 </div>
             </div> 
             <div class="form-group row">
-                <label asp-for="MobilePhone" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.MobilePhone" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.MobilePhone)
+                    @Html.DisplayFor(x => x.contact.MobilePhone)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="PagerNumber" class="col-sm-3 col-form-label"></label>
+                <label asp-for="contact.PagerNumber" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.PagerNumber)
+                    @Html.DisplayFor(x => x.contact.PagerNumber)
                 </div>
             </div> 
             <div class="form-group row">                
-                <label asp-for="AllowSeeds" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="AllowSeeds" class="col-sm-3 form-control">
+                <label asp-for="contact.AllowSeeds" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.AllowSeeds" class="col-sm-3 form-control">
             </div>  
             <div class="form-group row">                
-                <label asp-for="TagNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="TagNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.TagNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.TagNotices" class="col-sm-3 form-control">
             </div>  
             <div class="form-group row">                
-                <label asp-for="BulkSalesNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="BulkSalesNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.BulkSalesNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.BulkSalesNotices" class="col-sm-3 form-control">
             </div>    
             <div class="form-group row">                
-                <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="TransferNotices" class="col-sm-3 form-control">
+                <label asp-for="contact.TransferNotices" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="contact.TransferNotices" class="col-sm-3 form-control">
             </div>                                   
         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+        <hr>
+            <h3>Mapping permissions</h3>  
+        </div>       
+        <div class="col-md-6 col-xl-4"> @* First Col *@ 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Map Name</th>
+                        <th>Allow?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var permission in Model.contact.MapPermissions.OrderBy(m => m.Map))
+                    {
+                        <tr>
+                            <td><form asp-action="ToggleContactMapPermissions"><input type="hidden" id="mapPermission" name="mapPermission" value="@permission.Id"><input type="submit" value="Toggle"></form></td>
+                            <td>@permission.Map</td>
+                            <td>@Html.CheckBoxFor(a => permission.Allow)</td>
+                        </tr>                    
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <form asp-action="AddContactMapPermission">
+                    <input type="hidden" id="contactId" name="contactId" value="@Model.contact.Id">
+                    <select required name="MapName" id="MapName" class="form-control" asp-items="@(new SelectList(Model.maps.OrderBy(m=> m.Name), "Name", "Name"))"></select>
+                    <input type="submit" value="Add map permission" class="btn btn-primary">
+                </form>
+            </div>
+        </div>           
     </div>
     <div>
         <hr>
         <h3>Address</h3>
-        <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organization" asp-route-id="@Model.Id">Add New Address</a>                
+        <a class="btn btn-primary" asp-action="AddEmployeeAddress" asp-controller="Organization" asp-route-id="@Model.contact.Id">Add New Address</a>                
         <table class="table">
             <thead>
                 <tr>
@@ -165,7 +199,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var add in Model.Addresses)
+                @foreach (var add in Model.contact.Addresses)
                 {
                     <tr>
                         <th>
