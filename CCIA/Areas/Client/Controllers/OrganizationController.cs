@@ -380,13 +380,69 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "You do not have permission to update Org info.";
                 return RedirectToAction(nameof(Index), "Home");
             }
-            var employee = await _helper.FullContact().Where(c => c.Id == id && c.OrgId == orgId).FirstOrDefaultAsync();
-            if(employee == null)
+             var employee = await AdminContactDetailsViewModel.Create(_dbContext, _helper, id);
+            if(employee.contact == null)
             {
                 ErrorMessage = "Employee/Contact not found!";
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleContactMapPermissions (int mapPermission)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(!(await CheckOrgPermission()))
+            {
+                ErrorMessage = "You do not have permission to update Org info.";
+                return RedirectToAction(nameof(Index), "Home");
+            }
+            
+            var permission = await _dbContext.ContactMaps.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
+            var contact = await _dbContext.Contacts.Where(c => c.Id == permission.ContactId && c.OrgId == orgId).AnyAsync();
+            if(!contact)
+            {
+                ErrorMessage = "Contact not found";
+                return RedirectToAction(nameof(Index));
+            }
+            permission.Allow = !permission.Allow;
+            await _dbContext.SaveChangesAsync();
+            Message = "Perission toggled";
+            return RedirectToAction(nameof(EmployeeDetails), new { id = permission.ContactId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContactMapPermission (int contactId, string MapName)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            if(!(await CheckOrgPermission()))
+            {
+                ErrorMessage = "You do not have permission to update Org info.";
+                return RedirectToAction(nameof(Index), "Home");
+            }
+            var contact = await _dbContext.Contacts.Where(c => c.Id == contactId && c.OrgId == orgId).AnyAsync();
+            if(!contact)
+            {
+                ErrorMessage = "Contact not found";
+                return RedirectToAction(nameof(Index));
+            }
+            var permissions = await _dbContext.ContactMaps.Where(p => p.ContactId == contactId && p.Map == MapName).FirstOrDefaultAsync();
+            if(permissions != null)
+            {
+                permissions.Allow = true; 
+                Message = "Permission updated";              ;
+            } else
+            {
+                permissions = new ContactMaps();
+                permissions.Map = MapName;
+                permissions.ContactId = contactId;
+                permissions.Allow = true;
+                _dbContext.Add(permissions); 
+                Message = "Permssion created";               
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(EmployeeDetails), new { id = contactId });
         }
 
         

@@ -466,6 +466,34 @@ namespace CCIA.Controllers
 
         [HttpPost]
         [Authorize(Roles = "CoreStaff")]
+        public async Task<IActionResult> AddContactMapPermission (int contactId, string MapName)
+        {
+            var contact = await _dbContext.Contacts.Where(c => c.Id == contactId).AnyAsync();
+            if(!contact)
+            {
+                ErrorMessage = "Contact not found";
+                return RedirectToAction(nameof(Index));
+            }
+            var permissions = await _dbContext.ContactMaps.Where(p => p.ContactId == contactId && p.Map == MapName).FirstOrDefaultAsync();
+            if(permissions != null)
+            {
+                permissions.Allow = true; 
+                Message = "Permission updated";              ;
+            } else
+            {
+                permissions = new ContactMaps();
+                permissions.Map = MapName;
+                permissions.ContactId = contactId;
+                permissions.Allow = true;
+                _dbContext.Add(permissions); 
+                Message = "Permssion created";               
+            }
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(EmployeeDetails), new { id = contactId });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "CoreStaff")]
         public async Task<IActionResult> ToggleMapPermissions (int mapPermission)
         {
             var permission = await _dbContext.OrgMaps.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
@@ -473,6 +501,17 @@ namespace CCIA.Controllers
             await _dbContext.SaveChangesAsync();
             Message = "Perission toggled";
             return RedirectToAction(nameof(Details), new { id = permission.OrgId });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "CoreStaff")]
+        public async Task<IActionResult> ToggleContactMapPermissions (int mapPermission)
+        {
+            var permission = await _dbContext.ContactMaps.Where(p => p.Id == mapPermission).FirstOrDefaultAsync();
+            permission.Allow = !permission.Allow;
+            await _dbContext.SaveChangesAsync();
+            Message = "Perission toggled";
+            return RedirectToAction(nameof(EmployeeDetails), new { id = permission.ContactId });
         }
 
         [HttpPost]
@@ -502,6 +541,7 @@ namespace CCIA.Controllers
             await _dbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Details), new { id = org_Id });
         }
+        
 
         [HttpPost]
         [Authorize(Roles = "CoreStaff")]
@@ -516,7 +556,7 @@ namespace CCIA.Controllers
 
         public async Task<IActionResult> EmployeeDetails (int id)
         {
-            var employee = await _helper.FullContact().Where(c => c.Id == id).FirstOrDefaultAsync();
+            var employee = await AdminContactDetailsViewModel.Create(_dbContext, _helper, id);
             if(employee == null)
             {
                 ErrorMessage = "Employee/Contact not found!";

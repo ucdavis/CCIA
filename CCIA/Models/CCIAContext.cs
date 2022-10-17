@@ -127,6 +127,8 @@ namespace CCIA.Models
 
         public virtual DbSet<OrgMaps> OrgMaps {get; set; }
 
+        public virtual DbSet<ContactMaps> ContactMaps {get; set; }
+
         public virtual DbSet<Maps> Maps { get; set; }
 
         public virtual DbSet<OrgMapCrops> OrgMapCrops {get; set;}
@@ -500,6 +502,21 @@ namespace CCIA.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.OrgId).HasColumnName("org_id");
+
+                entity.Property(e => e.Map).HasColumnName("map_name");
+
+                entity.Property(e => e.Allow).HasColumnName("allow_access");
+
+            });
+
+            modelBuilder.Entity<ContactMaps>(entity => {
+                entity.ToTable("contact_map");   
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
 
                 entity.Property(e => e.Map).HasColumnName("map_name");
 
@@ -2639,6 +2656,7 @@ namespace CCIA.Models
                     .HasDefaultValueSql("((2000))");               
 
                entity.HasMany(e => e.Addresses);
+               entity.HasMany(e => e.MapPermissions);
 
             });
 
