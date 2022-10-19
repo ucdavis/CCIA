@@ -13,7 +13,14 @@
      <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
 </head>
 <body style="font-size: smaller">
-
+@if(ViewBag.Admin != null && ViewBag.Admin)
+{
+    <div class="noprint">Show link to Billing Fir. Also links back.</div>
+}
+@if(ViewBag.Billing != null && ViewBag.Billing)
+{
+    <div>Billing info goes here.</div>
+}
     <table border="0" width="100%" height="100">
         <tr>
             <td>

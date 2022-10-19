@@ -553,9 +553,23 @@ namespace CCIA.Controllers.Admin
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
-            }            
+            }  
+            ViewBag.Admin = true;          
             return View(model);
         }
+
+        public async Task<ActionResult> BillingFIRCertificate(int id)
+        {
+            var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            if(model.application.AppType == AppTypes.Potato.GetDisplayName())
+            {
+                return View("FIRCertificatePotato", model);
+            }  
+            ViewBag.Admin = true; 
+            ViewBag.Billing = true;  
+            return View("FIRCertificate", model);
+        }
+
        // Add ability to upload documentation for FIR
         public async Task<IActionResult> EditFIR(int id)
         {
