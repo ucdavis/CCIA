@@ -500,6 +500,14 @@ namespace CCIA.Models
             }
         }
 
+        public decimal? TotalFee
+        {
+            get
+            {
+                return Fee.GetValueOrDefault(0) + LateFee.GetValueOrDefault(0) + IncompleteFee.GetValueOrDefault(0);
+            }
+        }
+
         
         
 
