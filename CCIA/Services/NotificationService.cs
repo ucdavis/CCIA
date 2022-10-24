@@ -382,6 +382,7 @@ namespace CCIA.Services
                     Email = $"{user}@ucdavis.edu",
                     TagId = tag.Id,
                     SID = tag.SeedsID,
+                    IsAdmin = true,
                     Message = $"NFC SID/Tag submitted by conditioner SID:{tag.SeedsID} TID:{tag.Id}"
                 };
                 _dbContext.Notifications.Add(notification);      

@@ -82,6 +82,8 @@
                                                                 </h1>
                                                                 <ul>
                                                                     <li>Seed Transfer ID: @Model.Id</li>
+                                                                    <li>Links: <a href="https://ccia-mvc.ucdavis.edu/admin/SeedTransfers/Details/@Model.Id">CCIA Staff</a> | 
+                                                                        <a href="https://ccia-mvc.ucdavis.edu/AgComm/SeedTransfers/Details/@Model.Id">Ag Comm Office</a></li>
                                                                     <li>Transfer Type: @Model.Type</li>                                                                        
                                                                     @{
                                                                         var origOrg = Model.OriginatingOrganization != null ? Model.OriginatingOrganization.NameAndId  : "";
