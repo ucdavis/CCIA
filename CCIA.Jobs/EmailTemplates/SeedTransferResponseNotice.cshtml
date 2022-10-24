@@ -81,7 +81,7 @@
                                                                 The following Seed Transfer has been responded by the Ag Commissioner:
                                                                 </h1>
                                                                 <ul>
-                                                                    <li>Seed Transfer ID: @Model.Id</li>
+                                                                    <li>Seed Transfer ID: <a href="https://ccia-mvc.ucdavis.edu/client/SeedTransfer/Details/@Model.Id">@Model.Id</a></li>
                                                                     <li>Transfer Type: @Model.Type</li>                                                                        
                                                                     @{
                                                                         var origOrg = Model.OriginatingOrganization != null ? Model.OriginatingOrganization.NameAndId  : "";

@@ -83,7 +83,7 @@ namespace CCIA.Services
 
         private async Task SendPendingAdminAppNotices(string password)
         {
-             ConfigureSMTPClient(password);
+            ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.AppId != 0 && n.IsAdmin).ToListAsync();
             if(notifications.Count == 0)
             {
@@ -138,7 +138,7 @@ namespace CCIA.Services
 
         private async Task SendPendingAdminNFCNotices(string password)
         {
-             ConfigureSMTPClient(password);
+            ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId != 0).ToListAsync();
             if(notifications.Count == 0)
             {
@@ -166,7 +166,7 @@ namespace CCIA.Services
 
         private async Task SendPendingAdminSeedNotices(string password)
         {
-             ConfigureSMTPClient(password);
+            ConfigureSMTPClient(password);
             var notifications = await _dbContext.Notifications.Where(n => n.Pending && n.SID != 0 && n.IsAdmin && n.TagId == 0).ToListAsync();
             if(notifications.Count == 0)
             {

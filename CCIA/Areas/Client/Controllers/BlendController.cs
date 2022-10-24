@@ -335,6 +335,11 @@ namespace CCIA.Controllers.Client.Client
                 ErrorMessage = "SID variety is not a component of the entered variety. Please double check values.";
                 return View();
             }
+            if(weight == 0 || weight < .1)
+            {
+                ErrorMessage = "Weight can not be zero or less than 0.1";
+                return View();
+            }
             var newBlend = new BlendRequests();
             newBlend.BlendType = BlendType.Varietal.GetDisplayName();
             newBlend.RequestStarted = DateTime.Now;
@@ -377,6 +382,11 @@ namespace CCIA.Controllers.Client.Client
             if(!seed.HasLabs)
             {
                 ErrorMessage = "SID must have lab results to be the first lot added to blend.";
+                return RedirectToAction(nameof(StartNewLotBlend));
+            }
+            if(weight == 0 || weight < .1)
+            {
+                ErrorMessage = "Weight can not be zero or less than 0.1";
                 return RedirectToAction(nameof(StartNewLotBlend));
             }
             var newBlend = new BlendRequests();
@@ -425,6 +435,12 @@ namespace CCIA.Controllers.Client.Client
                 ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
                 return RedirectToAction(nameof(Index));
             }
+            if(weight == 0 || weight < .1)
+            {
+                ErrorMessage = "Weight can not be zero or less than 0.1";
+                return RedirectToAction(nameof(Details), new {id = blendId});
+            }
+            
 
             if(blend.BlendType == BlendType.Lot.GetDisplayName())
             {
@@ -504,6 +520,11 @@ namespace CCIA.Controllers.Client.Client
                ErrorMessage = "SID not found";
                return RedirectToAction(nameof(EditLot), new { id = id }); 
            }
+           if(blend.Weight == 0 || blend.Weight < 0.1M)
+            {
+                ErrorMessage = "Weight can not be zero or less than 0.1";
+                return RedirectToAction(nameof(EditLot), new { id = id }); 
+            }
 
            if(blendToUpdate.BlendType == BlendType.Lot.GetDisplayName())
             {
@@ -603,6 +624,11 @@ namespace CCIA.Controllers.Client.Client
            {
                ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
                return RedirectToAction(nameof(Index));
+           }
+           if(comp.Weight == 0 || comp.Weight < 0.1M)
+           {
+                ErrorMessage = "Component weight cannot be zero or less than 0.1 ";
+                return View(compToUpdate);
            }
            
            compToUpdate.AppId = comp.AppId;

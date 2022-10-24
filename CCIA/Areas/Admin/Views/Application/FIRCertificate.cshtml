@@ -10,10 +10,22 @@
 <head>
     <title></title>
     <meta http-equiv="content-style-type" content="text/css" />    
-     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />
+     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"/> 
 </head>
 <body style="font-size: smaller">
-
+@if(ViewBag.Admin != null && ViewBag.Admin)
+{
+    <div class="noprint">
+         @if(ViewBag.Billing != null && ViewBag.Billing)
+         {
+            <a class="btn btn-info" asp-action="FirCertificate" asp-route-id="@Model.application.Id">Regular  FIR</a>
+         } else
+         {
+            <a class="btn btn-info" asp-action="BillingFirCertificate" asp-route-id="@Model.application.Id">Billing FIR</a>
+         }         
+    | <a asp-action="LookupFir" class="btn btn-info">Lookup Different FIR</a></div>
+}
     <table border="0" width="100%" height="100">
         <tr>
             <td>
@@ -346,6 +358,30 @@
                 }
                 </td>
         </tr>
+        @if(ViewBag.Billing != null && ViewBag.Billing)
+        {
+           <tr>
+                     <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td align="right" nowrap>
+                            Application Fee:
+                            <br />
+                            Late Fee:<br />
+                            Incomplete Fee:<br />
+                            <br />
+                            Total Fees:</td>
+                        <td align="right">
+                            @Html.DisplayFor(x => x.application.Fee)<br>
+                            @Html.DisplayFor(x => x.application.LateFee)<br>
+                            @Html.DisplayFor(x => x.application.IncompleteFee)<br><br>
+                            @Html.DisplayFor(x => x.application.TotalFee)</td>
+                        <td>
+                        </td>
+                    </tr>
+            
+        }
         <tr height="100%">
             <td>
             </td>
