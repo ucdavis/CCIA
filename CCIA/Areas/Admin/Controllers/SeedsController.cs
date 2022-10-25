@@ -187,10 +187,7 @@ namespace CCIA.Controllers.Admin
         }
 
         public async Task<IActionResult> ChargeSIR(int id)
-        {
-            await _dbContext.SaveChangesAsync();
-            Message = "Seed Accepted";
-           
+        {  
             var p0 = new SqlParameter("@seeds_id", id);
             await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @seeds_id", p0);
 
