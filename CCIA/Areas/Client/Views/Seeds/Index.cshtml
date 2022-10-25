@@ -41,7 +41,12 @@
                 </td>
                 <td>@seeds.GetCropName()</td>
                 <td>@seeds.GetVarietyName()</td>
-                <td>@seeds.ClassProduced.CertClass</td>
+                <td>
+                    @if(seeds.ClassProduced != null)
+                    {
+                        @seeds.ClassProduced.CertClass
+                    } 
+                </td>
                 <td>@seeds.LotNumber</td>
                 <td><input type="checkbox" checked=@seeds.HasLabs class="form-control"></td>
                 <td>@if(seeds.LabResults != null && seeds.LabResults.PrivateLabDate.HasValue){

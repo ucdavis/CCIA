@@ -42,7 +42,13 @@ namespace CCIA.Controllers.Client
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             if (certYear == 0)
             {
-                certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
+                if(await _dbContext.Seeds.Where(s=> s.ConditionerId == orgId).AnyAsync())
+                {
+                    certYear = await _dbContext.Seeds.Where(s => s.ConditionerId == orgId).Select(s => s.CertYear.Value).MaxAsync();
+                } else
+                {
+                    certYear = CertYearFinder.CertYear;
+                }               
             }
             var model = await SeedsIndexViewModel.Create(_dbContext, orgId, certYear);
             return View(model);
