@@ -30,6 +30,7 @@ namespace CCIA.Helpers
         // public string Assay2Error { get; set; }
 
         public bool AssayNeeded { get; set; }
+        public string GeneralError {get; set; }
 
 
         public LabResultsCheckStandards()
@@ -41,12 +42,27 @@ namespace CCIA.Helpers
         public static async Task<LabResultsCheckStandards> CheckStandardsFromLabs(CCIAContext _dbContext, SampleLabResults labs)
         {
             var returnList = new LabResultsCheckStandards();
-            var properties = await _dbContext.Seeds.Where(s => s.Id == labs.SeedsId)
+            var properties = new StandardsProperties();
+            var seed =  await _dbContext.Seeds.Where(s => s.Id == labs.SeedsId)
                 .Include(s => s.Variety)
                 .Include(s => s.Application)
                 .Include(s => s.ClassProduced)
-                .Select(s => new StandardsProperties { CropId = s.GetCropId(), CertProgram = s.CertProgram, ClassAbbreviation = s.ClassProduced.Abbrv, ClassId = s.Class.Value })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync();;
+            if(seed.OfficialVarietyId.HasValue && seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
+            {
+                properties.CropId = seed.GetCropId();
+                properties.CertProgram = seed.CertProgram;
+                properties.ClassAbbreviation = seed.ClassProduced.Abbrv;
+                properties.ClassId = seed.Class.Value;                
+            } else if(seed.NotFinallyCertified)
+            {
+                return returnList;
+            } else
+            {
+                returnList.HasWarnings = true;
+                returnList.GeneralError = "SID does not have valid crop or class; Cannot verify standards";
+                return returnList;
+            }
 
 
             var cs = await _dbContext.CropStandards.Where(c => c.CropId == properties.CropId && c.Standards.Program == properties.CertProgram && (c.Standards.Category == properties.ClassAbbreviation || c.Standards.Category == "A"))
