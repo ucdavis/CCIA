@@ -112,7 +112,11 @@ namespace CCIA.Controllers.Admin
                 if (errorList.Assay1Error != null)
                 {
                     ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
-                }               
+                }    
+                if (errorList.GeneralError != null)
+                {
+                    ModelState.AddModelError(string.Empty, errorList.GeneralError);
+                }              
 
                 ModelState.AddModelError(string.Empty, "Double check value or mark that section as not passing");
 
