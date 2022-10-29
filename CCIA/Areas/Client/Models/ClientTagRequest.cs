@@ -443,8 +443,8 @@ namespace CCIA.Models
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
         public int CountRequested { get; set; }
         [Display(Name ="Bag Weight")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0")]
-        public int BagSize { get; set; }
+        [Range(.1, 900000, ErrorMessage = "Please enter a value greater than 0")]
+        public decimal BagSize { get; set; }
         public string WeightUnit { get; set; }
         [Display(Name ="Coating (%)")]
         public decimal CoatingPercent { get; set; }
