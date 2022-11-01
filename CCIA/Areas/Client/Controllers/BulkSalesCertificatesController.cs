@@ -91,8 +91,8 @@ namespace CCIA.Controllers.Client
                 newBulkSalesCertificate.Pounds = model.BulkSalesCertificate.Pounds;
                 newBulkSalesCertificate.ClassId = model.BulkSalesCertificate.ClassId;
 
-                // TODO use real contact id
-                newBulkSalesCertificate.CreatedById = 1;
+               
+                newBulkSalesCertificate.CreatedById =  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
                 newBulkSalesCertificate.CreatedOn = DateTime.Now;
 
 
