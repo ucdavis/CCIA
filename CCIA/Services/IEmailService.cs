@@ -39,9 +39,9 @@ namespace CCIA.Services
 
         public async Task SendNotices(string password)
         {
-            await SendPendingSeedNotices(password);
-            await SendPendingAdminAppNotices(password);
             await SendPendingAdminSeedNotices(password);
+            await SendPendingSeedNotices(password);
+            await SendPendingAdminAppNotices(password);            
             await SendPendingAdminNFCNotices(password);
             await SendPendingAdminTagNotices(password);
             await SendPendingBlendNotices(password);
