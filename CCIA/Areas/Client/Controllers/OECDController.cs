@@ -58,8 +58,15 @@ namespace CCIA.Controllers.Client
             {
                 ErrorMessage = "You are not the conditioner for that certificate! Access denied.";
                 return RedirectToAction(nameof(Index));
-            }            
-             return View("~/Areas/Admin/Views/OECD/Certificate.cshtml",model);
+            }         
+            if(model.DatePrinted.HasValue)
+            {
+                return View("~/Areas/Admin/Views/OECD/Certificate.cshtml",model);
+            }   else {
+                ErrorMessage = "OECD Certificate not marked complete by CCIA staff. Please check back later.";
+                return RedirectToAction(nameof(Index));
+            }
+             
         }
 
 

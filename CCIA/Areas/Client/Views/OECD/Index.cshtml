@@ -27,7 +27,14 @@
             @foreach (var oecd in Model.oecd)
             {
             <tr>
-                <td><a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a></td>
+                <td>
+                    @if(oecd.DatePrinted.HasValue)
+                    {
+                        <a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a>
+                    } else {
+                        <span>Pending</span>
+                    }
+                </td>
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
                 <td>@oecd.TagId</td>

@@ -193,6 +193,11 @@ namespace CCIA.Controllers.Admin
                ErrorMessage = "Something went wrong!";
                return RedirectToAction(nameof(Process));
            }
+           if(lot.Weight == 0 || lot.Weight < 0.1M)
+           {
+                ErrorMessage = "Component weight cannot be zero or less than 0.1 ";
+                return View(lot);
+           }
            var newLot = new LotBlends();
            newLot.BlendId = id;
            newLot.Sid = lot.Sid;
@@ -235,6 +240,11 @@ namespace CCIA.Controllers.Admin
            {
                ErrorMessage = "Something went wrong!";
                return RedirectToAction(nameof(Process));
+           }
+           if(lot.Weight == 0 || lot.Weight < 0.1M)
+           {
+                ErrorMessage = "Component weight cannot be zero or less than 0.1 ";
+                return View(lot);
            }
            var newLot = new BlendInDirtComponents();
            newLot.BlendId = id;
@@ -320,6 +330,11 @@ namespace CCIA.Controllers.Admin
            {
                ErrorMessage = "Component not found!";
                return RedirectToAction(nameof(Process));
+           }
+           if(lotToUpdate.Weight == 0 || lotToUpdate.Weight < 0.1M)
+           {
+                ErrorMessage = "Component weight cannot be zero or less than 0.1 ";
+                return View(lotToUpdate);
            }
 
            if(lotToUpdate.Sid != blend.Sid)
@@ -410,6 +425,11 @@ namespace CCIA.Controllers.Admin
            {
                ErrorMessage = "Component not found!";
                return RedirectToAction(nameof(Process));
+           }
+           if(compToUpdate.Weight == 0 || compToUpdate.Weight < 0.1M)
+           {
+                ErrorMessage = "Component weight cannot be zero or less than 0.1 ";
+                return View(compToUpdate);
            }
            
            compToUpdate.AppId = comp.AppId;
