@@ -2,11 +2,23 @@
 
 <h2>Tags</h2> 
 <form asp-action="Process" method="Post">
-<div class="container">        
-    <div class="form-group row text-center">
-        <label for="Stage" class="col-sm-3 col-form-label">Limit by Status</label>       
-        <select asp-for="SelectedSearch" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<TagStages>()"></select>    
-        &nbsp;&nbsp;<input type="submit" value="Apply Filter" id="submit" class="btn btn-primary"></input>                
+<div class="row">
+    <div class="col-sm-4">@*First column *@
+        <div class="row form-group">
+                <label for="Stage" class="col-form-label col-sm-3">Status</label>       
+            <select asp-for="SelectedSearch" class="col-sm-5 form-control" asp-items="Html.GetEnumSelectList<TagStages>()"></select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group row">
+            <label asp-for="YearSubmitted" class="col-form-label col-sm-6">Year submitted:<sup>*</sup></label> 
+            <select asp-for="YearSubmitted" class="form-control col-sm-3" asp-items="@(new SelectList(Model.YearsToDisplay, Model.YearSubmitted))"></select>             
+        </div>
+    </div>
+    <div class="col-sm-4">            
+        <div class="form-group row">
+            <input type="submit" value="Apply Filter" id="submit" class="btn btn-primary"></input> 
+        </div>
     </div>
 </div>
 </form>
@@ -15,6 +27,8 @@
 {
     @await Html.PartialAsync("_TagTable", @Model.Tags)
 }
+
+<div><sup>*</sup>Only applied if "Complete" stage selected.</div>
 
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
