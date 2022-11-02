@@ -550,23 +550,23 @@ namespace CCIA.Controllers.Admin
         public async Task<ActionResult> FIRCertificate(int id)
         {
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            ViewBag.Admin = true;     
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
-            }  
-            ViewBag.Admin = true;          
+            }                   
             return View(model);
         }
 
         public async Task<ActionResult> BillingFIRCertificate(int id)
         {
             var model = await AdminViewModel.CreateFIR(_dbContext, id, _helper);
+            ViewBag.Admin = true; 
+            ViewBag.Billing = true;
             if(model.application.AppType == AppTypes.Potato.GetDisplayName())
             {
                 return View("FIRCertificatePotato", model);
-            }  
-            ViewBag.Admin = true; 
-            ViewBag.Billing = true;  
+            }               
             return View("FIRCertificate", model);
         }
 
