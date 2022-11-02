@@ -271,6 +271,20 @@ namespace CCIA.Services
                 };
                 _dbContext.Notifications.Add(notification);      
             }
+
+            var countyComm = await _dbContext.Organizations.Where(o => !string.IsNullOrWhiteSpace(o.Email) && o.AgCommissioner && (o.CountyId == request.OriginatingCountyId || (o.CountyId == request.PurchaserCountyId && request.PurchaserStateId == 102))).Distinct().ToListAsync();
+            foreach (var org in countyComm)
+            {                
+                var notification = new Notifications
+                {
+                    Email = org.Email,
+                    StId = request.Id,
+                    Message = "Seed Transfer responded by Ag Commissioner",
+                    IsAdmin = false,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+            
         }
 
         public async Task BlendRequestApproved(BlendRequests blendRequest)
