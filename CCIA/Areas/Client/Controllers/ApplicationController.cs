@@ -1285,6 +1285,7 @@ namespace CCIA.Controllers.Client
 
         // GET: Application/FindVariety
         [HttpGet]
+        [AllowAnonymous] 
         public async Task<JsonResult> FindVariety(string name, int cropId)
         {
             var varieties = await _dbContext.VarFull
@@ -1301,6 +1302,7 @@ namespace CCIA.Controllers.Client
 
         // GET: Application/FindCropVarieties
         [HttpGet]
+        [AllowAnonymous] 
         public async Task<JsonResult> FindCropVarieties(int cropId)
         {
             var varieties = await _dbContext.VarOfficial.Where(v => v.CropId == cropId)
@@ -1317,6 +1319,7 @@ namespace CCIA.Controllers.Client
 
         // GET: Application/FindGermplasmEntities
         [HttpGet]
+        [AllowAnonymous] 
         public async Task<JsonResult> FindGermplasmEntities(string name)
         {
             var varieties = await _dbContext.VarOfficial
