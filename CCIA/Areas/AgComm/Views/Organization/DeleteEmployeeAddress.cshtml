@@ -1,0 +1,56 @@
+@model CCIA.Models.ContactAddress
+
+<form asp-action="ConfirmDeleteEmployeeAddress">
+@Html.HiddenFor(x => x.Id)
+<input type="hidden" id="Delete" name="Delete" value="Delete">
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Confirm Delete this Employee Address?</h2> 
+        </div>            
+    </div>    
+    <div class="col-sm-6">
+        <div class="form-group row">                
+            <label asp-for="Mailing" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="Mailing" class="col-sm-1 form-control">
+        </div>
+        <div class="form-group row">                
+            <label asp-for="Billing" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="Billing" class="col-sm-1 form-control">
+        </div>
+        <div class="form-group row">                
+            <label asp-for="Delivery" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="Delivery" class="col-sm-1 form-control">
+        </div> 
+        <div class="form-group row">                
+            <label asp-for="PhysicalLoc" class="col-sm-3 col-form-label"></label>
+            <input type="checkbox" asp-for="PhysicalLoc" class="col-sm-1 form-control">
+        </div>   
+        <div class="form-group row">
+            <label asp-for="Address.Address1" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Address.Address1" class="col-sm-3 form-control">
+        </div>
+        <div class="form-group row">
+            <label asp-for="Address.Address2" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Address.Address2" class="col-sm-3 form-control">
+        </div>
+        <div class="form-group row">
+            <label asp-for="Address.Address3" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Address.Address3" class="col-sm-3 form-control">
+        </div> 
+        <div class="form-group row">
+            <label asp-for="Address.City" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Address.City" class="col-sm-3 form-control">
+        </div>          
+        <div class="form-group row">
+            <label asp-for="Address.PostalCode" class="col-sm-3 col-form-label"></label>
+            <input asp-for="Address.PostalCode" class="col-sm-3 form-control">
+        </div>
+        <div class="row">
+         <div class="col-sm-12">             
+            <input type="submit" value="Delete" class="btn btn-danger"></input>   
+            <a class="btn btn-dark" asp-action="EmployeeDetails" asp-controller="Organization" asp-route-id="@Model.ContactId">Cancel Delete</a>
+        </div>
+    </div>
+</div>
+</form>

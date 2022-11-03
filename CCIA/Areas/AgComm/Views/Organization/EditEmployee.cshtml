@@ -1,0 +1,132 @@
+@model CCIA.Models.Contacts
+
+<form asp-action="EditEmployee">
+    @Html.HiddenFor(x => x.Id)
+<div class="container col-sm-12">    
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Employee</h2> 
+        </div>            
+    </div>
+     <div class="row">
+        <div class="col-sm-12">           
+            <a class="btn btn-dark"asp-action="EmployeeDetails" asp-controller="Organization" asp-route-id="@Model.Id">Return to Employee Details</a><br><br>
+        </div>            
+    </div>     
+    <div class="row">
+        <div class="col-md-6 col-xl-4"> @* First column *@
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-sm-3 col-form-label"></label>
+                <input asp-for="FirstName" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
+            </div>            
+            <div class="form-group row">
+                <label asp-for="Title" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Title" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="BusinessPhone" class="col-sm-3 col-form-label"></label>
+                <input asp-for="BusinessPhone" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="BusinessPhone" data-valmsg-replace="true"></span>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="FaxNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="FaxNumber" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="FaxNumber" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Email" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Email" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Active" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Active" class="col-sm-6 form-control">
+            </div>  
+            <div class="form-group row">
+                <label asp-for="ApplicationNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="ApplicationNotices" class="col-sm-6 form-control">
+            </div>  
+            <div class="form-group row">
+                <label asp-for="OECDNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="OECDNotices" class="col-sm-6 form-control">
+            </div>                               
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Second column *@  
+            <div class="form-group row">
+                <label asp-for="MiddleInitial" class="col-sm-3 col-form-label"></label>
+                <input asp-for="MiddleInitial" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="MiddleInitial" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="FormOfAddr" class="col-sm-3 col-form-label"></label>
+                <input asp-for="FormOfAddr" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="FormOfAddr" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="BusinessPhoneExtension" class="col-sm-3 col-form-label"></label>
+                <input asp-for="BusinessPhoneExtension" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="BusinessPhoneExtension" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="HomePhone" class="col-sm-3 col-form-label"></label>
+                <input asp-for="HomePhone" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="HomePhone" data-valmsg-replace="true"></span>
+            </div>  
+            <div class="form-group row">
+                <label asp-for="AllowOrgUpdate" class="col-sm-3 col-form-label">Update Org?</label>
+                <input asp-for="AllowOrgUpdate" class="col-sm-6 form-control">
+            </div> 
+            <div class="form-group row">
+                <label asp-for="SeedNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="SeedNotices" class="col-sm-6 form-control">
+            </div>
+            <div class="form-group row">
+                <label asp-for="BlendNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="BlendNotices" class="col-sm-6 form-control">
+            </div>                                                             
+        </div>
+        <div class="col-md-6 col-xl-4"> @* Third Col *@ 
+             <div class="form-group row">
+                <label asp-for="LastName" class="col-sm-3 col-form-label"></label>
+                <input asp-for="LastName" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="Suffix" class="col-sm-3 col-form-label"></label>
+                <input asp-for="Suffix" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="Suffix" data-valmsg-replace="true"></span>
+            </div> 
+            <div class="form-group row">
+                <label asp-for="MobilePhone" class="col-sm-3 col-form-label"></label>
+                <input asp-for="MobilePhone" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="MobilePhone" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PagerNumber" class="col-sm-3 col-form-label"></label>
+                <input asp-for="PagerNumber" class="col-sm-6 form-control">
+                <span class="field-validation-valid text-danger" data-valmsg-for="PagerNumber" data-valmsg-replace="true"></span>
+            </div>   
+            <div class="form-group row">
+                <label asp-for="TagNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="TagNotices" class="col-sm-6 form-control">
+            </div>
+            <div class="form-group row">
+                <label asp-for="BulkSalesNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="BulkSalesNotices" class="col-sm-6 form-control">
+            </div>     
+            <div class="form-group row">
+                <label asp-for="TransferNotices" class="col-sm-3 col-form-label"></label>
+                <input asp-for="TransferNotices" class="col-sm-6 form-control">
+            </div>              
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-sm-12"> 
+            <input class="btn btn-primary" type="Submit" value="Update"> | 
+            <a class="btn btn-dark" asp-action="EmployeeDetails" asp-controller="Organization" asp-route-id="@Model.Id">Return to Employee Details</a>
+        </div>            
+    </div>    
+</div>
+</form>
