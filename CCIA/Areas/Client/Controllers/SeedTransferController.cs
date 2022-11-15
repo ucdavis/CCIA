@@ -71,7 +71,12 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Create(int Id, string Target)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value); 
-            var model = await SeedTransferRequestModel.Create(_dbContext, _helper, Id, Target, orgId);            
+            var model = await SeedTransferRequestModel.Create(_dbContext, _helper, Id, Target, orgId);
+            if(model.Error)
+            {
+                ErrorMessage = model.ErrorMessage;
+                return RedirectToAction(nameof(Initiate));
+            }            
             return View(model);
         }
 

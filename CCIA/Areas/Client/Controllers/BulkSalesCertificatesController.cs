@@ -214,9 +214,10 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> GetSidOrBlend(string lookupType, int id)
         {
+             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             if (lookupType == "Blend")
             {
-                var model = await _dbContext.BlendRequests.Where(b => b.Id == id)
+                var model = await _dbContext.BlendRequests.Where(b => b.Id == id && b.ConditionerId == orgId)
                 .Include(b => b.Conditioner)
                 .Include(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)
@@ -250,7 +251,7 @@ namespace CCIA.Controllers.Client
             }
             else
             {
-                var model = await _dbContext.Seeds.Where(s => s.Id == id)
+                var model = await _dbContext.Seeds.Where(s => s.Id == id && (s.ConditionerId == orgId || s.ApplicantId == orgId))
                 .Include(s => s.ApplicantOrganization)
                 .Include(s => s.ConditionerOrganization)
                 .Include(s => s.Variety)
