@@ -266,7 +266,15 @@
                         <td>@row.OldValue</td>
                         <td>@row.NewValue</td>
                         <td>@row.DateChanged</td>
-                        <td>@row.Employee.Name</td>
+                        <td>
+                            @if(row.UserChange=="Client")
+                            {
+                                <span>Client</span>
+                            } else if(row.Employee != null)
+                            {
+                                @row.Employee.Name
+                            }
+                            </td>
                     </tr>
                 }
                 </tbody>
