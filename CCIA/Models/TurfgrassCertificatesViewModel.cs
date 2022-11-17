@@ -26,7 +26,8 @@ namespace CCIA.Models
 
             var viewModel = new TurfgrassCertificatesViewModel()
             {
-                application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)                
+                application = await _dbContext.Applications.Where(a => a.AppType == "TG" && a.Id == id)   
+                    .Include(a => a.Crop)             
                     .Include(a => a.GrowerOrganization)    
                     .ThenInclude(g => g.Address)  
                     .ThenInclude(a => a.StateProvince)          
