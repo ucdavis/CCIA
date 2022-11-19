@@ -136,6 +136,7 @@ namespace CCIA.Models
         public string EmployeeModified { get; set; }
         [Display(Name = "Not Finally Certified")] 
         public bool NotFinallyCertified { get; set; }
+         [Display(Name = "Charge Full Fees")]
         public bool ChargeFullFees { get; set; }
 
         public List<SeedsApplications>   SeedsApplications { get; set; }

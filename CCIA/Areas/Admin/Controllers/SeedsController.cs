@@ -234,6 +234,7 @@ namespace CCIA.Controllers.Admin
             seedToUpdate.LotNumber = seedEdit.LotNumber;
             seedToUpdate.PoundsLot = seedEdit.PoundsLot;
             seedToUpdate.NotFinallyCertified = seedEdit.NotFinallyCertified;
+            seedToUpdate.ChargeFullFees = seedEdit.ChargeFullFees;
             seedToUpdate.Class = seedEdit.Class;
             seedToUpdate.SampleDrawnBy = seedEdit.SampleDrawnBy;
             seedToUpdate.OriginCountry = seedEdit.OriginCountry;
