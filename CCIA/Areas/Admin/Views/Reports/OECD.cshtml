@@ -80,7 +80,8 @@
             {
                 <th>Crop</th>
                 <th>Kind</th>
-            }               
+            }  
+            <th>Class</th>             
             <th>Lbs passed</th>
             <th># certified</th>
         </thead>
@@ -101,6 +102,7 @@
                    <td>@row.crop</td>    
                     <td>@row.crop_kind</td>
                 } 
+                <td>@row.OECDClass</td>
                 <td>@Html.Raw(row.pounds_oecd.ToString("##,##0.00"))</td> 
                 <td>@row.number_certificates</td>
             </tr>

@@ -105,12 +105,11 @@ namespace CCIA.Controllers.Client
                 {
                     return View(model);
                 }
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Certificate", new { id = newBulkSalesCertificate.Id});
             }
             catch
             {
-                return View(model);
+                return View(model);                
             }
         }
 
