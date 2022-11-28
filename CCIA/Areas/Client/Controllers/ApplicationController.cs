@@ -1288,6 +1288,7 @@ namespace CCIA.Controllers.Client
         [AllowAnonymous] 
         public async Task<JsonResult> FindVariety(string name, int cropId)
         {
+            name = name.Trim();
             var varieties = await _dbContext.VarFull
                 .Where(v => v.Name.Contains(name) && v.CropId == cropId)
                 .Select(v => new VarietyList
