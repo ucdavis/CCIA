@@ -49,13 +49,13 @@ namespace CCIA.Models
                 return viewModel;
 
 
-            }
+            }            
             var freshModel = new AdminChargesSearchViewModel
             {
                 charges = new List<Charges>(),
                 beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
-                endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1),
-                reportDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1),
+                endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1),
+                reportDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1),
             };           
 
             return freshModel;
