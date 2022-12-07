@@ -90,6 +90,7 @@ namespace CCIA.Controllers
             orgToCreate.AgCommissioner = org.AgCommissioner;
             orgToCreate.DateModified = DateTime.Now;
             orgToCreate.UserModified = User.FindFirstValue(ClaimTypes.Name);
+            orgToCreate.MemberYear = 0;
             orgToCreate.Active = true;
 
              if(ModelState.IsValid){
