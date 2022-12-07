@@ -20,12 +20,27 @@
         <th>Cert Year</th>
         <th>Grower</th>
         <th>Field Name</th>
-        <th>Acres</th>
+        @if(Model.IsFIR)
+        {
+            <th>Fld Insp Comments</th>
+            <th>Acres Approved</th>
+            <th>Acres Rejected</th>
+            <th>Acres Insp Only</th>
+            <th>Acres Growout</th>
+            <th>Acres No Crop</th>
+        }
+        @if(!Model.IsFIR)
+        {
+            <th>Acres</th>
+        }        
         <th>County</th>
         <th>Crop</th>
         <th>Variety</th>
         <th>Class</th>
-        <th>Map</th>
+        @if(!Model.IsFIR)
+        {
+            <th>Map</th>
+        }        
         <th>Status</th>
         </thead>
         <tbody>
@@ -50,12 +65,25 @@
                     <td>@app.GrowerOrganization.Name</td>
                 }               
                 <td>@app.FieldName</td>
-                <td>@app.AcresApplied
-                    @if(app.IsSquareFeet)
-                    {
-                        <span>Square feet</span>
-                    } 
-                </td>
+                @if(Model.IsFIR)
+                {
+                    <td>@app.FieldInspectionReport.Comments</td>
+                    <td>@app.FieldInspectionReport.AcresApproved</td>
+                    <td>@app.FieldInspectionReport.AcresRejected</td>
+                    <td>@app.FieldInspectionReport.AcresInspectionOnly</td>
+                    <td>@app.FieldInspectionReport.AcresGrowout</td>
+                    <td>@app.FieldInspectionReport.AcresNoCrop</td>
+                }
+                @if(!Model.IsFIR)
+                {
+                    <td>@app.AcresApplied
+                        @if(app.IsSquareFeet)
+                        {
+                            <span>Square feet</span>
+                        } 
+                    </td>
+                }
+                
                 <td>@app.County.Name</td>
                 <td>@app.Crop.Name</td>
                 @if (app.AppType == "PV" || app.SelectedVarietyId==null)
@@ -67,19 +95,20 @@
                     <td>@app.VarietyName</td>
                 }
                @if (app.ClassProduced != null)
-        {
-            <td>@app.ClassProduced.ClassProducedTrans</td>
-        }
-        else
-        {
-            <td>@app.ClassProducedId</td>
-        }
-
-        <td><input type="checkbox" asp-for="@app.MapVe" class="form-control"></td>
-        <td>@app.Status</td>
+                {
+                    <td>@app.ClassProduced.ClassProducedTrans</td>
+                }
+                else
+                {
+                    <td>@app.ClassProducedId</td>
+                }
+                @if(!Model.IsFIR)
+                {
+                    <td><input type="checkbox" asp-for="@app.MapVe" class="form-control"></td>
+                }
+                <td>@app.Status</td>
             </tr>
             }
-
         </tbody>
     </table>
 </div>
