@@ -197,7 +197,7 @@
                 <td valign="top" class="topandbottom">
                     &nbsp;Date Test Concluded</td>
                 <td valign="top" class="label">
-                    @if(Model.Seeds.LabResults.PrivateLabDate.HasValue)
+                    @if(Model.Seeds != null && Model.Seeds.LabResults != null && Model.Seeds.LabResults.PrivateLabDate.HasValue)
                     {
                         @Model.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
                     }                    
@@ -232,23 +232,25 @@
                                 seed</td>
                         </tr>
                         <tr>
-                            <td style="height: 21px" class="labelvertnopad " align="center">                                
-                                @string.Format("{0:N}", Model.Seeds.LabResults.PurityPercent * 100) %
-                            </td>
-                            <td style="height: 21px" class="labelvertnopad " align="center">
-                                @string.Format("{0:N}", Model.Seeds.LabResults.InertPercent * 100) %
-                            </td>
-                            <td style="height: 21px" class="labelvertnopad " align="center">
-                                @string.Format("{0:N}", Model.Seeds.LabResults.OtherCropPercent * 100) %
-                            </td>
-                            <td style="height: 21px" class="labelvertnopad " align="center">
-                                @string.Format("{0:N}", Model.Seeds.LabResults.WeedSeedPercent * 100) %
-                            </td>
-                            <td style="height: 21px" class="labelvertnopad " align="center">
-                                @string.Format("{0:N}", Model.Seeds.LabResults.GermPercent * 100) %
-                            </td>
-                            <td style="height: 21px" class="labelnopad" align="center">
-                                0.00 %/@string.Format("{0:N}", Model.Seeds.LabResults.HardSeedPercent * 100) %</td>
+                            @if(Model.Seeds != null && Model.Seeds.LabResults != null){
+                                <td style="height: 21px" class="labelvertnopad " align="center">                                
+                                    @string.Format("{0:N}", Model.Seeds.LabResults.PurityPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Seeds.LabResults.InertPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Seeds.LabResults.OtherCropPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Seeds.LabResults.WeedSeedPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Seeds.LabResults.GermPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelnopad" align="center">
+                                    0.00 %/@string.Format("{0:N}", Model.Seeds.LabResults.HardSeedPercent * 100) %</td>
+                            }
                         </tr>
                     </table>
                     &nbsp;
@@ -258,21 +260,31 @@
                 <td valign="top" class="topandbottom">
                     Kind of inert matter</td>
                 <td colspan="3" valign="top" class="label">
-                    @Model.Seeds.LabResults.InertComments
+                     @if(Model.Seeds != null && Model.Seeds.LabResults != null)
+                     {
+                        @Model.Seeds.LabResults.InertComments
+                     }
                 </td>
             </tr>
             <tr>
                 <td valign="top" class="topandbottom">
                     Other crop seed (species)</td>
                 <td colspan="3" valign="top" class="label">
-                    @Model.Seeds.LabResults.OtherCropComments
+                    @if(Model.Seeds != null && Model.Seeds.LabResults != null)
+                     {
+                        @Model.Seeds.LabResults.OtherCropComments
+                     }
+                    
                 </td>
             </tr>
             <tr>
                 <td valign="top" class="topandbottom">
                     Weed seed (species)</td>
                 <td class="label" colspan="3" valign="top">
-                    @Model.Seeds.LabResults.WeedSeedComments
+                    @if(Model.Seeds != null && Model.Seeds.LabResults != null)
+                     {
+                        @Model.Seeds.LabResults.WeedSeedComments
+                     }
                 </td>
             </tr>
             <tr>
