@@ -90,6 +90,7 @@ namespace CCIA.Controllers.Client.Client
         [HttpPost]
         public async Task<IActionResult> UploadBlendDocument(int id, string docName, IFormFile file)
         {
+            docName = docName.Trim();
            var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(blend == null)
             {
@@ -128,7 +129,7 @@ namespace CCIA.Controllers.Client.Client
         public async Task<JsonResult> FindBlend(string name)
         {
             var varieties = await _dbContext.VarFull
-                .Where(v => EF.Functions.Like(v.Name, "%" + name + "%") && v.Blend)
+                .Where(v => EF.Functions.Like(v.Name, "%" + name.Trim() + "%") && v.Blend)
                 .Select(v => new VarFull
                 {
                     CropId = v.CropId,                    

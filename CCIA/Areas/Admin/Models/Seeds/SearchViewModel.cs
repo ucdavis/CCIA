@@ -108,11 +108,11 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName.Trim() + "%") || s.ConditionerId.ToString() == vm.conditionerName.Trim());
                 }
                 if(!string.IsNullOrWhiteSpace(vm.applicantName))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ApplicantOrganization.Name, "%" + vm.applicantName + "%") || s.ApplicantId.ToString() == vm.applicantName);
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.ApplicantOrganization.Name, "%" + vm.applicantName.Trim() + "%") || s.ApplicantId.ToString() == vm.applicantName.Trim());
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Any())
                 {
@@ -120,7 +120,7 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.variety))
                 {
-                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety + "%"));
+                    seedToFind = seedToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety.Trim() + "%") || s.Id.ToString().Contains(vm.variety.Trim()));
                 }
                 if(!string.IsNullOrWhiteSpace(vm.lotNumber))
                 {

@@ -53,7 +53,7 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.varietyNameToSearch))
                 {
-                    varietySearch = varietySearch.Where(v => EF.Functions.Like(v.Name, "%" + vm.varietyNameToSearch + "%"));
+                    varietySearch = varietySearch.Where(v => EF.Functions.Like(v.Name, "%" + vm.varietyNameToSearch.Trim() + "%"));
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Count > 0)
                 {
