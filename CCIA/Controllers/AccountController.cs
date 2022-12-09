@@ -93,6 +93,7 @@ namespace CCIA.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync("Cookies");
+            EmulationMessage = "";
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -185,6 +186,7 @@ namespace CCIA.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("Cookies");
+            EmulationMessage = "";
             return RedirectToAction(nameof(Login));
         }      
         
