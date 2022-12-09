@@ -371,6 +371,9 @@ namespace CCIA.Controllers.Admin
                 var freshmodel = await AdminSearchViewModel.Create(_dbContext, null, _helper);
                 return View(freshmodel);  
             }
+            vm.applicantName = vm.applicantName.Trim();
+            vm.growerName = vm.growerName.Trim();
+            vm.variety = vm.variety.Trim();
                 var model = await AdminSearchViewModel.Create(_dbContext, vm, _helper);
                 if(model.includeMapOptions)
                 {
