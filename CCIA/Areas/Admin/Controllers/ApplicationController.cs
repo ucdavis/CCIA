@@ -69,6 +69,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UpdateComments (int Id, string comments )
         {
+            comments = comments.Trim();
             var appToUpdate = await _dbContext.Applications.Where(a => a.Id == Id).FirstOrDefaultAsync();
             if(appToUpdate == null)
             { 
@@ -254,6 +255,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
         {
+            certName = certName.Trim();
            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(app == null)
            {
@@ -290,6 +292,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UploadFIRDocument(int id, string docName, IFormFile file)
         {
+            docName = docName.Trim();
            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(app == null)
            {
@@ -850,6 +853,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> LookupOrg (string lookup)
         {
+            lookup = lookup.Trim();
             var orgs = new List<Organizations>();
             int id = 0;
             // Parsing was successful (we have an ID number instead of a name)
@@ -867,7 +871,8 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> LookupVariety (string lookup, int cropId) 
         {
-            var varieties = await _dbContext.VarFull.Where(v => (v.CropId == cropId || cropId ==0) && v.Name.Contains(lookup)).ToListAsync();
+            lookup = lookup.Trim();
+            var varieties = await _dbContext.VarFull.Where(v => (v.CropId == cropId || cropId ==0) && (v.Name.Contains(lookup) || v.Id.ToString().Contains(lookup))).ToListAsync();
             return PartialView("_LookupVariety", varieties);
         }
 
