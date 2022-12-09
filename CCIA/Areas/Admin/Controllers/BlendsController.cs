@@ -78,6 +78,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UploadBlendDocument(int id, string docName, IFormFile file)
         {
+           docName = docName.Trim();
            var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(blend == null)
            {
@@ -116,6 +117,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Search(AdminBlendsSearchViewModel vm)
         {
+            vm.conditionerSearchTerm = vm.conditionerSearchTerm.Trim();
             var model = await AdminBlendsSearchViewModel.Create(_dbContext, vm, _helper);
             return View(model);
         }
@@ -162,7 +164,8 @@ namespace CCIA.Controllers.Admin
        }
 
        public async Task<IActionResult> LookupVariety (string lookup) 
-        {            
+        {  
+            lookup = lookup.Trim();          
             var varieties = await _dbContext.VarFull.Where(v => (v.Name.Contains(lookup) || EF.Functions.Like(v.Id.ToString(), "%" + lookup + "%")) && v.Blend).ToListAsync();
             return PartialView("_LookupVariety", varieties);
         }
