@@ -105,6 +105,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> UploadSeedDocument(int id, string certName, int docType, IFormFile file)
         {
+            certName = certName.Trim();
            var sid = await _dbContext.Seeds.Where(s => s.Id==id).FirstOrDefaultAsync();
            var documentType = await _dbContext.SeedsDocumentTypes.Where(t => t.Id == docType).FirstOrDefaultAsync();
            if(sid == null)

@@ -94,11 +94,11 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.conditionerName))
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName + "%") || s.ConditionerId.ToString() == vm.conditionerName);
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ConditionerOrganization.Name, "%" + vm.conditionerName.Trim() + "%") || s.ConditionerId.ToString() == vm.conditionerName.Trim());
                 }
                 if(!string.IsNullOrWhiteSpace(vm.shipperName))
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ShipperOrganization.Name, "%" + vm.shipperName + "%") || s.ShipperId.ToString() == vm.shipperName);
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.ShipperOrganization.Name, "%" + vm.shipperName.Trim() + "%") || s.ShipperId.ToString() == vm.shipperName.Trim());
                 }
                 if(vm.searchCrops != null && vm.searchCrops.Any())
                 {
@@ -106,7 +106,7 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.variety))
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety + "%"));
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.Variety.Name, "%" + vm.variety.Trim() + "%") || s.Variety.Id.ToString().Contains(vm.variety.Trim()));
                 }                
                 if(!string.IsNullOrWhiteSpace(vm.searchClass) && vm.searchClass != "Any")              
                 {

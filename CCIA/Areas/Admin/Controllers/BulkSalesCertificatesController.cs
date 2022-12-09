@@ -118,6 +118,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> Search(AdminBulkSalesCertificateSearchViewModel vm)
         {
+            vm.searchConditioner = vm.searchConditioner.Trim();
             var model = await AdminBulkSalesCertificateSearchViewModel.Create(_dbContext, vm, _helper);
             return View(model);
         }

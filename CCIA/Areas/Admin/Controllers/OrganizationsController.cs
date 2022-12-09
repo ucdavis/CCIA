@@ -43,7 +43,7 @@ namespace CCIA.Controllers
                 .ThenInclude(a => a.County)
                 .Include(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
-                .Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term + "%") || EF.Functions.Like(o.Name, "%" + term + "%")).ToListAsync();
+                .Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term.Trim() + "%") || EF.Functions.Like(o.Name, "%" + term.Trim() + "%")).ToListAsync();
 
             return View(model);
         }
