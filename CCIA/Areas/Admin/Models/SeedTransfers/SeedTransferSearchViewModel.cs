@@ -69,7 +69,7 @@ namespace CCIA.Models
                 }
                 if(!string.IsNullOrWhiteSpace(vm.searchConditioner))
                 {
-                    stcToFind = stcToFind.Where(st => EF.Functions.Like(st.OriginatingOrganization.Name, "%" + vm.searchConditioner + "%") || EF.Functions.Like(st.OriginatingOrganizationId.ToString(), "%" + vm.searchConditioner + "%"));
+                    stcToFind = stcToFind.Where(st => EF.Functions.Like(st.OriginatingOrganization.Name, "%" + vm.searchConditioner.Trim() + "%") || EF.Functions.Like(st.OriginatingOrganizationId.ToString(), "%" + vm.searchConditioner.Trim() + "%"));
                 }
                
                 

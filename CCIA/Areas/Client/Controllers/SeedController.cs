@@ -518,6 +518,7 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<IActionResult> GetApplicants(string search)
         {
+            search = search.Trim();
             var orgs = new List<Organizations>();
             int id = 0;
             // Parsing was successful (we have an ID number instead of a name)
@@ -608,6 +609,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> UploadSeedDocument(int id, string certName, int docType, IFormFile file)
         {
+            certName = certName.Trim();
            var sid = await _dbContext.Seeds.Where(s => s.Id==id).FirstOrDefaultAsync();
            if(sid.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
             {
