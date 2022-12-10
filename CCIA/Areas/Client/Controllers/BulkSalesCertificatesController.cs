@@ -17,6 +17,19 @@ using CCIA.Models.BulkSalesCertificateShareViewModel;
 
 namespace CCIA.Controllers.Client
 {
+    public class BulkSalesCertificateInfo 
+    {
+        public int id { get; set; }
+        public string saleType { get; set; }
+        public string program { get; set; }
+        public string applicant { get; set; }
+        public string conditioner { get; set; }
+        public string crop { get; set; }
+        public string variety { get; set; }
+        public string cert { get; set; }
+        public string lot { get; set; }
+
+    }
     public class BulkSalesCertificatesController : ClientController
     {
         // TODO Get shipping location from address w/ Facility
@@ -213,7 +226,7 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<JsonResult> GetSidOrBlend(string lookupType, int id)
         {
-             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             if (lookupType == "Blend")
             {
                 var model = await _dbContext.BlendRequests.Where(b => b.Id == id && b.ConditionerId == orgId)
@@ -234,7 +247,7 @@ namespace CCIA.Controllers.Client
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
-                .Select(b => new
+                .Select(b => new BulkSalesCertificateInfo
                 {
                     id = b.Id,
                     saleType = "Blend",
@@ -245,7 +258,11 @@ namespace CCIA.Controllers.Client
                     variety = b.GetVarietyName(),
                     cert = b.CertNumber,
                     lot = "",
-                }).SingleAsync();
+                }).FirstOrDefaultAsync();
+                if(model == null)
+                {
+                   model = await CheckForBlendTransfers(id, orgId);
+                }
                 return Json(model);
             }
             else
@@ -259,7 +276,7 @@ namespace CCIA.Controllers.Client
                 .ThenInclude(a => a.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(s => s.AppTypeTrans)
-                .Select(s => new
+                .Select(s => new BulkSalesCertificateInfo
                 {
                     id = s.Id,
                     saleType = "SID",
@@ -270,10 +287,86 @@ namespace CCIA.Controllers.Client
                     variety = s.GetVarietyName(),
                     cert = s.CertNumber,
                     lot = s.LotNumber,
-                }).SingleAsync();
+                }).FirstOrDefaultAsync();
+                if(model == null)
+                {
+                   model = await CheckForSIDTransfers(id, orgId);
+                }
                 return Json(model);
             }
+        }
 
+        private async Task<BulkSalesCertificateInfo> CheckForBlendTransfers(int Id, int orgId)
+        {
+            var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == orgId && t.BlendId == Id)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.Conditioner)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from knownh app) => indirt => application => variety
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Variety)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => crop
+                .ThenInclude(i => i.Application)
+                .ThenInclude(a => a.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => crop
+                .ThenInclude(i => i.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
+                .ThenInclude(i => i.Variety)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.Variety) // blendrequest (varietal) => variety => crop
+                .ThenInclude(v => v.Crop)                
+                .Select(b => new BulkSalesCertificateInfo
+                {
+                    id = b.Id,
+                    saleType = "Blend",
+                    program = b.Blend.BlendType,
+                    applicant = b.Blend.ConditionerId + " " + b.Blend.Conditioner.Name,
+                    conditioner = b.Blend.ConditionerId + " " + b.Blend.Conditioner.Name,
+                    crop = b.GetCrop(),
+                    variety = b.Blend.GetVarietyName(),
+                    cert = b.Blend.CertNumber,
+                    lot = "",
+                }).SingleAsync();
+                return info;
+        }
+        
+        private async Task<BulkSalesCertificateInfo> CheckForSIDTransfers(int Id, int orgId)
+        {
+             var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == orgId && t.SeedsID == Id)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.ApplicantOrganization)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.ConditionerOrganization)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.Application)
+                .ThenInclude(a => a.Variety)
+                .ThenInclude(v => v.Crop)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.AppTypeTrans)
+                .Select(s => new BulkSalesCertificateInfo
+                {
+                    id = s.Id,
+                    saleType = "SID",
+                    program = s.Seeds.AppTypeTrans.AppTypeTrans,
+                    applicant = s.Seeds.ApplicantId + " " + s.Seeds.ApplicantOrganization.Name,
+                    conditioner = s.Seeds.ConditionerId + " " + s.Seeds.ConditionerOrganization.Name,
+                    crop = s.Seeds.GetCropName(),
+                    variety = s.Seeds.GetVarietyName(),
+                    cert = s.Seeds.CertNumber,
+                    lot = s.Seeds.LotNumber,
+                }).SingleAsync();
+            return info;
         }
 
         [HttpGet]
