@@ -1,0 +1,161 @@
+@model CCIA.Models.AdminPotatoBookReportViewModel
+@{
+    var i = 1;
+    var variety = "";
+    var firstRow = false;
+    decimal varietyAcres = 0;
+    decimal totalAcres = 0;
+    int varietyCount = 0;
+    int totalCount = 0;
+}
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+<h3>Potato Book</h3>
+<form asp-action="PotatoBook" method="POST">
+<div class="container col-sm-6 text-center">
+     <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button> | <input type="submit" value="Search" class="btn btn-primary"></input> 
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">                
+        <div class="col-md-6 col-xl-3">@* 4rd column *@ 
+            <div class="form-group row">
+                <label asp-for="certYearsReport" class="col-sm-3 col-form-label">Cert Year</label>
+                <select asp-for="certYearsReport" cla4ss="col-sm-4 form-control" asp-items="@(new SelectList(Model.certYears))"></select>               
+            </div> 
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>    
+</div>
+
+</form>
+ 
+@if(Model.apps != null && Model.apps.Any())
+{
+   <table id="table" class="table datatable">
+        <thead>             
+            <th>Variety</th>
+            <th>Org</th>
+            <th>Cert#</th>
+            <th>Acres Applied</th>
+            <th>Class produced</th>
+            <th>Insp#</th>
+            <th>Other Varieties</th>
+            <th>Mosiac</th>
+            <th>Leafrool</th>
+            <th>BlackLeg</th>
+            <th>Calico</th> 
+        </thead>
+        <tbody>
+            @foreach (var row in Model.apps.OrderBy(a => a.Variety.Category).ThenBy(a => a.VarietyName).ThenBy(a => a.ApplicantOrganization.Name))
+            {
+                {i = 1;
+                if(variety != "" && variety != row.PotatoBookVariety)
+                {
+                    <tr><td colspan="11"></td></tr>
+                    <tr><td>&nbsp;</td><td>Total</td><td>&nbsp;</td><td>@varietyAcres</td><td colspan="7">Count = @varietyCount</td></tr>
+                    <tr><td colspan="11"><hr></td></tr>
+                    variety = row.PotatoBookVariety;
+                    firstRow = true;
+                    varietyAcres = 0;
+                    varietyCount =0;
+                }
+                if(variety == "")
+                {
+                    variety = row.PotatoBookVariety;
+                    firstRow = true; 
+                }
+                varietyAcres = varietyAcres + row.AcresApplied.Value;
+                totalAcres = totalAcres + row.AcresApplied.Value;
+                varietyCount = varietyCount + 1;
+                totalCount = totalCount + 1;
+                
+                }                                        
+
+                    @foreach (var insp in row.FieldInspection)
+                    {
+                        @if(i == 1)
+                        {
+                            <tr> 
+                                @if(firstRow)
+                                {
+                                    firstRow = false;
+                                    <td>@row.PotatoBookVariety</td>
+
+                                } else {
+                                    <td>&nbsp;</td>
+                                }                                                              
+                                <td>@row.ApplicantOrganization.Name @row.Id</td>
+                                <td>@row.FullCert</td>
+                                <td>@row.AcresApplied</td>
+                                <td>@row.ClassProducedName</td> 
+                                <td>@i</td>
+                                <td>@Html.DisplayFor(x => insp.OtherVarietiesPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.MosaicPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.LeafrollPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.BlacklegPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.CalicoPercent)</td>  
+                            </tr>
+                        } else
+                        {
+                            <tr>
+                                <td colspan="5"></td>
+                                <td>@i</td>
+                                <td>@Html.DisplayFor(x => insp.OtherVarietiesPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.MosaicPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.LeafrollPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.BlacklegPercent)</td>
+                                <td>@Html.DisplayFor(x => insp.CalicoPercent)</td>
+                            </tr>
+                        }                        
+                        {i++;}
+                    }
+            }
+            <tr><td colspan="11"></td></tr>
+            <tr><td>&nbsp;</td><td>Total</td><td>&nbsp;</td><td>@varietyAcres</td><td colspan="7">Total Count = @varietyCount</td></tr>
+            <tr><td colspan="11"><hr></td></tr>
+            <tr><td colspan="11"></td></tr>
+            <tr><td>Total Acreage</td><td colspan="2">&nbsp;</td><td>@totalAcres</td><td colspan="7">Total Count = @totalCount</td></tr>
+            <tr><td colspan="11"><hr></td></tr>
+        </tbody>
+    </table>
+} 
+<table>
+@* @foreach (var row in Model.apps.OrderBy(a => a.Id))
+            {
+                <tr><td>@row.Id</td></tr>
+            }
+</table> *@
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}    
+
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+     <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'Brt',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                bPaginate: false,
+            });
+        } );
+    </script>
+     
+}
+
+
+

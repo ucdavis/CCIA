@@ -272,6 +272,31 @@ namespace CCIA.Models
             } 
         }
 
+        public string PotatoBookVariety 
+        { 
+            get
+            {
+                
+                if (Variety != null)
+                {
+                    if(Variety.Category == "Proprietary")
+                    {
+                        return "Proprietary";
+                    }
+                    return Variety.Name;
+                }
+                if(AppType=="PV" || SelectedVarietyId == null)
+                {
+                    return PvgSelectionId;
+                }
+                if(EnteredVariety != null)
+                {
+                    return EnteredVariety;
+                }                
+                return "";
+            } 
+        }
+
         public string QACertNumber
         { 
             get
