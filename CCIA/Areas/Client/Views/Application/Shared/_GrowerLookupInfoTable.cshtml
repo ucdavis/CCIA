@@ -38,6 +38,26 @@
                     {
                         <td>@org.Address.StateProvince.Name</td>
                     }                
+                } else if(org.Addresses.Any())
+                {
+                    if(org.Addresses.Where(a => a.Active).Any())
+                    {
+                        var displayAddress = org.Addresses.Where(a => a.Active).First();
+                        <td>@displayAddress.Address.Address1</td>
+                        <td>@displayAddress.Address.City</td>
+                        @if (displayAddress.Address.StateProvince != null)
+                        {
+                            <td>@displayAddress.Address.StateProvince.Name</td>
+                        }                
+                    } else {
+                        var anyAddress = org.Addresses.First();
+                        <td>@anyAddress.Address.Address1</td>
+                        <td>@anyAddress.Address.City</td>
+                        @if (anyAddress.Address.StateProvince != null)
+                        {
+                            <td>@anyAddress.Address.StateProvince.Name</td>
+                        }   
+                    }
                 }
             </tr>
         }

@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    var bodyClass = "";
 }
 
 <!DOCTYPE html
@@ -14,8 +15,14 @@
     <meta http-equiv="content-style-type" content="text/css" />
     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />
 </head>
-
-<body>
+@if(!Model.DatePrinted.HasValue)
+{
+    bodyClass = "noprint";
+} else
+{
+    bodyClass = null;
+}
+<body class="@bodyClass">
     <div>
         <a asp-action="Details" asp-controller="OECD" asp-route-id="@Model.Id" class="noprint">Return to OECD</a>
     </div>

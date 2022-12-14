@@ -29,7 +29,8 @@
             /* Get app type id from querystring */
             const urlParams = new URLSearchParams(window.location.search);
             const appTypeId = parseInt(urlParams.get('appTypeId'));
-            let lookupVal = $("#account").val();            
+            let lookupVal = encodeURIComponent($("#account").val());  
+            //alert(lookupVal);          
             if (lookupVal === "") {
                 alert("This field cannot be empty.");
                 return;

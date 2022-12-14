@@ -1265,6 +1265,7 @@ namespace CCIA.Controllers.Client
             {
                 orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(lookupVal.ToLower()))
                     .Include(o => o.Address).ThenInclude(a => a.StateProvince)
+                    .Include(o => o.Addresses).ThenInclude(a => a.Address).ThenInclude(a => a.StateProvince)
                     .ToListAsync();
             }
             GrowerInfo growerInfo = new GrowerInfo();

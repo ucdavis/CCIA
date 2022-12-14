@@ -33,6 +33,35 @@
                 <tr>
                     <td>@Model.GrowerOrg.Id</td>
                     <td>@Model.GrowerOrg.Name</td>
+                    @if (Model.GrowerOrg.Address != null)
+                {
+                    <td>@Model.GrowerOrg.Address.Address1</td>
+                    <td>@Model.GrowerOrg.Address.City</td>
+                    @if (Model.GrowerOrg.Address.StateProvince != null)
+                    {
+                        <td>@Model.GrowerOrg.Address.StateProvince.Name</td>
+                    }                
+                } else if(Model.GrowerOrg.Addresses.Any())
+                {
+                    if(Model.GrowerOrg.Addresses.Where(a => a.Active).Any())
+                    {
+                        var displayAddress = Model.GrowerOrg.Addresses.Where(a => a.Active).First();
+                        <td>@displayAddress.Address.Address1</td>
+                        <td>@displayAddress.Address.City</td>
+                        @if (displayAddress.Address.StateProvince != null)
+                        {
+                            <td>@displayAddress.Address.StateProvince.Name</td>
+                        }                
+                    } else {
+                        var anyAddress = Model.GrowerOrg.Addresses.First();
+                        <td>@anyAddress.Address.Address1</td>
+                        <td>@anyAddress.Address.City</td>
+                        @if (anyAddress.Address.StateProvince != null)
+                        {
+                            <td>@anyAddress.Address.StateProvince.Name</td>
+                        }   
+                    }
+                }
                     @if (@Model.GrowerOrg.Address != null)
                     {
                         <td>@Model.GrowerOrg.Address.Address1</td>
