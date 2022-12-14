@@ -270,17 +270,21 @@ namespace CCIA.Controllers
             var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
             var existingAddresses = await _dbContext.OrganizationAddress.Where(oa => oa.OrgId == vm.OrgId).AnyAsync();
 
-             if(newAddress.Address.CountyId != 0 && !existingAddresses)
+            addressToAdd.Active = false;
+
+            if(!existingAddresses)
+            {
+                addressToAdd.Active = true;
+            }
+
+            if(newAddress.Address.CountyId != 0 && !existingAddresses)
             {
                 var county = await _dbContext.County.Where(c => c.CountyId == newAddress.Address.CountyId).FirstAsync();
                 org.District = county.District;
                 org.CountyId = county.CountyId;
                 addressToAdd.Address.CountyId = newAddress.Address.CountyId;
-                addressToAdd.Active = true;                
-            } else
-            {
-                addressToAdd.Active = false;
             }
+
             addressToAdd.Billing = newAddress.Billing;
             addressToAdd.Mailing = newAddress.Mailing;
             addressToAdd.Delivery = newAddress.Delivery;
