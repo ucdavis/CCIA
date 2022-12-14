@@ -126,13 +126,15 @@ namespace CCIA.Models
             {                
                 AppType = abbrevAppType,
                 Application = app,
-                ClassProducedList = classes,
+            ClassProducedList = classes,
                 ClassPlantedList = planted,
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
                 GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)
-                    .Include(o => o.Address)
-                    .Include(o => o.Address)
+                    .Include(o => o.Address)                    
+                    .ThenInclude(a => a.StateProvince)
+                    .Include(o => o.Addresses)
+                    .ThenInclude(o => o.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
                 statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
