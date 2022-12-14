@@ -261,6 +261,12 @@ namespace CCIA.Controllers
             var addressToAdd = new OrganizationAddress();
             addressToAdd.Address = new Address();
             var newAddress = vm.orgAddress;
+            if(newAddress.Address.CountyId == 0 && newAddress.Address.StateProvinceId == 102)
+            {
+                ErrorMessage = "Please select a county if the state is California";
+                var model = await AdminAddressEditCreateViewModel.Create(_dbContext, 0, id);
+                return View(model); 
+            }
             var org = await _dbContext.Organizations.Where(o => o.Id == vm.OrgId).FirstAsync();
             var existingAddresses = await _dbContext.OrganizationAddress.Where(oa => oa.OrgId == vm.OrgId).AnyAsync();
 
@@ -297,7 +303,7 @@ namespace CCIA.Controllers
                 Message = "Address added";
             } else {
                 ErrorMessage = "Something went wrong.";
-                var model = await AdminAddressEditCreateViewModel.Create(_dbContext, id);
+                var model = await AdminAddressEditCreateViewModel.Create(_dbContext, 0, id);
                 return View(model); 
             }
             return RedirectToAction(nameof(Details), new { id = vm.OrgId });
