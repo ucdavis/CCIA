@@ -156,6 +156,16 @@
                 <label asp-for="LinkId" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Model.LinkId @Model.IdType
+                    @if(@Model.IdType == "SID")
+                    {
+                        <a asp-action="details" asp-controller="Seeds" asp-route-id="@Model.LinkId" class="btn btn-info">SID</a>
+                    } else if(@Model.IdType == "BID")
+                    {
+                        <a asp-action="details" asp-controller="Blends" asp-route-id="@Model.LinkId" class="btn btn-info">BID</a>
+                    } else if(@Model.IdType == "AppID")
+                    {
+                        <a asp-action="details" asp-controller="Application" asp-route-id="@Model.LinkId" class="btn btn-info">AppID</a>
+                    }
                 </div>
             </div>
             <div class="form-group row">

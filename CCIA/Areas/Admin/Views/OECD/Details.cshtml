@@ -97,6 +97,7 @@
                 <label asp-for="Seeds.Id" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.Seeds.Id)
+                    <a asp-action="details" asp-controller="Seeds" asp-route-id="@Model.SeedsId" class="btn btn-info">SID</a>
                 </div>
             </div>  
             <div class="form-group row">
