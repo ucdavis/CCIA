@@ -37,10 +37,16 @@
 </div>
 
 </form>
+
  
 @if(Model.apps != null && Model.apps.Any())
 {
-   <table id="table" class="table datatable">
+    <div class="card">
+        <div class="card-body">
+            <button onclick="$('table').tblToExcel()" class="btn btn-info">Export to Excel</button> (Donwload Excel-1. You will get a warning when opening in Excel. Just click "yes". That's because we are opening an HTML table as an Excel file.) 
+        </div>
+    </div>
+       <table id="table" class="table">
         <thead>             
             <th>Variety</th>
             <th>Org</th>
@@ -48,11 +54,11 @@
             <th>Acres Applied</th>
             <th>Class produced</th>
             <th>Insp#</th>
-            <th>Other Varieties</th>
-            <th>Mosiac</th>
-            <th>Leafrool</th>
-            <th>BlackLeg</th>
-            <th>Calico</th> 
+            <th>Other Varieties %</th>
+            <th>Mosiac %</th>
+            <th>Leafrool %</th>
+            <th>BlackLeg %</th>
+            <th>Calico %</th> 
         </thead>
         <tbody>
             @foreach (var row in Model.apps.OrderBy(a => a.Variety.Category).ThenBy(a => a.VarietyName).ThenBy(a => a.ApplicantOrganization.Name))
@@ -129,16 +135,11 @@
     </table>
 } 
 <table>
-@* @foreach (var row in Model.apps.OrderBy(a => a.Id))
-            {
-                <tr><td>@row.Id</td></tr>
-            }
-</table> *@
 
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}    
+    <script src="/js/tableToExcel/jquery.tableToExcel.js"></script>
 
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
@@ -153,7 +154,7 @@
                 bPaginate: false,
             });
         } );
-    </script>
+    </script> 
      
 }
 
