@@ -657,7 +657,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> UploadCertificate(int id, string certName, IFormFile file)
         {
-            certName = certName.Trim();
+            certName = certName?.Trim();
            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(app == null)
            {
@@ -1251,7 +1251,7 @@ namespace CCIA.Controllers.Client
         [HttpGet]
         public async Task<IActionResult> Lookup(string lookupVal, int appTypeId)
         {
-            lookupVal = lookupVal.Trim();
+            lookupVal = lookupVal?.Trim();
             var orgs = new List<Organizations>();
             int id = 0;
             // Parsing was successful (we have an ID number instead of a name)
@@ -1290,7 +1290,7 @@ namespace CCIA.Controllers.Client
         [AllowAnonymous] 
         public async Task<JsonResult> FindVariety(string name, int cropId)
         {
-            name = name.Trim();
+            name = name?.Trim();
             var varieties = await _dbContext.VarFull
                 .Where(v => v.Name.Contains(name) && v.CropId == cropId)
                 .Select(v => new VarietyList
@@ -1325,7 +1325,7 @@ namespace CCIA.Controllers.Client
         [AllowAnonymous] 
         public async Task<JsonResult> FindGermplasmEntities(string name)
         {
-            name = name.Trim();
+            name = name?.Trim();
             var varieties = await _dbContext.VarOfficial
                 .Where(v => v.VarOffName.ToLower() == name.ToLower())
                 .Where(v => v.GermplasmEntity == true)
