@@ -502,7 +502,7 @@
                     <tr>
                         <td><a asp-action="EditHistory" asp-route-id="@row.Id" class="btn btn-info">Edit</a></td>
                         <td>@row.Year</td>
-                        <td>@row.FHCrops.Name</td>
+                        <td>@row.FHCrops?.Name</td>
                         <td>@row.Variety</td>
                         <td>@row.AppNumber</td>
                     </tr>
