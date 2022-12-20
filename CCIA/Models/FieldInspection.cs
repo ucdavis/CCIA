@@ -60,6 +60,7 @@ namespace CCIA.Models
         public string Appearance { get; set; }
 
        
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double OtherVarietiesPercent { 
             get {
                 if(OtherVarieties.HasValue)
@@ -70,6 +71,7 @@ namespace CCIA.Models
             }
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double MosaicPercent { 
             get {
                 if(Mosaic.HasValue)
@@ -81,6 +83,7 @@ namespace CCIA.Models
             }
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double LeafrollPercent { 
             get {
                 if(Leafroll.HasValue)
@@ -92,6 +95,7 @@ namespace CCIA.Models
             }
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double BlacklegPercent { 
             get {
                 if(Blackleg.HasValue)
@@ -103,6 +107,7 @@ namespace CCIA.Models
             }
         }
        
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double CalicoPercent { 
             get {
                 if(Calico.HasValue)
@@ -114,6 +119,7 @@ namespace CCIA.Models
             }
         }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00;0.00;0}")]
         public double OtherDiseasesPercent { 
             get {
                 if(OtherDiseases.HasValue)

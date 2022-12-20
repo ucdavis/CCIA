@@ -60,6 +60,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> PotatoBook(AdminPotatoBookReportViewModel vm = null)
+        {
+            var model = await AdminPotatoBookReportViewModel.Create(_dbContext, vm);
+            return View(model);            
+        }
+
         
 
         

@@ -1,9 +1,5 @@
 @model List<CCIA.Models.Applications>
 
-@{
-    var i = 0;
-}
-
 <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
 
@@ -65,7 +61,6 @@
                 {
                 <td> 
                     <input name="checkMap" type="checkbox" class="form-control mapCheckbox" value="@app.Id" />
-                    @{i =+ 1; }
                 </td>
                 }
                 <td>@app.Id</td>
