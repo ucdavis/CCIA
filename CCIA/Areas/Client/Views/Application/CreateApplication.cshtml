@@ -1,5 +1,5 @@
 @model CCIA.Models.ApplicationViewModel
-
+@using CCIA.Helpers
 
 @{
     ViewData["Title"] = @Model.AppType.AppTypeTrans +  "Application";
@@ -85,6 +85,8 @@
     <input type="hidden" asp-for="WhatProduced" value="@Model.WhatProduced">
     <input type="hidden" asp-for="ProducingSeedType" value="@Model.ProducingSeedType">
     <input type="hidden" asp-for="WhereProduction" value="@Model.WhereProduction">
+    <input asp-for="Replant">
+    <input asp-for="ReplantId">
 
     <div class="row border">
         <div class="form-group col-sm-3 required">            
@@ -524,10 +526,74 @@
                 <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
             </div>
 
-            @if(Model.AppType.Abbreviation != "HP" || Model.WhereProduction != "Indoors")
+            @if(!Model.Replant && (Model.AppType.Abbreviation != "HP" || Model.WhereProduction != "Indoors"))
             {
-            <h5><strong>History:</strong></h5>
-            <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
+                <h5><strong>History:</strong></h5>
+                <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
+                    
+                int fhEntryId = 1;
+                int nextFhEntryId = fhEntryId+1;
+                ViewBag.name = "FieldHistories["+fhEntryId+"].Year";
+                ViewBag.startYearOffset = 0;
+                ViewBag.endYearOffset = 6;
+                        
+                <div class="row">
+                        @{                        
+                            var cropYearList = new List<SelectListItem>();
+                            @for (int i = 0; i <= ViewBag.endYearOffset; i++)
+                            {
+                                int year = Model.CertYear - 1 - i;
+                                var newItem = new SelectListItem() { Value= year.ToString(), Text=year.ToString()};     
+                                cropYearList.Add(newItem);                            
+                            }  
+                        }
+                    <table class="table">
+                        <thead>
+                            <th>Crop Year</th>
+                            <th>Crop</th>
+                            <th>Variety or Crop not in list</th>
+                            <th>Application Number</th>
+                        </thead>
+                        <tbody>                        
+                            @for(int j =1; j <= Model.AppType.FieldHistoryCount; j++)
+                            {                                                     
+                                int year = Model.CertYear - j;  
+                                <tr>
+                                    <td>
+                                    <select name='@("FieldHistory" + j).Year' id='@("FieldHistory" + j)_Year' class="form-control">
+                                        @foreach (var item in cropYearList)
+                                        {
+                                            if(item.Value == year.ToString())
+                                            {
+                                                <option value="@item.Value" selected>@item.Value</option>
+                                            } else
+                                            {
+                                                <option value="@item.Value">@item.Value</option>
+                                            }
+                                        }
+                                    </select> 
+                                    </td>
+                                    <td>
+                                        <select name='@("FieldHistory" + j).Crop' id='@("FieldHistory" + j)_Crop' class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
+                                            <option value="0">Select crop...</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" name='@("FieldHistory" + j).Variety' id='@("FieldHistory" + j)_Variety' class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" name='@("FieldHistory" + j).AppNumber' id='@("FieldHistory" + j)_AppNumber' class="form-control">
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    
+                </div>
+            } else if (Model.Replant)
+            {
+                <h5><strong>History:</strong></h5>
+                <p><em>Application numbers and full crop history may be required for previous years as specified in crop standards.</em></p>
 
                     
                 int fhEntryId = 1;
@@ -536,59 +602,85 @@
                 ViewBag.startYearOffset = 0;
                 ViewBag.endYearOffset = 6;
                         
-            <div class="row">
-                    @{                        
-                        var cropYearList = new List<SelectListItem>();
-                        @for (int i = 0; i <= ViewBag.endYearOffset; i++)
-                        {
-                            int year = Model.CertYear - 1 - i;
-                            var newItem = new SelectListItem() { Value= year.ToString(), Text=year.ToString()};     
-                            cropYearList.Add(newItem);                            
-                        }  
-                    }
-                <table class="table">
-                    <thead>
-                        <th>Crop Year</th>
-                        <th>Crop</th>
-                        <th>Variety or Crop not in list</th>
-                        <th>Application Number</th>
-                    </thead>
-                    <tbody>                        
-                        @for(int j =1; j <= Model.AppType.FieldHistoryCount; j++)
-                        {                                                     
-                            int year = Model.CertYear - j;  
-                            <tr>
-                                <td>
-                                   <select name='@("FieldHistory" + j).Year' id='@("FieldHistory" + j)_Year' class="form-control">
-                                       @foreach (var item in cropYearList)
-                                       {
-                                           if(item.Value == year.ToString())
-                                           {
-                                               <option value="@item.Value" selected>@item.Value</option>
-                                           } else
-                                           {
-                                               <option value="@item.Value">@item.Value</option>
-                                           }
-                                       }
-                                   </select> 
-                                </td>
-                                <td>
-                                     <select name='@("FieldHistory" + j).Crop' id='@("FieldHistory" + j)_Crop' class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
-                                         <option value="0">Select crop...</option>
-                                     </select>
-                                </td>
-                                <td>
-                                    <input type="text" name='@("FieldHistory" + j).Variety' id='@("FieldHistory" + j)_Variety' class="form-control">
-                                </td>
-                                <td>
-                                    <input type="text" name='@("FieldHistory" + j).AppNumber' id='@("FieldHistory" + j)_AppNumber' class="form-control">
-                                </td>
-                            </tr>
+                <div class="row">
+                        @{                        
+                            var cropYearList = new List<SelectListItem>();
+                            @for (int i = 0; i <= ViewBag.endYearOffset; i++)
+                            {
+                                int year = Model.CertYear - 1 - i;
+                                var newItem = new SelectListItem() { Value= year.ToString(), Text=year.ToString()};     
+                                cropYearList.Add(newItem);                            
+                            }  
                         }
-                    </tbody>
-                </table>
-                
-            </div>
+                    <table class="table">
+                        <thead>
+                            <th>Crop Year</th>
+                            <th>Crop</th>
+                            <th>Variety or Crop not in list</th>
+                            <th>Application Number</th>
+                        </thead>
+                        <tbody>                        
+                            @for(int j =1; j <= Model.AppType.FieldHistoryCount; j++)
+                            {                                                     
+                                int year = Model.CertYear - j; 
+                                var thisHistory = new FieldHistory();
+                                if(Model.Application.FieldHistories.Where(f => f.Year == year).Any())
+                                {
+                                    thisHistory = Model.Application.FieldHistories.Where(f => f.Year == year).First();
+                                } else {
+                                    thisHistory = new FieldHistory();
+                                }                          
+                                <tr>
+                                    <td>
+                                    <select name='@("FieldHistory" + j).Year' id='@("FieldHistory" + j)_Year' class="form-control">
+                                        @foreach (var item in cropYearList)
+                                        {
+                                            if(item.Value == year.ToString())
+                                            {
+                                                <option value="@item.Value" selected>@item.Value</option>
+                                            } else
+                                            {
+                                                <option value="@item.Value">@item.Value</option>
+                                            }
+                                        }
+                                    </select> 
+                                    </td>
+                                    <td>
+                                        <select name='@("FieldHistory" + j).Crop' id='@("FieldHistory" + j)_Crop' class="form-control" asp-items="@(new SelectList(Model.FullCrops, "CropId","Name"))">
+                                            @foreach (var item in Model.FullCrops)
+                                            {
+                                                <option value="0">Select crop...</option>
+                                                if((thisHistory != null && thisHistory.Crop.HasValue && thisHistory.Crop.Value == item.CropId) || year == CertYearFinder.CertYear - 1 && item.CropId == (int) CropIdNames.Rice)
+                                                {
+                                                    <option value="@item.CropId" selected>@item.Name</option>
+                                                } else {
+                                                    <option value="@item.CropId">@item.Name</option>
+                                                }                                                                                                
+                                            }                                            
+                                        </select>
+                                    </td>
+                                    <td>
+                                        @if(year == CertYearFinder.CertYear - 1)
+                                        {
+                                            <input type="text" name='@("FieldHistory" + j).Variety' id='@("FieldHistory" + j)_Variety' class="form-control" value="@Model.Application.VarietyName">
+                                        } else {
+                                            <input type="text" name='@("FieldHistory" + j).Variety' id='@("FieldHistory" + j)_Variety' class="form-control" value="@thisHistory.Variety">
+                                        }                                        
+                                    </td>
+                                    <td>
+                                        @if(year == CertYearFinder.CertYear - 1)
+                                        {
+                                            <input type="text" name='@("FieldHistory" + j).AppNumber' id='@("FieldHistory" + j)_AppNumber' class="form-control" value="@Model.Application.Id">
+                                        } else {
+                                            <input type="text" name='@("FieldHistory" + j).AppNumber' id='@("FieldHistory" + j)_AppNumber' class="form-control" value="@thisHistory.AppNumber">
+                                        }                                         
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    
+                </div>
             }
         </section>
 

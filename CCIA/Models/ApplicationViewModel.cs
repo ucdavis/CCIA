@@ -8,11 +8,10 @@ using Microsoft.EntityFrameworkCore;
 namespace CCIA.Models
 {
     public class ApplicationViewModel
-    {
-        public readonly static int PotatoCropId = 137;
-        public readonly static int RiceCropId = 63;
-        public readonly static int HempCropId = 316;
+    {        
         public Applications Application { get; set; }
+        public bool Replant { get; set; }
+        public int ReplantId { get; set; }
         public ApplicationLabels ApplicationLabels { get; set; }
         public int AppTypeId { get; set; }
         public List<AbbrevClassProduced> ClassProducedList { get; set; }
@@ -50,6 +49,11 @@ namespace CCIA.Models
         // Maximum number of field history records allowed for a specified app type
         public int LastAgreementYear { get; set; }
 
+        public ApplicationViewModel()
+        {
+            Replant = false;
+        }
+
         public static async Task<ApplicationViewModel> CreateGeneric(CCIAContext _dbContext, int growerId, int appType, int applicantOrg, string whatPlanted, string whatProduced, string producingSeedType, string whereProduction, int contactId)
         {
 
@@ -68,14 +72,14 @@ namespace CCIA.Models
             {
                 // Seed
                 case 1:
-                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
                     break;
                 // Potato
                 case 2:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
-                    varieties = await _dbContext.VarFull.Where(v => v.CropId == PotatoCropId).OrderBy(v => v.Name).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId == (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    varieties = await _dbContext.VarFull.Where(v => v.CropId == (int) CropIdNames.Potato).OrderBy(v => v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
-                    app.CropId = PotatoCropId;
+                    app.CropId = (int) CropIdNames.Potato;
                     planted = classes.Where(c => c.ClassProducedId != 11).ToList();
                     break;
                 // Heritage Grain QA
@@ -88,10 +92,10 @@ namespace CCIA.Models
                     break;
                 // Rice QA
                 case 5:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId == (int) CropIdNames.Rice).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     varieties = await _dbContext.VarFull.Where(v => v.RiceQa).OrderBy(v=> v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
-                    app.CropId = RiceCropId;
+                    app.CropId = (int) CropIdNames.Rice;
                     break;
                 // Turfgrass
                 case 6:
@@ -102,8 +106,8 @@ namespace CCIA.Models
                     break;               
                 // Hemp program
                 case 10:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
-                    app.CropId = HempCropId;
+                    crops = await _dbContext.Crops.Where(c => c.CropId == (int) CropIdNames.Hemp).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    app.CropId = (int) CropIdNames.Hemp;
                     var hempProducing = whatProduced;
                     if(whatProduced == "Seed")
                     {
@@ -169,12 +173,12 @@ namespace CCIA.Models
             {
                 // Seed
                 case 1:
-                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
                     break;
                 // Potato
                 case 2:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
-                    varieties = await _dbContext.VarFull.Where(v => v.CropId == PotatoCropId).OrderBy(v => v.Name).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    varieties = await _dbContext.VarFull.Where(v => v.CropId ==  (int) CropIdNames.Potato).OrderBy(v => v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     break;
                 // Heritage Grain QA
@@ -187,7 +191,7 @@ namespace CCIA.Models
                     break;
                 // Rice QA
                 case 5:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Rice).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     varieties = await _dbContext.VarFull.Where(v => v.RiceQa).OrderBy(v=> v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     break;
@@ -200,7 +204,7 @@ namespace CCIA.Models
                     break;               
                 // Hemp program
                 case 10:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Hemp).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     var hempProducing = submittedModel.WhatProduced;
                     if(submittedModel.WhatProduced == "Seed")
                     {
@@ -279,12 +283,12 @@ namespace CCIA.Models
             {
                 // Seed
                 case 1:
-                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId != PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
+                    crops = await _dbContext.Crops.Where(c => c.CertifiedCrop == true && c.CropId !=  (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();                    
                     break;
                 // Potato
                 case 2:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == PotatoCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
-                    varieties = await _dbContext.VarFull.Where(v => v.CropId == PotatoCropId).OrderBy(v => v.Name).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Potato).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    varieties = await _dbContext.VarFull.Where(v => v.CropId ==  (int) CropIdNames.Potato).OrderBy(v => v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     break;
                 // Heritage Grain QA
@@ -297,7 +301,7 @@ namespace CCIA.Models
                     break;
                 // Rice QA
                 case 5:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == RiceCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Rice).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     varieties = await _dbContext.VarFull.Where(v => v.RiceQa).OrderBy(v=> v.Name).ToListAsync();
                     varieties.Insert(0, new VarFull { Id=0, Name="Select variety..."});
                     break;
@@ -310,7 +314,7 @@ namespace CCIA.Models
                     break;               
                 // Hemp program
                 case 10:
-                    crops = await _dbContext.Crops.Where(c => c.CropId == HempCropId).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.CropId ==  (int) CropIdNames.Hemp).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     var hempProducing = app.HempWhatProduced;
                     if(app.HempWhatProduced == "Seed")
                     {
@@ -381,7 +385,7 @@ namespace CCIA.Models
                 // Potato
                 case 2:
                     crops = await dbContext.Crops
-                        .Where(c => c.CropId == PotatoCropId)
+                        .Where(c => c.CropId ==  (int) CropIdNames.Potato)
                         .ToListAsync();
                     break;
                 // Heritage Grain QA
@@ -401,7 +405,7 @@ namespace CCIA.Models
                 case 5:
                     maxFieldHistoryRecords = 1;
                     crops = await dbContext.Crops
-                        .Where(c => c.CropId == RiceCropId)
+                        .Where(c => c.CropId ==  (int) CropIdNames.Rice)
                         .ToListAsync();
                     break;
                 // // Turfgrass
@@ -411,7 +415,7 @@ namespace CCIA.Models
                 case 7:
                     maxFieldHistoryRecords = 5;
                     crops = await dbContext.Crops
-                        .Where(c => c.CropId == HempCropId)
+                        .Where(c => c.CropId ==  (int) CropIdNames.Hemp)
                         .ToListAsync();
                     break;
                 // // Hemp from clones
