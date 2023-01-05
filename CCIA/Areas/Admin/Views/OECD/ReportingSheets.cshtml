@@ -105,29 +105,19 @@
                 <td>0</td>
                 <td>Domestic</td>
                 <td></td>
-                <td>
-                    @if(oecd.Seeds.LabResults.LabOrganization != null)
-                    {
-                        @oecd.Seeds.LabResults.LabOrganization.Name
-                    }
-                </td>
+                <td>@oecd.Seeds?.LabResults?.LabOrganization?.Name</td>
                 <td>SID @oecd.SeedsId</td>
-                <td>
-                     @if(oecd.Seeds.LabResults.PrivateLabDate.HasValue)
-                    {
-                        @oecd.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
-                    }
-                </td>
-                <td>@oecd.Seeds.LabResults.PurityValue</td>
-                <td>@oecd.Seeds.LabResults.InertValue</td>
-                <td>@oecd.Seeds.LabResults.OtherCropValue</td>
-                <td>@oecd.Seeds.LabResults.WeedSeedValue</td>
-                <td>@oecd.Seeds.LabResults.GermValue</td>
-                <td>@oecd.Seeds.LabResults.GermHardSeedValue</td>
-                <td>@oecd.Seeds.LabResults.InertComments</td>
-                <td>@oecd.Seeds.LabResults.OtherCropComments</td>
-                <td>@oecd.Seeds.LabResults.WeedSeedComments</td>
-                <td>@oecd.Seeds.LabResults.Comments</td>
+                <td>@oecd.Seeds?.LabResults?.PrivateLabDate?.ToShortDateString()</td>
+                <td>@oecd.Seeds?.LabResults?.PurityValue</td>
+                <td>@oecd.Seeds?.LabResults?.InertValue</td>
+                <td>@oecd.Seeds?.LabResults?.OtherCropValue</td>
+                <td>@oecd.Seeds?.LabResults?.WeedSeedValue</td>
+                <td>@oecd.Seeds?.LabResults?.GermValue</td>
+                <td>@oecd.Seeds?.LabResults?.GermHardSeedValue</td>
+                <td>@oecd.Seeds?.LabResults?.InertComments</td>
+                <td>@oecd.Seeds?.LabResults?.OtherCropComments</td>
+                <td>@oecd.Seeds?.LabResults?.WeedSeedComments</td>
+                <td>@oecd.Seeds?.LabResults?.Comments</td>
                 <td>@oecd.DatePrinted.Value.ToShortDateString()</td>
             </tr>
             }
