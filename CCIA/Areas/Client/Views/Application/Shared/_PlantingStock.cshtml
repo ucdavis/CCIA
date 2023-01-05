@@ -68,7 +68,7 @@
             @Html.ValidationMessage("AppSpecificPlantingStocks[0].SeedPurchasedFrom", "", new { @class = "text-danger"})
         </div>
         <!-- Hemp -->
-        @if(Model.AppViewModel.AppTypeId == ApplicationViewModel.HempCropId)
+        @if(Model.AppViewModel.AppTypeId == (int) AppTypes.HempProgarm)
         {
             <div class="form-group col">
                 <label for="thc-percent">THC Percent</label>

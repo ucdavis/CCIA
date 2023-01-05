@@ -19,4 +19,13 @@ namespace CCIA.Models
         [Display(Name="HP")]
         HempProgarm
     }
+
+    public enum CropIdNames
+    {
+        Alfalfa = 1,
+        Rice = 63,
+        Sunflower = 74,
+        Potato = 137,
+        Hemp = 316
+    }
 }
