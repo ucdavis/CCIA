@@ -39,6 +39,8 @@
                     <option value="Crop/County">By Crop & County</option>
                     <option value="Crop">By Crop</option>
                     <option value="County">By County</option>
+                    <option value="Crop/Variety/County">By Crop, Variety, & County</option>
+                    <option value="Crop/Variety">By Crop & Variety</option>
                 </select>
             </div>          
         </div>
@@ -81,7 +83,11 @@
             {
                 <th>Crop</th>
                 <th>Kind</th>
-            }               
+            } 
+            @if(Model.reportType.Contains("Variety", StringComparison.OrdinalIgnoreCase))              
+            {
+                <th>Variety</th>
+            }
             <th>Year</th>
             <th>Acres Applied</th>
             <th>Acres Approved</th>
@@ -100,9 +106,13 @@
                 }                    
                 @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
                 {
-                   <td>@row.crop</td>    
+                    <td>@row.crop</td>    
                     <td>@row.crop_kind</td>
-                }          
+                }   
+                @if(Model.reportType.Contains("Variety", StringComparison.OrdinalIgnoreCase))              
+                {
+                    <td>@row.var_name</td>
+                }       
                 <td>@row.cert_year</td>
                 <td>@Html.Raw(row.acres_applied.ToString("##,##0.00"))</td>
                 <td>@Html.Raw(row.acres_approved.ToString("##,##0.00"))</td>
