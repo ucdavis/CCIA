@@ -89,6 +89,51 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
+        public async Task<IActionResult> Replant(int id)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }            
+            var replantModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);  
+            if(replantModel.Application.AppType != AppTypes.Seed.GetDisplayName() || replantModel.Application.CertYear != CertYearFinder.CertYear - 1 || replantModel.Application.CropId != 63)
+            {
+                ErrorMessage = "App is not a seed app, rice app, or from last cert year";
+                return Redirect(nameof(Index));
+            }
+            replantModel.Replant = true;
+            replantModel.ReplantId = id;
+            return View("CreateApplication",replantModel);
+        }
+
+        public async Task<IActionResult> Reuse(int id)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }            
+            var reuseModel = await ApplicationViewModel.CreateEditModel(_dbContext, id); 
+            reuseModel.Application.CertYear = CertYearFinder.CertYear;  
+            reuseModel.Application.PlantingStocks.First().PsCertNum = null;
+            reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
+            reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            reuseModel.Application.FieldName = null;
+            reuseModel.Application.DatePlanted = null;
+            reuseModel.Application.FarmCounty = 0;
+            reuseModel.Application.AcresApplied = null;
+            reuseModel.Application.Comments = null;
+
+
+            return View("CreateApplication",reuseModel);
+
+        }
+
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)
         {
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
@@ -149,6 +194,7 @@ namespace CCIA.Controllers.Client
             newApp.Received = DateTime.Now;
             newApp.Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName();
             newApp.ApplicantComments = submittedApp.ApplicantComments;
+            newApp.ApplicantNotes = "Replant on AppId " + model.ReplantId.ToString();
             newApp.FieldName = submittedApp.FieldName;
             newApp.DatePlanted = submittedApp.DatePlanted;
             newApp.AcresApplied = submittedApp.AcresApplied;
@@ -247,6 +293,19 @@ namespace CCIA.Controllers.Client
                 newApp.PvgSelectionId = submittedApp.PvgSelectionId;
                 newApp.EcoregionId = submittedApp.EcoregionId;
                 newApp.FieldElevation = submittedApp.FieldElevation;
+            }
+
+            if(model.Replant)
+            {
+                var replantApp = await _dbContext.Applications.Where(a => a.Id == model.ReplantId).FirstOrDefaultAsync();
+                newApp.Maps = replantApp.Maps;
+                newApp.MapsSubmissionDate = replantApp.MapsSubmissionDate;
+                newApp.MapCenterLat = replantApp.MapCenterLat;
+                newApp.MapCenterLong = replantApp.MapCenterLong;
+                newApp.MapVe = replantApp.MapVe;
+                newApp.TextField  = replantApp.TextField;
+                newApp.GeoTextField = replantApp.GeoTextField;
+                newApp.GeoField = replantApp.GeoField;
             }
 
             ModelState.Clear();    
