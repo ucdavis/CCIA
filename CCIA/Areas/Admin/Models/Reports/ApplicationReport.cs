@@ -9,6 +9,7 @@ namespace CCIA.Models
 
        public string crop { get; set; }
        public string crop_kind { get; set; }
+       public string var_name { get; set; }
        public int cert_year { get; set; }
        public decimal acres_applied { get; set; }
 
