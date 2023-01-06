@@ -106,6 +106,7 @@ namespace CCIA.Controllers.Client
             }
             replantModel.Replant = true;
             replantModel.ReplantId = id;
+            replantModel.Application.CertYear = CertYearFinder.CertYear;
             return View("CreateApplication",replantModel);
         }
 
