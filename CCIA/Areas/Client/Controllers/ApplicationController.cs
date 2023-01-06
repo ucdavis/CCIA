@@ -91,7 +91,7 @@ namespace CCIA.Controllers.Client
 
         public async Task<IActionResult> Replant(int id)
         {
-             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             var checker = await MembershipChecker.Check(_dbContext, orgId);
             if(!checker.CurrentMember)
@@ -107,6 +107,31 @@ namespace CCIA.Controllers.Client
             replantModel.Replant = true;
             replantModel.ReplantId = id;
             return View("CreateApplication",replantModel);
+        }
+
+        public async Task<IActionResult> Reuse(int id)
+        {
+            var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
+            var contactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+            var checker = await MembershipChecker.Check(_dbContext, orgId);
+            if(!checker.CurrentMember)
+            {
+                return RedirectToAction("Membership","Organization");
+            }            
+            var reuseModel = await ApplicationViewModel.CreateEditModel(_dbContext, id); 
+            reuseModel.Application.CertYear = CertYearFinder.CertYear;  
+            reuseModel.Application.PlantingStocks.First().PsCertNum = null;
+            reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
+            reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            reuseModel.Application.FieldName = null;
+            reuseModel.Application.DatePlanted = null;
+            reuseModel.Application.FarmCounty = 0;
+            reuseModel.Application.AcresApplied = null;
+            reuseModel.Application.Comments = null;
+
+
+            return View("CreateApplication",reuseModel);
+
         }
 
         public async Task<IActionResult> CreateApplication(int growerId, int appTypeId)

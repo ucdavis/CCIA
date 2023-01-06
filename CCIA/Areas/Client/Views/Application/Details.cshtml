@@ -31,23 +31,24 @@
         </div>
     </div>    
 }
-@if(Model.CropId ==  (int) CropIdNames.Rice && Model.AppType == AppTypes.Seed.GetDisplayName() && Model.CertYear == CertYearFinder.CertYear - 1)
-{
     <div class="row col-sm-12">
+        <div class="col-sm-4">
+            <a asp-action="Reuse" asp-route-id="@Model.Id" class="btn btn-info">New App based on this one</a>
+        </div>
+    @if(Model.CropId ==  (int) CropIdNames.Rice && Model.AppType == AppTypes.Seed.GetDisplayName() && Model.CertYear == CertYearFinder.CertYear - 1)
+    {   
         <div class="col-sm-4">
             <a asp-action="Replant" asp-route-id="@Model.Id" class="btn btn-info">Replant this Field</a>
         </div>
-    </div>
-
-}
-@if(Model.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName())
-{
-    <div class="row col-sm-12">
+    }
+    @if(Model.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName())
+    {    
         <div class="col-sm-4">
             <a asp-action="FIR" asp-route-id="@Model.Id" class="btn btn-info">View FIR</a>
         </div>
+    }
     </div>
-}
+
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
