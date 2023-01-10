@@ -87,17 +87,12 @@
             <td valign="top">
                 Address:</td>
             <td colspan="2">
-                @if(Model.application.ApplicantOrganization.Address != null){
-                @if(Model.application.ApplicantOrganization.Address.Address1 != null){
-                    @Model.application.ApplicantOrganization.Address.Address1<br>
+                @if(Model.application.ApplicantOrganization.Addresses != null){
+                @if(Model.application.ApplicantOrganization.Addresses.First().Address != null){
+                    @Model.application.ApplicantOrganization.Addresses.First().Address.AddressLines<br>
                 }
-               
-               @if(Model.application.ApplicantOrganization.Address.Address2 != null)
-               {
-                   @Model.application.ApplicantOrganization.Address.Address2<br>
-               }
-               <span>@Model.application.ApplicantOrganization.Address.City,&nbsp; @Model.application.ApplicantOrganization.Address.StateProvince.StateProvinceCode </span>
-                @Model.application.ApplicantOrganization.Address.PostalCode
+               <span>@Model.application.ApplicantOrganization.Addresses.First().Address.City,&nbsp; @Model.application.ApplicantOrganization.Addresses.First().Address.StateProvince.StateProvinceCode </span>
+                @Model.application.ApplicantOrganization.Addresses.First().Address.PostalCode
                 }
             </td>
             <td colspan="1">
