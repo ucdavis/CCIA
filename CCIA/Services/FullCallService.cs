@@ -84,9 +84,11 @@ namespace CCIA.Services
         {
             var seed = _context.Seeds
                 .Include(s => s.ApplicantOrganization)
+                .ThenInclude(a => a.Addresses.Where(a => a.Active))
                 .ThenInclude(a => a.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Include(s => s.ConditionerOrganization)
+                .ThenInclude(c => c.Addresses.Where(a => a.Active))
                 .ThenInclude(a => a.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Include(s => s.AppTypeTrans)
@@ -291,27 +293,21 @@ namespace CCIA.Services
         public IQueryable<Organizations> FullOrg()
         {
             var org = _context.Organizations
-               .Include(o => o.Address)
+               .Include(o => o.Addresses.Where(a => a.Active))
+               .ThenInclude(o => o.Address)
                .ThenInclude(a => a.County)
-               .Include(o => o.Address)
+               .Include(o => o.Addresses.Where(a => a.Active))
+               .ThenInclude(o => o.Address)
                .ThenInclude(a => a.StateProvince)
-               .Include(o => o.Address)
+               .Include(o => o.Addresses.Where(a => a.Active))
+               .ThenInclude(o => o.Address)
                .ThenInclude(a => a.Countries)
                .Include(o => o.RepresentativeContact)
                .Include(o => o.Employees)
                .Include(o => o.ConditionerStatus)
                .Include(o => o.MapPermissions)
                .Include(o => o.MapCropPermissions)
-               .ThenInclude(p => p.Crop)
-               .Include(o => o.Addresses)
-               .ThenInclude(oa => oa.Address)
-               .ThenInclude(a => a.County)
-               .Include(o => o.Addresses)
-               .ThenInclude(oa => oa.Address)
-               .ThenInclude(a => a.StateProvince)
-               .Include(o => o.Addresses)
-               .ThenInclude(oa => oa.Address)
-               .ThenInclude(a => a.Countries)               
+               .ThenInclude(p => p.Crop)                        
                 .AsQueryable();
             return org;
         }
@@ -422,6 +418,7 @@ namespace CCIA.Services
         {
             var st = _context.SeedTransfers
                 .Include(st => st.OriginatingOrganization)
+                .ThenInclude(o => o.Addresses.Where(a => a.Active))
                 .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Include(st => st.PurchaserCounty)
@@ -571,6 +568,7 @@ namespace CCIA.Services
                 .Include(t => t.BulkCrop)
                 .Include(t => t.BulkVariety)
                 .Include(t => t.TaggingOrganization)
+                .ThenInclude(t => t.Addresses.Where(a => a.Active))
                 .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Include(t => t.ContactEntered)
