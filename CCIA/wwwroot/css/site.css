@@ -35,11 +35,11 @@ html {
 
 .table th,
 .table td  {
-  padding: 0ch !important;
+  padding: 0ch .5ch !important;
 }
 
 table.dataTable tbody th, table.dataTable tbody td {
-  padding: 0ch !important;
+  padding: 0ch .5ch !important;
 }
 
 .form-group {
