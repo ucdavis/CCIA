@@ -65,15 +65,15 @@
 
                             <br/>
 
-                            @Model.Application.GrowerOrganization.Address.Address1
+                            @Model.Application.GrowerOrganization.Addresses.First().Address.Address1
 
                             <br/>
 
-                            @Model.Application.GrowerOrganization.Address.City
+                            @Model.Application.GrowerOrganization.Addresses.First().Address.City
 
                             <br/>
 
-                            @(Model.Application.GrowerOrganization.Address.StateProvince.StateProvinceCode) @(Model.Application.GrowerOrganization.Address.PostalCode)
+                            @(Model.Application.GrowerOrganization.Addresses.First().Address.StateProvince.StateProvinceCode) @(Model.Application.GrowerOrganization.Addresses.First().Address.PostalCode)
                         </td>
                     </tr>
                 </table>
