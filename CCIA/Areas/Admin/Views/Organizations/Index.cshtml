@@ -47,14 +47,16 @@
                     <td>@row.Id</td>
                     <td>@row.Name</td>
                     <td>@row.Phone</td>
-                    <td>@(row.Address == null ? "" : @row.Address.Address1)</td>
-                    <td>@(row.Address == null ? "" : @row.Address.City)</td>
-                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.Name)</td>
-                    <td>@(row.Address == null || row.Address.StateProvince == null ? "" : @row.Address.StateProvince.Name)</td>
-                    <td>@(row.Address == null ? "" : @row.Address.PostalCode)</td>
-                    <td>@(row.Address == null || row.Address.County == null ? "" : @row.Address.County.District)</td>
-                </tr>
-                
+                    @if(row.Addresses.Any())
+                    {
+                        <td>@row.Addresses?.First().Address.Address1</td>
+                        <td>@row.Addresses.First().Address.City</td>
+                        <td>@row.Addresses.First().Address.County?.Name</td>
+                        <td>@row.Addresses.First().Address.StateProvince?.Name</td>
+                        <td>@row.Addresses.First().Address.PostalCode</td>
+                        <td>@row.Addresses.First().Address.County?.District</td>
+                    }                    
+                </tr>                
             }
         </tbody>
     </table> 

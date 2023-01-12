@@ -423,11 +423,14 @@ namespace CCIA.Models
             }
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var organization = await dbContext.Organizations.Where(o => o.Id == orgId)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.Countries)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.County)
                 .FirstOrDefaultAsync();
             /* California's StateProvinceID is 102 -- All applications must come from CA */

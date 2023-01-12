@@ -2519,7 +2519,7 @@ namespace CCIA.Models
                 
                 entity.HasOne(e => e.OrgCounty);
 
-                entity.HasOne(e => e.Address);
+                //entity.HasOne(e => e.Address);
 
                 entity.HasOne(e => e.RepresentativeContact);
 

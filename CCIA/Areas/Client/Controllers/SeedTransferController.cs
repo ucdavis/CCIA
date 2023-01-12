@@ -225,7 +225,7 @@ namespace CCIA.Controllers.Client
 
         public async Task<JsonResult> GetPurchaserFromOrganization(int id)
         {
-            var org = await _dbContext.Organizations.Include(o => o.Address).Where(o => o.Id == id).FirstOrDefaultAsync();
+            var org = await _dbContext.Organizations.Include(o => o.Addresses.Where(a=> a.Active)).ThenInclude(o=> o.Address).Where(o => o.Id == id).FirstOrDefaultAsync();
             if(org == null)
             {
                 return new JsonResult("Org not found"){
@@ -235,13 +235,13 @@ namespace CCIA.Controllers.Client
             var customer = new MyCustomers{
                 Id = org.Id,
                 Name = org.Name,
-                Address1 = org.Address.Address1,
-                Address2 = org.Address.Address2,
-                City = org.Address.City,
-                CountyId = org.CountyId.HasValue ? org.CountyId : 0,
-                StateId = org.Address.StateProvinceId.HasValue ? org.Address.StateProvinceId.Value : 0,
-                CountryId = org.Address.CountryId.HasValue ?  org.Address.CountryId.Value : 0,
-                Zip = org.Address.PostalCode,
+                Address1 = org.Addresses.Any() ? org.Addresses.First().Address.Address1 : "",
+                Address2 =  org.Addresses.Any() ?  org.Addresses.First().Address.Address2 : "",
+                City =  org.Addresses.Any() ?  org.Addresses.First().Address.City : "",
+                CountyId = org.Addresses.Any() && org.CountyId.HasValue ? org.CountyId : 0,
+                StateId =  org.Addresses.Any() && org.Addresses.First().Address.StateProvinceId.HasValue ? org.Addresses.First().Address.StateProvinceId.Value : 0,
+                CountryId =  org.Addresses.Any() && org.Addresses.First().Address.CountryId.HasValue ?  org.Addresses.First().Address.CountryId.Value : 0,
+                Zip =  org.Addresses.Any() ? org.Addresses.First().Address.PostalCode : "",
                 Phone = org.Phone,
                 Email = org.Email,
             };

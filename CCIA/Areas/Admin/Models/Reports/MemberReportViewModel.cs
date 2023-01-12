@@ -32,7 +32,7 @@ namespace CCIA.Models
                 .ThenInclude(a =>a.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Include(o => o.Addresses.Where(a=>a.Active))
-                .Include(a =>a.Address)
+                .ThenInclude(a =>a.Address)
                 .ThenInclude(a => a.County)
                 .AsQueryable(); 
             var model = new AdminMemberReportViewModel(); 
@@ -73,7 +73,7 @@ namespace CCIA.Models
                 
                 model = new AdminMemberReportViewModel
                 { 
-                    reports = await _dbContext.Organizations.Include(o => o.RepresentativeContact).Include(o => o.Address).ThenInclude(a => a.StateProvince).Include(o => o.Address).ThenInclude(a => a.County).Where(o => o.Member && o.MemberType == "Voting member").ToListAsync(),                    
+                    reports = await _dbContext.Organizations.Include(o => o.RepresentativeContact).Include(o => o.Addresses.Where(a=>a.Active)).ThenInclude(o => o.Address).ThenInclude(a => a.StateProvince).Include(o => o.Addresses.Where(a=>a.Active)).ThenInclude(o => o.Address).ThenInclude(a => a.County).Where(o => o.Member && o.MemberType == "Voting member").ToListAsync(),                    
                 };
             }
 

@@ -54,8 +54,7 @@ namespace CCIA.Models.AgComm
             {
                 var seedToFind = _dbContext.Seeds
                     .Include(s => s.ConditionerOrganization)
-                    .Include(s => s.ApplicantOrganization)
-                    .ThenInclude(a => a.Address)
+                    .Include(s => s.ApplicantOrganization)                   
                     .Include(s => s.AppTypeTrans)
                     .Include(s => s.Variety)
                     .ThenInclude(v => v.Crop)
