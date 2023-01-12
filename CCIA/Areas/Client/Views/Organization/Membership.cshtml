@@ -52,10 +52,10 @@
                 Email: ccia@ucdavis.edu
             </td>
             <td>@Model.Name<br/>
-                @if(Model.Address != null)
+                @if(Model.Addresses.First().Address != null)
                 {
-                    @Html.Raw(Model.Address.AddressLines)<br>
-                    @Model.Address.City<span>,</span> @Model.Address.StateProvince.Name @Model.Address.PostalCode
+                    @Html.Raw(Model.Addresses.First().Address.AddressLines)<br>
+                    @Model.Addresses.First().Address.City<span>,</span> @Model.Addresses.First().Address.StateProvince.Name @Model.Addresses.First().Address.PostalCode
                 }
                 <br/><br/>
                 Email: @Model.Email
@@ -72,10 +72,10 @@
     <p>11.	<u>GOVERNING LAW.</u>  This Agreement shall be subject to, construed, enforced and governed by the laws of the State of California. </p>
     <p>IN WITNESS WHEREOF, the parties hereto have executed this Agreement, effective on the day and in the year first set forth above.</p>
     <p>@Model.Name<br/>
-        @if(Model.Address != null)
+        @if(Model.Addresses.First().Address != null)
         {
-            @Html.Raw(Model.Address.AddressLines)<br>
-            @Model.Address.City<span>,</span> @Model.Address.StateProvince.Name @Model.Address.PostalCode
+            @Html.Raw(Model.Addresses.First().Address.AddressLines)<br>
+            @Model.Addresses.First().Address.City<span>,</span> @Model.Addresses.First().Address.StateProvince.Name @Model.Addresses.First().Address.PostalCode
         }
         <br/>
         <br/>
