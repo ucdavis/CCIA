@@ -26,6 +26,7 @@ namespace CCIA.Models
                 {
                    application = await _dbContext.Applications
                         .Include(a => a.GrowerOrganization)
+                        .ThenInclude(g => g.Addresses.Where(a => a.Active))
                         .ThenInclude(g => g.Address)
                         .ThenInclude(a => a.StateProvince)                
                         .Include(a => a.Variety)

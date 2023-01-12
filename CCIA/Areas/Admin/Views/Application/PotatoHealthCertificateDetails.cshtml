@@ -130,7 +130,7 @@
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.application.GrowerOrganization.Address.City), @Html.DisplayFor(x => x.application.GrowerOrganization.Address.StateProvince.Name) @Html.DisplayFor(x => x.application.GrowerOrganization.Address.PostalCode)
+                    @Html.DisplayFor(x => x.application.GrowerOrganization.Addresses.First().Address.City), @Html.DisplayFor(x => x.application.GrowerOrganization.Addresses.First().Address.StateProvince.Name) @Html.DisplayFor(x => x.application.GrowerOrganization.Addresses.First().Address.PostalCode)
                 </div>
             </div> 
             <div class="form-group row">
