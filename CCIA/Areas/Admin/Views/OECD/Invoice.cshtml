@@ -60,12 +60,12 @@
                         <tr>
                             <td> </td>
                             <td colspan="2" class="labelnoline">
-                                @if(Model.ShipperOrganization.Address != null)
+                                @if(Model.ShipperOrganization.Addresses != null)
                                 {
-                                    @Html.Raw(Model.ShipperOrganization.Address.AddressLines)<br>
-                                    @Model.ShipperOrganization.Address.City<span>,</span>
-                                    @Model.ShipperOrganization.Address.StateProvince.StateProvinceCode
-                                    @Model.ShipperOrganization.Address.PostalCode
+                                    @Html.Raw(Model.ShipperOrganization.Addresses.First().Address.AddressLines)<br>
+                                    @Model.ShipperOrganization.Addresses.First().Address.City<span>,</span>
+                                    @Model.ShipperOrganization.Addresses.First().Address.StateProvince.StateProvinceCode
+                                    @Model.ShipperOrganization.Addresses.First().Address.PostalCode
                                 }
                             </td>
                         </tr>
@@ -80,12 +80,12 @@
                         <tr>
                             <td> </td>
                             <td colspan="2" class="labelnoline">
-                                @if(Model.ConditionerOrganization.Address != null)
+                                @if(Model.ConditionerOrganization.Addresses != null)
                                 {
-                                    @Html.Raw(Model.ConditionerOrganization.Address.AddressLines)<br>
-                                    @Model.ConditionerOrganization.Address.City<span>,</span>
-                                    @Model.ConditionerOrganization.Address.StateProvince.StateProvinceCode
-                                    @Model.ConditionerOrganization.Address.PostalCode
+                                    @Html.Raw(Model.ConditionerOrganization.Addresses.First().Address.AddressLines)<br>
+                                    @Model.ConditionerOrganization.Addresses.First().Address.City<span>,</span>
+                                    @Model.ConditionerOrganization.Addresses.First().Address.StateProvince.StateProvinceCode
+                                    @Model.ConditionerOrganization.Addresses.First().Address.PostalCode
                                 }
                             </td>
                         </tr>
