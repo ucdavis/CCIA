@@ -134,10 +134,8 @@ namespace CCIA.Models
                 ClassPlantedList = planted,
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
-                GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)
-                    .Include(o => o.Address)                    
-                    .ThenInclude(a => a.StateProvince)
-                    .Include(o => o.Addresses)
+                GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == growerId)                   
+                    .Include(o => o.Addresses.Where(a => a.Active))
                     .ThenInclude(o => o.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
@@ -232,8 +230,8 @@ namespace CCIA.Models
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
                 GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == submittedModel.Application.GrowerId)
-                    .Include(o => o.Address)
-                    .Include(o => o.Address)
+                    .Include(o => o.Addresses.Where(a=> a.Active))
+                    .ThenInclude(a => a.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
                 statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
@@ -342,8 +340,8 @@ namespace CCIA.Models
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
                 GrowerOrg = await _dbContext.Organizations.Where(o => o.Id == app.GrowerId)
-                    .Include(o => o.Address)
-                    .Include(o => o.Address)
+                    .Include(o => o.Addresses.Where(a => a.Active))
+                    .ThenInclude(a => a.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
                 statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
@@ -425,11 +423,14 @@ namespace CCIA.Models
             }
             var stateProvince = await dbContext.StateProvince.ToListAsync();
             var organization = await dbContext.Organizations.Where(o => o.Id == orgId)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.Countries)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses)
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.County)
                 .FirstOrDefaultAsync();
             /* California's StateProvinceID is 102 -- All applications must come from CA */

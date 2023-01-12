@@ -401,16 +401,17 @@ namespace CCIA.Controllers.Client
         public async Task<JsonResult> GetMyCustomerFromOrgId(int id)
         {
             var model = await _dbContext.Organizations.Where(o => o.Id == id)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses.Where(a=> a.Active))
+                .ThenInclude(o => o.Address)
                 .Select(o => new MyCustomers
                 {
                     Name = o.Name,
-                    Address1 = o.Address.Address1,
-                    Address2 = o.Address.Address2,
-                    City = o.Address.City,
-                    StateId = o.Address.StateProvinceId.Value,
-                    CountryId = o.Address.CountryId.Value,
-                    Zip = o.Address.PostalCode,
+                    Address1 =  o.Addresses.Any() ?  o.Addresses.First().Address.Address1 : "",
+                    Address2 = o.Addresses.Any() ? o.Addresses.First().Address.Address2 : "",
+                    City = o.Addresses.Any() ? o.Addresses.First().Address.City : "",
+                    StateId = o.Addresses.Any() ? o.Addresses.First().Address.StateProvinceId.Value : 0,
+                    CountryId = o.Addresses.Any() ?  o.Addresses.First().Address.CountryId.Value : 0,
+                    Zip = o.Addresses.Any() ?  o.Addresses.First().Address.PostalCode : "",
                     Phone = o.Phone,
                     Email = o.Email
                 })

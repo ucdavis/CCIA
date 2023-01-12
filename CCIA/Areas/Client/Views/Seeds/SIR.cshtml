@@ -60,10 +60,10 @@
                         <tr>
                             <td> </td>
                             <td colspan="2">
-                                @if(Model.seed.ApplicantOrganization.Address != null)
+                                @if(Model.seed.ApplicantOrganization.Addresses.First().Address != null)
                                 {    
-                                    @Html.Raw(Model.seed.ApplicantOrganization.Address.AddressLines) <br>
-                                    @Model.seed.ApplicantOrganization.Address.City<span>,</span> @Model.seed.ApplicantOrganization.Address.StateName @Model.seed.ApplicantOrganization.Address.PostalCode
+                                    @Html.Raw(Model.seed.ApplicantOrganization.Addresses.First().Address.AddressLines) <br>
+                                    @Model.seed.ApplicantOrganization.Addresses.First().Address.City<span>,</span> @Model.seed.ApplicantOrganization.Addresses.First().Address.StateName @Model.seed.ApplicantOrganization.Addresses.First().Address.PostalCode
                                 }
                             </td>
                         </tr>
@@ -79,10 +79,10 @@
                          <tr>
                             <td> </td>
                             <td colspan="2">
-                                @if(Model.seed.ConditionerOrganization.Address != null)
+                                @if(Model.seed.ConditionerOrganization.Addresses.First().Address != null)
                                 {  
-                                    @Html.Raw(Model.seed.ConditionerOrganization.Address.AddressLines)<br>
-                                    @Model.seed.ConditionerOrganization.Address.City<span>,</span> @Model.seed.ConditionerOrganization.Address.StateName @Model.seed.ConditionerOrganization.Address.PostalCode
+                                    @Html.Raw(Model.seed.ConditionerOrganization.Addresses.First().Address.AddressLines)<br>
+                                    @Model.seed.ConditionerOrganization.Addresses.First().Address.City<span>,</span> @Model.seed.ConditionerOrganization.Addresses.First().Address.StateName @Model.seed.ConditionerOrganization.Addresses.First().Address.PostalCode
                                 }
                             </td>
                         </tr>

@@ -114,21 +114,21 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.Address1" class="col-sm-3 col-form-label">Address Line 1</label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.Address1" class="col-sm-3 col-form-label">Address Line 1</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.Address1) 
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.Address1) 
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.Address2" class="col-sm-3 col-form-label">Address Line 2</label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.Address2" class="col-sm-3 col-form-label">Address Line 2</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.Address2) 
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.Address2) 
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.City" class="col-sm-3 col-form-label"></label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.City" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.City)
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.City)
                 </div>
             </div>
             <div class="form-group row">
@@ -136,21 +136,21 @@
                  <select required asp-for="stc.OriginatingCountyId" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.counties, "CountyId", "Name"))"></select>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.StateProvince.Name)
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.StateProvince.Name)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.PostalCode" class="col-sm-3 col-form-label"></label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.PostalCode" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.PostalCode)
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.PostalCode)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="stc.OriginatingOrganization.Address.CountryName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="stc.OriginatingOrganization.Addresses.First().Address.CountryName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Address.CountryName)
+                    @Html.DisplayFor(x => x.stc.OriginatingOrganization.Addresses.First().Address.CountryName)
                 </div>
             </div>
             <div class="form-group row">

@@ -97,25 +97,25 @@
                         <td></td>
                         <td></td>
                     }
-                    @if(@row.Address != null)
+                    @if(@row.Addresses.Count > 0)
                     {
-                        <td>@row.Address.AddressLines</td>
-                        <td>@row.Address.City</td>
-                        @if(@row.Address.County != null)
+                        <td>@Html.Raw(@row.Addresses?.First().Address.AddressLines)</td>
+                        <td>@row.Addresses?.First().Address.City</td>
+                        @if(@row.Addresses?.First().Address.County != null)
                         {
-                            <td>@row.Address.County.Name</td>
+                            <td>@row.Addresses?.First().Address.County.Name</td>
                         } else
                         {
                             <td></td>
                         }
-                        @if(@row.Address.StateProvince != null)
+                        @if(@row.Addresses.First().Address.StateProvince != null)
                         {
-                            <td>@row.Address.StateProvince.Name</td>
+                            <td>@row.Addresses?.First().Address.StateProvince.Name</td>
                         } else
                         {
                             <td></td>
                         }
-                        <td>@row.Address.PostalCode</td>
+                        <td>@row.Addresses?.First().Address.PostalCode</td>
                     } else
                     {
                         <td></td>

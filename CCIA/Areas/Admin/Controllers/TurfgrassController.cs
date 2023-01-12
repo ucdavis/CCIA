@@ -35,6 +35,7 @@ namespace CCIA.Controllers.Admin
                 .ThenInclude(a => a.Crop)
                 .Include(t => t.Application)
                 .ThenInclude(a => a.GrowerOrganization)
+                .ThenInclude(g => g.Addresses.Where(a =>a.Active))
                 .ThenInclude(g => g.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Where(t => t.Id == id).FirstOrDefaultAsync();

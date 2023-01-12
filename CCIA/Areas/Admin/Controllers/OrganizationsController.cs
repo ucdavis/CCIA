@@ -39,9 +39,11 @@ namespace CCIA.Controllers
             }
             
             var model = await _dbContext.Organizations
-                .Include(o => o.Address)
+                .Include(o => o.Addresses.Where(a=> a.Active))
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.County)
-                .Include(o => o.Address)
+                .Include(o => o.Addresses.Where(a=> a.Active))
+                .ThenInclude(o => o.Address)
                 .ThenInclude(a => a.StateProvince)
                 .Where(o => EF.Functions.Like(o.Id.ToString(), "%" + term.Trim() + "%") || EF.Functions.Like(o.Name, "%" + term.Trim() + "%")).ToListAsync();
 

@@ -122,15 +122,15 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="OriginatingOrganization.Address.AddressLines" class="col-sm-3 col-form-label">Address</label>
+                <label asp-for="OriginatingOrganization.Addresses.First().Address.AddressLines" class="col-sm-3 col-form-label">Address</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.AddressLines) 
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Addresses.First().Address.AddressLines) 
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="OriginatingOrganization.Address.City" class="col-sm-3 col-form-label"></label>
+                <label asp-for="OriginatingOrganization.Addresses.First().Address.City" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.City)
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Addresses.First().Address.City)
                 </div>
             </div>
             <div class="form-group row">
@@ -140,21 +140,21 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="OriginatingOrganization.Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
+                <label asp-for="OriginatingOrganization.Addresses.First().Address.StateProvince.Name" class="col-sm-3 col-form-label">State</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.StateProvince.Name)
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Addresses.First().Address.StateProvince.Name)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="OriginatingOrganization.Address.PostalCode" class="col-sm-3 col-form-label"></label>
+                <label asp-for="OriginatingOrganization.Addresses.First().Address.PostalCode" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.PostalCode)
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Addresses.First().Address.PostalCode)
                 </div>
             </div>
             <div class="form-group row">
-                <label asp-for="OriginatingOrganization.Address.CountryName" class="col-sm-3 col-form-label"></label>
+                <label asp-for="OriginatingOrganization.Addresses.First().Address.CountryName" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.OriginatingOrganization.Address.CountryName)
+                    @Html.DisplayFor(x => x.OriginatingOrganization.Addresses.First().Address.CountryName)
                 </div>
             </div>
             <div class="form-group row">

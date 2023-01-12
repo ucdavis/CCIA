@@ -32,13 +32,13 @@
                 <tr>
                     <td>@Model.GrowerOrg.Id</td>
                     <td>@Model.GrowerOrg.Name</td>
-                    @if (@Model.GrowerOrg.Address != null)
+                    @if (@Model.GrowerOrg.Addresses.First().Address != null)
                     {
-                        <td>@Model.GrowerOrg.Address.Address1</td>
-                        <td>@Model.GrowerOrg.Address.City</td>
-                        @if (@Model.GrowerOrg.Address.StateProvince != null)
+                        <td>@Model.GrowerOrg.Addresses.First().Address.Address1</td>
+                        <td>@Model.GrowerOrg.Addresses.First().Address.City</td>
+                        @if (@Model.GrowerOrg.Addresses.First().Address.StateProvince != null)
                         {
-                            <td>@Model.GrowerOrg.Address.StateProvince.Name</td>
+                            <td>@Model.GrowerOrg.Addresses.First().Address.StateProvince.Name</td>
                         }                
                     }
                 </tr>

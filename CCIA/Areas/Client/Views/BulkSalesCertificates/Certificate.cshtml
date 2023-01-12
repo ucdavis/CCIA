@@ -123,17 +123,17 @@
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Address.Address1
+                        <td>@Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.Address1
                             <br/>
-                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.Address2
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.Address2
                         </td>
                         <td></td>
                         <td>City, State, Zip:</td>
                         <td nowrap="true">
-                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.City, 
-                            @Model.BulkSalesCertificate.ConditionerOrganization.Address.StateProvince.Name
-                             @Model.BulkSalesCertificate.ConditionerOrganization.Address.PostalCode<br/>
-                        @Model.BulkSalesCertificate.ConditionerOrganization.Address.Countries.Name</td>
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.City, 
+                            @Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.StateProvince.Name
+                             @Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.PostalCode<br/>
+                        @Model.BulkSalesCertificate.ConditionerOrganization.Addresses.First().Address.Countries.Name</td>
                     </tr>
                     <tr>
                         <td>Phone:</td>

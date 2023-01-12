@@ -465,12 +465,12 @@
             </div>
         </div>
         <div class="form-group row">
-            <label asp-for="TaggingOrganization.Address.Address1" class="col-sm-3 col-form-label">Address</label>
+            <label asp-for="TaggingOrganization.Addresses.First().Address.Address1" class="col-sm-3 col-form-label">Address</label>
             <div class="col-sm-9 form-control-plaintext">
-                @if(Model.TaggingOrganization.Address != null)
+                @if(Model.TaggingOrganization.Addresses.First().Address != null)
                 {
-                    @Model.TaggingOrganization.Address.AddressLines<br>
-                    @Model.TaggingOrganization.Address.City<span>,</span> @Model.TaggingOrganization.Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Address.PostalCode
+                    @Model.TaggingOrganization.Addresses.First().Address.AddressLines<br>
+                    @Model.TaggingOrganization.Addresses.First().Address.City<span>,</span> @Model.TaggingOrganization.Addresses.First().Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Addresses.First().Address.PostalCode
                 }
             </div>
         </div>
