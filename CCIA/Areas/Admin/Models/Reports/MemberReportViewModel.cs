@@ -26,7 +26,15 @@ namespace CCIA.Models
                
         public static async Task<AdminMemberReportViewModel> Create(CCIAContext _dbContext, AdminMemberReportViewModel vm )
         { 
-            var reportsFound = _dbContext.Organizations.Include(o => o.RepresentativeContact).Include(o => o.Address).ThenInclude(a => a.StateProvince).Include(o => o.Address).ThenInclude(a => a.County).AsQueryable(); 
+            var reportsFound = _dbContext.Organizations
+                .Include(o => o.RepresentativeContact)
+                .Include(o => o.Addresses.Where(a => a.Active))
+                .ThenInclude(a =>a.Address)
+                .ThenInclude(a => a.StateProvince)
+                .Include(o => o.Addresses.Where(a=>a.Active))
+                .Include(a =>a.Address)
+                .ThenInclude(a => a.County)
+                .AsQueryable(); 
             var model = new AdminMemberReportViewModel(); 
             if(vm.showReport != null)
             {
