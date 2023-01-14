@@ -31,6 +31,8 @@ namespace CCIA.Services
 
         FileStream DownloadBlendFile(BlendDocuments blendDoc, int certYear);
 
+        FileStream DownloadLibrary(string link);
+
         Task SaveSeedDocument(Seeds sid, string docType, IFormFile file);
 
         FileStream DownloadSeedFile(SeedDocuments doc, int certYear);
@@ -140,6 +142,17 @@ namespace CCIA.Services
             return GetFile(filePath);
         }
 
+        public FileStream DownloadLibrary(string link)
+        {
+            if(link.Contains("Library/") || link.Contains("varieties/"))
+            {
+                var folder = $"{GetLibraryRoot()}/{link}";
+                var filePath = Path.Combine(folder);
+                return GetFile(filePath);
+            }
+            return null;
+        }
+
         private FileStream GetFile(string filePath)
         {
             var content = new System.IO.FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -149,6 +162,11 @@ namespace CCIA.Services
         private string GetRoot()
         {
             return _configuration["FilePath"];
+        }
+
+        private string GetLibraryRoot()
+        {
+            return _configuration["FilePath"].Replace("/uploads","");
         }
 
         public bool CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear)
