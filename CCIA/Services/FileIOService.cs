@@ -144,7 +144,7 @@ namespace CCIA.Services
 
         public FileStream DownloadLibrary(string link)
         {
-            if(link.Contains("Library/") || link.Contains("varieties/"))
+            if(link.ToLower().Contains("library/") || link.ToLower().Contains("varieties/"))
             {
                 var folder = $"{GetLibraryRoot()}/{link}";
                 var filePath = Path.Combine(folder);
