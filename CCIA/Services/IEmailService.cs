@@ -17,6 +17,7 @@ namespace CCIA.Services
         Task SendWeeklyApplicationNotices(string password);        
 
         Task SendNotices(string password);
+
     }
     
 
@@ -36,7 +37,7 @@ namespace CCIA.Services
         {
             _client = new SmtpClient("pricklypear.plantsciences.ucdavis.edu",25) {Credentials = new NetworkCredential("ccia", password), EnableSsl = true};
         }
-
+       
         public async Task SendNotices(string password)
         {
             await SendPendingAdminSeedNotices(password);
@@ -120,14 +121,20 @@ namespace CCIA.Services
             
             foreach(var notice in notifications)
             {
-                var contact = await _dbContext.Contacts.Where(c => c.Id == notice.ContactId).FirstOrDefaultAsync();                             
 
+                var contact = await _dbContext.Contacts.Where(c => c.Id == notice.ContactId).FirstOrDefaultAsync();
+                var contactAndOrg = new ContactsAndOrg
+                {
+                    contact = contact,
+                    Org = await _dbContext.Organizations.Where(o => o.Id == contact.OrgId).FirstOrDefaultAsync()
+                };
+                
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Account Password Reset Instructions"})
                 {
                     //message.To.Add("jscubbage@ucdavis.edu");                    
                     message.To.Add(contact.Email);
                     message.Body = "Reset password instructions. Please visit CCIA website for details";
-                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/PasswordReset.cshtml", contact), new ContentType(MediaTypeNames.Text.Html));                    
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/PasswordReset.cshtml", contactAndOrg), new ContentType(MediaTypeNames.Text.Html));                    
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
                 }
