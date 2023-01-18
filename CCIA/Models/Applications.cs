@@ -231,7 +231,7 @@ namespace CCIA.Models
         { 
             get
             {
-                if (CropId == null)
+                if (CropId == null || Crop == null)
                 {
                     return "";
                 }
