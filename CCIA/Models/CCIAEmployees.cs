@@ -99,6 +99,8 @@ namespace CCIA.Models
 
         [Display(Name="New Blend Inform")]
         public bool NewBlend { get; set; }
+        [Display(Name="Admin Email Summary")]
+        public bool AdminEmailSummary { get; set; }
 
         [ForeignKey("EmployeeId")]
         public ICollection<CropAssignments> AssignedCrops { get; set; }

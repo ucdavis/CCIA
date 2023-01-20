@@ -1090,6 +1090,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
 
                 entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
+                entity.Property(e => e.AdminEmailSummary).HasColumnName("AdminEmailSummary");
                 entity.HasMany(e => e.AssignedCrops);
 
             });
