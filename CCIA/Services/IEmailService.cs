@@ -18,6 +18,8 @@ namespace CCIA.Services
 
         Task SendNotices(string password);
 
+        Task SendWeeklyAdminNotices(string password);
+
     }
     
 
@@ -52,6 +54,25 @@ namespace CCIA.Services
             await SendPendingSeedTransferSubmitNotices(password);
             await SendPendingSeedTransferResponseNotices(password);
             await SendPendingPasswordResetNotices(password);
+        }
+
+        public async Task SendWeeklyAdminNotices(string password)
+        {
+            await SendWeeklyStaffNotices(password);
+            //await SendAdminNotices(password);
+        }
+        
+        private async Task SendWeeklyStaffNotices(string password)
+        {
+
+            ConfigureSMTPClient(password);
+            var staffToEmail = await _dbContext.CCIAEmployees.Include(c => c.AssignedCrops).Distinct().Select(c => new System.Tuple<string, string>(c.KerberosId, c.Id)).ToListAsync();
+        }
+
+        private async Task SendAdminNotices(string password)
+        {
+            ConfigureSMTPClient(password);
+            var staffToEmail = await _dbContext.CCIAEmployees.Where(c => c.AdminEmailSummary).ToListAsync();
         }
 
         public  async Task SendWeeklyApplicationNotices(string password)

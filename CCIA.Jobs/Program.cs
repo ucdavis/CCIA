@@ -29,7 +29,15 @@ namespace CCIA.Jobs
                 emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
                 var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
                 context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);  
-            }            
+            } 
+            var adminNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Staff Emails" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();
+            if(adminNotices.Count > 0)
+            {
+                Console.Write("Running Staff Weekly Emails");
+                emailService.SendWeeklyAdminNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult(); 
+                var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
+                context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);
+            }           
             emailService.SendNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
                       
             Console.WriteLine("End?");
