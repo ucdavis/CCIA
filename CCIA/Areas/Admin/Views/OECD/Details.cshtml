@@ -163,7 +163,10 @@
             <div class="form-group row">
                 <label asp-for="CloseDate" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                   @Model.CloseDate.Value.ToShortDateString()
+                    @if(Model.CloseDate.HasValue)
+                    {
+                        @Model.CloseDate.Value.ToShortDateString()
+                    }                   
                 </div>
             </div>
             <div class="form-group row">
