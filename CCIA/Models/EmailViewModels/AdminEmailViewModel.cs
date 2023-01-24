@@ -61,6 +61,15 @@ namespace CCIA.Models
             return model;
         }
 
+        public static async Task<AdminEmailViewModel> GetAppsForAdmin(AdminEmailViewModel model, CCIAContext _dbContext, IFullCallService _helper)
+        {
+            model.Apps = null;
+            model.Apps =  await _helper.OverviewApplications().Where(a => a.Postmark >= DateTime.Now.AddDays(-7) && !a.Cancelled).ToListAsync();
+            var p0 = new SqlParameter("@current_year", CertYearFinder.CertYear);
+            model.SummaryCounts =  await _dbContext.CropSummaryCount.FromSqlRaw($"EXEC mvc_weekly_admin_summary_counts @current_year", p0).ToListAsync();
+            return model;
+        }
+
         
 
         

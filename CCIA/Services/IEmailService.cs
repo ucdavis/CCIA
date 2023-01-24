@@ -61,8 +61,8 @@ namespace CCIA.Services
 
         public async Task SendWeeklyAdminNotices(string password)
         {
-            await SendWeeklyStaffNotices(password);
-            //await SendAdminNotices(password);
+            //await SendWeeklyStaffNotices(password);
+            await SendAdminNotices(password);
         }
         
         private async Task SendWeeklyStaffNotices(string password)
@@ -87,8 +87,27 @@ namespace CCIA.Services
 
         private async Task SendAdminNotices(string password)
         {
-            ConfigureSMTPClient(password);            
-            var staffToEmail = await _dbContext.CCIAEmployees.Where(c => c.AdminEmailSummary).ToListAsync();
+            ConfigureSMTPClient(password);
+            var model = await AdminEmailViewModel.CreateBase(_dbContext);
+            
+            await AdminEmailViewModel.GetAppsForAdmin(model,_dbContext, _helper);
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.AdminEmailSummary).ToListAsync();
+
+            using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Weekly Application Summary"})
+            {  
+                message.To.Add("jscubbage@ucdavis.edu");                 
+                //message.To.Add(empl.Email);
+                foreach(var emp in admins)
+                {
+                    //message.To.Add(emp.Email);
+                    message.Subject = message.Subject + emp.Email + " ";
+                }
+                message.Body = "Summary of applicatons in last week";
+                var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
+                message.AlternateViews.Add(htmlView);
+                await _client.SendMailAsync(message);
+            }
+            
         }
 
         public  async Task SendWeeklyApplicationNotices(string password)
