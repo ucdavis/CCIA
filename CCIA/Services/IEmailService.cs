@@ -30,9 +30,12 @@ namespace CCIA.Services
 
         private SmtpClient _client;
 
-        public EmailService(CCIAContext dbContext)
+        private readonly IFullCallService _helper;
+
+        public EmailService(CCIAContext dbContext, IFullCallService helper)
         {
             _dbContext = dbContext;
+            _helper = helper;
         }
         
          private void ConfigureSMTPClient(string password)
@@ -64,14 +67,28 @@ namespace CCIA.Services
         
         private async Task SendWeeklyStaffNotices(string password)
         {
-
             ConfigureSMTPClient(password);
-            var staffToEmail = await _dbContext.CCIAEmployees.Include(c => c.AssignedCrops).Distinct().Select(c => new System.Tuple<string, string>(c.KerberosId, c.Id)).ToListAsync();
+            var model = await AdminEmailViewModel.CreateBase(_dbContext);
+            foreach(var empl in model.EmployeesToEmail)
+            {
+                model.Apps = null;
+                model.Apps = await AdminEmailViewModel.GetAppsForEmployee(_dbContext, _helper, empl.Id);
+
+                using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Weekly Application Summary"})
+                {  
+                    message.To.Add("jscubbage@ucdavis.edu");                 
+                    //message.To.Add(empl.Email);
+                    message.Body = "Summary of applicatons in last week";
+                    var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
+                    message.AlternateViews.Add(htmlView);
+                    await _client.SendMailAsync(message);
+                }
+            }
         }
 
         private async Task SendAdminNotices(string password)
         {
-            ConfigureSMTPClient(password);
+            ConfigureSMTPClient(password);            
             var staffToEmail = await _dbContext.CCIAEmployees.Where(c => c.AdminEmailSummary).ToListAsync();
         }
 

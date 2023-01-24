@@ -7,6 +7,7 @@ using CCIA.Models;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
 using Microsoft.Data.SqlClient;
+using System.Diagnostics;
 
 namespace CCIA.Jobs
 {
@@ -22,23 +23,24 @@ namespace CCIA.Jobs
             var provider = ConfigureServices(); 
             var context = provider.GetService<CCIAContext>();
             var emailService = provider.GetService<IEmailService>();
-            var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();            
-            if(appNotices.Count > 0)
-            {
-                Console.WriteLine("Running weekly app notices");                            
-                emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
-                var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
-                context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);  
-            } 
+            var fullcall = provider.GetService<IFullCallService>();
+            // var appNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Application Updates" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();            
+            // if(appNotices.Count > 0)
+            // {
+            //     Console.WriteLine("Running weekly app notices");                            
+            //     emailService.SendWeeklyApplicationNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();  
+            //     var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
+            //     context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);  
+            // } 
             var adminNotices = context.Jobs.Where(a => a.JobTitle == "Weekly Staff Emails" && a.DateNextJobStart < DateTime.Now).ToListAsync().GetAwaiter().GetResult();
             if(adminNotices.Count > 0)
             {
-                Console.Write("Running Staff Weekly Emails");
+                Console.WriteLine("Running Staff Weekly Emails");
                 emailService.SendWeeklyAdminNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult(); 
-                var p0 = new SqlParameter("@jobID",  appNotices.First().Id);
-                context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);
+                // var p0 = new SqlParameter("@jobID",  adminNotices.First().Id);
+                // context.Database.ExecuteSqlRaw($"EXEC mark_job_as_completed @jobID", p0);
             }           
-            emailService.SendNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
+            //emailService.SendNotices(Configuration["EmailPassword"]).GetAwaiter().GetResult();
                       
             Console.WriteLine("End?");
             //var test = Console.ReadLine();            
@@ -60,6 +62,7 @@ namespace CCIA.Jobs
             });
 
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IFullCallService, FullCallService>();
 
             return services.BuildServiceProvider();
         }

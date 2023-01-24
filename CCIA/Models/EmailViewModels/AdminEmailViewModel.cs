@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using Microsoft.EntityFrameworkCore;
-
+using CCIA.Services;
 
 namespace CCIA.Models
 {   
@@ -18,10 +18,11 @@ namespace CCIA.Models
         public decimal? WeekAcres { get; set; }
         public decimal? TotalAcres { get; set; }
         public int WeeklyFir { get; set; }
-        public int TotalFir { get; set; }             
+        public int TotalFir { get; set; } 
+        public List<CCIAEmployees> EmployeesToEmail { get; set; }            
 
         
-        public static async Task<AdminEmailViewModel> CreateStaff(CCIAContext _dbContext)
+        public static async Task<AdminEmailViewModel> CreateBase(CCIAContext _dbContext)
         {                
             var viewModel = new AdminEmailViewModel
             {
@@ -40,10 +41,17 @@ namespace CCIA.Models
                     a.Status == ApplicationStatus.FieldInspectionInProgress.GetDisplayName())).SumAsync(a => a.AcresApplied),
                 WeeklyFir = await _dbContext.FieldInspectionReport.Where(f => f.Complete && f.DateComplete > DateTime.Now.AddDays(-7)).CountAsync(),
                 TotalFir = await _dbContext.Applications.Where(a => a.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName() 
-                    && a.CertYear == CertYearFinder.CertYear).CountAsync()
+                    && a.CertYear == CertYearFinder.CertYear).CountAsync(),
+                EmployeesToEmail = await _dbContext.CCIAEmployees.Include(c => c.AssignedCrops).Where(c=> c.AssignedCrops.Any()).Distinct().ToListAsync()
             };           
 
             return viewModel;
+        }
+
+        public static async Task<List<Applications>> GetAppsForEmployee(CCIAContext _dbContext, IFullCallService _helper, string employeeId)
+        {
+            var crops = await _dbContext.CropAssignments.Where(c => c.EmployeeId == employeeId).Select(c => c.CropId).ToListAsync();
+            return await _helper.OverviewApplications().Where(a => a.Postmark >= DateTime.Now.AddDays(-7) && !a.Cancelled && crops.Contains(a.CropId.Value)).ToListAsync();
         }
 
         
