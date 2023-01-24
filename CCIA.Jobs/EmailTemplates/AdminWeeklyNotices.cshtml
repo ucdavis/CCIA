@@ -79,7 +79,8 @@
                                                             <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
                                                                 <h1 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:34px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal">
                                                                     The following applications were submitted in the last week:
-                                                                    </h1><table class="spacer" style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%"><tbody><tr style="padding:0;text-align:left;vertical-align:top"><td height="16px" style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:16px;margin:0;mso-line-height-rule:exactly;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">&#xA0;</td></tr></tbody></table><h4 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal">Notification Details</h4><table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                                    </h1>
+                                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
                                                                     <thead><tr style="padding:0;text-align:left;vertical-align:top">
                                                                         <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
                                                                             <b>AppId<sup>*</sup> &nbsp;&nbsp;&nbsp;</b>
@@ -100,6 +101,10 @@
                                                                             <b>submitted By</b>
                                                                         </th>
                                                                     <tbody>
+                                                                        @if(Model.Apps.Count == 0)
+                                                                        {
+                                                                            <tr><td colspan="5">No applications were submitted this week</td></tr>
+                                                                        }
                                                                         @foreach (var app in Model.Apps)
                                                                         {
                                                                             <tr style="padding:0;text-align:left;vertical-align:top">
@@ -126,6 +131,56 @@
                                                                     <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
                                                                 </tr>
                                                             </table>
+                                                            <hr>
+                                                            <h1 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:34px;font-weight:400;line-height:1.3;margin:0;margin-bottom:10px;padding:0;text-align:left;word-wrap:normal">
+                                                                    Total applications pending acceptance for all crops: 
+                                                                    </h1>
+                                                                    <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                                                    <thead><tr style="padding:0;text-align:left;vertical-align:top">
+                                                                        <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding: 0.5ch;;text-align:left">
+                                                                            <b>Crop</b>
+                                                                        </th>
+                                                                        <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding: 0.5ch;text-align:left">
+                                                                           <b>Pending acceptance</b>
+                                                                        </th>
+                                                                        <th style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding: 0.5ch;text-align:left">
+                                                                            <b>Total Apps This Cert Year</b>
+                                                                        </th>                                                                        
+                                                                    <tbody>
+                                                                        @if(Model.SummaryCounts.Count == 0)
+                                                                        {
+                                                                            <tr><td colspan="3">None yet</td></tr>
+                                                                        }
+                                                                        @foreach (var summary in Model.SummaryCounts)
+                                                                        {
+                                                                            <tr style="padding:0;text-align:center;vertical-align:top;width: 100%">
+                                                                                <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                                                   @summary.Crop
+                                                                                </td>
+                                                                                <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:center;vertical-align:top;word-wrap:break-word">
+                                                                                    @summary.PendingAppCount
+                                                                                </td>
+                                                                                <td style="-moz-hyphens:auto;-webkit-hyphens:auto;Margin:0;border-collapse:collapse!important;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;hyphens:auto;line-height:1.3;margin:0;padding:0;text-align:center;vertical-align:top;word-wrap:break-word">
+                                                                                    @summary.TotalCount
+                                                                                </td>                                                                                
+                                                                            </tr>
+                                                                        } 
+                                                                    <th class="expander" style="Margin:0;color:#0a0a0a;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;visibility:hidden;width:0"></th>
+                                                                </tr>
+                                                            </table>
+                                                            <hr>
+                                                            Total Acres applied for all crops: <br>
+                                                            This week: @Model.WeekAcres<br>
+                                                            This year: @Model.TotalAcres<br>
+                                                            <br><br>
+                                                            Total applications for all crops: <br>
+                                                            Pending acceptance: @Model.PendingAcceptance<br>
+                                                            Submitted this week: @Model.WeekAppCount<br>
+                                                            This year: @Model.TotalAppCount<br>
+                                                            <br><br>
+                                                            Total Field Inspections issued for all crops: <br>
+                                                            This week: @Model.WeeklyFir<br>
+                                                            This year: @Model.TotalFir<br>
                                                         </th>
                                                     </tr>
                                                 </tbody>
