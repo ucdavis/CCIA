@@ -61,7 +61,7 @@ namespace CCIA.Services
 
         public async Task SendWeeklyAdminNotices(string password)
         {
-            //await SendWeeklyStaffNotices(password);
+            await SendWeeklyStaffNotices(password);
             await SendAdminNotices(password);
         }
         
@@ -75,8 +75,8 @@ namespace CCIA.Services
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Weekly Application Summary"})
                 {  
-                    message.To.Add("jscubbage@ucdavis.edu");                 
-                    //message.To.Add(empl.Email);
+                    //message.To.Add("jscubbage@ucdavis.edu");                 
+                    message.To.Add(empl.Email);
                     message.Body = "Summary of applicatons in last week";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
@@ -95,12 +95,10 @@ namespace CCIA.Services
 
             using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Weekly Application Summary"})
             {  
-                message.To.Add("jscubbage@ucdavis.edu");                 
-                //message.To.Add(empl.Email);
+                //message.To.Add("jscubbage@ucdavis.edu");
                 foreach(var emp in admins)
                 {
-                    //message.To.Add(emp.Email);
-                    message.Subject = message.Subject + emp.Email + " ";
+                    message.To.Add(emp.Email);
                 }
                 message.Body = "Summary of applicatons in last week";
                 var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
