@@ -27,6 +27,8 @@ namespace CCIA.Models
             throw new NotImplementedException();
         }
 
+        public virtual DbSet<cropSummaryCount> CropSummaryCount { get; set; }
+
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
 
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
@@ -373,6 +375,10 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<cropSummaryCount>(entity => {
                 entity.HasNoKey();
             });
 

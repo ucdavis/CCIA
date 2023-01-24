@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using CCIA.Helpers;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Services;
+using Microsoft.Data.SqlClient;
 
 namespace CCIA.Models
 {   
     public class AdminEmailViewModel 
     {
         public List<Applications> Apps { get; set; }
+        public List<cropSummaryCount> SummaryCounts { get; set; }
         
         public int PendingAcceptance { get; set; }   
         public int WeekAppCount { get; set; }  
@@ -48,15 +50,22 @@ namespace CCIA.Models
             return viewModel;
         }
 
-        public static async Task<List<Applications>> GetAppsForEmployee(CCIAContext _dbContext, IFullCallService _helper, string employeeId)
+        public static async Task<AdminEmailViewModel> GetAppsForEmployee(AdminEmailViewModel model, CCIAContext _dbContext, IFullCallService _helper, string employeeId)
         {
+            model.Apps = null;
             var crops = await _dbContext.CropAssignments.Where(c => c.EmployeeId == employeeId).Select(c => c.CropId).ToListAsync();
-            return await _helper.OverviewApplications().Where(a => a.Postmark >= DateTime.Now.AddDays(-7) && !a.Cancelled && crops.Contains(a.CropId.Value)).ToListAsync();
+            model.Apps =  await _helper.OverviewApplications().Where(a => a.Postmark >= DateTime.Now.AddDays(-7) && !a.Cancelled && crops.Contains(a.CropId.Value)).ToListAsync();
+            var p0 = new SqlParameter("@current_year", CertYearFinder.CertYear);
+            var p1 = new SqlParameter("@employee_id", employeeId);
+            model.SummaryCounts =  await _dbContext.CropSummaryCount.FromSqlRaw($"EXEC mvc_weekly_staff_summary_counts @current_year, @employee_id", p0, p1).ToListAsync();
+            return model;
         }
 
         
 
         
     } 
+
+    
     
 }

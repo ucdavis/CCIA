@@ -71,8 +71,7 @@ namespace CCIA.Services
             var model = await AdminEmailViewModel.CreateBase(_dbContext);
             foreach(var empl in model.EmployeesToEmail)
             {
-                model.Apps = null;
-                model.Apps = await AdminEmailViewModel.GetAppsForEmployee(_dbContext, _helper, empl.Id);
+               await AdminEmailViewModel.GetAppsForEmployee(model,_dbContext, _helper, empl.Id);
 
                 using (var message = new MailMessage {From = new MailAddress("ccia@ucdavis.edu"), Subject = "CCIA Weekly Application Summary"})
                 {  
