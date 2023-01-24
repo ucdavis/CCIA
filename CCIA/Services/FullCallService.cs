@@ -217,6 +217,7 @@ namespace CCIA.Services
                 .Include(a => a.ClassProduced)
                 .Include(a => a.FieldInspection)
                 .Include(a => a.FieldInspectionReport)
+                .Include(a => a.DataEntryContact)
                 .AsQueryable();
             return app;
 
@@ -225,6 +226,7 @@ namespace CCIA.Services
         public IQueryable<Applications> FullApplications()
         {
             var app = _context.Applications
+                .Include(a => a.DataEntryContact)
                 .Include(a => a.GrowerOrganization)
                 .Include(a => a.ApplicantOrganization)
                 .Include(a => a.County)

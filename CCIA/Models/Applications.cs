@@ -67,6 +67,9 @@ namespace CCIA.Models
         
         
         public int? UserDataentry { get; set; }
+
+        [ForeignKey("UserDataentry")]
+        public Contacts DataEntryContact { get; set; }
         public int? UserAppModifed { get; set; }
         public DateTime? UserAppModDt { get; set; }
          

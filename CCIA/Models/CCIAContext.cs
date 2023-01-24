@@ -2058,6 +2058,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.ClassProduced);
 
                 entity.HasOne(d => d.Crop);
+                entity.HasOne(d => d.DataEntryContact);
                     
 
                 entity.HasOne(d => d.GrowerOrganization);
