@@ -278,7 +278,7 @@ namespace CCIA.Controllers.Admin
         {
             if(!Void)
             {
-                var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
+                var test = await _dbContext.TagSeries.Include(s => s.Tag).Where(s => s.Letter == Letter && !s.Tag.Bulk && !s.Void && ((End >= s.Start && Start <= s.End) || (Start >= s.Start && End <= s.End))).AnyAsync();
                 if(test)
                 {
                     ErrorMessage = "Tag Series already exists with that Letter & range";
