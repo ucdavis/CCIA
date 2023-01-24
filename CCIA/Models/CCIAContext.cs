@@ -27,6 +27,8 @@ namespace CCIA.Models
             throw new NotImplementedException();
         }
 
+        public virtual DbSet<cropSummaryCount> CropSummaryCount { get; set; }
+
         public virtual DbSet<AbbrevAppType> AbbrevAppType { get; set; }
 
         public virtual DbSet<IsolationConflicts> IsolationConflicts { get; set; }
@@ -373,6 +375,10 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<PotatoHealthCertificateInspections>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<cropSummaryCount>(entity => {
                 entity.HasNoKey();
             });
 
@@ -1090,6 +1096,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ConditionerStatusUpdate).HasColumnName("ConditionerStatusUpdate");
 
                 entity.Property(e => e.UpdateMapPermissions).HasColumnName("UpdateMapPermissions");
+                entity.Property(e => e.AdminEmailSummary).HasColumnName("AdminEmailSummary");
                 entity.HasMany(e => e.AssignedCrops);
 
             });
@@ -2057,6 +2064,7 @@ namespace CCIA.Models
                 entity.HasOne(d => d.ClassProduced);
 
                 entity.HasOne(d => d.Crop);
+                entity.HasOne(d => d.DataEntryContact);
                     
 
                 entity.HasOne(d => d.GrowerOrganization);

@@ -209,6 +209,12 @@
                     @Html.DisplayFor(x => x.application.FieldName)
                 </div>
             </div>
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Entered By</label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Model.application.DataEntryContact?.FullName()
+                </div>
+            </div>
         </div>
         <div class="col-md-6 col-xl-4">@* Column 2*@
             <div class="form-group row">

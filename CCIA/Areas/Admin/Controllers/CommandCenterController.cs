@@ -194,6 +194,7 @@ namespace CCIA.Controllers
             newEmployee.HeritageGrainQA = employee.HeritageGrainQA;
             newEmployee.PrevarietyGermplasm = employee.PrevarietyGermplasm;
             newEmployee.OECDInvoicePrinter =employee.OECDInvoicePrinter;
+            newEmployee.AdminEmailSummary  = employee.AdminEmailSummary;
             newEmployee.NewBlend = employee.NewBlend;
 
             if(ModelState.IsValid){ 
@@ -250,6 +251,7 @@ namespace CCIA.Controllers
             employeeToUpdate.HeritageGrainQA = employee.HeritageGrainQA;
             employeeToUpdate.PrevarietyGermplasm = employee.PrevarietyGermplasm;
             employeeToUpdate.OECDInvoicePrinter =employee.OECDInvoicePrinter;
+            employeeToUpdate.AdminEmailSummary  = employee.AdminEmailSummary;
             employeeToUpdate.NewBlend = employee.NewBlend;
 
 
