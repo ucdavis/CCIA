@@ -82,8 +82,7 @@ namespace CCIA.Controllers
         [AllowAnonymous]
         public async Task CasLogin(string returnUrl)
         {
-            // TODO: Check returnURL, use if not blank
-            var props = new AuthenticationProperties { RedirectUri = "/Admin/AdminHome/Index" };
+            var props = new AuthenticationProperties { RedirectUri = !String.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/Admin/AdminHome/Index" };
             await HttpContext.ChallengeAsync("CAS", props);
         }
 
