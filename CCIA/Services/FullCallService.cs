@@ -185,6 +185,11 @@ namespace CCIA.Services
                 .ThenInclude(s => s.ClassProduced)
                 .Include(o => o.Seeds)
                 .ThenInclude(s => s.LabResults)
+                .Include(o => o.Blend) 
+                .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
+                .ThenInclude(l => l.Seeds)
+                .ThenInclude(s => s.Variety)
+                .ThenInclude(v => v.Crop)
                 .Include(o => o.Class)
                 .Include(o => o.ShipperOrganization)
                 .ThenInclude(s => s.Addresses.Where(a => a.Active))

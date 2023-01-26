@@ -94,12 +94,19 @@
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@
             <div class="form-group row">
-                <label asp-for="Seeds.Id" class="col-sm-3 col-form-label"></label>
+                <label class="col-sm-3 col-form-label">ID</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Seeds.Id)
-                    <a asp-action="details" asp-controller="Seeds" asp-route-id="@Model.SeedsId" class="btn btn-info">SID</a>
+                    @Html.DisplayFor(x => x.LinkId)
+                    @if(Model.Seeds != null)
+                    {
+                        <a asp-action="details" asp-controller="Seeds" asp-route-id="@Model.SeedsId" class="btn btn-info">SID</a>
+                    }
+                    @if(Model.Blend != null)
+                    {
+                        <a asp-action="details" asp-controller="Blends" asp-route-id="@Model.BID" class="btn btn-info">BID</a>
+                    }
                 </div>
-            </div>  
+            </div>                    
             <div class="form-group row">
                 <label asp-for="DatePrinted" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -119,9 +126,9 @@
                 </div>
             </div>  
             <div class="form-group row">
-                <label asp-for="Seeds.ClassProduced.CertClass" class="col-sm-3 col-form-label">Seed Class</label>
+                <label asp-for="LinkClass" class="col-sm-3 col-form-label">Class</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Seeds.ClassProduced.CertClass)
+                    @Html.DisplayFor(x => x.LinkClass)
                 </div>
             </div>
            <div class="form-group row">
@@ -155,9 +162,9 @@
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
-                <label asp-for="Seeds.CertYear" class="col-sm-3 col-form-label"></label>
+                <label asp-for="CertYear" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Seeds.CertYear)
+                    @Html.DisplayFor(x => x.CertYear)
                 </div>
             </div> 
             <div class="form-group row">

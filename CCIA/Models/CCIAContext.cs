@@ -1190,6 +1190,7 @@ namespace CCIA.Models
                 entity.Property(e => e.Id).HasColumnName("file_num");
 
                 entity.Property(e => e.SeedsId).HasColumnName("seeds_id");
+                entity.Property(e => e.BID).HasColumnName("BID");
                 entity.Property(e => e.FollowUp).HasDefaultValue(false);
 
                 entity.Property(e => e.VarietyId).HasColumnName("variety_id");
@@ -1257,6 +1258,7 @@ namespace CCIA.Models
                 entity.Property(e => e.ClientNotified).HasColumnName("client_notified");
 
                 entity.HasOne(e => e.Seeds);
+                entity.HasOne(e => e.Blend);
 
                 entity.HasOne(e => e.Class);
 

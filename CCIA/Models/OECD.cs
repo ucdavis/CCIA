@@ -14,6 +14,11 @@ namespace CCIA.Models
         [ForeignKey("SeedsId")]
         public Seeds Seeds { get; set; }
 
+        public int? BID { get; set; }
+
+        [ForeignKey("BID")]
+        public BlendRequests Blend { get; set; }
+
         public int? VarietyId { get; set; }
         [ForeignKey("VarietyId")]
         public VarFull Variety { get; set; }
@@ -161,6 +166,51 @@ namespace CCIA.Models
                 }
                 return $"CA{Seeds.CertYear}-{Id.ToString("D6")}";
 
+            }
+        }
+
+        public int LinkId { 
+            get
+            {
+                if(SeedsId != null)
+                {
+                    return SeedsId.Value;
+                }
+                if(BID != null)
+                {
+                    return BID.Value;
+                }
+                return 0;
+            }
+        }
+
+        public string LinkClass {
+            get
+            {
+                if(Seeds != null && Seeds.ClassProduced != null)
+                {
+                    return Seeds.ClassProduced.CertClass;
+                }
+                if(Blend != null)
+                {
+                    return "Blend";
+                }
+                return "Unknown";
+            }
+        }
+
+        public int CertYear { 
+            get
+            {
+                if(Seeds != null)
+                {
+                    return Seeds.CertYear.Value;
+                }
+                if(Blend != null)
+                {
+                    return Blend.CertYear;
+                }
+                return 0;
             }
         }
 
