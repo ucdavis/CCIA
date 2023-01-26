@@ -184,6 +184,22 @@ namespace CCIA.Models
             }
         }
 
+        public string LinkTitle {
+            get
+            {
+                if(SeedsId != null)
+                {
+                    return "SID";
+                }
+                if(BID != null)
+                {
+                    return "Blend ID";
+                }
+                return "Unknown";
+
+            }
+         }
+
         public string LinkClass {
             get
             {

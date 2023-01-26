@@ -129,6 +129,7 @@ namespace CCIA.Controllers.Admin
             oecdToUpdate.UpdateDate = DateTime.Now;
             oecdToUpdate.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
             oecdToUpdate.SeedsId = edit.SeedsId;
+            oecdToUpdate.BID = edit.BID;
             oecdToUpdate.CloseDate = edit.CloseDate;
             oecdToUpdate.ShipperId = edit.ShipperId;
             oecdToUpdate.ConditionerId = edit.ConditionerId;
