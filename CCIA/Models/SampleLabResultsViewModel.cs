@@ -12,6 +12,7 @@ namespace CCIA.Models.SampleLabResultsViewModel
         public CropStandardsList  Standards { get; set; }
 
         public List<Organizations> PrivateLabs { get; set; }
+        public bool SubmitAsRejected { get; set; }
 
         public static async Task<SampleLabResultsViewModel> Create(CCIAContext _dbContext, int sid)
         { 

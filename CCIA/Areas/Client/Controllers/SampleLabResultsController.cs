@@ -47,7 +47,7 @@ namespace CCIA.Controllers.Client
 
             var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, labs);
 
-            if (errorList.HasWarnings)
+            if (errorList.HasWarnings && !results.SubmitAsRejected)
             {
                 if (errorList.PurityError != null)
                 {
