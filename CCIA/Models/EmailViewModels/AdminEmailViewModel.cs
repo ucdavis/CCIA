@@ -44,7 +44,7 @@ namespace CCIA.Models
                 WeeklyFir = await _dbContext.FieldInspectionReport.Where(f => f.Complete && f.DateComplete > DateTime.Now.AddDays(-7)).CountAsync(),
                 TotalFir = await _dbContext.Applications.Where(a => a.Status == ApplicationStatus.FieldInspectionReportReady.GetDisplayName() 
                     && a.CertYear == CertYearFinder.CertYear).CountAsync(),
-                EmployeesToEmail = await _dbContext.CCIAEmployees.Include(c => c.AssignedCrops).Where(c=> c.AssignedCrops.Any()).Distinct().ToListAsync()
+                EmployeesToEmail = await _dbContext.CCIAEmployees.Include(c => c.AssignedCrops).Where(c=> c.AssignedCrops.Any() && c.Current).Distinct().ToListAsync()
             };           
 
             return viewModel;
