@@ -208,9 +208,9 @@ namespace CCIA.Models
                 {
                     return Seeds.OfficialVarietyId.Value;
                 }
-                if(BlendId.HasValue && Blend != null && Blend.VarietyId.HasValue)
+                if(BlendId.HasValue && Blend != null)
                 {
-                    return Blend.VarietyId.Value;
+                    return Blend.GetVarietyId();
                 }
                 if(BulkVariety != null)
                 {
