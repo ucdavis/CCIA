@@ -213,6 +213,9 @@
             </div>         
         </div>   
         <div class="collapse rounded-section light-grey" id="OECD">
+            <div class="form-group row collapse" id="maxOECDWeightWarning">
+                <h2 class="alert alert-danger">The weight of this lot exceeds OECD limits of @Model.MaxOECDWeight pounds for this crop. Limit does not apply to "Not Finally Certified" Lots.</h2>
+            </div>
             <div class="form-group row">
                 <label asp-for="request.PlantingStockLotNumber" class="col-sm-4 col-form-label"></label>
                 <input asp-for="request.PlantingStockLotNumber" class="form-control col-sm-2">                    
@@ -302,14 +305,23 @@
             if(collapse == "true")
             {
                 $("#OECD").collapse('show');
-                var selectedTag = $("[id*=request_TagType]:checked").val();
-                @* if (selectedTag === "5") {
-                    alert("All OECD request must be Sew-on tags!");
-                } *@
+               CheckOECDLimit();
             } else {
                 $("#OECD").collapse('hide');
             }           
         };
+
+        function CheckOECDLimit() {
+             var weight =  $("[id*=weightOfRequest]").text()
+                var maxWeight = @Model.MaxOECDWeight;
+                if(weight > maxWeight)
+                {
+                    $("#maxOECDWeightWarning").collapse('show');
+                } else
+                {
+                    $("#maxOECDWeightWarning").collapse('hide');
+                }
+        }
 
         function WeightChange(){
             var count = $("#request_CountRequested").val();            
@@ -319,13 +331,15 @@
             var balance = "";            
             if (!isNaN(count) && count.length != 0 && count != 0 && !isNaN(weight) && weight.length != 0 && weight != 0) {
                 balance = (($("[id*=request_WeightUnit").val() == "L") ? count * weight * (1- coating) : count * weight * 2.20462262 * (1- coating));
-                $("[id*=weightOfRequest").text(Math.round(balance));
+                var weight =  $("[id*=weightOfRequest]").text()
+                $("[id*=weightOfRequest]").text(Math.round(balance));
                 if (balance > priorBalance) {
-                    $("[id*=weightOfRequest").addClass("text-danger");
+                    $("[id*=weightOfRequest]").addClass("text-danger");
                 } else {
-                    $("[id*=weightOfRequest").removeClass("text-danger");
+                    $("[id*=weightOfRequest]").removeClass("text-danger");
                 }
             } 
+            CheckOECDLimit();
         };
 
         function ClassOrTagChange(){
