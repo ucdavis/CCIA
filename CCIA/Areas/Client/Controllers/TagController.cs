@@ -253,18 +253,16 @@ namespace CCIA.Controllers.Client
             newTag.HowDeliver = submittedTag.HowDeliver;
             newTag.Stage = TagStages.Requested.GetDisplayName();
             newTag.Alias = submittedTag.Alias;
-            if(submittedTag.Target == "SID")
+            
+            newTag.OECD = submittedTag.OECD;
+            if(submittedTag.OECD)
             {
-                newTag.OECD = submittedTag.OECD;
-                if(submittedTag.OECD)
-                {
-                    newTag.PlantingStockNumber = submittedTag.PlantingStockLotNumber;
-                    newTag.OECDTagType = submittedTag.OECDTagType;
-                    newTag.DateSealed = submittedTag.DateSealed;
-                    newTag.OECDCountryId = submittedTag.OECDCountryId;
-                }
-
-            } else {
+                newTag.PlantingStockNumber = submittedTag.PlantingStockLotNumber;
+                newTag.OECDTagType = submittedTag.OECDTagType;
+                newTag.DateSealed = submittedTag.DateSealed;
+                newTag.OECDCountryId = submittedTag.OECDCountryId;
+            } else
+            {
                 newTag.OECD = false;
             }
 
