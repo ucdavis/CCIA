@@ -24,6 +24,7 @@ namespace CCIA.Models
         public bool AllowOECD { get; set; }
         public Crops crop { get; set; }
         public VarFull variety { get; set; }
+        public int MaxOECDWeight { get; set; }
 
         public bool AllowSeries { get; set; }
         public bool AllowPreTag { get; set; }
@@ -78,6 +79,7 @@ namespace CCIA.Models
                 countries.Insert(0, new Countries { Id=0, Name="Select country..."});
                 model.Countries = countries;
                 model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
+                model.MaxOECDWeight = seed.Variety.Crop.maxOECDLotWeight;
             }
             if(tagTarget == "BID")
             {
@@ -98,7 +100,18 @@ namespace CCIA.Models
                 request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
                 request.ClassProduced = "Certified";
                 request.TagClass = 4;
-                request.AllowOECD = false;
+                if(blend.BlendType == BlendType.Lot.GetDisplayName())
+                {
+                    request.AllowOECD = true;
+                    var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                    countries.Insert(0, new Countries { Id=0, Name="Select country..."});
+                    model.Countries = countries;
+                    model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
+                    model.MaxOECDWeight = blend.LotBlends.First().Seeds.Variety.Crop.maxOECDLotWeight;
+                } else
+                {
+                    request.AllowOECD = false;
+                }
             }
             if(tagTarget == "LT")
             {
