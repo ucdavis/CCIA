@@ -25,7 +25,18 @@
         </div>
     </div>
     <div class="row col-sm-12">
-         <a asp-action="Edit" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit SID</a>
+        <div class="col-sm-4">
+            <a asp-action="Edit" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit SID</a>
+        </div>
+         <div class="col-sm-4">
+            
+        </div>
+         <div class="col-sm-4">
+            <form asp-action="sublot">
+                <input type="hidden" id="id" name="id" value="@Model.seed.Id">
+                <input type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to create Sublot?)" value="Create Sublot">
+            </form>
+        </div>         
     </div>
     @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && (Model.LabsAndStandards.Labs.CciaConfirmed || Model.seed.NotFinallyCertified))
     {

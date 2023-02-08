@@ -153,6 +153,7 @@ namespace CCIA.Models
         public ICollection<SeedsChanges> Changes { get; set; }
 
         public bool FollowUp { get; set; }
+        public bool Sublot { get; set; }
        
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
