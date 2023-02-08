@@ -32,9 +32,9 @@
             
         </div>
          <div class="col-sm-4">
-            <form asp-action="sublot">
+            <form asp-action="sublot" onsubmit="return confirm('Do you really want to create Sublot?');">
                 <input type="hidden" id="id" name="id" value="@Model.seed.Id">
-                <input type="submit" class="btn btn-warning" onclick="return confirm('Are you sure you want to create Sublot?)" value="Create Sublot">
+                <input type="submit" class="btn btn-warning" value="Create Sublot">
             </form>
         </div>         
     </div>
@@ -206,6 +206,10 @@
                     <div class="form-group row">                
                         <label asp-for="seed.OECDLot" class="col-sm-4 col-form-label"></label>
                         <input type="checkbox" asp-for="seed.OECDLot" class="col-sm-3 form-control">
+                    </div>
+                    <div class="form-group row">                
+                        <label asp-for="seed.Sublot" class="col-sm-4 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.Sublot" class="col-sm-3 form-control">
                     </div>
                 </div>
             </div>                      
