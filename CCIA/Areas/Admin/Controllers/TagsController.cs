@@ -405,13 +405,7 @@ namespace CCIA.Controllers.Admin
         [HttpPost]
         public async Task<IActionResult> AcceptTag(int id, bool conditionerPrint = false)
         {
-            var tag = await _dbContext.Tags
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.StateOfOrigin)
-                .Include(t => t.Seeds)
-                .ThenInclude(s => s.Variety)
-                .ThenInclude(v => v.Crop)
-                .Where(t => t.Id == id).FirstOrDefaultAsync();
+            var tag = await _helper.FullTag().Where(t => t.Id == id).FirstOrDefaultAsync();            
             if(tag == null)
             {
                 ErrorMessage = "Tag ID Not found!";
@@ -428,25 +422,26 @@ namespace CCIA.Controllers.Admin
             {
                 
                 oecd.SeedsId = tag.SeedsID;
-                oecd.VarietyId = tag.Seeds.OfficialVarietyId;
+                oecd.BID = tag.BlendId;
+                oecd.VarietyId = tag.VarietyId;
                 oecd.Pounds = Convert.ToInt32(tag.LotWeightRequested.Value);
-                oecd.CertNumber = tag.Seeds.CertNumber;
+                oecd.CertNumber = tag.CertNumber;
                 oecd.ClassId = tag.OECDTagType;
                 oecd.CloseDate = tag.DateSealed.Value;
-                oecd.ConditionerId = tag.Seeds.ConditionerId;
+                oecd.ConditionerId = tag.SeedsID != null ? tag.Seeds.ConditionerId : tag.Blend.ConditionerId;
                 oecd.CountryId = tag.OECDCountryId;
-                oecd.LotNumber = tag.Seeds.LotNumber;
+                oecd.LotNumber = tag.LotNumber;
                 oecd.ShipperId = tag.TaggingOrg;
                 oecd.DateRequested = tag.DateEntered;
                 oecd.NotCertified = tag.OECDTagType == 5;
                 oecd.DataEntryDate = DateTime.Now;
                 oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
-                oecd.DomesticOrigin = tag.Seeds.OriginCountry == 58;
+                oecd.DomesticOrigin = tag.SeedsID != null ? tag.Seeds.OriginCountry == 58 : true;
                 oecd.ReferenceNumber = tag.PlantingStockNumber;
                 oecd.Canceled = false;
                 oecd.TagsRequested = tag.CountRequested.Value;
                 oecd.AdminComments = tag.AdminComments;
-                oecd.OECDNumber = tag.Seeds.OriginCountry == 102 ? $"USA-CA-{tag.Seeds.CertNumber}" : $"USA-{tag.Seeds.StateOfOrigin.StateProvinceCode}/CA-{tag.Seeds.CertNumber}-{tag.Seeds.LotNumber}";
+                oecd.OECDNumber = tag.BlendId != null || tag.Seeds.OriginCountry == 102  ? $"USA-CA-{tag.CertNumber}" : $"USA-{tag.Seeds.StateOfOrigin.StateProvinceCode}/CA-{tag.Seeds.CertNumber}-{tag.Seeds.LotNumber}";
                 oecd.TagId = tag.Id;
 
                 _dbContext.Add(oecd);
@@ -470,7 +465,13 @@ namespace CCIA.Controllers.Admin
                 var msg = $"; OECD File {oecd.Id}";
                 tag.AdminComments = $"{tag.AdminComments}{msg}";
                 tag.OECDId = oecd.Id;
-                tag.Seeds.Remarks = $"{tag.Seeds.Remarks}{msg}";
+                if(tag.SeedsID != null)
+                {
+                    tag.Seeds.Remarks = $"{tag.Seeds.Remarks}{msg}";
+                } else 
+                {
+                    tag.Blend.Comments = $"{tag.Blend.Comments}{msg}";
+                }                
                 await _dbContext.SaveChangesAsync(); 
                 Message = $"{Message} & OECD File saved";               
             }

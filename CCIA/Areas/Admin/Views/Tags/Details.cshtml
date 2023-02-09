@@ -253,6 +253,10 @@
             <div class="form-group row">
                 <label asp-for="LotWeightRequested" class="col-sm-3 col-form-label">Requested Weight</label>
                 <div class="col-sm-9 form-control-plaintext">
+                    @if(Model.LotWeightRequested > Model.Seeds.Variety.Crop.maxOECDLotWeight)
+                    {
+                        <h2 class="alert alert-danger">The weight of this lot exceeds OECD limits of @Model.Seeds.Variety.Crop.maxOECDLotWeight pounds for this crop. Limit does not apply to "Not Finally Certified" Lots.</h2>            
+                    }
                     @Html.DisplayFor(x => x.LotWeightRequested)
                 </div>
             </div> 

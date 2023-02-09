@@ -111,6 +111,28 @@ namespace CCIA.Models
             return "unknown";
         }
 
+        [Display(Name ="Variety Id")]
+        public int GetVarietyId()
+        {           
+            if (BlendType == "Varietal" && Variety != null)
+            {
+                return Variety.Id;
+            }
+            if (BlendType == "Lot" && LotBlends.Any() && LotBlends.First().Seeds != null && LotBlends.First().Seeds.Variety != null)
+            {
+                return LotBlends.First().Seeds.Variety.Id;
+            }          
+            if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().AppId != null && InDirtBlends.First().Application != null && InDirtBlends.First().Application.Variety != null)
+            {
+                return InDirtBlends.First().Application.Variety.Id;
+            }
+            if (BlendType == "In Dirt" && InDirtBlends.Any() && InDirtBlends.First().Variety != null)
+            {
+                return InDirtBlends.First().Variety.Id;
+            }
+            return -1;
+        }
+
         [Display(Name ="Cert Year")]
         public int CertYear
         {

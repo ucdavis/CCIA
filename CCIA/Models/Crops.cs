@@ -39,6 +39,8 @@ namespace CCIA.Models
         public decimal? IsolationParentR { get; set; }
         public bool LacTracker { get; set; }
 
+        public int maxOECDLotWeight { get; set; }
+
         public string GenusSpecies 
         { 
             get

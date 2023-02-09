@@ -135,10 +135,20 @@
             </div>
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@
-            <div class="form-group row">
-                <label asp-for="oecd.SeedsId" class="col-sm-3 col-form-label"></label>
-                <input asp-for="oecd.SeedsId" class="col-sm-3 col-form">
-            </div>  
+            @if(Model.oecd.SeedsId != null)
+            {
+                <div class="form-group row">
+                    <label asp-for="oecd.SeedsId" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="oecd.SeedsId" class="col-sm-3 col-form">
+                </div>
+            }
+            @if(Model.oecd.BID != null)
+            {
+                <div class="form-group row">
+                    <label asp-for="oecd.BID" class="col-sm-3 col-form-label"></label>
+                    <input asp-for="oecd.BID" class="col-sm-3 col-form">
+                </div>
+            }              
             <div class="form-group row">
                 <label asp-for="oecd.DatePrinted" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
@@ -171,9 +181,9 @@
                 </dl>
             </div>
             <div class="form-group row">
-                <label asp-for="oecd.Seeds.ClassProduced.CertClass" class="col-sm-3 col-form-label">Seed Class</label>
+                <label asp-for="oecd.LinkClass" class="col-sm-3 col-form-label">Class</label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.oecd.Seeds.ClassProduced.CertClass)
+                    @Html.DisplayFor(x => x.oecd.LinkClass)
                 </div>
             </div>
            <div class="form-group row">
@@ -206,9 +216,9 @@
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
-                <label asp-for="oecd.Seeds.CertYear" class="col-sm-3 col-form-label"></label>
+                <label asp-for="oecd.CertYear" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.oecd.Seeds.CertYear)
+                    @Html.DisplayFor(x => x.oecd.CertYear)
                 </div>
             </div> 
             <div class="form-group row">

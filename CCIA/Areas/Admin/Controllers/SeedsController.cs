@@ -310,7 +310,7 @@ namespace CCIA.Controllers.Admin
 
         }
 
-         public async Task<IActionResult> Search(int id, AdminSeedSearchViewModel vm)
+        public async Task<IActionResult> Search(int id, AdminSeedSearchViewModel vm)
         {
             if(!vm.Search){
                 var freshmodel = await AdminSeedSearchViewModel.Create(_dbContext, null);
@@ -319,5 +319,76 @@ namespace CCIA.Controllers.Admin
                 var model = await AdminSeedSearchViewModel.Create(_dbContext, vm);                
                 return View(model);            
         }  
+
+        [HttpPost]
+        public async Task<IActionResult> Sublot(int id)
+        {
+            var sid = await _dbContext.Seeds.Where(s => s.Id == id).FirstOrDefaultAsync();
+            if(sid == null)
+            {
+                ErrorMessage = "SID not found!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var newSid = new Seeds();
+            newSid.CertProgram = sid.CertProgram;
+            newSid.AppId = sid.AppId;
+            newSid.SampleFormCertNumber = sid.SampleFormCertNumber;
+            newSid.SampleFormDate = sid.SampleFormDate;
+            newSid.Sublot = true;
+            newSid.SampleFormRad = sid.SampleFormRad;
+            newSid.CertYear = sid.CertYear;
+            newSid.ApplicantId = sid.ApplicantId;
+            newSid.ConditionerId = sid.ConditionerId;
+            newSid.SampleFormVarietyId = sid.SampleFormVarietyId;
+            newSid.OfficialVarietyId = sid.OfficialVarietyId;
+            newSid.LotNumber = sid.LotNumber + "-1";
+            newSid.PoundsLot = 0;
+            newSid.Class = sid.Class;
+            newSid.ClassAccession = sid.ClassAccession;
+            newSid.Status = sid.Status;
+            newSid.CountyDrawn = sid.CountyDrawn;
+            newSid.OriginState = sid.OriginState;
+            newSid.OriginCountry = sid.OriginCountry;
+            newSid.Bulk = sid.Bulk;
+            newSid.OriginalRun = sid.OriginalRun;
+            newSid.Remill = sid.Remill;
+            newSid.Treated = sid.Treated;
+            newSid.OECDTestRequired = sid.OECDTestRequired;
+            newSid.Resampled = sid.Resampled;
+            newSid.Remarks = sid.Remarks + $"; sublot of SID{sid.Id}";
+            newSid.SampleDrawnBy = sid.SampleDrawnBy;
+            newSid.SamplerID = sid.SamplerID;
+            newSid.SampleId = sid.SampleId;
+            newSid.OECDLot = sid.OECDLot;
+            newSid.Rush = sid.Rush;
+            newSid.InDirt = sid.InDirt;
+            newSid.BlendNumber = sid.BlendNumber;
+            newSid.DateSampleReceived = sid.DateSampleReceived;
+            newSid.CropFee = 0;
+            newSid.CertFee = 0;
+            newSid.ResearchFee = 0;
+            newSid.MinimumFee = 0;
+            newSid.LotCertOk = sid.LotCertOk;
+            newSid.UserEntered = sid.UserEntered;
+            newSid.Submitted = sid.Submitted;
+            newSid.Confirmed = sid.Confirmed;
+            newSid.ConfirmedAt = sid.ConfirmedAt;
+            newSid.Docs = false;
+            newSid.NotFinallyCertified = sid.NotFinallyCertified;
+            newSid.ChargeFullFees = false;
+
+            if(ModelState.IsValid){
+                _dbContext.Add(newSid);
+                await _dbContext.SaveChangesAsync();
+                Message = "Sublot created. Please update the Lot# & Pounds";
+            } else {
+                ErrorMessage = "Something went wrong";
+                return RedirectToAction(nameof(Details), new { id = id});
+            }
+
+            return RedirectToAction(nameof(Details), new { id = newSid.Id });
+        }
+
     }
 }
