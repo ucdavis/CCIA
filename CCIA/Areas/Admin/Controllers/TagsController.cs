@@ -244,6 +244,11 @@ namespace CCIA.Controllers.Admin
                 .Include(t => t.EmployeePrinted)
                 .Include(t => t.Documents)
                 .Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Tag not found";
+                return RedirectToAction(nameof(Index));
+            }
             if(model.Stage ==  TagStages.Requested.GetDisplayName() && model.SeriesRequest)
             {
                 ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.ConditionerYearEntered && c.PrintSeries).AnyAsync();
@@ -441,7 +446,7 @@ namespace CCIA.Controllers.Admin
                 oecd.Canceled = false;
                 oecd.TagsRequested = tag.CountRequested.Value;
                 oecd.AdminComments = tag.AdminComments;
-                oecd.OECDNumber = tag.BlendId != null || tag.Seeds.OriginCountry == 102  ? $"USA-CA-{tag.CertNumber}" : $"USA-{tag.Seeds.StateOfOrigin.StateProvinceCode}/CA-{tag.Seeds.CertNumber}-{tag.Seeds.LotNumber}";
+                oecd.OECDNumber = tag.OECDCertNumber;
                 oecd.TagId = tag.Id;
 
                 _dbContext.Add(oecd);
@@ -476,7 +481,7 @@ namespace CCIA.Controllers.Admin
                 Message = $"{Message} & OECD File saved";               
             }
 
-            return RedirectToAction(nameof(Details), new {id = id});            
+            return RedirectToAction(nameof(Details), new {id = tag.Id});            
         }
 
         public async Task<IActionResult> EditSeries(int id)
