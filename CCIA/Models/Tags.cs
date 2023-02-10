@@ -529,6 +529,31 @@ namespace CCIA.Models
             } 
         }
 
+        public string OECDCertNumber {
+            get 
+            {
+                if(BlendId != null)
+                {
+                    return $"USA-CA-{CertNumber}";
+                }
+                if(Seeds != null){
+                    if(Seeds.OriginState == 102)
+                    {
+                        return $"USA-CA-{CertNumber}";
+                    }
+                    if(Seeds.OriginCountry == 58 && Seeds.StateOfOrigin != null)
+                    {
+                        return $"USA-{Seeds.StateOfOrigin.StateProvinceCode}/CA-{Seeds.CertNumber}-{Seeds.LotNumber}";
+                    }
+                    if(Seeds.CountryOfOrigin != null)
+                    {
+                        return $"USA-{Seeds.CountryOfOrigin.Code}/CA-{Seeds.CertNumber}-{Seeds.LotNumber}";
+                    }
+                }
+                return "Cannot determine";
+            }
+        }
+
         public string Stage { get; set; }
 
         public string UserApproved { get; set; }

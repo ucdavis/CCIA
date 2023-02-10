@@ -58,6 +58,7 @@ namespace CCIA.Models
         public int? AppYearAgree { get; set; }
         //public int? LacYearAgree { get; set; }
         public bool AlfalfaGMOPinning { get; set; }
+        public Guid ApiKey { get; set; }
         
 
 

@@ -552,6 +552,10 @@ namespace CCIA.Services
                 .ThenInclude(s => s.SeedsApplications)
                 .ThenInclude(sa => sa.Application)
                 .ThenInclude(a => a.FieldInspectionReport)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.StateOfOrigin)
+                .Include(t => t.Seeds)
+                .ThenInclude(s => s.CountryOfOrigin)
                 .Include(t => t.Blend) 
                 .ThenInclude(b => b.LotBlends)  // blendrequest (lot) => lotblend => seeds => variety => crop
                 .ThenInclude(l => l.Seeds)

@@ -15,6 +15,7 @@ using System.IO;
 using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace CCIA.Controllers.Client
 {
