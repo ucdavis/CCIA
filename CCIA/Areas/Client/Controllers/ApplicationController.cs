@@ -1419,30 +1419,6 @@ namespace CCIA.Controllers.Client
             return PartialView(fullPartialPath, app);
         }
 
-        public async Task<IActionResult> GetGeoJSON(int year, Guid key)
-        {
-            var org = await _dbContext.Organizations.Where(o => o.ApiKey == key).FirstOrDefaultAsync();
-            StringBuilder geoJson = new StringBuilder("{ \"type\": \"FeatureCollection\",\"features\": [");
-
-            var applicantId = new SqlParameter("applicant_id", org.Id);
-            var yearP = new SqlParameter("cert_year", year);
-            var sqlJSON = await _dbContext.Database.ExecuteSqlRawAsync($"EXEC GetGeoJSONByApplicantAndCertYear @applicant_id, @cert_year", applicantId, yearP);
-           
-            //var test = await _dbContext.Database.ExecuteSqlInterpolatedAsync($"EXEC test").
-        
-        
-        // while (dr.Read())
-        // {
-        //     geoJson.Append(dr[0].ToString());
-        // }
-
-        // geoJson.Append("]}");
-
-        // Context.Response.Write(geoJson);
-            return View(org);
-
-        }
-
         private Applications MapRenewFromApp(Applications appToRenew)
         {
             var newApp = new Applications();
