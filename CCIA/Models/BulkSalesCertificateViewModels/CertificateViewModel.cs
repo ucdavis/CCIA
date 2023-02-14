@@ -22,7 +22,7 @@ namespace CCIA.Models.CertificateViewModel
 
         public static async Task<CertificateViewModel> Create(CCIAContext _dbContext, int id, int orgId)
         {
-            var programId = await _dbContext.BulkSalesCertificates.Include(b => b.CertProgram).Where(b => b.Id == id).Select(b => new Tuple<int, int>(b.CertProgram.AppTypeId, b.SeedsID.Value)).SingleAsync();
+            var programId = await _dbContext.BulkSalesCertificates.Include(b => b.CertProgram).Where(b => b.Id == id).Select(b => new Tuple<int?, int?>(b.CertProgram.AppTypeId, b.SeedsID.Value)).SingleAsync();
             var classes = await _dbContext.AbbrevClassSeeds.Where(s => s.Program == programId.Item1).ToListAsync();            
             var standardsMessage = await _dbContext.Seeds.Where(x => x.Id == programId.Item2).Select(d => CCIAContext.GetStandardsMessage(d.Id)).FirstOrDefaultAsync();
             var assayMessage = await _dbContext.Seeds.Where(x => x.Id == programId.Item2).Select(d => CCIAContext.GetAssayMessage(d.Id)).FirstOrDefaultAsync();
