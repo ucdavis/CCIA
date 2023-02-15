@@ -77,7 +77,7 @@ namespace CCIA.Services
                 {  
                     //message.To.Add("jscubbage@ucdavis.edu");                 
                     message.To.Add(empl.Email);
-                    message.Body = "Summary of applicatons in last week";
+                    message.Body = "Summary of applications in last week";
                     var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
                     message.AlternateViews.Add(htmlView);
                     await _client.SendMailAsync(message);
@@ -98,9 +98,9 @@ namespace CCIA.Services
                 //message.To.Add("jscubbage@ucdavis.edu");
                 foreach(var emp in admins)
                 {
-                    message.To.Add(emp.Email);
+                   message.To.Add(emp.Email);
                 }
-                message.Body = "Summary of applicatons in last week";
+                message.Body = "Summary of applications in last week";
                 var htmlView = AlternateView.CreateAlternateViewFromString(await GetRazorEngine().CompileRenderAsync("/EmailTemplates/AdminWeeklyNotices.cshtml", model), new ContentType(MediaTypeNames.Text.Html));
                 message.AlternateViews.Add(htmlView);
                 await _client.SendMailAsync(message);
