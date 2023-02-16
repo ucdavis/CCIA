@@ -76,10 +76,7 @@
                     }
                     // Populate dropdown with list of varieties
                     res.forEach((el) => {
-                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id}>${el.name}</a>`;
-                        document.getElementById(`variety-${el.id}`).addEventListener('click', (e) => {
-                            varietySelected(el.id,el.name);
-                        });
+                        vs.innerHTML += `<a class="dropdown-item" id=variety-${el.id} value=${el.id} onclick="varietySelected(${el.id},'${el.name}');">${el.name}</a>`;
                     })
                 },
                 error: function (res) {
