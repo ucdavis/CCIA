@@ -110,14 +110,19 @@ namespace CCIA.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var test = await _dbContext.Contacts.Where(c => c.Email == email && c.Active).ToListAsync();            
+                var test = await _dbContext.Contacts.Where(c => c.Email == email && c.Active).ToListAsync();                            
                 foreach (Contacts contact in test)
                 {
                     if (VerifyPassword(password, contact))
-                    {
-                        var agComm = await _dbContext.Organizations.Where(o => o.Id == contact.OrgId && o.AgCommissioner).AnyAsync();
-                        await CompleteSignin(contact, false, agComm);
-                        if(agComm)
+                    {                        
+                        var org = await _dbContext.Organizations.Where(o => o.Id == contact.OrgId).FirstOrDefaultAsync();                        
+                        if(!org.Active)
+                        {
+                            ModelState.AddModelError("", "Org not set to active. Please contact CCIA.");
+                            return View();
+                        }
+                        await CompleteSignin(contact, false, org.AgCommissioner);
+                        if(org.AgCommissioner)
                         {
                             return RedirectToAction("Index", "AgCommHome", new { area = "AgComm"});
                         }                        
