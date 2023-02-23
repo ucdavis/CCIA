@@ -489,6 +489,10 @@ namespace CCIA.Models
         public bool AppLate { 
             get 
             {
+                if(Renewal)
+                {
+                    return false;
+                }
                 if(Postmark.HasValue && Deadline.HasValue)
                 {
                     if(Postmark.Value.Date > Deadline.Value.Date) 
