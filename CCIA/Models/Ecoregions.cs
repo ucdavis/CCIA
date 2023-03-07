@@ -7,5 +7,11 @@ namespace CCIA.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Display
+        {
+            get {
+                return $"{Id} {Name}";
+            }
+        }
     }
 }

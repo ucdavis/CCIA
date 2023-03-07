@@ -348,7 +348,7 @@
             <div class="col-sm-12">
                 <div class="form-group row">
                     <label asp-for="variety.VarietyOfficial.Ecoregion" class="col-sm-2 col-form-label">Ecoregion</label>
-                    <select required asp-for="variety.VarietyOfficial.Ecoregion" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.ecoregions, "Id", "Name"))"></select>
+                    <select required asp-for="variety.VarietyOfficial.Ecoregion" class="col-sm-2 form-control" asp-items="@(new SelectList(Model.ecoregions, "Id", "Display"))"></select>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" asp-for="variety.VarietyOfficial.Elevation"></label>
