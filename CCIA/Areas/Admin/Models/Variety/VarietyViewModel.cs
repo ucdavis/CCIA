@@ -30,6 +30,7 @@ namespace CCIA.Models
       public List<StateProvince> states { get; set; }
 
       public List<string> types { get; set; }
+      public List<VarietyBlendComponents> BlendComponents { get; set; }
                
         public static async Task<AdminVarietyDetailsViewModel> Create(CCIAContext _dbContext, IFullCallService _helper, int id)
         {      
@@ -51,7 +52,8 @@ namespace CCIA.Models
             var model = new AdminVarietyDetailsViewModel
             {
                 variety = var,
-                familyInfo = await _dbContext.VarFull.Where(v => v.Id== id || v.ParentId == var.ParentId).ToListAsync(),                
+                familyInfo = await _dbContext.VarFull.Where(v => v.Id== id || v.ParentId == var.ParentId).ToListAsync(), 
+                BlendComponents = await _dbContext.VarietyBlendComponents.Include(b => b.ComponentVariety).Where(b => b.BlendVarietyId == id || b.BlendVarietyId == var.ParentId).ToListAsync(),               
             };
 
             return model;
