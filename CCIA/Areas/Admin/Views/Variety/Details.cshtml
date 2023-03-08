@@ -408,12 +408,16 @@
             @if(Model.BlendComponents.Any())
             {
                  <h4>Blend Component Info</h4>
+                  @if(this.User.IsInRole("EditVarieties")){
+                                    <a asp-action="AddComponent" asp-route-id="@Model.variety.Id" class="btn btn-info">add component</a>
+                                }
                  <table class="table">
                     <thead>
                         <tr>
                             <th>VarId</th>
                             <th>Variety</th>
                             <th>%</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -423,10 +427,15 @@
                                 <td>@comp.ComponentVarietyId</td>
                                 <td>@comp.ComponentVariety?.Name</td>
                                 <td>@comp.ComponentPercent</td>
+                                @if(this.User.IsInRole("EditVarieties")){
+                                    <td><a asp-action="EditComponent" asp-route-id="@comp.Id">Edit</a></td>
+                                }
                             </tr>                            
                         }
                     </tbody>
                  </table>
+            } else if(!Model.BlendComponents.Any() && Model.variety.Type == "official" && this.User.IsInRole("EditVarieties")) {
+                <span>This variety is not currently listed as a blend. If it should be, <a asp-action="AddComponent" asp-route-id="@Model.variety.Id" class="btn btn-info">add component</a>.</span>
             }
         </div>
     </div>

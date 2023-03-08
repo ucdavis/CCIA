@@ -155,6 +155,76 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> EditComponent(int id)
+        {
+            var model = await _dbContext.VarietyBlendComponents.Include(c => c.ComponentVariety).Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Component not found";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditComponent(int id, VarietyBlendComponents comp)
+        {
+            var componentToEdit = await _dbContext.VarietyBlendComponents.Include(c => c.ComponentVariety).Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(componentToEdit == null)
+            {
+                ErrorMessage = "Component not found";
+                return RedirectToAction(nameof(Index));
+            }
+            componentToEdit.ComponentVarietyId = comp.ComponentVarietyId;
+            componentToEdit.ComponentPercent = comp.ComponentPercent;
+            await _dbContext.SaveChangesAsync();
+            Message = "Component Updated";
+            return RedirectToAction(nameof(Details), new {id = componentToEdit.BlendVarietyId});
+        }
+
+        public async Task<IActionResult> AddComponent(int id)
+        {
+            var model = await _dbContext.VarOfficial.Where(v => v.VarOffId == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Variety not found. Please check ID and make sure it's a Official (e.g. not alias, etc.).";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComponent(int id, int VarOffId, int VarietyId, decimal Percent)
+        {
+            var model = await _dbContext.VarOfficial.Where(v => v.VarOffId == id).FirstOrDefaultAsync();
+            if(model == null)
+            {
+                ErrorMessage = "Variety not found. Please check ID and make sure it's a Official (e.g. not alias, etc.).";
+                return RedirectToAction(nameof(Index));
+            }
+            var addedVariety = await _dbContext.VarOfficial.Where(v => v.VarOffId == VarietyId).FirstOrDefaultAsync();
+            if(addedVariety == null)
+            {
+                ErrorMessage = "Added component not found. Please check ID and make sure it's a Official (e.g. not alias, etc.).";
+                return RedirectToAction(nameof(Details), new {id = id});
+            }
+            var newComponent = new VarietyBlendComponents();
+            newComponent.BlendVarietyId = id;
+            newComponent.ComponentVarietyId = VarietyId;
+            newComponent.ComponentPercent = Percent;
+
+            if(ModelState.IsValid){  
+                _dbContext.Add(newComponent);                 
+                await _dbContext.SaveChangesAsync();
+                Message = "Component Added";
+            } else {
+                ErrorMessage = "Something went wrong";                                                     
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
         public async Task<IActionResult> RemoveCountry(int variety, int country)    
         {
             var varCountryToRemove = await _dbContext.VarCountires.Where(c => c.VarId == variety && c.CountryId == country).FirstOrDefaultAsync();

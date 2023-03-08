@@ -1,0 +1,24 @@
+@model CCIA.Models.VarOfficial
+
+<h2>Add Component to Official Variety: @Model.VarOffName</h2>
+
+<form asp-action="AddComponent">
+    <input type="hidden" asp-for="VarOffId">
+    <div class="container col-sm-6">
+        <div class="form-group row">
+            <label for="VarietyId" class="col-sm-3 col-form-label">Variety ID</label>
+            <div class="col-sm-9">
+                <input type="text" name="VarietyId" id="VarietyId" class="form-control">
+            </div>
+        </div>        
+        <div class="form-group row">
+            <label for="Percent" class="col-sm-3 col-form-label">Percent (decimal, e.g. .5)</label>
+            <div class="col-sm-9">
+                <input type="text" name="Percent" id="Percent" class="form-control">
+            </div>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Add Component">
+        </div>
+    </div>
+</form>
