@@ -380,7 +380,7 @@
     }
     <div class="row">
         <div class="col-sm-12"><hr></div>
-        <div >
+        <div class="col-sm-6" >
             <h4>Variety Family info</h4>
             <table class="table">
                 <thead>
@@ -403,6 +403,31 @@
                     }
                 </tbody>
             </table>
+        </div>
+        <div class="col-sm-6">
+            @if(Model.BlendComponents.Any())
+            {
+                 <h4>Blend Component Info</h4>
+                 <table class="table">
+                    <thead>
+                        <tr>
+                            <th>VarId</th>
+                            <th>Variety</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comp in Model.BlendComponents)
+                        {
+                            <tr>
+                                <td>@comp.ComponentVarietyId</td>
+                                <td>@comp.ComponentVariety?.Name</td>
+                                <td>@comp.ComponentPercent</td>
+                            </tr>                            
+                        }
+                    </tbody>
+                 </table>
+            }
         </div>
     </div>
 </div>
