@@ -1036,6 +1036,7 @@ namespace CCIA.Controllers.Admin
             var reasonWithDate = DateTime.Now.ToShortDateString() + ": " + reason;
             appToReturn.Status = ApplicationStatus.ReturnedToClient.GetDisplayName();
             appToReturn.returnReason =  string.IsNullOrWhiteSpace(appToReturn.returnReason) ? reasonWithDate : appToReturn.returnReason + "; " + reasonWithDate;
+            await _notificationService.ApplicationReturnedForReview(appToReturn);
             await _dbContext.SaveChangesAsync();
             Message = "Application returned to client.";
             return RedirectToAction(nameof(Details), new {id = appToReturn.Id});

@@ -19,6 +19,7 @@ namespace CCIA.Models
             StId = 0;
             ContactId = 0;
             IsAdmin = false;
+            IsWeekly = false;
         }
 
         public int Id { get; set; }
@@ -47,6 +48,7 @@ namespace CCIA.Models
 
         public DateTime? Sent { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsWeekly { get; set; }
         
     }
 }
