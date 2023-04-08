@@ -13,6 +13,8 @@ namespace CCIA.Services
 
         Task ApplicationSubmitted(Applications app);
 
+         Task ApplicationReSubmitted(Applications app);
+
         Task ApplicationRenewed(Applications app);
 
         Task ApplicationRenewNoSeed(Applications app);
@@ -107,7 +109,7 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = "Application returned for review",
+                    Message = "Application returned for review- " + app.returnReason,
                     IsWeekly = false,
                 };
                 _dbContext.Notifications.Add(notification);      
@@ -125,7 +127,25 @@ namespace CCIA.Services
                 {
                     Email = $"{employee.UCDMailID}@ucdavis.edu",
                     AppId = app.Id,
-                    Message = "Application accepted",
+                    Message = "Application submitted",
+                    IsAdmin = true,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task ApplicationReSubmitted(Applications app)
+        {
+            var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
+            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();            
+            
+            foreach (var employee in inspectors)
+            {                
+                var notification = new Notifications
+                {
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
+                    AppId = app.Id,
+                    Message = "Application Re-Submitted",
                     IsAdmin = true,
                 };
                 _dbContext.Notifications.Add(notification);      

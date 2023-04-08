@@ -512,6 +512,35 @@ namespace CCIA.Controllers.Client
         }
 
         [HttpPost]
+        public async Task<IActionResult> ReSubmit(int id)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found!";
+                return  RedirectToAction(nameof(Index));
+            }   
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }           
+            app.Status = ApplicationStatus.PendingAcceptance.GetDisplayName();
+            
+            await _notificationService.ApplicationReSubmitted(app);
+
+            if (TryValidateModel(app))
+            {                  
+                await _dbContext.SaveChangesAsync();
+                Message = "Application resubmitted";
+            } else
+            {
+                ErrorMessage = "Something went wrong";
+            }
+            return RedirectToAction("Details", new { id = app.Id });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Cancel(int id)
         {
             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();

@@ -31,6 +31,26 @@
         </div>
     </div>    
 }
+@if(Model.Status == ApplicationStatus.ReturnedToClient.GetDisplayName())
+{
+    <div class="row col-sm-12">
+        <div class="col-sm-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Edit</a>
+        </div>
+        <div class="col-sm-4">
+            <form asp-action="ReSubmit">
+                <input type="hidden" asp-for="Id">
+                <input type="submit" class="btn btn-danger" onclick="return confirm('Once submitted, you will no longer be able to edit application or add/change supporting material. Are you sure you want to submit this application?')" value="ReSubmit Application">
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form asp-action="Cancel">
+                <input type="hidden" asp-for="Id">
+                <input type="submit" class="btn btn-dark" onclick="return confirm('Once cancelled, this app will no longer be available. Are you sure you want to cancel this field?')" value="Cancel Application">
+            </form>
+        </div>
+    </div>    
+}
     <div class="row col-sm-12">
         <div class="col-sm-4">
             <a asp-action="Reuse" asp-route-id="@Model.Id" class="btn btn-info">New App based on this one</a>
@@ -63,7 +83,16 @@
                     <div class="col-sm-9 form-control-plaintext">
                         @Html.DisplayFor(x => x.Status)
                     </div>
-                </div>                
+                </div>
+                @if(!string.IsNullOrWhiteSpace(Model.returnReason))
+                {
+                    <div class="form-group row">
+                        <label asp-for="returnReason" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.returnReason)
+                        </div>
+                    </div>
+                }
                 <div class="form-group row">
                     <label asp-for="ApplicantOrganization.NameAndId" class="col-sm-3 col-form-label">Applicant</label>
                     <div class="col-sm-9 form-control-plaintext">

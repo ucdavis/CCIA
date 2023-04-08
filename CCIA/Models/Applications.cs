@@ -231,6 +231,7 @@ namespace CCIA.Models
         public ICollection<AppChanges> Changes { get; set; }
 
         public bool FollowUp { get; set; }
+        [Display(Name ="Return Reason")]
         public string returnReason { get; set; }
 
         public string CropName 
