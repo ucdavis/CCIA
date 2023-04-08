@@ -149,7 +149,16 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Status)
                 </div>
-            </div>   
+            </div>
+            @if(!string.IsNullOrWhiteSpace(Model.application.returnReason))
+            {
+                <div class="form-group row">
+                    <label asp-for="application.returnReason" class="col-sm-3 col-form-label">Return Reason</label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.returnReason)
+                    </div>
+                </div>
+            }   
             <div class="form-group row">
                 <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
