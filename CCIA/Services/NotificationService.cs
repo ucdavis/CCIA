@@ -13,6 +13,8 @@ namespace CCIA.Services
 
         Task ApplicationSubmitted(Applications app);
 
+         Task ApplicationReSubmitted(Applications app);
+
         Task ApplicationRenewed(Applications app);
 
         Task ApplicationRenewNoSeed(Applications app);
@@ -20,6 +22,8 @@ namespace CCIA.Services
         Task ApplicationRenewalCancelled(RenewFields renew);
 
         Task ApplicationFIRComplete(Applications app);
+
+        Task ApplicationReturnedForReview(Applications app);
 
         Task SeedLotAccepted(Seeds seed);
 
@@ -77,9 +81,7 @@ namespace CCIA.Services
         public async Task ApplicationAccepted(Applications app)
         {
            
-            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();           
-            // Don't email org. Ask orgs to register that email as employee and assign roles as appropriate
-            //users.Add(await _dbContext.Organizations.Where(o => o.Id == app.ApplicantId && !string.IsNullOrWhiteSpace(o.Email)).Select(o => o.Email).FirstOrDefaultAsync());
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();                       
             users = users.Distinct().ToList();
             
             foreach (var user in users)
@@ -88,7 +90,27 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = "Application accepted"
+                    Message = "Application accepted",
+                    IsWeekly = true,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task ApplicationReturnedForReview(Applications app)
+        {
+           
+            var users = await _dbContext.Contacts.Where(c => (c.Id == app.UserDataentry.Value || (c.ApplicationNotices && c.OrgId == app.ApplicantId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();                       
+            users = users.Distinct().ToList();
+            
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    AppId = app.Id,
+                    Message = "Application returned for review- " + app.returnReason,
+                    IsWeekly = false,
                 };
                 _dbContext.Notifications.Add(notification);      
             }
@@ -105,7 +127,25 @@ namespace CCIA.Services
                 {
                     Email = $"{employee.UCDMailID}@ucdavis.edu",
                     AppId = app.Id,
-                    Message = "Application accepted",
+                    Message = "Application submitted",
+                    IsAdmin = true,
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task ApplicationReSubmitted(Applications app)
+        {
+            var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
+            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();            
+            
+            foreach (var employee in inspectors)
+            {                
+                var notification = new Notifications
+                {
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
+                    AppId = app.Id,
+                    Message = "Application Re-Submitted",
                     IsAdmin = true,
                 };
                 _dbContext.Notifications.Add(notification);      
@@ -122,7 +162,8 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = $"Application {app.PaperAppNum} Renewed; New AppID: {app.Id}"
+                    Message = $"Application {app.PaperAppNum} Renewed; New AppID: {app.Id}",
+                    IsWeekly = true,
                 };
                 _dbContext.Notifications.Add(notification);      
             }
@@ -138,7 +179,8 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = $"Application {app.PaperAppNum} Renewed (no seed); New AppID: {app.Id}"
+                    Message = $"Application {app.PaperAppNum} Renewed (no seed); New AppID: {app.Id}",
+                    IsWeekly = true,
                 };
                 _dbContext.Notifications.Add(notification);      
             }
@@ -155,7 +197,8 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = $"Application {app.PaperAppNum} Renewal Canceled"
+                    Message = $"Application {app.PaperAppNum} Renewal Canceled",
+                    IsWeekly = true,
                 };
                 _dbContext.Notifications.Add(notification);      
             }
@@ -172,7 +215,8 @@ namespace CCIA.Services
                 {
                     Email = user,
                     AppId = app.Id,
-                    Message = "Field Inspection Complete"
+                    Message = "Field Inspection Complete",
+                    IsWeekly = true,
                 };
                 _dbContext.Notifications.Add(notification);      
             }

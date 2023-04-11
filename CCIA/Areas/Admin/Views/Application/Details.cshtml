@@ -31,9 +31,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-2">
             <a class="btn btn-primary" asp-action="Edit" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Edit</a>            
         </div>
+        <div class="col-sm-10 border">
+            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseReturn" aria-expanded="false" aria-controls="collapseReturn">Begin Return to Client...</button>  
+            <form asp-action="ReturnApplication">  
+            <input type="hidden" id="id" name="id" value="@Model.application.Id">
+            <div class="collapse col-sm-12" id="collapseReturn">
+                <div class="form-group row">
+                    <label for="reason" class="col-sm-5 col-form-label"> Enter reason for returning app</label>               
+                    <textarea id="reason" name="reason" class="form-control col-sm-7"></textarea>
+                </div>
+                <input class="btn btn-danger" type="submit" value="Return App">
+            </div>
+            </form>
+        </div>        
     </div>
     @if(Model.application.Status == "Pending acceptance")
     {
@@ -136,7 +149,16 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Status)
                 </div>
-            </div>   
+            </div>
+            @if(!string.IsNullOrWhiteSpace(Model.application.returnReason))
+            {
+                <div class="form-group row">
+                    <label asp-for="application.returnReason" class="col-sm-3 col-form-label">Return Reason</label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.returnReason)
+                    </div>
+                </div>
+            }   
             <div class="form-group row">
                 <label asp-for="application.Deadline" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
