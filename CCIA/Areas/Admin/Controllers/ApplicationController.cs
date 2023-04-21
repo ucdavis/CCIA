@@ -716,6 +716,12 @@ namespace CCIA.Controllers.Admin
             appToUpdate.ClassProducedId = edit.ClassProducedId;
             appToUpdate.AcresApplied = edit.AcresApplied;
             appToUpdate.FieldName = edit.FieldName;
+            if(appToUpdate.AppType == AppTypes.Potato.GetDisplayName())
+            {
+                appToUpdate.CertTagOrBulkSalesUploaded = edit.CertTagOrBulkSalesUploaded;
+                appToUpdate.NASPHCUploaded = edit.NASPHCUploaded;
+                appToUpdate.ShippingPointInspectionUploadedOrFromNonInspectState = edit.ShippingPointInspectionUploadedOrFromNonInspectState;
+            }
             if(edit.PackageComplete && !appToUpdate.PackageComplete){
                 appToUpdate.CompleteDate = DateTime.Now;                
             }

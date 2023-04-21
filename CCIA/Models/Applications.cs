@@ -50,6 +50,9 @@ namespace CCIA.Models
            LateFee = 0;
            Fee = 0;
            IsSquareFeet = false;
+           CertTagOrBulkSalesUploaded = false;
+           NASPHCUploaded = false;
+           ShippingPointInspectionUploadedOrFromNonInspectState = false;
         }
 
        
@@ -233,6 +236,10 @@ namespace CCIA.Models
         public bool FollowUp { get; set; }
         [Display(Name ="Return Reason")]
         public string returnReason { get; set; }
+
+        public bool CertTagOrBulkSalesUploaded { get; set; }
+        public bool NASPHCUploaded { get; set; }
+        public bool ShippingPointInspectionUploadedOrFromNonInspectState { get; set; }
 
         public string CropName 
         { 

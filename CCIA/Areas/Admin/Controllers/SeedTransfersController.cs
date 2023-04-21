@@ -135,6 +135,7 @@ namespace CCIA.Controllers.Admin
             stcToUpdate.StageFromFieldNumberOfAcres = update.StageFromFieldNumberOfAcres;
             stcToUpdate.AdminUpdated = true;
             stcToUpdate.OriginatingCountyId = update.OriginatingCountyId;
+            stcToUpdate.SubmittedForAnalysis = update.SubmittedForAnalysis;
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
