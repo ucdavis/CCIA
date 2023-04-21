@@ -50,6 +50,9 @@ namespace CCIA.Models
            LateFee = 0;
            Fee = 0;
            IsSquareFeet = false;
+           CertTagOrBulkSalesUploaded = false;
+           NASPHCUploaded = false;
+           ShippingPointInspectionUploadedOrFromNonInspectState = false;
         }
 
        
