@@ -689,6 +689,25 @@ namespace CCIA.Controllers.Client
             return View(model);  
         }
 
+        public async Task<IActionResult> LinkMap(int id)
+        {
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(app == null || app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "App doesn't exist or does not belong to your organization";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var p0 = new SqlParameter("@contactId", System.Data.SqlDbType.Int);
+            p0.Value = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);         
+            var p1 = new SqlParameter("@appId", System.Data.SqlDbType.Int);
+            p1.Value = id;
+           
+            var model =  await _dbContext.MapLinks.FromSqlRaw($"EXEC mvc_app_map_link_list @contactId,@appId", p0, p1).ToListAsync();
+
+            return View(model);
+        }
+
         public async Task<IActionResult> NewMap(int id)
         {
             var model = await NewMapViewModel.CreateClient(_dbContext, id);           

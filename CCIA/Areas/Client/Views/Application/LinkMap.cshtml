@@ -1,0 +1,38 @@
+@model List<CCIA.Models.MapLinks>
+
+
+<h2>Copy Isolation Map to this Application</h2>
+
+
+@if(Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Pin Id</th>
+                <th>Type</th>
+                <th>Planted</th>
+                <th>Variety</th>
+                <th>Status</th>
+                <th>Acres</th>
+                <th>Map</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var link in Model)
+            {
+                <tr>
+                    <td>select</td>
+                    <td>@link.CropptId</td>
+                    <td>@link.Type</td>
+                    <td>@link.DatePlanted</td>
+                    <td>@link.Variety</td>
+                    <td>@link.Status</td>
+                    <td>@link.Acres</td>
+                    <td>@link.Description</td>
+                </tr>                
+            }
+        </tbody>
+    </table>
+}
