@@ -234,6 +234,10 @@ namespace CCIA.Models
         [Display(Name ="Return Reason")]
         public string returnReason { get; set; }
 
+        public bool CertTagOrBulkSalesUploaded { get; set; }
+        public bool NASPHCUploaded { get; set; }
+        public bool ShippingPointInspectionUploadedOrFromNonInspectState { get; set; }
+
         public string CropName 
         { 
             get

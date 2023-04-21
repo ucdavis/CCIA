@@ -1,4 +1,5 @@
 @using Microsoft.Extensions.Configuration
+@using CCIA.Helpers
 @inject IConfiguration Configuration
 @model CCIA.Models.DetailsViewModels.AdminViewModel
 
@@ -118,6 +119,7 @@
                 <label asp-for="application.AppTypeTrans.AppTypeTrans" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.AppTypeTrans.AppTypeTrans)
+                    <input type="hidden" asp-for="application.AppType">
                 </div>
             </div> 
             <div class="form-group row">
@@ -290,7 +292,24 @@
                 <a class="btn btn-warning" asp-action="NewMap" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Update/Create Map</a>
             </div> 
         </div>
-    </div>   
+    </div>  
+    @if(Model.application.AppType == AppTypes.Potato.GetDisplayName()) 
+    {
+        <div><hr><h2>Potato Certification Checks:</h2></div>
+        <div class="form-group row">
+            <label asp-for="application.CertTagOrBulkSalesUploaded" class="col-sm-9 col-form-label">Cert Tag or Bulk Sales Certificate uploaded Or California lot?</label>
+            <input type="checkbox" asp-for="application.CertTagOrBulkSalesUploaded" class="col-sm-3 form-control">
+        </div>
+        <div class="form-group row">
+            <label asp-for="application.NASPHCUploaded" class="col-sm-9 col-form-label">NASPHC showing seed lot was tested and passed Post-harvest test?</label>
+            <input type="checkbox" asp-for="application.NASPHCUploaded" class="col-sm-3 form-control">
+        </div>
+        <div class="form-group row">
+            <label asp-for="application.ShippingPointInspectionUploadedOrFromNonInspectState" class="col-sm-9 col-form-label">Shipping Point Inspection showing &lt; 0.5% tuber necosis OR origin state does not perform inspections?</label>
+            <input type="checkbox" asp-for="application.ShippingPointInspectionUploadedOrFromNonInspectState" class="col-sm-3 form-control">
+        </div>
+        <div><hr></div>
+    }
     <div class="form-group row">
         <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-9 form-control-plaintext">
@@ -611,9 +630,21 @@
             var complete = $("#application_PackageComplete").is(':checked');
             var late = $("#application_AppLate").is(':checked');
             var override = $("#application_OverrideLateFee").is(':checked');
+            var certTag = $("#application_CertTagOrBulkSalesUploaded").is(':checked');
+            var naspch = $("#application_NASPHCUploaded").is(':checked');
+            var shippingPoint = $("#application_ShippingPointInspectionUploadedOrFromNonInspectState").is(':checked');
+            var type = $("#application_AppType").val();
+            
             var msg = '';
             var bolCheck = false;
+
+            //alert(type == "PO" && (!certTag || !naspch || !shippingPoint));
             
+            if(type == "PO" && (!certTag || !naspch || !shippingPoint))
+            {
+                alert("Potato apps MUST have cert tag, NASPCH, and shipping point checkboxes marked to accept");
+                return false;
+            }
             if (!complete) {
                 msg = 'Accept application even when incomplete? \n This will add an extra $50 fee.';
                 bolCheck = true;
@@ -626,7 +657,8 @@
                     return confirm(msg);
             }
             return true;
-            
+            //alert("accept");
+            //return false;
         } 
    
         
