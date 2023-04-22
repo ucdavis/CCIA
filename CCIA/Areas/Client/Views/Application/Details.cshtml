@@ -211,7 +211,7 @@
         </div>
     <hr>
     <form enctype="multipart/form-data" method="post" asp-action="UploadCertificate">
-    <h3>Upload new Certificate</h3>
+    <h3>Upload new Certificate/Document</h3>
         <input type="hidden" name="id" id="id" value="@Model.Id">
          <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Certificate Name</label>
@@ -222,6 +222,16 @@
         <input class="btn btn-primary" type="submit" value="Upload" disabled />
         <br>Allowed files: @Configuration["AllowedFiles"]
     </form>
+    @if(Model.AppType == AppTypes.Potato.GetDisplayName())
+    {
+        <div><h4>New Potato Document Requirements:</h4>
+        <ol>
+            <li>If out-of-state Planting Stock: <b>Cert Tag or Bulk Sales Certificate</b></li>
+            <li><b>North American Seed Potato Health Certificate (NASPHC)</b> showing seed lot was tested and passed Post Harvest Test</li>
+            <li><b>Shipping Point Inspection Report</b> indicating seed lot has less than 0.5% tuber necrosis (may not be available depending on origin state)</li>
+        </ol>
+        </div>
+    }
     <hr>
     @if(Model.PlantingStocks.Any())
     {
