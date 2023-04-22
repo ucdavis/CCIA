@@ -1,0 +1,72 @@
+@model List<CCIA.Models.MapLinks>
+
+
+<h2>Copy Isolation Map to this Application</h2>
+
+
+@if(Model.Count > 0)
+{
+    <div>Select the previously pinned field to copy to this application</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Pin Id</th>
+                <th>Type</th>
+                <th>Planted</th>
+                <th>Variety</th>
+                <th>Status</th>
+                <th>Acres</th>
+                <th>Map</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var link in Model)
+            {
+                <tr>
+                    <td><button class="btn btn-info" onclick="getLinkMap('@link.CropptId','@link.Data')">Preview</button>
+                        <input type="hidden" id="@link.CropptId" value="@link.Data">
+                    </td>
+                    <td>@link.CropptId</td>
+                    <td>@link.Type</td>
+                    <td>@link.DatePlanted</td>
+                    <td>@link.Variety</td>
+                    <td>@link.Status</td>
+                    <td>@link.Acres</td>
+                    <td>@link.Description</td>
+                </tr>                
+            }
+        </tbody>
+    </table>
+} else
+{
+    <div>There are no pins matching this application's crop and cert year.</div>
+
+}
+
+<div id="mapContainer" class="container collapse">    
+    <div id="MapDiv" style="position:relative;width:800px;height:600px;float:left; z-index: 1">
+        <div id="myMap" style="position:relative; width:800px;height:600px;"></div>        
+    </div>  
+    <div class="row col-sm-12"><br></div>
+    <div class="row col-sm-12">
+        If this is the correct field to associate with this application: &nbsp;&nbsp;
+        <form asp-action="LinkMap">
+            <input type="hidden" name="AppId" id="AppId" value="@ViewBag.AppId">
+            <input type="hidden" name="CropptId" id="CropptId" value="">
+            <input type="submit" class="btn btn-primary" value="Link Field"> | 
+            <a asp-action="details" asp-route-id="@ViewBag.AppId" class="btn btn-dark">Cancel Link</a>
+        </form>
+    </div>
+</div>
+
+<div>
+    
+</div>
+
+<input type="hidden" id="data" value="">
+
+@section Scripts {
+    <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+    <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
+}
