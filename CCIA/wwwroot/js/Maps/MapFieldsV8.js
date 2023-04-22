@@ -98,6 +98,15 @@ function geocodeQuery(query) {
     searchManager.geocode(searchRequest);
 }
 
+function getLinkMap(id, data)
+{   
+    $("#CropptId").val(id);
+    $("#mapContainer").collapse("show");
+    $("#data").val(data);
+    processRequest();
+    setMapView();
+    map.setView({ zoom: 15 })    
+}
 
 function processRequest () {  
     pinLayer.clear();

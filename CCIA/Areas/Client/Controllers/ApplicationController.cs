@@ -685,7 +685,7 @@ namespace CCIA.Controllers.Client
             {
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
-            }
+            }           
             return View(model);  
         }
 
@@ -704,8 +704,25 @@ namespace CCIA.Controllers.Client
             p1.Value = id;
            
             var model =  await _dbContext.MapLinks.FromSqlRaw($"EXEC mvc_app_map_link_list @contactId,@appId", p0, p1).ToListAsync();
-
+            ViewBag.AppId = id;
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LinkMap(int AppId, int CropptId)
+        {
+            var p0 = new SqlParameter("@pinId", System.Data.SqlDbType.Int);
+            p0.Value = CropptId;
+            var p1 = new SqlParameter("@contactId", System.Data.SqlDbType.Int);
+            p1.Value = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);         
+            var p2 = new SqlParameter("@appId", System.Data.SqlDbType.Int);
+            p2.Value = AppId;
+
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_app_iso_map_link_field @pinId, @contactId, @appId", p0, p1, p2);
+
+            Message = $"App {AppId} updated and linked to CropPtId {CropptId}";
+            return RedirectToAction(nameof(Details), new { id = AppId }); 
+            
         }
 
         public async Task<IActionResult> NewMap(int id)
