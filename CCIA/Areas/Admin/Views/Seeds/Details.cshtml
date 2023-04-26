@@ -29,6 +29,7 @@
             <a asp-action="Edit" asp-route-id="@Model.seed.Id" class="btn btn-primary">Edit SID</a>
         </div>
          <div class="col-sm-4">
+            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseReturn" aria-expanded="false" aria-controls="collapseReturn">Begin Return to Client...</button>  
             
         </div>
          <div class="col-sm-4">
@@ -37,6 +38,18 @@
                 <input type="submit" class="btn btn-warning" value="Create Sublot">
             </form>
         </div>         
+    </div>
+    <div class="row col-sm-12">
+        <form asp-action="ReturnSID">  
+            <input type="hidden" id="id" name="id" value="@Model.seed.Id">
+            <div class="collapse col-sm-12" id="collapseReturn">
+                <div class="form-group row">
+                    <label for="reason" class="col-sm-5 col-form-label"> Enter reason for returning SID:</label>               
+                    <textarea id="reason" name="reason" class="form-control col-sm-7"></textarea>
+                </div>
+                <input class="btn btn-danger" type="submit" value="Return SID">
+            </div>
+            </form>
     </div>
     @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && (Model.LabsAndStandards.Labs.CciaConfirmed || Model.seed.NotFinallyCertified))
     {
