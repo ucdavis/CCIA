@@ -608,7 +608,7 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> NewHistory(int id, AdminHistoryViewModel historyVm)
         {
-             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
             if(app == null)
             {
                 ErrorMessage = "Application not found";
