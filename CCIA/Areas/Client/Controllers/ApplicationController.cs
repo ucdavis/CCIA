@@ -647,7 +647,8 @@ namespace CCIA.Controllers.Client
         [HttpPost]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
         {
-             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var historyToUpdate = await _dbContext.FieldHistory.Where(f => f.Id == id).FirstAsync();
+            var app = await _dbContext.Applications.Where(a => a.Id == historyToUpdate.AppId).FirstOrDefaultAsync();
             if(app == null)
             {
                 ErrorMessage = "Application not found";
@@ -659,7 +660,7 @@ namespace CCIA.Controllers.Client
                 return  RedirectToAction(nameof(Index));
             }
             var history = historyVm.history;
-            var historyToUpdate = await _dbContext.FieldHistory.Where(f => f.Id == id).FirstAsync();
+            
             historyToUpdate.Year = history.Year;
             historyToUpdate.Crop = history.Crop;
             historyToUpdate.Variety = history.Variety;
