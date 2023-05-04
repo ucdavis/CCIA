@@ -571,6 +571,26 @@ namespace CCIA.Controllers.Client
 
         }
 
+        public async Task<IActionResult> DeleteHistory (int id)
+        {
+            var historyToDelete = await _dbContext.FieldHistory.Where(h => h.Id == id).FirstOrDefaultAsync();
+            var app = await _dbContext.Applications.Where(a => a.Id == historyToDelete.AppId).FirstOrDefaultAsync();
+            if(app == null)
+            {
+                ErrorMessage = "Application not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return  RedirectToAction(nameof(Index));
+            }
+            _dbContext.Remove(historyToDelete);
+            await _dbContext.SaveChangesAsync();
+            Message ="History deleted.";
+            return RedirectToAction(nameof(Edit), new { id = historyToDelete.AppId }); 
+        }
+
          public async Task<IActionResult> EditHistory(int id)
         {
             var model = await AdminHistoryViewModel.Create(_dbContext, id);

@@ -494,6 +494,7 @@
                     <th>Crop</th>
                     <th>Variety</th>
                     <th>Application #</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -505,6 +506,7 @@
                         <td>@row.FHCrops?.Name</td>
                         <td>@row.Variety</td>
                         <td>@row.AppNumber</td>
+                        <td><a asp-action="DeleteHistory" asp-route-id="@row.Id" onclick="return confirm('Are you sure you wish to delete this history row? This action can not be undone.')"><i class="fas fa-trash"></i></a></td>
                     </tr>
                 }
                 </tbody>
