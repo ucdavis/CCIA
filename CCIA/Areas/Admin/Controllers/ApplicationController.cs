@@ -794,6 +794,15 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Edit), new { id = newHistory.AppId });              
         }
 
+        public async Task<IActionResult> DeleteHistory (int id)
+        {
+            var historyToDelete = await _dbContext.FieldHistory.Where(h => h.Id == id).FirstOrDefaultAsync();            
+            _dbContext.Remove(historyToDelete);
+            await _dbContext.SaveChangesAsync();
+            Message ="History deleted.";
+            return RedirectToAction(nameof(Edit), new { id = historyToDelete.AppId }); 
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditHistory(int id, AdminHistoryViewModel historyVm)
