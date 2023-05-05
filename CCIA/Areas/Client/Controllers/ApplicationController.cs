@@ -368,6 +368,7 @@ namespace CCIA.Controllers.Client
             }
             var submittedApp = model.Application;
             
+            appToUpdate.GrowerId = submittedApp.GrowerId;
             appToUpdate.CertYear = submittedApp.CertYear;
             appToUpdate.OriginalCertYear = submittedApp.CertYear;
             appToUpdate.UserAppModifed = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
@@ -1503,6 +1504,24 @@ namespace CCIA.Controllers.Client
             string fullPartialPath = $"~/Views/Application/{folder}/{partialName}.cshtml";
             ViewData["fhEntryId"] = fhEntryId;
             return PartialView(fullPartialPath, app);
+        }
+
+        public async Task<IActionResult> LookupOrg (string lookup)
+        {
+            lookup = lookup?.Trim();
+            var orgs = new List<Organizations>();
+            int id = 0;
+            // Parsing was successful (we have an ID number instead of a name)
+            if (Int32.TryParse(lookup, out id))
+            {
+                orgs = await _dbContext.Organizations.Where(o => o.Id == id).ToListAsync();
+            }
+            else
+            {
+                orgs = await _dbContext.Organizations.Where(o => o.Name.Contains(lookup.ToLower())).ToListAsync();
+            }                        
+            return PartialView("_LookupOrg", orgs);
+
         }
 
         private Applications MapRenewFromApp(Applications appToRenew)

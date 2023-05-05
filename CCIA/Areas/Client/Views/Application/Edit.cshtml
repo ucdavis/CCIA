@@ -15,12 +15,42 @@
     @Html.ValidationSummary()
 </div>
 
+<!-- Org Lookup Modal -->
+<div class="modal fade" id="lookupOrgModal" tabindex="-1" role="dialog" aria-labelledby="Lookup Orgs" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Look Up Grower</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fa fa-window-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+         <label for="account">Name or Account Number:</label>
+        <div class="input-group col">
+            <input type="text" class="form-control" id="account" placeholder="Enter the organization's name or account number">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" id="account-lookup-btn"><i id="account-lookup-btn" class="fas fa-search"></i></button>                    
+            </span>
+        </div>
+        <input type="hidden" id="lookupType" value=""/>
+        <div id="orgTable"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Grower:</h5>
+        <h5 class="card-title">Grower:</h5>        
         <table class="table">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Account #</th>
                     <th>Grower</th>
                     <th>Address</th>
@@ -30,15 +60,18 @@
             </thead>
             <tbody id="organizations">
                 <tr>
-                    <td>@Model.GrowerOrg.Id</td>
-                    <td>@Model.GrowerOrg.Name</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-pen"></i></button>                
+                    </td>
+                    <td id="GrowerId" class="replaceGrower">@Model.GrowerOrg.Id</td>
+                    <td class="replaceGrower">@Model.GrowerOrg.Name</td>
                     @if (@Model.GrowerOrg.Addresses.First().Address != null)
                     {
-                        <td>@Model.GrowerOrg.Addresses.First().Address.Address1</td>
-                        <td>@Model.GrowerOrg.Addresses.First().Address.City</td>
+                        <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.Address1</td>
+                        <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.City</td>
                         @if (@Model.GrowerOrg.Addresses.First().Address.StateProvince != null)
                         {
-                            <td>@Model.GrowerOrg.Addresses.First().Address.StateProvince.Name</td>
+                            <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.StateProvince.Name</td>
                         }                
                     }
                 </tr>
@@ -540,5 +573,33 @@
      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="~/js/applications/createApplications.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $('#account-lookup-btn').click(function(e){
+            e.preventDefault();            
+            var lookup = escape($("#account").val());
+            if (lookup === "") {
+                alert("This field cannot be empty.");
+                return;
+            }            
+            $("#orgTable").empty();
+            $("#orgTable").load("/client/Application/LookupOrg?lookup="+lookup, (response, status, xhr) => {
+                if ( status == "error" ) {
+                    var msg = "Sorry, the following error occurred: ";
+                    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+                }
+            });
+        });
+
+        function useOrg(e,orgId, orgNameAndId)
+        {
+            e.preventDefault();                       
+            $("#Application_GrowerId").val(orgId);
+            $(".replaceGrower").html("");            
+            $("#GrowerId").html(orgNameAndId);
+            $("#orgTable").empty();
+            $("#lookupOrgModal").modal('hide');                       
+        }
+    </script>
    
 } 
