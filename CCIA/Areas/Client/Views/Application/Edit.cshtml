@@ -63,15 +63,15 @@
                     <td>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupOrgModal" data-whatever="Grower"><i class="fa fa-pen"></i></button>                
                     </td>
-                    <td id="GrowerId">@Model.GrowerOrg.Id</td>
-                    <td id="GrowerName">@Model.GrowerOrg.Name</td>
+                    <td id="GrowerId" class="replaceGrower">@Model.GrowerOrg.Id</td>
+                    <td class="replaceGrower">@Model.GrowerOrg.Name</td>
                     @if (@Model.GrowerOrg.Addresses.First().Address != null)
                     {
-                        <td id="GrowerAddress ">@Model.GrowerOrg.Addresses.First().Address.Address1</td>
-                        <td>@Model.GrowerOrg.Addresses.First().Address.City</td>
+                        <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.Address1</td>
+                        <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.City</td>
                         @if (@Model.GrowerOrg.Addresses.First().Address.StateProvince != null)
                         {
-                            <td>@Model.GrowerOrg.Addresses.First().Address.StateProvince.Name</td>
+                            <td class="replaceGrower">@Model.GrowerOrg.Addresses.First().Address.StateProvince.Name</td>
                         }                
                     }
                 </tr>
@@ -594,8 +594,9 @@
         function useOrg(e,orgId, orgNameAndId)
         {
             e.preventDefault();                       
-            $("#application_GrowerId").val(orgId);
-            //$("#application_GrowerOrganization_NameAndId").val(orgNameAndId);            
+            $("#Application_GrowerId").val(orgId);
+            $(".replaceGrower").html("");            
+            $("#GrowerId").html(orgNameAndId);
             $("#orgTable").empty();
             $("#lookupOrgModal").modal('hide');                       
         }

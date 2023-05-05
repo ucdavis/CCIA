@@ -368,6 +368,7 @@ namespace CCIA.Controllers.Client
             }
             var submittedApp = model.Application;
             
+            appToUpdate.GrowerId = submittedApp.GrowerId;
             appToUpdate.CertYear = submittedApp.CertYear;
             appToUpdate.OriginalCertYear = submittedApp.CertYear;
             appToUpdate.UserAppModifed = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
