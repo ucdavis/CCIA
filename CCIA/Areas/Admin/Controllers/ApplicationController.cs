@@ -721,6 +721,7 @@ namespace CCIA.Controllers.Admin
                 appToUpdate.CertTagOrBulkSalesUploaded = edit.CertTagOrBulkSalesUploaded;
                 appToUpdate.NASPHCUploaded = edit.NASPHCUploaded;
                 appToUpdate.ShippingPointInspectionUploadedOrFromNonInspectState = edit.ShippingPointInspectionUploadedOrFromNonInspectState;
+                appToUpdate.PoLotNum = edit.PoLotNum;
             }
             if(edit.PackageComplete && !appToUpdate.PackageComplete){
                 appToUpdate.CompleteDate = DateTime.Now;                
