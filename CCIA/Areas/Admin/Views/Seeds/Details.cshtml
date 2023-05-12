@@ -33,8 +33,11 @@
             
         </div>
         <div class="col-sm-3">
-            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseReturn" aria-expanded="false" aria-controls="collapseReturn">Begin Return to Client...</button>  
-            
+            <form asp-action="Cancel">
+                <input type="hidden" asp-for="seed.Id">
+                <input type="submit" class="btn btn-dark" type="button" value="Cancel" onsubmit="return confirm('Do you really want to cancel this lot?');">
+            </form>
+             
         </div>
          <div class="col-sm-3">
             <form asp-action="sublot" onsubmit="return confirm('Do you really want to create Sublot?');">
