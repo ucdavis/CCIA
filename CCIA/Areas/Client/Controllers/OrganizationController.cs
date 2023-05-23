@@ -470,7 +470,7 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "You do not have permission to update Org info.";
                 return RedirectToAction(nameof(Index), "Home");
             }
-            // TODO send email with instructions to set password
+            
             var employeeToAdd = new Contacts();
 
             employeeToAdd.OrgId = orgId;
@@ -490,11 +490,16 @@ namespace CCIA.Controllers.Client
             employeeToAdd.MobilePhone = employee.MobilePhone;
             employeeToAdd.PagerNumber = employee.PagerNumber;
             employeeToAdd.AllowSeeds = employee.AllowSeeds;
-
+            byte[] b = System.Security.Cryptography.RandomNumberGenerator.GetBytes(12);                                         
+            employeeToAdd.ResetPin = b;
+            employeeToAdd.ResetExpiration = DateTime.Now.AddDays(5);
+            
             if(ModelState.IsValid){
                 _dbContext.Add(employeeToAdd);               
                 await _dbContext.SaveChangesAsync();
-                Message = "Employee created";
+                _notification.ResetPassword(employeeToAdd);
+                await _dbContext.SaveChangesAsync();
+                Message = "Employee created and password reset email created.";
             } else {
                 ErrorMessage = "Something went wrong.";                
                 return View(employee); 
