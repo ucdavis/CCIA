@@ -102,6 +102,7 @@ namespace CCIA.Controllers.Admin
             stcToUpdate.CertificateDate = update.CertificateDate;           
             stcToUpdate.Pounds = update.Pounds;
             stcToUpdate.OriginatingOrganizationId = update.OriginatingOrganizationId;
+            stcToUpdate.DestinationOrganizationId = update.DestinationOrganizationId;
             stcToUpdate.PurchaserName = update.PurchaserName;
             stcToUpdate.PurchaserAddressLine1 = update.PurchaserAddressLine1;
             stcToUpdate.PurchaserAddressLine2 = update.PurchaserAddressLine2;
