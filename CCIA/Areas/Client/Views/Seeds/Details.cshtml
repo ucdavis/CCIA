@@ -20,7 +20,7 @@
                     </div>
                 </div>
             }
-            @if(Model.seed.Submitted == false)
+            @if(Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName())
             {               
                 <div class="row">
                     <div class="col-sm-12">
@@ -113,6 +113,15 @@
                     @Html.DisplayFor(x => x.seed.Status)
                 </div>
             </div>  
+            @if(!string.IsNullOrWhiteSpace(Model.seed.ReturnReason))
+                {
+                    <div class="form-group row">
+                        <label asp-for="seed.ReturnReason" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.seed.ReturnReason)
+                        </div>
+                    </div>
+                }
             <div>
                 @if(Model.seed.SeedsApplications.Count > 0)
                 {
@@ -191,7 +200,7 @@
                     <h2>Lab Results</h2>
                 </div>
             </div>
-            @if(Model.seed.Submitted == false)
+            @if(Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName())
             {               
                 <div class="row">
                     <div class="col-sm-12">
