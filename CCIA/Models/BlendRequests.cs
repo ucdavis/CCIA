@@ -13,7 +13,9 @@ namespace CCIA.Models
         [Display(Name="Pending acceptance")]
         PendingAcceptance,
         [Display(Name="Approved")]
-        Approved,        
+        Approved,    
+        [Display(Name="Cancelled")]
+        Cancelled,      
     } 
 
     public enum BlendType

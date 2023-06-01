@@ -161,7 +161,7 @@ namespace CCIA.Models
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
-        public string certYearAbbrev => CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+        public string certYearAbbrev => CertYear != null ? CertYear.ToString().Substring(CertYear.ToString().Length - 2) : "";
 
         // NO lot number included
         [Display(Name = "Cert#")]

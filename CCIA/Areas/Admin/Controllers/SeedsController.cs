@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Security.Claims;
 using CCIA.Models.SeedsViewModels;
+using System.Text;
 
 namespace CCIA.Controllers.Admin
 {
@@ -282,6 +283,19 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Cancel(AdminSeedsViewModel model)
         {
+            var p0 = new SqlParameter("@id", System.Data.SqlDbType.Int);
+            p0.Value = model.seed.Id;
+            var check =  await _dbContext.SeedCancelChecks.FromSqlRaw($"EXEC mvc_seed_cancel_check @id", p0).ToListAsync();
+            if(check.Any())
+            {
+                var sbCheck = new StringBuilder();                
+                foreach(var row in check)
+                {
+                    sbCheck.Append(row.Id + " " + row.Source + " || ");
+                }
+                ErrorMessage = "That SID has existing tags, OECD, Blends, Bulk Sales, or Seed Transfers on file: " + sbCheck.ToString();
+                return RedirectToAction(nameof(Details), new {id = model.seed.Id}); 
+            }
             var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == model.seed.Id).FirstOrDefaultAsync();
             seedToCancel.Status = SeedsStatus.CancelledByCCIA.GetDisplayName();
             seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff";

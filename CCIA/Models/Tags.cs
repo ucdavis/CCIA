@@ -17,7 +17,9 @@ namespace CCIA.Models
         [Display(Name="Complete")]
         Complete,
         [Display(Name="Follow-Up")]
-        followup
+        followup,
+        [Display(Name="Cancelled")]
+        Cancelled
     } 
 
     public enum TagHowPickUp
