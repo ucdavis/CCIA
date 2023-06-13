@@ -202,17 +202,16 @@ namespace CCIA.Controllers.Client
             }
             else
             {
-                int? sidClass = await _dbContext.Seeds.Where(s => s.Id == id).Select(s => s.Class).FirstAsync();
-                int appType = await _dbContext.Seeds.Where(s => s.Id == id).Include(s => s.AppTypeTrans).Select(s => s.AppTypeTrans.AppTypeId).FirstAsync();
-                if (sidClass.HasValue)
+                var seedFound = await _dbContext.Seeds.Where(s => s.Id == id).Include(s => s.AppTypeTrans).FirstOrDefaultAsync();
+                if(seedFound.Class.HasValue)
                 {
-                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= sidClass && a.Program == appType)
+                    var model = await _dbContext.AbbrevClassSeeds.Where(a => a.Id >= seedFound.Class.Value && a.Program == seedFound.AppTypeTrans.AppTypeId)
                         .OrderBy(a => a.Id)
                         .Select(a => new { value = a.Id, text = a.CertClass })
                         .ToListAsync();
                     return Json(model);
-                }
-                else
+
+                } else
                 {
                     var model = await _dbContext.AbbrevClassSeeds.Where(a => a.CertClass == "Certified")
                         .OrderBy(a => a.Id)
@@ -365,7 +364,7 @@ namespace CCIA.Controllers.Client
                     variety = s.Seeds.GetVarietyName(),
                     cert = s.Seeds.CertNumber,
                     lot = s.Seeds.LotNumber,
-                }).SingleAsync();
+                }).FirstOrDefaultAsync();
             return info;
         }
 
