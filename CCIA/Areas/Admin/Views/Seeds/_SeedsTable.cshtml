@@ -11,7 +11,7 @@
             <th>SeedsID</th>
             <th>Program</th>
             <th>Cert#</th>
-            <th>Year</th>
+            <th>Date Recd.</th>
             <th>Applicant</th>
             <th>Conditioner</th> 
             <th>Pounds</th>           
@@ -27,7 +27,7 @@
                 <td>@seed.Id</td>
                 <td>@seed.CertProgram</td>
                 <td>@seed.CertNumber</td>
-                <td>@seed.CertYear</td>
+                <td data-sort="@(seed.SampleFormDate.HasValue ? seed.SampleFormDate.Value.ToFileTimeUtc() : "")">@(seed.SampleFormDate.HasValue ? seed.SampleFormDate.Value.ToShortDateString() : "")</td>
                 <td>@if(seed.ApplicantOrganization != null)
                     {
                          @seed.ApplicantOrganization.Name
