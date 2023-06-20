@@ -13,6 +13,8 @@ namespace CCIA.Models
 
         public string IDType { get; set; }
 
+        public DateTime DateRequested { get; set; }
+
         public string Crop { get; set; }
 
         public string Variety { get; set; }

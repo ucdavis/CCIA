@@ -10,6 +10,7 @@
             <th>TID</th>
             <th>ID</th>
             <th>Type</th>
+            <th>Date</th>
             <th>Org</th>
             <th>Crop</th>
             <th>Variety</th>
@@ -30,6 +31,7 @@
                 <td>@item.Id</td>
                 <td>@item.LinkId</td>
                 <td>@item.IDType</td>
+                <td data-sort="@item.DateRequested.ToFileTimeUtc()">@item.DateRequested.ToShortDateString()</td>
                 <td>@item.OrgId @item.OrgName</td>
                 <td>@item.Crop</td>
                 <td>@item.Variety</td>

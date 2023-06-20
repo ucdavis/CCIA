@@ -28,6 +28,8 @@ namespace CCIA.Services
         Task SeedLotAccepted(Seeds seed);
 
         Task SeedLotSubmitted(Seeds seed);
+        Task SeedReturnedForReview(Seeds seed);
+        Task SeedCanceledByCCIA(Seeds seed);
 
         Task BlendRequestApproved(BlendRequests blend);
 
@@ -237,6 +239,39 @@ namespace CCIA.Services
                 _dbContext.Notifications.Add(notification);      
             }
         }
+
+        public async Task SeedReturnedForReview(Seeds seed)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == seed.UserEntered.Value || (c.SeedNotices && c.OrgId == seed.ApplicantId || (c.SeedNotices && c.OrgId == seed.ConditionerId))) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    SID = seed.Id,
+                    Message = "Seed Lot returned to client for review"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task SeedCanceledByCCIA(Seeds seed)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == seed.UserEntered.Value || (c.SeedNotices && c.OrgId == seed.ApplicantId || (c.SeedNotices && c.OrgId == seed.ConditionerId))) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    SID = seed.Id,
+                    Message = "Seed Lot cancelled by CCIA Staff"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }
+        }
+
 
         public async Task SeedLotSubmitted(Seeds seed)
         {

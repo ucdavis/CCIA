@@ -12,6 +12,7 @@ using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Security.Claims;
 using CCIA.Models.SeedsViewModels;
+using System.Text;
 
 namespace CCIA.Controllers.Admin
 {
@@ -256,6 +257,52 @@ namespace CCIA.Controllers.Admin
 
             return RedirectToAction(nameof(Details), new { id = seedEdit.Id });
 
+        }
+
+        public async Task<IActionResult> ReturnSID(int id, string reason)
+        {
+            var seedToReturn = await _dbContext.Seeds.Where(s => s.Id == id).FirstOrDefaultAsync();
+            if(seedToReturn == null)
+            {
+                ErrorMessage = "Seed not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if(string.IsNullOrWhiteSpace(reason))
+            {
+                ErrorMessage = "Return reason cannot be blank";
+                return RedirectToAction(nameof(Details), new {id = seedToReturn.Id});
+            }
+            var reasonWithDate = DateTime.Now.ToShortDateString() + ": " + reason;
+            seedToReturn.Status = SeedsStatus.ReturnedToClient.GetDisplayName();
+            seedToReturn.ReturnReason = string.IsNullOrWhiteSpace(seedToReturn.ReturnReason) ? reasonWithDate : seedToReturn.ReturnReason + "; " + reasonWithDate;
+            await _notificationService.SeedReturnedForReview(seedToReturn);
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed returned to client.";
+            return RedirectToAction(nameof(Details), new {id = seedToReturn.Id});
+        }
+
+        public async Task<IActionResult> Cancel(AdminSeedsViewModel model)
+        {
+            var p0 = new SqlParameter("@id", System.Data.SqlDbType.Int);
+            p0.Value = model.seed.Id;
+            var check =  await _dbContext.SeedCancelChecks.FromSqlRaw($"EXEC mvc_seed_cancel_check @id", p0).ToListAsync();
+            if(check.Any())
+            {
+                var sbCheck = new StringBuilder();                
+                foreach(var row in check)
+                {
+                    sbCheck.Append(row.Id + " " + row.Source + " || ");
+                }
+                ErrorMessage = "That SID has existing tags, OECD, Blends, Bulk Sales, or Seed Transfers on file: " + sbCheck.ToString();
+                return RedirectToAction(nameof(Details), new {id = model.seed.Id}); 
+            }
+            var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == model.seed.Id).FirstOrDefaultAsync();
+            seedToCancel.Status = SeedsStatus.CancelledByCCIA.GetDisplayName();
+            seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff";
+            await _notificationService.SeedCanceledByCCIA(seedToCancel);
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed Cancelled";
+            return RedirectToAction(nameof(Details), new {id = seedToCancel.Id});
         }
 
         public ActionResult Seeds()

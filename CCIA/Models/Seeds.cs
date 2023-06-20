@@ -24,6 +24,8 @@ namespace CCIA.Models
         CancelledByOrganization,        
         [Display(Name="Cancelled by CCIA")]
         CancelledByCCIA,
+        [Display(Name ="Returned to Client")]
+        ReturnedToClient
     } 
     public partial class Seeds
     {
@@ -154,11 +156,12 @@ namespace CCIA.Models
 
         public bool FollowUp { get; set; }
         public bool Sublot { get; set; }
+        public string ReturnReason { get; set; }
        
 
         public bool HasLabs => LabResults == null || (LabResults.PurityPercent == null && LabResults.GermPercent == null) ? false : true;
 
-        public string certYearAbbrev => CertYear.ToString().Substring(CertYear.ToString().Length - 2);
+        public string certYearAbbrev => CertYear != null ? CertYear.ToString().Substring(CertYear.ToString().Length - 2) : "";
 
         // NO lot number included
         [Display(Name = "Cert#")]
