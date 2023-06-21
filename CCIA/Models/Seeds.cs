@@ -156,6 +156,7 @@ namespace CCIA.Models
 
         public bool FollowUp { get; set; }
         public bool Sublot { get; set; }
+        [Display(Name ="Return Reason")]
         public string ReturnReason { get; set; }
        
 
