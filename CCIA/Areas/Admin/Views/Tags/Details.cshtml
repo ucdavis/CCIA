@@ -247,6 +247,15 @@
                     @Html.DisplayFor(x => x.Stage)
                 </div>
             </div>
+            @if(!string.IsNullOrWhiteSpace(Model.ReturnReason))
+            {
+                <div class="form-group row">
+                    <label asp-for="ReturnReason" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.ReturnReason)
+                    </div>
+                </div>
+            }
             <div class="form-group row">
                 <label asp-for="CertNumber" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">

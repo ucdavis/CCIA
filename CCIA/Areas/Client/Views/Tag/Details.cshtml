@@ -1,5 +1,6 @@
 @model  CCIA.Models.TagCreateEditViewModel
 @using Microsoft.Extensions.Configuration
+@using CCIA.Helpers
 @inject IConfiguration Configuration
 
 <div class="container col-sm-12">    
@@ -7,7 +8,15 @@
         <div class="col-sm-12">
             <h2>Tag Details</h2>             
         </div>            
-    </div>        
+    </div>
+    @if(@Model.tag.Stage == TagStages.ReturnedToClient.GetDisplayName())
+    { 
+        <div class="row">
+            <div class="col-sm-12">
+                <a asp-action="edit" asp-route-id="@Model.tag.Id" class="btn btn-info">Edit Tag</a>
+            </div>
+        </div>   
+    }    
     <div class="row">
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -133,6 +142,15 @@
                     @Html.DisplayFor(x => x.tag.Stage)
                 </div>
             </div>
+            @if(!string.IsNullOrWhiteSpace(Model.tag.ReturnReason))
+            {
+                <div class="form-group row">
+                    <label asp-for="tag.ReturnReason" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.tag.ReturnReason)
+                    </div>
+                </div>
+            }
             <div class="form-group row">
                 <label asp-for="tag.CertNumber" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
