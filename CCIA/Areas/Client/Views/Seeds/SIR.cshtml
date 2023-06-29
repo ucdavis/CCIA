@@ -46,8 +46,8 @@
                                     <tr>
                                         <td valign="top">Applicant: </td>
                                         <td>
-                                            <span class="labelnoline">@Model.seed.ApplicantOrganization.Name</span>
-                                            &nbsp; &nbsp;&nbsp; (ID# <span class="labelnoline">@Model.seed.ApplicantOrganization.Id</span>)<br />
+                                            <span class="labelnoline">@Model.seed.ApplicantOrganization?.Name</span>
+                                            &nbsp; &nbsp;&nbsp; (ID# <span class="labelnoline">@Model.seed.ApplicantOrganization?.Id</span>)<br />
                                         </td>
                                         <td align="right" valign="top">
                                             Date:
@@ -60,10 +60,10 @@
                         <tr>
                             <td> </td>
                             <td colspan="2">
-                                @if(Model.seed.ApplicantOrganization.Addresses.First().Address != null)
+                                @if(Model.seed.ApplicantOrganization?.Addresses.First().Address != null)
                                 {    
-                                    @Html.Raw(Model.seed.ApplicantOrganization.Addresses.First().Address.AddressLines) <br>
-                                    @Model.seed.ApplicantOrganization.Addresses.First().Address.City<span>,</span> @Model.seed.ApplicantOrganization.Addresses.First().Address.StateName @Model.seed.ApplicantOrganization.Addresses.First().Address.PostalCode
+                                    @Html.Raw(Model.seed.ApplicantOrganization?.Addresses.First().Address.AddressLines) <br>
+                                    @Model.seed.ApplicantOrganization?.Addresses.First().Address.City<span>,</span> @Model.seed.ApplicantOrganization.Addresses.First().Address.StateName @Model.seed.ApplicantOrganization.Addresses.First().Address.PostalCode
                                 }
                             </td>
                         </tr>
