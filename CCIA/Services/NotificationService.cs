@@ -38,6 +38,7 @@ namespace CCIA.Services
         Task SeedTransferResponded(SeedTransfers request);
 
         Task TagApproved(Tags tag);
+        Task TagReturnedForReview(Tags tag);
 
         Task TagApprovedForConditionerPrint(Tags tag);
 
@@ -250,7 +251,7 @@ namespace CCIA.Services
                 {
                     Email = user,
                     SID = seed.Id,
-                    Message = "Seed Lot returned to client for review"
+                    Message = "Seed Lot returned to client for review -" + seed.ReturnReason
                 };
                 _dbContext.Notifications.Add(notification);      
             }
@@ -426,6 +427,22 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag request Approved for conditioner printing"
+                };
+                _dbContext.Notifications.Add(notification);      
+            }            
+        }
+
+        public async Task TagReturnedForReview(Tags tag)
+        {
+             var users = await _dbContext.Contacts.Where(c => (c.Id == tag.UserEntered.Value || (c.TagNotices && c.OrgId == tag.TaggingOrg )) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {                
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag returned for edits - " + tag.ReturnReason
                 };
                 _dbContext.Notifications.Add(notification);      
             }            

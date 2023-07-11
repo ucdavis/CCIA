@@ -3,20 +3,22 @@
 @using CCIA.Helpers
 @inject IConfiguration Configuration
 
+<form asp-action="Edit">
+    <input type="hidden" asp-for="tag.Id" />
 <div class="container col-sm-12">    
     <div class="row">
         <div class="col-sm-12">
             <h2>Tag Details</h2>             
         </div>            
+    </div> 
+    <div class="row">
+        <div class="col-sm-6">
+           <input type="submit" value="Update" class="btn btn-primary" />
+        </div>
+        <div class="col-sm-6">
+            <a asp-action="Details" asp-route-id="@Model.tag.Id" class="btn btn-dark">Cancel Edit</a>
+        </div>
     </div>
-    @if(@Model.tag.Stage == TagStages.ReturnedToClient.GetDisplayName())
-    { 
-        <div class="row">
-            <div class="col-sm-12">
-                <a asp-action="edit" asp-route-id="@Model.tag.Id" class="btn btn-info">Edit Tag</a>
-            </div>
-        </div>   
-    }    
     <div class="row">
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -50,6 +52,16 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label asp-for="tag.BagSize" class="col-sm-2 col-form-label"></label>
+                <input asp-for="tag.BagSize" class="form-control col-sm-2" onchange="WeightChange()">
+                <span class="field-validation-valid text-danger" asp-validation-for="tag.BagSize" data-valmsg-replace="true"></span>
+                <div class="col-sm-1"></div>
+                <select asp-for="tag.WeightUnit" onchange="WeightChange()">
+                    <option value="L">Pounds</option>
+                    <option value="K">Kilograms</option>
+                </select>
+            </div>
+            <div class="form-group row">
                 <label asp-for="tag.BagSizePounds" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.tag.BagSizePounds)
@@ -69,19 +81,30 @@
             </div>
             <div class="form-group row">
                 <label asp-for="tag.CountRequested" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.CountRequested)
-                </div>
+                <input asp-for="tag.CountRequested" class="col-sm-4 form-control" />
+                <span class="field-validation-valid text-danger" asp-validation-for="tag.CountRequested" data-valmsg-replace="true"></span>
             </div> 
             <div class="form-group row">
-                <label asp-for="tag.CoatingPercent" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.CoatingPercent)
+                <label asp-for="tag.CoatingPercent" class="col-form-label col-sm-2"></label>
+                <div class="col-sm-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="tag.CoatingPercent" onclick="WeightChange()" value="0" data-val="true" data-val-required="Please coating percentage">
+                        <label class="form-check-label" for="0">No coating</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="tag.CoatingPercent" onclick="WeightChange()" value="0.34" data-val="true" data-val-required="Please coating percentage">
+                        <label class="form-check-label" for="0.34">34%</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input lgRadio" type="radio" asp-for="tag.CoatingPercent" onclick="WeightChange()" value="0.5" data-val="true" data-val-required="Please coating percentage">
+                        <label class="form-check-label" for="0.5">50%</label>
+                    </div>
+                    <span class="field-validation-valid text-danger" asp-validation-for="tag.CoatingPercent" data-valmsg-replace="true"></span>
                 </div>
             </div>
             <div class="form-group row">                
                 <label asp-for="tag.SeriesRequest" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="tag.SeriesRequest" class="col-sm-3 form-control disabled">
+                <input type="checkbox" asp-for="tag.SeriesRequest" class="col-sm-3 form-control">
             </div>             
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@ 
@@ -132,7 +155,7 @@
             </div>  
             <div class="form-group row">                
                 <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="tag.Bulk" class="col-sm-3 form-control disabled">
+                <input type="checkbox" asp-for="tag.Bulk" class="col-sm-3 form-control">
             </div>                                                         
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
@@ -171,9 +194,7 @@
             </div>
             <div class="form-group row">
                 <label asp-for="tag.Alias" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.Alias)
-                </div>
+                <input asp-for="tag.Alias" class="col-sm-8 form-control" />
             </div>
             <div class="form-group row">
                 <label asp-for="tag.LotWeightRequested" class="col-sm-3 col-form-label">Requested Weight</label>
@@ -201,7 +222,7 @@
             </div>             
             <div class="form-group row">                
                 <label asp-for="tag.AnalysisRequested" class="col-sm-3 col-form-label"></label>
-                <input type="checkbox" asp-for="tag.AnalysisRequested" class="col-sm-3 form-control disabled">
+                <input type="checkbox" asp-for="tag.AnalysisRequested" class="col-sm-3 form-control">
             </div>         
         </div>
     </div>
@@ -399,208 +420,10 @@
             <div class="col-sm-9 form-control-plaintext">
                 @Html.DisplayFor(x => x.tag.Seeds.ConditionerOrganization.NameAndId)
             </div>
-        </div>                
-        <div class="row">
-            @if(Model.tag.Seeds != null && Model.tag.Seeds.SeedsApplications != null && Model.tag.Seeds.SeedsApplications.Count > 0)
-            {
-                @:Apps in this lot:
-                <table class="table">
-                    <tr>
-                        <th>AppID</th>
-                        <th>Applicant</th>
-                        <th>Grower</th>
-                        <th>Cert Year</th>
-                        <th>Crop</th>
-                        <th>Variety</th>
-                        <th>Class</th>
-                        <th>Status</th>
-                        <th>Warning</th>
-                    </tr>
-                    @foreach(var app in Model.tag.Seeds.SeedsApplications)
-                    {
-                        <tr>
-                            <td>@app.AppId</td>
-                            <td>@app.Application.ApplicantOrganization.NameAndId</td>
-                            <td>@app.Application.GrowerOrganization.NameAndId</td>
-                            <td>@app.Application.CertYear</td>
-                            <td>@app.Application.CropName</td>
-                            <td>@app.Application.VarietyName</td>
-                            <td>@app.Application.ClassProducedName</td>
-                            <td>@app.Application.Status</td>
-                            <td>
-                                @if(app.Application.Status != "Field Inspection Report Ready")
-                                {
-                                    <a class="btn btn-danger" href="#">FIR not ready</a>
-                                }
-                            
-                                @if(app.Application.FieldInspectionReport != null)
-                                {
-                                    @if(app.Application.FieldInspectionReport.AcresApproved == 0)
-                                    {
-                                        <a class="btn btn-danger" href="#">Acres Approved =0</a>
-                                    }
-                                    @if(app.Application.FieldInspectionReport.AcresGrowout > 0)
-                                    {
-                                        <a class="btn btn-danger" href="#">Acres Growout > 0</a>
-                                    }
-                                    @if(app.Application.FieldInspectionReport.AcresRejected > 0)
-                                    {
-                                        <a class="btn btn-danger" href="#">Acres Rejected > 0</a>
-                                    }
-                                    @if(!app.Application.FieldInspectionReport.Complete)
-                                    {
-                                        <a class="btn btn-danger" href="#">FIR not marked complete</a>
-                                    }                                
-                                } else
-                                {
-                                    <a class="btn btn-danger" href="#">Field Inspection Report Not Found</a>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </table>
-            }
-            @if(Model.tag.Application != null)
-            {
-                @:Apps in this lot:
-                <table class="table">
-                    <tr>
-                        <th>AppID</th>
-                        <th>Applicant</th>
-                        <th>Grower</th>
-                        <th>Cert Year</th>
-                        <th>Crop</th>
-                        <th>Variety</th>
-                        <th>Class</th>
-                        <th>Status</th>
-                        <th>Warning</th>
-                    </tr>                   
-                    <tr>
-                        <td>@Model.tag.Application.Id</td>
-                        <td>@Model.tag.Application.ApplicantOrganization.NameAndId</td>
-                        <td>@Model.tag.Application.GrowerOrganization.NameAndId</td>
-                        <td>@Model.tag.Application.CertYear</td>
-                        <td>@Model.tag.Application.CropName</td>
-                        <td>@Model.tag.Application.VarietyName</td>
-                        <td>@Model.tag.Application.ClassProducedName</td>
-                        <td>@Model.tag.Application.Status</td>
-                        <td>
-                            @if(Model.tag.Application.Status != "Field Inspection Report Ready")
-                            {
-                                <a class="btn btn-danger" href="#">FIR not ready</a>
-                            }
-                        
-                            @if(Model.tag.Application.FieldInspectionReport != null)
-                            {
-                                @if(Model.tag.Application.FieldInspectionReport.AcresApproved == 0)
-                                {
-                                    <a class="btn btn-danger" href="#">Acres Approved =0</a>
-                                }
-                                @if(Model.tag.Application.FieldInspectionReport.AcresGrowout > 0)
-                                {
-                                    <a class="btn btn-danger" href="#">Acres Growout > 0</a>
-                                }
-                                @if(Model.tag.Application.FieldInspectionReport.AcresRejected > 0)
-                                {
-                                    <a class="btn btn-danger" href="#">Acres Rejected > 0</a>
-                                }
-                                @if(!Model.tag.Application.FieldInspectionReport.Complete)
-                                {
-                                    <a class="btn btn-danger" href="#">FIR not marked complete</a>
-                                }                                
-                            } else
-                            {
-                                <a class="btn btn-danger" href="#">Field Inspection Report Not Found</a>
-                            }
-                        </td>
-                    </tr>
-                </table>
-            }
-        </div>        
-    </div> 
-    <div class="col-sm-12"> @* full width*@
-        <div class="row">
-            <h3>Supporting Documents</h3>
-        </div>
-        <div class="row">
-             @if(Model.tag.Documents.Any())
-                {                            
-                    <table class="table">
-                        <tr>
-                            <th>File</th>
-                        </tr>
-                        @foreach (var document in Model.tag.Documents)
-                        {
-                            <tr>
-                                <td><a asp-action="GetTagFile" asp-route-id="@document.Id" asp-route-certYear="@Model.tag.CertYear">@document.Link</a></td>
-                            </tr>                                
-                        }
-                    </table>
-                }
-        </div>
-        <div class="row">
-            <form enctype="multipart/form-data" method="post" asp-action="UploadTagDocument">
-            <h3>Upload new Document</h3>
-                <input type="hidden" name="id" id="id" value="@Model.tag.Id">  
-                <input type="hidden" name="certYear" id="certYear" value="@Model.tag.CertYear">
-                <input id="file" name="file" type="file">            
-                <input class="btn btn-primary" type="submit" value="Upload" disabled />
-                <br>Allowed files: @Configuration["AllowedFiles"]
-            </form>
-        </div>
-    </div>
-    <div class="col-sm-12"> @* full width *@
-        <div class="row">
-            <h3>Tag Series</h3>
-        </div>
-        <div class="row">
-            <h4>New Entry:</h4>
-            <form asp-action="RecordSeries" class="form-inline">
-               <input type="hidden" id="id" name="id" value="@Model.tag.Id">
-               <label for="Letter" class="col-sm-1">Letter</label> 
-               <input type="text" id="Letter" name="Letter" class="form-control col-sm-1" width="5px" />
-               <label for="Star" class="col-sm-2">Start Number</label>
-               <input type="text" id="Start" name="Start" class="form-control col-sm-1">
-               <label for="End" class="col-sm-2">End Number</label>
-               <input type="text" id="End" name="End" class="form-control col-sm-1">    
-               <label for="Start" class="col-sm-1">Void</label>
-               <input type="checkbox" id="Void" name="Void" value="true" class="form-control col-sm-1">           
-               <input type="submit" class="btn btn-info" value="Record Line">
-            </form>                  
-        </div>
-    @if(Model.tag.TagSeries.Count > 0)
-    {    
-        <div class="row">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Letter</th>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Void?</th>
-                        <th>Count</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var tagSeries in Model.tag.TagSeries)
-                    {
-                        <tr>
-                            <td>@tagSeries.Letter</td>
-                            <td>@tagSeries.Start</td>
-                            <td>@tagSeries.End</td>
-                            <td><input type="checkbox" asp-for="tag.@tagSeries.Void" class="col-sm-3 form-control disabled"></td>
-                            <td>@tagSeries.Count </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>    
-    }
-        
-    </div>
+        </div>                               
+    </div>     
 </div>
+</form>
 @section Scripts {
     <script>
         

@@ -19,7 +19,9 @@ namespace CCIA.Models
         [Display(Name="Follow-Up")]
         followup,
         [Display(Name="Cancelled")]
-        Cancelled
+        Cancelled,
+        [Display(Name ="Returned to Client")]
+        ReturnedToClient
     } 
 
     public enum TagHowPickUp
@@ -59,6 +61,8 @@ namespace CCIA.Models
         public Applications Application {get; set;}
 
         public bool FollowUp { get; set; }
+        [Display(Name ="Return Reason")]
+        public string ReturnReason { get; set; }
 
         
         public TagBagging TagBagging { get; set; }

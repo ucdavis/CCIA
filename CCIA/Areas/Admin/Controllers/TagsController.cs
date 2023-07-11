@@ -227,6 +227,39 @@ namespace CCIA.Controllers.Admin
            return RedirectToAction(nameof(Details), new { id = id }); 
         }
 
+        public async Task<IActionResult> ReturnTag(int id, string reason)
+        {
+            var tagToReturn = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(tagToReturn == null)
+            {
+                ErrorMessage = "Tag not found";
+                return RedirectToAction(nameof(Process));
+            }
+            if(string.IsNullOrWhiteSpace(reason))
+            {
+                ErrorMessage = "Return reason cannot be blank";
+                return RedirectToAction(nameof(Details), new {id = tagToReturn.Id});
+            }
+            var reasonWithDate = DateTime.Now.ToShortDateString() + ": " + reason;
+            tagToReturn.Stage = TagStages.ReturnedToClient.GetDisplayName();
+            tagToReturn.ReturnReason = string.IsNullOrWhiteSpace(tagToReturn.ReturnReason) ? reasonWithDate : tagToReturn.ReturnReason + "; " + reasonWithDate;
+            await _notificationService.TagReturnedForReview(tagToReturn);
+            await _dbContext.SaveChangesAsync();
+            Message = "Tag returned to client.";
+            return RedirectToAction(nameof(Details), new {id = tagToReturn.Id});
+        }
+
+        public async Task<IActionResult> Cancel(AdminSeedsViewModel model)
+        {            
+            var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == model.seed.Id).FirstOrDefaultAsync();
+            seedToCancel.Status = SeedsStatus.CancelledByCCIA.GetDisplayName();
+            seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff";
+            await _notificationService.SeedCanceledByCCIA(seedToCancel);
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed Cancelled";
+            return RedirectToAction(nameof(Details), new {id = seedToCancel.Id});
+        }
+
 
 
 

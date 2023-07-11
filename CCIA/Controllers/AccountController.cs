@@ -191,7 +191,7 @@ namespace CCIA.Controllers
         {
             await HttpContext.SignOutAsync("Cookies");
             EmulationMessage = "";
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction("Index","Root");
         }      
         
         

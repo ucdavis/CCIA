@@ -11,6 +11,7 @@ using CCIA.Models.IndexViewModels;
 using CCIA.Services;
 using System.IO;
 using CCIA.Models.SeedsCreateViewModel;
+using System.Security.Cryptography;
 
 namespace CCIA.Controllers.Client
 {
@@ -67,6 +68,57 @@ namespace CCIA.Controllers.Client
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await TagCreateEditViewModel.Create(_dbContext, _helper, id); 
+            if(model.tag == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                return RedirectToAction(nameof(Index));
+            }            
+            if(model.tag.TaggingOrg != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the company that requested that tag";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, TagCreateEditViewModel vm)
+        {
+            var tagToUpdate = await _dbContext.Tags.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if(tagToUpdate == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (tagToUpdate.TaggingOrg != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the company that requested that tag";
+                return RedirectToAction(nameof(Index));
+            }
+            tagToUpdate.BagSize = vm.tag.BagSize;
+            tagToUpdate.WeightUnit = vm.tag.WeightUnit;
+            tagToUpdate.CountRequested = vm.tag.CountRequested;
+            tagToUpdate.CoatingPercent = vm.tag.CoatingPercent;
+            tagToUpdate.TagSeries = vm.tag.TagSeries;
+            tagToUpdate.Alias = vm.tag.Alias;
+            tagToUpdate.AnalysisRequested = vm.tag.AnalysisRequested;
+            tagToUpdate.Bulk = vm.tag.Bulk;
+
+            if (TryValidateModel(tagToUpdate))
+            {                
+                await _dbContext.SaveChangesAsync();                
+                Message = "Tag updated.";
+                return RedirectToAction("Details", new { id = tagToUpdate.Id });
+            }
+
+            var retryModel = await TagCreateEditViewModel.Create(_dbContext, _helper, id);
+            return View(retryModel);
+
         }
 
         private async Task<bool> checkTagPermission(int orgId)
