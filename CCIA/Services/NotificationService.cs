@@ -47,6 +47,7 @@ namespace CCIA.Services
         Task TagFiled(Tags tag);
 
         Task TagSubmitted(Tags tag);
+        Task TagReSubmitted(Tags tag);
 
         Task OrgCreated(Organizations org);
 
@@ -478,6 +479,22 @@ namespace CCIA.Services
                     Message = "Tag submitted by conditioner"
                 };
                 _dbContext.Notifications.Add(notification);      
+            }
+        }
+
+        public async Task TagReSubmitted(Tags tag)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewTag && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
+
+            foreach (var user in admins)
+            {
+                var notification = new Notifications
+                {
+                    Email = $"{user}@ucdavis.edu",
+                    TagId = tag.Id,
+                    Message = "Tag re-submitted after edits"
+                };
+                _dbContext.Notifications.Add(notification);
             }
         }
 

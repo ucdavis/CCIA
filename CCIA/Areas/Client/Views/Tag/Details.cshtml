@@ -12,8 +12,14 @@
     @if(@Model.tag.Stage == TagStages.ReturnedToClient.GetDisplayName())
     { 
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <a asp-action="edit" asp-route-id="@Model.tag.Id" class="btn btn-info">Edit Tag</a>
+            </div>
+            <div class="col-sm-6">
+                <form asp-action="Resubmit">
+                    <input type="hidden" asp-for="@Model.tag.Id">
+                    <input type="submit" class="btn btn-primary" value="Resubmit Tag (after editing)">
+                </form>
             </div>
         </div>   
     }    
