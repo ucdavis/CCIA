@@ -169,7 +169,7 @@ namespace CCIA.Controllers.Admin
             var appToCancel = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
             appToCancel.Cancelled = true;
             appToCancel.CancelledBy =  User.FindFirstValue(ClaimTypes.Name);
-            appToCancel.Comments = appToCancel.Comments +  "; Cancelled at 'process pending apps' prior to inspection";
+            appToCancel.Comments = appToCancel.Comments +  "; Cancelled at 'process pending apps' prior to inspection " + DateTime.Now.ToString();
             appToCancel.Status = "Application cancelled";
 
             await _dbContext.SaveChangesAsync();

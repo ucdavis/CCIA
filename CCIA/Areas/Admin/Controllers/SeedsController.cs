@@ -298,7 +298,7 @@ namespace CCIA.Controllers.Admin
             }
             var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == model.seed.Id).FirstOrDefaultAsync();
             seedToCancel.Status = SeedsStatus.CancelledByCCIA.GetDisplayName();
-            seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff";
+            seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff " + DateTime.Now.ToString();
             await _notificationService.SeedCanceledByCCIA(seedToCancel);
             await _dbContext.SaveChangesAsync();
             Message = "Seed Cancelled";
