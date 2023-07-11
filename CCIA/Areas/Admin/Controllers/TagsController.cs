@@ -249,15 +249,15 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new {id = tagToReturn.Id});
         }
 
-        public async Task<IActionResult> Cancel(AdminSeedsViewModel model)
+        public async Task<IActionResult> Cancel(int id, Tags tag)
         {            
-            var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == model.seed.Id).FirstOrDefaultAsync();
-            seedToCancel.Status = SeedsStatus.CancelledByCCIA.GetDisplayName();
-            seedToCancel.Remarks = seedToCancel.Remarks +  "; Cancelled at by CCIA staff";
-            await _notificationService.SeedCanceledByCCIA(seedToCancel);
+            var tagToCancel = await _dbContext.Tags.Where(s => s.Id == tag.Id).FirstOrDefaultAsync();
+            tagToCancel.Stage = TagStages.Cancelled.GetDisplayName();
+            tagToCancel.Comments = tagToCancel.Comments +  "; Canceled at by CCIA staff " + DateTime.Now.ToString();
+            await _notificationService.TagCanceledByCCIA(tagToCancel);
             await _dbContext.SaveChangesAsync();
-            Message = "Seed Cancelled";
-            return RedirectToAction(nameof(Details), new {id = seedToCancel.Id});
+            Message = "Tag Canceled";
+            return RedirectToAction(nameof(Details), new {id = tagToCancel.Id});
         }
 
 

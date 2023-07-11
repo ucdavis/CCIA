@@ -30,6 +30,7 @@ namespace CCIA.Services
         Task SeedLotSubmitted(Seeds seed);
         Task SeedReturnedForReview(Seeds seed);
         Task SeedCanceledByCCIA(Seeds seed);
+        Task TagCanceledByCCIA(Tags tag);
 
         Task BlendRequestApproved(BlendRequests blend);
 
@@ -431,6 +432,22 @@ namespace CCIA.Services
                 };
                 _dbContext.Notifications.Add(notification);      
             }            
+        }
+
+        public async Task TagCanceledByCCIA(Tags tag)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == tag.UserEntered.Value || (c.TagNotices && c.OrgId == tag.TaggingOrg)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = tag.Id,
+                    Message = "Tag canceled by CCIA Staff"
+                };
+                _dbContext.Notifications.Add(notification);
+            }
         }
 
         public async Task TagReturnedForReview(Tags tag)
