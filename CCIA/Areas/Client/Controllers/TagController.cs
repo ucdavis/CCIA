@@ -118,7 +118,27 @@ namespace CCIA.Controllers.Client
 
             var retryModel = await TagCreateEditViewModel.Create(_dbContext, _helper, id);
             return View(retryModel);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Resubmit (int id, TagCreateEditViewModel vm)
+        {
+            var tagToResubmit = await _dbContext.Tags.Where(t => t.Id == vm.tag.Id).FirstOrDefaultAsync();
+            if (tagToResubmit == null)
+            {
+                ErrorMessage = "Tag ID not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (tagToResubmit.TaggingOrg != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the company that requested that tag";
+                return RedirectToAction(nameof(Index));
+            }
+            tagToResubmit.Stage = TagStages.Requested.GetDisplayName();
+            await _notificationService.TagReSubmitted(tagToResubmit);
+            await _dbContext.SaveChangesAsync();
+            Message = "Tag resubmitted.";
+            return RedirectToAction("Details", new { id = tagToResubmit.Id });
         }
 
         private async Task<bool> checkTagPermission(int orgId)
