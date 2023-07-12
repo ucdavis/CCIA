@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using CCIA.Controllers.Client;
 using CCIA.Helpers;
 using CCIA.Models.SeedsCreateOOSViewModel;
 using CCIA.Models.SeedsCreateViewModel;
@@ -50,41 +52,109 @@ namespace CCIA.Models
 
             if(Target == "SID")
             {
-                var seed = await _helper.FullSeeds().Where(s => s.Id == id && (s.ConditionerId == OrgId || s.ApplicantId == OrgId)).FirstOrDefaultAsync(); 
-                if(seed == null)
+                var seed = await _helper.FullSeeds().Where(s => s.Id == id && (s.ConditionerId == OrgId || s.ApplicantId == OrgId)).FirstOrDefaultAsync();
+                if (seed == null)
                 {
-                    model.Error = true;
-                    model.ErrorMessage = "SID not found or does not belong to your company.";
-                    return model;
-                }    
-                request.seed = seed;            
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.SeedsID == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okSeed = await _helper.FullSeeds().Where(s => s.Id == info.SeedsID).FirstOrDefaultAsync();
+                        if (okSeed != null)
+                        {
+                            request.seed = okSeed;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "SID not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "SID not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
+                }
+                else
+                {
+                    request.seed = seed;
+                }                        
             }
             if(Target == "BID")
             {
                 var blend = await _helper.FullBlendRequest().Where(b => b.Id == id && b.ConditionerId == OrgId).FirstOrDefaultAsync();
                 if(blend == null)
                 {
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.BlendId == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okBlend = await _helper.FullBlendRequest().Where(b => b.Id == info.BlendId).FirstOrDefaultAsync();
+                        if (okBlend != null)
+                        {
+                            request.blend = okBlend;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "Blend not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "Blend not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
                     model.Error = true;
                     model.ErrorMessage = "Blend not found or does not belong to your company.";
                     return model;
-                }                
-                request.blend = blend;
+                } else
+                {
+                    request.blend = blend;
+                }
+                
             }
             if(Target == "AppId")
             {
                 var app = await _helper.FullApplications().Where(a => a.Id == id && a.ApplicantId == OrgId).FirstOrDefaultAsync();
-                if(app == null)
+                if (app == null)
                 {
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.ApplicationId == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okApp = await _helper.FullApplications().Where(b => b.Id == info.ApplicationId).FirstOrDefaultAsync();
+                        if (okApp != null)
+                        {
+                            request.app = okApp;
+                            model.transfer.StageFromFieldNumberOfAcres = okApp.AcresApplied.Value;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "Application not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "Application not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
                     model.Error = true;
-                    model.ErrorMessage = "AppId not found or does not belong to your company.";
+                    model.ErrorMessage = "Application not found or does not belong to your company.";
                     return model;
-                }                
-                request.app = app;
-                model.transfer.StageFromFieldNumberOfAcres = app.AcresApplied.Value;
+                }
+                else
+                {
+                    request.app = app;
+                    model.transfer.StageFromFieldNumberOfAcres = app.AcresApplied.Value;
+                }                                                
             }            
             model.request = request;  
-                 
-                       
             return model;
         }   
 
@@ -115,36 +185,107 @@ namespace CCIA.Models
 
             if(Target == "SID")
             {
-                var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
-                if(seed == null)
+                var seed = await _helper.FullSeeds().Where(s => s.Id == id && (s.ConditionerId == OrgId || s.ApplicantId == OrgId)).FirstOrDefaultAsync();
+                if (seed == null)
                 {
-                    model.Error = true;
-                    model.ErrorMessage = "SID not found or does not belong to your company.";
-                    return model;
-                }    
-                request.seed = seed;            
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.SeedsID == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okSeed = await _helper.FullSeeds().Where(s => s.Id == info.SeedsID).FirstOrDefaultAsync();
+                        if (okSeed != null)
+                        {
+                            request.seed = okSeed;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "SID not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "SID not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
+                }
+                else
+                {
+                    request.seed = seed;
+                }
             }
             if(Target == "BID")
             {
-                var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
-                if(blend == null)
+                var blend = await _helper.FullBlendRequest().Where(b => b.Id == id && b.ConditionerId == OrgId).FirstOrDefaultAsync();
+                if (blend == null)
                 {
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.BlendId == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okBlend = await _helper.FullBlendRequest().Where(b => b.Id == info.BlendId).FirstOrDefaultAsync();
+                        if (okBlend != null)
+                        {
+                            request.blend = okBlend;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "Blend not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "Blend not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
                     model.Error = true;
                     model.ErrorMessage = "Blend not found or does not belong to your company.";
                     return model;
-                }                
-                request.blend = blend;
+                }
+                else
+                {
+                    request.blend = blend;
+                }
             }
             if(Target == "AppId")
             {
-                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
-                if(app == null)
+                var app = await _helper.FullApplications().Where(a => a.Id == id && a.ApplicantId == OrgId).FirstOrDefaultAsync();
+                if (app == null)
                 {
+                    var info = await _dbContext.SeedTransfers.Where(t => t.DestinationOrganizationId == OrgId && t.ApplicationId == id).FirstOrDefaultAsync();
+                    if (info != null)
+                    {
+                        var okApp = await _helper.FullApplications().Where(b => b.Id == info.ApplicationId).FirstOrDefaultAsync();
+                        if (okApp != null)
+                        {
+                            request.app = okApp;
+                            model.transfer.StageFromFieldNumberOfAcres = okApp.AcresApplied.Value;
+                        }
+                        else
+                        {
+                            model.Error = true;
+                            model.ErrorMessage = "Application not found or does not belong to your company.";
+                            return model;
+                        }
+                    }
+                    else
+                    {
+                        model.Error = true;
+                        model.ErrorMessage = "Application not found or does not belong to your company and no transfers found.";
+                        return model;
+                    }
                     model.Error = true;
-                    model.ErrorMessage = "AppId not found or does not belong to your company.";
+                    model.ErrorMessage = "Application not found or does not belong to your company.";
                     return model;
-                }                
-                request.app = app;
+                }
+                else
+                {
+                    request.app = app;
+                    model.transfer.StageFromFieldNumberOfAcres = app.AcresApplied.Value;
+                }
             }            
             model.request = request;  
             model.transfer = transfer;             
