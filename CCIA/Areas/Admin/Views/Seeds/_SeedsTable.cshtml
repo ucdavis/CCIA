@@ -7,18 +7,20 @@
 
     <table id="table" class="table datatable">
         <thead> 
-            <th></th>          
-            <th>SeedsID</th>
-            <th>Program</th>
-            <th>Cert#</th>
-            <th>Date Recd.</th>
-            <th>Applicant</th>
-            <th>Conditioner</th> 
-            <th>Pounds</th>           
-            <th>Crop</th>
-            <th>Variety</th>
-            <th>Lot#</th>            
-        </thead>
+            <tr>
+                <th></th>          
+                <th>SeedsID</th>
+                <th>Program</th>
+                <th>Cert#</th>
+                <th>Date Recd.</th>
+                <th>Applicant</th>
+                <th>Conditioner</th> 
+                <th>Pounds</th>           
+                <th>Crop</th>
+                <th>Variety</th>
+			    <th>Lot#</th>
+		    </tr>
+	    </thead>
         <tbody>
             @foreach (var seed in Model)
             {
@@ -27,7 +29,20 @@
                 <td>@seed.Id</td>
                 <td>@seed.CertProgram</td>
                 <td>@seed.CertNumber</td>
-                <td data-sort="@(seed.SampleFormDate.HasValue ? seed.SampleFormDate.Value.ToFileTimeUtc() : "")">@(seed.SampleFormDate.HasValue ? seed.SampleFormDate.Value.ToShortDateString() : "")</td>
+                @if(seed.DateSampleReceived.HasValue)
+                {
+                    <td data-sort="@seed.DateSampleReceived.Value.ToFileTimeUtc()">@seed.DateSampleReceived.Value.ToShortDateString()</td>
+                } else
+                {
+                    @if(seed.SampleFormDate.HasValue)
+                    {
+                        <td data-sort="@seed.SampleFormDate.Value.ToFileTimeUtc()">@seed.SampleFormDate.Value.ToShortDateString()</td>
+                    } else
+                    {
+                        <td></td>
+                    }
+                    
+                }                
                 <td>@if(seed.ApplicantOrganization != null)
                     {
                          @seed.ApplicantOrganization.Name
@@ -42,5 +57,5 @@
             }
         </tbody>
     </table>
-</div>
+
 

@@ -102,6 +102,9 @@ namespace CCIA.Models
         public bool Rush { get; set; }
         public bool InDirt { get; set; }
         public int? BlendNumber { get; set; }
+
+        [Display(Name = "Date Rec'd.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? DateSampleReceived { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:C}")]
         public decimal? CropFee { get; set; }
