@@ -22,6 +22,7 @@
         <th>Field Name</th>
         @if(Model.IsFIR)
         {
+            <th>Cert#</th>
             <th>Fld Insp Comments</th>
             <th>Acres Approved</th>
             <th>Acres Rejected</th>
@@ -67,6 +68,7 @@
                 <td>@app.FieldName</td>
                 @if(Model.IsFIR)
                 {
+                    <td>@app.FullCert</td>
                     <td>@app.FieldInspectionReport.Comments</td>
                     <td>@app.FieldInspectionReport.AcresApproved</td>
                     <td>@app.FieldInspectionReport.AcresRejected</td>
