@@ -166,6 +166,7 @@ namespace CCIA.Models
             customers.Insert(0, new MyCustomers { Id=0, Name="Select customer..."});
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
             counties.Insert(0, new County { CountyId=0, Name="Select county..."});
+            model.transfer = transfer;
 
 
             var p0 = new SqlParameter("@id", id);
