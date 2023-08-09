@@ -178,7 +178,11 @@
                 <td valign="top" class="topandbottom">
                     Remarks:</td>
                 <td colspan="3" valign="top" class="label" align="center">
-                    Meets EC Norms and Standards<br />
+                    @if (Model.Country.OecdMember.HasValue && Model.Country.OecdMember.Value)
+                    {
+                        <span> Meets EC Norms and Standards <br /></span>    
+                    }
+                  
                     Destination:
                     @Model.Country.Name
                 </td>
