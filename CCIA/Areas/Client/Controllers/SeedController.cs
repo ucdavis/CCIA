@@ -102,6 +102,18 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "You are not the conditioner of that seed lot";
                 return RedirectToAction(nameof(Index));
             }
+            var labs = await _dbContext.SampleLabResults.Where(l => l.SeedsId == seedToSubmit.Id && l.PurityPercent.HasValue && l.GermPercent.HasValue).AnyAsync();
+            if(!labs)
+            {
+                ErrorMessage = "You must have entered the lab results for this SID before submitting";
+                return RedirectToAction("Details", new { id = seedToSubmit.Id });
+            }
+            var files = await _dbContext.SeedDocuments.Where(f => f.SeedsId == seedToSubmit.Id && f.DocType == 1).AnyAsync();
+            if(!files)
+            {
+                ErrorMessage = "You must have uploaded lab results for this SID before submitting";
+                return RedirectToAction("Details", new { id = seedToSubmit.Id });
+            }
 
             seedToSubmit.Status = SeedsStatus.PendingAcceptance.GetDisplayName();
             seedToSubmit.DateSampleReceived = DateTime.Now;
