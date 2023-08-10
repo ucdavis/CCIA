@@ -168,6 +168,7 @@ namespace CCIA.Models
         public virtual DbSet<CropAssignments> CropAssignments { get; set; }
 
         public virtual DbSet<ExportCharges> ExportCharges { get; set; }
+        public virtual DbSet<TagsReport> TagsReport { get; set; }
         public virtual DbSet<MapLinks>  MapLinks { get; set; }
         public virtual DbSet<SeedCancelCheck> SeedCancelChecks { get; set; }
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
@@ -388,7 +389,11 @@ namespace CCIA.Models
                 entity.HasNoKey();
             });
 
-            modelBuilder.Entity<SeedsPreviousTagBag>(entity => {
+			modelBuilder.Entity<TagsReport>(entity => {
+				entity.HasNoKey();
+			});
+
+			modelBuilder.Entity<SeedsPreviousTagBag>(entity => {
                 entity.HasNoKey();
             });
 

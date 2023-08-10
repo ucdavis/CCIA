@@ -66,6 +66,12 @@ namespace CCIA.Controllers.Admin
             return View(model);            
         }
 
+        public async Task<IActionResult> BadTags(AdminBadTagsReportViewModel vm = null)
+        {
+            var model = await AdminBadTagsReportViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
         
 
         
