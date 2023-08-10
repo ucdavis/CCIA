@@ -436,6 +436,20 @@ namespace CCIA.Models
                 }
             }
         }
+
+        [NotMapped]                
+        public string Warning
+        {
+            get
+            {
+                if(SeedsID.HasValue && Seeds != null && Seeds.Status != "SIR ready")
+                {
+                    return "Attached SID status is not marked 'SIR Ready'!!";
+                }
+                return "";
+            }
+        }
+
         [NotMapped]
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.00}")]
         [Display(Name = "Bag Size (Kilograms)")] 

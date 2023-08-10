@@ -82,13 +82,13 @@ namespace CCIA.Controllers.Admin
             oecdToCreate.SeedsId = create.SeedsId;
             oecdToCreate.VarietyId = seed.OfficialVarietyId;            
             oecdToCreate.Pounds = create.Pounds;
-            oecdToCreate.CertNumber = create.CertNumber; 
+            oecdToCreate.CertNumber = string.IsNullOrWhiteSpace(create.CertNumber) ? seed.CertNumber : create.CertNumber;
             oecdToCreate.ClassId = create.ClassId;
             oecdToCreate.CloseDate = create.CloseDate;
             oecdToCreate.ShipperId = create.ShipperId;
             oecdToCreate.ConditionerId = create.ConditionerId;
             oecdToCreate.CountryId = create.CountryId;
-            oecdToCreate.LotNumber = create.LotNumber;
+            oecdToCreate.LotNumber = string.IsNullOrWhiteSpace(create.LotNumber) ? seed.LotNumber : create.LotNumber;
             oecdToCreate.DateRequested = DateTime.Now;
             oecdToCreate.NotCertified = create.NotCertified;
             oecdToCreate.Canceled = false;
@@ -257,6 +257,10 @@ namespace CCIA.Controllers.Admin
         public String GetInitialOECDNumber(int certYear, string CertNumber, string LotNumber)
         {
             string certYearAbbrev = certYear.ToString().Substring(certYear.ToString().Length - 2);
+            if (CertNumber.Contains(certYearAbbrev + "CA"))
+            {
+                return $"USA-CA-{CertNumber}-{LotNumber}";
+            }           
             return $"USA-CA-{certYearAbbrev}CA-{CertNumber}-{LotNumber}";
         }
 

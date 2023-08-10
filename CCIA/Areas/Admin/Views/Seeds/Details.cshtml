@@ -211,7 +211,16 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.Status)
                 </div>
-            </div> 
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.seed.ReturnReason))
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.ReturnReason" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.seed.ReturnReason)
+                    </div>
+                </div>
+            }
             <div class="form-group row">
                 <label asp-for="seed.CountyDrawn" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">

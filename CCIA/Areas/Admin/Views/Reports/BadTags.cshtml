@@ -1,0 +1,102 @@
+@model CCIA.Models.AdminBadTagsReportViewModel
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+<h3>Bad Tags Report</h3>
+<form asp-action="BadTags" method="POST">
+	<div class="container col-sm-6 text-center">
+		<div asp-validation-summary="All" class="text-danger"></div>
+		<button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+			Hide Search
+		</button> | <input type="submit" value="Search" class="btn btn-primary"></input>
+	</div>
+	<div class="container col-sm-10 collapse show" id="SearchCollapse">
+		<div>&nbsp;</div>
+		<div class="row">
+		<div class="col-sm-5">
+			@* First column*@
+			<div class="form-group row">
+				<label asp-for="starDate" class="col-sm-4 col-form-label">Start Date</label>
+				<input type="text" asp-for="starDate" class="col-sm-4 form-control datepicker" />
+				<div class="input-group-append" onclick="$('.datepicker').focus();">
+					<i class="fa fa-calendar input-group-text"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5">
+			@* 2nd column *@
+			<div class="form-group row">
+				<label asp-for="endDate" class="col-sm-4 col-form-label">End Date</label>
+				<input type="text" asp-for="endDate" class="col-sm-4 form-control datepicker" />
+				<div class="input-group-append" onclick="$('.datepicker').focus();">
+					<i class="fa fa-calendar input-group-text"></i>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div>
+		<input type="submit" value="Search" class="btn btn-primary"></input>
+	</div>
+	</div>
+</form>
+
+@if (Model.tagsReport != null && Model.tagsReport.Any())
+{
+	<table id="table" class="table datatable">
+		<thead>
+		<th>Org Name</th>
+		<th>TID</th>
+		<th>SID</th>
+		<th>Date Requested</th>
+		<th>Date Approved</th>
+		<th>Tag Stage</th>
+		<th>SID Status</th>
+		</thead>
+		<tbody>
+			@foreach (var row in Model.tagsReport)
+			{
+				<tr>
+					<td>@row.OrgName</td>
+					<td>@row.TagId</td>
+					<td>@row.SID</td>
+					<td>@row.DateRequested</td>
+					<td>@row.DateApproved</td>
+					<td>@row.TagStage</td>
+					<td>@row.SidStatus</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+	<script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+
+
+	<script>
+		$(document).ready(function () {
+			$('.datepicker').datepicker();
+			$('#table').DataTable({
+				dom: 'lBfrtip',
+				buttons: ['copyHtml5', 'csvHtml5'],
+				pageLength: 100,
+			});
+		});
+	</script>
+
+}
+
+
+
