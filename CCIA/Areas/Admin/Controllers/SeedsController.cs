@@ -226,9 +226,19 @@ namespace CCIA.Controllers.Admin
         {
             var seedEdit = vm.seed;
             var seedToUpdate = await _dbContext.Seeds.Where(s => s.Id == seedEdit.Id).FirstOrDefaultAsync();
+			bool changeCertYear = false;
+			int originalCertYear = 0;
+			int newCertYear = 0;
 
-            seedToUpdate.SampleFormDate = seedEdit.SampleFormDate;
-            seedToUpdate.CertYear = seedEdit.CertYear;
+			seedToUpdate.SampleFormDate = seedEdit.SampleFormDate;
+			if (seedToUpdate.CertYear != seedEdit.CertYear)
+			{
+				changeCertYear = true;
+				originalCertYear = seedToUpdate.CertYear.Value;
+				newCertYear = seedEdit.CertYear.Value;
+				seedToUpdate.CertYear = seedEdit.CertYear;
+			}
+			seedToUpdate.CertYear = seedEdit.CertYear;
             seedToUpdate.ConditionerId = seedEdit.ConditionerId;
             seedToUpdate.ApplicantId = seedEdit.ApplicantId;
             seedToUpdate.OfficialVarietyId = seedEdit.OfficialVarietyId;
@@ -249,7 +259,11 @@ namespace CCIA.Controllers.Admin
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Seed updated";
-            } else {
+				if (changeCertYear)
+				{
+					_fileService.CopySIDFilesAfterCertYearChange(seedToUpdate.Id, originalCertYear, newCertYear);
+				}
+			} else {
                 ErrorMessage = "Something went wrong";
                 var model = await AdminSeedsViewModel.EditDetails(_dbContext, seedEdit.Id, _helper);
                 return View(model); 

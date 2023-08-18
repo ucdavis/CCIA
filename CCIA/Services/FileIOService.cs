@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using static Humanizer.On;
 
 namespace CCIA.Services
 {
@@ -40,7 +41,8 @@ namespace CCIA.Services
 
         Task SaveTagDocument(int tagId, int certYear, IFormFile file);
 
-        bool CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear);
+        void CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear);
+        void CopySIDFilesAfterCertYearChange(int sidId, int origanalCertYear, int newCertYear);
        
     }
 
@@ -169,7 +171,7 @@ namespace CCIA.Services
             return _configuration["FilePath"].Replace("/uploads","");
         }
 
-        public bool CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear)
+        public void CopyApplicationFilesAfterCertYearChange(int appId, int originalCertYear, int newCertYear)
         {
             var originalFolder = $"{GetRoot()}/certyear{originalCertYear}/appId{appId}/";
             var newFolder = $"{GetRoot()}/certyear{newCertYear}/appId{appId}/";
@@ -185,8 +187,25 @@ namespace CCIA.Services
             {
                 File.Copy(newPath, newPath.Replace(originalFolder, newFolder), true);
             }
-            return true;
         }
-       
-    }
+
+        public void CopySIDFilesAfterCertYearChange(int sidId, int originalCertYear, int newCertYear)
+        {
+			var originalFolder = $"{GetRoot()}/certyear{originalCertYear}/sid{sidId}/";
+			var newFolder = $"{GetRoot()}/certyear{newCertYear}/sid{sidId}/";
+			//Now Create all of the directories
+			foreach (string dirPath in Directory.GetDirectories(originalFolder, "*", SearchOption.AllDirectories))
+			{
+				Directory.CreateDirectory(dirPath.Replace(originalFolder, newFolder));
+			}
+
+			//Copy all the files & Replaces any files with the same name
+			foreach (string newPath in Directory.GetFiles(originalFolder, "*.*", SearchOption.AllDirectories))
+			{
+				File.Copy(newPath, newPath.Replace(originalFolder, newFolder), true);
+			}			
+		}
+
+
+	}
 }
