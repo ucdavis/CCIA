@@ -196,7 +196,10 @@ namespace CCIA.Controllers.Client
             newApp.Received = DateTime.Now;
             newApp.Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName();
             newApp.ApplicantComments = submittedApp.ApplicantComments;
-            newApp.ApplicantNotes = "Replant on AppId " + model.ReplantId.ToString();
+            if (model.ReplantId != orgId)
+            {
+                newApp.ApplicantNotes = "Replant on AppId " + model.ReplantId.ToString() + "; ";
+            }
             newApp.FieldName = submittedApp.FieldName;
             newApp.DatePlanted = submittedApp.DatePlanted;
             newApp.AcresApplied = submittedApp.AcresApplied;
@@ -287,7 +290,10 @@ namespace CCIA.Controllers.Client
             if((newPS1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession >= submittedApp.ClassProducedAccession))
             {
                 newApp.WarningFlag = true;
-                newApp.ApplicantNotes += "Class produced is less then or equal to class planted";
+				if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+				{
+    `               newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+				}
             }
             if(submittedApp.AppType == "PV")
             {
@@ -453,7 +459,10 @@ namespace CCIA.Controllers.Client
             if((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
             {
                 appToUpdate.WarningFlag = true;
-                appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted";
+                if(!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                {
+    `               appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                }                
             }
             if(submittedApp.AppType == "PV")
             {
