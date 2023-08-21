@@ -292,7 +292,7 @@ namespace CCIA.Controllers.Client
                 newApp.WarningFlag = true;
 				if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
 				{
-    `               newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                   newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
 				}
             }
             if(submittedApp.AppType == "PV")
@@ -461,7 +461,7 @@ namespace CCIA.Controllers.Client
                 appToUpdate.WarningFlag = true;
                 if(!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
                 {
-    `               appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                   appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
                 }                
             }
             if(submittedApp.AppType == "PV")
