@@ -45,9 +45,25 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return RedirectToAction(nameof(Index));
+            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
+            if(model == null)
+            {
+                ErrorMessage = "OECD record not found";
+                return RedirectToAction("Index");
+            }
+            if (model.oecd.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner for that OECD record! Access denied.";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.oecd.DatePrinted.HasValue)
+            {
+                ErrorMessage = "OECD Certificate marked complete by CCIA staff. No edits allowed.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
         public async Task<IActionResult> Certificate(int id)
