@@ -15,6 +15,8 @@ namespace CCIA.Models
         public bool? OecdMember { get; set; }
 
         public bool US { get; set; }
-       
+        public bool EC { get; set; }
+
+
     }
 }
