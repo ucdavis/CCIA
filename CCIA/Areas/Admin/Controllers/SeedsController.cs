@@ -255,6 +255,7 @@ namespace CCIA.Controllers.Admin
             seedToUpdate.Remill = seedEdit.Remill;
             seedToUpdate.OECDLot = seedEdit.OECDLot;
             seedToUpdate.EmployeeModified = User.FindFirstValue(ClaimTypes.Name);
+            seedToUpdate.Remarks = seedEdit.Remarks;
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
