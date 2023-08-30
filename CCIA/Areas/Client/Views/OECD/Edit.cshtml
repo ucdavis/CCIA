@@ -48,11 +48,9 @@
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.Variety.NameAndId" class="col-sm-3 col-form-label">Variety</label>
-					<input type="text" asp-for="oecd.Variety.NameAndId" class="col-sm-8 form-control" readonly>
-					<div class="input-group-append">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lookupVarietyModal"><i class="fa fa-exchange-alt"></i></button>
+					<div class="col-sm-9 form-control-plaintext">
+						@Model.oecd.Variety.NameAndId
 					</div>
-					@Html.HiddenFor(x => x.oecd.VarietyId)
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.TotalFee" class="col-sm-3 col-form-label"></label>
@@ -62,7 +60,7 @@
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.NotCertified" class="col-sm-3 col-form-label"></label>
-					<input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-control">
+					<input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-control" readonly onclick="return false;">
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.DataEntryDate" class="col-sm-3 col-form-label"></label>
@@ -134,7 +132,7 @@
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.Canceled" class="col-sm-3 col-form-label"></label>
-					<input type="checkbox" asp-for="oecd.Canceled" class="col-sm-7 form-control">
+					<input type="checkbox" asp-for="oecd.Canceled" class="col-sm-7 form-control" readonly onclick="return false;">
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.DataEntryUser" class="col-sm-3 col-form-label"></label>
@@ -163,7 +161,9 @@
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.LotNumber" class="col-sm-3 col-form-label"></label>
-					<input asp-for="oecd.LotNumber" class="col-sm-3 col-form">
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.LotNumber)
+					</div>
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.TagsRequested" class="col-sm-3 col-form-label"></label>
@@ -175,11 +175,13 @@
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form-label">Reference #</label>
-					<input asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form">
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.ReferenceNumber)
+					</div>
 				</div>
 				<div class="form-group row">
 					<label asp-for="oecd.DomesticOrigin" class="col-sm-3 col-form-label"></label>
-					<input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-control">
+					<input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-control" onclick="return false;">
 				</div>
 			</div>
 		</div>
@@ -188,46 +190,7 @@
 			<div class="form-group row">
 				<label asp-for="oecd.Comments" class="col-sm-2 col-form-label"></label>
 				<textarea rows="2" asp-for="oecd.Comments" class="col-sm form-control"></textarea>
-			</div>
-			<div class="form-group row">
-				<label asp-for="oecd.AdminComments" class="col-sm-2 col-form-label"></label>
-				<textarea rows="5" asp-for="oecd.AdminComments" class="col-sm form-control"></textarea>
-			</div>
-			<div class="row">
-				<h3>Changes made to this File:</h3>
-				<table class="table table-sm">
-					<thead>
-						<tr>
-							<th>column</th>
-							<th>Old Value</th>
-							<th>New Value</th>
-							<th>Date</th>
-							<th>Person</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var row in Model.oecd.Changes.OrderBy(c => c.Id))
-						{
-							<tr>
-								<td>@row.ColumnChange</td>
-								<td>@row.OldValue</td>
-								<td>@row.NewValue</td>
-								<td>@row.DateChanged</td>
-								<td>
-									@if (row.UserChange == "Client")
-									{
-										<span>Client</span>
-									}
-									else if (row.Employee != null)
-									{
-										@row.Employee.Name
-									}
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
+			</div>						
 		</div>
 	</div>
 </form>
