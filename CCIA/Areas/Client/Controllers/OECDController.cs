@@ -95,6 +95,7 @@ namespace CCIA.Controllers.Client
             oecdToUpdate.CountryId = oecdEdit.CountryId;
             oecdToUpdate.Pounds = oecdEdit.Pounds;
             oecdToUpdate.ClassId = oecdEdit.ClassId;
+            oecdToUpdate.Comments = oecdEdit.Comments;
             oecdToUpdate.TagsRequested = oecdEdit.TagsRequested;
 
 			if (ModelState.IsValid)
@@ -104,18 +105,58 @@ namespace CCIA.Controllers.Client
 				Message = "OECD Updated";
 			}
 			else
-			{				
+			{
+				if (ModelState.ErrorCount == 1)
+				{
+					foreach (var modelStateKey in ViewData.ModelState.Keys)
+					{
+						var modelStateVal = ViewData.ModelState[modelStateKey];
+						foreach (var error in modelStateVal.Errors)
+						{
+							var key = modelStateKey;
+							if (key == "oecd.Variety.Name")
+							{
+                                await _notification.OECDClientUpated(oecdToUpdate);
+								await _dbContext.SaveChangesAsync();								
+								Message = "OECD Updated";
+								return RedirectToAction(nameof(Edit), new { id = oecdToUpdate.Id });
+							}
+						}
+					}
+				}
 				ErrorMessage = "Something went wrong.";
 				var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
 				return View(model);
 			}
-
 			return RedirectToAction(nameof(Edit), new { id = oecdToUpdate.Id });
-
-
 		}
 
-        public async Task<IActionResult> Certificate(int id)
+        public async Task<IActionResult> Complete(int id, AdminOECDEditCreateViewModel vm)
+        {			
+			var oecdToUpdate = await _dbContext.OECD.Where(o => o.Id == vm.oecd.Id).FirstOrDefaultAsync();
+			if (oecdToUpdate == null)
+			{
+				ErrorMessage = "OECD record not found";
+				return RedirectToAction("Index");
+			}
+			if (oecdToUpdate.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "You are not the conditioner for that OECD record! Access denied.";
+				return RedirectToAction(nameof(Index));
+			}
+			if (oecdToUpdate.DatePrinted.HasValue)
+			{
+				ErrorMessage = "OECD Certificate marked complete by CCIA staff. No edits allowed.";
+				return RedirectToAction(nameof(Index));
+			}
+            await _notification.OECDClientComplete(oecdToUpdate);
+            await _dbContext.SaveChangesAsync();
+            Message = "OECD submitted for final print";
+            return RedirectToAction(nameof(Index));
+		}
+
+
+		public async Task<IActionResult> Certificate(int id)
         {
             var oecd = _helper.FullOECD();
             var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();

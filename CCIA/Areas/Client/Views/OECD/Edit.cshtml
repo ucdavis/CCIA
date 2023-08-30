@@ -1,6 +1,15 @@
 @model CCIA.Models.AdminOECDEditCreateViewModel
 
-
+<form asp-action="Complete">
+	<input type="hidden" asp-for="oecd.Id" />
+	<div class="container col-sm-12">
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="submit" value="Mark Complete" class="btn btn-danger" onclick="return confirm('Are you sure are ready to mark this OECD complete and have the OECD Certificate printed? Once printed, no further edits can be made on the client side.')"></input>
+			</div>
+		</div>
+	</div>
+</form>
 <form asp-action="Edit">
 	<div class="container col-sm-12">
 		<div class="row">
