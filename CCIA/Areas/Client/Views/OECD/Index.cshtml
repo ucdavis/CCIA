@@ -32,7 +32,7 @@
                     {
                         <a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a>
                     } else {
-                        <span>Pending</span>
+                        <span><a asp-action="Edit" asp-route-id="@oecd.Id" class="btn btn-primary">Pending</a></span>
                     }
                 </td>
                 <td>@oecd.Id</td>

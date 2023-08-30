@@ -55,6 +55,8 @@ namespace CCIA.Services
         Task OrgUpdated(Organizations org);
 
         Task OECDCharged(OECD oecd);
+        Task OECDClientUpated(OECD oecd);
+        Task OECDClientComplete(OECD oecd);
 
         Task NFCSubmitted(Tags tag);
 
@@ -597,7 +599,40 @@ namespace CCIA.Services
             }
         }
 
-        private async Task<List<CCIAEmployees>> GetSeedTransferEmployeeInformList(SeedTransfers request)
+        public async Task OECDClientUpated(OECD oecd)
+        {
+			var admins = await _dbContext.CCIAEmployees.Where(e => e.OECDInvoicePrinter && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
+
+			foreach (var user in admins)
+			{
+				var notification = new Notifications
+				{
+					Email = $"{user}@ucdavis.edu",
+					OecdId = oecd.Id,
+					Message = "OECD details updated by client."
+				};
+				_dbContext.Notifications.Add(notification);
+			}
+		}
+
+		public async Task OECDClientComplete(OECD oecd)
+		{
+			var admins = await _dbContext.CCIAEmployees.Where(e => e.OECDInvoicePrinter && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
+
+			foreach (var user in admins)
+			{
+				var notification = new Notifications
+				{
+					Email = $"{user}@ucdavis.edu",
+					OecdId = oecd.Id,
+					Message = "OECD marked complete and ready to print by the client."
+				};
+				_dbContext.Notifications.Add(notification);
+			}
+		}
+
+
+		private async Task<List<CCIAEmployees>> GetSeedTransferEmployeeInformList(SeedTransfers request)
         {
             var assignments = new List<CCIAEmployees>();
             

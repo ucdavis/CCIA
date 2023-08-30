@@ -149,14 +149,21 @@
             </div> 
            <div class="form-group row">
                <label asp-for="DataEntryUser" class="col-sm-3 col-form-label"></label>
-               <div class="col-sm-9 form-control-plaintext">
-                   @Html.DisplayFor(x => x.EntryEmployee.Name)
+               <div class="col-sm-9 form-control-plaintext">                  
+                        @Html.DisplayFor(x => x.EntryEmployee.Name)
                </div>
            </div>
            <div class="form-group row">
                <label asp-for="UpdateUser" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-9 form-control-plaintext">
-                   @Html.DisplayFor(x => x.UpdateEmployee.Name)
+                    @if (Model.UpdateUser != null && Model.UpdateEmployee == null)
+                    {
+                        <span>Client</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(x => x.UpdateEmployee.Name)
+                    }
                </div>
            </div>                                                          
         </div>
@@ -251,9 +258,12 @@
                         <td>
                             @if(row.Employee != null)
                             {
-                                @row.Employee.Name
-                            }
-                        </td>
+                                    @row.Employee.Name
+                                } else
+                                {
+                                    <span>Client</span>
+                                }
+                            </td>
                     </tr>
                 }
                 </tbody>

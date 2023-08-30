@@ -730,10 +730,12 @@ namespace CCIA.Models
                 entity.Property(e => e.NewValue).HasColumnName("new_value");                
 
                 entity.Property(e => e.UserChange).HasColumnName("user_change");
+                entity.Property(e => e.ContactChange).HasColumnName("contact_change");
 
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
 
                 entity.HasOne(e => e.Employee);
+                entity.HasOne(e => e.Contact);
             });
 
             modelBuilder.Entity<TagChanges>(entity => {

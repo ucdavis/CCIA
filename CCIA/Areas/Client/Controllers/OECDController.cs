@@ -16,12 +16,14 @@ namespace CCIA.Controllers.Client
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+		private readonly INotificationService _notification;
 
-        public OECDController(CCIAContext dbContext, IFullCallService helper)
+		public OECDController(CCIAContext dbContext, IFullCallService helper, INotificationService notification)
         {
             _dbContext = dbContext;
             _helper = helper;
-        }
+			_notification = notification;
+		}
 
         
         // GET: Application
@@ -45,12 +47,116 @@ namespace CCIA.Controllers.Client
             return View(model);
         }
 
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return RedirectToAction(nameof(Index));
+            var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
+            if(model == null)
+            {
+                ErrorMessage = "OECD record not found";
+                return RedirectToAction("Index");
+            }
+            if (model.oecd.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "You are not the conditioner for that OECD record! Access denied.";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.oecd.DatePrinted.HasValue)
+            {
+                ErrorMessage = "OECD Certificate marked complete by CCIA staff. No edits allowed.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
-        public async Task<IActionResult> Certificate(int id)
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, AdminOECDEditCreateViewModel vm)
+        {
+            var oecdEdit = vm.oecd;
+            var oecdToUpdate = await _dbContext.OECD.Where(o => o.Id == id).FirstOrDefaultAsync();
+			if (oecdToUpdate == null)
+			{
+				ErrorMessage = "OECD record not found";
+				return RedirectToAction("Index");
+			}
+			if (oecdToUpdate.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "You are not the conditioner for that OECD record! Access denied.";
+				return RedirectToAction(nameof(Index));
+			}
+			if (oecdToUpdate.DatePrinted.HasValue)
+			{
+				ErrorMessage = "OECD Certificate marked complete by CCIA staff. No edits allowed.";
+				return RedirectToAction(nameof(Index));
+			}
+
+            oecdToUpdate.UpdateUser = User.Claims.FirstOrDefault(c => c.Type == "contactId").Value;
+            oecdToUpdate.UpdateDate = DateTime.Now;
+            oecdToUpdate.CloseDate = oecdEdit.CloseDate;
+            oecdToUpdate.CountryId = oecdEdit.CountryId;
+            oecdToUpdate.Pounds = oecdEdit.Pounds;
+            oecdToUpdate.ClassId = oecdEdit.ClassId;
+            oecdToUpdate.Comments = oecdEdit.Comments;
+            oecdToUpdate.TagsRequested = oecdEdit.TagsRequested;
+
+			if (ModelState.IsValid)
+			{
+                await _notification.OECDClientUpated(oecdToUpdate);
+				await _dbContext.SaveChangesAsync();
+				Message = "OECD Updated";
+			}
+			else
+			{
+				if (ModelState.ErrorCount == 1)
+				{
+					foreach (var modelStateKey in ViewData.ModelState.Keys)
+					{
+						var modelStateVal = ViewData.ModelState[modelStateKey];
+						foreach (var error in modelStateVal.Errors)
+						{
+							var key = modelStateKey;
+							if (key == "oecd.Variety.Name")
+							{
+                                await _notification.OECDClientUpated(oecdToUpdate);
+								await _dbContext.SaveChangesAsync();								
+								Message = "OECD Updated";
+								return RedirectToAction(nameof(Edit), new { id = oecdToUpdate.Id });
+							}
+						}
+					}
+				}
+				ErrorMessage = "Something went wrong.";
+				var model = await AdminOECDEditCreateViewModel.Create(_dbContext, _helper, id);
+				return View(model);
+			}
+			return RedirectToAction(nameof(Edit), new { id = oecdToUpdate.Id });
+		}
+
+        public async Task<IActionResult> Complete(int id, AdminOECDEditCreateViewModel vm)
+        {			
+			var oecdToUpdate = await _dbContext.OECD.Where(o => o.Id == vm.oecd.Id).FirstOrDefaultAsync();
+			if (oecdToUpdate == null)
+			{
+				ErrorMessage = "OECD record not found";
+				return RedirectToAction("Index");
+			}
+			if (oecdToUpdate.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "You are not the conditioner for that OECD record! Access denied.";
+				return RedirectToAction(nameof(Index));
+			}
+			if (oecdToUpdate.DatePrinted.HasValue)
+			{
+				ErrorMessage = "OECD Certificate marked complete by CCIA staff. No edits allowed.";
+				return RedirectToAction(nameof(Index));
+			}
+            await _notification.OECDClientComplete(oecdToUpdate);
+            await _dbContext.SaveChangesAsync();
+            Message = "OECD submitted for final print";
+            return RedirectToAction(nameof(Index));
+		}
+
+
+		public async Task<IActionResult> Certificate(int id)
         {
             var oecd = _helper.FullOECD();
             var model = await oecd.Where(o => o.Id == id).FirstOrDefaultAsync();

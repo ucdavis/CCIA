@@ -1,0 +1,220 @@
+@model CCIA.Models.AdminOECDEditCreateViewModel
+
+<form asp-action="Complete">
+	<input type="hidden" asp-for="oecd.Id" />
+	<div class="container col-sm-12">
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="submit" value="Mark Complete" class="btn btn-danger" onclick="return confirm('Are you sure are ready to mark this OECD complete and have the OECD Certificate printed? Once printed, no further edits can be made on the client side.')"></input>
+			</div>
+		</div>
+	</div>
+</form>
+<form asp-action="Edit">
+	<div class="container col-sm-12">
+		<div class="row">
+			<div class="col-sm-12">
+				<h2>Edit OECD</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<input type="submit" value="Update" class="btn btn-primary"></input>
+				<a class="btn btn-dark" asp-action="Index" asp-controller="OECD">Cancel Edit</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-xl-4">
+				@* First column *@
+				<div class="form-group row">
+					<label asp-for="oecd.Id" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.Id)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.DateRequested" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Model.oecd.DateRequested.Value.ToShortDateString()
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.ShipperOrganization.NameAndId" class="col-sm-3 col-form-label">Shipper</label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Model.oecd.ShipperOrganization.NameAndId
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.ConditionerOrganization.NameAndId" class="col-sm-3 col-form-label">Conditioner</label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Model.oecd.ConditionerOrganization.NameAndId
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.ClassId" class="col-sm-3 col-form-label"></label>
+					<select asp-for="oecd.ClassId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.classes, "Id", "Class"))"></select>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.Variety.NameAndId" class="col-sm-3 col-form-label">Variety</label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Model.oecd.Variety.NameAndId
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.TotalFee" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.TotalFee)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.NotCertified" class="col-sm-3 col-form-label"></label>
+					<input type="checkbox" asp-for="oecd.NotCertified" class="col-sm-7 form-control" readonly onclick="return false;">
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.DataEntryDate" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.DataEntryDate)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.UpdateDate" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.UpdateDate)
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xl-4">
+				@* Second column *@
+				@if (Model.oecd.SeedsId != null)
+				{
+					<div class="form-group row">
+						<label asp-for="oecd.SeedsId" class="col-sm-3 col-form-label"></label>
+						<div class="col-sm-9 form-control-plaintext">
+							@Html.DisplayFor(x => x.oecd.SeedsId)
+						</div>
+					</div>
+				}
+				@if (Model.oecd.BID != null)
+				{
+					<div class="form-group row">
+						<label asp-for="oecd.BID" class="col-sm-3 col-form-label"></label>
+						<div class="col-sm-9 form-control-plaintext">
+							@Html.DisplayFor(x => x.oecd.BID)
+						</div>
+					</div>
+				}
+				<div class="form-group row">
+					<label asp-for="oecd.DatePrinted" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.DatePrinted)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.CertNumber" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.CertNumber)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.OECDNumber" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.OECDNumber)
+					</div>
+				</div>				
+				<div class="form-group row">
+					<label asp-for="oecd.LinkClass" class="col-sm-3 col-form-label">Class</label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.LinkClass)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.Variety.Crop.Name" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.Variety.Crop.Name)
+					</div>
+					@Html.HiddenFor(x => x.oecd.Variety.CropId)
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.Country.Name" class="col-sm-3 col-form-label"></label>
+					<select asp-for="oecd.CountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.countries, "Id", "Name"))"></select>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.Canceled" class="col-sm-3 col-form-label"></label>
+					<input type="checkbox" asp-for="oecd.Canceled" class="col-sm-7 form-control" readonly onclick="return false;">
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.DataEntryUser" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.EntryEmployee.Name)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.UpdateUser" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.UpdateEmployee.Name)
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xl-4">
+				@* Third Col *@
+				<div class="form-group row">
+					<label asp-for="oecd.CertYear" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.CertYear)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.CloseDate" class="col-sm-3 col-form-label"></label>
+					<input class="col-sm-3 col-form datepicker" type="text" asp-for="oecd.CloseDate">
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.LotNumber" class="col-sm-3 col-form-label"></label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.LotNumber)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.TagsRequested" class="col-sm-3 col-form-label"></label>
+					<input asp-for="oecd.TagsRequested" class="col-sm-3 col-form">
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.Pounds" class="col-sm-3 col-form-label"></label>
+					<input asp-for="oecd.Pounds" class="col-sm-3 col-form">
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.ReferenceNumber" class="col-sm-3 col-form-label">Reference #</label>
+					<div class="col-sm-9 form-control-plaintext">
+						@Html.DisplayFor(x => x.oecd.ReferenceNumber)
+					</div>
+				</div>
+				<div class="form-group row">
+					<label asp-for="oecd.DomesticOrigin" class="col-sm-3 col-form-label"></label>
+					<input type="checkbox" asp-for="oecd.DomesticOrigin" class="col-sm-7 form-control" onclick="return false;">
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			@* full width *@
+			<div class="form-group row">
+				<label asp-for="oecd.Comments" class="col-sm-2 col-form-label"></label>
+				<textarea rows="2" asp-for="oecd.Comments" class="col-sm form-control"></textarea>
+			</div>						
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('.datepicker').datepicker();
+		});
+
+	</script>
+}
