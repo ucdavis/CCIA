@@ -19,6 +19,12 @@
             </form>
         </div>       
     }
+    @if(Model.blend.Status == BlendStatus.Approved.GetDisplayName())
+    {
+        <div class="row">
+            <a asp-action="Certificate" asp-route-id="@Model.blend.Id" class="btn btn-info">Printable Permit</a>
+        </div>
+    }
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -194,7 +200,10 @@
             </table>
         } else
         {
-            <a asp-action="AddInDirtBlendLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+            @if (Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+            {
+                <a asp-action="AddInDirtBlendLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+            }
             <table class="table">
                 <thead>
                     <tr>
@@ -234,12 +243,16 @@
                             {
                                 <td></td>
                             } 
-                            <td><form asp-action="DeleteDirtLot"><input type="hidden" id="id" name="id" value="@row.Id"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form></td>
+                            <td>
+                                @if (Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                                {
+                                    <form asp-action="DeleteDirtLot"><input type="hidden" id="id" name="id" value="@row.Id"/><input type="submit" class="btn btn-danger" onclick="return confirm('Really delete this component?');" value="Delete"></form>
+                                }
+                            </td>
                         </tr>                        
                     }
                 </tbody>
             </table>
-
         }        
         <div><hr></div>
         <div class="col-sm-3">

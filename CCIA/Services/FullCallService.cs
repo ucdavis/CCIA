@@ -152,6 +152,7 @@ namespace CCIA.Services
         public IQueryable<BlendRequests> FullBlendRequest()
         {
             var blend = _context.BlendRequests
+                .Include(b => b.EnteredByContact)
                 .Include(b => b.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(b => b.LotBlends)
@@ -173,6 +174,8 @@ namespace CCIA.Services
                 .Include(b => b.InDirtBlends) // blendrequest (in dirt from oos app) => indirt => variety
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Conditioner)
+                .ThenInclude(c => c.OrgCounty)
+                .Include(b => b.ApprovedByEmployee)
                 .AsQueryable();
             return blend;
 

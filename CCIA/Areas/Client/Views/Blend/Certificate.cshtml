@@ -1,0 +1,191 @@
+﻿@model CCIA.Models.AdminBlendsDetailsViewModel
+@using CCIA.Helpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" />
+     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"/> 
+</head>
+<body style="font-size: smaller">
+
+<table border="0" width="100%">
+    <tr>
+        <td colspan="2" valign="bottom"><b>Blend Number:</b></td>
+            <td align="center" class="titleoecd">California Crop Improvement Association<br /><br /></td>
+        <td rowspan="3" valign="top">
+            <img align="right" height="108" src="~/images/ccia-tra.gif" />
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            @Model.blend.CertNumber
+        </td>
+        <td align="center" valign="t"><b>@Model.blend.BlendType - CERTIFIED SEED BLENDING PERMIT</b></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td valign="top">
+            <b>@Model.blend.BlendType:</b><br />
+           @Model.blend.BlendDefinition
+        </td>
+        <td align="center">
+            <table>
+                <tr>
+                    <td>Variety Name:</td>
+                    <td>
+                        @Model.blend.GetVarietyName()
+                    </td>
+                </tr>
+                <tr>
+                    <td>Blend Requested By:</td>
+                    <td>
+                        @Model.blend.EnteredByContact.FullName()
+                    </td>
+                </tr>
+                <tr>
+                    <td>Conditioner:</td>
+                    <td>
+                        @Model.blend.Conditioner.Name
+                    </td>
+                </tr>
+                <tr>
+                    <td>County</td>
+                    <td>
+                        @Model.blend.Conditioner.OrgCounty.Name
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"><br />We hereby request permission to blend the seed described below, and assume responsibility for any portion of the blended lot, so certified, being of certified seed quality.</td>
+    </tr>
+    <tr>
+        <td colspan="4">
+            <br /><br />
+            @if (Model.blend.BlendType == "Lot" || Model.blend.BlendType == "Varietal")
+            {                
+                <table class="table" width="100%">
+                    <thead>
+                        <tr>                           
+                            <th>Component ID</th>
+                            <th>SID</th>
+                            <th>Lot#</th>
+                            <th>Variety</th>
+                            <th>Weight</th>
+                            @if (Model.blend.BlendType == "Varietal")
+                            {
+                                <th>Percent</th>
+                            }
+                            <th>Class</th>
+                            <th>Germ</th>
+                            <th>Hard</th>
+                            <th>TotalGerm</th>
+                            <th>Purity</th>
+                            <th>Other Crop</th>
+                            <th>Inert</th>
+                            <th>Weed</th>
+                            <th>Lab Date</th>
+                            <th>Cert Results</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.components)
+                        {
+                            <tr>
+                                @if (row.CompId > 0)
+                                {                                    
+                                    <td>@row.CompId</td>
+                                }
+                                else
+                                {                                 
+                                    <td></td>
+                                }
+
+                                <td>@row.Sid</td>
+                                <td>@row.LotNumber</td>
+                                <td>@row.VarietyName</td>
+                                <td>@row.Weight</td>
+                                @if (Model.blend.BlendType == "Varietal")
+                                {
+                                    <td>@row.ComponentPercent</td>
+                                }
+                                <td>@row.ClassName</td>
+                                <td>@row.GermValue</td>
+                                <td>@row.HardValue</td>
+                                <td>@row.TotalGermValue</td>
+                                <td>@row.PurityValue</td>
+                                <td>@row.OtherCropValue</td>
+                                <td>@row.InertValue</td>
+                                <td>@row.WeedValue</td>
+                                <td>@row.LabDate</td>                                
+                                <td>@row.CertificationResults</td>                                
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                @if (Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+                {
+                    <a asp-action="AddInDirtBlendLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+                }
+                <table class="table" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Component ID</th>
+                            <th>AppId</th>
+                            <th>Cert#</th>
+                            <th>Variety</th>
+                            <th>Class</th>
+                            <th>Weight</th>
+                            <th>Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.dirtComponents)
+                        {
+                            <tr>                                
+                                <td>@row.Id</td>
+                                <td>@row.AppId</td>
+                                <td>@row.CertNumber</td>
+                                <td>@row.Variety</td>
+                                <td>@row.ClassName</td>
+                                <td>@row.Weight</td>
+                                <td>@row.Percent</td>                               
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" class="legal">The above blended lot meets the minimum standards for certifications. Complete certification may be obtained by requesting attachment of official certification tags.</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="3">
+            Approved By:
+            @Model.blend.ApprovedByEmployee.Name
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Date:
+            @Model.blend.ApproveDate.Value.ToShortDateString()
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="3"></td>
+    </tr>   
+</table>
+</body>
+</html>

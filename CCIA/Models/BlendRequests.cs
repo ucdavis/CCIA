@@ -58,6 +58,9 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public ICollection<LotBlends> LotBlends { get; set; }
 
+        [ForeignKey("ApprovedBy")]
+        public CCIAEmployees ApprovedByEmployee { get; set; }
+
         [ForeignKey("BlendId")]
         public ICollection<BlendInDirtComponents> InDirtBlends { get; set; }
 
@@ -66,6 +69,9 @@ namespace CCIA.Models
 
         [ForeignKey("ConditionerId")]
         public Organizations Conditioner { get; set; }
+
+        [ForeignKey("UserEntered")]
+        public Contacts EnteredByContact { get; set; }
 
         public bool FollowUp { get; set; }
 
@@ -165,6 +171,23 @@ namespace CCIA.Models
                         return $"CA-V{twoDigitYear}{Id}";
                     case "In Dirt":
                         return $"CA-D{twoDigitYear}{Id}";
+                }
+                return "";
+            }
+        }
+
+        public string BlendDefinition
+        {
+            get
+            {
+                switch(BlendType)
+                {
+                    case "Lot":
+                        return "Different lots of the same variety";
+                    case "Varietal":
+                        return "Mix of different varieties in previously approved ratios";
+                    case "In Dirt":
+                        return "Different lots/cert numbers direct from field harvest";
                 }
                 return "";
             }

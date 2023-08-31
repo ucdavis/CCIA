@@ -64,6 +64,27 @@ namespace CCIA.Controllers.Client.Client
             {
                 ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
                 return RedirectToAction(nameof(Index));
+            }            
+            return View(model);
+        }
+
+        public async Task<IActionResult> Certificate(int id)
+        {
+            var model = await AdminBlendsDetailsViewModel.Create(_dbContext, _helper, id);
+            if (model.blend == null)
+            {
+                ErrorMessage = "Blend Request not found";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.blend.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "Blend Conditioner does not match your ID. Access denied.";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.blend.Status != BlendStatus.Approved.GetDisplayName())
+            {
+                ErrorMessage = "Blend not approved. Certificates are only shown for approved blends";
+                return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
