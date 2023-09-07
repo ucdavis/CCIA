@@ -264,6 +264,12 @@ namespace CCIA.Controllers.Admin
             return $"USA-CA-{certYearAbbrev}CA-{CertNumber}-{LotNumber}";
         }
 
+        public async Task<IActionResult> Pending()
+        {
+            var model = await _dbContext.OECD.Where(o => !o.DatePrinted.HasValue).ToListAsync();
+            return View(model);
+        }
+
 
        
     }

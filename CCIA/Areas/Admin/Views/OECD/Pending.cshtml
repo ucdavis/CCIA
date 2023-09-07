@@ -1,0 +1,36 @@
+﻿@model List<OECD>
+
+    <h3>The following OECD files have not been printed</h3>
+@if (Model.Any())
+{
+    <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+    <table id="table" class="table datatable">
+        <thead>
+        <th></th>
+        <th>OECD ID</th>
+        <th>SID</th>
+        <th>Crop</th>
+        <th>Variety</th>
+        <th>Lbs</th>
+        <th>Class</th>        
+        <th>Created</th>
+        </thead>
+        <tbody>
+            @foreach (var oecd in Model)
+            {
+                <tr>
+                    <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="OECD" asp-route-id="@oecd.Id">Details</a></td>
+                    <td>@oecd.Id</td>
+                    <td>@oecd.SeedsId</td>
+                    <td>@oecd.Seeds?.GetCropName()</td>
+                    <td>@oecd.Seeds?.GetVarietyName()</td>
+                    <td>@Html.DisplayFor(x => oecd.Pounds)</td>
+                    <td>@oecd.Class?.Class</td>                    
+                    <td>@(oecd.DataEntryDate.HasValue ? oecd.DataEntryDate.Value.ToShortDateString() : "")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
