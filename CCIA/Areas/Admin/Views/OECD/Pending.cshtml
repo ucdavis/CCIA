@@ -34,3 +34,23 @@
         </tbody>
     </table>
 }
+
+@section Scripts {
+        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>   
+
+        <script>
+        
+
+            $(document).ready( function () {            
+
+                $('#table').dataTable({
+                     dom: 'lfrtip',
+                    buttons: ['copyHtml5', 'csvHtml5'],
+                    "pageLength": 100,
+                    order: [[ 1, "asc"]],
+                    columnDefs: [{ targets: 0, orderable: false}],
+                });           
+
+            } );
+        </script>
+}
