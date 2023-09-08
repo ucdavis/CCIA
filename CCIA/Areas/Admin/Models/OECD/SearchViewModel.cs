@@ -53,6 +53,8 @@ namespace CCIA.Models
         
         [Display(Name="Variety")]
         public string variety { get; set; }
+        [Display(Name ="Printed?")]
+        public string PrintedToSearch { get; set; }
        
 
                
@@ -112,7 +114,15 @@ namespace CCIA.Models
                 {
                     oecdToFind = oecdToFind.Where(s => s.Class.Class == vm.searchClass);
                 }
-                
+                if(!string.IsNullOrWhiteSpace(vm.PrintedToSearch) && vm.PrintedToSearch == "Printed")
+                {
+                    oecdToFind = oecdToFind.Where(o => o.DatePrinted.HasValue);
+                }
+                if (!string.IsNullOrWhiteSpace(vm.PrintedToSearch) && vm.PrintedToSearch == "Not Printed")
+                {
+                    oecdToFind = oecdToFind.Where(o => !o.DatePrinted.HasValue);
+                }
+
                 var viewModel = new AdminOECDSearchViewModel
                 {
                     oecds = await oecdToFind.ToListAsync(),  
@@ -132,6 +142,7 @@ namespace CCIA.Models
                 crops = await _dbContext.Crops.Where(c => c.CertifiedCrop || c.Heritage || c.PreVarietyGermplasm || c.LacTracker || c.Crop == "hemp").OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
                 classOptions = classList,
                 followUp = 2,
+                PrintedToSearch = "Both",
             };           
 
             return freshModel;

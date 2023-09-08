@@ -53,6 +53,14 @@
                 <label asp-for="followUp" class="col-sm-3 col-form-label"></label>
                 <select asp-for="followUp" class="col-sm-3 form-control" asp-items="Html.GetEnumSelectList<SearchOptions>()"></select>
             </div>
+            <div class="form-group row">
+                <label asp-for="PrintedToSearch" class="col-sm-3 col-form-label"></label>
+                <select asp-for="PrintedToSearch" class="col-sm-3 form-control">
+                    <option>Both</option>
+                    <option>Printed</option>
+                    <option>Not Printed</option>
+                </select>
+            </div>
         </div>
         <div class="col-md-6 col-xl-4">@* 3rd column*@ 
             <div class="form-group row">
@@ -91,6 +99,7 @@
             <th></th>          
             <th>OECD ID</th>
             <th>SID</th>
+            <th>Conditioner</th>
             <th>Crop</th>
             <th>Variety</th>
             <th>Lbs</th>
@@ -104,6 +113,7 @@
                 <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="OECD" asp-route-id="@oecd.Id">Details</a></td>                
                 <td>@oecd.Id</td>
                 <td>@oecd.SeedsId</td>
+                    <td>@oecd.ConditionerOrganization?.NameAndId</td>
                 <td>@oecd.Seeds?.GetCropName()</td>
                 <td>@oecd.Seeds?.GetVarietyName()</td>
                 <td>@Html.DisplayFor(x => oecd.Pounds)</td>
