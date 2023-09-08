@@ -29,8 +29,8 @@
                     <td>@oecd.Seeds?.GetCropName()</td>
                     <td>@oecd.Seeds?.GetVarietyName()</td>
                     <td>@Html.DisplayFor(x => oecd.Pounds)</td>
-                    <td>@oecd.Class?.Class</td>                    
-                    <td>@(oecd.DataEntryDate.HasValue ? oecd.DataEntryDate.Value.ToShortDateString() : "")</td>
+                    <td>@oecd.Class?.Class</td>
+                    <td>@(oecd.DateRequested.HasValue ? oecd.DateRequested.Value.ToShortDateString() : "")</td>
                 </tr>
             }
         </tbody>
