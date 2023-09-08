@@ -266,7 +266,7 @@ namespace CCIA.Controllers.Admin
 
         public async Task<IActionResult> Pending()
         {
-            var model = await _helper.FullOECD().Where(o => !o.DatePrinted.HasValue).ToListAsync();
+            var model = await _helper.FullOECD().Where(o => !o.DatePrinted.HasValue && !o.Canceled).ToListAsync();
             return View(model);
         }
 
