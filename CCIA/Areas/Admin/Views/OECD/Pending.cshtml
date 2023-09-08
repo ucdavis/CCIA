@@ -11,6 +11,7 @@
         <th></th>
         <th>OECD ID</th>
         <th>SID</th>
+        <th>Conditioner</th>
         <th>Crop</th>
         <th>Variety</th>
         <th>Lbs</th>
@@ -24,11 +25,12 @@
                     <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="OECD" asp-route-id="@oecd.Id">Details</a></td>
                     <td>@oecd.Id</td>
                     <td>@oecd.SeedsId</td>
+                    <td>@oecd.ConditionerOrganization?.NameAndId</td>
                     <td>@oecd.Seeds?.GetCropName()</td>
                     <td>@oecd.Seeds?.GetVarietyName()</td>
                     <td>@Html.DisplayFor(x => oecd.Pounds)</td>
-                    <td>@oecd.Class?.Class</td>                    
-                    <td>@(oecd.DataEntryDate.HasValue ? oecd.DataEntryDate.Value.ToShortDateString() : "")</td>
+                    <td>@oecd.Class?.Class</td>
+                    <td>@(oecd.DateRequested.HasValue ? oecd.DateRequested.Value.ToShortDateString() : "")</td>
                 </tr>
             }
         </tbody>
