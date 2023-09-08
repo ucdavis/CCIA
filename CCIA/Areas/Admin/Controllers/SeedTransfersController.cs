@@ -97,6 +97,7 @@ namespace CCIA.Controllers.Admin
             }
 
             stcToUpdate.SeedsID = update.SeedsID;
+            stcToUpdate.Type = update.Type;
             stcToUpdate.BlendId = update.BlendId;
             stcToUpdate.ApplicationId = update.ApplicationId;
             stcToUpdate.CertificateDate = update.CertificateDate;           

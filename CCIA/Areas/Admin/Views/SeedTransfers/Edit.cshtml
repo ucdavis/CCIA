@@ -48,7 +48,11 @@
             <div class="form-group row">
                 <label asp-for="stc.Type" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.stc.Type)
+                    <select asp-for="stc.Type">
+                            <option>Inter-county</option>
+                            <option>Intra-county</option>
+                            <option>Inter-agency (state)</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group row">
