@@ -282,7 +282,7 @@ namespace CCIA.Controllers.Admin
                 ErrorMessage = "Tag not found";
                 return RedirectToAction(nameof(Index));
             }
-            if(model.Stage ==  TagStages.Requested.GetDisplayName() && model.SeriesRequest)
+            if(model.Stage ==  TagStages.Requested.GetDisplayName() && (model.SeriesRequest || model.TaggingOrg == 2193 || model.TaggingOrg == 4393 || (model.TaggingOrg == 293 && model.TagType == 7)))
             {
                 ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.ConditionerYearEntered && c.PrintSeries).AnyAsync();
             }            
