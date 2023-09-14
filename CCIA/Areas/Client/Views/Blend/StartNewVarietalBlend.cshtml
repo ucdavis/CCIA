@@ -20,7 +20,10 @@
                         </div>
                     </div>
                 </div>
-        </div>     
+        </div>   
+        <div>
+            Please enter the variety name, click the magnifying glass to search the system, and select the correct variety. You cannot just enter the variety name; must perform the search and select variety to proceed.
+        </div>
         @Html.ValidationMessage("Variety", "", new { @class = "text-danger" })
         <input type="hidden" id="varietyId" name="varietyId">
     </div>    
@@ -36,7 +39,7 @@
         <span class="field-validation-valid text-danger" data-valmsg-for="weight" data-valmsg-replace="true"></span>
     </div> 
     <div class="form-group row">
-        <input type="submit" class="btn btn-primary" value="Create Blend">
+        <input type="submit" class="btn btn-primary" value="Create Blend" onclick="JavaScript:return checkVariety();">
     </div>
 </form>
 
@@ -44,6 +47,18 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}  
     <script type="application/javascript">
+
+        function checkVariety()
+        {
+            var id = $("#varietyId").val();
+            if(id == "")
+            {
+                alert("Please make sure you entered a variety, clicked the magnifying glass, and selected a variety from the drop down list!")
+                return false;
+            }
+            //alert("submit");
+            return true;
+        }
 
         $('#variety-search').on('click', () => {
             searchVarieties("variety-dropdown", "variety", "selectFirstVarietyFormRemainder")
