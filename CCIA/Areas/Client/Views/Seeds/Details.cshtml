@@ -20,7 +20,7 @@
                     </div>
                 </div>
             }
-            @if(Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName())
+            @if((Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName()) && (Model.seed.Status != SeedsStatus.CancelledByCCIA.GetDisplayName() && Model.seed.Status != SeedsStatus.CancelledByOrganization.GetDisplayName()))
             {               
                 <div class="row">
                     <div class="col-sm-12">
@@ -28,9 +28,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <form asp-action="Submit">
-                            <input type="submit" value="Submit for Certification" asp-action="Submit" asp-route-id="@Model.seed.Id" class="btn btn-primary" onclick="return confirm('Once submitted, you will no longer be able to edit lot information or add/change supporting material. \n\nAre you sure you want to submit this lot for certification?')">
+                            <input type="hidden" asp-for="seed.Id">
+                            <input type="submit" value="Submit for Certification" class="btn btn-primary" onclick="return confirm('Once submitted, you will no longer be able to edit lot information or add/change supporting material. \n\nAre you sure you want to submit this lot for certification?')">
+                        </form>                        
+                    </div>
+                    <div class="col-sm-6">
+                        <form asp-action="Cancel">
+                            <input type="hidden" asp-for="seed.Id">
+                            <input type="submit" value="Cancel Lot" class="btn btn-dark" onclick="return confirm('Once cancelled, this lot will not be active or usable to make tags, blends, transfers, or bulk sales. \n\nAre you sure you want to cancel this lot?')">
                         </form>                        
                     </div>
                 </div>
@@ -172,25 +179,28 @@
                         </td>
                     </tr>
                     <tr><td><hr><br></td></tr>
-                    <tr>
-                        <td>
-                            <form enctype="multipart/form-data" method="post" asp-action="UploadSeedDocument">
-                            <h3>Upload new Document</h3>
-                                <input type="hidden" name="id" id="id" value="@Model.seed.Id">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">File Name</label>
-                                    <input id="certName" name="certName" class="col-form col-sm-8">
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Doc Type</label>
-                                    <select name="doctype" id="docType" class="form-control col-sm-8" asp-items="@(new SelectList(Model.documentTypes, "Id","Name"))"></select>
-                                </div>
-                                <input id="file" name="file" type="file">            
-                                <input class="btn btn-primary" type="submit" value="Upload" disabled />
-                                <br>Allowed files: @Configuration["AllowedFiles"]
-                            </form>
-                        </td>
-                    </tr>
+                    @if (Model.seed.Status != SeedsStatus.CancelledByCCIA.GetDisplayName() && Model.seed.Status != SeedsStatus.CancelledByOrganization.GetDisplayName())
+                    {
+                        <tr>
+                            <td>
+                                <form enctype="multipart/form-data" method="post" asp-action="UploadSeedDocument">
+                                    <h3>Upload new Document</h3>
+                                    <input type="hidden" name="id" id="id" value="@Model.seed.Id">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">File Name</label>
+                                        <input id="certName" name="certName" class="col-form col-sm-8">
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Doc Type</label>
+                                        <select name="doctype" id="docType" class="form-control col-sm-8" asp-items="@(new SelectList(Model.documentTypes, "Id","Name"))"></select>
+                                    </div>
+                                    <input id="file" name="file" type="file">            
+                                    <input class="btn btn-primary" type="submit" value="Upload" disabled />
+                                    <br>Allowed files: @Configuration["AllowedFiles"]
+                                </form>
+                            </td>
+                        </tr>
+                    }
                 </table>
             </div>
         </div> 
@@ -200,8 +210,8 @@
                     <h2>Lab Results</h2>
                 </div>
             </div>
-            @if(Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName())
-            {               
+            @if ((Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName()) && (Model.seed.Status != SeedsStatus.CancelledByCCIA.GetDisplayName() && Model.seed.Status != SeedsStatus.CancelledByOrganization.GetDisplayName()))
+            {
                 <div class="row">
                     <div class="col-sm-12">
                         <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-info">Edit Lab Results</a>

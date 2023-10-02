@@ -125,9 +125,33 @@ namespace CCIA.Controllers.Client
             Message = "Seed lot submitted for review";
 
             return RedirectToAction("Details", new { id = seedToSubmit.Id });
-        } 
-       
-        public async Task<IActionResult> SelectOrigin()
+        }
+
+		[HttpPost]
+		public async Task<IActionResult> Cancel(int id, ClientSeedsViewModel vm)
+		{
+			var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == vm.seed.Id).FirstOrDefaultAsync();
+			if (seedToCancel == null)
+			{
+				ErrorMessage = "Seed lot not found.";
+				return RedirectToAction(nameof(Index));
+			}
+			if (seedToCancel.ConditionerId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "You are not the conditioner of that seed lot";
+				return RedirectToAction(nameof(Index));
+			}			
+
+			seedToCancel.Status = SeedsStatus.CancelledByOrganization.GetDisplayName();
+            seedToCancel.Remarks = seedToCancel.Remarks + $" ; cancelled {DateTime.Now}";
+
+			await _dbContext.SaveChangesAsync();
+			Message = "Seed lot cancelled";
+
+			return RedirectToAction("Details", new { id = seedToCancel.Id });
+		}
+
+		public async Task<IActionResult> SelectOrigin()
         {     
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
             var checker = await MembershipChecker.Check(_dbContext, orgId);
