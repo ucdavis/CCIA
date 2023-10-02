@@ -26,14 +26,20 @@
     </div>
     @if(Model.blend.Status == BlendStatus.PendingAcceptance.GetDisplayName() && (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff")))
          {             
-             <div class="row">
-                <div class="col-sm-12">                   
-                    <form asp-action="Accept">
-                        <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+            <div class="row">
+            <div class="col-sm-6">                   
+                <form asp-action="Accept">
+                    <input type="hidden" name="id" id="id" value="@Model.blend.Id">
                     <input type="submit" class="btn btn-primary" value="Approve Blend">
                 </form> 
-                </div>            
-            </div>   
+            </div>
+            <div class="col-sm-6">
+                <form asp-action="Cancel">
+                    <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                    <input type="submit" class="btn btn-dark" value="Cancel Blend" onclick="return confirm("Are you sure you want to oncancel this blend?">
+                </form>
+            </div>
+        </div>   
          }        
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@

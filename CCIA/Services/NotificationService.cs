@@ -59,6 +59,7 @@ namespace CCIA.Services
         Task OECDClientComplete(OECD oecd);
 
         Task NFCSubmitted(Tags tag);
+        Task BlendCancelled(BlendRequests blend);
 
         void ResetPassword(Contacts contact);
 
@@ -447,6 +448,22 @@ namespace CCIA.Services
                     Email = user,
                     TagId = tag.Id,
                     Message = "Tag canceled by CCIA Staff"
+                };
+                _dbContext.Notifications.Add(notification);
+            }
+        }
+
+        public async Task BlendCancelled(BlendRequests blend)
+        {
+            var users = await _dbContext.Contacts.Where(c => (c.Id == blend.UserEntered || (c.BlendNotices && c.OrgId == blend.ConditionerId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {
+                var notification = new Notifications
+                {
+                    Email = user,
+                    TagId = blend.Id,
+                    Message = "Blend canceled by CCIA Staff"
                 };
                 _dbContext.Notifications.Add(notification);
             }

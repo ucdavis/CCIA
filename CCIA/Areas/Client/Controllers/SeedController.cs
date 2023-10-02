@@ -146,7 +146,7 @@ namespace CCIA.Controllers.Client
             seedToCancel.Remarks = seedToCancel.Remarks + $" ; cancelled {DateTime.Now}";
 
 			await _dbContext.SaveChangesAsync();
-			Message = "Seed lot submitted cancelled";
+			Message = "Seed lot cancelled";
 
 			return RedirectToAction("Details", new { id = seedToCancel.Id });
 		}

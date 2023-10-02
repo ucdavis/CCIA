@@ -66,6 +66,23 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {            
+            var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if (blend == null)
+            {
+                ErrorMessage = "Blend not found";
+                return RedirectToAction(nameof(Index));
+            }
+            blend.Status = BlendStatus.Cancelled.GetDisplayName();
+            blend.Comments = blend.Comments + $"; cancelled by CCIA {DateTime.Now}";
+            await _notificationService.BlendCancelled(blend);
+            await _dbContext.SaveChangesAsync();
+            Message = "Blend cancelled.";
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
         public async Task<IActionResult> GetBlendFile(int id)
         {
             var blendDoc = await _dbContext.BlendDocuments.Where(a => a.Id == id).FirstOrDefaultAsync();
