@@ -128,9 +128,9 @@ namespace CCIA.Controllers.Client
         }
 
 		[HttpPost]
-		public async Task<IActionResult> Cancel(int id, ClientSeedsViewModel vm)
+		public async Task<IActionResult> Cancel(int id)
 		{
-			var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == vm.seed.Id).FirstOrDefaultAsync();
+			var seedToCancel = await _dbContext.Seeds.Where(s => s.Id == id).FirstOrDefaultAsync();
 			if (seedToCancel == null)
 			{
 				ErrorMessage = "Seed lot not found.";
