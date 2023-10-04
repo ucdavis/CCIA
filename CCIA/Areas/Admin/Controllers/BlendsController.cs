@@ -2,12 +2,14 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
 using CCIA.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
@@ -68,7 +70,20 @@ namespace CCIA.Controllers.Admin
 
         [HttpPost]
         public async Task<IActionResult> Cancel(int id)
-        {            
+        {
+            var p0 = new SqlParameter("@id", System.Data.SqlDbType.Int);
+            p0.Value = id;
+            var check = await _dbContext.SeedCancelChecks.FromSqlRaw($"EXEC mvc_blend_cancel_check @id", p0).ToListAsync();
+            if (check.Any())
+            {
+                var sbCheck = new StringBuilder();
+                foreach (var row in check)
+                {
+                    sbCheck.Append(row.Id + " " + row.Source + " || ");
+                }
+                ErrorMessage = "That Blend has existing tags, OECD, Blends, Bulk Sales, or Seed Transfers on file: " + sbCheck.ToString();
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
             var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
             if (blend == null)
             {
@@ -155,9 +170,32 @@ namespace CCIA.Controllers.Admin
                 return RedirectToAction(nameof(Process));
            }
            return View(model);
-       } 
+       }
 
-        public async Task<IActionResult> Previous(int id)
+		[HttpPost]
+		public async Task<IActionResult> ReturnBlend(int id, string reason)
+		{
+			var blendToReturn = await _dbContext.BlendRequests.Where(b => b.Id == id).FirstOrDefaultAsync();
+			if (blendToReturn == null)
+			{
+				ErrorMessage = "Blend not found";
+				return RedirectToAction(nameof(Index));
+			}
+			if (string.IsNullOrWhiteSpace(reason))
+			{
+				ErrorMessage = "Return reason cannot be blank";
+				return RedirectToAction(nameof(Details), new { id = blendToReturn.Id });
+			}
+			var reasonWithDate = DateTime.Now.ToShortDateString() + ": " + reason;
+			blendToReturn.Status = BlendStatus.ReturnedToClient.GetDisplayName();
+			blendToReturn.ReturnReason = string.IsNullOrWhiteSpace(blendToReturn.ReturnReason) ? reasonWithDate : blendToReturn.ReturnReason + "; " + reasonWithDate;
+			await _notificationService.BlendReturnedForReview(blendToReturn);
+			await _dbContext.SaveChangesAsync();
+			Message = "Blend returned to client.";
+			return RedirectToAction(nameof(Details), new { id = blendToReturn.Id });
+		}
+
+		public async Task<IActionResult> Previous(int id)
         {
             var previousId = await _dbContext.BlendRequests.Where(x => x.Id < id).OrderBy(x => x.Id).Select(x => x.Id).LastOrDefaultAsync();
             return RedirectToAction(nameof(Details), new {id = previousId});

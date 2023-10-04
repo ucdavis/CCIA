@@ -10,7 +10,7 @@
             <h2>Blend Request Details</h2>            
         </div>            
     </div> 
-    @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName())
+    @if(Model.blend.Status == BlendStatus.Initiated.GetDisplayName() || Model.blend.Status == BlendStatus.ReturnedToClient.GetDisplayName())
     {  
         <div class="row">
             <form asp-action="Submit">
@@ -85,6 +85,17 @@
             </div>  
         </div>
     </div>
+    @if (!string.IsNullOrWhiteSpace(Model.blend.ReturnReason))
+    {
+        <div class="col-sm-12">
+            <div class="form-group row">
+                <label asp-for="blend.ReturnReason" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.blend.ReturnReason)
+                </div>
+            </div>
+        </div>
+    }
     <div class="col-sm-12">
         <h3>Components</h3>
         @if(Model.blend.BlendType == "Lot" || Model.blend.BlendType == "Varietal")

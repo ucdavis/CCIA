@@ -15,8 +15,10 @@ namespace CCIA.Models
         [Display(Name="Approved")]
         Approved,    
         [Display(Name="Cancelled")]
-        Cancelled,      
-    } 
+        Cancelled,
+		[Display(Name = "Returned to Client")]
+		ReturnedToClient,
+	} 
 
     public enum BlendType
     {
@@ -50,6 +52,8 @@ namespace CCIA.Models
         public string Comments { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public bool? Submitted { get; set; }
+        [Display(Name = "Return Reason")] 
+        public string ReturnReason { get; set; }
         public bool? Approved { get; set; }
         [Display(Name ="Approved")]
         public DateTime? ApproveDate { get; set; }
