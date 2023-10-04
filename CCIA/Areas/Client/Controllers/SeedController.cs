@@ -398,6 +398,10 @@ namespace CCIA.Controllers.Client
             newSeed.CountyDrawn = seed.CountyDrawn;
             newSeed.OriginState = state;
             newSeed.OriginCountry = country;
+            if(app.CropId == 74)
+            {
+                newSeed.NotFinallyCertified = seed.NotFinallyCertified;
+            }
             if(seed.Type == "Original Run")
             {
                 newSeed.OriginalRun = true;
@@ -594,8 +598,8 @@ namespace CCIA.Controllers.Client
         public async Task<IActionResult> Edit(AdminSeedsViewModel vm)
         {
             var seedEdit = vm.seed;
-            var seedToUpdate = await _dbContext.Seeds.Where(s => s.Id == seedEdit.Id).FirstOrDefaultAsync();  
-            if(seedToUpdate == null)
+            var seedToUpdate = await _helper.FullSeeds().Where(s => s.Id == seedEdit.Id).FirstOrDefaultAsync();
+            if (seedToUpdate == null)
             {
                 ErrorMessage = "Seed lot not found.";
                 return RedirectToAction(nameof(Index));
@@ -615,7 +619,10 @@ namespace CCIA.Controllers.Client
             {
                 seedToUpdate.CertByOtherAgency = seedEdit.CertByOtherAgency;
             }
-            
+            if(seedToUpdate.GetCropId() == 74)
+            {
+                seedToUpdate.NotFinallyCertified = seedEdit.NotFinallyCertified;
+            }            
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
