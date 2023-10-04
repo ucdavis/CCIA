@@ -57,7 +57,7 @@
             </div>
         </form>
     </div>
-    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && (Model.LabsAndStandards.Labs.CciaConfirmed || Model.seed.NotFinallyCertified))
+    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && (Model.LabsAndStandards.Labs.CciaConfirmed || Model.seed.NotFinallyCertified || Model.seed.CertByOtherAgency))
     {
         <div class="row col-sm-12">
             <form asp-action="AcceptSeed">
@@ -66,7 +66,7 @@
             </form>       
         </div>
     }
-    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && !Model.LabsAndStandards.Labs.CciaConfirmed)
+    @if(Model.seed.Status == SeedsStatus.PendingAcceptance.GetDisplayName() && !Model.LabsAndStandards.Labs.CciaConfirmed && !Model.seed.CertByOtherAgency)
     {
         <div class="row col-sm-12">
             <b>Must confirm the lab results before you can accept this lot unless it is NFC.</b>
@@ -139,7 +139,14 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
                 </div>
-            </div>                  
+            </div>     
+            @if (Model.seed.OriginState != 102)
+            {
+                    <div class="form-group row">
+                            <label asp-for="seed.CertByOtherAgency" class="col-sm-8 col-form-label"></label>
+                        <input type="checkbox" asp-for="seed.CertByOtherAgency" class="col-sm-1 form-control disabled">
+                    </div>
+            }
             <div class="form-group row">
                 <label asp-for="seed.SampleDrawnBy" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
