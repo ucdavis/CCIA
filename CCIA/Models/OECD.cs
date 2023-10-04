@@ -230,6 +230,30 @@ namespace CCIA.Models
             }
         }
 
+        public string Flag
+        {
+            get
+            {
+                if(Seeds != null && Seeds.LabResults != null && Seeds.LabResults.PrivateLabDate.HasValue && CloseDate.HasValue)
+                {
+                    
+                    if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) > CloseDate.Value || CloseDate.Value.AddMonths(6) > Seeds.LabResults.PrivateLabDate.Value)
+                    {
+                        return "Warning: It appears the close date is more than 6 months from the lab results on the SID";
+                    }
+                }
+                if(Seeds!= null && Seeds.LabResults != null && !Seeds.LabResults.PrivateLabDate.HasValue)
+                {
+                    return "Alert: Lab results does not have a date, so can't check the 6 months requirement";
+                }
+                if(Seeds == null || Seeds.LabResults == null)
+                {
+                    return "No Seed or Lab Results provided (can't check 6 month requirement";
+                }
+                return "";
+            }
+        }
+
        
 
         [Display(Name="USDA Ref#")]
