@@ -237,9 +237,13 @@ namespace CCIA.Models
                 if(Seeds != null && Seeds.LabResults != null && Seeds.LabResults.PrivateLabDate.HasValue && CloseDate.HasValue)
                 {
                     
-                    if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) > CloseDate.Value || CloseDate.Value.AddMonths(6) > Seeds.LabResults.PrivateLabDate.Value)
+                    if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) < CloseDate.Value)
                     {
-                        return "Warning: It appears the close date is more than 6 months from the lab results on the SID";
+                        return "Warning: It appears the close date is more than 6 months from the lab results on the SID.";
+                    }
+                    if(Seeds.LabResults.PrivateLabDate.Value > CloseDate.Value)
+                    {
+                        return "Lab results lab date is greater than the close date. Please double check this.";
                     }
                 }
                 if(Seeds!= null && Seeds.LabResults != null && !Seeds.LabResults.PrivateLabDate.HasValue)
