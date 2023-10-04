@@ -35,7 +35,9 @@ namespace CCIA.Services
         Task BlendRequestApproved(BlendRequests blend);
 
         Task BlendRequestSubmitted(BlendRequests blend);
-        Task SeedTransferSubmitted(SeedTransfers request);
+        Task BlendReturnedForReview(BlendRequests blend);
+
+		Task SeedTransferSubmitted(SeedTransfers request);
         Task SeedTransferResponded(SeedTransfers request);
 
         Task TagApproved(Tags tag);
@@ -469,7 +471,23 @@ namespace CCIA.Services
             }
         }
 
-        public async Task TagReturnedForReview(Tags tag)
+		public async Task BlendReturnedForReview(BlendRequests blend)
+		{
+			var users = await _dbContext.Contacts.Where(c => (c.Id == blend.UserEntered || (c.BlendNotices && c.OrgId == blend.ConditionerId)) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
+
+			foreach (var user in users)
+			{
+				var notification = new Notifications
+				{
+					Email = user,
+					TagId = blend.Id,
+					Message = "Blend returned to client for review by CCIA Staff"
+				};
+				_dbContext.Notifications.Add(notification);
+			}
+		}
+
+		public async Task TagReturnedForReview(Tags tag)
         {
              var users = await _dbContext.Contacts.Where(c => (c.Id == tag.UserEntered.Value || (c.TagNotices && c.OrgId == tag.TaggingOrg )) && !string.IsNullOrWhiteSpace(c.Email)).Select(c => c.Email).ToListAsync();
 

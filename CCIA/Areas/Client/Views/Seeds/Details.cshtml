@@ -30,13 +30,13 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <form asp-action="Submit">
-                            <input type="hidden" asp-for="seed.Id">
+                            <input type="hidden" name="id" id="id" value="@Model.seed.Id">
                             <input type="submit" value="Submit for Certification" class="btn btn-primary" onclick="return confirm('Once submitted, you will no longer be able to edit lot information or add/change supporting material. \n\nAre you sure you want to submit this lot for certification?')">
                         </form>                        
                     </div>
                     <div class="col-sm-6">
                         <form asp-action="Cancel">
-                            <input type="hidden" asp-for="seed.Id">
+                            <input type="hidden" name="id" id="id" value="@Model.seed.Id">
                             <input type="submit" value="Cancel Lot" class="btn btn-dark" onclick="return confirm('Once cancelled, this lot will not be active or usable to make tags, blends, transfers, or bulk sales. \n\nAre you sure you want to cancel this lot?')">
                         </form>                        
                     </div>

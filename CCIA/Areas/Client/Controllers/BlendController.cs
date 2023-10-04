@@ -736,8 +736,11 @@ namespace CCIA.Controllers.Client.Client
            }      
            if(blend.Status != BlendStatus.Initiated.GetDisplayName() || blend.Submitted.Value)
            {
-               ErrorMessage = "That blend is not ready to submit";
-               return RedirectToAction(nameof(Details), new { id = Id });
+                if(blend.Status != BlendStatus.ReturnedToClient.GetDisplayName())
+                {
+                   ErrorMessage = "That blend is not ready to submit";
+                   return RedirectToAction(nameof(Details), new { id = Id });
+                }               
            }
            await _notificationService.BlendRequestSubmitted(blend);
            blend.Status = BlendStatus.PendingAcceptance.GetDisplayName();
