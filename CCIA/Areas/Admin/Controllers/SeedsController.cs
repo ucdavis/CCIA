@@ -274,6 +274,7 @@ namespace CCIA.Controllers.Admin
 
         }
 
+        [HttpPost]
         public async Task<IActionResult> ReturnSID(int id, string reason)
         {
             var seedToReturn = await _dbContext.Seeds.Where(s => s.Id == id).FirstOrDefaultAsync();
