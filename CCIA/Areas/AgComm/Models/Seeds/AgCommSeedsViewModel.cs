@@ -57,7 +57,7 @@ namespace CCIA.Models.AgComm
                     .FirstOrDefaultAsync(),
                 LabsAndStandards = labsAndStandards,
                 Documents = await _dbContext.SeedDocuments.Where(d => d.SeedsId == sid).ToListAsync(),
-                documentTypes = await _dbContext.SeedsDocumentTypes.ToListAsync(),                
+                documentTypes = await _dbContext.SeedsDocumentTypes.OrderBy(d => d.Order).ToListAsync(),                
             };
         }        
     }
