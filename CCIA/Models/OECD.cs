@@ -234,10 +234,14 @@ namespace CCIA.Models
         {
             get
             {
+                if(BID.HasValue)
+                {
+                    return "Blend used. Please manually check 6 month reqruirment on lab results.";
+                }
                 if(Seeds != null && Seeds.LabResults != null && Seeds.LabResults.PrivateLabDate.HasValue && CloseDate.HasValue)
                 {
                     
-                    if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) < CloseDate.Value)
+                    if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) <= CloseDate.Value)
                     {
                         return "Warning: It appears the close date is more than 6 months from the lab results on the SID.";
                     }
