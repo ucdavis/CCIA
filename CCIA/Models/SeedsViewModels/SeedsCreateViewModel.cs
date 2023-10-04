@@ -116,6 +116,8 @@ namespace CCIA.Models.SeedsCreateViewModel
         public string SamplerId { get; set; }
         [Display(Name = "OECD Lot?")]
         public bool OECDLot { get; set; }
+        [Display(Name ="Not Finally Certified?")]
+        public bool NotFinallyCertified { get; set; }
 
         public int? CertYear { get; set; }
         public int SampleFormCertNumber { get; set; }

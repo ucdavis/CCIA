@@ -123,8 +123,10 @@ namespace CCIA.Models
                 return CropFee.GetValueOrDefault() + CertFee.GetValueOrDefault() + ResearchFee.GetValueOrDefault() + MinimumFee.GetValueOrDefault();
             }
 
-        } 
-        
+        }
+
+        [Display(Name = "Finally Certified by Other Agency?")]
+        public bool CertByOtherAgency { get; set; }
         public bool LotCertOk { get; set; }
         [Display(Name="Entered By")]
         public int? UserEntered { get; set; }
