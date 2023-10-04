@@ -112,6 +112,10 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
         [Display(Name = "OECD Lot?")]
         public bool OECDLot { get; set; }
 
+        [Display(Name = "Finally Certified by Other Agency?")]
+        [Required]
+        public string CertByOtherAgency { get; set; }
+
         public int? CertYear { get; set; }
         
         public int? SampleFormRad { get; set; }

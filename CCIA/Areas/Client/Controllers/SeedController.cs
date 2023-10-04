@@ -103,13 +103,13 @@ namespace CCIA.Controllers.Client
                 return RedirectToAction(nameof(Index));
             }
             var labs = await _dbContext.SampleLabResults.Where(l => l.SeedsId == seedToSubmit.Id && l.PurityPercent.HasValue && l.GermPercent.HasValue).AnyAsync();
-            if(!labs)
+            if(!labs && !seedToSubmit.CertByOtherAgency && !seedToSubmit.NotFinallyCertified)
             {
                 ErrorMessage = "You must have entered the lab results for this SID before submitting";
                 return RedirectToAction("Details", new { id = seedToSubmit.Id });
             }
             var files = await _dbContext.SeedDocuments.Where(f => f.SeedsId == seedToSubmit.Id && f.DocType == 1).AnyAsync();
-            if(!files)
+            if(!files && !seedToSubmit.NotFinallyCertified)
             {
                 ErrorMessage = "You must have uploaded lab results for this SID before submitting";
                 return RedirectToAction("Details", new { id = seedToSubmit.Id });
@@ -492,6 +492,7 @@ namespace CCIA.Controllers.Client
             newSeed.OriginalRun = seed.Type == "Original Run" ? true : false;
             newSeed.Remill = seed.Type == "Remill" ? true : false;            
             newSeed.Remarks = seed.Remarks;
+            newSeed.CertByOtherAgency = seed.CertByOtherAgency == "True" ? true : false;
             newSeed.SampleDrawnBy = seed.SampleDrawnBy + " - " + seed.SamplerName;
             newSeed.SamplerID = seed.SamplerId;
             newSeed.OECDLot = seed.OECDLot;
@@ -609,7 +610,12 @@ namespace CCIA.Controllers.Client
             seedToUpdate.LotNumber = seedEdit.LotNumber;
             seedToUpdate.PoundsLot = seedEdit.PoundsLot;            
             seedToUpdate.Class = seedEdit.Class;
-            seedToUpdate.Remarks = seedEdit.Remarks;        
+            seedToUpdate.Remarks = seedEdit.Remarks;
+            if(seedToUpdate.OriginState != 102)
+            {
+                seedToUpdate.CertByOtherAgency = seedEdit.CertByOtherAgency;
+            }
+            
 
             if(ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();

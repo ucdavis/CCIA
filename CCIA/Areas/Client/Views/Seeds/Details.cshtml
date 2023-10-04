@@ -89,7 +89,21 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.seed.ClassProduced.CertClass)
                 </div>
-            </div>  
+            </div>
+            @if (Model.seed.OriginState != 102)
+            {
+                <div class="form-group row">
+                        <label asp-for="seed.CertByOtherAgency" class="col-sm-8 col-form-label"></label>
+                    <input type="checkbox" asp-for="seed.CertByOtherAgency" class="col-sm-1 form-control disabled">
+                </div>
+            }
+            @if(Model.seed.GetCropId() == 74)
+            {
+                <div class="form-group row">
+                    <label asp-for="seed.NotFinallyCertified" class="col-sm-8 col-form-label"></label>
+                    <input type="checkbox" asp-for="seed.NotFinallyCertified" class="col-sm-1 form-control disabled">
+                </div>
+            }
             <div class="form-group row">
                 <label asp-for="seed.CertNumber"  class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
