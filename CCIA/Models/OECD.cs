@@ -244,11 +244,11 @@ namespace CCIA.Models
                 }
                 if(Seeds!= null && Seeds.LabResults != null && !Seeds.LabResults.PrivateLabDate.HasValue)
                 {
-                    return "Alert: Lab results does not have a date, so can't check the 6 months requirement";
+                    return "Alert: Lab results does not have a date (can't check the 6 months requirement)";
                 }
                 if(Seeds == null || Seeds.LabResults == null)
                 {
-                    return "No Seed or Lab Results provided (can't check 6 month requirement";
+                    return "No Seed or Lab Results provided (can't check 6 month requirement)";
                 }
                 return "";
             }
