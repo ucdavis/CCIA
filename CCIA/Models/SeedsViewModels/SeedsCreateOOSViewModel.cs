@@ -27,9 +27,9 @@ namespace CCIA.Models.SeedsCreateOOSViewModel
 
         public static async Task<SeedsCreateOOSViewModel> Create(CCIAContext _dbContext)
         {               
-            var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
+            //var countyId = await _dbContext.Organizations.Where(o => o.Id == 168).Select(o => o.CountyId).FirstAsync();            
             var seed = new NewOOSSeeds();
-            seed.CountyDrawn = countyId; 
+            seed.CountyDrawn = 0; 
             seed.CertYear = CertYearFinder.CertYear;
             var cal = await _dbContext.StateProvince.Where(s => s.Name == "California").Select(s => s.StateProvinceId).FirstAsync();           
            

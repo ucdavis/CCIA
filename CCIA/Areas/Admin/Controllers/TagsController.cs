@@ -285,8 +285,12 @@ namespace CCIA.Controllers.Admin
             if(model.Stage ==  TagStages.Requested.GetDisplayName() && (model.SeriesRequest || model.TaggingOrg == 2193 || model.TaggingOrg == 4393 || (model.TaggingOrg == 293 && model.TagType == 7)))
             {
                 ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.ConditionerYearEntered && c.PrintSeries).AnyAsync();
-            }            
-
+            }
+            var varietyList = await _dbContext.VarFull.Where(v => v.ParentId == model.VarietyId).ToListAsync();
+            if(!varietyList.Any(v => v.Name.Contains(model.Alias)))
+            {
+                ViewBag.AliasWarning = "It appears the entered alias does not match any known aliases";
+            }
             if(model == null)
             {
                 ErrorMessage = "Tag ID not found!";

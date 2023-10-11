@@ -143,10 +143,10 @@
                  <input asp-for="Seed.SamplerId" type="text" class="col-sm-6 form-control"></input>
                 <span asp-validation-for="Seed.SamplerId" class="text-danger"></span>
             </div>
-            <div class="form-group row required">
+            <div class="form-group row">
                 <label asp-for="Seed.CountyDrawn" class="col-sm-3 col-form-label"></label>                
-                <select asp-for="Seed.CountyDrawn" class="col-sm-6 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","Name"))">
-                    <option value="0">Select county....</option>
+                <select asp-for="Seed.CountyDrawn" class="col-sm-7 form-control" asp-items="@(new SelectList(Model.Counties, "CountyId","Name"))">
+                    <option value="0">Select CA county (ignore if drawn out of state)</option>
                 </select>
                 <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               
             </div>
