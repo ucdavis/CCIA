@@ -28,10 +28,14 @@
             {
             <tr>
                 <td>
-                    @if(oecd.DatePrinted.HasValue)
+                    @if(oecd.DatePrinted.HasValue && !oecd.Canceled)
                     {
-                        <a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a>
-                    } else {
+                            <a asp-action="Certificate" asp-controller="oecd" asp-route-id="@oecd.Id" class="btn btn-info">Cert</a>
+                        } else if (oecd.Canceled)
+                        {
+                            <span>Cancelled</span>
+                        }
+                        else {
                         <span><a asp-action="Edit" asp-route-id="@oecd.Id" class="btn btn-primary">Pending</a></span>
                     }
                 </td>

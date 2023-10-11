@@ -43,8 +43,19 @@
                     </form>
                 </div>
                 
-            </div>   
-         }        
+        </div>
+    }
+    else if (this.User.IsInRole("Admin") || this.User.IsInRole("CoreStaff"))
+    {
+        <div class="row">            
+            <div class="col-sm-4">
+                <form asp-action="Cancel">
+                    <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                    <input type="submit" class="btn btn-dark" value="Cancel Blend" onclick="return confirm(" Are you sure you want to oncancel this blend?">
+                </form>
+            </div>
+        </div>
+    }
     <div class="row col-sm-12">
         <form asp-action="ReturnBlend">
             <input type="hidden" id="id" name="id" value="@Model.blend.Id">
