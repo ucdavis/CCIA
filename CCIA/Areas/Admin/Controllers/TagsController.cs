@@ -287,7 +287,7 @@ namespace CCIA.Controllers.Admin
                 ViewBag.AllowConditionerPrint = await _dbContext.CondStatus.Where(c => c.OrgId == model.TaggingOrg && c.Year == model.ConditionerYearEntered && c.PrintSeries).AnyAsync();
             }
             var varietyList = await _dbContext.VarFull.Where(v => v.ParentId == model.VarietyId).ToListAsync();
-            if(!varietyList.Any(v => v.Name.Contains(model.Alias)))
+            if(model.Alias != null && !varietyList.Any(v => v.Name.Contains(model.Alias)))
             {
                 ViewBag.AliasWarning = "It appears the entered alias does not match any known aliases";
             }
