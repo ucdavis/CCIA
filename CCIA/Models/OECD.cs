@@ -25,8 +25,8 @@ namespace CCIA.Models
 
         public int? TagId { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0}")]
-        public int? Pounds { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:#,##0.##}")]
+        public decimal? Pounds { get; set; }
 
         [Display(Name ="Cert #")]
         public string CertNumber { get; set; }
