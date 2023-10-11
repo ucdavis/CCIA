@@ -286,7 +286,11 @@
             <div class="form-group row">
                 <label asp-for="Alias" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.Alias)
+                    @Html.DisplayFor(x => x.Alias) <br />
+                    @if (@ViewBag.AliasWarning != null)
+                    {
+                        <span class="text-danger">@ViewBag.AliasWarning</span>
+                    }
                 </div>
             </div>
             <div class="form-group row">
