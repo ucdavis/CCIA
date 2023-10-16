@@ -218,28 +218,11 @@ namespace CCIA.Controllers.Admin
             return View();
         }
 
-        public async Task<IActionResult> Certificates(string ids, string charge)
+        public async Task<IActionResult> Certificates(string ids)
         {           
             var listIds = ids.Split(',').Select(int.Parse).ToList();
             var oecd = _helper.FullOECD();
-            var model = await oecd.Where(o => listIds.Contains(o.Id)).ToListAsync();
-
-            if (charge == "on" || charge == "true")
-            {
-                foreach(var file in model)
-                {
-                    if(file.DatePrinted == null)
-                    {
-                        await _notificationService.OECDCharged(file);
-                        file.DatePrinted = DateTime.Now;
-                        file.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
-                        await _dbContext.SaveChangesAsync();
-
-                        var p0 = new SqlParameter("@file_num", file.Id);
-                        await _dbContext.Database.ExecuteSqlRawAsync($"EXEC charge_OECD @file_num", p0);
-                    }
-                }                
-            }
+            var model = await oecd.Where(o => listIds.Contains(o.Id)).ToListAsync();           
             return View(model);
         }
 
