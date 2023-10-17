@@ -194,9 +194,20 @@ namespace CCIA.Controllers.Admin
             await _dbContext.Database.ExecuteSqlRawAsync($"EXEC accept_seeds_post_action @seeds_id", p0);
 
             return  RedirectToAction(nameof(SIR), new {id = id});            
-        }    
+        }
+        public ActionResult GetListToPrint()
+        {
+            return View();
+        }
 
-        
+        public async Task<IActionResult> MultiSIR(string ids)
+        {
+            var listIds = ids.Split(',').Select(int.Parse).ToList();
+            var model = await ClientSeedsViewModel.CreateSIRList(_dbContext, _helper, listIds);
+            return View(model);
+        }
+
+
         public async Task<IActionResult> Details(int id)
         {  
             var model = await AdminSeedsViewModel.CreateDetails(_dbContext, id, _helper);

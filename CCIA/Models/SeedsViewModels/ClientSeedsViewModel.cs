@@ -70,5 +70,21 @@ namespace CCIA.Models.SeedsViewModels
                 AssayMessage = await _dbContext.Seeds.Where(x => x.Id == sid).Select(d => CCIAContext.GetAssayMessage(d.Id)).FirstOrDefaultAsync(),                                       
             };
         }
+
+        public static async Task<List<ClientSeedsViewModel>> CreateSIRList(CCIAContext _dbContext, IFullCallService _helper,  List<int> sid)
+        {
+            var model = new List<ClientSeedsViewModel>();
+            foreach(var id in sid)
+            {
+                var thisVM = new ClientSeedsViewModel
+                {
+                    seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(),
+                    StandardsMessage = await _dbContext.Seeds.Where(x => x.Id == id).Select(d => CCIAContext.GetStandardsMessage(d.Id)).FirstOrDefaultAsync(),
+                    AssayMessage = await _dbContext.Seeds.Where(x => x.Id == id).Select(d => CCIAContext.GetAssayMessage(d.Id)).FirstOrDefaultAsync(),
+                };
+                model.Add(thisVM);
+            }
+            return model;
+        }
     }
 }

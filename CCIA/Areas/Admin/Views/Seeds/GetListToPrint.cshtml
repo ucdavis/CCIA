@@ -1,0 +1,24 @@
+﻿<h2>Billing SIR Multi Print</h2>
+<form asp-action="MultiSIR" method="GET">
+    <div class="container">      
+        <div class="row">
+            <div class="col-sm-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label for="ids" class="col-sm-3 col-form-label">SID, comma separated</label>
+            <input type="text" id="ids" class="col-sm-9 form-control" name="ids" data-val="true" data-val-required="OECD IDs list is required">
+            <span class="field-validation-valid text-danger" for="Id" data-valmsg-replace="true"></span>
+        </div>
+        <div class="row">
+            <input type="submit" value="Print Multi SIR" id="submit" class="btn btn-primary"></input> 
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
