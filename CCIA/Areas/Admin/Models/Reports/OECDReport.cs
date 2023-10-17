@@ -13,7 +13,7 @@ namespace CCIA.Models
        public string OECDClass { get; set; }
 
        public string report_group { get; set; }
-       public int pounds_oecd { get; set; }
+       public decimal pounds_oecd { get; set; }
        
        public int number_certificates{ get; set; }
         
