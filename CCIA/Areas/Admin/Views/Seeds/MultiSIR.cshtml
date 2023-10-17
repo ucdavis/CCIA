@@ -1,0 +1,251 @@
+@model List<CCIA.Models.SeedsViewModels.ClientSeedsViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title></title>
+    <meta http-equiv="content-style-type" content="text/css" />    
+     <link rel="stylesheet" href="/css/printStyle.css" type="text/css" /> 
+</head>
+<body style="font-size: smaller">
+    @foreach(var sir in Model)
+    {
+        <div style="page-break-after: always">             
+            <table width="100%" border="0">
+                <tr>
+                    <td align="center" width="100%">
+                    
+                        <div align="center" class="title">
+                            <img src="/images/ccia-tra.GIF" align="left" width="150px"/>
+                SEED INSPECTION REPORT
+                        <br/>
+                        @sir.seed.AppTypeTrans.CertificateTitle
+                                                        </div>
+            <div align="center">
+                California Crop Improvement Association<br />
+                Frank G. Parsons Seed Certification Center<br />
+                University of California<br />
+                One Shields Avenue<br />
+                Davis, California 95616-8541<br />
+                <br />
+            </div>
+                    </td>
+                    <td align="right" valign="top" nowrap>@sir.seed.CertificateCornerLabel()</td>
+                </tr>
+            </table>                                         
+            <Table Width="100%">
+                <tr>
+                    <td>
+                        <table  border="0" width="100%">
+                            <tr>
+                                <td valign="top">
+                                    <table width="100%" border="0"  >                                
+                                        <tr>
+                                            <td valign="top">Applicant: </td>
+                                            <td>
+                                                <span class="labelnoline">@sir.seed.ApplicantOrganization?.Name</span>
+                                                &nbsp; &nbsp;&nbsp; (ID# <span class="labelnoline"> @sir.seed.ApplicantOrganization?.Id</span>)<br />
+                                            </td>
+                                            <td align="right" valign="top">
+                                                Date:
+                                                @if(sir.seed.ConfirmedAt.HasValue)
+                                                {
+                                                    <span class="labelnoline">@sir.seed.ConfirmedAt.Value.ToShortDateString()</span>
+                                                }
+                                            </td>
+                                        </tr>
+                            <tr>
+                                <td> </td>
+                                <td colspan="2">
+                                    @if(sir.seed.ApplicantOrganization?.Addresses.First().Address != null)
+                                    {    
+                                        @Html.Raw(sir.seed.ApplicantOrganization?.Addresses.First().Address.AddressLines) <br>
+                                        @sir.seed.ApplicantOrganization?.Addresses.First().Address.City<span>,</span> @sir.seed.ApplicantOrganization.Addresses.First().Address.StateName @sir.seed.ApplicantOrganization.Addresses.First().Address.PostalCode
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Conditioner: </td>
+                                 <td>
+                                    <span class="labelnoline">@sir.seed.ConditionerOrganization.Name</span>
+                                    &nbsp; &nbsp;&nbsp; (ID# <span class="labelnoline">@sir.seed.ConditionerOrganization.Id</span>)<br />
+                                </td>
+                                <td align="right" valign="top">&nbsp;
+                                </td>
+                            </tr>
+                             <tr>
+                                <td> </td>
+                                <td colspan="2">
+                                    @if(sir.seed.ConditionerOrganization.Addresses.First().Address != null)
+                                    {  
+                                        @Html.Raw(sir.seed.ConditionerOrganization.Addresses.First().Address.AddressLines)<br>
+                                        @sir.seed.ConditionerOrganization.Addresses.First().Address.City<span>,</span> @sir.seed.ConditionerOrganization.Addresses.First().Address.StateName @sir.seed.ConditionerOrganization.Addresses.First().Address.PostalCode
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br />
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    A sample of the seed lot described below has been tested to meet minimum seed inspection
+                                    standards for @sir.seed.AppTypeTrans.SirTitle. Final @sir.seed.AppTypeTrans.ProcessTitle on seed lots meeting standards
+                                    as indicated below may be obtained by the owner of the seed requesting attachment
+                                    of official certification tags, and assuming responsibility for any portion of the
+                                    lot, so certified being of @sir.seed.AppTypeTrans.ProcessTitle seed quality. If the seed fails to meet @sir.seed.AppTypeTrans.ProcessTitle certification
+                                    requirements, reasons are given below.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <br />
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td>
+                                    Sample Form No:&nbsp;</td>
+                                <td colspan="2" class="doublespace">
+                                    <span class="labelnoline">@sir.seed.FormNumber()</span>
+                                </td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td nowrap="noWrap">
+                                    @sir.seed.AppTypeTrans.VarietyTitle and @sir.seed.AppTypeTrans.SpeciesOrCrop:&nbsp;</td>
+                                <td colspan="2" class="doublespace">
+                                    @sir.seed.Variety.Name @sir.seed.Variety.Crop.Name
+                            </tr>
+                            <tr class="doublespace">
+                                <td>
+                                    @sir.seed.AppTypeTrans.NumberTitle No:</td>
+                                <td>
+                                    @sir.seed.FullCert()</td>
+                                <td>
+                                    Weight of Lot: @string.Format("{0:N1}", sir.seed.PoundsLot) Pounds</td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td>
+                                    @sir.seed.AppTypeTrans.ProducedTitle:
+                                </td>
+                                <td>
+                                    @sir.seed.ClassProduced?.CertClass
+                                </td>
+                                <td>
+                                    @if(sir.seed.CertProgram == "GQ" || sir.seed.CertProgram == "PV" || sir.seed.CertProgram == "RQ")
+                                    {
+                                        <span>Category: @sir.seed.Variety.Category</span>
+                                    }
+                                    @if(sir.seed.CertProgram == "PV")
+                                    {
+                                        <span>Germplasm Type: @sir.seed.Application.PvgSource</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td colspan="3">
+                                    Seed Certification Results: @sir.seed.CertResults()<br />
+                                </td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td colspan="3">
+                                    Remarks: @sir.seed.Remarks <br> @sir.AssayMessage <br> @sir.StandardsMessage <br> @sir.seed.LabResults.Comments <br> @sir.seed.VarietyComment()</td>
+                            </tr>
+                            <tr class="doublespace">                                    
+                                <td>&nbsp;
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr class="doublespace">
+                                <td>
+                                </td>
+                                <td align="right">
+                                    @if(sir.seed.CertProgram != "GQ")
+                                    {
+                                        <table class="table">
+                                            <tr>
+                                                <td align="right">
+                                                    @if(sir.seed.CertFee.HasValue && sir.seed.CertFee != 0)
+                                                    {
+                                                        <span class="labelnoline">Cert Fee = @string.Format("{0:C}", sir.seed.CertFee)</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    @if(sir.seed.CropFee.HasValue && sir.seed.CropFee != 0)
+                                                    {
+                                                        <span class="labelnoline">@sir.seed.CropFeeLabel() = @string.Format("{0:C}", sir.seed.CropFee)</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                     @if(sir.seed.ResearchFee.HasValue && sir.seed.ResearchFee != 0)
+                                                    {
+                                                        <span class="labelnoline">Research Fee = @string.Format("{0:C}", sir.seed.ResearchFee)</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                             <tr>
+                                                <td align="right">
+                                                     @if(sir.seed.MinimumFee.HasValue && sir.seed.MinimumFee != 0)
+                                                    {
+                                                        <span class="labelnoline">Minimum Sample Fee = @string.Format("{0:C}", sir.seed.MinimumFee)</span>
+                                                    }
+                                                </td>
+                                            </tr>                                        
+                                            <tr>
+                                                <td class="overline" align="right">
+                                                    @if(sir.seed.TotalFee.HasValue && sir.seed.TotalFee != 0)
+                                                    {
+                                                        <span class="labelnoline">Total Charges = @string.Format("{0:C}", sir.seed.TotalFee)</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    }
+                                
+                                </td>
+                                <td>
+                                </td>
+                            </tr> <tr>
+                                <td colspan="3">&nbsp;
+                                </td>                                    
+                            </tr>                               
+                        </table>  
+                </td></tr>                  
+            </table>
+                    </td>
+                </tr>
+            </table>         
+            <table width="100%" border="0">
+                <tr>
+                    <td> </td>
+                    <td style="width: 30px">
+                    </td>                        
+                    <td valign="top" rowspan="2" align="right"><img width="250px" src="/images/ExecutiveDirector_signature.JPG" alt="Executive Director Signature" /></td>
+                </tr>
+                <tr><td>Invoice Copy</td></tr>
+            </table> 
+        </div>   
+    }
+    
+</body>
+</html>
