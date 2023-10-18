@@ -31,7 +31,11 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.CropName)
                 </div>
-            </div>                              
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Cancelled" class="col-sm-3 col-form-label"></label>
+                <input type="checkbox" asp-for="Cancelled" class="col-sm-3 form-control">
+            </div>
         </div>
         <div class="col-md-6 col-xl-4"> @* Second column *@ 
             <div class="form-group row">

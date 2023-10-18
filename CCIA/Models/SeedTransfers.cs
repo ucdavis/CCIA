@@ -177,8 +177,9 @@ namespace CCIA.Models
         public DateTime? AdminUpdatedDate { get; set; }
 
         public bool AdminUpdated { get; set; }
+        public bool Cancelled { get; set; }
 
-       
+
         public int? LinkId
         {
             get
