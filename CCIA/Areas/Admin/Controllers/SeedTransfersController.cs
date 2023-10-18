@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
 using CCIA.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
@@ -17,11 +19,13 @@ namespace CCIA.Controllers.Admin
     {
         private readonly CCIAContext _dbContext;
         private readonly IFullCallService _helper;
+        private readonly INotificationService _notificationService;
 
-        public SeedTransfersController(CCIAContext dbContext, IFullCallService helper)
+        public SeedTransfersController(CCIAContext dbContext, IFullCallService helper, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _helper = helper;
+            _notificationService = notificationService;
         }
 
         public IActionResult Index()
@@ -43,6 +47,24 @@ namespace CCIA.Controllers.Admin
                 return RedirectToAction(nameof(Lookup));
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var seedTransfer = await _dbContext.SeedTransfers.Where(t => t.Id == id).FirstOrDefaultAsync();
+            if (seedTransfer == null)
+            {
+                ErrorMessage = "Seed Transfer not found";
+                return RedirectToAction(nameof(Index));
+            }
+            seedTransfer.Cancelled = true;
+            seedTransfer.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
+            seedTransfer.AdminUpdatedDate = DateTime.Now;
+            await _notificationService.SeedTransferCancelled(seedTransfer);
+            await _dbContext.SaveChangesAsync();
+            Message = "Seed Transfer cancelled.";
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         public async Task<IActionResult> Previous(int id)

@@ -39,6 +39,7 @@ namespace CCIA.Services
 
 		Task SeedTransferSubmitted(SeedTransfers request);
         Task SeedTransferResponded(SeedTransfers request);
+        Task SeedTransferCancelled(SeedTransfers request);
 
         Task TagApproved(Tags tag);
         Task TagReturnedForReview(Tags tag);
@@ -372,6 +373,50 @@ namespace CCIA.Services
                 _dbContext.Notifications.Add(notification);      
             }
             
+        }
+
+        
+        public async Task SeedTransferCancelled(SeedTransfers request)
+        {
+            var assignments = await GetSeedTransferEmployeeInformList(request);
+
+            foreach (var employee in assignments)
+            {
+                var notification = new Notifications
+                {
+                    Email = $"{employee.UCDMailID}@ucdavis.edu",
+                    StId = request.Id,
+                    Message = "Seed Transfer cancelled",
+                    IsAdmin = false,
+                };
+                _dbContext.Notifications.Add(notification);
+            }
+            var users = await _dbContext.Contacts.Where(c => !string.IsNullOrWhiteSpace(c.Email) && (c.Id == request.CreatedById || (c.OrgId == request.OriginatingOrganizationId && ((c.ApplicationNotices && request.ApplicationId.HasValue && request.ApplicationId > 0) || (c.SeedNotices && request.SeedsID.HasValue && request.SeedsID > 0) || (c.BlendNotices && request.BlendId.HasValue && request.BlendId > 0))))).Select(c => c.Email).ToListAsync();
+
+            foreach (var user in users)
+            {
+                var notification = new Notifications
+                {
+                    Email = user,
+                    StId = request.Id,
+                    Message = "Seed Transfer cancelled",
+                    IsAdmin = false,
+                };
+                _dbContext.Notifications.Add(notification);
+            }
+
+            var countyComm = await _dbContext.Organizations.Where(o => !string.IsNullOrWhiteSpace(o.Email) && o.AgCommissioner && (o.CountyId == request.OriginatingCountyId || (o.CountyId == request.PurchaserCountyId && request.PurchaserStateId == 102))).Distinct().ToListAsync();
+            foreach (var org in countyComm)
+            {
+                var notification = new Notifications
+                {
+                    Email = org.Email,
+                    StId = request.Id,
+                    Message = "Seed Transfer cancelled",
+                    IsAdmin = false,
+                };
+                _dbContext.Notifications.Add(notification);
+            }
         }
 
         public async Task BlendRequestApproved(BlendRequests blendRequest)

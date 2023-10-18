@@ -247,7 +247,7 @@ namespace CCIA.Models.IndexViewModels
         {
             var viewModel = new SeedTransferIndexViewModel
             {
-                seedsTransfers = await _dbContext.SeedTransfers.Where(s => s.OriginatingOrganizationId == orgId && (s.CertificateDate.Year == certYear || certYear == -1))
+                seedsTransfers = await _dbContext.SeedTransfers.Where(s => !s.Cancelled && s.OriginatingOrganizationId == orgId && (s.CertificateDate.Year == certYear || certYear == -1))
                 .Include(st => st.Seeds)
                 .ThenInclude(s => s.ClassProduced)
                 .Include(st => st.Application)
