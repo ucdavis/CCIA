@@ -113,8 +113,9 @@ namespace CCIA.Models
         public DateTime? AdminUpdatedDate { get; set; }
 
         public bool NotificationSent { get; set; }
+        public bool Cancelled { get; set; }
 
-         public int? LinkId
+        public int? LinkId
         {
             get
             {

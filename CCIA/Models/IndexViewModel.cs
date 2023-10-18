@@ -143,7 +143,7 @@ namespace CCIA.Models.IndexViewModels
             var shares = await _dbContext.BulkSalesCertificatesShares.Where(s => s.ShareOrganizationId == orgId).Select(s => s.BulkSalesCertificatesId).ToListAsync();
             var viewModel = new BulkSalesCertificatesIndexViewModel
             {
-                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)) && (b.Date.Year == certYear || certYear == -1))
+                bulkSalesCertificates = await _dbContext.BulkSalesCertificates.Where(b => !b.Cancelled && (b.ConditionerOrganizationId == orgId || shares.Contains(b.Id)) && (b.Date.Year == certYear || certYear == -1))
                 .Include(b => b.Seeds)
                 .Include(b => b.PurchaserState)
                 .Include(b => b.PurchaserCountry)

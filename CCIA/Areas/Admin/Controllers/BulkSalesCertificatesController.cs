@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using CCIA.Helpers;
 using CCIA.Models;
 using CCIA.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
@@ -32,6 +34,23 @@ namespace CCIA.Controllers.Admin
         public IActionResult Lookup()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var bsc = await _dbContext.BulkSalesCertificates.Where(b => b.Id == id).FirstOrDefaultAsync();
+            if (bsc == null)
+            {
+                ErrorMessage = "BSC not found";
+                return RedirectToAction(nameof(Index));
+            }
+            bsc.Cancelled = true;
+            bsc.AdminUpdatedId = User.FindFirstValue(ClaimTypes.Name);
+            bsc.AdminUpdatedDate = DateTime.Now;            
+            await _dbContext.SaveChangesAsync();
+            Message = "BSC cancelled.";
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         public async Task<IActionResult> Details(int id)
