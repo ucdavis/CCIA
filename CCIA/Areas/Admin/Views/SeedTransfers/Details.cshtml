@@ -13,12 +13,15 @@
                 <div class="col-sm-6">                   
                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                 </div>
-            <div class="col-sm-6">
-                <form asp-action="Cancel">
-                    <input type="hidden" name="id" id="id" value="@Model.Id">
-                    <input type="submit" class="btn btn-dark" value="Cancel Blend" onclick="return confirm('Are you sure you want to cancel this Seed Transfer?')">
-                </form>
-            </div>
+            @if (!Model.Cancelled)
+            {
+                <div class="col-sm-6">
+                        <form asp-action="Cancel">
+                        <input type="hidden" name="id" id="id" value="@Model.Id">
+                        <input type="submit" class="btn btn-dark" value="Cancel Seed Transfer" onclick="return confirm('Are you sure you want to cancel this Seed Transfer?')">
+                    </form>
+                </div>
+            }
             </div>   
          }  
     <div class="row">
