@@ -13,12 +13,15 @@
                 <div class="col-sm-6">                   
                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                 </div>
+            @if (!Model.Cancelled)
+            {
                 <div class="col-sm-6">
                     <form asp-action="Cancel">
                         <input type="hidden" name="id" id="id" value="@Model.Id">
-                        <input type="submit" class="btn btn-dark" value="Cancel Blend" onclick="return confirm('Are you sure you want to cancel this BSC?')">
+                        <input type="submit" class="btn btn-dark" value="Cancel BSC" onclick="return confirm('Are you sure you want to cancel this BSC?')">
                     </form>
                 </div>
+            }
             </div>   
          }        
     <div class="row"> 
