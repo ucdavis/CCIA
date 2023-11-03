@@ -269,10 +269,10 @@ namespace CCIA.Controllers.Client
                 return RedirectToAction(nameof(Index));
             }
             var orgId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value);
-            var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget, orgId);
+            var model = await ClientTagRequestViewModel.Create(_dbContext, _helper, id, TagTarget, orgId);           
             if(model.request == null)
             {
-                ErrorMessage = "Tag request could not be started. Please double check ID & Tag type.";
+                ErrorMessage = "Tag request could not be started or that is not your SID/BID/AppID. Please double check ID & Tag type.";
                 return RedirectToAction(nameof(Index));
             }
         
