@@ -58,7 +58,11 @@ namespace CCIA.Models
                 var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
                 if(seed == null || seed.ConditionerId != orgId || seed.ApplicantId != orgId)
                 {
-                    return model;
+                    var transferedSeed =  await _dbContext.SeedTransfers.Where(t => t.SeedsID == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
+                    if(transferedSeed == null)
+                    {
+                        return model;
+                    }                    
                 }
                 var previousTags = await _dbContext.Tags.Where(t => t.SeedsID == id).ToListAsync();
                 var previousBlends = await _dbContext.LotBlends.Where(b => b.Sid == id).SumAsync(b => b.Weight);
@@ -86,7 +90,11 @@ namespace CCIA.Models
                 var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
                 if(blend == null || blend.ConditionerId != orgId)
                 {
-                    return model;
+                    var transferedSeed = await _dbContext.SeedTransfers.Where(t => t.BlendId == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
+                    if (transferedSeed == null)
+                    {
+                        return model;
+                    }
                 }
                 var previousTags = await _dbContext.Tags.Where(t => t.BlendId == id).ToListAsync();
                 model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 4).ToListAsync();
@@ -118,7 +126,11 @@ namespace CCIA.Models
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
                 if(app == null || app.ApplicantId != orgId)
                 {
-                    return model;
+                    var transferedSeed = await _dbContext.SeedTransfers.Where(t => t.ApplicationId == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
+                    if (transferedSeed == null)
+                    {
+                        return model;
+                    }
                 }
                 var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
                 model.possibleClasses = await _dbContext.AbbrevClassSeeds.Where(c => c.Id == 79).ToListAsync();
@@ -139,7 +151,11 @@ namespace CCIA.Models
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
                 if(app == null || app.ApplicantId != orgId)
                 {
-                    return model;
+                    var transferedSeed = await _dbContext.SeedTransfers.Where(t => t.ApplicationId == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
+                    if (transferedSeed == null)
+                    {
+                        return model;
+                    }
                 }
                 var previousTags = await _dbContext.Tags.Where(t => t.AppId == id).ToListAsync();
                 model.potatoClasses = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == app.AppTypeTrans.AppTypeId && c.ClassProducedId >= app.ClassProducedId).OrderBy(c => c.SortOrder).ToListAsync();
