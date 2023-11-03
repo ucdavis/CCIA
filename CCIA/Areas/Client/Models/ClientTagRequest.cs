@@ -56,7 +56,7 @@ namespace CCIA.Models
             if(tagTarget == "SID")
             {
                 var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
-                if(seed == null || seed.ConditionerId != orgId || seed.ApplicantId != orgId)
+                if(seed == null || (seed.ConditionerId != orgId && seed.ApplicantId != orgId))
                 {
                     var transferedSeed =  await _dbContext.SeedTransfers.Where(t => t.SeedsID == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
                     if(transferedSeed == null)
