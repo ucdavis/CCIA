@@ -56,7 +56,7 @@ namespace CCIA.Models
             if(tagTarget == "SID")
             {
                 var seed = await _helper.FullSeeds().Where(s => s.Id == id).FirstOrDefaultAsync(); 
-                if(seed == null)
+                if(seed == null || seed.ConditionerId != orgId || seed.ApplicantId != orgId)
                 {
                     return model;
                 }
@@ -84,7 +84,7 @@ namespace CCIA.Models
             if(tagTarget == "BID")
             {
                 var blend = await _helper.FullBlendRequest().Where(b => b.Id == id).FirstOrDefaultAsync();
-                if(blend == null)
+                if(blend == null || blend.ConditionerId != orgId)
                 {
                     return model;
                 }
@@ -116,7 +116,7 @@ namespace CCIA.Models
             if(tagTarget == "LT")
             {
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
-                if(app == null)
+                if(app == null || app.ApplicantId != orgId)
                 {
                     return model;
                 }
@@ -137,7 +137,7 @@ namespace CCIA.Models
             if(tagTarget == "PO")
             {
                 var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
-                if(app == null)
+                if(app == null || app.ApplicantId != orgId)
                 {
                     return model;
                 }
