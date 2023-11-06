@@ -254,6 +254,7 @@ namespace CCIA.Controllers.Admin
             seedToUpdate.ApplicantId = seedEdit.ApplicantId;
             seedToUpdate.OfficialVarietyId = seedEdit.OfficialVarietyId;
             seedToUpdate.SampleFormCertNumber = seedEdit.SampleFormCertNumber;
+            seedToUpdate.SampleFormRad = seedEdit.SampleFormRad;
             seedToUpdate.LotNumber = seedEdit.LotNumber;
             seedToUpdate.PoundsLot = seedEdit.PoundsLot;
             seedToUpdate.NotFinallyCertified = seedEdit.NotFinallyCertified;
