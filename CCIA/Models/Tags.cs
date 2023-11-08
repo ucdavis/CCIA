@@ -554,7 +554,7 @@ namespace CCIA.Models
             {
                 if(BlendId != null)
                 {
-                    return $"USA-CA-{CertNumber}";
+                    return $"USA-CA-{CertYear}{CertNumber}";
                 }
                 if(Seeds != null){
                     if(Seeds.OriginState == 102)
