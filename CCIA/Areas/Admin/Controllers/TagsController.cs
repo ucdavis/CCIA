@@ -103,38 +103,66 @@ namespace CCIA.Controllers.Admin
                 if(!string.IsNullOrWhiteSpace(newTag.PlantingStockNumber))
                 {
                     var oecd = new OECD();
-                    var seed = await _helper.FullSeeds().Where(s => s.Id == newTag.SeedsID).FirstAsync();
-                     oecd.SeedsId = tagToCreate.SeedsID;
-                    oecd.VarietyId = seed.OfficialVarietyId;
-                    oecd.Pounds = Convert.ToInt32(tagToCreate.LotWeightRequested.Value);
-                    oecd.CertNumber = seed.CertNumber;
-                    tagToCreate.OECDTagType = newTag.OECDTagType;
-                    oecd.ClassId = newTag.OECDTagType;
-                    oecd.CloseDate = newTag.DateSealed.Value;
-                    oecd.ConditionerId = seed.ConditionerId;
-                    oecd.CountryId = newTag.OECDCountryId;
-                    oecd.LotNumber = seed.LotNumber;
-                    oecd.ShipperId = newTag.TaggingOrg;
-                    oecd.DateRequested = DateTime.Now;
-                    oecd.NotCertified = newTag.OECDTagType == 5;
-                    oecd.DataEntryDate = DateTime.Now;
-                    oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
-                    oecd.DomesticOrigin = seed.OriginCountry == 58;
-                    oecd.ReferenceNumber = newTag.PlantingStockNumber;
-                    oecd.Canceled = false;
-                    oecd.TagsRequested = newTag.CountRequested.Value;
-                    oecd.AdminComments = newTag.AdminComments;
-                    oecd.OECDNumber = seed.OriginCountry == 102 ? $"USA-CA-{seed.CertNumber}" : $"USA-{seed.StateOfOrigin.StateProvinceCode}/CA-{seed.CertNumber}-{seed.LotNumber}";
-                    oecd.TagId = tagToCreate.Id;
+                    var msg = "; OECD ID:  " + oecd.Id.ToString() + " Tag ID: " + tagToCreate.Id;
+                    if (tagToCreate.SeedsID.HasValue)
+                    {
+                        var seed = await _helper.FullSeeds().Where(s => s.Id == newTag.SeedsID).FirstAsync();
+                        oecd.SeedsId = tagToCreate.SeedsID;
+                        oecd.VarietyId = seed.OfficialVarietyId;
+                        oecd.Pounds = Convert.ToInt32(tagToCreate.LotWeightRequested.Value);
+                        oecd.CertNumber = seed.CertNumber;
+                        tagToCreate.OECDTagType = newTag.OECDTagType;
+                        oecd.ClassId = newTag.OECDTagType;
+                        oecd.CloseDate = newTag.DateSealed.Value;
+                        oecd.ConditionerId = seed.ConditionerId;
+                        oecd.CountryId = newTag.OECDCountryId;
+                        oecd.LotNumber = seed.LotNumber;
+                        oecd.ShipperId = newTag.TaggingOrg;
+                        oecd.DateRequested = DateTime.Now;
+                        oecd.NotCertified = newTag.OECDTagType == 5;
+                        oecd.DataEntryDate = DateTime.Now;
+                        oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
+                        oecd.DomesticOrigin = seed.OriginCountry == 58;
+                        oecd.ReferenceNumber = newTag.PlantingStockNumber;
+                        oecd.Canceled = false;
+                        oecd.TagsRequested = newTag.CountRequested.Value;
+                        oecd.AdminComments = newTag.AdminComments;
+                        oecd.OECDNumber = seed.OriginCountry == 102 ? $"USA-CA-{seed.CertNumber}" : $"USA-{seed.StateOfOrigin.StateProvinceCode}/CA-{seed.CertNumber}-{seed.LotNumber}";
+                        oecd.TagId = tagToCreate.Id;
+                        seed.Remarks += msg;
+                    } else if(tagToCreate.BlendId.HasValue)
+                    {
+                        var blend = await _helper.FullBlendRequest().Where(b => b.Id == newTag.BlendId).FirstAsync();
+                        oecd.BID = blend.Id;
+                        oecd.VarietyId = blend.GetVarietyId();
+                        oecd.Pounds = Convert.ToInt32(tagToCreate.LotWeightRequested.Value);
+                        oecd.CertNumber = blend.CertNumber;
+                        tagToCreate.OECDTagType = newTag.OECDTagType;
+                        oecd.ClassId = newTag.OECDTagType;
+                        oecd.CloseDate = newTag.DateSealed.Value;
+                        oecd.ConditionerId = blend.ConditionerId;
+                        oecd.CountryId = newTag.OECDCountryId;
+                        oecd.LotNumber = "";
+                        oecd.ShipperId = newTag.TaggingOrg;
+                        oecd.DateRequested = DateTime.Now;
+                        oecd.NotCertified = newTag.OECDTagType == 5;
+                        oecd.DataEntryDate = DateTime.Now;
+                        oecd.DataEntryUser = User.FindFirstValue(ClaimTypes.Name);
+                        oecd.DomesticOrigin = true;
+                        oecd.ReferenceNumber = newTag.PlantingStockNumber;
+                        oecd.Canceled = false;
+                        oecd.TagsRequested = newTag.CountRequested.Value;
+                        oecd.AdminComments = newTag.AdminComments;
+                        oecd.OECDNumber = $"USA-CA-{blend.CertYear}{blend.CertNumber}";
+                        oecd.TagId = tagToCreate.Id;
+                        blend.Comments += msg;
+                    }
 
                     _dbContext.Add(oecd);
                     await _dbContext.SaveChangesAsync();
-                    Message = "Tag & OECD created";     
-
-                    var msg = "; OECD ID:  " + oecd.Id.ToString() + " Tag ID: " + tagToCreate.Id;
+                    Message = "Tag & OECD created";
                     tagToCreate.AdminComments += msg;
-                    oecd.AdminComments += msg;
-                    seed.Remarks += msg;
+                    oecd.AdminComments += msg;                    
                     await _dbContext.SaveChangesAsync();
                 }
             } else {
