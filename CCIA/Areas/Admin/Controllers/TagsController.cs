@@ -153,7 +153,7 @@ namespace CCIA.Controllers.Admin
                         oecd.Canceled = false;
                         oecd.TagsRequested = newTag.CountRequested.Value;
                         oecd.AdminComments = newTag.AdminComments;
-                        oecd.OECDNumber = $"USA-CA-{blend.CertYear}{blend.CertNumber}";
+                        oecd.OECDNumber = $"USA-CA-{blend.CertYear % 100}{blend.CertNumber}";
                         oecd.TagId = tagToCreate.Id;
                         blend.Comments += msg;
                     }
