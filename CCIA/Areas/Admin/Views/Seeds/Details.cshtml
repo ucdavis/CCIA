@@ -72,7 +72,7 @@
             <b>Must confirm the lab results before you can accept this lot unless it is NFC.</b>
         </div>
     }
-    @if(Model.seed.Status == null && !Model.seed.Sublot || Model.seed.Status == SeedsStatus.SIRReady.GetDisplayName() && !Model.seed.Sublot)
+    @if(Model.seed.Status == null && !Model.seed.Sublot || Model.seed.Status != SeedsStatus.SIRReady.GetDisplayName() && !Model.seed.Sublot)
     {
         <hr class="col-xs-11">
         <div class="row">
@@ -92,7 +92,7 @@
     {
         <div class="row">
             <div class="col-sm-12">
-                <a asp-action="SIR" asp-area="Admin" asp-route-id="@Model.seed.Id" class="btn btn-info">View Seed Inspection Report</a> 
+                <a asp-action="ChargeSIR" asp-area="Admin" asp-route-id="@Model.seed.Id" class="btn btn-info">View Seed Inspection Report</a> 
             </div>
         </div>
     }
