@@ -30,7 +30,7 @@
                     <option value="SID">SID</option>
                     <option value="Blend">Blend</option>
                 </select>
-                <button type="button" id="retrieveButton">Retrieve Info</button>                 
+                <button type="button" id="retrieveButton" class="btn btn-info">Retrieve Info</button>                 
             </div>
             <div>
                 <span id="results"></span>
@@ -51,8 +51,9 @@
             <div class="form-group">
                 <label class="control-label">Retrieve from Org ID</label>
                 <input type="text" id="OrgId" class="form-control"></input>
-                <button type="button" id="retrieveFromOrgIdButton">Retrieve Org Info</button>
+                <button type="button" id="retrieveFromOrgIdButton" class="btn btn-info">Retrieve Org Info</button>
             </div>
+            <div id="orgDiv" class="collapse">pick one</div>
             <div>
                Or just fill in the appropriate fields below 
             </div>
@@ -104,6 +105,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     
     <script type="text/javascript">
+        var arr = [];
         $('.datepicker').datepicker({
             
             format: 'LT',
@@ -192,24 +194,66 @@
                 var id = $('#OrgId').val();
                 $.ajax({
                     method: 'Get',
-                    url: '/client/BulkSalesCertificates/GetMyCustomerFromOrgId',
-                    data: { id: id,}
+                    url: '/client/BulkSalesCertificates/GetMyCustomerFromOrgIdOrName',
+                    data: { search: id, }
                 })
-                .done(function(data){
-                    populateForm(data);
+                .done(function(data){                    
+                    if(data.length == 1)
+                    {
+                        var singleRow = data[0];
+                        populateForm(singleRow);
+                            $('#orgDiv').hide();
+                    } else 
+                    {
+                        alert("Multiple records found. Please select the correct one below.");
+                        populateSelect(data);
+                    }
                 })
                 .fail(function(xhr) {
                     alert("Could not retrieve 'My Customer' information");
                     console.log('error', xhr);
                 }); 
-
-
             });
-
         });
 
-        function populateForm(data)
+        function populateSelect(dataarray)
         {
+            arr = dataarray;
+            let i = 0;
+            var div = $('#orgDiv');
+            var rows = "<hr>";
+            while (i < dataarray.length) {
+                //rows += "<div><input type='button' value='Select' onclick='useRow(" + i + ")' class='btn btn-success'> " + dataarray[i].name + ", " + dataarray[i].address1 + ", " + dataarray[i].city + "</div><hr>";
+               rows += buildRow(dataarray[i], i);
+                i++;
+            }
+            div.html(rows);
+            div.show();
+        }
+
+        function buildRow(data, rowNumber)
+        {
+            var row = "<div><input type='button' value='Select' onclick='useRow(" + rowNumber + ")' class='btn btn-success'> " + data.name;
+            if(data.address1 != "")
+            {
+                row += ", " + data.address1
+            }
+            if (data.city != "") {
+                row += ", " + data.city
+            }
+            if (data.phone != "") {
+                row += ", " + data.phone
+            }
+            row += "</div><hr>";
+            return row;
+        }
+
+        function useRow(i)
+        {
+            populateForm(arr[i]);
+            $('#orgDiv').hide();
+        }
+        function populateForm(data) {
             $('#BulkSalesCertificate_PurchaserName').val(data.name);
             $('#BulkSalesCertificate_PurchaserAddressLine1').val(data.address1);
             $('#BulkSalesCertificate_PurchaserAddressLine2').val(data.address2);

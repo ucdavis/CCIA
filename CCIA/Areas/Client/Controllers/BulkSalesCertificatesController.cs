@@ -418,5 +418,28 @@ namespace CCIA.Controllers.Client
 
             return Json(model);
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetMyCustomerFromOrgIdOrName(string search)
+        {
+            var model = await _dbContext.Organizations.Where(o => o.Id.ToString() == search || EF.Functions.Like(o.Name, "%" + search + "%"))
+                .Include(o => o.Addresses.Where(a => a.Active))
+                .ThenInclude(o => o.Address)
+                .Select(o => new MyCustomers
+                {
+                    Name = o.Name,
+                    Address1 = o.Addresses.Any() ? o.Addresses.First().Address.Address1 : "",
+                    Address2 = o.Addresses.Any() ? o.Addresses.First().Address.Address2 : "",
+                    City = o.Addresses.Any() ? o.Addresses.First().Address.City : "",
+                    StateId = o.Addresses.Any() ? o.Addresses.First().Address.StateProvinceId.Value : 0,
+                    CountryId = o.Addresses.Any() ? o.Addresses.First().Address.CountryId.Value : 0,
+                    Zip = o.Addresses.Any() ? o.Addresses.First().Address.PostalCode : "",
+                    Phone = o.Phone,
+                    Email = o.Email
+                })
+                .ToListAsync();
+
+            return Json(model);
+        }
     }
 }
