@@ -10,12 +10,12 @@
 <h4>Bulk Sales Certificate</h4>
 <hr>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-10">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group required has-feedback">
-                <label asp-for="BulkSalesCertificate.Date" class="control-label"></label>
-                <div class="input-group mb-3">
+            <div class="form-group required has-feedback row">
+                <label asp-for="BulkSalesCertificate.Date" class="col-sm-3 col-form-label"></label>
+                <div class="input-group col-sm-3">
                     <input asp-for="BulkSalesCertificate.Date" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />  
                     <div class="input-group-append" onclick="$('.datepicker').focus();">             
                         <i class="fa fa-calendar input-group-text"></i>
@@ -23,76 +23,93 @@
                 </div>               
                 <span asp-validation-for="BulkSalesCertificate.Date" class="text-danger"></span>
             </div>
-            <div class="form-group required">
-                <label class="control-label" asp-for="textId"></label>
-                <input class="form-control" type="text" asp-for="textId" />
-                <select class="form-control" asp-for="selectType">
+            <div class="form-group required row">
+                <label class="col-sm-3 col-form-label" asp-for="textId"></label>
+                <input class="form-control col-sm-2" type="text" asp-for="textId" />&nbsp;
+                <select class="form-control col-sm-1" asp-for="selectType">
                     <option value="SID">SID</option>
                     <option value="Blend">Blend</option>
-                </select>
+                </select>&nbsp;
                 <button type="button" id="retrieveButton" class="btn btn-info">Retrieve Info</button>                 
             </div>
             <div>
                 <span id="results"></span>
             </div>
-            <div class="form-group required">
-                <label class="control-label" asp-for="BulkSalesCertificate.ClassId"></label>
-                <select class="form-control" asp-for="BulkSalesCertificate.ClassId"></select>
+            <div class="form-group required row">
+                <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.ClassId"></label>
+                <select class="form-control col-sm-4" asp-for="BulkSalesCertificate.ClassId"></select>
             </div>
-            <div class="form-group required">
-                <label class="control-label" asp-for="BulkSalesCertificate.Pounds"></label>
-                <input asp-for="BulkSalesCertificate.Pounds" class="form-control">
+            <div class="form-group required row">
+                <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.Pounds"></label>
+                <input asp-for="BulkSalesCertificate.Pounds" class="form-control col-sm-3">
             </div>
             <div><hr/></div>
-            <div class="form-group">
-                <label class="control-label">Select My Customer</label>
-                <select id="MyCustomerSelect" class="form-control" asp-items="@(new SelectList(Model.Customers, "Id","Name"))"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Retrieve from Org ID</label>
-                <input type="text" id="OrgId" class="form-control"></input>
-                <button type="button" id="retrieveFromOrgIdButton" class="btn btn-info">Retrieve Org Info</button>
-            </div>
-            <div id="orgDiv" class="collapse">pick one</div>
-            <div>
-               Or just fill in the appropriate fields below 
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserName"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserName" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserAddressLine1"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserAddressLine1" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserAddressLine2"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserAddressLine2" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCity"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserCity" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserStateId"></label>
-                <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","Name"))"></select>
-            </div>             
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserCountryId"></label>
-                <select asp-for="BulkSalesCertificate.PurchaserCountryId" class="form-control" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserZip"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserZip" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserPhone"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserPhone" class="form-control"></input>
-            </div>
-            <div class="form-group">
-                <label class="control-label" asp-for="BulkSalesCertificate.PurchaserEmail"></label>
-                <input asp-for="BulkSalesCertificate.PurchaserEmail" class="form-control"></input>
-            </div>
+            <section class="rounded-section off-white">
+                <h4>Bulk Sales Certificate To:</h4>
+                <section class="rounded-section light-grey">
+                    <div>
+                        <div class="form-group row">
+                            <label for="myCustomers" class="col-sm-3 col-form-label">Select <i>My Customers</i></label>
+                            <select id="MyCustomerSelect" class="form-control col-sm-3" asp-items="@(new SelectList(Model.Customers, "Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <h4>Or...</h4>
+                </section>
+                <hr>
+                <section class="rounded-section light-grey">
+                    <div>
+                        <div class="form-group row">
+                            <label for="orgId" class="col-sm-4 col-form-label">Retrieve from Org (enter Name or Id)</label>
+                            <input type="text" id="OrgId" class="form-control col-sm-3"></input>&nbsp;
+                            <button type="button" id="retrieveFromOrgIdButton" class="btn btn-info">Retrieve Org Info</button>
+                        </div>
+                    </div>
+                    <div id="orgDiv" class="collapse">pick one</div>
+                    <h4>Or...just fill in the appropriate fields below</h4>
+                </section>
+                <hr>
+                <section class="rounded-section light-grey">
+                    <h5></h5>
+                    <div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserName"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserName" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserAddressLine1"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserAddressLine1" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserAddressLine2"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserAddressLine2" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserCity"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserCity" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserStateId"></label>
+                            <select asp-for="BulkSalesCertificate.PurchaserStateId" class="form-control col-sm-4" asp-items="@(new SelectList(Model.StateProvinces, "StateProvinceId","Name"))"></select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserCountryId"></label>
+                            <select asp-for="BulkSalesCertificate.PurchaserCountryId" class="form-control col-sm-4" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserZip"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserZip" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserPhone"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserPhone" class="form-control col-sm-4"></input>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" asp-for="BulkSalesCertificate.PurchaserEmail"></label>
+                            <input asp-for="BulkSalesCertificate.PurchaserEmail" class="form-control col-sm-4"></input>
+                        </div>
+                    </div>
+                </section>
+            </section>  
             <div class="form-group">
                 <input id="SubmitButton" type="submit" value="Create" class="btn btn-primary" disabled />
             </div>
@@ -223,8 +240,7 @@
             var div = $('#orgDiv');
             var rows = "<hr>";
             while (i < dataarray.length) {
-                //rows += "<div><input type='button' value='Select' onclick='useRow(" + i + ")' class='btn btn-success'> " + dataarray[i].name + ", " + dataarray[i].address1 + ", " + dataarray[i].city + "</div><hr>";
-               rows += buildRow(dataarray[i], i);
+                rows += buildRow(dataarray[i], i);
                 i++;
             }
             div.html(rows);
