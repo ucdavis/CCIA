@@ -462,7 +462,7 @@ namespace CCIA.Controllers.Client
             seed.SampleFormCertNumber = seed.SampleFormCertNumber?.Trim();   
            
             bool error = false;            
-             if(seed.CountyDrawn == 0 || seed.CountyDrawn == null){
+             if(seed.CountyDrawn == 0 && seed.OriginState == 102 || seed.CountyDrawn == null){
                 ErrorMessage = "Must Select county";
                 error = true;
             }
