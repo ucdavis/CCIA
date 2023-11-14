@@ -1,5 +1,10 @@
 @model CCIA.Models.SeedTransferRequestModel
 
+
+<h1>Create</h1>
+
+<h4>Seed Transfer Certificate</h4>
+
 @if(Model.request.Target == "AppId")
 {
     <div class="row">
@@ -204,11 +209,11 @@
     
 </div>
 <section id="planting-stock" class="rounded-section off-white">
-    <h4>Planting StockTransfer To:</h4>
+    <h4>Planting Stock Transfer To:</h4>
     <section class="rounded-section light-grey">
         <div>
             <div class="form-group row">
-                <label for="myCustomers" class="col-sm-3 col-form-label">Select <i>My Customers</i></label>
+                <label for="myCustomers" class="col-sm-4 col-form-label">Select <i>My Customers</i></label>
             <select name="myCustomers" id="myCustomers" class="form-control col-sm-3"  asp-items="@(new SelectList(Model.request.customers, "Id", "Name"))"></select>
             </div>
         </div>
@@ -218,11 +223,12 @@
     <section class="rounded-section light-grey">
         <div>
             <div class="form-group row">
-                <label for="orgId" class="col-sm-3 col-form-label">Retrieve from Org ID</label>
-                <input class="form-control col-sm-2" asp-for="request.OrgId">
+                <label for="orgId" class="col-sm-6 col-form-label">Retrieve from Org (enter Name or Id)</label>
+                <input type="text" id="OrgId" class="form-control col-sm-3"></input>&nbsp;
                 <input type="button" class="btn btn-info" value="Retrieve Org Info" onclick="GetCustomerFromOrg()">
             </div>
         </div>
+            <div id="orgDiv" class="collapse">pick one</div>
         <h4>Or...just fill in the appropriate fields below</h4>
     </section>
     <hr>
@@ -358,6 +364,7 @@
      @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
      <script type="text/javascript">
+        var arr = [];
         $(document).ready(function () {
             $('.datepicker').datepicker();  
             $('#myCustomers').change(() => { getCustomer()});
@@ -390,25 +397,54 @@
 
         function GetCustomerFromOrg()
         {
-            var Id = $("#request_OrgId").val();
-            let data = {
-                Id: Id,
-            }
+            var id = $('#OrgId').val();
             $.ajax({
                 type: "GET",
-                url: "/client/SeedTransfer/GetPurchaserFromOrganization",
-                data: data,
-                success: function (res) {                       
-                    if (res.length === 0) {
-                        alert("Warning: customer info not found."); 
+                url: '/client/BulkSalesCertificates/GetMyCustomerFromOrgIdOrName',
+                data: { search: id, },
+                success: function (data) {
+                    if (data.length == 1) {
+                        var singleRow = data[0];
+                        populatePurchaser(singleRow);
+                        $('#orgDiv').hide();
+                    } else {
+                        alert("Multiple records found. Please select the correct one below.");
+                        populateSelect(data);
                     }
-                    populatePurchaser(res);                   
                 },
                 error: function (res) {
                     alert("There was an error processing the request");
                 }
             });
 
+        }
+
+        function populateSelect(dataarray) {
+            arr = dataarray;
+            let i = 0;
+            var div = $('#orgDiv');
+            var rows = "<hr>";
+            while (i < dataarray.length) {
+                rows += buildRow(dataarray[i], i);
+                i++;
+            }
+            div.html(rows);
+            div.show();
+        }
+
+        function buildRow(data, rowNumber) {
+            var row = "<div><input type='button' value='Select' onclick='useRow(" + rowNumber + ")' class='btn btn-success'> " + data.name;
+            if (data.address1 != "") {
+                row += ", " + data.address1
+            }
+            if (data.city != "") {
+                row += ", " + data.city
+            }
+            if (data.phone != "") {
+                row += ", " + data.phone
+            }
+            row += "</div><hr>";
+            return row;
         }
 
        function GetPS()
@@ -433,6 +469,11 @@
                     alert("There was an error processing the request");
                 }
             });
+        }
+
+        function useRow(i) {
+            populatePurchaser(arr[i]);
+            $('#orgDiv').hide();
         }
 
         function populatePurchaser(cust)
