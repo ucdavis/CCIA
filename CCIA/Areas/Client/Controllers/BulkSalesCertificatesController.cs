@@ -405,6 +405,7 @@ namespace CCIA.Controllers.Client
                 .Select(o => new MyCustomers
                 {
                     Name = o.Name,
+                    OrganizationId = o.Id,
                     Address1 =  o.Addresses.Any() ?  o.Addresses.First().Address.Address1 : "",
                     Address2 = o.Addresses.Any() ? o.Addresses.First().Address.Address2 : "",
                     City = o.Addresses.Any() ? o.Addresses.First().Address.City : "",
@@ -435,7 +436,8 @@ namespace CCIA.Controllers.Client
                     CountryId = o.Addresses.Any() ? o.Addresses.First().Address.CountryId.Value : 0,
                     Zip = o.Addresses.Any() ? o.Addresses.First().Address.PostalCode : "",
                     Phone = o.Phone,
-                    Email = o.Email
+                    Email = o.Email,
+                    OrganizationId = o.Id,
                 })
                 .ToListAsync();
 
