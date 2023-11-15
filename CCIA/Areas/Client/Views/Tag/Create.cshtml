@@ -136,7 +136,18 @@
             <span class="field-validation-valid text-danger" asp-validation-for="request.TagClass" data-valmsg-replace="true"></span>
         </div>         
     </div>
-    <div class="form-group required row">
+        @if(Model.request.Program == "Potato")
+        {
+            <div class="form-group row required">
+                <label asp-for="request.DestinationCountry" class="col-sm-3 col-form-label">Destination Country</label>
+                <select asp-for="request.DestinationCountry" class="form-control  col-sm-3" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
+            </div>
+            <div class="form-group row required">
+                <label asp-for="request.DestinationState" class="col-sm-3 col-form-label"></label>
+                <select asp-for="request.DestinationState" class="form-control  col-sm-3" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateWithCountry"))"></select>
+            </div>
+        }
+        <div class="form-group required row">
         <label asp-for="request.TagType" class="col-form-label col-sm-3"></label> 
         <div class="col-sm-9">         
             @foreach (var item in Model.TagTypes) 
@@ -298,8 +309,51 @@
             if($("input:radio[id*=request_OECD]:first").is(':checked'))  
             {                
                 OECDChange('true');
-            }         
+            }
+            $('#request_DestinationCountry').change(function () {
+                SetStatesForCountry();
+            })
         });
+
+        function SetStatesForCountry() {
+            var country = $("#request_DestinationCountry option:selected");
+                        
+            if (country.text() === "United States") {
+                showStates("USA");
+            } else if (country.text() === "Canada") {
+                showStates("Canada");
+            } else {
+                showStates("Outside");
+            }
+        };
+
+        function showStates(country) {           
+            $("#request_DestinationState option").filter(function (index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+            
+            var selectText, indexText;
+            if (country === "USA") {
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if (country === "Canada") {
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";
+            }
+            
+            $("#request_DestinationState > option").each(function () {
+                if (~this.text.indexOf(indexText)) {
+                    $("#request_DestinationState option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#request_DestinationState option[value*='" + this.value + "']").prop('disabled', true);
+                }
+            });
+
+            $("#request_DestinationState option").removeAttr("selected");
+            $("#request_DestinationCountry option:contains(" + selectText + ")").attr('selected', 'selected');
+
+        };
 
         function OECDChange(collapse){            
             if(collapse == "true")

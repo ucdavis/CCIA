@@ -611,6 +611,11 @@ namespace CCIA.Models
 
         public int? BulkCropId { get; set; }
 
+        [Display(Name = "Destination Country")]
+        public int DestinationCountry { get; set; }
+        [Display(Name = "Destination State")]
+        public int DestinationState { get; set; }
+
         [ForeignKey("BulkCropId")]
         public Crops BulkCrop { get; set; }
 
@@ -621,6 +626,13 @@ namespace CCIA.Models
 
         [ForeignKey("TagId")]
         public ICollection<TagDocuments> Documents { get; set; }
+
+        [ForeignKey("DestinationCountry")]
+        public Countries Country { get; set; }
+
+        [ForeignKey("DestinationState")]
+        public StateProvince State { get; set; }
+
 
 
 

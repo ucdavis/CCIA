@@ -20,6 +20,7 @@ namespace CCIA.Models
         public List<AbbrevClassProduced> potatoClasses { get; set; }
         public List<AbbrevTagType> TagTypes { get; set; }   
         public List<Countries> Countries { get; set; }
+       
         public List<AbbrevOECDClass> OECDTagTypes { get; set; }
         public bool AllowOECD { get; set; }
         public Crops crop { get; set; }
@@ -170,6 +171,12 @@ namespace CCIA.Models
                 request.ClassProduced = "Certified";
                 request.TagClass = 4;
                 request.AllowOECD = false;
+                var countries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                countries.Insert(0, new Countries { Id = 0, Name = "Select country..." });
+                model.Countries = countries;
+                var states = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
+                states.Insert(0, new StateProvince { StateProvinceId = 0, Name = "Select state..." });
+                model.States = states;
             }
             model.request = request;            
             var status = await _dbContext.CondStatus.Where(c => c.OrgId == orgId && c.Year == Helpers.CertYearFinder.ConditionerYear).FirstOrDefaultAsync();
@@ -513,7 +520,10 @@ namespace CCIA.Models
 
         [Display(Name ="Analysis Requested?")]
         public bool AnalysisRequested { get; set; }
-
+        [Display(Name = "Destination Country")]
+        public int DestinationCountry { get; set; }
+        [Display(Name = "Destination State")]
+        public int DestinationState { get; set; }
 
     }   
 }
