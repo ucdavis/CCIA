@@ -549,6 +549,39 @@ namespace CCIA.Models
             } 
         }
 
+        [Display(Name = "Potato Tag Statement")]
+        public string PotatoTagStatement
+        {
+            get
+            {
+                if(AppId.HasValue && Application != null && Application.AppType == "PO" && Country != null && State != null )
+                {
+                    if(Country.Name != "Canada" && Country.Name != "United States")
+                    {
+                        return "for export";
+                    }
+                   if(State.Name == "California")
+                    {
+                        return "for in-state use only";
+                    }
+                   if(State.ProducesCertifiedSeedPotatoes || Country.Name == "Canada")
+                    {
+                        return "Post-Harvest Testing required";
+                    }
+                   if(!State.ProducesCertifiedSeedPotatoes)
+                    {
+                        return "For Non-Seed Producing State";
+                    }
+                    return "Can not determine PHT statement!";
+                }
+                if (AppId.HasValue && Application != null && Application.AppType == "PO")
+                {
+                    return "Missing destination Country and/or State. Please update.";
+                }
+                return "";
+            }
+        }
+
         public string OECDCertNumber {
             get 
             {
@@ -612,9 +645,9 @@ namespace CCIA.Models
         public int? BulkCropId { get; set; }
 
         [Display(Name = "Destination Country")]
-        public int DestinationCountry { get; set; }
+        public int? DestinationCountry { get; set; }
         [Display(Name = "Destination State")]
-        public int DestinationState { get; set; }
+        public int? DestinationState { get; set; }
 
         [ForeignKey("BulkCropId")]
         public Crops BulkCrop { get; set; }
