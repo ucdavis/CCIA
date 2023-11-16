@@ -307,6 +307,12 @@ namespace CCIA.Models
                 request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
                 request.TagClass = 4;
                 request.AllowOECD = false;
+                var countries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                countries.Insert(0, new Countries { Id = 0, Name = "Select country..." });
+                model.Countries = countries;
+                var states = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
+                states.Insert(0, new StateProvince { StateProvinceId = 0, Name = "Select state..." });
+                model.States = states;
             }
             request.Alias = submittedTag.Alias;
             request.CountRequested = submittedTag.CountRequested;

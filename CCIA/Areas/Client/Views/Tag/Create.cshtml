@@ -141,10 +141,12 @@
             <div class="form-group row required">
                 <label asp-for="request.DestinationCountry" class="col-sm-3 col-form-label">Destination Country</label>
                 <select asp-for="request.DestinationCountry" class="form-control  col-sm-3" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
+                <span class="field-validation-valid text-danger" asp-validation-for="request.DestinationCountry" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group row required">
                 <label asp-for="request.DestinationState" class="col-sm-3 col-form-label"></label>
                 <select asp-for="request.DestinationState" class="form-control  col-sm-3" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateWithCountry"))"></select>
+                <span class="field-validation-valid text-danger" asp-validation-for="request.DestinationState" data-valmsg-replace="true"></span>
             </div>
         }
         <div class="form-group required row">

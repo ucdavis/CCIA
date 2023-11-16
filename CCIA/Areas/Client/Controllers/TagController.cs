@@ -100,6 +100,14 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "You are not the company that requested that tag";
                 return RedirectToAction(nameof(Index));
             }
+            if(tagToUpdate.AppId.HasValue && vm.tag.DestinationCountry != 0)
+            {
+                tagToUpdate.DestinationCountry = vm.tag.DestinationCountry;
+            }
+            if (tagToUpdate.AppId.HasValue && vm.tag.DestinationState != 0)
+            {
+                tagToUpdate.DestinationState = vm.tag.DestinationState;
+            }
             tagToUpdate.BagSize = vm.tag.BagSize;
             tagToUpdate.WeightUnit = vm.tag.WeightUnit;
             tagToUpdate.CountRequested = vm.tag.CountRequested;
@@ -299,7 +307,9 @@ namespace CCIA.Controllers.Client
                     newTag.BlendId = submittedTag.Id;
                     break;
                 default:
-                    newTag.AppId = submittedTag.Id;
+                    newTag.AppId = submittedTag.Id;                    
+                    newTag.DestinationCountry = submittedTag.DestinationCountry;
+                    newTag.DestinationState = submittedTag.DestinationState;
                     break;
             }
             newTag.TagClass = submittedTag.TagClass;
@@ -342,6 +352,10 @@ namespace CCIA.Controllers.Client
             if(submittedTag.DateNeeded < DateTime.Now.AddDays(1))       
             {
                 ModelState.AddModelError("request.DateNeeded","Date needed must be greater than 2 days out");
+            }
+            if (newTag.DestinationCountry == 0 || newTag.DestinationState == 0)
+            {
+                ModelState.AddModelError("request.DestinationCountry", "Destination country & state are required for potato tags.");
             }
             if (TryValidateModel(newTag))
             {   

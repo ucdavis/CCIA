@@ -139,7 +139,25 @@
             <div class="form-group row">                
                 <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label>
                 <input type="checkbox" asp-for="tag.Bulk" class="col-sm-3 form-control disabled">
-            </div>                                                         
+            </div>  
+            @if(Model.tag.Application != null && Model.tag.Application.AppType == "PO")
+            {
+                <div class="form-group row">
+                    <label asp-for="tag.DestinationCountry" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.tag.Country.Name)
+                    </div>
+                </div>
+                @if (Model.tag.DestinationState != 155)
+                {
+                    <div class="form-group row">
+                            <label asp-for="tag.DestinationState" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.tag.State.Name)
+                        </div>
+                    </div>
+                }
+            }
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">

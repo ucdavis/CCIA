@@ -142,7 +142,20 @@
                 <div class="form-check form-check-inline col-sm-12">
                     <label asp-for="tag.Bulk" class="col-sm-3 col-form-label"></label><input type="checkbox" class="form-control col-sm-3 " asp-for="tag.Bulk">
                 </div>
-            </div>                                                  
+            </div>
+            @if (Model.tag.Application != null && Model.tag.Application.AppType == "PO")
+            {
+                <div class="form-group row required">
+                    <label asp-for="tag.DestinationCountry" class="col-sm-3 col-form-label">Destination Country</label>
+                    <select asp-for="tag.DestinationCountry" class="form-control  col-sm-4" asp-items="@(new SelectList(Model.Countries, "Id","Name"))"></select>
+                    <span class="field-validation-valid text-danger" asp-validation-for="tag.DestinationCountry" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group row required">
+                    <label asp-for="tag.DestinationState" class="col-sm-3 col-form-label"></label>
+                    <select asp-for="tag.DestinationState" class="form-control  col-sm-4" asp-items="@(new SelectList(Model.States, "StateProvinceId","StateWithCountry"))"></select>
+                    <span class="field-validation-valid text-danger" asp-validation-for="tag.DestinationState" data-valmsg-replace="true"></span>
+                </div>
+            }
         </div>
         <div class="col-md-6 col-xl-4"> @* Third Col *@ 
             <div class="form-group row">
@@ -302,7 +315,56 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>   
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script> 
+    
+    <script>
+        $(document).ready(
+            function () {                
+                $('#tag_DestinationCountry').change(function () {
+                    SetStatesForCountry();
+                })
+            });
+
+        function SetStatesForCountry() {
+            var country = $("#tag_DestinationCountry option:selected");
+
+            if (country.text() === "United States") {
+                showStates("USA");
+            } else if (country.text() === "Canada") {
+                showStates("Canada");
+            } else {
+                showStates("Outside");
+            }
+        };
+
+        function showStates(country) {
+            $("#tag_DestinationState option").filter(function (index) { return $(this).text() === "Outside US"; }).attr('selected', 'selected');
+
+            var selectText, indexText;
+            if (country === "USA") {
+                selectText = "Alabama, USA";
+                indexText = ", USA";
+            } else if (country === "Canada") {
+                selectText = "Alberta, Canada";
+                indexText = ", Canada";
+            } else {
+                selectText = "Outside US";
+                indexText = "Outside US";
+            }
+
+            $("#tag_DestinationState > option").each(function () {
+                if (~this.text.indexOf(indexText)) {
+                    $("#tag_DestinationState option[value*='" + this.value + "']").prop('disabled', false);
+                } else {
+                    $("#tag_DestinationState option[value*='" + this.value + "']").prop('disabled', true);
+                }
+            });
+
+            $("#tag_DestinationState option").removeAttr("selected");
+            $("#tag_DestinationCountry option:contains(" + selectText + ")").attr('selected', 'selected');
+
+        };
+    </script>
     
      
 }
