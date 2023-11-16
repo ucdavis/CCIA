@@ -247,7 +247,25 @@
             <div class="form-group row">                
                 <label asp-for="Bulk" class="col-sm-3 col-form-label"></label>
                 <input type="checkbox" asp-for="Bulk" class="col-sm-3 form-control disabled">
-            </div>                                                         
+            </div>    
+            @if (Model.Application != null && Model.Application.AppType == "PO")
+            {
+                <div class="form-group row">
+                    <label asp-for="DestinationCountry" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.Country.Name)
+                    </div>
+                </div>
+                @if (Model.DestinationState != 155)
+                {
+                    <div class="form-group row">
+                        <label asp-for="DestinationState" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.State.Name)
+                        </div>
+                    </div>
+                }
+            }
         </div>
         <div class="col-md-6 col-xl-4 align-top"> @* Third Col *@ 
             <div class="form-group row">
@@ -480,6 +498,15 @@
                 @Html.DisplayFor(x => x.Statement)
             </div>
         </div>
+        @if(Model.AppId.HasValue && Model.Application != null && Model.Application.AppType == "PO")
+        {
+            <div class="form-group row">
+                <label asp-for="PotatoTagStatement" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-9 form-control-plaintext">
+                    @Html.DisplayFor(x => x.PotatoTagStatement)
+                </div>
+            </div>
+        }
         <div class="form-group row">
             <label asp-for="HowDeliver" class="col-sm-1 col-form-label"></label>
             <div class="col-sm-9 form-control-plaintext">
@@ -514,7 +541,7 @@
         <div class="form-group row">
             <label asp-for="TaggingOrganization.Addresses.First().Address.Address1" class="col-sm-3 col-form-label">Address</label>
             <div class="col-sm-9 form-control-plaintext">
-                @if(Model.TaggingOrganization.Addresses.First().Address != null)
+                @if(Model.TaggingOrganization?.Addresses.Count > 0 && Model.TaggingOrganization.Addresses.First().Address != null)
                 {
                     @Model.TaggingOrganization.Addresses.First().Address.AddressLines<br>
                     @Model.TaggingOrganization.Addresses.First().Address.City<span>,</span> @Model.TaggingOrganization.Addresses.First().Address.StateProvince.StateProvinceCode @Model.TaggingOrganization.Addresses.First().Address.PostalCode

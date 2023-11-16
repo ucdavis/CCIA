@@ -13,6 +13,7 @@ namespace CCIA.Models
         [Display(Name="State")]        
         public string Name { get; set; }
         public DateTime DateModified { get; set; }
+        public bool ProducesCertifiedSeedPotatoes { get; set; }
 
         public string StateWithCountry 
         { 

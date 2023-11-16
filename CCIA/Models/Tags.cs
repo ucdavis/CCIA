@@ -549,6 +549,39 @@ namespace CCIA.Models
             } 
         }
 
+        [Display(Name = "Potato Tag Statement")]
+        public string PotatoTagStatement
+        {
+            get
+            {
+                if(AppId.HasValue && Application != null && Application.AppType == "PO" && Country != null && State != null )
+                {
+                    if(Country.Name != "Canada" && Country.Name != "United States")
+                    {
+                        return "For export only";
+                    }
+                   if(State.Name == "California")
+                    {
+                        return "For in-state use only";
+                    }
+                   if(State.ProducesCertifiedSeedPotatoes || Country.Name == "Canada")
+                    {
+                        return "Post-Harvest Testing required";
+                    }
+                   if(!State.ProducesCertifiedSeedPotatoes)
+                    {
+                        return "For Non-Seed Producing State only";
+                    }
+                    return "Can not determine PHT statement!";
+                }
+                if (AppId.HasValue && Application != null && Application.AppType == "PO")
+                {
+                    return "Missing destination Country and/or State. Please update.";
+                }
+                return "";
+            }
+        }
+
         public string OECDCertNumber {
             get 
             {
@@ -611,6 +644,11 @@ namespace CCIA.Models
 
         public int? BulkCropId { get; set; }
 
+        [Display(Name = "Destination Country")]
+        public int? DestinationCountry { get; set; }
+        [Display(Name = "Destination State")]
+        public int? DestinationState { get; set; }
+
         [ForeignKey("BulkCropId")]
         public Crops BulkCrop { get; set; }
 
@@ -621,6 +659,13 @@ namespace CCIA.Models
 
         [ForeignKey("TagId")]
         public ICollection<TagDocuments> Documents { get; set; }
+
+        [ForeignKey("DestinationCountry")]
+        public Countries Country { get; set; }
+
+        [ForeignKey("DestinationState")]
+        public StateProvince State { get; set; }
+
 
 
 

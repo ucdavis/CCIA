@@ -205,8 +205,16 @@ namespace CCIA.Controllers.Admin
             tagToUpdate.HowDeliver = edit.HowDeliver;
             tagToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
             tagToUpdate.DateModified = DateTime.Now;
+            if (tagToUpdate.AppId.HasValue && edit.DestinationCountry != 0)
+            {
+                tagToUpdate.DestinationCountry = edit.DestinationCountry;
+            }
+            if (tagToUpdate.AppId.HasValue && edit.DestinationState != 0)
+            {
+                tagToUpdate.DestinationState = edit.DestinationState;
+            }
 
-            if(ModelState.IsValid){
+            if (ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Tag Updated";
             } else {
