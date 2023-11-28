@@ -558,7 +558,7 @@ namespace CCIA.Models
                 {
                     if(Country.Name != "Canada" && Country.Name != "United States")
                     {
-                        return "For export only";
+                        return $"For export to {Country.Name} only";
                     }
                    if(State.Name == "California")
                     {
@@ -566,11 +566,11 @@ namespace CCIA.Models
                     }
                    if(State.ProducesCertifiedSeedPotatoes || Country.Name == "Canada")
                     {
-                        return "Post-Harvest Testing required";
+                        return "Post-Harvest Test Required";
                     }
                    if(!State.ProducesCertifiedSeedPotatoes)
                     {
-                        return "For Non-Seed Producing State only";
+                        return $"Destination {State.Name}: Post Harvest Test not required";
                     }
                     return "Can not determine PHT statement!";
                 }
