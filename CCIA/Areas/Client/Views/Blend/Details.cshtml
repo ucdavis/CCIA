@@ -25,6 +25,12 @@
             <a asp-action="Certificate" asp-route-id="@Model.blend.Id" class="btn btn-info">Printable Permit</a>
         </div>
     }
+    @if(Model.blend.BlendType == BlendType.Lot.GetDisplayName())
+    {
+        <div class="row py-1">
+            <a asp-action="blendLabs" asp-route-id="@Model.blend.Id" class="btn btn-primary">Add lab results</a> (needed for Lot Blends going OECD)
+        </div>
+    }
     <div class="row"> 
         <div class="col-md-6 col-xl-4"> @* First column *@
             <div class="form-group row">
@@ -328,6 +334,22 @@
                 <br>Allowed files: @Configuration["AllowedFiles"]
             </form>
         </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Lab Results</h2>
+            </div>
+        </div>
+       @*  @if ((Model.seed.Submitted == false || Model.seed.Status == SeedsStatus.ReturnedToClient.GetDisplayName()) && (Model.seed.Status != SeedsStatus.CancelledByCCIA.GetDisplayName() && Model.seed.Status != SeedsStatus.CancelledByOrganization.GetDisplayName()))
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.seed.Id" class="btn btn-info">Edit Lab Results</a>
+                </div>
+            </div>
+        }
+        @await Html.PartialAsync("../SampleLabResults/_SampleLabResultsDetails.cshtml", Model.LabsAndStandards) *@
     </div>
 </div>
 
