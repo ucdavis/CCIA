@@ -132,4 +132,18 @@ namespace CCIA.Helpers
         }
 
     }
+
+    public class BlendLabsAndStandards
+    {
+        public BlendLabResults Labs { get; set; }
+        public CropStandardsList Standards { get; set; }
+
+
+        public BlendLabsAndStandards()
+        {
+            Labs = new BlendLabResults();
+            Standards = new CropStandardsList();
+        }
+
+    }
 }

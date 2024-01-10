@@ -75,6 +75,7 @@ namespace CCIA.Models
         public virtual DbSet<SeedsApplications> SeedsApplications { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
         public virtual DbSet<SampleLabResults> SampleLabResults { get; set; }
+        public virtual DbSet<BlendLabResults> BlendLabResults { get; set; }
         public virtual DbSet<VarFamily> VarFamily { get; set; }
         public virtual DbSet<VarOfficial> VarOfficial { get; set; }
         public virtual DbSet<VarFull> VarFull { get; set; }
@@ -3554,7 +3555,98 @@ namespace CCIA.Models
 
 
             });
-            
+
+            modelBuilder.Entity<BlendLabResults>(entity =>
+            {
+                entity.HasKey(e => e.BlendId);
+
+                entity.ToTable("blend_lab_results");
+
+                entity.Property(e => e.BlendId).HasColumnName("blend_id").ValueGeneratedNever();
+
+                entity.Property(e => e.AssayResults).HasColumnName("assay_results").HasColumnType("char(1)");
+
+                entity.Property(e => e.AssayResults2).HasColumnName("assay_results2").HasColumnType("char(1)");
+
+                entity.Property(e => e.AssayTest).HasColumnName("assay_test").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.AssayTest2).HasColumnName("assay_test2").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.CciaConfirmed).HasColumnName("ccia_confirmed").HasDefaultValue(false);
+                
+                entity.Property(e => e.ConfirmDate).HasColumnName("confirm_date").HasColumnType("datetime");
+
+                entity.Property(e => e.ConfirmUser).HasColumnName("confirm_user").HasMaxLength(50).IsUnicode(false);
+
+                entity.Property(e => e.DataEntryDate).HasColumnName("data_entry_date").HasColumnType("datetime");
+
+                entity.Property(e => e.DataEntryUser).HasColumnName("data_entry_user").HasMaxLength(50).IsUnicode(false);
+
+                entity.Property(e => e.DodderGrams).HasColumnName("dodder_grams").HasColumnType("numeric(7, 2)");
+                              
+                entity.Property(e => e.HardSeedPercent).HasColumnName("germ_hard_seed").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.GermPercent).HasColumnName("germ_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.GermResults).HasColumnName("germ_results").HasColumnType("char(1)");
+
+                entity.Property(e => e.InertComments).HasColumnName("inert_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.InertPercent).HasColumnName("inert_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.NoxiousComments).HasColumnName("noxious_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.NoxiousCount).HasColumnName("noxious_count");
+
+                entity.Property(e => e.NoxiousGrams).HasColumnName("noxious_grams").HasColumnType("numeric(7, 2)");
+
+                entity.Property(e => e.OtherCropComments).HasColumnName("other_crop_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.OtherCropCount).HasColumnName("other_crop_count");
+
+                entity.Property(e => e.OtherCropPercent).HasColumnName("other_crop_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.OtherVarietyComments).HasColumnName("other_variety_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.OtherVarietyCount).HasColumnName("other_variety_count");
+
+                entity.Property(e => e.OtherVarietyPercent).HasColumnName("other_variety_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.PrivateLabDate).HasColumnName("private_lab_date").HasColumnType("datetime");
+
+                entity.Property(e => e.PrivateLabId).HasColumnName("private_lab_id");
+
+                entity.Property(e => e.PrivateLabName).HasColumnName("private_lab_name").HasMaxLength(50).IsUnicode(false);
+
+                entity.Property(e => e.PrivateLabNumber).HasColumnName("private_lab_number").HasMaxLength(500).IsUnicode(false);
+
+                entity.Property(e => e.PurityComments).HasColumnName("purity_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.PurityGrams).HasColumnName("purity_grams").HasColumnType("numeric(7, 2)");
+
+                entity.Property(e => e.PurityPercent).HasColumnName("purity_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.PurityResults).HasColumnName("purity_results").HasColumnType("char(1)");
+
+                entity.Property(e => e.Comments).HasColumnName("sample_comments").HasMaxLength(500).IsUnicode(false);
+                                
+                entity.Property(e => e.UpdateDate).HasColumnName("update_date").HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateUser).HasColumnName("update_user").HasMaxLength(50).IsUnicode(false);
+
+                entity.Property(e => e.WeedSeedComments).HasColumnName("weed_seed_comments").HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(e => e.WeedSeedCount).HasColumnName("weed_seed_count");
+
+                entity.Property(e => e.WeedSeedPercent).HasColumnName("weed_seed_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.OtherKindPercent).HasColumnName("other_kind_percent").HasColumnType("numeric(8, 7)");
+
+                entity.Property(e => e.OtherKindComments).HasColumnName("other_kind_comments");
+
+                entity.HasOne(d => d.LabOrganization);
+
+            });
 
             modelBuilder.Entity<VarFamily>(entity =>
             {

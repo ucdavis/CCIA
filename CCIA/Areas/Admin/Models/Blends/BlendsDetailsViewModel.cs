@@ -26,8 +26,10 @@ namespace CCIA.Models
 
        public List<BlendDocuments> documents { get; set; }
 
+       public BlendLabsAndStandards LabsAndStandards { get; set; }
 
-               
+
+
         public static async Task<AdminBlendsDetailsViewModel> Create(CCIAContext _dbContext, IFullCallService _helper, int id)
         {    
             var thisBlend = await _helper.FullBlendRequest().Where(b => b.Id ==id).FirstOrDefaultAsync();          
@@ -39,20 +41,32 @@ namespace CCIA.Models
                     documents = await _dbContext.BlendDocuments.Where(d => d.BlendId == id).ToListAsync(),
                 };
 
-            if(thisBlend.BlendType == "Lot" || thisBlend.BlendType == "Varietal")
+            if(thisBlend.BlendType == BlendType.Lot.GetDisplayName() || thisBlend.BlendType == BlendType.Varietal.GetDisplayName())
             {
                 model.components = await _dbContext.LotBlendSummary.FromSqlRaw($"EXEC mvc_lot_blend_components_summary @blend_id", p0).ToListAsync();                
             } else
             {
                 model.dirtComponents = await _dbContext.InDirtBlendSummary.FromSqlRaw($"EXEC mvc_indirt_blend_components @blend_id", p0).ToListAsync();                
             }
-            if(thisBlend.BlendType == "Varietal")
+            if(thisBlend.BlendType == BlendType.Varietal.GetDisplayName())
             {
                 model.varietalComponents = await _dbContext.VarietyBlendComponents
                     .Include(c => c.BlendVariety)
                     .Include(c => c.ComponentVariety)
                     .Where(c => c.BlendVarietyId == thisBlend.VarietyId)
                     .ToListAsync();
+            }
+            if(thisBlend.BlendType == BlendType.Lot.GetDisplayName() && await _dbContext.BlendLabResults.Where(x => x.BlendId == id).AnyAsync())
+            {
+                var labsAndStandards = new BlendLabsAndStandards();
+                labsAndStandards.Labs = await _dbContext.BlendLabResults.Where(l => l.BlendId == id)
+                        .Include(r => r.LabOrganization)
+                        .FirstOrDefaultAsync();
+                if (labsAndStandards.Labs != null)
+                {
+                    labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, thisBlend.LotBlends.First().Sid);
+                }
+                model.LabsAndStandards = labsAndStandards;
             }
             return model;
         }
