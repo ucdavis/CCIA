@@ -1568,6 +1568,7 @@ namespace CCIA.Controllers.Client
             newApp.GeoField = appToRenew.GeoField;
             newApp.DatePlanted = appToRenew.DatePlanted;
             newApp.Tags = appToRenew.Tags;
+            newApp.Submitable = false;
 
             return newApp;
 
