@@ -377,6 +377,10 @@ namespace CCIA.Models
                     }
                     return inDirtTotal;
                 }
+                if(AppId.HasValue && Application != null && Application.FieldInspectionReport != null)
+                {
+                    return Application.FieldInspectionReport.PotatoPoundsHarvested;
+                }
                 return 0;
             }
         }
