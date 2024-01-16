@@ -47,8 +47,8 @@ namespace CCIA.Helpers
                 .Include(s => s.Variety)
                 .Include(s => s.Application)
                 .Include(s => s.ClassProduced)
-                .FirstOrDefaultAsync();;
-            if(seed.OfficialVarietyId.HasValue && seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
+                .FirstOrDefaultAsync();
+            if(!string.IsNullOrWhiteSpace(seed.GetVarietyName()) && seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
             {
                 properties.CropId = seed.GetCropId();
                 properties.CertProgram = seed.CertProgram;
@@ -224,6 +224,10 @@ namespace CCIA.Helpers
                     if (cs.Any(c => c.Name == "germ_and_hard"))
                     {
                         totalGerm = labs.GermPercent + labs.HardSeedPercent;
+                    }
+                    if(cs.Any(c => c.Name == "germ_and_dormant"))
+                    {
+                        totalGerm = labs.GermPercent + labs.DormantSeedPercent;
                     }
                     standard = cs.First(c => c.Name == "min_germ");
                     if (totalGerm < standard.MinValue || totalGerm > standard.MaxValue)
