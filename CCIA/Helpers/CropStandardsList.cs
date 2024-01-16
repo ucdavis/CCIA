@@ -26,6 +26,7 @@ namespace CCIA.Helpers
 
         public bool ShowOtherKind { get; set; }
         public bool ShowDormant { get; set; }
+        public bool CombineGermAndHard { get; set; }
 
         public CropStandardsList()
         {  
@@ -42,6 +43,7 @@ namespace CCIA.Helpers
             ShowInert = false;
             ShowOtherKind = false;
             ShowDormant = false;
+            CombineGermAndHard = false;
         }
 
         public static async Task<CropStandardsList> GetStandardsFromSeed(CCIAContext _dbContext, int sid)
@@ -75,18 +77,15 @@ namespace CCIA.Helpers
 			{
 				returnList.ShowDormant = true;
 			}
+            if (cs.Any(c => c.Standards.Name == "germ_and_hard"))
+            {
+                returnList.CombineGermAndHard = true;
+            }
 
-			if (cs.Any(c => c.Standards.Name == "assay_required")){
+            if (cs.Any(c => c.Standards.Name == "assay_required")){
                 var stand = cs.First(c => c.Standards.Name == "assay_required");
                 returnList.ShowAssay1 = true;
                 returnList.Assay1Name = stand.Standards.TextValue;
-
-                // if(cs.Count(c => c.Standards.Name == "assay_required") > 1)
-                // {
-                //     stand = cs.Last(c => c.Standards.Name == "assay_required");
-                //     returnList.ShowAssay2 = true;
-                //     returnList.Assay2Name = stand.Standards.TextValue;
-                // }                  
             } 
 
             if(cs.Any(c => c.Standards.Name == "max_other_varieties"))

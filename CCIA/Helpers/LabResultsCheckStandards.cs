@@ -46,9 +46,10 @@ namespace CCIA.Helpers
             var seed =  await _dbContext.Seeds.Where(s => s.Id == labs.SeedsId)
                 .Include(s => s.Variety)
                 .Include(s => s.Application)
+                .ThenInclude(a => a.Variety)
                 .Include(s => s.ClassProduced)
                 .FirstOrDefaultAsync();
-            if(!string.IsNullOrWhiteSpace(seed.GetVarietyName()) && seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
+            if(seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
             {
                 properties.CropId = seed.GetCropId();
                 properties.CertProgram = seed.CertProgram;
