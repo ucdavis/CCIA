@@ -153,6 +153,15 @@
         @Html.DisplayFor(x => x.Labs.HardSeedPercent)
     </div>
 </div> 
+@if(Model.Standards.ShowDormant)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.DormantSeedPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.DormantSeedPercent)
+        </div>
+    </div> 
+}
 <div class="form-group row">
     <label asp-for="Labs.TotalGermination" class="col-sm-3 col-form-label"></label>
     <div class="col-sm-3 form-control-plaintext">
