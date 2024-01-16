@@ -190,12 +190,42 @@
         @Html.DisplayFor(x => x.Labs.HardSeedPercent)
     </div>
 </div> 
-<div class="form-group row">
-    <label asp-for="Labs.TotalGermination" class="col-sm-3 col-form-label"></label>
-    <div class="col-sm-3 form-control-plaintext">
-        @Html.DisplayFor(x => x.Labs.TotalGermination)
+@if (Model.Standards.ShowDormant)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.DormantSeedPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.DormantSeedPercent)
+        </div>
     </div>
-</div> 
+}
+@if (Model.Standards.CombineGermAndHard)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.TotalGermination" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.TotalGermination) (G+H)
+        </div>
+    </div>
+}
+@if (Model.Standards.ShowDormant)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.TotalGerminationAndDormant" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.TotalGerminationAndDormant) (G+D)
+        </div>
+    </div>
+}
+@if (!Model.Standards.ShowDormant && !Model.Standards.CombineGermAndHard)
+{
+    <div class="form-group row">
+        <label asp-for="Labs.TotalGermination" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 form-control-plaintext">
+            @Html.DisplayFor(x => x.Labs.GermPercent) (G)
+        </div>
+    </div>
+}
 @if(Model.Standards.ShowAssay1) 
 {
     <div class="row">

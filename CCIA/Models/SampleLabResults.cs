@@ -158,8 +158,24 @@ namespace CCIA.Models
              } 
              return "";
             }           
-        }  
-        public string AssayResults { get; set; }
+        }
+
+		[Display(Name = "Dormant Seed (TZ %)")]
+		[DisplayFormat(DataFormatString = "{0:P2}")]
+		[Range(0.0, 100)]
+		public decimal? DormantSeedPercent { get; set; }
+		public string DormantSeedValue
+		{
+			get
+			{
+				if (DormantSeedPercent.HasValue)
+				{
+					return (DormantSeedPercent.Value * 100).ToString("0.####");
+				}
+				return "";
+			}
+		}
+		public string AssayResults { get; set; }
         public bool? AssayTest { get; set; }
         public bool? AssayTest2 { get; set; }
         public string AssayResults2 { get; set; }
@@ -270,6 +286,28 @@ namespace CCIA.Models
                 }
                 return 0;
             } 
+        }
+
+        [Display(Name = "Total Germination")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        public decimal TotalGerminationAndDormant
+        {
+            get
+            {
+                if (DormantSeedPercent.HasValue && GermPercent.HasValue)
+                {
+                    return DormantSeedPercent.Value + GermPercent.Value;
+                }
+                if (GermPercent.HasValue)
+                {
+                    return GermPercent.Value;
+                }
+                if (DormantSeedPercent.HasValue)
+                {
+                    return DormantSeedPercent.Value;
+                }
+                return 0;
+            }
         }
 
         public Seeds SID { get; set; }

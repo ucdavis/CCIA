@@ -272,26 +272,43 @@
         <input class="@errorClass" type="text" data-val="true" data-val-number="The field Hard Seed value must be a number." data-val-range="The field Hard Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Hard Seed value field is required." id="HardSeedPercent" name="Labs.HardSeedPercent" value="@Model.Labs.GermHardSeedValue">
     </div>
 </div> 
-@if(Model.Standards.ShowAssay1) 
+@if(Model.Standards.ShowDormant)
 {
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name Results</label>
-        <select asp-for="Labs.AssayResults" class="col-sm-3 form-control">
-            <option value="P">Passed</option>
-            <option value="S">Passed - Substandard</option>
-            <option value="R">Rejected</option>
-            <option value="U">Unknown</option>
-        </select>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name</label>
+        <label asp-for="Labs.DormantSeedPercent" class="col-sm-3 col-form-label"></label>
         <div class="col-sm-3 col-form">
-             <select asp-for="Labs.AssayTest">
-                <option value="true">Positive</option>
-                <option value="false">Negative</option>
-            </select>
+                @if (ViewData.ModelState.GetFieldValidationState("Labs.DormantSeedPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                errorClass = "input-validation-error";
+            }
+            else
+            {
+                errorClass = "";
+            }
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Dormant Seed value must be a number." data-val-range="The field Dormant Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Dormant Seed value field is required." id="DormantSeedPercent" name="Labs.DormantSeedPercent" value="@Model.Labs.DormantSeedValue">
         </div>
     </div>
+}
+@if(Model.Standards.ShowAssay1) 
+{
+<div class="form-group row">
+    <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name Results</label>
+    <select asp-for="Labs.AssayResults" class="col-sm-3 form-control">
+        <option value="P">Passed</option>
+        <option value="S">Passed - Substandard</option>
+        <option value="R">Rejected</option>
+        <option value="U">Unknown</option>
+    </select>
+</div>
+<div class="form-group row">
+    <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name</label>
+    <div class="col-sm-3 col-form">
+            <select asp-for="Labs.AssayTest">
+            <option value="true">Positive</option>
+            <option value="false">Negative</option>
+        </select>
+    </div>
+</div>
 }
 @if(Model.Standards.ShowDodderGrams)
 {   

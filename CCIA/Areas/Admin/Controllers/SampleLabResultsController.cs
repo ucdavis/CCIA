@@ -44,6 +44,7 @@ namespace CCIA.Controllers.Admin
             labs.ForeignMaterialPercent = labs.ForeignMaterialPercent / 100;
             labs.SplitsAndCracksPercent = labs.SplitsAndCracksPercent / 100;
             labs.ChewingInsectDamagePercent = labs.ChewingInsectDamagePercent / 100;
+            labs.DormantSeedPercent = labs.DormantSeedPercent / 100;
 
             var errorList = await LabResultsCheckStandards.CheckStandardsFromLabs(_dbContext, labs);
 
@@ -151,6 +152,7 @@ namespace CCIA.Controllers.Admin
             labsToUpdate.GermPercent = labs.GermPercent;
             labsToUpdate.GermResults = labs.GermResults;
             labsToUpdate.HardSeedPercent = labs.HardSeedPercent;
+            labsToUpdate.DormantSeedPercent = labs.DormantSeedPercent;
             labsToUpdate.InertComments = labs.InertComments;
             labsToUpdate.InertPercent = labs.InertPercent;
             labsToUpdate.NoxiousComments = labs.NoxiousComments;
