@@ -40,7 +40,7 @@ namespace CCIA.Models
                 oecdClass = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync(),
                 oecdCountries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync()
             };
-            if(tagToEdit.Application != null && tagToEdit.Application.AppType == "PO")
+            if(tagToEdit != null && tagToEdit.Application != null && tagToEdit.Application.AppType == "PO")
             {
                 var countries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
                 countries.Insert(0, new Countries { Id = 0, Name = "Select country..." });
