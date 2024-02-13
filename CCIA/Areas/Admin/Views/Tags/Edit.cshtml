@@ -230,30 +230,22 @@
                     <hr>
                     <h3>OECD</h3> 
                 </div>            
-            </div>
+            </div>            
             <div class="form-group row">
                 <label asp-for="tag.PlantingStockNumber" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.PlantingStockNumber)
-                </div>
-            </div>
+                <input asp-for="tag.PlantingStockNumber" class="col-sm-3 form-control">
+            </div>           
             <div class="form-group row">
                 <label asp-for="tag.DateSealed" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.DateSealed)
-                </div>
-            </div>
+                <input asp-for="tag.DateSealed" type="text" class="col-sm-3 form-control datepicker">
+            </div>  
             <div class="form-group row">
                 <label asp-for="tag.OECDClass.Class" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.OECDClass.Class)
-                </div>
+                <select asp-for="tag.OECDTagType" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.oecdClass, "Id", "Class"))"></select>
             </div>
             <div class="form-group row">
                 <label asp-for="tag.OECDCountry.Name" class="col-sm-3 col-form-label"></label>
-                <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.tag.OECDCountry.Name)
-                </div>
+                <select asp-for="tag.OECDCountryId" class="col-sm-5 form-control" asp-items="@(new SelectList(Model.oecdCountries, "Id", "Name"))"></select>
             </div>
             <div class="row">
                 <div class="col-sm-12">
@@ -323,6 +315,7 @@
                 $('#tag_DestinationCountry').change(function () {
                     SetStatesForCountry();
                 })
+                $('.datepicker').datepicker();
             });
 
         function SetStatesForCountry() {
