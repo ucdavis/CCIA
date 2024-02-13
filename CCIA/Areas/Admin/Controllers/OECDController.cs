@@ -205,10 +205,9 @@ namespace CCIA.Controllers.Admin
                     model.DatePrinted = DateTime.Now;
                     model.UpdateUser = User.FindFirstValue(ClaimTypes.Name);
                     await _dbContext.SaveChangesAsync();
-
-                    var p0 = new SqlParameter("@file_num", model.Id);
-                    await _dbContext.Database.ExecuteSqlRawAsync($"EXEC charge_OECD @file_num", p0);
                 }
+                var p0 = new SqlParameter("@file_num", model.Id);
+                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC charge_OECD @file_num", p0);
             }
             return View(model);
         }

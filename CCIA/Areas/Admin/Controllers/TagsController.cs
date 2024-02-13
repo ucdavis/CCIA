@@ -205,6 +205,13 @@ namespace CCIA.Controllers.Admin
             tagToUpdate.HowDeliver = edit.HowDeliver;
             tagToUpdate.UserModified = User.FindFirstValue(ClaimTypes.Name);
             tagToUpdate.DateModified = DateTime.Now;
+            if (tagToUpdate.OECD)
+            {
+                tagToUpdate.PlantingStockNumber = edit.PlantingStockNumber;
+                tagToUpdate.DateSealed = edit.DateSealed;
+                tagToUpdate.OECDClass = edit.OECDClass;
+                tagToUpdate.OECDCountry = edit.OECDCountry;
+            }
             if (tagToUpdate.AppId.HasValue && edit.DestinationCountry != 0)
             {
                 tagToUpdate.DestinationCountry = edit.DestinationCountry;
