@@ -29,6 +29,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> EditBlend(int id)
+        {
+            var model = await SampleLabResultsViewModel.Create(_dbContext, id);
+            return View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Edit(int id, SampleLabResultsViewModel results)
         {
@@ -113,7 +119,11 @@ namespace CCIA.Controllers.Admin
                 if (errorList.Assay1Error != null)
                 {
                     ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
-                }    
+                }
+                if (errorList.DodderError != null)
+                {
+                    ModelState.AddModelError("Labs.DodderGrams", errorList.DodderError);
+                }
                 if (errorList.GeneralError != null)
                 {
                     ModelState.AddModelError(string.Empty, errorList.GeneralError);

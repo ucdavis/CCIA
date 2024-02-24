@@ -1,11 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-//using Thinktecture;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Configuration;
 
 namespace CCIA.Models
 {
@@ -185,6 +181,9 @@ namespace CCIA.Models
                    builder.AddConsole()
                           .AddFilter(DbLoggerCategory.Database.Command.Name,
                                      LogLevel.Information));
+            serviceCollection.AddLogging(builder =>
+                    builder.AddDebug()
+                            .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
             return serviceCollection.BuildServiceProvider()
                     .GetService<ILoggerFactory>();
         }

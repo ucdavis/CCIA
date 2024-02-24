@@ -5,10 +5,120 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
-    public partial class SampleLabResults
+    public partial class SampleLabResults : LabResults
     {
         public int SeedsId { get; set; }
-        
+        public Seeds SID { get; set; }
+
+        [Display(Name = "Badly Discolored")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? BadlyDiscoloredPercent { get; set; }
+
+        [Display(Name = "Bushel Weight")]
+        public decimal? BushelWeight { get; set; }
+        [Display(Name = "Chewing Insect Damage")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? ChewingInsectDamagePercent { get; set; }
+        public string ChewingInsectDamageValue
+        {
+            get
+            {
+                if (ChewingInsectDamagePercent.HasValue)
+                {
+                    return (ChewingInsectDamagePercent.Value * 100).ToString("0.####");
+                }
+                return "";
+            }
+        }
+        [Display(Name = "Dormant Seed (TZ %)")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? DormantSeedPercent { get; set; }
+        public string DormantSeedValue
+        {
+            get
+            {
+                if (DormantSeedPercent.HasValue)
+                {
+                    return (DormantSeedPercent.Value * 100).ToString("0.####");
+                }
+                return "";
+            }
+        }
+        public string BadlyDiscoloredValue
+        {
+            get
+            {
+                if (BadlyDiscoloredPercent.HasValue)
+                {
+                    return (BadlyDiscoloredPercent.Value * 100).ToString("0.####");
+                }
+                return "";
+            }
+        }
+        [Display(Name = "Foreign Material")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? ForeignMaterialPercent { get; set; }
+        public string ForeignMaterialValue
+        {
+            get
+            {
+                if (ForeignMaterialPercent.HasValue)
+                {
+                    return (ForeignMaterialPercent.Value * 100).ToString("0.####");
+                }
+                return "";
+            }
+        }
+        public string ForeignMaterialsComments { get; set; }
+        [Display(Name = "Splits&Cracks")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        [Range(0.0, 100)]
+        public decimal? SplitsAndCracksPercent { get; set; }
+        public string SplitsAndCracksValue
+        {
+            get
+            {
+                if (SplitsAndCracksPercent.HasValue)
+                {
+                    return (SplitsAndCracksPercent.Value * 100).ToString("0.####");
+                }
+                return "";
+            }
+        }
+        [Display(Name = "Total Germination")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        public decimal TotalGerminationAndDormant
+        {
+            get
+            {
+                if (DormantSeedPercent.HasValue && GermPercent.HasValue)
+                {
+                    return DormantSeedPercent.Value + GermPercent.Value;
+                }
+                if (GermPercent.HasValue)
+                {
+                    return GermPercent.Value;
+                }
+                if (DormantSeedPercent.HasValue)
+                {
+                    return DormantSeedPercent.Value;
+                }
+                return 0;
+            }
+        }
+    }
+
+    public partial class BlendLabResults : LabResults
+    {
+        public int BlendId { get; set; }
+        //public BlendRequests Blend { get; set; }
+    }
+    public partial class LabResults
+    {   
 
         [Display(Name = "Germination")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
@@ -138,8 +248,7 @@ namespace CCIA.Models
         [Display(Name = "Noxious Weeds")]        
         [DisplayFormat(DataFormatString = "{0} seed(s)")]
         public int? NoxiousCount { get; set; }
-        [Display(Name = "Bushel Weight")]
-        public decimal? BushelWeight { get; set; }
+      
         [Display(Name = "Purity Grams")]
         [Range(0.0, 100000)]
         public decimal? PurityGrams { get; set; }
@@ -160,21 +269,7 @@ namespace CCIA.Models
             }           
         }
 
-		[Display(Name = "Dormant Seed (TZ %)")]
-		[DisplayFormat(DataFormatString = "{0:P2}")]
-		[Range(0.0, 100)]
-		public decimal? DormantSeedPercent { get; set; }
-		public string DormantSeedValue
-		{
-			get
-			{
-				if (DormantSeedPercent.HasValue)
-				{
-					return (DormantSeedPercent.Value * 100).ToString("0.####");
-				}
-				return "";
-			}
-		}
+		
 		public string AssayResults { get; set; }
         public bool? AssayTest { get; set; }
         public bool? AssayTest2 { get; set; }
@@ -201,71 +296,13 @@ namespace CCIA.Models
         public bool CciaConfirmed { get; set; }
         public DateTime? ConfirmDate { get; set; }
         public string ConfirmUser { get; set; }
-        [Display(Name = "Badly Discolored")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
-        [Range(0.0, 100)]
-        public decimal? BadlyDiscoloredPercent { get; set; }
+      
 
         [ForeignKey("SID")]
         public ICollection<SampleLabResultsChanges> Changes { get; set; }
 
-        public string BadlyDiscoloredValue 
-        { 
-            get
-            {
-                if(BadlyDiscoloredPercent.HasValue)
-             {
-                 return (BadlyDiscoloredPercent.Value * 100).ToString("0.####");
-             } 
-             return "";
-            }           
-        }  
-        [Display(Name = "Foreign Material")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
-        [Range(0.0, 100)]
-        public decimal? ForeignMaterialPercent { get; set; }
-        public string ForeignMaterialValue 
-        { 
-            get
-            {
-                if(ForeignMaterialPercent.HasValue)
-             {
-                 return (ForeignMaterialPercent.Value * 100).ToString("0.####");
-             } 
-             return "";
-            }           
-        }  
-        public string ForeignMaterialsComments { get; set; }
-        [Display(Name = "Splits&Cracks")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
-        [Range(0.0, 100)]
-        public decimal? SplitsAndCracksPercent { get; set; }
-        public string SplitsAndCracksValue 
-        { 
-            get
-            {
-                if(SplitsAndCracksPercent.HasValue)
-             {
-                 return (SplitsAndCracksPercent.Value * 100).ToString("0.####");
-             } 
-             return "";
-            }           
-        }  
-        [Display(Name = "Chewing Insect Damage")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
-        [Range(0.0, 100)]
-        public decimal? ChewingInsectDamagePercent { get; set; }
-        public string ChewingInsectDamageValue 
-        { 
-            get
-            {
-                if(ChewingInsectDamagePercent.HasValue)
-             {
-                 return (ChewingInsectDamagePercent.Value * 100).ToString("0.####");
-             } 
-             return "";
-            }           
-        } 
+       
+       
 
         [Display(Name = "Total Germination")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
@@ -288,29 +325,9 @@ namespace CCIA.Models
             } 
         }
 
-        [Display(Name = "Total Germination")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
-        public decimal TotalGerminationAndDormant
-        {
-            get
-            {
-                if (DormantSeedPercent.HasValue && GermPercent.HasValue)
-                {
-                    return DormantSeedPercent.Value + GermPercent.Value;
-                }
-                if (GermPercent.HasValue)
-                {
-                    return GermPercent.Value;
-                }
-                if (DormantSeedPercent.HasValue)
-                {
-                    return DormantSeedPercent.Value;
-                }
-                return 0;
-            }
-        }
+       
 
-        public Seeds SID { get; set; }
+        
 
 
     }
