@@ -117,6 +117,11 @@ namespace CCIA.Models
                     model.Countries = countries;
                     model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
                     model.MaxOECDWeight = blend.LotBlends.First().Seeds.Variety.Crop.maxOECDLotWeight;
+                    var labs = await _dbContext.BlendLabResults.Where(l => l.BlendId == id).AnyAsync();
+                    if (!labs)
+                    {
+                        request.OECDWarning = true;
+                    }
                 } else
                 {
                     request.AllowOECD = false;
@@ -266,7 +271,24 @@ namespace CCIA.Models
                 request.LotWeight = blend.LbsLot.HasValue ? decimal.ToInt32(blend.LbsLot.Value) : 0;
                 request.WeightBalance = previousTags.Any() ? decimal.ToInt32(previousTags.Sum(t => t.LotWeightRequested.Value)) : 0;
                 request.TagClass = 4;
-                request.AllowOECD = false;
+                if (blend.BlendType == BlendType.Lot.GetDisplayName())
+                {
+                    request.AllowOECD = true;
+                    var countries = await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
+                    countries.Insert(0, new Countries { Id = 0, Name = "Select country..." });
+                    model.Countries = countries;
+                    model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
+                    model.MaxOECDWeight = blend.LotBlends.First().Seeds.Variety.Crop.maxOECDLotWeight;
+                    var labs = await _dbContext.BlendLabResults.Where(l => l.BlendId == id).AnyAsync();
+                    if (!labs)
+                    {
+                        request.OECDWarning = true;
+                    }
+                }
+                else
+                {
+                    request.AllowOECD = false;
+                }                
             }
             if(tagTarget == "LT")
             {
@@ -460,6 +482,7 @@ namespace CCIA.Models
             Pretagging = false;
             SeriesRequest = false;
             AnalysisRequested = false;
+            OECDWarning = false;           
         }
 
 
@@ -530,6 +553,7 @@ namespace CCIA.Models
         public int DestinationCountry { get; set; }
         [Display(Name = "Destination State")]
         public int DestinationState { get; set; }
+        public bool OECDWarning { get; set; }
 
     }   
 }
