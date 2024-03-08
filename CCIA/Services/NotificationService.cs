@@ -33,6 +33,7 @@ namespace CCIA.Services
         Task TagCanceledByCCIA(Tags tag);
 
         Task BlendRequestApproved(BlendRequests blend);
+        Task BlendLabAdded(BlendLabResults labs);
 
         Task BlendRequestSubmitted(BlendRequests blend);
         Task BlendReturnedForReview(BlendRequests blend);
@@ -448,6 +449,23 @@ namespace CCIA.Services
                     Message = "Blend submitted by conditioner"
                 };
                 _dbContext.Notifications.Add(notification);      
+            }
+
+        }
+
+        public async Task BlendLabAdded(BlendLabResults labs)
+        {
+            var admins = await _dbContext.CCIAEmployees.Where(e => e.NewBlend && !string.IsNullOrEmpty(e.UCDMailID) && e.Current).Select(e => e.UCDMailID).ToListAsync();
+
+            foreach (var user in admins)
+            {
+                var notification = new Notifications
+                {
+                    Email = $"{user}@ucdavis.edu",
+                    BlendId = labs.BlendId,
+                    Message = "Blend lab results updated"
+                };
+                _dbContext.Notifications.Add(notification);
             }
 
         }

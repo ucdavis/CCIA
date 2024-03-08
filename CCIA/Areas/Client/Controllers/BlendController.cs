@@ -903,8 +903,11 @@ namespace CCIA.Controllers.Client.Client
             labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
             labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
 
+            
+
             if (ModelState.IsValid)
             {
+                await _notificationService.BlendLabAdded(labsToUpdate);
                 await _dbContext.SaveChangesAsync();
                 Message = "Lab Results Updated";
                 return RedirectToAction("Details", "Blend", new { id = labs.BlendId });
