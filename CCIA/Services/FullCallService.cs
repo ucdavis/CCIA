@@ -175,7 +175,7 @@ namespace CCIA.Services
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Conditioner)
                 .ThenInclude(c => c.OrgCounty)
-                .Include(b => b.ApprovedByEmployee)
+                .Include(b => b.ApprovedByEmployee)                
                 .AsQueryable();
             return blend;
 
