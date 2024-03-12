@@ -13,21 +13,22 @@ namespace CCIA.Models
         
         [ForeignKey("UserChange")]
         public CCIAEmployees Employee { get; set; }
+        public string UserChange { get; set; }
 
     }
 
     public partial class BlendLabResultsChanges : LabResultChanges
     {
         public int BlendId { get; set; }
+        public int? contactChange { get; set; }
+        public string adminChange { get; set; }
 
-        public int? UpdateContactId { get; set; }
-        public string UpdateAdminId { get; set; }
-        public bool LastUpdateAdmin { get; set; }
 
-        [ForeignKey("UpdateAdminId")]
+
+        [ForeignKey("adminChange")]
         public CCIAEmployees Employee { get; set; }
 
-        [ForeignKey("UpdateContactId")]
+        [ForeignKey("contactChange")]
         public Contacts Contact { get; set; }
     }
 
@@ -38,7 +39,7 @@ namespace CCIA.Models
         public string ColumnChange { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
-        public string UserChange { get; set; }
+        
         public DateTime DateChanged { get; set; }
 
        

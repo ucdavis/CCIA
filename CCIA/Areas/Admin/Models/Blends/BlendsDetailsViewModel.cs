@@ -62,6 +62,9 @@ namespace CCIA.Models
                 labsAndStandards.Labs = await _dbContext.BlendLabResults.Where(l => l.BlendId == id)
                         .Include(r => r.LabOrganization)
                         .Include(r => r.Changes)
+                        .ThenInclude(c => c.Employee)
+                        .Include(r => r.Changes)
+                        .ThenInclude(c => c.Contact)
                         .FirstOrDefaultAsync();
                 if (labsAndStandards.Labs != null)
                 {

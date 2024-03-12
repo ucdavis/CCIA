@@ -110,12 +110,21 @@ namespace CCIA.Models
                 return 0;
             }
         }
+        [ForeignKey("SID")]
+        public ICollection<SampleLabResultsChanges> Changes { get; set; }
     }
 
     public partial class BlendLabResults : LabResults
     {
         public int BlendId { get; set; }
         //public BlendRequests Blend { get; set; }
+        [ForeignKey("BlendId")]
+        public ICollection<BlendLabResultsChanges> Changes { get; set; }
+
+        public int? UpdateContactId { get; set; }
+        public string UpdateAdminId { get; set; }
+        public bool LastUpdateAdmin { get; set; }
+
     }
     public partial class LabResults
     {   
@@ -298,8 +307,7 @@ namespace CCIA.Models
         public string ConfirmUser { get; set; }
       
 
-        [ForeignKey("SID")]
-        public ICollection<SampleLabResultsChanges> Changes { get; set; }
+        
 
        
        

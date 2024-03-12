@@ -375,7 +375,7 @@
 
 
                 @await Html.PartialAsync("_BlendLabResultsDetails.cshtml", Model.LabsAndStandards)
-                <a asp-action="Edit" asp-controller="SampleLabResults" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Lab Results</a>
+                <a asp-action="EditLabs" asp-controller="Blends" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Lab Results</a>
             </div>            
         </div>
         <div class="col-sm-12">
@@ -390,7 +390,7 @@
                         <th>Date</th>
                         <th>Person</th>
                     </tr>
-                    @foreach (var change in Model.LabsAndStandards.Labs.Changes)
+                    @foreach (var change in Model.LabsAndStandards.Labs.Changes.OrderBy(c=> c.ColumnChange).ThenBy(c=> c.DateChanged))
                     {
                         <tr>
                             <td>@change.ColumnChange</td>
@@ -400,8 +400,13 @@
                             <td>
                                 @if (change.Employee != null)
                                 {
-                                    @change.Employee.Name
+                                    @change.Employee.Name 
                                 }
+                                @if (change.Contact != null)
+                                {
+                                    @change.Contact.Name <span>(client)</span>
+                                }
+                                
                             </td>
                         </tr>
                     }

@@ -27,13 +27,7 @@ namespace CCIA.Controllers.Admin
         {
             var model = await SampleLabResultsViewModel.Create(_dbContext, id);
             return View(model);
-        }
-
-        public async Task<IActionResult> EditBlend(int id)
-        {
-            var model = await SampleLabResultsViewModel.Create(_dbContext, id);
-            return View(model);
-        }
+        }       
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, SampleLabResultsViewModel results)

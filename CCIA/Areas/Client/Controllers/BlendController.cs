@@ -902,8 +902,10 @@ namespace CCIA.Controllers.Client.Client
             labsToUpdate.WeedSeedComments = labs.WeedSeedComments;
             labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
             labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
+            labsToUpdate.LastUpdateAdmin = false;
+            labsToUpdate.UpdateContactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
 
-            
+
 
             if (ModelState.IsValid)
             {
