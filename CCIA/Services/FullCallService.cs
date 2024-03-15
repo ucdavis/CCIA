@@ -565,6 +565,8 @@ namespace CCIA.Services
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
                 .Include(t => t.Blend)
+                .ThenInclude(b => b.Labs)          // Blenrequests => labs (only for lot blends)       
+                .Include(t => t.Blend)
                 .ThenInclude(b => b.InDirtBlends)  // blendrequest (in dirt from known app) => indirt => application => variety
                 .ThenInclude(i => i.Application)
                 .ThenInclude(a => a.Variety)
