@@ -245,7 +245,7 @@
                         <tr>
                             @if(Model.Seeds != null && Model.Seeds.LabResults != null){
                                 <td style="height: 21px" class="labelvertnopad " align="center">                                
-                                    @string.Format("{0:N}", Model.Seeds.LabResults.PurityPercent * 100) %
+                                   @string.Format("{0:N}", Model.Seeds.LabResults.PurityPercent * 100)  %
                                 </td>
                                 <td style="height: 21px" class="labelvertnopad " align="center">
                                     @string.Format("{0:N}", Model.Seeds.LabResults.InertPercent * 100) %
@@ -261,6 +261,25 @@
                                 </td>
                                 <td style="height: 21px" class="labelnopad" align="center">
                                     0.00 %/@string.Format("{0:N}", Model.Seeds.LabResults.HardSeedPercent * 100) %</td>
+                            }
+                             @if(Model.Blend != null && Model.Blend.Labs != null){
+                                <td style="height: 21px" class="labelvertnopad " align="center">                                
+                                   @string.Format("{0:N}", Model.Blend.Labs.PurityPercent * 100)  %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Blend.Labs.InertPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Blend.Labs.OtherCropPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Blend.Labs.WeedSeedPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelvertnopad " align="center">
+                                    @string.Format("{0:N}", Model.Blend.Labs.GermPercent * 100) %
+                                </td>
+                                <td style="height: 21px" class="labelnopad" align="center">
+                                    0.00 %/@string.Format("{0:N}", Model.Blend.Labs.HardSeedPercent * 100) %</td>
                             }
                         </tr>
                     </table>

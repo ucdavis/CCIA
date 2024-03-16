@@ -193,6 +193,8 @@ namespace CCIA.Services
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(o => o.Blend)
+                .ThenInclude(b => b.Labs)
                 .Include(o => o.Class)
                 .Include(o => o.ShipperOrganization)
                 .ThenInclude(s => s.Addresses.Where(a => a.Active))
