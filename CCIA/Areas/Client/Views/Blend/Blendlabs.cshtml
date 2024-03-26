@@ -1,0 +1,258 @@
+@model CCIA.Models.SampleLabResultsViewModel.SampleLabResultsViewModel
+@{string errorClass = "";}
+<form asp-action="BlendLabs">
+@Html.HiddenFor(s => s.BlendLabs.BlendId)
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Lab Results</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 text-danger" asp-validation-summary="All"> 
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-3 col-form-label"></div>
+    <div class="col-sm-1 col-form">
+       Value
+    </div>
+    <div class="col-sm-2">&nbsp;</div>
+    <div class="col-sm-6 col-form">
+        Comments        
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="BlendLabs.PurityPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.PurityPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+       {
+          errorClass = "input-validation-error";
+       } else 
+       {
+           errorClass = "";
+       }
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Purity value must be a number." data-val-range="The field Purity value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Purity value field is required." id="BlendLabs_PurityPercent" name="BlendLabs.PurityPercent" value="@Model.BlendLabs.PurityValue">
+        </div>        
+    <div class="col-sm-6 col-form">
+            <textarea asp-for="BlendLabs.PurityComments" rows="1" cols="30"></textarea>
+    </div>
+</div>
+@if(Model.Standards.ShowInert)
+{ 
+    <div class="form-group row">
+        <label asp-for="BlendLabs.InertPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form">
+            @if(ViewData.ModelState.GetFieldValidationState("BlendLabs.InertPercent")  == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+            {
+                errorClass = "input-validation-error";
+            } else 
+            {
+                errorClass = "";
+            }    
+                <input class="@errorClass" type="text" data-val="true" data-val-number="The field Inert value must be a number." data-val-range="The field Inert value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Inert value field is required." id="BlendLabs_InertPercent" name="BlendLabs.InertPercent" value="@Model.BlendLabs.InertValue">
+        </div>
+        <div class="col-sm-6 col-form">
+                <textarea asp-for="BlendLabs.InertComments" rows="1" cols="30"></textarea>
+        </div>
+    </div> 
+}
+@if(Model.Standards.OtherVarietyType != null)
+{
+    <div class="form-group row align-items-start">
+            <label asp-for="BlendLabs.OtherVarietyPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form">
+            @if(Model.Standards.OtherVarietyType == "R")
+            {
+                    @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.OtherVarietyPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                }
+                    <input class="@errorClass" type="text" data-val="true" data-val-number="The field Other Variety value must be a number." data-val-range="The field Other Variety value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Variety value field is required." id="BlendLabs_OtherVarietyPercent" name="BlendLabs.OtherVarietyPercent" value="@Model.BlendLabs.OtherVarietyValue">
+            } else if(Model.Standards.OtherVarietyType == "C")
+            {
+                    <input asp-for="BlendLabs.OtherVarietyCount">
+            }
+        </div>
+        <div class="col-sm-6 col-form">
+                <textarea asp-for="BlendLabs.OtherVarietyComments" rows="1" cols="30"></textarea>
+        </div>
+    </div> 
+}
+@if(Model.Standards.OtherCropType != null)
+{
+    <div class="form-group row">
+            <label asp-for="BlendLabs.OtherCropPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form">
+            @if(Model.Standards.OtherCropType == "R")
+            {
+                    @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.OtherCropPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                }
+                    <input class="@errorClass" type="text" data-val="true" data-val-number="The field Other Crop value must be a number." data-val-range="The field Other Crop value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Other Crop value field is required." id="BlendLabs_OtherCropPercent" name="BlendLabs.OtherCropPercent" value="@Model.BlendLabs.OtherCropValue">
+            } else if(Model.Standards.OtherCropType == "C")
+            {
+                    <input asp-for="BlendLabs.OtherCropCount">
+            }
+        </div>
+        <div class="col-sm-6 col-form">
+                <textarea asp-for="BlendLabs.OtherCropComments" rows="1" cols="30"></textarea>
+        </div>
+    </div> 
+}
+@if(Model.Standards.WeedSeedType != null)
+{
+    <div class="form-group row">
+            <label asp-for="BlendLabs.WeedSeedPercent" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form">
+            @if(Model.Standards.WeedSeedType == "R")
+            {
+                    @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.WeedSeedPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+                {
+                    errorClass = "input-validation-error";
+                } else 
+                {
+                    errorClass = "";
+                }
+                    <input class="@errorClass" type="text" data-val="true" data-val-number="The field Weed Seed value must be a number." data-val-range="The field Weed Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Weed Seed value field is required." id="BlendLabs_WeedSeedPercent" name="BlendLabs.WeedSeedPercent" value="@Model.BlendLabs.WeedSeedValue">
+            } else if(Model.Standards.WeedSeedType == "C")
+            {
+                    <input asp-for="BlendLabs.WeedSeedCount">
+            }
+        </div>
+        <div class="col-sm-6 col-form">
+                <textarea asp-for="BlendLabs.WeedSeedComments" rows="1" cols="30"></textarea>
+        </div>
+    </div> 
+}
+<div class="form-group row">
+        <label asp-for="BlendLabs.PurityGrams" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            <input asp-for="BlendLabs.PurityGrams">
+    </div>
+</div> 
+<div class="form-group row">
+        <label asp-for="BlendLabs.NoxiousCount" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            <input asp-for="BlendLabs.NoxiousCount">
+    </div>
+    <div class="col-sm-6 col-form">
+            <textarea asp-for="BlendLabs.NoxiousComments" rows="1" cols="30"></textarea>
+    </div>
+</div>  
+<div class="form-group row">
+        <label asp-for="BlendLabs.NoxiousGrams" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            <input asp-for="BlendLabs.NoxiousGrams">
+    </div>
+</div> 
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>   
+<div class="form-group row">
+        <label asp-for="BlendLabs.GermPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.GermPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+        {
+            errorClass = "input-validation-error";
+        } else 
+        {
+            errorClass = "";
+        }
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Germination value must be a number." data-val-range="The field Germination value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Germination value field is required." id="BlendLabs_GermPercent" name="BlendLabs.GermPercent" value="@Model.BlendLabs.GermValue">
+        </div>
+</div>
+<div class="form-group row">
+        <label asp-for="BlendLabs.HardSeedPercent" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            @if (ViewData.ModelState.GetFieldValidationState("BlendLabs.HardSeedPercent") == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
+        {
+            errorClass = "input-validation-error";
+        } else 
+        {
+            errorClass = "";
+        }
+            <input class="@errorClass" type="text" data-val="true" data-val-number="The field Hard Seed value must be a number." data-val-range="The field Hard Seed value must be between 0 and 100." data-val-range-max="100" data-val-range-min="0" data-val-required="The Hard Seed value field is required." id="HardSeedPercent" name="BlendLabs.HardSeedPercent" value="@Model.BlendLabs.GermHardSeedValue">
+    </div>
+</div>
+@if(Model.Standards.ShowAssay1) 
+    {<div class="form-group row">
+        <label class="col-sm-3 col-form-label">@Model.Standards.Assay1Name</label>
+        <div class="col-sm-3 col-form">
+                <select asp-for="BlendLabs.AssayTest">
+                <option value="true">Positive</option>
+                <option value="false">Negative</option>
+            </select>
+        </div>
+    </div>
+}
+@if(Model.Standards.ShowDodderGrams)
+{   
+    <div class="form-group row">
+            <label asp-for="BlendLabs.DodderGrams" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form">
+                <input asp-for="BlendLabs.DodderGrams">
+        </div>
+    </div> 
+}
+<div class="form-group row">
+        <label asp-for="BlendLabs.PrivateLabDate" class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-3 col-form input-group">
+            <input asp-for="BlendLabs.PrivateLabDate" class="form-control datepicker" placeholder="MM/DD/YYYY" type="text" />
+            <div class="input-group-append" onclick="$('.datepicker').focus();">             
+            <i class="fa fa-calendar input-group-text"></i>
+        </div>
+    </div>   
+</div> 
+<div class="form-group row">
+    <label class="col-sm-3 col-form-label">Lab</label>
+    <div class="col-sm-3 col-form">
+            <select asp-for="BlendLabs.PrivateLabId" class="form-control" asp-items="@(new SelectList(Model.PrivateLabs, "Id","Name"))"></select>
+    </div>
+</div>
+<div class="form-group row">
+        <label asp-for="BlendLabs.PrivateLabNumber" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            <input asp-for="BlendLabs.PrivateLabNumber">
+    </div>
+</div>
+<div class="form-group row">
+        <label asp-for="BlendLabs.Comments" class="col-sm-3 col-form-label"></label>
+    <div class="col-sm-3 col-form">
+            <textarea asp-for="BlendLabs.Comments" rows="5" cols="60"></textarea>
+    </div>
+</div> 
+<div class="form-group row">
+    <label asp-for="SubmitAsRejected" class="col-sm-3 col-form-label">Submit as Rejected</label>
+    <div class="col-sm-3 col-form">
+        <input type="checkbox" class="form-control" asp-for="SubmitAsRejected">
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-3">     
+    </div>
+    <div class="col-sm-3">
+        <input type="submit" value="Submit Results" class="btn btn-primary" />    
+    </div>
+</div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
+    
+    <script type="text/javascript">
+        $('.datepicker').datepicker({            
+            format: 'LT',
+            autoclose: "true",
+        })
+    </script>
+}

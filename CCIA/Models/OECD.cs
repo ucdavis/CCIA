@@ -228,18 +228,49 @@ namespace CCIA.Models
                 }
                 return 0;
             }
-        }
+        }       
 
         public string Flag
         {
             get
             {
-                if(BID.HasValue)
+                if (BID.HasValue)
                 {
-                    return "Blend used. Please manually check 6 month reqruirment on lab results.";
-                }
+                    if (Blend == null)
+                    {
+                        return "Blend not found, can't verify labs";
+                    }
+                    if (Blend != null && Blend.Labs == null)
+                    {
+                        return "Blend has no lab results";
+                    }                    
+                    if (!Blend.Labs.CciaConfirmed)
+                    {
+                        return "Blend has labs but they have not been confirmed";
+                    }
+                    if (Blend.Labs.PrivateLabDate.HasValue && CloseDate.HasValue)
+                    {
+                        if (Blend.Labs.PrivateLabDate.Value.AddMonths(6) <= CloseDate.Value)
+                        {
+                            return "Warning: It appears the close date is more than 6 months from the lab results on the Blend.";
+                        }
+                        if (Blend.Labs.PrivateLabDate.Value > CloseDate.Value)
+                        {
+                            return "Lab results lab date is greater than the close date. Please double check this.";
+                        }
+                    }
+                    if (!Blend.Labs.PrivateLabDate.HasValue)
+                    {
+                        return "Alert: Lab results does not have a date (can't check the 6 months requirement)";
+                    }
+                    return "";
+                }  
                 if(Seeds != null && Seeds.LabResults != null && Seeds.LabResults.PrivateLabDate.HasValue && CloseDate.HasValue)
-                {
+                {  
+                    if(!Seeds.LabResults.CciaConfirmed)
+                    {
+                        return "SID has labs, but they have not been confirmed";
+                    }
                     
                     if(Seeds.LabResults.PrivateLabDate.Value.AddMonths(6) <= CloseDate.Value)
                     {

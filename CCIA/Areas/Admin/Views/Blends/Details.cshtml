@@ -367,6 +367,63 @@
                         </form>
         </div>
     </div>
+    @if (Model.blend.BlendType == BlendType.Lot.GetDisplayName())
+    {
+        @if(Model.LabsAndStandards == null || Model.LabsAndStandards.Labs == null)
+        {
+            <a asp-action="EditLabs" asp-controller="Blends" asp-route-id="@Model.blend.Id" class="btn btn-primary">Enter Lab Results</a>
+        }
+        @if (Model.LabsAndStandards != null)
+        {
+        <div class="col-sm-12 row">
+            <div class="col-sm-8">
+                <a asp-action="EditLabs" asp-controller="Blends" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Lab Results</a>
+
+                @if(Model.LabsAndStandards != null)
+                {
+                    @await Html.PartialAsync("_BlendLabResultsDetails.cshtml", Model.LabsAndStandards)
+                }                
+                <a asp-action="EditLabs" asp-controller="Blends" asp-route-id="@Model.blend.Id" class="btn btn-primary">Edit Lab Results</a>
+            </div>            
+        </div>
+        
+            <div class="col-sm-12">
+                @if (Model.LabsAndStandards.Labs.Changes.Count > 0)
+                {
+                    <h2>Changes To Lab Results</h2>
+                    <table class="table">
+                        <tr>
+                            <th>Column</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                            <th>Date</th>
+                            <th>Person</th>
+                        </tr>
+                        @foreach (var change in Model.LabsAndStandards.Labs.Changes.OrderBy(c => c.ColumnChange).ThenBy(c => c.DateChanged))
+                        {
+                            <tr>
+                                <td>@change.ColumnChange</td>
+                                <td>@change.OldValue</td>
+                                <td>@change.NewValue</td>
+                                <td>@change.DateChanged</td>
+                                <td>
+                                    @if (change.Employee != null)
+                                    {
+                                        @change.Employee.Name
+                                    }
+                                    @if (change.Contact != null)
+                                    {
+                                        @change.Contact.Name <span>(client)</span>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+        }
+    }
 </div>
 
 @section Scripts {

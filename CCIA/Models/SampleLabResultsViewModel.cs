@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CCIA.Helpers;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace CCIA.Models.SampleLabResultsViewModel
 {
     public class SampleLabResultsViewModel
     {
         public SampleLabResults Labs { get; set; }
+        public BlendLabResults BlendLabs { get; set; }
         public CropStandardsList  Standards { get; set; }
 
         public List<Organizations> PrivateLabs { get; set; }
@@ -39,7 +41,53 @@ namespace CCIA.Models.SampleLabResultsViewModel
             };
         }
 
+        public static async Task<SampleLabResultsViewModel> CreateBlend(CCIAContext _dbContext, int bid)
+        {
+            var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
+                    .Select(o => new Organizations { Id = o.Id, Name = o.Name })
+                    .OrderBy(o => o.Name)
+                    .ToListAsync();
+            privateLabs.Insert(0, new Organizations { Id = 0, Name = "Select lab..." });
+            privateLabs.Add(new Organizations { Id = -1, Name = "Other...list in comments" });
+
+            if (!await _dbContext.BlendLabResults.AnyAsync(b => b.BlendId == bid))
+            {
+                var labresults = new BlendLabResults();
+                labresults.BlendId = bid;
+                await _dbContext.BlendLabResults.AddAsync(labresults);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == bid).FirstAsync();
+
+            return new SampleLabResultsViewModel
+            {
+                BlendLabs = await _dbContext.BlendLabResults.Where(b => b.BlendId == bid).FirstOrDefaultAsync(),
+                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid),
+                PrivateLabs = privateLabs,
+            };
+        }
+
         public static async Task<SampleLabResultsViewModel> ReUse(CCIAContext _dbContext, SampleLabResults labs)
+        {
+            var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
+                    .Select(o => new Organizations { Id = o.Id, Name = o.Name })
+                    .OrderBy(o => o.Name)
+                    .ToListAsync();
+            privateLabs.Insert(0, new Organizations { Id = 0, Name = "Select lab..." });
+            privateLabs.Add(new Organizations { Id = -1, Name = "Other...list in comments" });
+            
+            return new SampleLabResultsViewModel
+            {
+                Labs = labs,
+                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, labs.SeedsId),
+                PrivateLabs = privateLabs,
+            };
+
+
+        }
+
+        public static async Task<SampleLabResultsViewModel> ReUseBlend(CCIAContext _dbContext, BlendLabResults labs)
         {
             var privateLabs = await _dbContext.Organizations.Where(o => o.GermLab)
                     .Select(o => new Organizations { Id = o.Id, Name = o.Name})
@@ -48,10 +96,11 @@ namespace CCIA.Models.SampleLabResultsViewModel
             privateLabs.Insert(0, new Organizations {Id = 0, Name = "Select lab..."});
             privateLabs.Add(new Organizations {Id= -1, Name = "Other...list in comments"});
 
+            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == labs.BlendId).FirstAsync();
             return new SampleLabResultsViewModel
             {
-                Labs = labs,
-                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, labs.SeedsId),
+                BlendLabs = labs,
+                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid),
                 PrivateLabs = privateLabs,
             };
 

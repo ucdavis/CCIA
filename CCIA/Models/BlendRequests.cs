@@ -62,6 +62,9 @@ namespace CCIA.Models
         [ForeignKey("BlendId")]
         public ICollection<LotBlends> LotBlends { get; set; }
 
+        [ForeignKey("Id")]
+        public BlendLabResults? Labs { get; set; }
+
         [ForeignKey("ApprovedBy")]
         public CCIAEmployees ApprovedByEmployee { get; set; }
 
@@ -196,6 +199,8 @@ namespace CCIA.Models
                 return "";
             }
         }
+
+        
 
 
 

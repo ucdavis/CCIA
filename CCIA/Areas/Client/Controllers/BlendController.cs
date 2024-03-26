@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using CCIA.Models.IndexViewModels;
 using CCIA.Services;
 using System.IO;
+using CCIA.Models.SampleLabResultsViewModel;
 
 namespace CCIA.Controllers.Client.Client
 {
@@ -751,6 +752,177 @@ namespace CCIA.Controllers.Client.Client
            Message = "Blend request submitted for approval";
            return RedirectToAction(nameof(Details), new { id = Id });
        }
+
+       public async Task<IActionResult> BlendLabs (int Id)
+       {
+            var labs = await _dbContext.BlendLabResults.Where(b => b.BlendId == Id).FirstOrDefaultAsync();
+            if(labs == null)
+            {
+                BlendLabResults newlab = new BlendLabResults
+                {
+                    BlendId = Id
+                };
+                _dbContext.Add(newlab);
+                await _dbContext.SaveChangesAsync();
+            }
+            var model = await SampleLabResultsViewModel.CreateBlend(_dbContext, Id);
+            return View(model);
+       }
+
+        [HttpPost]
+        public async Task<IActionResult> BlendLabs(int id, SampleLabResultsViewModel results)
+        {
+            var labs = results.BlendLabs;
+            labs.PurityPercent = labs.PurityPercent / 100;
+            labs.InertPercent = labs.InertPercent / 100;
+            labs.OtherCropPercent = labs.OtherCropPercent / 100;
+            labs.OtherVarietyPercent = labs.OtherVarietyPercent / 100;
+            labs.WeedSeedPercent = labs.WeedSeedPercent / 100;
+            labs.GermPercent = labs.GermPercent / 100;
+            labs.HardSeedPercent = labs.HardSeedPercent / 100;
+           
+
+            var errorList = await LabResultsCheckStandards.CheckStandardsFromBlendLabs(_dbContext, labs);
+
+            if (errorList.HasWarnings && !results.SubmitAsRejected)
+            {
+                if (errorList.PurityError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.PurityPercent", errorList.PurityError);
+                }
+                if (errorList.InertError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.InertPercent", errorList.InertError);
+                }
+                if (errorList.OtherCropError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.OtherCropPercent", errorList.OtherCropError);
+                }
+                if (errorList.WeedSeedError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.WeedSeedPercent", errorList.WeedSeedError);
+                }
+                if (errorList.OtherVarietyError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.OtherVarietyPercent", errorList.OtherVarietyError);
+                }
+                if (errorList.ForeignMaterialError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.ForeignMaterialPercent", errorList.ForeignMaterialError);
+                }
+                if (errorList.SplitsAndCracksError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.SplitsAndCracksPercent", errorList.SplitsAndCracksError);
+                }
+                if (errorList.BadlyDiscoloredError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.BadlyDiscoloredPercent", errorList.BadlyDiscoloredError);
+                }
+                if (errorList.ChewingInsectDamageError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.ChewingInsectDamagePercent", errorList.ChewingInsectDamageError);
+                }
+                if (errorList.NoxiousSeedError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.NoxiousCount", errorList.NoxiousSeedError);
+                }
+                if (errorList.PurityGramsError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.PurityGrams", errorList.PurityGramsError);
+                }
+                if (errorList.NoxiousGramsError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.NoxiousGrams", errorList.NoxiousGramsError);
+                }
+                if (errorList.BushelWeightError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.BushelWeight", errorList.BushelWeightError);
+                }
+                if (errorList.GermError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.GermPercent", errorList.GermError);
+                }
+                if (errorList.Assay1Error != null)
+                {
+                    ModelState.AddModelError("BlendLabs.AssayTest", errorList.Assay1Error);
+                }
+                if (errorList.DodderError != null)
+                {
+                    ModelState.AddModelError("BlendLabs.DodderGrams", errorList.DodderError);
+                }
+                if (errorList.GeneralError != null)
+                {
+                    ModelState.AddModelError(string.Empty, errorList.GeneralError);
+                }
+                ModelState.AddModelError(string.Empty, "Double check value or select continue as rejected lot");
+
+                var errorModel = await SampleLabResultsViewModel.ReUseBlend(_dbContext, results.BlendLabs);
+                return View(errorModel);
+            }
+
+            // Passed verification, save and redirect
+            var labsToUpdate = await _dbContext.BlendLabResults.Where(l => l.BlendId == labs.BlendId).FirstOrDefaultAsync();
+            if (errorList.AssayNeeded)
+            {
+                labsToUpdate.AssayResults = labs.AssayResults;
+                labsToUpdate.AssayTest = labs.AssayTest;
+            }
+            else
+            {
+                labsToUpdate.AssayResults = "N";
+            }
+
+          
+            labsToUpdate.Comments = labs.Comments;
+            labsToUpdate.PrivateLabDate = labs.PrivateLabDate;
+            labsToUpdate.DodderGrams = labs.DodderGrams;            
+            labsToUpdate.GermPercent = labs.GermPercent;
+            labsToUpdate.GermResults = labs.GermResults;
+            labsToUpdate.HardSeedPercent = labs.HardSeedPercent;            
+            labsToUpdate.InertComments = labs.InertComments;
+            labsToUpdate.InertPercent = labs.InertPercent;
+            labsToUpdate.NoxiousComments = labs.NoxiousComments;
+            labsToUpdate.NoxiousCount = labs.NoxiousCount;
+            labsToUpdate.NoxiousGrams = labs.NoxiousGrams;
+            labsToUpdate.OtherCropComments = labs.OtherCropComments;
+            labsToUpdate.OtherCropCount = labs.OtherCropCount;
+            labsToUpdate.OtherCropPercent = labs.OtherCropPercent;
+            labsToUpdate.OtherKindComments = labs.OtherKindComments;
+            labsToUpdate.OtherKindPercent = labs.OtherKindPercent;
+            labsToUpdate.OtherVarietyComments = labs.OtherVarietyComments;
+            labsToUpdate.OtherVarietyCount = labs.OtherVarietyCount;
+            labsToUpdate.OtherVarietyPercent = labs.OtherVarietyPercent;
+            labsToUpdate.PrivateLabDate = labs.PrivateLabDate;
+            labsToUpdate.PrivateLabId = labs.PrivateLabId;
+            labsToUpdate.PrivateLabNumber = labs.PrivateLabNumber;
+            labsToUpdate.PurityComments = labs.PurityComments;
+            labsToUpdate.PurityGrams = labs.PurityGrams;
+            labsToUpdate.PurityPercent = labs.PurityPercent;
+            labsToUpdate.PurityResults = labs.PurityResults;
+            labsToUpdate.WeedSeedComments = labs.WeedSeedComments;
+            labsToUpdate.WeedSeedCount = labs.WeedSeedCount;
+            labsToUpdate.WeedSeedPercent = labs.WeedSeedPercent;
+            labsToUpdate.LastUpdateAdmin = false;
+            labsToUpdate.UpdateContactId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
+
+
+
+            if (ModelState.IsValid)
+            {
+                await _notificationService.BlendLabAdded(labsToUpdate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Lab Results Updated";
+                return RedirectToAction("Details", "Blend", new { id = labs.BlendId });
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong";
+            }
+
+            var model = await SampleLabResultsViewModel.ReUse(_dbContext, results.Labs);
+            return View(model);
+        }
+
 
     }
 }

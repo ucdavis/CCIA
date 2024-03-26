@@ -1,11 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-//using Thinktecture;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Configuration;
 
 namespace CCIA.Models
 {
@@ -165,6 +161,8 @@ namespace CCIA.Models
         public virtual DbSet<SeedsChanges> SeedsChanges { get; set; }
 
         public virtual DbSet<SampleLabResultsChanges> SampleLabResultChanges { get; set; }
+        public virtual DbSet<BlendLabResultsChanges> BlendLabResultChanges { get; set; }
+
 
         public virtual DbSet<CropAssignments> CropAssignments { get; set; }
 
@@ -185,6 +183,12 @@ namespace CCIA.Models
                    builder.AddConsole()
                           .AddFilter(DbLoggerCategory.Database.Command.Name,
                                      LogLevel.Information));
+            serviceCollection.AddLogging(builder =>
+                   builder.AddDebug()
+                           .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
+            serviceCollection.AddLogging(builder =>
+                    builder.AddDebug()
+                            .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
             return serviceCollection.BuildServiceProvider()
                     .GetService<ILoggerFactory>();
         }
@@ -495,6 +499,29 @@ namespace CCIA.Models
                 entity.Property(e => e.DateChanged).HasColumnName("date_change");
 
                 entity.HasOne(e => e.Employee);
+
+            });
+
+            modelBuilder.Entity<BlendLabResultsChanges>(entity => {
+                entity.ToTable("blend_lab_results_changes");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasColumnName("id");                
+
+                entity.Property(e => e.ColumnChange).HasColumnName("column_change");
+
+                entity.Property(e => e.OldValue).HasColumnName("old_value");
+
+                entity.Property(e => e.NewValue).HasColumnName("new_value");
+
+                entity.Property(e => e.contactChange).HasColumnName("contact_change");
+                entity.Property(e => e.adminChange).HasColumnName("admin_change");
+
+                entity.Property(e => e.DateChanged).HasColumnName("date_change");
+
+                //entity.HasOne(e => e.Employee);
+                //entity.HasOne(e => e.Contact);
 
             });
 
@@ -3643,6 +3670,9 @@ namespace CCIA.Models
                 entity.Property(e => e.OtherKindPercent).HasColumnName("other_kind_percent").HasColumnType("numeric(8, 7)");
 
                 entity.Property(e => e.OtherKindComments).HasColumnName("other_kind_comments");
+                entity.Property(e => e.LastUpdateAdmin).HasColumnName("lastUpdateAdmin");
+                entity.Property(e => e.UpdateAdminId).HasColumnName("updateAdminID");
+                entity.Property(e => e.UpdateContactId).HasColumnName("updateContactID");
 
                 entity.HasOne(d => d.LabOrganization);
 

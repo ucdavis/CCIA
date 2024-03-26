@@ -385,7 +385,36 @@ namespace CCIA.Models
             }
         }
 
-        
+        [Display(Name = "OECD Warning")]
+        public string OECDWarning
+        {
+            get
+            {
+                if (SeedsID.HasValue && Seeds != null && Seeds.LabResults == null)
+                {
+                    return "SID has no lab results";
+                }
+                if (SeedsID.HasValue && Seeds != null && !Seeds.LabResults.CciaConfirmed)
+                {
+                    return "SID has lab results, but they have not been confirmed";
+                }
+                if (BlendId.HasValue && Blend != null && Blend.Labs == null)
+                {
+                    return "Blend has no lab results";
+                }
+                if (BlendId.HasValue && Blend != null && !Blend.Labs.CciaConfirmed)
+                {
+                    return "Blend has lab results, but they have not been confirmed";
+                }
+                if (AppId.HasValue)
+                {
+                    return "Tags with AppID should not go OECD";
+                }
+                return "";
+            }
+        }
+
+
         public int? OECDId { get; set; }
         
         [ForeignKey("OECDId")]

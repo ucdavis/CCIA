@@ -110,6 +110,10 @@ namespace CCIA.Controllers.Client
                 {
                     ModelState.AddModelError("Labs.AssayTest", errorList.Assay1Error);
                 }  
+                if(errorList.DodderError != null)
+                {
+                    ModelState.AddModelError("Labs.DodderGrams", errorList.DodderError);
+                }
                 if (errorList.GeneralError != null)
                 {
                     ModelState.AddModelError(string.Empty, errorList.GeneralError);

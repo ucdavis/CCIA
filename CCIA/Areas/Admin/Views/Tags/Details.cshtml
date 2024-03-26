@@ -3,6 +3,7 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
+
 <div class="container col-sm-12">    
     <div class="row ">
         <div class="col-sm-12">
@@ -446,6 +447,15 @@
                     @Html.DisplayFor(x => x.OECDCountry.Name)
                 </div>
             </div>
+            @if(!string.IsNullOrWhiteSpace(Model.OECDWarning))
+            {
+                <div class="form-group row text-danger">
+                    <label asp-for="OECDWarning" class="col-sm-3 col-form-label"></label>
+                    <div class="col-sm-9 form-control-plaintext text-danger">
+                        @Html.DisplayFor(x => x.OECDWarning)
+                    </div>
+                </div>
+            }
             <div class="row">
                 <div class="col-sm-12">
                     <hr/>
