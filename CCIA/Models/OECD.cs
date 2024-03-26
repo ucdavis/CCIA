@@ -242,7 +242,7 @@ namespace CCIA.Models
                     }
                     if (Blend != null && Blend.Labs == null)
                     {
-                        return "Blend has not lab results";
+                        return "Blend has no lab results";
                     }                    
                     if (!Blend.Labs.CciaConfirmed)
                     {
