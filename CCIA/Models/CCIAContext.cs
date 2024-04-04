@@ -185,10 +185,7 @@ namespace CCIA.Models
                                      LogLevel.Information));
             serviceCollection.AddLogging(builder =>
                    builder.AddDebug()
-                           .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
-            serviceCollection.AddLogging(builder =>
-                    builder.AddDebug()
-                            .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));
+                           .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information));           
             return serviceCollection.BuildServiceProvider()
                     .GetService<ILoggerFactory>();
         }
