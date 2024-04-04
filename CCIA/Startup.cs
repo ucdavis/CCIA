@@ -34,12 +34,13 @@ namespace CCIA
             services.AddControllersWithViews(); 
 
             
-            IMvcBuilder builder = services.AddRazorPages(); 
-
+            IMvcBuilder builder = services.AddRazorPages();
+            var isDebug = false;
             #if DEBUG
                 if (Env.IsDevelopment())
                 {
                     builder.AddRazorRuntimeCompilation();
+                isDebug = true;
                 }
             #endif    
             
@@ -49,6 +50,9 @@ namespace CCIA
                 {                       
                         sqlOptions.UseNetTopologySuite();
                 });
+                o.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+                o.EnableDetailedErrors(isDebug);
+                o.EnableSensitiveDataLogging(isDebug);
                 o.UseLoggerFactory(CCIAContext.GetLoggerFactory());
                 
             });

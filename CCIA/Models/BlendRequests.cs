@@ -32,8 +32,8 @@ namespace CCIA.Models
 
     public partial class BlendRequests
     {
-        [Key]
-        public int Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
         [Display(Name ="Blend Type")]
         public string BlendType { get; set; }
         [Display(Name ="Requested")]
