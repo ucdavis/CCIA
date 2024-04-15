@@ -93,7 +93,7 @@
 {
     <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
-
+    <span>Rows with blue background are Blends</span>
     <table id="table" class="table datatable">
         <thead> 
             <th></th>          
@@ -109,11 +109,25 @@
         <tbody>
             @foreach (var oecd in Model.oecds)
             {
-            <tr>
+                var classBlend = "";
+                if (oecd.BID.HasValue)
+                {
+                    classBlend = "table-primary";
+                }                
+                <tr class="@classBlend">
                 <td><a class="btn btn-info" asp-action="Details" asp-area="admin" asp-controller="OECD" asp-route-id="@oecd.Id">Details</a></td>                
                 <td>@oecd.Id</td>
-                <td>@oecd.SeedsId</td>
-                    <td>@oecd.ConditionerOrganization?.NameAndId</td>
+                <td>
+                    @if(oecd.SeedsId.HasValue)
+                    {
+                        @oecd.SeedsId
+                    } 
+                    @if (oecd.BID.HasValue)
+                    {
+                        @oecd.BID
+                    }
+                </td>
+                <td>@oecd.ConditionerOrganization?.NameAndId</td>
                 <td>@oecd.Seeds?.GetCropName()</td>
                 <td>@oecd.Seeds?.GetVarietyName()</td>
                 <td>@Html.DisplayFor(x => oecd.Pounds)</td>
