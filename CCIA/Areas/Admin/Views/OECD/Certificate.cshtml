@@ -208,10 +208,12 @@
                 <td valign="top" class="topandbottom">
                     &nbsp;Date Test Concluded</td>
                 <td valign="top" class="label">
-                    @if(Model.Seeds != null && Model.Seeds.LabResults != null && Model.Seeds.LabResults.PrivateLabDate.HasValue)
-                    {
+                    @if(Model.Seeds != null && Model.Seeds.LabResults != null){
                         @Model.Seeds.LabResults.PrivateLabDate.Value.ToShortDateString()
-                    }                    
+                    }
+                    @if(Model.Blend != null && Model.Blend.Labs != null){
+                            @Model.Blend.Labs.PrivateLabDate.Value.ToShortDateString()
+                    }                                  
                 </td>
             </tr>
             <tr>

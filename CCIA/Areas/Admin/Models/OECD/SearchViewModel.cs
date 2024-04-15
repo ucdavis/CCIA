@@ -15,7 +15,7 @@ namespace CCIA.Models
     {
         public List<OECD> oecds { get; set; }             
                 
-        [Display(Name="SID")]
+        [Display(Name="SID/BID")]
         public int? sid { get; set; }
 
         
@@ -72,6 +72,7 @@ namespace CCIA.Models
                     .Include(o => o.ConditionerOrganization)
                     .Include(o => o.Variety)
                     .ThenInclude(v => v.Crop)
+                    .Include(o => o.Blend)                    
                     .AsQueryable(); 
                 if(vm.oecdId.HasValue)
                 {
@@ -79,7 +80,7 @@ namespace CCIA.Models
                 }
                 if(vm.sid.HasValue)
                 {
-                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.SeedsId.ToString(), "%" +  vm.sid.ToString() + "%"));
+                    oecdToFind = oecdToFind.Where(s => EF.Functions.Like(s.SeedsId.ToString(), "%" +  vm.sid.ToString() + "%") || EF.Functions.Like(s.BID.ToString(), "%" + vm.sid.ToString() + "%"));
                 }
 
                 if(vm.submittedYearsToSearch != null && vm.submittedYearsToSearch.Any())
