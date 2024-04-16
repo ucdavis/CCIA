@@ -113,7 +113,12 @@ namespace CCIA.Controllers.Client.Client
         public async Task<IActionResult> UploadBlendDocument(int id, string docName, IFormFile file)
         {
             docName = docName?.Trim();
-           var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
+            if (string.IsNullOrWhiteSpace(docName))
+            {
+                ErrorMessage = "Must provide a document name for this file!";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+            var blend = await _dbContext.BlendRequests.Where(a => a.Id == id).FirstOrDefaultAsync();
            if(blend == null)
             {
                 ErrorMessage = "Blend document not found.";
