@@ -94,6 +94,10 @@
                 <label asp-for="blend.BlendType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.blend.BlendType)
+                    @if(Model.blend.BlendType == "Lot" && Model.blend.Sublot)
+                    {
+                        <span>(Sublot)</span>
+                    }
                 </div>
             </div>  
             <div class="form-group row">
@@ -125,7 +129,19 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.blend.CertNumber)
                 </div>
-            </div>  
+            </div>
+            @if (Model.blend.BlendType == "Lot")
+            {               
+                @if (Model.blend.Sublot)
+                {
+                    <div class="form-group row">
+                        <label asp-for="blend.ParentId" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            <a asp-action="Details" asp-controller="Blends" asp-route-id="@Model.blend.ParentId" class="btn btn-info">Blend @Model.blend.ParentId</a>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
     @if (!string.IsNullOrWhiteSpace(Model.blend.ReturnReason))

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CCIA.Models
 {
@@ -32,12 +33,19 @@ namespace CCIA.Models
 
     public partial class BlendRequests
     {
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public BlendRequests()
+        {
+            Sublot = false;
+        }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
         [Display(Name ="Blend Type")]
         public string BlendType { get; set; }
         [Display(Name ="Requested")]
         public DateTime RequestStarted { get; set; }
+        public bool Sublot { get; set; }
+        public int? ParentId { get; set; }
         public int ConditionerId { get; set; }
         public int UserEntered { get; set; }
         public decimal? LbsLot { get; set; }
