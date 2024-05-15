@@ -3,6 +3,37 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
+
+<!-- Sublot Modal -->
+<div class="modal fade" id="SublotModal" tabindex="-1" role="dialog" aria-labelledby="Sublot Blend" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+           <h5 class="modal-title">Sublot this Blend</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="fa fa-window-close"></i>
+           </button>
+      </div>
+        <form asp-action="Sublot">
+            <div class="modal-body">          
+                <input type="hidden" name="id" id="id" value="@Model.blend.Id">
+                <label for="pounds">Sublot weight (lbs):</label>
+                <div class="col">
+                    <input type="text" class="form-control" id="pounds" name="pounds" placeholder="Enter weight of sublot in pounds">                
+                </div>
+                <input type="hidden" id="lookupType" value=""/>
+                <div id="orgTable"></div>        
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Create Sublot</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+		    </div>
+	    </form>
+    </div>
+  </div>
+</div>
+
+
 <div class="container col-sm-12">    
     <div class="row">
         <div class="col-sm-12">
@@ -53,6 +84,14 @@
                     <input type="hidden" name="id" id="id" value="@Model.blend.Id">
                     <input type="submit" class="btn btn-dark" value="Cancel Blend" onclick="return confirm('Are you sure you want to cancel this blend?')">
                 </form>
+            </div>
+        </div>
+    }
+    @if(Model.blend.BlendType == "Lot" && !Model.blend.Sublot)
+    {
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#SublotModal">Sublot</button>
             </div>
         </div>
     }
@@ -159,7 +198,10 @@
         <h3>Components</h3>
         @if(Model.blend.BlendType == "Lot" || Model.blend.BlendType == "Varietal")
         {
-            <a asp-action="NewLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+            if(!Model.blend.Sublot)
+            {
+                <a asp-action="NewLot" class="btn btn-info" asp-route-id="@Model.blend.Id">New Component</a>
+            }
             <table class="table">
                 <thead>
                     <tr>

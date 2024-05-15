@@ -93,7 +93,7 @@ namespace CCIA.Models
         [Display(Name ="Crop")]
         public string GetCrop()
         {
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Crop.Name;
             }
@@ -115,7 +115,7 @@ namespace CCIA.Models
         [Display(Name ="Variety")]
         public string GetVarietyName()
         {           
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Name;
             }
@@ -137,7 +137,7 @@ namespace CCIA.Models
         [Display(Name ="Variety Id")]
         public int GetVarietyId()
         {           
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Id;
             }
