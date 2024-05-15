@@ -58,6 +58,8 @@ namespace CCIA.Models
         public string HowDeliver { get; set; }
         public string DeliveryAddress { get; set; }
         public string Comments { get; set; }
+
+        public string SublotNumber { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public bool? Submitted { get; set; }
         [Display(Name = "Return Reason")] 
@@ -87,6 +89,9 @@ namespace CCIA.Models
 
         [ForeignKey("UserEntered")]
         public Contacts EnteredByContact { get; set; }
+
+        [ForeignKey("ParentId")]
+        public BlendRequests ParentBlend { get; set; }
 
         public bool FollowUp { get; set; }
 
@@ -161,13 +166,21 @@ namespace CCIA.Models
         {
             get
             {
-                if (RequestStarted.Date.Month == 10 || RequestStarted.Date.Month == 11 || RequestStarted.Date.Month == 12)
+                var date = new DateTime();
+                if(ParentBlend != null)
                 {
-                    return RequestStarted.Date.Year + 1;
+                    date = ParentBlend.RequestStarted;
+                } else
+                {
+                    date = RequestStarted;
+                }
+                if (date.Date.Month == 10 || date.Date.Month == 11 || date.Date.Month == 12)
+                {
+                    return date.Date.Year + 1;
                 }
                 else
                 {
-                    return RequestStarted.Date.Year;
+                    return date.Date.Year;
                 }
             }
         }
@@ -178,6 +191,10 @@ namespace CCIA.Models
             get
             {
                 var twoDigitYear = CertYear.ToString().Substring(CertYear.ToString().Length - 2, 2);
+                if (Sublot)
+                {
+                    return $"CA-L{twoDigitYear}{ParentBlend.Id}-{SublotNumber}";
+                }
                 switch (BlendType)
                 {
                     case "Lot":
