@@ -46,6 +46,29 @@ namespace CCIA.Helpers
             CombineGermAndHard = false;
         }
 
+        public static async Task<CropStandardsList> GetStandardsForBlendSublot(CCIAContext _dbContext, int bid)
+        {
+            var returnList = new CropStandardsList();
+            var cropId = await _dbContext.BlendRequests.Where(b => b.Id == bid)
+                .Include(b => b.Variety)
+                .Select(b => b.Variety.CropId)
+                .FirstOrDefaultAsync();            
+
+            if (cropId == 0)
+            {
+                return returnList;
+            }
+
+
+            var cs = await _dbContext.CropStandards.Where(c => c.CropId == cropId && c.Standards.Program == "SD")
+                .Include(c => c.Standards)
+                .ToListAsync();
+
+            GatherStandards(returnList, cs);
+
+            return returnList;
+        }
+
         public static async Task<CropStandardsList> GetStandardsFromSeed(CCIAContext _dbContext, int sid)
         {
             var returnList = new CropStandardsList();
@@ -54,74 +77,83 @@ namespace CCIA.Helpers
                 .Include(s => s.Application)
                 .Select(s => new Tuple<int, string>(s.GetCropId(), s.CertProgram))
                 .FirstOrDefaultAsync();
-            
-            if(cropId == null)
+
+            if (cropId == null)
             {
                 return returnList;
             }
-            
-                
+
+
             var cs = await _dbContext.CropStandards.Where(c => c.CropId == cropId.Item1 && c.Standards.Program == cropId.Item2)
                 .Include(c => c.Standards)
                 .ToListAsync();
+            GatherStandards(returnList, cs);
 
-            if(cs.Any(c => c.Standards.Name == "max_foreign_material")){
+            return returnList;
+
+            
+        }
+
+        private static void GatherStandards(CropStandardsList returnList, System.Collections.Generic.List<CropStandards> cs)
+        {
+            if (cs.Any(c => c.Standards.Name == "max_foreign_material"))
+            {
                 returnList.ShowBeans = true;
             }
 
-            if(cs.Any(c => c.Standards.Name == "max_other_kind")){
+            if (cs.Any(c => c.Standards.Name == "max_other_kind"))
+            {
                 returnList.ShowOtherKind = true;
             }
 
-			if (cs.Any(c => c.Standards.Name == "germ_and_dormant"))
-			{
-				returnList.ShowDormant = true;
-			}
+            if (cs.Any(c => c.Standards.Name == "germ_and_dormant"))
+            {
+                returnList.ShowDormant = true;
+            }
             if (cs.Any(c => c.Standards.Name == "germ_and_hard"))
             {
                 returnList.CombineGermAndHard = true;
             }
 
-            if (cs.Any(c => c.Standards.Name == "assay_required")){
+            if (cs.Any(c => c.Standards.Name == "assay_required"))
+            {
                 var stand = cs.First(c => c.Standards.Name == "assay_required");
                 returnList.ShowAssay1 = true;
                 returnList.Assay1Name = stand.Standards.TextValue;
-            } 
+            }
 
-            if(cs.Any(c => c.Standards.Name == "max_other_varieties"))
+            if (cs.Any(c => c.Standards.Name == "max_other_varieties"))
             {
                 var maxOtherVariety = cs.First(c => c.Standards.Name == "max_other_varieties");
                 returnList.OtherVarietyType = maxOtherVariety.Standards.ValueType;
             }
 
-            if(cs.Any(c => c.Standards.Name == "max_other_crop"))
+            if (cs.Any(c => c.Standards.Name == "max_other_crop"))
             {
                 var maxOtherCrop = cs.First(c => c.Standards.Name == "max_other_crop");
                 returnList.OtherCropType = maxOtherCrop.Standards.ValueType;
             }
 
-            if(cs.Any(c => c.Standards.Name == "max_weed_seed"))
+            if (cs.Any(c => c.Standards.Name == "max_weed_seed"))
             {
                 var maxWeedSeed = cs.First(c => c.Standards.Name == "max_weed_seed");
                 returnList.WeedSeedType = maxWeedSeed.Standards.ValueType;
             }
 
-            if(cs.Any(c => c.Standards.Name == "min_bushel_weight"))
-            {                
+            if (cs.Any(c => c.Standards.Name == "min_bushel_weight"))
+            {
                 returnList.ShowBushelWeight = true;
             }
 
-             if(cs.Any(c => c.Standards.Name == "max_inert"))
-            {                
+            if (cs.Any(c => c.Standards.Name == "max_inert"))
+            {
                 returnList.ShowInert = true;
             }
 
-            if(returnList.Assay1Name == "Dodder" || returnList.Assay2Name == "Dodder")
+            if (returnList.Assay1Name == "Dodder" || returnList.Assay2Name == "Dodder")
             {
                 returnList.ShowDodderGrams = true;
-            }                          
-
-            return returnList;
+            }
         }
     }
 

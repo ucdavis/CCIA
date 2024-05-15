@@ -58,12 +58,20 @@ namespace CCIA.Models.SampleLabResultsViewModel
                 await _dbContext.SaveChangesAsync();
             }
 
-            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == bid).FirstAsync();
+            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == bid).FirstOrDefaultAsync();
+            var standards = new CropStandardsList();
 
+            if (sid == null)
+            {
+                standards = await CropStandardsList.GetStandardsForBlendSublot(_dbContext, bid);
+            } else
+            {
+                standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid);
+            }
             return new SampleLabResultsViewModel
             {
                 BlendLabs = await _dbContext.BlendLabResults.Where(b => b.BlendId == bid).FirstOrDefaultAsync(),
-                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid),
+                Standards = standards,
                 PrivateLabs = privateLabs,
             };
         }
@@ -96,11 +104,21 @@ namespace CCIA.Models.SampleLabResultsViewModel
             privateLabs.Insert(0, new Organizations {Id = 0, Name = "Select lab..."});
             privateLabs.Add(new Organizations {Id= -1, Name = "Other...list in comments"});
 
-            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == labs.BlendId).FirstAsync();
+            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == labs.BlendId).FirstOrDefaultAsync();
+            var standards = new CropStandardsList();
+
+            if (sid == null)
+            {
+                standards = await CropStandardsList.GetStandardsForBlendSublot(_dbContext, labs.BlendId);
+            }
+            else
+            {
+                standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid);
+            }
             return new SampleLabResultsViewModel
             {
-                BlendLabs = labs,
-                Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, sid.Sid),
+                BlendLabs = await _dbContext.BlendLabResults.Where(b => b.BlendId == labs.BlendId).FirstOrDefaultAsync(),
+                Standards = standards,
                 PrivateLabs = privateLabs,
             };
 
