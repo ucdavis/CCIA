@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 
 namespace CCIA.Helpers
@@ -274,23 +275,56 @@ namespace CCIA.Helpers
         {
             var returnList = new LabResultsCheckStandards();
             var properties = new StandardsProperties();
+            int cropId = 0;
+            var certProgram = "";
+            var className = "";
+            int classValue = 0;
+            bool nfcSID = false;
+
                        
-            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == labs.BlendId).FirstAsync();
-            var seed = await _dbContext.Seeds.Where(s => s.Id == sid.Sid)
-                .Include(s => s.Variety)
-                .Include(s => s.Application)
-                .ThenInclude(a => a.Variety)
-                .Include(s => s.ClassProduced)
-                .FirstOrDefaultAsync();
-                       
-            if (seed.GetCropId() != 0 && seed.Class.HasValue && seed.CertProgram != null && seed.ClassProduced != null)
+            var sid = await _dbContext.LotBlends.Where(l => l.BlendId == labs.BlendId).FirstOrDefaultAsync();
+            if(sid != null)
             {
-                properties.CropId = seed.GetCropId();
-                properties.CertProgram = seed.CertProgram;
-                properties.ClassAbbreviation = seed.ClassProduced.Abbrv;
-                properties.ClassId = seed.Class.Value;
+                var seed = await _dbContext.Seeds.Where(s => s.Id == sid.Sid)
+                    .Include(s => s.Variety)
+                    .Include(s => s.Application)
+                    .ThenInclude(a => a.Variety)
+                    .Include(s => s.ClassProduced)
+                    .FirstOrDefaultAsync();
+                cropId = seed.GetCropId();
+                if(seed.Class.HasValue && seed.ClassProduced != null)
+                {
+                    classValue = seed.Class.Value;
+                    className = seed.ClassProduced.Abbrv;
+                }                
+                certProgram = seed.CertProgram;
+                if(seed.NotFinallyCertified)
+                {
+                    nfcSID = true;
+                }
+            } else
+            {
+                if(await _dbContext.BlendRequests.Where(b => b.Id == labs.BlendId && b.Sublot).AnyAsync())
+                {
+                    cropId = await _dbContext.BlendRequests.Where(b => b.Id == labs.BlendId)
+                        .Include(b => b.Variety)
+                        .Select(b => b.Variety.CropId)
+                        .FirstOrDefaultAsync();
+                    classValue = 4;
+                    className = "C";
+                    certProgram = "SD";
+                }
             }
-            else if (seed.NotFinallyCertified)
+            
+                       
+            if (cropId != 0 && classValue != 0 && certProgram != null)
+            {
+                properties.CropId = cropId;
+                properties.CertProgram = certProgram;
+                properties.ClassAbbreviation = className;
+                properties.ClassId = classValue;
+            }
+            else if (nfcSID)
             {
                 return returnList;
             }

@@ -175,7 +175,8 @@ namespace CCIA.Services
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Conditioner)
                 .ThenInclude(c => c.OrgCounty)
-                .Include(b => b.ApprovedByEmployee)                
+                .Include(b => b.ApprovedByEmployee)  
+                .Include(b => b.ParentBlend)
                 .AsQueryable();
             return blend;
 
@@ -193,6 +194,8 @@ namespace CCIA.Services
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(o => o.Blend)
+                .ThenInclude(b => b.ParentBlend)
                 .Include(o => o.Blend)
                 .ThenInclude(b => b.Labs)
                 .Include(o => o.Class)
@@ -566,6 +569,8 @@ namespace CCIA.Services
                 .ThenInclude(l => l.Seeds)
                 .ThenInclude(s => s.Variety)
                 .ThenInclude(v => v.Crop)
+                .Include(t => t.Blend)
+                .ThenInclude(b => b.ParentBlend)
                 .Include(t => t.Blend)
                 .ThenInclude(b => b.Labs)          // Blenrequests => labs (only for lot blends)       
                 .Include(t => t.Blend)

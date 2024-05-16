@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CCIA.Models
 {
@@ -32,12 +33,19 @@ namespace CCIA.Models
 
     public partial class BlendRequests
     {
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public BlendRequests()
+        {
+            Sublot = false;
+        }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
         [Display(Name ="Blend Type")]
         public string BlendType { get; set; }
         [Display(Name ="Requested")]
         public DateTime RequestStarted { get; set; }
+        public bool Sublot { get; set; }
+        public int? ParentId { get; set; }
         public int ConditionerId { get; set; }
         public int UserEntered { get; set; }
         public decimal? LbsLot { get; set; }
@@ -50,6 +58,8 @@ namespace CCIA.Models
         public string HowDeliver { get; set; }
         public string DeliveryAddress { get; set; }
         public string Comments { get; set; }
+
+        public string SublotNumber { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public bool? Submitted { get; set; }
         [Display(Name = "Return Reason")] 
@@ -80,12 +90,15 @@ namespace CCIA.Models
         [ForeignKey("UserEntered")]
         public Contacts EnteredByContact { get; set; }
 
+        [ForeignKey("ParentId")]
+        public BlendRequests ParentBlend { get; set; }
+
         public bool FollowUp { get; set; }
 
         [Display(Name ="Crop")]
         public string GetCrop()
         {
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Crop.Name;
             }
@@ -107,7 +120,7 @@ namespace CCIA.Models
         [Display(Name ="Variety")]
         public string GetVarietyName()
         {           
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Name;
             }
@@ -129,7 +142,7 @@ namespace CCIA.Models
         [Display(Name ="Variety Id")]
         public int GetVarietyId()
         {           
-            if (BlendType == "Varietal" && Variety != null)
+            if ((BlendType == "Varietal" && Variety != null) || (BlendType == "Lot" && Sublot))
             {
                 return Variety.Id;
             }
@@ -153,13 +166,21 @@ namespace CCIA.Models
         {
             get
             {
-                if (RequestStarted.Date.Month == 10 || RequestStarted.Date.Month == 11 || RequestStarted.Date.Month == 12)
+                var date = new DateTime();
+                if(ParentBlend != null)
                 {
-                    return RequestStarted.Date.Year + 1;
+                    date = ParentBlend.RequestStarted;
+                } else
+                {
+                    date = RequestStarted;
+                }
+                if (date.Date.Month == 10 || date.Date.Month == 11 || date.Date.Month == 12)
+                {
+                    return date.Date.Year + 1;
                 }
                 else
                 {
-                    return RequestStarted.Date.Year;
+                    return date.Date.Year;
                 }
             }
         }
@@ -170,6 +191,10 @@ namespace CCIA.Models
             get
             {
                 var twoDigitYear = CertYear.ToString().Substring(CertYear.ToString().Length - 2, 2);
+                if (Sublot)
+                {
+                    return $"CA-L{twoDigitYear}{ParentBlend.Id}-{SublotNumber}";
+                }
                 switch (BlendType)
                 {
                     case "Lot":

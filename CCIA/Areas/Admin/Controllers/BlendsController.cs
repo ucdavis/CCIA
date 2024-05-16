@@ -70,6 +70,56 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
+        public async Task<IActionResult> Sublot(int id, int pounds)
+        {
+            var blendToSublot = await _dbContext.BlendRequests.Include(b => b.LotBlends).ThenInclude(l => l.Seeds).Where(b => b.Id == id).FirstOrDefaultAsync();
+            if(blendToSublot == null)
+            {
+                ErrorMessage = "Blend not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if(blendToSublot.BlendType != "Lot")
+            {
+                ErrorMessage = "Blend must be a lot blend to sublot!";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+            if (blendToSublot.Sublot)
+            {
+                ErrorMessage = "Cannot sublot a sublot";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+            if (blendToSublot.LotBlends == null || blendToSublot.LotBlends.First().Seeds == null)
+            {
+                ErrorMessage = "SID not found on first component; can't sublot";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+
+            var sublot = new BlendRequests()
+            {
+                BlendType = "Lot",
+                RequestStarted = blendToSublot.RequestStarted,
+                Sublot = true,
+                ParentId = blendToSublot.Id,
+                ConditionerId = blendToSublot.ConditionerId,
+                UserEntered = blendToSublot.UserEntered,
+                LbsLot = pounds,
+                Status = BlendStatus.Approved.GetDisplayName(),
+                VarietyId = blendToSublot.LotBlends.First().Seeds.OfficialVarietyId,
+                Comments = $"Sublot of BID {blendToSublot.Id}",
+                DateSubmitted = DateTime.Now,
+                Submitted = true,
+                Approved = true,
+                ApproveDate = DateTime.Now,
+                ApprovedBy = User.FindFirstValue(ClaimTypes.Name)
+            };
+
+            _dbContext.Add(sublot);
+            await _dbContext.SaveChangesAsync();
+            Message = "Sublot created";
+            return RedirectToAction(nameof(Details), new { id = sublot.Id });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Cancel(int id)
         {
             var p0 = new SqlParameter("@id", System.Data.SqlDbType.Int);

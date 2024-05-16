@@ -66,9 +66,16 @@ namespace CCIA.Models
                         .Include(r => r.Changes)
                         .ThenInclude(c => c.Contact)
                         .FirstOrDefaultAsync();
-                if (labsAndStandards.Labs != null)
+                if (labsAndStandards.Labs != null && !thisBlend.Sublot)
                 {
                     labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, thisBlend.LotBlends.First().Sid);
+                }
+                if (labsAndStandards.Labs != null && thisBlend.Sublot)
+                {
+                    var parent = await _dbContext.BlendRequests
+                        .Include(b => b.LotBlends)
+                        .Where(x => x.Id == thisBlend.ParentId).FirstOrDefaultAsync();
+                    labsAndStandards.Standards = await CropStandardsList.GetStandardsFromSeed(_dbContext, parent.LotBlends.First().Sid);
                 }
                 model.LabsAndStandards = labsAndStandards;
             }
