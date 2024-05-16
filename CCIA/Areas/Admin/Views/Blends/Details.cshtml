@@ -21,6 +21,11 @@
                 <div class="col">
                     <input type="text" class="form-control" id="pounds" name="pounds" placeholder="Enter weight of sublot in pounds">                
                 </div>
+                <br />
+                 <label for="number">Sublot number (must be unique for parent):</label>
+                <div class="col">
+                    <input type="text" class="form-control" id="number" name="number" placeholder="Enter sublot number/ID">                
+                </div>
                 <input type="hidden" id="lookupType" value=""/>
                 <div id="orgTable"></div>        
             </div>
@@ -387,6 +392,35 @@
                 </tbody>
             </table>
         </div>
+        @if (Model.relativeBlends.Any())
+        {
+            <div><hr></div>
+            <div class="col-sm-12">
+                <h3>Related Blends</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>BID</th>
+                            <th>Cert #</th>
+                            <th>Initiated</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var row in Model.relativeBlends)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@row.Id" class="btn btn-info">@row.Id</a></td>
+                                <td>@row.CertNumber</td>
+                                <td>@row.RequestStarted</td>
+                                <td>@row.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
         <div><hr></div>
         <div class="col-sm-8">        
             <h3>Supporting Documentation</h3>

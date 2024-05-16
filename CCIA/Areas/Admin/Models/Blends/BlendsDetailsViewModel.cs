@@ -27,6 +27,7 @@ namespace CCIA.Models
        public List<BlendDocuments> documents { get; set; }
 
        public BlendLabsAndStandards LabsAndStandards { get; set; }
+        public List<BlendRequests>   relativeBlends { get; set; }
 
 
 
@@ -79,6 +80,15 @@ namespace CCIA.Models
                 }
                 model.LabsAndStandards = labsAndStandards;
             }
+            if(thisBlend.Sublot)
+            {
+                model.relativeBlends = await _dbContext.BlendRequests.Where(b => b.ParentId == thisBlend.ParentId && b.Id != thisBlend.Id).ToListAsync();
+            }
+            else
+            {
+                model.relativeBlends = await _dbContext.BlendRequests.Where(b => b.ParentId == thisBlend.Id).ToListAsync();
+            }
+
             return model;
         }
     }    

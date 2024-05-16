@@ -70,8 +70,18 @@ namespace CCIA.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sublot(int id, int pounds)
+        public async Task<IActionResult> Sublot(int id, int pounds, string number )
         {
+            if(pounds == 0 || string.IsNullOrWhiteSpace(number))
+            {
+                ErrorMessage = "Pounds and Sublot Number must be provided";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+            if(await _dbContext.BlendRequests.Where(b => b.ParentId == id && b.SublotNumber == number).AnyAsync())
+            {
+                ErrorMessage = "Sublot Number must be unique for the parent ID";
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
             var blendToSublot = await _dbContext.BlendRequests.Include(b => b.LotBlends).ThenInclude(l => l.Seeds).Where(b => b.Id == id).FirstOrDefaultAsync();
             if(blendToSublot == null)
             {
@@ -103,6 +113,7 @@ namespace CCIA.Controllers.Admin
                 ConditionerId = blendToSublot.ConditionerId,
                 UserEntered = blendToSublot.UserEntered,
                 LbsLot = pounds,
+                SublotNumber = number,
                 Status = BlendStatus.Approved.GetDisplayName(),
                 VarietyId = blendToSublot.LotBlends.First().Seeds.OfficialVarietyId,
                 Comments = $"Sublot of BID {blendToSublot.Id}",
