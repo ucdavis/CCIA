@@ -123,6 +123,7 @@ namespace CCIA.Models.IndexViewModels
                 .ThenInclude(i => i.Variety)
                 .Include(b => b.Variety) // blendrequest (varietal) => variety => crop
                 .ThenInclude(v => v.Crop)
+                .Include(b => b.ParentBlend)
                 .ToListAsync(),
                 certYears = await _dbContext.BlendRequests.Where(a => a.ConditionerId == orgId).Select(a => a.RequestStarted.Year).Distinct().OrderByDescending(a => a).ToListAsync(),
                 CertYear = certYear,
