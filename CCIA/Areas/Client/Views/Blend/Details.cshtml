@@ -56,7 +56,11 @@
             <div class="form-group row">
                 <label asp-for="blend.BlendType" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
-                    @Html.DisplayFor(x => x.blend.BlendType)
+                    @Html.DisplayFor(x => x.blend.BlendType) 
+                    @if (Model.blend.BlendType == "Lot" && Model.blend.Sublot)
+                    {
+                        <span>(Sublot)</span>
+                    }
                 </div>
             </div>  
             <div class="form-group row">
