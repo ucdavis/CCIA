@@ -71,7 +71,18 @@
 </div>
 <hr>
 <div>
-    <form method="post" id="newMap">        
+    <form method="post" id="newMap">    
+        @if (Model.showLink)
+        {
+            <div class="form-group row">
+                <label class="col-sm-8 col-form-label">This field is linked to an isolation map field. You can update both maps, or just the application map. This will not generate new isolation warning emails.<a href="#"></a> Update Both?</label>
+                <input type="checkbox" name="updateBoth" id="updateBoth" checked class="form-control col-sm-1">
+            </div>
+        }
+        else
+        {
+            <div>This field does not appear to be linked to an isolation map field.</div>
+        }
             <input type="hidden" id="map" name="map" value="test">
             <input type="hidden" id="id" name="id" value="@Model.application.Id"/>
     <input type="submit" value="Update Map">

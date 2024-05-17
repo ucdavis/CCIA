@@ -52,7 +52,7 @@ namespace CCIA.Models
                 .Include(a => a.Variety)
                 .Include(a => a.ClassProduced)
                 .Select(a => new MapWKT{ AppId = a.Id, Title= "AppId: " + a.Id.ToString(), GeoField = a.GeoField.AsText() , GeoType = "Polygon",  Description = 
-                    $"App: {a.ApplicantOrganization.NameAndId}<br>Crp: {a.Crop.Name}<br>Var: {a.Variety.Name}<br>Cl: {a.ClassProduced.ClassProducedTrans}>br>Fld: {a.FieldName}<br>Pt dt: {a.DatePlanted.Value.ToShortDateString()}<br>" +
+                    $"App: {a.ApplicantOrganization.NameAndId}<br>Crp: {a.Crop.Name}<br>Var: {a.Variety.Name}<br>Cl: {a.ClassProduced.ClassProducedTrans}<br>Fld: {a.FieldName}<br>Pt dt: {a.DatePlanted.Value.ToShortDateString()}<br>" +
                     $"<a href='/admin/Application/FieldMap/{a.Id}'>Map</a><br/><a href='/admin/Application/Fir/{a.Id}'>FIR</a>"})
                 .ToListAsync();           
 

@@ -16,6 +16,7 @@ using CCIA.Models.DetailsViewModels;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
+using static Humanizer.On;
 
 namespace CCIA.Controllers.Client
 {
@@ -514,6 +515,10 @@ namespace CCIA.Controllers.Client
             {                  
                 await _dbContext.SaveChangesAsync();
                 Message = "Application submitted for acceptance!";
+                                
+                var p0 = new SqlParameter("@appId", System.Data.SqlDbType.Int);
+                p0.Value = id;
+                await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_app_submission_update_pinning_map @appId", p0);
             } else
             {
                 ErrorMessage = "Something went wrong";
