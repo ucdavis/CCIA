@@ -32,6 +32,8 @@ namespace CCIA.Models
         public virtual DbSet<ProcessTag> ProcessTag { get; set;}
         public virtual DbSet<LandingStats> LandingStats { get; set; }
         public virtual DbSet<VarCountries> VarCountires { get; set; }
+
+        public virtual DbSet<Subspecies> Subspecies { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }

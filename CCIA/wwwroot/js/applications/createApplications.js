@@ -186,6 +186,40 @@ function ddlVarietySelected(){
     $("#form-remainder").collapse('show');
 }
 
+
+$("#Application_CropId").change(function () {
+    let appType = $("#Application_AppType").val();    
+    if (appType !== "PV") {
+        return;
+    }
+    // Display error if user tries to search for variety before selecting crop
+    let cropId = $("#Application_CropId").val();
+    if (cropId === "0") {
+        $("#cropAlert").modal('show');
+        return;
+    }    
+    let data = {        
+        CropId: cropId
+    };
+    let ss = $("#Application_SubspeciesId");
+    
+    $.ajax({
+        type: "GET",
+        url: "/Client/Application/GetSubspecies",
+        data: data,
+        success: function (res) {
+            // Populate dropdown with list of varieties
+            ss.html("");
+            res.forEach((el) => {
+                ss.append($('<option></option>').val(el.id).html(el.name));
+            })
+        },
+        error: function (res) {
+            alert("There was an error processing the request");
+        }
+    });
+});
+
 // Takes a parent element as a parameter, and places a centered bootstrap spinner inside
 function showSpinner(parentId) {
     $(`#${parentId}`)[0].innerHTML = spinner_div;

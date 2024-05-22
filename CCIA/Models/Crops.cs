@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -63,6 +64,9 @@ namespace CCIA.Models
         public ICollection<VarOfficial> VarOfficial { get; set; }
 
         public ICollection<CropStandards> CropStandards { get; set; }
-        
+
+        [ForeignKey("CropId")]
+        public ICollection<Subspecies> Subspecies { get; set; }
+
     }
 }

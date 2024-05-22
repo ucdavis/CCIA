@@ -302,6 +302,7 @@ namespace CCIA.Controllers.Client
                 newApp.PvgSelectionId = submittedApp.PvgSelectionId;
                 newApp.EcoregionId = submittedApp.EcoregionId;
                 newApp.FieldElevation = submittedApp.FieldElevation;
+                newApp.SubspeciesId = submittedApp.SubspeciesId;
             }
 
             if(model.Replant)
@@ -1445,6 +1446,15 @@ namespace CCIA.Controllers.Client
             var state_province = await _dbContext.StateProvince.Where(sp => sp.StateProvinceId == code)
                 .Select(sp => sp.StateProvinceCode).ToListAsync();
             return Json(state_province);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<JsonResult> GetSubspecies(int cropId)
+        {
+            var subspecies  = await _dbContext.Subspecies.Where(s => s.CropId == cropId).ToListAsync();
+            subspecies.Insert(0, new Subspecies { Id = 0, CropId = cropId, Name = "--" });
+            return Json(subspecies);
         }
 
         // GET: Application/FindVariety

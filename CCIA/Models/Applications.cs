@@ -169,7 +169,13 @@ namespace CCIA.Models
 
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
-      
+
+        public int? SubspeciesId { get; set; }
+
+        [ForeignKey("SubspeciesId")]
+        public Subspecies Subspecies { get; set; }
+
+
         [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
@@ -182,7 +188,9 @@ namespace CCIA.Models
         public string HempWhereProduced { get; set; }
         public string HempProducingSeedType { get; set; }
 
-        
+   
+
+
 
         public int? GrowerId { get; set; }
 
@@ -221,8 +229,7 @@ namespace CCIA.Models
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
         [ForeignKey("AppId")]
-        public ICollection<FieldInspection> FieldInspection { get; set; }
-
+        public ICollection<FieldInspection> FieldInspection { get; set; }       
         
         
         public FieldInspectionReport FieldInspectionReport { get; set; }
