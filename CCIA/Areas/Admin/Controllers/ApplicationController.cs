@@ -145,8 +145,8 @@ namespace CCIA.Controllers.Admin
             appToAccept.Approved = true;
             appToAccept.DateApproved = DateTime.Now;            
             appToAccept.Approver = User.FindFirstValue(ClaimTypes.Name);
-            appToAccept.NotifyNeeded = true;
-            appToAccept.NotifyDate = DateTime.Now;
+            //appToAccept.NotifyNeeded = true;
+            //appToAccept.NotifyDate = DateTime.Now;
             appToAccept.UserEmpDateMod = DateTime.Now;
             appToAccept.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
 
