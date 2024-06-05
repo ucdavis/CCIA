@@ -8,6 +8,7 @@ namespace CCIA.Models
     {
         public int Id { get; set; }
         public int CropId { get; set; }
+        public string CommonName { get; set; }
         public string Name { get; set; }
 
 

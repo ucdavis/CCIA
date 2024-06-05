@@ -219,6 +219,10 @@
                 <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.Crop.Name)
+                    @if(Model.application.Subspecies != null)
+                    {
+                        <span>(Subspecies: @Model.application.Subspecies.Name)</Span>
+                    }
                 </div>
             </div>
             <div class="form-group row">

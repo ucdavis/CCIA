@@ -102,8 +102,12 @@
                 <div class="form-group row">
                     <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Crop.Name)
-                    </div>
+                        @Html.DisplayFor(x => x.Crop.Name) 
+                        @if(Model.Subspecies != null)
+                        {
+                            <span>(Subspecies: @Model.Subspecies.Name)</Span>
+                        }
+                </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
