@@ -1,0 +1,103 @@
+@model CCIA.Models.AdminRebateReportViewModel
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+<h3>Seed Certification Report</h3>
+<form asp-action="Seeds" method="POST">
+<div class="container col-sm-6 text-center">
+     <div asp-validation-summary="All" class="text-danger"></div>
+    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#SearchCollapse" aria-expanded="false" aria-controls="SearchCollapse">
+    Hide Search
+  </button> | <input type="submit" value="Search" class="btn btn-primary"></input> 
+</div>
+<div class="container col-sm-10 collapse show" id="SearchCollapse">
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-md-12 col-xl-12">@* First column*@
+            <div class="form-group row">
+                    <label asp-for="fiscalYearReport" class="col-sm-3 col-form-label">Fiscal Year</label>
+                        <select asp-for="fiscalYearReport" class="col-sm-6 form-control">
+                            @foreach(var x in Model.fiscalYears)
+                            {
+                                <option value="@x">@(x)/@(x+ 1)</option>
+                            }
+                        </select>                   
+                </div>                         
+        </div>       
+    </div>
+    <div>
+        <input type="submit" value="Search" class="btn btn-primary"></input> 
+    </div>   
+</div>
+<hr>
+</form>
+@* 
+@if(Model.reports.Any())
+{
+   <table id="table" class="table">
+        <thead>  
+            @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>County</th>
+            }   
+            @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>Report Group</th>
+            }                   
+            @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
+            {
+                <th>Crop</th>
+                <th>Kind</th>
+            }               
+            <th>Lbs passed</th>
+            <th># certified</th>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.reports)
+            {
+            <tr>
+                @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
+                {
+                    <td>@row.CountyName</td>
+                } 
+                 @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
+            {
+                <td>@row.report_group</td>
+            }                      
+                @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
+                {
+                   <td>@row.crop</td>    
+                    <td>@row.crop_kind</td>
+                } 
+                <td>@Html.Raw(row.pounds_passed.ToString("##,##0.00"))</td> 
+                <td>@row.number_certified</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+} *@
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}   
+
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    
+
+     <script>
+        $(document).ready( function () {
+            $('#table').DataTable({
+                dom: 'Brt',
+                buttons: ['copyHtml5', 'csvHtml5'],
+                bPaginate: false,
+            });
+        } );
+    </script>
+     
+}
+
+
+

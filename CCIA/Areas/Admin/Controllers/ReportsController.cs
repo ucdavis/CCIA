@@ -42,6 +42,12 @@ namespace CCIA.Controllers.Admin
             return View(model);
         }
 
+        public async Task<IActionResult> Rebate(AdminRebateReportViewModel vm = null)
+        {
+            var model = await AdminRebateReportViewModel.Create(_dbContext, vm);
+            return View(model);
+        }
+
         public async Task<IActionResult> OECD(AdminOECDReportViewModel vm = null)
         {
             var model = await AdminOECDReportViewModel.Create(_dbContext, vm);
