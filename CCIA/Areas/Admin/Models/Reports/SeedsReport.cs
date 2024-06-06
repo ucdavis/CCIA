@@ -34,6 +34,7 @@ namespace CCIA.Models
         public decimal totalFee { get; set; }
 
         public int numberCertified { get; set; }
+        public bool NFC { get; set; }
 
     }
 }
