@@ -47,18 +47,20 @@
         </div>
     </div>
        <table id="table" class="table">
-        <thead>             
-            <th>Variety</th>
-            <th>Org</th>
-            <th>Cert#</th>
-            <th>Acres Applied</th>
-            <th>Class produced</th>
-            <th>Insp#</th>
-            <th>Other Varieties %</th>
-            <th>Mosiac %</th>
-            <th>Leafrool %</th>
-            <th>BlackLeg %</th>
-            <th>Calico %</th> 
+        <thead>  
+            <tr>
+                <th>Variety</th>
+                <th>Org</th>
+                <th>Cert#</th>
+                <th>Acres Applied</th>
+                <th>Class produced</th>
+                <th>Insp#</th>
+                <th>Other Varieties %</th>
+                <th>Mosiac %</th>
+                <th>Leafrool %</th>
+                <th>BlackLeg %</th>
+                <th>Calico %</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var row in Model.apps.OrderBy(a => a.Variety.Category).ThenBy(a => a.VarietyName).ThenBy(a => a.ApplicantOrganization.Name))

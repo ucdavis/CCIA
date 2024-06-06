@@ -75,6 +75,7 @@
 {
    <table id="table" class="table datatable">
         <thead>  
+            <tr>
             @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
             {
                 <th>County</th>
@@ -95,6 +96,7 @@
             <th>Acres Rejected</th>
             <th>Acres No Crop</th>
             <th># Apps</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var row in Model.reports)

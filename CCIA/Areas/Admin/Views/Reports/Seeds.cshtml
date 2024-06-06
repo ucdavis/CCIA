@@ -68,7 +68,8 @@
 @if(Model.reports.Any())
 {
    <table id="table" class="table">
-        <thead>  
+        <thead> 
+            <tr>
             @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
             {
                 <th>County</th>
@@ -84,6 +85,7 @@
             }               
             <th>Lbs passed</th>
             <th># certified</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var row in Model.reports)
