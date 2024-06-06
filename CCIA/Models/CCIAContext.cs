@@ -138,6 +138,8 @@ namespace CCIA.Models
 
         public virtual DbSet<OECDReport> OECDReport { get; set; }
 
+        public virtual DbSet<RebateReport> RebateReport { get; set; }
+
         public virtual DbSet<CropAssignmentByLeadBackup> CropAssignmentByLeadBackup { get; set; }
 
         public virtual DbSet<CropAssignmentByName> CropAssignmentByName { get; set; }
@@ -421,6 +423,10 @@ namespace CCIA.Models
             });
 
             modelBuilder.Entity<SeedsReport>(entity => {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<RebateReport>(entity => {
                 entity.HasNoKey();
             });
 

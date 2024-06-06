@@ -68,22 +68,24 @@
 {
    <table id="table" class="table">
         <thead>  
-            @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
-            {
-                <th>County</th>
-            }   
-            @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
-            {
-                <th>Report Group</th>
-            }                   
-            @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
-            {
-                <th>Crop</th>
-                <th>Kind</th>
-            }  
-            <th>Class</th>             
-            <th>Lbs passed</th>
-            <th># certified</th>
+            <tr>
+                @if(@Model.reportType.Contains("County", StringComparison.OrdinalIgnoreCase) )
+                {
+                    <th>County</th>
+                }   
+                @if(@Model.reportType.Contains("rg", StringComparison.OrdinalIgnoreCase) )
+                {
+                    <th>Report Group</th>
+                }                   
+                @if(@Model.reportType.Contains("Crop", StringComparison.OrdinalIgnoreCase) )
+                {
+                    <th>Crop</th>
+                    <th>Kind</th>
+                }  
+                <th>Class</th>             
+                <th>Lbs passed</th>
+                <th># certified</th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var row in Model.reports)
