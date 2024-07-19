@@ -305,8 +305,16 @@ namespace CCIA.Controllers.Client
                 newApp.FieldElevation = submittedApp.FieldElevation;
                 newApp.SubspeciesId = submittedApp.SubspeciesId;
             }
+            if (submittedApp.AppType == "NS")
+            {
+                newApp.PvgSource = submittedApp.PvgSource;
+                newApp.PvgSelectionId = submittedApp.PvgSelectionId;
+                newApp.EcoregionId = submittedApp.EcoregionId;
+                newApp.FieldElevation = submittedApp.FieldElevation;
+                newApp.SubspeciesId = submittedApp.SubspeciesId;
+            }
 
-            if(model.Replant)
+            if (model.Replant)
             {
                 var replantApp = await _dbContext.Applications.Where(a => a.Id == model.ReplantId).FirstOrDefaultAsync();
                 newApp.Maps = replantApp.Maps;
@@ -468,6 +476,13 @@ namespace CCIA.Controllers.Client
                 }                
             }
             if(submittedApp.AppType == "PV")
+            {
+                appToUpdate.PvgSource = submittedApp.PvgSource;
+                appToUpdate.PvgSelectionId = submittedApp.PvgSelectionId;
+                appToUpdate.EcoregionId = submittedApp.EcoregionId;
+                appToUpdate.FieldElevation = submittedApp.FieldElevation;
+            }
+            if (submittedApp.AppType == "NS")
             {
                 appToUpdate.PvgSource = submittedApp.PvgSource;
                 appToUpdate.PvgSelectionId = submittedApp.PvgSelectionId;
