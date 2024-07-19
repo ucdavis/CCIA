@@ -189,7 +189,7 @@ function ddlVarietySelected(){
 
 $("#Application_CropId").change(function () {
     let appType = $("#Application_AppType").val();    
-    if (appType !== "PV") {
+    if (appType !== "PV" && appType !== "NS") {
         return;
     }
     // Display error if user tries to search for variety before selecting crop
