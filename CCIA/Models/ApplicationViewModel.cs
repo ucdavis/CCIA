@@ -120,6 +120,10 @@ namespace CCIA.Models
                 case 11:
                     crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
+                // Native Seed
+                case 12:
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    break;
             }
 
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});

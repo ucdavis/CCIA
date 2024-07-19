@@ -19,6 +19,7 @@ namespace CCIA.Helpers
             {6, "CreateTurfgrassApplication"},
             {10, "CreateHempFromSeedApplication"},
             {11, "CreateLacTrackerApplication"},
+            {12, "CreateNativeSeedApplicatoin" },
         };
 
         /* Assigns all required fields from our cshtml */
@@ -101,6 +102,30 @@ namespace CCIA.Helpers
             newApp.PlantingStocks = new List<PlantingStocks>();
 
             foreach(var p in app.AppSpecificPlantingStocks)
+            {
+                var newPlantingStock = new PlantingStocks();
+
+                newPlantingStock.OfficialVarietyId = p.OfficialVarietyId;
+                newPlantingStock.PsEnteredVariety = p.PsEnteredVariety;
+                newPlantingStock.PsClass = p.PsClass;
+                newPlantingStock.PsCertNum = p.PsCertNum;
+                newPlantingStock.PoundsPlanted = p.PoundsPlanted;
+                newPlantingStock.StateCountryGrown = p.StateCountryGrown;
+                newPlantingStock.StateCountryTagIssued = p.StateCountryTagIssued;
+                newPlantingStock.SeedPurchasedFrom = p.SeedPurchasedFrom;
+
+                newApp.PlantingStocks.Add(newPlantingStock);
+            }
+
+            return newApp;
+        }
+
+        public static Applications CreateNativeSeedApplicatoin(PreVarietyGermplasmApp app, int contactId, string appType)
+        {
+            var newApp = AssignCommonAppFields(app, contactId, appType);
+            newApp.PlantingStocks = new List<PlantingStocks>();
+
+            foreach (var p in app.AppSpecificPlantingStocks)
             {
                 var newPlantingStock = new PlantingStocks();
 
