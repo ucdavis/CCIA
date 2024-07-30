@@ -82,6 +82,8 @@ namespace CCIA.Controllers.Client
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedCountry)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .Include(a => a.Subspecies)
+                .Include(a => a.Sites)
+                .Include(a => a.NSG0StateProvince)
                 .FirstOrDefaultAsync();
 
             if(model == null)

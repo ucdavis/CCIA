@@ -233,8 +233,16 @@ namespace CCIA.Models
         
         
         public FieldInspectionReport FieldInspectionReport { get; set; }
-        
-        
+
+        [ForeignKey("AppId")]
+        public ICollection<NativeSeedSites> Sites { get; set; }
+
+        [Display(Name = "G0 Collection State")]
+        public int? NSG0StateProvinceIdCollected { get; set; }
+        [ForeignKey("NSG0StateProvinceIdCollected")]
+        public StateProvince NSG0StateProvince { get; set; }
+
+
         public CertRad AppCertRad {get; set;}
 
         [ForeignKey("AppId")]

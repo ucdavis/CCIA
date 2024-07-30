@@ -49,6 +49,8 @@ namespace CCIA.Models
         // Maximum number of field history records allowed for a specified app type
         public int LastAgreementYear { get; set; }
 
+        public NativeSeedSites  Site1 { get; set; }
+
         public ApplicationViewModel()
         {
             Replant = false;
@@ -154,6 +156,7 @@ namespace CCIA.Models
                 WhereProduction = whereProduction, 
                 PlantingStock1 = new PlantingStocks(),
                 PlantingStock2 = new PlantingStocks(),
+                Site1 = new NativeSeedSites(),
                 LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
             };
 

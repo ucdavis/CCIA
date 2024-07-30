@@ -2121,6 +2121,7 @@ namespace CCIA.Models
                 entity.HasMany(d => d.Certificates);
 
                 entity.HasMany(d => d.PlantingStocks);
+                entity.HasMany(d => d.Sites);
 
                 entity.HasMany(d => d.FieldHistories);
 

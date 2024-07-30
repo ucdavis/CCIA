@@ -59,14 +59,17 @@ $(".datepicker").datepicker({
     autoclose: "true"
 });
 
-function ClassChange()
-{
+function ClassChange() {
     var val = $('input[name="Application.ClassProducedId"]:checked').val();
-    if(val == 14)
-    {
+    if (val == 14) {
         $("#AccessionSelector").collapse('show');
+    } if (val == 80) {        
+        $(".g0Hidden").hide();
+        $("#G0Panal").collapse('show');
     } else
     {
+        $(".g0Hidden").show();
+        $("#G0Panal").collapse('hide');
         $("#AccessionSelector").collapse('hide');
         $("#Application_ClassProducedAccession").val("");
     }
@@ -185,6 +188,8 @@ function ddlVarietySelected(){
     $("#ps1_PsEnteredVariety").val(varietyName);    
     $("#form-remainder").collapse('show');
 }
+
+
 
 
 $("#Application_CropId").change(function () {
