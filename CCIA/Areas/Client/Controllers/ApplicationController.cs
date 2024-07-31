@@ -17,6 +17,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using static Humanizer.On;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace CCIA.Controllers.Client
 {
@@ -28,13 +30,15 @@ namespace CCIA.Controllers.Client
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
         private readonly INotificationService _notificationService;
+        private readonly IConfiguration _config;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService,  INotificationService notificationService)
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService,  INotificationService notificationService, IConfiguration config)
         {
             _dbContext = dbContext;
             _helper = helper;
             _fileService = fileIOService;
             _notificationService = notificationService;
+            _config = config;
 
         }
 
@@ -774,6 +778,23 @@ namespace CCIA.Controllers.Client
                 ErrorMessage = "That app does not belong to your organization.";
                 return  RedirectToAction(nameof(Index));
             }
+            return View(model);
+        }
+
+        public async Task<IActionResult> NewMapG(int id)
+        {
+            var model = await NewMapViewModel.CreateClient(_dbContext, id);
+            if (model.application == null)
+            {
+                ErrorMessage = "App not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
             return View(model);
         }
 
