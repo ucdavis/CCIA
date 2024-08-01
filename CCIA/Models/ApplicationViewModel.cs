@@ -50,6 +50,7 @@ namespace CCIA.Models
         public int LastAgreementYear { get; set; }
 
         public NativeSeedSites  Site1 { get; set; }
+        public List<Subspecies> subspecies { get; set; }
 
         public ApplicationViewModel()
         {
@@ -131,7 +132,8 @@ namespace CCIA.Models
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
             counties.Insert(0, new County { CountyId = 0, Name="Select County..."});
-            
+            var subspecies = new List<Subspecies>();
+            subspecies.Insert(0, new Subspecies { Id = 0, CropId = 0, Name = "--" });
 
             var model = new ApplicationViewModel
             {                
@@ -159,6 +161,7 @@ namespace CCIA.Models
                 PlantingStock2 = new PlantingStocks(),
                 Site1 = new NativeSeedSites(),
                 LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
+                subspecies = subspecies,
             };
 
             return model;
@@ -171,6 +174,7 @@ namespace CCIA.Models
             var app = submittedModel.Application;
             app.ApplicantOrganization = await _dbContext.Organizations.Where(o => o.Id == applicantId).FirstAsync();
             var crops = new List<Crops>();
+            var subspecies = new List<Subspecies>();
             var varieties = new List<VarFull>();         
             var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == abbrevAppType.AppTypeId).ToListAsync();
             var planted = classes;
@@ -225,6 +229,8 @@ namespace CCIA.Models
                     break;
                 case 12:
                     crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    subspecies = await _dbContext.Subspecies.Where(s => s.CropId == submittedModel.Application.CropId.Value).ToListAsync();
+                    subspecies.Insert(0, new Subspecies { Id = 0, CropId = submittedModel.Application.CropId.Value, Name = "--" });
                     break;
             }
 
@@ -258,6 +264,7 @@ namespace CCIA.Models
                 PlantingStock2 = submittedModel.PlantingStock2,
                 LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
                 Site1 = submittedModel.Site1,
+                subspecies = subspecies,
             };
 
             return model;

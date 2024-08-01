@@ -347,7 +347,7 @@ namespace CCIA.Controllers.Client
                 newApp.FarmCounty = site1.SiteCounty;
                 model.Application.AcresApplied = site1.CollectionAreaSize;
                 model.Application.FieldName = site1.SiteName;
-               // model.Application.DatePlanted = site1.HarvestDate;
+                model.Application.DatePlanted = site1.HarvestDate;
                 newApp.NSG0StateProvinceIdCollected = submittedApp.NSG0StateProvinceIdCollected;
                 newApp.G0Ownership = submittedApp.G0Ownership;
                 newApp.DatePlanted = site1.HarvestDate;

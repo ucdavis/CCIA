@@ -75,6 +75,10 @@ function ClassChange() {
     }
 }
 
+$(document).ready(function () {
+    ClassChange();    
+})
+
 $("#ps1_PsClass").change(function() {
     var val = $("#PlantingStock1.PsClass").val();
     if(val == 14)

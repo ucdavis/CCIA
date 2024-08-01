@@ -72,7 +72,7 @@
             {
                 <div class="form-group col-sm-3 required" id="subspecies">
                     <label asp-for="Application.SubspeciesId" class="col-form-label">Subspecies</label>
-                    <select asp-for="Application.SubspeciesId" class="form-control"></select>
+                <select asp-for="Application.SubspeciesId" class="form-control" asp-items="@(new SelectList(Model.subspecies, "Id","Name"))"></select>
                 </div>
             }
             <div class="form-group col-sm-2 required">           
