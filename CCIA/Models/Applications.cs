@@ -53,6 +53,7 @@ namespace CCIA.Models
            CertTagOrBulkSalesUploaded = false;
            NASPHCUploaded = false;
            ShippingPointInspectionUploadedOrFromNonInspectState = false;
+           NSG0StateProvinceIdCollected = 102;
         }
 
        
@@ -188,7 +189,8 @@ namespace CCIA.Models
         public string HempWhereProduced { get; set; }
         public string HempProducingSeedType { get; set; }
 
-   
+        public string G0Ownership { get; set; }
+
 
 
 

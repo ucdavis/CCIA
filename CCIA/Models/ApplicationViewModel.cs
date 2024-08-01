@@ -131,6 +131,7 @@ namespace CCIA.Models
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
             counties.Insert(0, new County { CountyId = 0, Name="Select County..."});
+            
 
             var model = new ApplicationViewModel
             {                
@@ -222,6 +223,9 @@ namespace CCIA.Models
                 case 11:
                     crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
+                case 12:
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    break;
             }
 
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
@@ -253,6 +257,7 @@ namespace CCIA.Models
                 PlantingStock1 = submittedModel.PlantingStock1,
                 PlantingStock2 = submittedModel.PlantingStock2,
                 LastAgreementYear = await _dbContext.Contacts.Where(c => c.Id == contactId).Select(c => c.LastApplicationAgreementYear.Value).FirstOrDefaultAsync(),
+                Site1 = submittedModel.Site1,
             };
 
             return model;

@@ -8,19 +8,26 @@ namespace CCIA.Models
     {
         [Key]
         public int Id { get; set; }
-        public int appID { get; set; }
-
+        public int AppId { get; set; }
         public string SiteName { get; set; }
-        public string OwnershipOrSize { get; set; }
+        public int CollectionAreaSize { get; set; }
+        [DataType(DataType.Date)]
         public DateTime HarvestDate { get; set; }
         public decimal? Lat { get; set; }
         public decimal? Long { get; set; }
+        public int? FieldElevation { get; set; }
+        public int SiteCounty { get; set; }
+        [ForeignKey("SiteCounty")]
+        public County County { get; set; }        
         public string Comments { get; set; }
-        public DateTime DateInspected { get; set; }
-        public bool Approved { get; set; }
-        public string ApprovedBy { get; set; }
-        public string InspectionComment { get; set; }
-        public decimal? InspectionFee { get; set; }
+        
+
+
+        public NativeSeedSites()
+        {
+           SiteCounty = 102;
+            HarvestDate = DateTime.Now.AddDays(14).Date;
+        }
 
     }
 }
