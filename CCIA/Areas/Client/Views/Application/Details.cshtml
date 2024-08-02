@@ -271,6 +271,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Site Name</th>
                         <th>Size</th>
                         <th>Elevation</th>  
@@ -285,6 +286,7 @@
                     @foreach (var row in Model.Sites)
                     {
                         <tr>
+                            <td><a class="btn btn-info" asp-action="EditSite" asp-area="client" asp-controller="Application" asp-route-id="@row.Id">Edit</a></td>
                             <td>@row.SiteName</td>
                             <td>@row.CollectionAreaSize</td>
                             <td>@row.FieldElevation</td>
@@ -297,6 +299,9 @@
                     }
                 </tbody>
             </table>
+            <div>
+                 <a asp-action="NewSite" asp-route-id="@Model.Id" class="btn btn-primary">Add New Site</a>
+            </div>
         </div>
     }
     @if(Model.PlantingStocks.Any())
