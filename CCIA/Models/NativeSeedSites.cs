@@ -12,6 +12,7 @@ namespace CCIA.Models
         public string SiteName { get; set; }
         public int CollectionAreaSize { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime HarvestDate { get; set; }
         public decimal? Lat { get; set; }
         public decimal? Long { get; set; }
