@@ -438,69 +438,102 @@ namespace CCIA.Controllers.Client
             appToUpdate.UserAppModDt = DateTime.Now;
             appToUpdate.EnteredVariety = submittedApp.EnteredVariety;                        
             appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
-            appToUpdate.FieldName = submittedApp.FieldName;
-            appToUpdate.DatePlanted = submittedApp.DatePlanted;
-            appToUpdate.AcresApplied = submittedApp.AcresApplied;
-            appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
-            appToUpdate.CropId = submittedApp.CropId;            
-            appToUpdate.FarmCounty = submittedApp.FarmCounty;
+            appToUpdate.CropId = submittedApp.CropId; 
             appToUpdate.SelectedVarietyId = submittedApp.SelectedVarietyId;
-            appToUpdate.ClassProducedId = submittedApp.ClassProducedId;
 
+            if (submittedApp.AppType == "NS")            {                
+                
+                appToUpdate.EcoregionId = submittedApp.EcoregionId;                
+                appToUpdate.SubspeciesId = submittedApp.SubspeciesId;
+            }
 
-            var PSToUpdate = appToUpdate.PlantingStocks.First();
-            PSToUpdate.PsCertNum = model.PlantingStock1.PsCertNum;
-            PSToUpdate.PsEnteredVariety = model.PlantingStock1.PsEnteredVariety;            
-            PSToUpdate.PoundsPlanted = model.PlantingStock1.PoundsPlanted;
-            PSToUpdate.PsClass = model.PlantingStock1.PsClass;
-            PSToUpdate.PsAccession = model.PlantingStock1.PsAccession;
-            PSToUpdate.StateCountryGrown = model.PlantingStock1.StateCountryGrown;
-            PSToUpdate.StateCountryTagIssued = model.PlantingStock1.StateCountryTagIssued;
-            PSToUpdate.SeedPurchasedFrom = model.PlantingStock1.SeedPurchasedFrom;
-            PSToUpdate.WinterTest = model.PlantingStock1.WinterTest;
-            PSToUpdate.PvxTest = model.PlantingStock1.PvxTest;
-            PSToUpdate.ThcPercent = model.PlantingStock1.ThcPercent;            
-            if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
-            {
-                PSToUpdate.OfficialVarietyId = submittedApp.SelectedVarietyId;
-            }  
-
-            if(!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
-            {
-                if(appToUpdate.PlantingStocks.Count > 1)
-                {
-                    // Original App had 2 PS as does this one
-                    var PS2ToUpdate = appToUpdate.PlantingStocks.Last();
-                    PS2ToUpdate.PsCertNum = model.PlantingStock2.PsCertNum;
-                    PS2ToUpdate.PsEnteredVariety = model.PlantingStock2.PsEnteredVariety;            
-                    PS2ToUpdate.PoundsPlanted = model.PlantingStock2.PoundsPlanted;
-                    PS2ToUpdate.PsClass = model.PlantingStock2.PsClass;
-                    PS2ToUpdate.PsAccession = model.PlantingStock2.PsAccession;
-                    PS2ToUpdate.StateCountryGrown = model.PlantingStock2.StateCountryGrown;
-                    PS2ToUpdate.StateCountryTagIssued = model.PlantingStock2.StateCountryTagIssued;
-                    PS2ToUpdate.SeedPurchasedFrom = model.PlantingStock2.SeedPurchasedFrom;
-                    PS2ToUpdate.WinterTest = model.PlantingStock2.WinterTest;
-                    PS2ToUpdate.PvxTest = model.PlantingStock2.PvxTest;
-                    PS2ToUpdate.ThcPercent = model.PlantingStock2.ThcPercent;              
-                } else
-                {
-                    // Original app had 1 ps, but edit has 2
-                    var newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
-                    newPS2.AppId = PSToUpdate.AppId;
-                    _dbContext.Add(newPS2);
-                }
-                               
+            if (appToUpdate.ClassProducedId == 80)
+            {                                   
+                appToUpdate.G0Ownership = submittedApp.G0Ownership;
+                appToUpdate.NSG0StateProvinceIdCollected = submittedApp.NSG0StateProvinceIdCollected;
+                model.Application.FieldName = appToUpdate.FieldName;
+                model.Application.DatePlanted = appToUpdate.DatePlanted;
+                model.Application.AcresApplied = appToUpdate.AcresApplied;
+                model.Application.FarmCounty = appToUpdate.FarmCounty;
             } else
             {
-                //Check if app had 2 ps, removed second one
-                model.PlantingStock2.PsCertNum = "0";
-                if(appToUpdate.PlantingStocks.Count > 1)
+                if (submittedApp.AppType == "NS")
                 {
-                    var psToRemove = appToUpdate.PlantingStocks.Last();
-                    _dbContext.Remove(psToRemove);
+                    appToUpdate.PvgSource = submittedApp.PvgSource;
+                    appToUpdate.FieldElevation = submittedApp.FieldElevation;
                 }
-            }                 
-           
+
+                appToUpdate.FieldName = submittedApp.FieldName;
+                appToUpdate.DatePlanted = submittedApp.DatePlanted;
+                appToUpdate.AcresApplied = submittedApp.AcresApplied;
+                appToUpdate.FarmCounty = submittedApp.FarmCounty;
+                var PSToUpdate = appToUpdate.PlantingStocks.First();
+                PSToUpdate.PsCertNum = model.PlantingStock1.PsCertNum;
+                PSToUpdate.PsEnteredVariety = model.PlantingStock1.PsEnteredVariety;
+                PSToUpdate.PoundsPlanted = model.PlantingStock1.PoundsPlanted;
+                PSToUpdate.PsClass = model.PlantingStock1.PsClass;
+                PSToUpdate.PsAccession = model.PlantingStock1.PsAccession;
+                PSToUpdate.StateCountryGrown = model.PlantingStock1.StateCountryGrown;
+                PSToUpdate.StateCountryTagIssued = model.PlantingStock1.StateCountryTagIssued;
+                PSToUpdate.SeedPurchasedFrom = model.PlantingStock1.SeedPurchasedFrom;
+                PSToUpdate.WinterTest = model.PlantingStock1.WinterTest;
+                PSToUpdate.PvxTest = model.PlantingStock1.PvxTest;
+                PSToUpdate.ThcPercent = model.PlantingStock1.ThcPercent;
+
+                if (submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
+                {
+                    PSToUpdate.OfficialVarietyId = submittedApp.SelectedVarietyId;
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+                {
+                    if (appToUpdate.PlantingStocks.Count > 1)
+                    {
+                        // Original App had 2 PS as does this one
+                        var PS2ToUpdate = appToUpdate.PlantingStocks.Last();
+                        PS2ToUpdate.PsCertNum = model.PlantingStock2.PsCertNum;
+                        PS2ToUpdate.PsEnteredVariety = model.PlantingStock2.PsEnteredVariety;
+                        PS2ToUpdate.PoundsPlanted = model.PlantingStock2.PoundsPlanted;
+                        PS2ToUpdate.PsClass = model.PlantingStock2.PsClass;
+                        PS2ToUpdate.PsAccession = model.PlantingStock2.PsAccession;
+                        PS2ToUpdate.StateCountryGrown = model.PlantingStock2.StateCountryGrown;
+                        PS2ToUpdate.StateCountryTagIssued = model.PlantingStock2.StateCountryTagIssued;
+                        PS2ToUpdate.SeedPurchasedFrom = model.PlantingStock2.SeedPurchasedFrom;
+                        PS2ToUpdate.WinterTest = model.PlantingStock2.WinterTest;
+                        PS2ToUpdate.PvxTest = model.PlantingStock2.PvxTest;
+                        PS2ToUpdate.ThcPercent = model.PlantingStock2.ThcPercent;
+                    }
+                    else
+                    {
+                        // Original app had 1 ps, but edit has 2
+                        var newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
+                        newPS2.AppId = PSToUpdate.AppId;
+                        _dbContext.Add(newPS2);
+                    }
+
+                }
+                else
+                {
+                    //Check if app had 2 ps, removed second one
+                    model.PlantingStock2.PsCertNum = "0";
+                    if (appToUpdate.PlantingStocks.Count > 1)
+                    {
+                        var psToRemove = appToUpdate.PlantingStocks.Last();
+                        _dbContext.Remove(psToRemove);
+                    }
+                }
+
+                if ((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
+                {
+                    appToUpdate.WarningFlag = true;
+                    if (!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                    {
+                        appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                    }
+                }
+            }
+            appToUpdate.ClassProducedId = submittedApp.ClassProducedId;
+
             if(submittedApp.AppType == "HP")
             {
                 appToUpdate.CountyPermit = submittedApp.CountyPermit;                
@@ -513,14 +546,7 @@ namespace CCIA.Controllers.Client
             {
                 appToUpdate.ClassProducedAccession = submittedApp.ClassProducedAccession;
             }
-            if((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
-            {
-                appToUpdate.WarningFlag = true;
-                if(!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
-                {
-                   appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
-                }                
-            }
+            
             if(submittedApp.AppType == "PV")
             {
                 appToUpdate.PvgSource = submittedApp.PvgSource;
@@ -528,13 +554,7 @@ namespace CCIA.Controllers.Client
                 appToUpdate.EcoregionId = submittedApp.EcoregionId;
                 appToUpdate.FieldElevation = submittedApp.FieldElevation;
             }
-            if (submittedApp.AppType == "NS")
-            {
-                appToUpdate.PvgSource = submittedApp.PvgSource;
-                appToUpdate.PvgSelectionId = submittedApp.PvgSelectionId;
-                appToUpdate.EcoregionId = submittedApp.EcoregionId;
-                appToUpdate.FieldElevation = submittedApp.FieldElevation;
-            }
+            
 
             ModelState.Clear();    
             if(submittedApp.FarmCounty == 0)       

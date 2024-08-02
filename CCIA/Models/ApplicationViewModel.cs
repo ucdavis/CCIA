@@ -287,6 +287,7 @@ namespace CCIA.Models
             var varieties = new List<VarFull>();         
             var classes = await _dbContext.AbbrevClassProduced.Where(c => c.AppTypeId == abbrevAppType.AppTypeId).ToListAsync();
             var planted = classes;
+            var subspecies = new List<Subspecies>();
             if(app.PlantingStocks.Count > 0)
             {
                 ps1 = app.PlantingStocks.First();
@@ -344,11 +345,27 @@ namespace CCIA.Models
                 case 11:
                     crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
+                case 12:
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    subspecies = await _dbContext.Subspecies.Where(s => s.CropId == app.CropId.Value).ToListAsync();
+                    subspecies.Insert(0, new Subspecies { Id = 0, CropId = app.CropId.Value, Name = "--" });
+                    break;
             }
 
             crops.Insert(0, new Crops{ CropId=0, Crop="Select crop..."});
             var counties = await _dbContext.County.Where(c => c.StateProvinceId == 102).ToListAsync();
             counties.Insert(0, new County { CountyId = 0, Name="Select County..."});
+            var statesAndCountries = new List<StatesAndCountries>();
+            
+            if(app.ClassProducedId == 80)
+            {
+                statesAndCountries = await _dbContext.StatesAndCountries.Where(s => s.Ord == 1).OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync();
+            }
+            else
+            {
+                statesAndCountries = await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync();
+            }
+            
 
             var model = new ApplicationViewModel
             {
@@ -363,7 +380,7 @@ namespace CCIA.Models
                     .ThenInclude(a => a.Address)
                     .ThenInclude(a => a.StateProvince)
                     .FirstOrDefaultAsync(),
-                statesAndCountries =  await _dbContext.StatesAndCountries.OrderBy(s => s.Ord).ThenBy(s => s.Name).ToListAsync(),
+                statesAndCountries = statesAndCountries,
                 Crops = crops,
                 CertYear = Helpers.CertYearFinder.CertYear,
                 FullCrops = await _dbContext.Crops.OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync(),
@@ -375,6 +392,7 @@ namespace CCIA.Models
                 PlantingStock1 = ps1,
                 PlantingStock2 = ps2,
                 LastAgreementYear = CertYearFinder.CertYear,
+                subspecies = subspecies,
             };
 
             return model;
