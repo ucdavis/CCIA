@@ -243,9 +243,8 @@
                     </div>
                     <div class="row">
                         <div class="form-group required col-sm-6">
-                            <label class="col-form-label" asp-for="Application.Ecoregion">US EPA Level III Ecoregion</label>
-                            <select asp-for="Application.Ecoregion" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>
-                            <span class="field-validation-valid text-danger" data-valmsg-for="Application.Ecoregion" data-valmsg-replace="true"></span>
+                            <label class="col-form-label" asp-for="Application.EcoregionId">US EPA Level III Ecoregion</label>
+                            <select asp-for="Application.EcoregionId" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>                            
                         </div>
                         <div class="col form-group required">
                             <label class="col-form-label"  asp-for="Site1.FieldElevation">Field Elevation (feet)</label>
