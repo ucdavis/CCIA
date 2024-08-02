@@ -83,6 +83,8 @@ namespace CCIA.Controllers.Client
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
                 .Include(a => a.Subspecies)
                 .Include(a => a.Sites)
+                .ThenInclude(s => s.County)
+                .Include(a => a.Ecoregion)
                 .Include(a => a.NSG0StateProvince)
                 .FirstOrDefaultAsync();
 
@@ -324,11 +326,11 @@ namespace CCIA.Controllers.Client
             {
                 newApp.PvgSelectionId = submittedApp.PvgSelectionId;
                 newApp.SubspeciesId = submittedApp.SubspeciesId;
+                newApp.EcoregionId = submittedApp.EcoregionId;
             }
             if (submittedApp.AppType == "NS" && newApp.ClassProducedId != 80)
             {
-                newApp.PvgSource = submittedApp.PvgSource;
-                newApp.EcoregionId = submittedApp.EcoregionId;
+                newApp.PvgSource = submittedApp.PvgSource;                
                 newApp.FieldElevation = submittedApp.FieldElevation;                
             }
             if(newApp.AppType == "NS" && newApp.ClassProducedId == 80)
