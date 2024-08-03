@@ -51,6 +51,15 @@ namespace CCIA.Models
             }
         }
 
+        public string NativeSeedName
+        {
+            get
+            {
+                return $"{Genus} {Species} ({Crop})";
+
+            }
+        }
+
         [StringLength(256)]
         [Display(Name = "Crop")]
         public string Name => CropKind == null ? Crop : CropKind + " " + Crop;

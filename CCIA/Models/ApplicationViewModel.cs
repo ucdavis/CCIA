@@ -91,7 +91,7 @@ namespace CCIA.Models
                     break;
                 // Pre Variety Germplasm
                 case 4:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     break;
                 // Rice QA
                 case 5:
@@ -125,7 +125,7 @@ namespace CCIA.Models
                     break;
                 // Native Seed
                 case 12:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     break;
             }
 
@@ -139,7 +139,7 @@ namespace CCIA.Models
             {                
                 AppType = abbrevAppType,
                 Application = app,
-            ClassProducedList = classes,
+                ClassProducedList = classes,
                 ClassPlantedList = planted,
                 Counties = counties,
                 Ecoregions =  await _dbContext.Ecoregions.ToListAsync(),
@@ -197,7 +197,7 @@ namespace CCIA.Models
                     break;
                 // Pre Variety Germplasm
                 case 4:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     break;
                 // Rice QA
                 case 5:
@@ -228,7 +228,7 @@ namespace CCIA.Models
                     crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
                 case 12:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     subspecies = await _dbContext.Subspecies.Where(s => s.CropId == submittedModel.Application.CropId.Value).ToListAsync();
                     subspecies.Insert(0, new Subspecies { Id = 0, CropId = submittedModel.Application.CropId.Value, Name = "--" });
                     break;
@@ -315,7 +315,7 @@ namespace CCIA.Models
                     break;
                 // Pre Variety Germplasm
                 case 4:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     break;
                 // Rice QA
                 case 5:
@@ -346,7 +346,7 @@ namespace CCIA.Models
                     crops = await _dbContext.Crops.Where(c => c.LacTracker).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
                     break;
                 case 12:
-                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Crop).ThenBy(c => c.CropKind).ToListAsync();
+                    crops = await _dbContext.Crops.Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species).ToListAsync();
                     subspecies = await _dbContext.Subspecies.Where(s => s.CropId == app.CropId.Value).ToListAsync();
                     subspecies.Insert(0, new Subspecies { Id = 0, CropId = app.CropId.Value, Name = "--" });
                     break;
@@ -432,7 +432,7 @@ namespace CCIA.Models
                 // Pre Variety Germplasm
                 case 4:
                     crops = await dbContext.Crops
-                        .Where(c => c.PreVarietyGermplasm == true)
+                        .Where(c => c.PreVarietyGermplasm == true).OrderBy(c => c.Genus).ThenBy(c => c.Species)
                         .ToListAsync();
                     maxFieldHistoryRecords = 5;
                     break;

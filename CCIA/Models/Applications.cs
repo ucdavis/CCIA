@@ -270,7 +270,11 @@ namespace CCIA.Models
                 {
                     return Crop.Name;
                 }
-                if(Crop != null) 
+                if (AppType == "NS")
+                {
+                    return Crop.Genus + " " + Crop.Species + " (" + Crop.Name + ")";
+                }
+                if (Crop != null) 
                 {
                     return Crop.Name;
 
@@ -291,7 +295,7 @@ namespace CCIA.Models
                 {
                     return Variety.Name;
                 }
-                if(AppType=="PV" || SelectedVarietyId == null)
+                if(AppType=="PV" || SelectedVarietyId == null || AppType == "NS")
                 {
                     return PvgSelectionId;
                 }
@@ -316,7 +320,7 @@ namespace CCIA.Models
                     }
                     return Variety.Name;
                 }
-                if(AppType=="PV" || SelectedVarietyId == null)
+                if(AppType == "PV" || SelectedVarietyId == null || AppType == "NS")
                 {
                     return PvgSelectionId;
                 }
@@ -348,7 +352,11 @@ namespace CCIA.Models
                 if(AppType=="LT")
                 {
                     return $"{certYearAbbrev}CA-LT-{Id}";
-                }                
+                }
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id}";
+                }
 
                 return "";
 
@@ -389,8 +397,12 @@ namespace CCIA.Models
                 if(AppType=="LT")
                 {
                     return $"{certYearAbbrev}CA-LT-{Id}";
-                }  
-                if(AppType=="HP")
+                }
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id}";
+                }
+                if (AppType=="HP")
                 {
                     return $"{certYearAbbrev}CA-HP-{rad}-{CertNum}";
                 }  
@@ -432,7 +444,11 @@ namespace CCIA.Models
                 {
                     return $"{certYearAbbrev}CA-PVG-{Id} for {ClassProduced.ClassProducedTrans}";
                 }
-                if(AppType=="GQ")
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id} for {ClassProduced.ClassProducedTrans}";
+                }
+                if (AppType=="GQ")
                 {
                     return $"{certYearAbbrev}CA-QA-{Id} for {ClassProduced.ClassProducedTrans}";
                 }
@@ -538,7 +554,7 @@ namespace CCIA.Models
              {
                  if(Variety != null)
                  {
-                     if(Variety.Status == "Certified" || AppType == "GQ" || AppType == "PV" || AppType == "RQ")
+                     if(Variety.Status == "Certified" || AppType == "GQ" || AppType == "PV" || AppType == "NS" || AppType == "RQ")
                      {
                          return false;
                      }

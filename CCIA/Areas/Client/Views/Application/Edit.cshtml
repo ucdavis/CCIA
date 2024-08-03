@@ -91,10 +91,18 @@
     <input type="hidden" asp-for="Application.Id">
 
     <div class="row border">
-        <div class="form-group col-sm-3 required">            
+        @if(Model.AppType.Abbreviation == "PV" || Model.AppType.Abbreviation == "NS")
+        {
+            <div class="form-group col-sm-3 required">            
                 <label asp-for="Application.CropId" class="col-form-label">Crop</label>
-                <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
-        </div>
+                <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","NativeSeedName"))"></select>
+            </div>
+        } else {
+            <div class="form-group col-sm-3 required">            
+                    <label asp-for="Application.CropId" class="col-form-label">Crop</label>                
+                    <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
+            </div>  
+        }        
         @if (Model.AppType.Abbreviation == "NS")
         {
             <div class="form-group col-sm-3 required" id="subspecies">
