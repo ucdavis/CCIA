@@ -13,6 +13,7 @@ using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using System.IO;
+using CCIA.Models.ApplicationViewModels;
 
 namespace CCIA.Controllers.Admin
 {
@@ -81,7 +82,106 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new { id = Id }); 
         }
 
-       
+        public async Task<IActionResult> EditSite(int id)
+        {
+            var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+            if (model.Site == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == model.Site.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSite(int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToUpdate = await _dbContext.NativeSeedSites.Where(s => s.Id == vm.Site.Id).FirstOrDefaultAsync();
+            if (siteToUpdate == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == siteToUpdate.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }            
+            var updatedSite = vm.Site;
+            siteToUpdate.SiteName = updatedSite.SiteName;
+            siteToUpdate.CollectionAreaSize = updatedSite.CollectionAreaSize;
+            siteToUpdate.FieldElevation = updatedSite.FieldElevation;
+            siteToUpdate.Lat = updatedSite.Lat;
+            siteToUpdate.Long = updatedSite.Long;
+            siteToUpdate.SiteCounty = updatedSite.SiteCounty;
+            siteToUpdate.HarvestDate = updatedSite.HarvestDate;
+            siteToUpdate.Comments = updatedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Updated";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToUpdate.AppId });
+
+        }
+
+        public async Task<IActionResult> NewSite(int id)
+        {
+            var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewSite(int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToCreate = new NativeSeedSites();
+            var app = await _dbContext.Applications.Where(a => a.Id == vm.Site.AppId).FirstOrDefaultAsync();
+            if (app == null || id != vm.Site.AppId)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }            
+            var submittedSite = vm.Site;
+            siteToCreate.SiteName = submittedSite.SiteName;
+            siteToCreate.AppId = submittedSite.AppId;
+            siteToCreate.CollectionAreaSize = submittedSite.CollectionAreaSize;
+            siteToCreate.FieldElevation = submittedSite.FieldElevation;
+            siteToCreate.Lat = submittedSite.Lat;
+            siteToCreate.Long = submittedSite.Long;
+            siteToCreate.SiteCounty = submittedSite.SiteCounty;
+            siteToCreate.HarvestDate = submittedSite.HarvestDate;
+            siteToCreate.Comments = submittedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(siteToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Created";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToCreate.AppId });
+        }
 
         public async Task<IActionResult> NewMap(int id)
         {
