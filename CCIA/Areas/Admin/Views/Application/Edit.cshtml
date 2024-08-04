@@ -191,7 +191,7 @@
                 <div class="col-sm-9 form-control-plaintext">
                     @Html.DisplayFor(x => x.application.OriginalCertYear) Prev App: @Html.DisplayFor(x => x.application.PaperAppNum)
                 </div>
-            </div>
+            </div>                
         </div>
     </div>
     <div class="row">
@@ -235,10 +235,27 @@
     </div>
     <div class="row">
         <div class="col-md-6 col-xl-4">@* Column 1*@
-            <div class="form-group row">
-                <label asp-for="application.Crop.Name" class="col-sm-3 col-form-label"></label>
-                <select asp-for="application.CropId" class="col-sm-9 form-control" asp-items="@(new SelectList(Model.Crops, nameof(Crops.CropId), nameof(Crops.CropsAndKind)))"></select>                   
-            </div>
+            @if (Model.application.AppType == "PV" || Model.application.AppType == "NS")
+            {
+                <div class="form-group row">
+                    <label asp-for="application.CropId" class="col-form-label col-sm-3">Crop</label>
+                    <select asp-for="application.CropId" class="form-control col-sm-9" asp-items="@(new SelectList(Model.Crops, "CropId","NativeSeedName"))"></select>
+                </div>
+                @if (Model.application.AppType == "NS")
+                {
+                    <div class="form-group row">
+                            <label asp-for="application.SubspeciesId" class="col-form-label col-sm-3">Subspecies</label>
+                            <select asp-for="application.SubspeciesId" class="form-control col-sm-9" asp-items="@(new SelectList(Model.Subspecies, "Id","Name"))"></select>
+                    </div>
+                }
+            }                
+            else
+            {
+                <div class="form-group row">
+                    <label asp-for="application.CropId" class="col-form-label col-sm-3">Crop</label>
+                    <select asp-for="application.CropId" class="form-control col-sm-9" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
+                </div>
+            }                
             <div class="form-group row">
                 <label asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
                 <input type="text" asp-for="application.ClassProduced.ClassProducedTrans" class="col-sm-8 form-control" readonly>
@@ -257,6 +274,18 @@
                 <label asp-for="application.EnteredVariety" class="col-sm-3 col-form-label"></label>
                 <input type="text" class="col-sm-9 form-control" asp-for="application.EnteredVariety">
             </div>
+                @if ((Model.application.AppType == "PV") || (Model.application.AppType == "NS" && Model.application.ClassProducedId != 80))
+                {
+                    <div class="form-group required row">
+                        <label asp-for=application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label>
+                        <select class="col-sm-4 form-control" asp-for="application.PvgSource" data-val="true" data-val-required="Please select Germplasm Source">
+                            <option value="">Select germplasm type...</option>
+                            <option value="Source Identified Germplasm">Source Identified Germplasm</option>
+                            <option value="Selected Germplasm">Selected Germplasm</option>
+                            <option value="Tested Germplasm">Tested Germplasm</option>
+                        </select>
+                    </div>
+                }
             <div class="form-group row">
                 <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
                 <input type="text" asp-for="application.AcresApplied" class="col-sm-9 form-control" > 
@@ -280,13 +309,25 @@
                 @Html.HiddenFor(x => x.application.SelectedVarietyId)                  
             </div>
             <div class="form-group row">
-                <label asp-for="application.PackageComplete" class="col-sm-3 form-check-label"></label>
+                    <label asp-for="application.PackageComplete" class="col-sm-3 col-form-label"></label>
                 <input type="checkbox" asp-for="application.PackageComplete" class="col-sm-3 form-control">
             </div>
             <div class="form-group row">
                 <label asp-for="application.MapVe" class="col-sm-3 col-form-label"></label>
                 <input type="checkbox" asp-for="application.MapVe" class="col-sm-3 form-control" disabled="disabled">                   
             </div>
+                @if ((Model.application.AppType == "PV") || (Model.application.AppType == "NS" && Model.application.ClassProducedId != 80))
+                {   
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" asp-for="application.EcoregionId">Ecoregion</label>
+                        <select asp-for="application.EcoregionId" class="col-sm-3 form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" asp-for="application.FieldElevation">Field Elevation</label>
+                        <input asp-for="application.FieldElevation" class="col-sm-3 form-control">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldElevation" data-valmsg-replace="true"></span>
+                    </div>
+                }
         </div>
     </div>    
     @if(Model.application.AppType == AppTypes.Potato.GetDisplayName()) 
@@ -306,6 +347,31 @@
         </div>
         <div><hr></div>
     }
+        @if (Model.application.ClassProducedId == 80)
+        {
+            <section id="G0Panal" class="rounded-section off-white">
+                <h3>G0 Pre-Collection</h3>
+                <section class="rounded-section light-grey">
+                    <div class="row">
+                        <div class="form-group col required">
+                            <label asp-for="application.G0Ownership" class="col-form-label">Property Owner</label>
+                            <input asp-for="application.G0Ownership" class="form-control" placeholder="Property Owner" />
+                        </div>
+                        <div class="form-group required col-sm-6">
+                            <label asp-for="application.NSG0StateProvinceIdCollected" class="col-form-label">State</label>
+                            <select asp-for="application.NSG0StateProvinceIdCollected" class="form-control" asp-items="@(new SelectList(Model.StatesAndCountries,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group required col-sm-6">
+                            <label class="col-form-label" asp-for="application.EcoregionId">US EPA Level III Ecoregion</label>
+                            <select asp-for="application.EcoregionId" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <br />
+                </section>
+            </section>
+        }
     <div class="form-group row">
         <label asp-for="application.ApplicantComments" class="col-sm-3 col-form-label"></label>        
         <div class="col-sm-9 form-control-plaintext">
@@ -321,6 +387,8 @@
      <div class="row">
         <hr />
     </div>
+    @if(Model.application.ClassProducedId != 80)
+    {
     @if(Model.application.PlantingStocks.Any())
     {  
         <div class="row">
@@ -463,6 +531,7 @@
             </tbody>
         </table>
     </div>
+    }
     @if(Model.application.Changes.Any())
     {
         <div class="row">

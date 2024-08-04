@@ -781,7 +781,6 @@ namespace CCIA.Controllers.Admin
 
         // POST: Application/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AdminViewModel vm)
         {
             var appToUpdate = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
@@ -831,7 +830,36 @@ namespace CCIA.Controllers.Admin
             appToUpdate.FarmCounty = edit.FarmCounty;
             appToUpdate.Comments = edit.Comments;
 
-            if(ModelState.IsValid){
+            if (edit.AppType == "NS")
+            {
+
+                appToUpdate.EcoregionId = edit.EcoregionId;
+                appToUpdate.SubspeciesId = edit.SubspeciesId;
+            }
+            if (appToUpdate.ClassProducedId == 80)
+            {
+                appToUpdate.G0Ownership = edit.G0Ownership;
+                appToUpdate.NSG0StateProvinceIdCollected = edit.NSG0StateProvinceIdCollected;
+                vm.application.FieldName = appToUpdate.FieldName;
+                vm.application.DatePlanted = appToUpdate.DatePlanted;
+                vm.application.AcresApplied = appToUpdate.AcresApplied;
+                vm.application.FarmCounty = appToUpdate.FarmCounty;
+            }
+            else
+            {
+                if (edit.AppType == "NS")
+                {
+                    appToUpdate.PvgSource = edit.PvgSource;
+                    appToUpdate.FieldElevation = edit.FieldElevation;
+                }
+
+                appToUpdate.FieldName = edit.FieldName;
+                appToUpdate.DatePlanted = edit.DatePlanted;
+                appToUpdate.AcresApplied = edit.AcresApplied;
+                appToUpdate.FarmCounty = edit.FarmCounty;                
+            }
+
+            if (ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Application Updated";
                 if(changeCertYear)

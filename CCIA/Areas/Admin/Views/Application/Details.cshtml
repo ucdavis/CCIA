@@ -257,6 +257,15 @@
                     @Html.DisplayFor(x => x.application.EnteredVariety)
                 </div>
             </div>
+            @if((Model.application.AppType == "PV") || (Model.application.AppType == "NS" && Model.application.ClassProducedId != 80))
+            {
+                <div class="form-group row">
+                    <label asp-for=application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label>
+                    <div class="col-sm-9 form-control-plaintext">
+                        @Html.DisplayFor(x => x.application.PvgSource)
+                    </div>
+                </div>
+            }
             <div class="form-group row">
                 <label asp-for="application.AcresApplied" class="col-sm-3 col-form-label">Acres</label>
                 <div class="col-sm-9 form-control-plaintext">
