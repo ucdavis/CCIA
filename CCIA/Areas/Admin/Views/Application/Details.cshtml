@@ -507,7 +507,7 @@
                     @foreach (var row in Model.application.Sites)
                     {
                         <tr>
-                            <td><a class="btn btn-info" asp-action="EditSite" asp-area="client" asp-controller="Application" asp-route-id="@row.Id">Edit</a></td>
+                            <td><a class="btn btn-info" asp-action="EditSite" asp-controller="Application" asp-route-id="@row.Id">Edit</a></td>
                             <td>@row.SiteName</td>
                             <td>@row.CollectionAreaSize</td>
                             <td>@row.FieldElevation</td>
