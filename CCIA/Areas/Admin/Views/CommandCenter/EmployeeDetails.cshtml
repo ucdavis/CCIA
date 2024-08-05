@@ -45,12 +45,12 @@
             <div class="form-group row">
                 <label asp-for="NewBlend" class="col-sm-6 col-form-label"></label>
                 <input type="checkbox" asp-for="NewBlend" class="col-sm-3 form-control">
-            </div>         
+            </div>              
         </div>
         <div class="col-md-6 col-xl-4">@*Second column *@
             <div class="form-group row">
                 <label asp-for="LastName" class="col-sm-6 col-form-label"></label>
-                <div class="col-sm- form-control-plaintext">
+                <div class="col-sm-6 form-control-plaintext">
                     @Html.DisplayFor(x => x.LastName)
                 </div>
             </div>
@@ -79,7 +79,11 @@
             <div class="form-group row">                
                 <label asp-for="PrevarietyGermplasm" class="col-sm-6 col-form-label"></label>
                 <input type="checkbox" asp-for="PrevarietyGermplasm" class="col-sm-3 form-control">
-            </div>                  
+            </div>  
+            <div class="form-group row">
+                <label asp-for="Lactracker" class="col-sm-6 col-form-label"></label>
+                <input type="checkbox" asp-for="Lactracker" class="col-sm-3 form-control">
+            </div>
         </div>
         <div class="col-md-6 col-xl-4">@*Third column *@
             <div class="form-group row">

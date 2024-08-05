@@ -83,8 +83,11 @@ namespace CCIA.Models
         [Display(Name="Heritage QA Inform?")]
         public bool HeritageGrainQA { get; set; }
 
-        [Display(Name="PVG Inform?")]
+        [Display(Name="NS/PVG Inform?")]
         public bool PrevarietyGermplasm { get; set; }
+
+        [Display(Name = "LacTracker Inform?")]
+        public bool Lactracker { get; set; }
 
         [Display(Name="OECD Invoice Printer?")]
         public bool OECDInvoicePrinter { get; set; }
