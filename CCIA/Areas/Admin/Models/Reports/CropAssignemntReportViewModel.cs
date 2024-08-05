@@ -55,11 +55,10 @@ namespace CCIA.Models
 
         public string Blank { get; set; }
 
-        public string Hostert { get; set; }
+        public string Trejo { get; set; }
 
         public string Koala { get; set; }
         public string Mkandawire { get; set; }
-        public string Palmer { get; set; }
     }    
 
     public partial class CropGroups
