@@ -138,6 +138,9 @@ namespace CCIA.Services
             } else if (app.AppType == "GQ")
             {
                 inspectors = await _dbContext.CCIAEmployees.Where(e => e.HeritageGrainQA && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
+            } else if(app.AppType == "LT")
+            {
+                inspectors = await _dbContext.CCIAEmployees.Where(e => e.Lactracker && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
             }
             else
             {
@@ -161,9 +164,25 @@ namespace CCIA.Services
 
         public async Task ApplicationReSubmitted(Applications app)
         {
-            var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
-            var inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();            
-            
+            var inspectors = new List<CCIAEmployees>();
+            if (app.AppType == "PV" || app.AppType == "NS")
+            {
+                inspectors = await _dbContext.CCIAEmployees.Where(e => e.PrevarietyGermplasm && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
+            }
+            else if (app.AppType == "GQ")
+            {
+                inspectors = await _dbContext.CCIAEmployees.Where(e => e.HeritageGrainQA && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
+            }
+            else if (app.AppType == "LT")
+            {
+                inspectors = await _dbContext.CCIAEmployees.Where(e => e.Lactracker && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
+            }
+            else
+            {
+                var assignments = await _dbContext.CropAssignments.Where(c => c.CropId == app.CropId).Select(c => c.EmployeeId).ToListAsync();
+                inspectors = await _dbContext.CCIAEmployees.Where(e => assignments.Contains(e.Id) && e.Current && !string.IsNullOrWhiteSpace(e.UCDMailID)).Distinct().ToListAsync();
+            }
+
             foreach (var employee in inspectors)
             {                
                 var notification = new Notifications
