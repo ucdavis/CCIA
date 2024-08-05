@@ -102,8 +102,12 @@
                 <div class="form-group row">
                     <label asp-for="Crop.Name" class="col-sm-3 col-form-label"></label>
                     <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.Crop.Name)
-                    </div>
+                        @Html.DisplayFor(x => x.Crop.Name) 
+                        @if(Model.Subspecies != null)
+                        {
+                            <span>(Subspecies: @Model.Subspecies.Name)</Span>
+                        }
+                </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="ClassProduced.ClassProducedTrans" class="col-sm-3 col-form-label">Class</label>
@@ -125,12 +129,15 @@
                     <a class="btn btn-warning" asp-action="NewMap" asp-area="client" asp-controller="Application" asp-route-id="@Model.Id">Update/Create Map</a> |
                     <a class="btn btn-warning" asp-action="LinkMap" asp-area="client" asp-controller="Application" asp-route-id="@Model.Id">Link to Isoloation Map</a>
                 </div> 
-                <div class="form-group row">
-                    <label asp-for="FieldName" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.FieldName)
+                @if(Model.ClassProducedId != 80)
+                {
+                    <div class="form-group row">
+                        <label asp-for="FieldName" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.FieldName)
+                        </div>
                     </div>
-                </div>
+                }
         </div>
         <div class="col-lg-6">
                 <div class="form-group row">
@@ -168,18 +175,42 @@
                         (Mapped: @Html.DisplayFor(x => x.AreaAcres) )
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="DatePlanted" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.DatePlanted)
+                @if (Model.ClassProducedId != 80)
+                {
+                    <div class="form-group row">
+                        <label asp-for="DatePlanted" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                                @Html.DisplayFor(x => x.DatePlanted)
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label asp-for="County.Name" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-9 form-control-plaintext">
-                        @Html.DisplayFor(x => x.County.Name)
+                    <div class="form-group row">
+                        <label asp-for="County.Name" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9 form-control-plaintext">
+                            @Html.DisplayFor(x => x.County.Name)
+                        </div>
+                    </div>   
+                }
+                @if(Model.ClassProducedId == 80)
+                {
+                    <div class="form-group row">
+                        <label asp-for="NSG0StateProvinceIdCollected" class="col-sm-6 col-form-label"></label>
+                        <div class="col-sm-6 form-control-plaintext">
+                            @Html.DisplayFor(x => x.NSG0StateProvince.Name)
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group row">
+                        <label asp-for="G0Ownership" class="col-sm-6 col-form-label">Property Owner</label>
+                        <div class="col-sm-6 form-control-plaintext">
+                            @Html.DisplayFor(x => x.G0Ownership)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Ecoregion.Name" class="col-sm-6 col-form-label">Ecoregion</label>
+                        <div class="col-sm-6 form-control-plaintext">
+                            @Html.DisplayFor(x => x.Ecoregion.Name)
+                        </div>
+                    </div>
+                }
         </div>
     </div>
 </div>
@@ -233,6 +264,46 @@
         </div>
     }
     <hr>
+    @if(Model.Sites.Any())
+    {
+         <div class="row">
+            <label class="col-form-label">G0 Harvest Sites</label>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Site Name</th>
+                        <th>Size</th>
+                        <th>Elevation</th>  
+                        <th>County</th>
+                        <th>Harvest Date</th>
+                        <th>Lat</th>
+                        <th>Long</th>                        
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Sites)
+                    {
+                        <tr>
+                            <td><a class="btn btn-info" asp-action="EditSite" asp-area="client" asp-controller="Application" asp-route-id="@row.Id">Edit</a></td>
+                            <td>@row.SiteName</td>
+                            <td>@row.CollectionAreaSize</td>
+                            <td>@row.FieldElevation</td>
+                            <td>@row.County.Name</td>
+                            <td>@row.HarvestDate.ToShortDateString()</td>
+                            <td>@row.Lat.Value.ToString("0.0000")</td>
+                            <td>@row.Long.Value.ToString("0.0000")</td>
+                            <td>@row.Comments</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                 <a asp-action="NewSite" asp-route-id="@Model.Id" class="btn btn-primary">Add New Site</a>
+            </div>
+        </div>
+    }
     @if(Model.PlantingStocks.Any())
     {
     <div class="row">
@@ -331,33 +402,36 @@
         </table>
     </div>
     }
-    <div class="row">
-        <hr />
-    </div>  
-    <div class="row">
-        <label class="col-form-label">Field History</label>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Year</th>
-                <th>Crop</th>
-                <th>Variety</th>
-                <th>Application #</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var row in Model.FieldHistories.OrderBy(h => h.Year))
-            {
-                <tr>                    
-                    <td>@row.Year</td>
-                    <td>@(@row.FHCrops == null ? "" : @row.FHCrops.Name)</td>
-                    <td>@row.Variety</td>
-                    <td>@row.AppNumber</td>
+    @if(Model.FieldHistories.Any())
+        {
+        <div class="row">
+            <hr />
+        </div>  
+        <div class="row">
+            <label class="col-form-label">Field History</label>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Crop</th>
+                    <th>Variety</th>
+                    <th>Application #</th>
                 </tr>
-            }
-            </tbody>
-        </table>
-    </div>  
+                </thead>
+                <tbody>
+                @foreach (var row in Model.FieldHistories.OrderBy(h => h.Year))
+                {
+                    <tr>                    
+                        <td>@row.Year</td>
+                        <td>@(@row.FHCrops == null ? "" : @row.FHCrops.Name)</td>
+                        <td>@row.Variety</td>
+                        <td>@row.AppNumber</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
 
 

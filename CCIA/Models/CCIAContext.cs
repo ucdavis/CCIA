@@ -32,6 +32,8 @@ namespace CCIA.Models
         public virtual DbSet<ProcessTag> ProcessTag { get; set;}
         public virtual DbSet<LandingStats> LandingStats { get; set; }
         public virtual DbSet<VarCountries> VarCountires { get; set; }
+
+        public virtual DbSet<Subspecies> Subspecies { get; set; }
         public virtual DbSet<AbbrevClassProduced> AbbrevClassProduced { get; set; }
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Applications> Applications { get; set; }
@@ -172,6 +174,7 @@ namespace CCIA.Models
         public virtual DbSet<TagsReport> TagsReport { get; set; }
         public virtual DbSet<MapLinks>  MapLinks { get; set; }
         public virtual DbSet<SeedCancelCheck> SeedCancelChecks { get; set; }
+        public virtual DbSet<NativeSeedSites> NativeSeedSites { get; set; }
         // Unable to generate entity type for table 'dbo.renew_actions_trans'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.var_countries'. Please see the warning messages.
         // Unable to generate entity type for table 'dbo.contact_map'. Please see the warning messages.
@@ -2112,8 +2115,6 @@ namespace CCIA.Models
                 entity.HasOne(d => d.GrowerOrganization);
 
                 entity.HasOne(d => d.ApplicantOrganization);
-                    // .WithMany(p => p.AppliedApplications)
-                    // .HasForeignKey(d => d.Id);
 
                 
                 entity.HasOne(d => d.County);
@@ -2122,9 +2123,12 @@ namespace CCIA.Models
 
                 entity.HasOne(d => d.AppTypeTrans).WithMany(a => a.Application).HasPrincipalKey(a => a.Abbreviation).HasForeignKey(e => e.AppType);
 
+                entity.HasMany(d => d.Sites);
+
                 entity.HasMany(d => d.Certificates);
 
                 entity.HasMany(d => d.PlantingStocks);
+                entity.HasMany(d => d.Sites);
 
                 entity.HasMany(d => d.FieldHistories);
 

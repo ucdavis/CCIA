@@ -1,12 +1,11 @@
 @model CCIA.Models.SeedsCreateQAViewModel.SeedsCreateQAViewModel
 
 @{
-    ViewData["Title"] = "Create New QA Seed Lot";
+    ViewData["Title"] = "Create New QA/PVG/NS Seed Lot";
 }
 
-<h1>Create New QA Seed Lot</h1>
+<h1>Create New Seed Lot for Non-Certified Programs</h1>
 
-<h4>Certified Seed Lot</h4>
 <hr>
 <div class="row">
     <div class="col-md-9">
@@ -118,6 +117,19 @@
                     </select>
                     <span asp-validation-for="Seed.CountyDrawn" class="text-danger"></span>               
                 </div>
+                @if (Model.Application != null && Model.Application.ClassProducedId == 80 && Model.Seed != null && (Model.Seed.AppType == 4 || Model.Seed.AppType == 12))
+                {
+                    <div>
+                        <hr />
+                        All lots require lab results except G0 lots submitted for G1 Increase Only. These do not need lab results.
+                        <br />
+                        <div class="form-group row">
+                            <label asp-for="Seed.G0IncreaseOnly" class="col-sm-4 col-form-label"></label>
+                            <input type="checkbox" asp-for="Seed.G0IncreaseOnly" class="col-sm-3 form-control" />
+                        </div>
+                        <hr />
+                    </div>
+                }
                 <div class="form-group">                
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>

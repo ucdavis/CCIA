@@ -119,6 +119,8 @@ namespace CCIA.Models.SeedsCreateQAViewModel
         public int? AppId { get; set; }
         [Display(Name = "QA Program")]
         public int AppType { get; set; }
+        [Display(Name = "This a G1 Increase Only Lot?")]
+        public bool G0IncreaseOnly { get; set; }
 
     }
 }

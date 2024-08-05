@@ -248,8 +248,7 @@ namespace CCIA.Services
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownCountry)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
@@ -259,6 +258,10 @@ namespace CCIA.Services
                 .Include(a => a.FieldInspection)
                 .Include(a => a.Changes).ThenInclude(c => c.Employee)
                 .Include(a => a.TurfgrassCertificates)
+                .Include(a => a.Subspecies)
+                .Include(a => a.Sites).ThenInclude(s => s.County)
+                .Include(a => a.Ecoregion)
+                .Include(a => a.NSG0StateProvince)
                 .AsQueryable();
             return app;
 

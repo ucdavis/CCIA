@@ -13,6 +13,7 @@ using System.Security.Claims;
 using CCIA.Services;
 using Microsoft.Data.SqlClient;
 using System.IO;
+using CCIA.Models.ApplicationViewModels;
 
 namespace CCIA.Controllers.Admin
 {
@@ -81,7 +82,106 @@ namespace CCIA.Controllers.Admin
             return RedirectToAction(nameof(Details), new { id = Id }); 
         }
 
-       
+        public async Task<IActionResult> EditSite(int id)
+        {
+            var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+            if (model.Site == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == model.Site.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }           
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSite(int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToUpdate = await _dbContext.NativeSeedSites.Where(s => s.Id == vm.Site.Id).FirstOrDefaultAsync();
+            if (siteToUpdate == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == siteToUpdate.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }            
+            var updatedSite = vm.Site;
+            siteToUpdate.SiteName = updatedSite.SiteName;
+            siteToUpdate.CollectionAreaSize = updatedSite.CollectionAreaSize;
+            siteToUpdate.FieldElevation = updatedSite.FieldElevation;
+            siteToUpdate.Lat = updatedSite.Lat;
+            siteToUpdate.Long = updatedSite.Long;
+            siteToUpdate.SiteCounty = updatedSite.SiteCounty;
+            siteToUpdate.HarvestDate = updatedSite.HarvestDate;
+            siteToUpdate.Comments = updatedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Updated";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToUpdate.AppId });
+
+        }
+
+        public async Task<IActionResult> NewSite(int id)
+        {
+            var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewSite(int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToCreate = new NativeSeedSites();
+            var app = await _dbContext.Applications.Where(a => a.Id == vm.Site.AppId).FirstOrDefaultAsync();
+            if (app == null || id != vm.Site.AppId)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }            
+            var submittedSite = vm.Site;
+            siteToCreate.SiteName = submittedSite.SiteName;
+            siteToCreate.AppId = submittedSite.AppId;
+            siteToCreate.CollectionAreaSize = submittedSite.CollectionAreaSize;
+            siteToCreate.FieldElevation = submittedSite.FieldElevation;
+            siteToCreate.Lat = submittedSite.Lat;
+            siteToCreate.Long = submittedSite.Long;
+            siteToCreate.SiteCounty = submittedSite.SiteCounty;
+            siteToCreate.HarvestDate = submittedSite.HarvestDate;
+            siteToCreate.Comments = submittedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(siteToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Created";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToCreate.AppId });
+        }
 
         public async Task<IActionResult> NewMap(int id)
         {
@@ -145,8 +245,8 @@ namespace CCIA.Controllers.Admin
             appToAccept.Approved = true;
             appToAccept.DateApproved = DateTime.Now;            
             appToAccept.Approver = User.FindFirstValue(ClaimTypes.Name);
-            appToAccept.NotifyNeeded = true;
-            appToAccept.NotifyDate = DateTime.Now;
+            //appToAccept.NotifyNeeded = true;
+            //appToAccept.NotifyDate = DateTime.Now;
             appToAccept.UserEmpDateMod = DateTime.Now;
             appToAccept.UserEmpModified = User.FindFirstValue(ClaimTypes.Name);
 
@@ -681,7 +781,6 @@ namespace CCIA.Controllers.Admin
 
         // POST: Application/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AdminViewModel vm)
         {
             var appToUpdate = await _dbContext.Applications.Where(a => a.Id == id).FirstAsync();
@@ -731,7 +830,36 @@ namespace CCIA.Controllers.Admin
             appToUpdate.FarmCounty = edit.FarmCounty;
             appToUpdate.Comments = edit.Comments;
 
-            if(ModelState.IsValid){
+            if (edit.AppType == "NS")
+            {
+
+                appToUpdate.EcoregionId = edit.EcoregionId;
+                appToUpdate.SubspeciesId = edit.SubspeciesId;
+            }
+            if (appToUpdate.ClassProducedId == 80)
+            {
+                appToUpdate.G0Ownership = edit.G0Ownership;
+                appToUpdate.NSG0StateProvinceIdCollected = edit.NSG0StateProvinceIdCollected;
+                vm.application.FieldName = appToUpdate.FieldName;
+                vm.application.DatePlanted = appToUpdate.DatePlanted;
+                vm.application.AcresApplied = appToUpdate.AcresApplied;
+                vm.application.FarmCounty = appToUpdate.FarmCounty;
+            }
+            else
+            {
+                if (edit.AppType == "NS")
+                {
+                    appToUpdate.PvgSource = edit.PvgSource;
+                    appToUpdate.FieldElevation = edit.FieldElevation;
+                }
+
+                appToUpdate.FieldName = edit.FieldName;
+                appToUpdate.DatePlanted = edit.DatePlanted;
+                appToUpdate.AcresApplied = edit.AcresApplied;
+                appToUpdate.FarmCounty = edit.FarmCounty;                
+            }
+
+            if (ModelState.IsValid){
                 await _dbContext.SaveChangesAsync();
                 Message = "Application Updated";
                 if(changeCertYear)
