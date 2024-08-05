@@ -245,6 +245,10 @@ namespace CCIA.Models
 
         public string CertResults()
         {
+            if(NotFinallyCertified && CertProgram == "NS" && Class == 80)
+            {
+                return "Passed as Not finally Certified";
+            }
             if(NotFinallyCertified)
             {
                 return "REJECTED - LOT 'Not Finally Certified'";
