@@ -86,6 +86,9 @@ namespace CCIA.Models
         [Display(Name="PVG Inform?")]
         public bool PrevarietyGermplasm { get; set; }
 
+        [Display(Name = "LacTracker Inform?")]
+        public bool Lactracker { get; set; }
+
         [Display(Name="OECD Invoice Printer?")]
         public bool OECDInvoicePrinter { get; set; }
 
