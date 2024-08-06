@@ -925,6 +925,17 @@ namespace CCIA.Controllers.Client
             return View(model);  
         }
 
+        public async Task<IActionResult> SitesMap(int id)
+        {
+            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+            if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
         public async Task<IActionResult> LinkMap(int id)
         {
             var app = await _dbContext.Applications.Where(a => a.Id == id).FirstOrDefaultAsync();
