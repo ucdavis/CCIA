@@ -497,6 +497,12 @@ namespace CCIA.Controllers.Admin
             return View(model);  
         }
 
+        public async Task<IActionResult> SitesMap(int id)
+        {
+            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+            return View(model);
+        }
+
         
         public async Task<IActionResult> Details(int id)
         {   

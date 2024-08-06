@@ -530,7 +530,8 @@
                 </tbody>
             </table>
             <div>
-                 <a asp-action="NewSite" asp-route-id="@Model.application.Id" class="btn btn-primary">Add New Site</a>
+                 <a asp-action="NewSite" asp-route-id="@Model.application.Id" class="btn btn-primary">Add New Site</a> | 
+                 <a class="btn btn-info" asp-action="SitesMap" asp-area="admin" asp-controller="Application" asp-route-id="@Model.application.Id">Map Sites</a>
             </div>
         </div>
         <hr />

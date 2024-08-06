@@ -100,6 +100,7 @@ function geocodeQuery(query) {
 
 function getLinkMap(id, data)
 {   
+    alert("getlingMap");
     $("#CropptId").val(id);
     $("#mapContainer").collapse("show");
     $("#data").val(data);
@@ -108,33 +109,45 @@ function getLinkMap(id, data)
     map.setView({ zoom: 15 })    
 }
 
-function processRequest () {  
+function processRequest() {     
     pinLayer.clear();
     var data = JSON.parse($("#data").val());
     console.log(data);
+    
     if(data.length ==0){
         alert("No pins found");
         return;
     }
     
     for(i=0; i<= data.length -1; i++) {
-        var geoField = data[i].GeoField; 
-        geoField = geoField.replace("POLYGON ((","").replace("))","").replace(/,/g,"").replace("POINT (","").replace(")","");
-
+        var geoField = data[i].GeoField;         
         var coords = new Array();
-        coords = geoField.split(" ");        
-        console.log(coords);
-
-        if (coords[coords.length - 1] === "") {
-            coords.pop();
-        }
-
         var thisLocs = new Array();
 
-        for (var k = 0; k <= coords.length - 1; k = k + 2) {
-            var thisLoc = new Microsoft.Maps.Location(coords[k + 1], coords[k]);
-            thisLocs.push(thisLoc);
+        if (data[i].GeoType === "Point") { 
+            coords = geoField.split(", ");
+            console.log(coords);            
+            var thisLoc = new Microsoft.Maps.Location(coords[1], coords[0]);            
+            thisLocs.push(thisLoc);            
+            console.log(thisLocs);            
+        } else {
+            geoField = geoField.replace("POLYGON ((", "").replace("))", "").replace(/,/g, "").replace("POINT (", "").replace(")", "");
+            console.log("Polygon")
+            coords = geoField.split(" ");        
+            console.log(coords);
+
+            if (coords[coords.length - 1] === "") {
+                coords.pop();
+            }
+                       
+
+            for (var k = 0; k <= coords.length - 1; k = k + 2) {
+                var thisLoc = new Microsoft.Maps.Location(coords[k + 1], coords[k]);
+                thisLocs.push(thisLoc);
+            }
         }
+        
+        console.log(thisLocs);
         var shape = null;
 
         switch (data[i].GeoType) {
@@ -271,7 +284,7 @@ function Panmap () {
      }
  }
 
- function  checkPrezoom() {
+function checkPrezoom() {
      var loc = $("#existingCenter").val();
      if(loc !== undefined && loc !== null && loc !== "")
      {

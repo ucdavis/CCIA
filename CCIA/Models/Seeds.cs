@@ -247,7 +247,7 @@ namespace CCIA.Models
         {
             if(NotFinallyCertified && CertProgram == "NS" && Class == 80)
             {
-                return "Passed as Not finally Certified";
+                return "Passed for G1 increase";
             }
             if(NotFinallyCertified)
             {
