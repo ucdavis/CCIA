@@ -306,6 +306,13 @@ namespace CCIA.Models
                 entity.Property(e => e.Ord);
             });
 
+            modelBuilder.Entity<NativeSeedSites>(entity =>
+            {
+                entity.Property(e => e.Lat).HasPrecision(25, 15);
+                entity.Property(e => e.Long).HasPrecision(25, 15);
+
+            });
+
             modelBuilder.Entity<Jobs>(entity => {
                 entity.ToTable("jobs");
 
