@@ -73,7 +73,7 @@ namespace CCIA.Models
         public ICollection<LotBlends> LotBlends { get; set; }
 
         [ForeignKey("Id")]
-        public BlendLabResults? Labs { get; set; }
+        public BlendLabResults Labs { get; set; }
 
         [ForeignKey("ApprovedBy")]
         public CCIAEmployees ApprovedByEmployee { get; set; }

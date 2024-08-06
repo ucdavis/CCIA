@@ -115,8 +115,7 @@ namespace CCIA.Models
                     var countries =  await _dbContext.Countries.OrderBy(c => c.Name).ToListAsync();
                     countries.Insert(0, new Countries { Id=0, Name="Select country..."});
                     model.Countries = countries;
-                    model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();
-                    int maxWeight = 0;
+                    model.OECDTagTypes = await _dbContext.AbbrevOECDClass.OrderBy(c => c.SortOrder).ToListAsync();                    
                     if(blend.Sublot)
                     {
                         model.MaxOECDWeight = await _dbContext.Crops.Where(c => c.CropId == blend.Variety.CropId).Select(c => c.maxOECDLotWeight).FirstOrDefaultAsync();
