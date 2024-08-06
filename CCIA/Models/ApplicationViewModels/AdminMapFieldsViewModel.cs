@@ -66,5 +66,21 @@ namespace CCIA.Models
             return viewModal;
         }
 
+        public static async Task<AdminMapFieldsViewModel> SitesMap(CCIAContext _dbcontext, int appId, IFullCallService _helper)
+        {
+            var pins = await _dbcontext.NativeSeedSites.Where(s => s.AppId == appId)
+                .Select(a => new MapWKT { AppId = appId, Title = $"AppId: {a.AppId}", GeoField = $"{a.Long}, {a.Lat}", GeoType = "Point",
+                Description = $"Site Name: {a.SiteName}<br>Size: {a.CollectionAreaSize}<br>Elevation: {a.FieldElevation}<br>Harvest Date: {a.HarvestDate.ToShortDateString()}<br>" +
+                $"Comments: {a.Comments}"}).ToListAsync();
+            var viewModel = new AdminMapFieldsViewModel
+            {
+                app = new List<int> { appId },
+                data = JsonConvert.SerializeObject(pins),
+                details = await AdminViewModel.CreateDetails(_dbcontext, appId, _helper)
+            };
+            return viewModel;
+        }
+        
+
     }
 }
