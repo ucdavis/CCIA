@@ -62,7 +62,25 @@ namespace CCIA.Models
 
         [StringLength(256)]
         [Display(Name = "Crop")]
-        public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
+        public string Name
+        {
+            get
+            {
+                if(PreVarietyGermplasm)
+                {
+                    return $"{Genus} {Species} ({Crop})";
+                } else
+                {
+                    if(CropKind == null)
+                    {
+                        return Crop;
+                    } else
+                    {
+                        return $"{CropKind} {Crop}";
+                    }
+                }
+            }
+        } 
 
         
         [Display(Name = "Crop and Kind")]
