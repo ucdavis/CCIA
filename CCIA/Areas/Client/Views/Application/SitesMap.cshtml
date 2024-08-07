@@ -1,0 +1,16 @@
+@model CCIA.Models.AdminMapFieldsViewModel
+
+<div class="row">
+    <a class="btn btn-info" asp-action="Details" asp-area="client" asp-controller="Application" asp-route-id="@Model.details.application.Id">Return to Details</a>
+</div> 
+
+<div class="col-sm-12">
+    <div class="container">
+        @{await Html.RenderPartialAsync("_Map", Model);}
+    </div>
+</div>
+
+@section Scripts {
+    <script type='text/javascript' src="//www.bing.com/api/maps/mapcontrol?callback=loadMapScenario" async defer></script>
+    <script type="text/javascript" src="/js/Maps/MapFieldsV8.js"></script>
+}

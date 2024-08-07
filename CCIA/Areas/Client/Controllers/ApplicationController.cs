@@ -129,9 +129,13 @@ namespace CCIA.Controllers.Client
             }            
             var reuseModel = await ApplicationViewModel.CreateEditModel(_dbContext, id); 
             reuseModel.Application.CertYear = CertYearFinder.CertYear;  
-            reuseModel.Application.PlantingStocks.First().PsCertNum = null;
-            reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
-            reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            if(reuseModel.Application.PlantingStocks.Any())
+            {
+                reuseModel.Application.PlantingStocks.First().PsCertNum = null;
+                reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
+                reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            }
+            
             reuseModel.Application.FieldName = null;
             reuseModel.Application.DatePlanted = null;
             reuseModel.Application.FarmCounty = 0;
@@ -923,6 +927,17 @@ namespace CCIA.Controllers.Client
                 return  RedirectToAction(nameof(Index));
             }           
             return View(model);  
+        }
+
+        public async Task<IActionResult> SitesMap(int id)
+        {
+            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+            if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
         }
 
         public async Task<IActionResult> LinkMap(int id)
