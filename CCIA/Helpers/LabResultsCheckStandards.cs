@@ -68,7 +68,7 @@ namespace CCIA.Helpers
             }
 
 
-            var cs = await _dbContext.CropStandards.Where(c => c.CropId == properties.CropId && c.Standards.Program == properties.CertProgram && (c.Standards.Category == properties.ClassAbbreviation || c.Standards.Category == "A"))
+            var cs = await _dbContext.CropStandards.Where(c => c.CropId == properties.CropId && c.Standards.Program.Contains(properties.CertProgram) && (c.Standards.Category == properties.ClassAbbreviation || c.Standards.Category == "A"))
                 .Include(c => c.Standards)
                 .Select(c => c.Standards)
                 .ToListAsync();
@@ -336,7 +336,7 @@ namespace CCIA.Helpers
             }
 
 
-            var cs = await _dbContext.CropStandards.Where(c => c.CropId == properties.CropId && c.Standards.Program == properties.CertProgram && (c.Standards.Category == properties.ClassAbbreviation || c.Standards.Category == "A"))
+            var cs = await _dbContext.CropStandards.Where(c => c.CropId == properties.CropId && c.Standards.Program.Contains(properties.CertProgram) && (c.Standards.Category == properties.ClassAbbreviation || c.Standards.Category == "A"))
                 .Include(c => c.Standards)
                 .Select(c => c.Standards)
                 .ToListAsync();
