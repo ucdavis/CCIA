@@ -129,9 +129,13 @@ namespace CCIA.Controllers.Client
             }            
             var reuseModel = await ApplicationViewModel.CreateEditModel(_dbContext, id); 
             reuseModel.Application.CertYear = CertYearFinder.CertYear;  
-            reuseModel.Application.PlantingStocks.First().PsCertNum = null;
-            reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
-            reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            if(reuseModel.Application.PlantingStocks.Any())
+            {
+                reuseModel.Application.PlantingStocks.First().PsCertNum = null;
+                reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
+                reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            }
+            
             reuseModel.Application.FieldName = null;
             reuseModel.Application.DatePlanted = null;
             reuseModel.Application.FarmCounty = 0;
