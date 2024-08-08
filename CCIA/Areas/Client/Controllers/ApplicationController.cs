@@ -260,7 +260,10 @@ namespace CCIA.Controllers.Client
                 if ((newPS1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession >= submittedApp.ClassProducedAccession))
                 {
                     newApp.WarningFlag = true;
-                    if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                    if(newApp.ApplicantNotes == null)
+                    {
+                        newApp.ApplicantNotes = "Class produced is less then or equal to class planted; ";
+                    } else if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
                     {
                         newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
                     }
@@ -531,7 +534,10 @@ namespace CCIA.Controllers.Client
                 if ((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
                 {
                     appToUpdate.WarningFlag = true;
-                    if (!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                    if (appToUpdate.ApplicantNotes == null)
+                    {
+                        appToUpdate.ApplicantNotes = "Class produced is less then or equal to class planted; ";
+                    } else if (!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
                     {
                         appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
                     }
