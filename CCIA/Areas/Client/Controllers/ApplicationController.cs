@@ -262,10 +262,10 @@ namespace CCIA.Controllers.Client
                     newApp.WarningFlag = true;
                     if(newApp.ApplicantNotes == null)
                     {
-                        newApp.ApplicantNotes = "Class produced is less then or equal to class planted; ";
-                    } else if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                        newApp.ApplicantNotes = "Class produced is less than or equal to class planted; ";
+                    } else if (!newApp.ApplicantNotes.Contains("Class produced is less than or equal to class planted"))
                     {
-                        newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                        newApp.ApplicantNotes += "Class produced is less than or equal to class planted; ";
                     }
                 }
             } else
@@ -536,10 +536,10 @@ namespace CCIA.Controllers.Client
                     appToUpdate.WarningFlag = true;
                     if (appToUpdate.ApplicantNotes == null)
                     {
-                        appToUpdate.ApplicantNotes = "Class produced is less then or equal to class planted; ";
-                    } else if (!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
+                        appToUpdate.ApplicantNotes = "Class produced is less than or equal to class planted; ";
+                    } else if (!appToUpdate.ApplicantNotes.Contains("Class produced is less than or equal to class planted"))
                     {
-                        appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
+                        appToUpdate.ApplicantNotes += "Class produced is less than or equal to class planted; ";
                     }
                 }
             }
