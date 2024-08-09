@@ -128,6 +128,16 @@ namespace CCIA.Controllers.Client
                 transferToCreate.Type = SeedTransferTypes.InterAgency.GetDisplayName();
             }
 
+            if(transferToCreate.Type != SeedTransferTypes.InterAgency.GetDisplayName())
+            {
+                if(!vm.request.OrgId.HasValue)
+                {
+                    ErrorMessage = "In-State Seed Transfers MUST have a destination Org Id to transfer";
+                    var retryModel = await SeedTransferRequestModel.Retry(_dbContext, _helper, vm.request.Id, vm.request.Target, orgId, submittedTransfer);
+                    return View("Create", retryModel);
+                }
+            }
+
             transferToCreate.SubmittedForAnalysis = submittedTransfer.SubmittedForAnalysis ? true : false ;            
             transferToCreate.CreatedById =  int.Parse(User.Claims.FirstOrDefault(c => c.Type == "contactId").Value);
             transferToCreate.CreatedOn = DateTime.Now;
