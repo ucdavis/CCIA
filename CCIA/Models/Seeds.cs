@@ -217,11 +217,24 @@ namespace CCIA.Models
 
         public string GetCropName()
         {
+            var subspecies = "";
             if (AppId.HasValue)
             {
+                if(Application.SubspeciesName != "")
+                {
+                    return $"{Application.CropName} (Subspecies: {Application.SubspeciesName}";
+                }
                 return Application.CropName;
             }
-            return Variety == null || Variety.Crop == null ? "" : Variety.Crop.Name;
+            if(Variety != null && Variety.Crop != null)
+            {
+                if(Variety.Subspecies != null)
+                {
+                    return $"{Variety.Crop.Name} (Subspecies: {Variety.Subspecies.Name})";
+                }
+                return Variety.Crop.Name;
+            }
+            return "";
         }
 
         public int GetCropId()

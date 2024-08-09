@@ -307,6 +307,25 @@ namespace CCIA.Models
             } 
         }
 
+        public string SubspeciesName
+        {
+            get
+            {
+                if(Variety != null && Variety.Subspecies != null)
+                {
+                    return Variety.Subspecies.Name;
+                }
+                if(AppType == "PV" || SelectedVarietyId == null || AppType == "NS")
+                {
+                    if(Subspecies != null)
+                    {
+                        return Subspecies.Name;
+                    }
+                }
+                return "";
+            }
+        }
+
         public string PotatoBookVariety 
         { 
             get
