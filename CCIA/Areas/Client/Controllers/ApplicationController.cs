@@ -75,8 +75,7 @@ namespace CCIA.Controllers.Client
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownCountry)
@@ -87,6 +86,7 @@ namespace CCIA.Controllers.Client
                 .ThenInclude(s => s.County)
                 .Include(a => a.Ecoregion)
                 .Include(a => a.NSG0StateProvince)
+                .Include(a => a.FieldInspectionReport)
                 .FirstOrDefaultAsync();
 
             if(model == null)
@@ -415,7 +415,42 @@ namespace CCIA.Controllers.Client
             return View(retryModel);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        [HttpPost]
+        public async Task<IActionResult> UpdatePOPoundsHarvested(int id, int PoundsHarvested)
+        {
+			var appToUpdate = await _dbContext.Applications.Include(a => a.FieldInspectionReport)
+				.Where(a => a.Id == id).FirstOrDefaultAsync();
+			if (appToUpdate == null)
+			{
+				ErrorMessage = "Application not found!";
+				return RedirectToAction(nameof(Index));
+			}
+			if (appToUpdate.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "That app does not belong to your organization.";
+				return RedirectToAction(nameof(Index));
+			}
+            if(appToUpdate.Status != ApplicationStatus.FieldInspectionReportReady.GetDisplayName() || appToUpdate.AppType != "PO")
+            {
+				ErrorMessage = "That app is either not a Potato App or not 'Field Inspection Report Ready'.";
+				return RedirectToAction(nameof(Index));
+			}
+            appToUpdate.FieldInspectionReport.PotatoPoundsHarvested = PoundsHarvested;
+
+			if (TryValidateModel(appToUpdate))
+			{
+				await _dbContext.SaveChangesAsync();
+
+				Message = "Pounds Harvested Updated!";
+				return RedirectToAction("Details", new { id = appToUpdate.Id });
+			}
+
+            ErrorMessage = "Something went wrong";
+			return RedirectToAction("Details", new { id = appToUpdate.Id });
+		}
+
+
+		public async Task<IActionResult> Edit(int id)
         {
             var retryModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);   
             return View(retryModel);            
