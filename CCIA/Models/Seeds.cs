@@ -216,8 +216,7 @@ namespace CCIA.Models
         }
 
         public string GetCropName()
-        {
-            var subspecies = "";
+        {            
             if (AppId.HasValue)
             {
                 if(Application.SubspeciesName != "")
