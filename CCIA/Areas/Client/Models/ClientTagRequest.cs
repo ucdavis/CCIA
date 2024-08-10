@@ -161,7 +161,7 @@ namespace CCIA.Models
             }
             if(tagTarget == "PO")
             {
-                var app = await _helper.FullApplications().Where(a => a.Id == id).FirstOrDefaultAsync();
+                var app = await _helper.FullApplications().Include(a => a.FieldInspectionReport).Where(a => a.Id == id).FirstOrDefaultAsync();
                 if(app == null || app.ApplicantId != orgId)
                 {
                     var transferedSeed = await _dbContext.SeedTransfers.Where(t => t.ApplicationId == id && t.DestinationOrganizationId == orgId).FirstOrDefaultAsync();
@@ -189,6 +189,7 @@ namespace CCIA.Models
                 var states = await _dbContext.StateProvince.OrderBy(s => s.Name).ToListAsync();
                 states.Insert(0, new StateProvince { StateProvinceId = 0, Name = "Select state..." });
                 model.States = states;
+                model.Application = app;
             }
             model.request = request;            
             var status = await _dbContext.CondStatus.Where(c => c.OrgId == orgId && c.Year == Helpers.CertYearFinder.ConditionerYear).FirstOrDefaultAsync();
