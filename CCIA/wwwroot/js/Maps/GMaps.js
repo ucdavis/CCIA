@@ -19,7 +19,7 @@ async function initMap() {
 
     service = new PlacesService(map);   
     const drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        
         drawingControl: true,
         drawingControlOptions: {
             position: google.maps.ControlPosition.LEFT_TOP,
@@ -59,9 +59,8 @@ async function initMap() {
             }
             strCoord = strCoord + ' ' + t.lng() + ' ' + t.lat() + ', ';
         });
-        strCoord = strCoord + first;
-        //path = path.replaceAll("(", "");
-        alert(strCoord);
+        strCoord = strCoord + first;        
+        //alert(strCoord);
         $("#newPolygon").val(strCoord);
     });
 }

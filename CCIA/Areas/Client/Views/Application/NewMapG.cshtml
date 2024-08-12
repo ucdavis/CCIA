@@ -1,4 +1,7 @@
 ﻿@model CCIA.Models.NewMapViewModel
+@{
+    Layout = "_LayoutNoFooter";
+}
 <link href="/css/GoogleMaps.css" rel="stylesheet" type="text/css" />
 
 <br>
@@ -72,7 +75,7 @@
 </div>
 <hr>
 <div>
-    <form method="post" id="newMap">
+    <form method="post" id="newMapG">
         @if (Model.showLink)
         {
             <div class="form-group row">
@@ -84,13 +87,13 @@
         {
             <div>This field does not appear to be linked to an isolation map field.</div>
         }
-        @* <input type="text" id="newPolygon" name="newPolygon" value="test"> *@
-        <textarea id="newPolygon" name="newPolygon" cols="100" rows="5">text</textarea>
+        <input type="hidden" id="newPolygon" name="newPolygon" value="test">
+        @* <textarea id="newPolygon" name="newPolygon" cols="100" rows="5">text</textarea> *@
         <input type="hidden" id="id" name="id" value="@Model.application.Id" />
         <input type="submit" value="Update Map">
     </form>
 </div>
-<div id="map" class="embed-responsive-item embed-responsive-4by3" style="min-height: 800px; min-width: 600px"></div>
+<div id="map" class="embed-responsive-item embed-responsive-1by1" style="min-height: 600px; min-width: 600px"></div>
 
 @section Scripts {
 		
