@@ -6,6 +6,8 @@ async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");    
     const { PlacesService } = await google.maps.importLibrary("places");
     const { DrawingService } = await google.maps.importLibrary("drawing");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const { LatLngBounds } = await google.maps.importLibrary("core");
 
    
     map = new Map(document.getElementById("map"), {
@@ -63,9 +65,49 @@ async function initMap() {
         //alert(strCoord);
         $("#newPolygon").val(strCoord);
     });
+    processRequest();
 }
 
 initMap();
+
+function processRequest() {
+    var data = JSON.parse($("#data").val());
+    console.log(data);
+    var bounds = new google.maps.LatLngBounds();
+    if (data.length == 0) {
+        alert("No pins found");
+        return;
+    }
+
+    for (i = 0; i <= data.length - 1; i++) {
+        var geoField = data[i].GeoField; 
+        geoField = geoField.replace("POLYGON ((", "").replace("))", "").replace(/,/g, "").replace("POINT (", "").replace(")", "");
+        var coords = new Array();
+        coords = geoField.split(" "); 
+        console.log(coords);
+
+        var thisLocs = new Array();
+
+        for (var k = 0; k <= coords.length - 1; k = k + 2) {            
+            var thisLoc = new google.maps.LatLng(coords[k + 1], coords[k]);            
+            bounds.extend(thisLoc);
+            thisLocs.push(thisLoc);
+        }
+        thisLocs.pop();
+        console.log(thisLocs);
+
+        const bermudaTriangle = new google.maps.Polygon({
+            paths: thisLocs,
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+        });
+        bermudaTriangle.setMap(map);
+        map.fitBounds(bounds);
+    }
+}
 
 function Panmap() {
     //Davis 38.67 -121.75
