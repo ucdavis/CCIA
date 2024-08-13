@@ -114,6 +114,10 @@ namespace CCIA.Models
         [ForeignKey("StateHarvestedId")]
         public StateProvince StateHarvested { get; set; }
 
+        public int subspeciesId { get; set; }
+        [ForeignKey("SubspeciesId")]
+        public Subspecies Subspecies { get; set; }
+
 
     }
 }

@@ -56,12 +56,34 @@
     <input type="hidden" asp-for="Replant">
     <input type="hidden" asp-for="ReplantId">
 
-    <div class="row border">
-        <div class="form-group col-sm-3 required">            
+    <div class="row ">
+        @if(Model.AppType.Abbreviation == "PV" || Model.AppType.Abbreviation == "NS")
+        {
+            <div class="form-group col-sm-3 required">            
                 <label asp-for="Application.CropId" class="col-form-label">Crop</label>
-                <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
-        </div>          
-        <div class="form-group col-sm-3 required">           
+                <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","NativeSeedName"))"></select>
+            </div>
+        } else {
+            <div class="form-group col-sm-3 required">            
+                    <label asp-for="Application.CropId" class="col-form-label">Crop</label>                
+                    <select asp-for="Application.CropId" class="form-control" asp-items="@(new SelectList(Model.Crops, "CropId","Name"))"></select>
+            </div>  
+        }
+            @if (Model.AppType.Abbreviation == "PV")
+            {
+                <div class="form-group col-sm-3 required" id="subspecies">
+                    <label asp-for="Application.SubspeciesId" class="col-form-label">Subspecies</label>
+                    <select asp-for="Application.SubspeciesId" class="form-control"></select>
+                </div>
+            }
+             @if (Model.AppType.Abbreviation == "NS")
+            {
+                <div class="form-group col-sm-3 required" id="subspecies">
+                    <label asp-for="Application.SubspeciesId" class="col-form-label">Subspecies</label>
+                <select asp-for="Application.SubspeciesId" class="form-control" asp-items="@(new SelectList(Model.subspecies, "Id","Name"))"></select>
+                </div>
+            }
+            <div class="form-group col-sm-2 required">           
             <label asp-for="Application.CertYear" class="col-form-label">Cert Year</label>
             @{                
                 var selectList = new List<int>();
@@ -72,7 +94,7 @@
             }
             <select asp-for="Application.CertYear" class="form-control" asp-items="@(new SelectList(selectList))"></select>           
         </div>
-        <div class="form-group required col-sm-6 border">                     
+        <div class="form-group required col-sm-4 border">                     
             <label asp-for="Application.EnteredVariety" class="col-form-label">@Model.AppType.VarietyTitle</label>
             <div>
                 @if(Model.AppType.Abbreviation != "PO" && Model.AppType.Abbreviation != "RQ" && Model.AppType.Abbreviation != "TG")
@@ -131,7 +153,21 @@
 
         @if(Model.AppType.Abbreviation == "PV")
         {
-            <div class="form-group required row">
+            <div class="form-group required row g0Hidden">
+                <label asp-for=Application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label> 
+                <select class="col-sm-4 form-control" asp-for="Application.PvgSource" data-val="true" data-val-required="Please select Germplasm Source"  >
+                    <option value="">Select germplasm type...</option>
+                    <option value="Source Identified Germplasm">Source Identified Germplasm</option>
+                    <option value="Selected Germplasm">Selected Germplasm</option>
+                    <option value="Tested Germplasm">Tested Germplasm</option>
+                </select>      
+                <span class="field-validation-valid text-danger" data-valmsg-for="Application.PvgSource" data-valmsg-replace="true"></span>
+                <hr>
+            </div>
+        }
+        @if(Model.AppType.Abbreviation == "NS")
+        {
+                <div class="form-group required row g0Hidden">
                 <label asp-for=Application.PvgSource class="col-form-label col-sm-3">Germplasm Source</label> 
                 <select class="col-sm-4 form-control" asp-for="Application.PvgSource" data-val="true" data-val-required="Please select Germplasm Source"  >
                     <option value="">Select germplasm type...</option>
@@ -155,8 +191,89 @@
             </div>
 
         }
- 
-        <section id="planting-stock" class="rounded-section off-white">
+
+        @if (Model.AppType.Abbreviation == "NS")
+        {
+            <section id="G0Panal" class="rounded-section off-white g0show collapse">
+                <h3>G0 Pre-Collection</h3>
+                <h5><ul>
+                    <li>Additional sites can be added after creating application</li>
+                    <li>Each Site must have same Ecoregion, Property Owner, and State</li>
+                </ul></h5>
+                <section class="rounded-section light-grey">
+                    <div class="row">
+                        <div class="form-group col required">
+                            <label asp-for="Site1.SiteName" class="col-form-label">Site Name</label>
+                            <input asp-for="Site1.SiteName" class="form-control" placeholder="Field Name">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Site1.SiteName" data-valmsg-replace="true"></span>
+                        </div>
+                        <!-- Date Time Picker -->
+                        <div class="form-group col required">
+                            <label asp-for="Site1.HarvestDate" class="col-form-label">Est. Harvest Date</label>
+                            <div class="input-group mb-3">
+                                <input type="text" asp-for="Site1.HarvestDate" class="form-control datepicker" placeholder="MM/DD/YYYY">
+                                <div class="input-group-append" id="calendar-btn" onclick="$('.datepicker').focus();">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Site1.HarvestDate" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col required">
+                            <label asp-for="Application.G0Ownership" class="col-form-label">Property Owner</label>
+                                <input asp-for="Application.G0Ownership" class="form-control" placeholder="Property Owner" />
+                        </div>
+                        <div class="form-group col required">
+                            <label asp-for="Site1.CollectionAreaSize" class="col-form-label">Approximate Collection Area (acres)</label>
+                            <input asp-for="Site1.CollectionAreaSize" class="form-control" placeholder="Collection Area (acres)" />
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="form-group col required">
+                                <label asp-for="Site1.Lat" class="col-form-label">Latitude</label>
+                                <input asp-for="Site1.Lat" class="form-control" placeholder="Latitude" />
+                            </div>
+                            <div class="form-group col required">
+                                <label asp-for="Site1.Long" class="col-form-label">Longitude</label>
+                                <input asp-for="Site1.Long" class="form-control" placeholder="Longitude" />
+                            </div>
+                        </div>
+                    <div class="row">                        
+                        <div class="form-group col-sm-5">
+                                <label class="col-form-label" asp-for="Site1.SiteCounty">Site County (if in California)</label>
+                                <select asp-for="Site1.SiteCounty" class="form-control" asp-items="@(new SelectList(Model.Counties,"CountyId","Name"))" data-val="true" data-val-required="Please select Farm County"></select>                                
+                        </div>
+                        <div class="form-group required col-sm-6">
+                                <label asp-for="Application.NSG0StateProvinceIdCollected" class="col-form-label">State</label>
+                                <select asp-for="Application.NSG0StateProvinceIdCollected" class="form-control" asp-items="@(new SelectList(Model.statesAndCountries,"Id","Name"))"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group required col-sm-6">
+                            <label class="col-form-label" asp-for="Application.EcoregionId">US EPA Level III Ecoregion</label>
+                            <select asp-for="Application.EcoregionId" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>                            
+                        </div>
+                        <div class="col form-group required">
+                            <label class="col-form-label"  asp-for="Site1.FieldElevation">Field Elevation (feet)</label>
+                            <input asp-for="Site1.FieldElevation" class="form-control" placeholder="Field Elevation">
+                                <span class="field-validation-valid text-danger" data-valmsg-for="Site1.FieldElevation" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label class="col-form-label" asp-for="Site1.Comments">Site Specific Information/Comments</label>
+                            <textarea rows="5" class="form-control" asp-for="Site1.Comments" placeholder="Site Information/Comments"></textarea>
+                        </div>
+                    <div class="form-group">
+                        <label class="col-form-label" asp-for="Application.ApplicantComments">Application Additional Information/Comments</label>
+                        <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Application Information/Comments"></textarea>
+                    </div>
+                    <br />
+                </section>
+            </section>
+        }
+
+            <section id="planting-stock" class="rounded-section off-white g0Hidden">
             <h4>Planting Stock
                 @if(Model.AppType.Abbreviation == "HP")
                 {
@@ -214,6 +331,10 @@
                                 @if(Model.AppType.Abbreviation == "PV") {
                                     <text>(1 for G0)</text>
                                 }
+                                <!-- Special NS Label -->
+                                @if(Model.AppType.Abbreviation == "NS") {
+                                    <text>(1 for G0)</text>
+                                }
                             </label>
                             <input type="text" asp-for="PlantingStock1.PoundsPlanted" class="form-control" placeholder="Pounds Planted"  data-val="true" data-val-required="Please enter Planting Stock Pounds Planted" data-val-number="Planting Stock Pounds Planted must be a number">
                             <span class="field-validation-valid text-danger" data-valmsg-for="PlantingStock1.PoundsPlanted" data-valmsg-replace="true"></span>                          
@@ -237,7 +358,7 @@
                     </div>
                 }
                 <div class="row">
-                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    <!-- PVG, Rice QA, Native Seed  and Heritage Apps don't have Tag Issued field -->
                     @if(Model.AppType.ShowPSTagIssued)
                     {
                         <div class="form-group col">
@@ -375,7 +496,7 @@
                     }
                 </div>
                 <div class="row">
-                    <!-- PVG, Rice QA,  and Heritage Apps don't have Tag Issued field -->
+                    <!-- PVG, Rice QA, Native Seed  and Heritage Apps don't have Tag Issued field -->
                     @if(Model.AppType.ShowPSTagIssued)
                     {
                         <div class="form-group col">
@@ -407,10 +528,10 @@
                 </section>                
             </div>
             }
-        </section> 
-            
+        </section>
 
-        <section id="field-info" class="rounded-section off-white">
+
+            <section id="field-info" class="rounded-section off-white g0Hidden">
             <h4>Field Information</h4>
             <div class="rounded-section light-grey" >
             <div class="row">
@@ -464,6 +585,10 @@
                             @if(Model.AppType.Abbreviation == "PV") 
                             {
                                 <text>(enter 1 for G0)</text>
+                            }                            
+                            @if(Model.AppType.Abbreviation == "NS") 
+                            {
+                                <text>(enter 1 for G0)</text>
                             }
                         </label>
                         <input asp-for="Application.AcresApplied" class="form-control" placeholder="Acres Applied">
@@ -482,7 +607,23 @@
                         <span class="field-validation-valid text-danger" data-valmsg-for="Application.Ecoregion" data-valmsg-replace="true"></span>
                     </div>                     
                     <div class="col form-group">
-                        <label asp-for="Application.FieldElevation">Field Elevation</label>
+                        <label class="col-form-label"  asp-for="Application.FieldElevation">Field Elevation</label>
+                        <input asp-for="Application.FieldElevation" class="form-control" placeholder="Field Elevation">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldElevation" data-valmsg-replace="true"></span>                        
+                    </div>
+                </div>
+            }
+            <!-- NS Fields -->
+            @if(Model.AppType.Abbreviation == "NS")
+            {
+                <div class="row">
+                    <div class="form-group required col-sm-6">
+                        <label class="col-form-label" asp-for="Application.Ecoregion">US EPA Level III Ecoregion</label>
+                        <select asp-for="Application.Ecoregion" class="form-control" asp-items="@(new SelectList(Model.Ecoregions,"Id","Name"))"></select>                             
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Application.Ecoregion" data-valmsg-replace="true"></span>
+                    </div>                     
+                    <div class="col form-group">
+                        <label class="col-form-label" asp-for="Application.FieldElevation">Field Elevation</label>
                         <input asp-for="Application.FieldElevation" class="form-control" placeholder="Field Elevation">
                         <span class="field-validation-valid text-danger" data-valmsg-for="Application.FieldElevation" data-valmsg-replace="true"></span>                        
                     </div>
@@ -490,7 +631,7 @@
             }
 
             <div class="form-group">
-                <label asp-for="Application.ApplicantComments">Additional Information/Comments</label>
+                <label class="col-form-label" asp-for="Application.ApplicantComments">Additional Information/Comments</label>
                 <textarea rows="5" class="form-control" asp-for="Application.ApplicantComments" placeholder="Additional Information/Comments"></textarea>
             </div>
 

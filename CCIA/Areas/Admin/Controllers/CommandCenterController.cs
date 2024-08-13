@@ -196,6 +196,7 @@ namespace CCIA.Controllers
             newEmployee.OECDInvoicePrinter =employee.OECDInvoicePrinter;
             newEmployee.AdminEmailSummary  = employee.AdminEmailSummary;
             newEmployee.NewBlend = employee.NewBlend;
+            newEmployee.Lactracker = employee.Lactracker;
 
             if(ModelState.IsValid){ 
                 _dbContext.Add(newEmployee);                              
@@ -253,6 +254,7 @@ namespace CCIA.Controllers
             employeeToUpdate.OECDInvoicePrinter =employee.OECDInvoicePrinter;
             employeeToUpdate.AdminEmailSummary  = employee.AdminEmailSummary;
             employeeToUpdate.NewBlend = employee.NewBlend;
+            employeeToUpdate.Lactracker = employee.Lactracker;
 
 
             if(ModelState.IsValid){                               

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CCIA.Models
 {
@@ -50,9 +51,36 @@ namespace CCIA.Models
             }
         }
 
+        public string NativeSeedName
+        {
+            get
+            {
+                return $"{Genus} {Species} ({Crop})";
+
+            }
+        }
+
         [StringLength(256)]
         [Display(Name = "Crop")]
-        public string Name => CropKind == null ? Crop : CropKind + " " + Crop;
+        public string Name
+        {
+            get
+            {
+                if(PreVarietyGermplasm)
+                {
+                    return $"{Genus} {Species} ({Crop})";
+                } else
+                {
+                    if(CropKind == null)
+                    {
+                        return Crop;
+                    } else
+                    {
+                        return $"{CropKind} {Crop}";
+                    }
+                }
+            }
+        } 
 
         
         [Display(Name = "Crop and Kind")]
@@ -63,6 +91,9 @@ namespace CCIA.Models
         public ICollection<VarOfficial> VarOfficial { get; set; }
 
         public ICollection<CropStandards> CropStandards { get; set; }
-        
+
+        [ForeignKey("CropId")]
+        public ICollection<Subspecies> Subspecies { get; set; }
+
     }
 }

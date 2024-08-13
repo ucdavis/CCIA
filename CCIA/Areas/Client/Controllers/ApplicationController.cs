@@ -20,6 +20,9 @@ using static Humanizer.On;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
+using CCIA.Models.ApplicationViewModels;
+
+
 namespace CCIA.Controllers.Client
 {
 
@@ -78,13 +81,18 @@ namespace CCIA.Controllers.Client
                 .Include(a => a.ClassProduced)
                 .Include(a => a.AppTypeTrans)
                 .Include(a => a.Certificates)
-                .Include(a => a.PlantingStocks)
-                .ThenInclude(p => p.PsClassNavigation)
+                .Include(a => a.PlantingStocks).ThenInclude(p => p.PsClassNavigation)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedStateProvince)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.GrownCountry)
                 .Include(a => a.PlantingStocks).ThenInclude(p => p.TaggedCountry)
                 .Include(a => a.FieldHistories).ThenInclude(fh => fh.FHCrops)
+                .Include(a => a.Subspecies)
+                .Include(a => a.Sites)
+                .ThenInclude(s => s.County)
+                .Include(a => a.Ecoregion)
+                .Include(a => a.NSG0StateProvince)
+                .Include(a => a.FieldInspectionReport)
                 .FirstOrDefaultAsync();
 
             if(model == null)
@@ -127,9 +135,13 @@ namespace CCIA.Controllers.Client
             }            
             var reuseModel = await ApplicationViewModel.CreateEditModel(_dbContext, id); 
             reuseModel.Application.CertYear = CertYearFinder.CertYear;  
-            reuseModel.Application.PlantingStocks.First().PsCertNum = null;
-            reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
-            reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            if(reuseModel.Application.PlantingStocks.Any())
+            {
+                reuseModel.Application.PlantingStocks.First().PsCertNum = null;
+                reuseModel.Application.PlantingStocks.First().PoundsPlanted = null;
+                reuseModel.Application.PlantingStocks.First().SeedPurchasedFrom = null;
+            }
+            
             reuseModel.Application.FieldName = null;
             reuseModel.Application.DatePlanted = null;
             reuseModel.Application.FarmCounty = 0;
@@ -189,6 +201,7 @@ namespace CCIA.Controllers.Client
             var contact = await _dbContext.Contacts.Where(c => c.Id == contactId).FirstOrDefaultAsync();
             contact.LastApplicationAgreementYear = CertYearFinder.CertYear;
             var newPS2 = new PlantingStocks();
+            var site = new NativeSeedSites();
             List<FieldHistory> newFieldHistories = new List<FieldHistory>();
             var newFieldHistory = new FieldHistory();
             var newApp = new Applications();
@@ -201,7 +214,7 @@ namespace CCIA.Controllers.Client
             newApp.Received = DateTime.Now;
             newApp.Status = ApplicationStatus.PendingSupportingMaterial.GetDisplayName();
             newApp.ApplicantComments = submittedApp.ApplicantComments;
-            if (model.ReplantId != orgId)
+            if (model.ReplantId != 0 && model.ReplantId != orgId)
             {
                 newApp.ApplicantNotes = "Replant on AppId " + model.ReplantId.ToString() + "; ";
             }
@@ -214,38 +227,60 @@ namespace CCIA.Controllers.Client
             newApp.GrowerId = submittedApp.GrowerId;
             newApp.FarmCounty = submittedApp.FarmCounty;
             newApp.SelectedVarietyId = submittedApp.SelectedVarietyId;
-            
 
-            var newPS1 = TransferPlantingStockFromSubmission(model.PlantingStock1);  
-            if(submittedApp.AppType == "LT")
-            {
-                newApp.ClassProducedId = 78;
-                newPS1.PsClass = 77;
-                newPS1.PsCertNum = "LT";
-                model.PlantingStock1.PsCertNum = "LT";
-            } else {
-                newApp.ClassProducedId = submittedApp.ClassProducedId;
-            }          
-            if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
-            {
-                newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
-            }  
-            if(submittedApp.AppType == "PO")
-            {
-                newPS1.OfficialVarietyId = int.Parse(submittedApp.EnteredVariety);
-                newApp.SelectedVarietyId = int.Parse(submittedApp.EnteredVariety);
-            }
+            var newPS1 = TransferPlantingStockFromSubmission(model.PlantingStock1);
+            if (submittedApp.ClassProducedId != 80)
+            {                
+                if (submittedApp.AppType == "LT")
+                {
+                    newApp.ClassProducedId = 78;
+                    newPS1.PsClass = 77;
+                    newPS1.PsCertNum = "LT";
+                    model.PlantingStock1.PsCertNum = "LT";
+                }
+                else
+                {
+                    newApp.ClassProducedId = submittedApp.ClassProducedId;
+                }
+                if (submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
+                {
+                    newPS1.OfficialVarietyId = submittedApp.SelectedVarietyId;
+                }
+                if (submittedApp.AppType == "PO")
+                {
+                    newPS1.OfficialVarietyId = int.Parse(submittedApp.EnteredVariety);
+                    newApp.SelectedVarietyId = int.Parse(submittedApp.EnteredVariety);
+                }
 
-            if(model.PlantingStock2 != null && !string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
-            {
-                newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);                 
+                if (model.PlantingStock2 != null && !string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+                {
+                    newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
+                }
+                else
+                {
+                    if (model.PlantingStock2 != null)
+                    {
+                        model.PlantingStock2.PsCertNum = "0";
+                    }
+                }
+                if ((newPS1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession >= submittedApp.ClassProducedAccession))
+                {
+                    newApp.WarningFlag = true;
+                    if(newApp.ApplicantNotes == null)
+                    {
+                        newApp.ApplicantNotes = "Class produced is less than or equal to class planted; ";
+                    } else if (!newApp.ApplicantNotes.Contains("Class produced is less than or equal to class planted"))
+                    {
+                        newApp.ApplicantNotes += "Class produced is less than or equal to class planted; ";
+                    }
+                }
             } else
             {
-                if(model.PlantingStock2 != null)
-                {
-                    model.PlantingStock2.PsCertNum = "0";
-                }
-            }    
+                newApp.ClassProducedId = submittedApp.ClassProducedId;
+                newPS1.PsCertNum = "0";
+                model.PlantingStock1.PsCertNum = "0";
+                model.PlantingStock2.PsCertNum = "0";
+            }
 
             if(FieldHistoryExists(model.FieldHistory1))
             {
@@ -292,23 +327,49 @@ namespace CCIA.Controllers.Client
             {
                 newApp.ClassProducedAccession = submittedApp.ClassProducedAccession;
             }
-            if((newPS1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (newPS1.PsAccession >= submittedApp.ClassProducedAccession))
-            {
-                newApp.WarningFlag = true;
-				if (!newApp.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
-				{
-                   newApp.ApplicantNotes += "Class produced is less then or equal to class planted; ";
-				}
-            }
+            
             if(submittedApp.AppType == "PV")
             {
                 newApp.PvgSource = submittedApp.PvgSource;
                 newApp.PvgSelectionId = submittedApp.PvgSelectionId;
                 newApp.EcoregionId = submittedApp.EcoregionId;
                 newApp.FieldElevation = submittedApp.FieldElevation;
+                newApp.SubspeciesId = submittedApp.SubspeciesId;
+            }
+            if(submittedApp.AppType == "NS")
+            {
+                newApp.PvgSelectionId = submittedApp.PvgSelectionId;
+                newApp.SubspeciesId = submittedApp.SubspeciesId;
+                newApp.EcoregionId = submittedApp.EcoregionId;
+            }
+            if (submittedApp.AppType == "NS" && newApp.ClassProducedId != 80)
+            {
+                newApp.PvgSource = submittedApp.PvgSource;                
+                newApp.FieldElevation = submittedApp.FieldElevation;                
+            }
+            if(newApp.AppType == "NS" && newApp.ClassProducedId == 80)
+            {
+                var site1 = model.Site1;
+                site.SiteName = site1.SiteName;
+                newApp.FieldName = site1.SiteName;
+                site.HarvestDate = site1.HarvestDate;
+                site.Lat = site1.Lat;
+                site.Long = site1.Long;
+                site.Comments = site1.Comments;
+                site.CollectionAreaSize = site1.CollectionAreaSize;
+                site.FieldElevation = site1.FieldElevation;
+                site.SiteCounty = site1.SiteCounty;
+                newApp.AcresApplied = site1.CollectionAreaSize;
+                newApp.FarmCounty = site1.SiteCounty;
+                model.Application.AcresApplied = site1.CollectionAreaSize;
+                model.Application.FieldName = site1.SiteName;
+                model.Application.DatePlanted = site1.HarvestDate;
+                newApp.NSG0StateProvinceIdCollected = submittedApp.NSG0StateProvinceIdCollected;
+                newApp.G0Ownership = submittedApp.G0Ownership;
+                newApp.DatePlanted = site1.HarvestDate;
             }
 
-            if(model.Replant)
+            if (model.Replant)
             {
                 var replantApp = await _dbContext.Applications.Where(a => a.Id == model.ReplantId).FirstOrDefaultAsync();
                 newApp.Maps = replantApp.Maps;
@@ -322,7 +383,7 @@ namespace CCIA.Controllers.Client
             }
 
             ModelState.Clear();    
-            if(submittedApp.FarmCounty == 0)       
+            if(submittedApp.FarmCounty == 0 && newApp.ClassProducedId != 80)       
             {
                 ModelState.AddModelError("Application.FarmCounty","Must select a Farm county");
             }
@@ -331,15 +392,20 @@ namespace CCIA.Controllers.Client
                 _dbContext.Add(newApp);                
                 await _dbContext.SaveChangesAsync();
 
-                newPS1.AppId = newApp.Id;
-                _dbContext.Add(newPS1);  
-
                 if(model.PlantingStock2 != null && model.PlantingStock2.PsCertNum != "0")
                 {
                     newPS2.AppId = newApp.Id;
                     _dbContext.Add(newPS2);
                 }  
-
+                if(newApp.AppType == "NS" && newApp.ClassProducedId == 80)
+                {
+                    site.AppId = newApp.Id;
+                    _dbContext.Add(site);
+                } else
+                {
+                    newPS1.AppId = newApp.Id;
+                    _dbContext.Add(newPS1);  
+                }
                 foreach(FieldHistory history in newFieldHistories)
                 {
                     history.AppId = newApp.Id;
@@ -355,7 +421,42 @@ namespace CCIA.Controllers.Client
             return View(retryModel);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        [HttpPost]
+        public async Task<IActionResult> UpdatePOPoundsHarvested(int id, int PoundsHarvested)
+        {
+			var appToUpdate = await _dbContext.Applications.Include(a => a.FieldInspectionReport)
+				.Where(a => a.Id == id).FirstOrDefaultAsync();
+			if (appToUpdate == null)
+			{
+				ErrorMessage = "Application not found!";
+				return RedirectToAction(nameof(Index));
+			}
+			if (appToUpdate.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+			{
+				ErrorMessage = "That app does not belong to your organization.";
+				return RedirectToAction(nameof(Index));
+			}
+            if(appToUpdate.Status != ApplicationStatus.FieldInspectionReportReady.GetDisplayName() || appToUpdate.AppType != "PO")
+            {
+				ErrorMessage = "That app is either not a Potato App or not 'Field Inspection Report Ready'.";
+				return RedirectToAction(nameof(Index));
+			}
+            appToUpdate.FieldInspectionReport.PotatoPoundsHarvested = PoundsHarvested;
+
+			if (TryValidateModel(appToUpdate))
+			{
+				await _dbContext.SaveChangesAsync();
+
+				Message = "Pounds Harvested Updated!";
+				return RedirectToAction("Details", new { id = appToUpdate.Id });
+			}
+
+            ErrorMessage = "Something went wrong";
+			return RedirectToAction("Details", new { id = appToUpdate.Id });
+		}
+
+
+		public async Task<IActionResult> Edit(int id)
         {
             var retryModel = await ApplicationViewModel.CreateEditModel(_dbContext, id);   
             return View(retryModel);            
@@ -386,69 +487,105 @@ namespace CCIA.Controllers.Client
             appToUpdate.UserAppModDt = DateTime.Now;
             appToUpdate.EnteredVariety = submittedApp.EnteredVariety;                        
             appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
-            appToUpdate.FieldName = submittedApp.FieldName;
-            appToUpdate.DatePlanted = submittedApp.DatePlanted;
-            appToUpdate.AcresApplied = submittedApp.AcresApplied;
-            appToUpdate.ApplicantComments = submittedApp.ApplicantComments;
-            appToUpdate.CropId = submittedApp.CropId;            
-            appToUpdate.FarmCounty = submittedApp.FarmCounty;
+            appToUpdate.CropId = submittedApp.CropId; 
             appToUpdate.SelectedVarietyId = submittedApp.SelectedVarietyId;
-            appToUpdate.ClassProducedId = submittedApp.ClassProducedId;
 
+            if (submittedApp.AppType == "NS")            {                
+                
+                appToUpdate.EcoregionId = submittedApp.EcoregionId;                
+                appToUpdate.SubspeciesId = submittedApp.SubspeciesId;
+            }
 
-            var PSToUpdate = appToUpdate.PlantingStocks.First();
-            PSToUpdate.PsCertNum = model.PlantingStock1.PsCertNum;
-            PSToUpdate.PsEnteredVariety = model.PlantingStock1.PsEnteredVariety;            
-            PSToUpdate.PoundsPlanted = model.PlantingStock1.PoundsPlanted;
-            PSToUpdate.PsClass = model.PlantingStock1.PsClass;
-            PSToUpdate.PsAccession = model.PlantingStock1.PsAccession;
-            PSToUpdate.StateCountryGrown = model.PlantingStock1.StateCountryGrown;
-            PSToUpdate.StateCountryTagIssued = model.PlantingStock1.StateCountryTagIssued;
-            PSToUpdate.SeedPurchasedFrom = model.PlantingStock1.SeedPurchasedFrom;
-            PSToUpdate.WinterTest = model.PlantingStock1.WinterTest;
-            PSToUpdate.PvxTest = model.PlantingStock1.PvxTest;
-            PSToUpdate.ThcPercent = model.PlantingStock1.ThcPercent;            
-            if(submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
-            {
-                PSToUpdate.OfficialVarietyId = submittedApp.SelectedVarietyId;
-            }  
-
-            if(!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
-            {
-                if(appToUpdate.PlantingStocks.Count > 1)
-                {
-                    // Original App had 2 PS as does this one
-                    var PS2ToUpdate = appToUpdate.PlantingStocks.Last();
-                    PS2ToUpdate.PsCertNum = model.PlantingStock2.PsCertNum;
-                    PS2ToUpdate.PsEnteredVariety = model.PlantingStock2.PsEnteredVariety;            
-                    PS2ToUpdate.PoundsPlanted = model.PlantingStock2.PoundsPlanted;
-                    PS2ToUpdate.PsClass = model.PlantingStock2.PsClass;
-                    PS2ToUpdate.PsAccession = model.PlantingStock2.PsAccession;
-                    PS2ToUpdate.StateCountryGrown = model.PlantingStock2.StateCountryGrown;
-                    PS2ToUpdate.StateCountryTagIssued = model.PlantingStock2.StateCountryTagIssued;
-                    PS2ToUpdate.SeedPurchasedFrom = model.PlantingStock2.SeedPurchasedFrom;
-                    PS2ToUpdate.WinterTest = model.PlantingStock2.WinterTest;
-                    PS2ToUpdate.PvxTest = model.PlantingStock2.PvxTest;
-                    PS2ToUpdate.ThcPercent = model.PlantingStock2.ThcPercent;              
-                } else
-                {
-                    // Original app had 1 ps, but edit has 2
-                    var newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
-                    newPS2.AppId = PSToUpdate.AppId;
-                    _dbContext.Add(newPS2);
-                }
-                               
+            if (appToUpdate.ClassProducedId == 80)
+            {                                   
+                appToUpdate.G0Ownership = submittedApp.G0Ownership;
+                appToUpdate.NSG0StateProvinceIdCollected = submittedApp.NSG0StateProvinceIdCollected;
+                model.Application.FieldName = appToUpdate.FieldName;
+                model.Application.DatePlanted = appToUpdate.DatePlanted;
+                model.Application.AcresApplied = appToUpdate.AcresApplied;
+                model.Application.FarmCounty = appToUpdate.FarmCounty;
             } else
             {
-                //Check if app had 2 ps, removed second one
-                model.PlantingStock2.PsCertNum = "0";
-                if(appToUpdate.PlantingStocks.Count > 1)
+                if (submittedApp.AppType == "NS")
                 {
-                    var psToRemove = appToUpdate.PlantingStocks.Last();
-                    _dbContext.Remove(psToRemove);
+                    appToUpdate.PvgSource = submittedApp.PvgSource;
+                    appToUpdate.FieldElevation = submittedApp.FieldElevation;
                 }
-            }                 
-           
+
+                appToUpdate.FieldName = submittedApp.FieldName;
+                appToUpdate.DatePlanted = submittedApp.DatePlanted;
+                appToUpdate.AcresApplied = submittedApp.AcresApplied;
+                appToUpdate.FarmCounty = submittedApp.FarmCounty;
+                var PSToUpdate = appToUpdate.PlantingStocks.First();
+                PSToUpdate.PsCertNum = model.PlantingStock1.PsCertNum;
+                PSToUpdate.PsEnteredVariety = model.PlantingStock1.PsEnteredVariety;
+                PSToUpdate.PoundsPlanted = model.PlantingStock1.PoundsPlanted;
+                PSToUpdate.PsClass = model.PlantingStock1.PsClass;
+                PSToUpdate.PsAccession = model.PlantingStock1.PsAccession;
+                PSToUpdate.StateCountryGrown = model.PlantingStock1.StateCountryGrown;
+                PSToUpdate.StateCountryTagIssued = model.PlantingStock1.StateCountryTagIssued;
+                PSToUpdate.SeedPurchasedFrom = model.PlantingStock1.SeedPurchasedFrom;
+                PSToUpdate.WinterTest = model.PlantingStock1.WinterTest;
+                PSToUpdate.PvxTest = model.PlantingStock1.PvxTest;
+                PSToUpdate.ThcPercent = model.PlantingStock1.ThcPercent;
+
+                if (submittedApp.EnteredVariety == model.PlantingStock1.PsEnteredVariety)
+                {
+                    PSToUpdate.OfficialVarietyId = submittedApp.SelectedVarietyId;
+                }
+
+                if (!string.IsNullOrWhiteSpace(model.PlantingStock2.PsCertNum))
+                {
+                    if (appToUpdate.PlantingStocks.Count > 1)
+                    {
+                        // Original App had 2 PS as does this one
+                        var PS2ToUpdate = appToUpdate.PlantingStocks.Last();
+                        PS2ToUpdate.PsCertNum = model.PlantingStock2.PsCertNum;
+                        PS2ToUpdate.PsEnteredVariety = model.PlantingStock2.PsEnteredVariety;
+                        PS2ToUpdate.PoundsPlanted = model.PlantingStock2.PoundsPlanted;
+                        PS2ToUpdate.PsClass = model.PlantingStock2.PsClass;
+                        PS2ToUpdate.PsAccession = model.PlantingStock2.PsAccession;
+                        PS2ToUpdate.StateCountryGrown = model.PlantingStock2.StateCountryGrown;
+                        PS2ToUpdate.StateCountryTagIssued = model.PlantingStock2.StateCountryTagIssued;
+                        PS2ToUpdate.SeedPurchasedFrom = model.PlantingStock2.SeedPurchasedFrom;
+                        PS2ToUpdate.WinterTest = model.PlantingStock2.WinterTest;
+                        PS2ToUpdate.PvxTest = model.PlantingStock2.PvxTest;
+                        PS2ToUpdate.ThcPercent = model.PlantingStock2.ThcPercent;
+                    }
+                    else
+                    {
+                        // Original app had 1 ps, but edit has 2
+                        var newPS2 = TransferPlantingStockFromSubmission(model.PlantingStock2);
+                        newPS2.AppId = PSToUpdate.AppId;
+                        _dbContext.Add(newPS2);
+                    }
+
+                }
+                else
+                {
+                    //Check if app had 2 ps, removed second one
+                    model.PlantingStock2.PsCertNum = "0";
+                    if (appToUpdate.PlantingStocks.Count > 1)
+                    {
+                        var psToRemove = appToUpdate.PlantingStocks.Last();
+                        _dbContext.Remove(psToRemove);
+                    }
+                }
+
+                if ((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
+                {
+                    appToUpdate.WarningFlag = true;
+                    if (appToUpdate.ApplicantNotes == null)
+                    {
+                        appToUpdate.ApplicantNotes = "Class produced is less than or equal to class planted; ";
+                    } else if (!appToUpdate.ApplicantNotes.Contains("Class produced is less than or equal to class planted"))
+                    {
+                        appToUpdate.ApplicantNotes += "Class produced is less than or equal to class planted; ";
+                    }
+                }
+            }
+            appToUpdate.ClassProducedId = submittedApp.ClassProducedId;
+
             if(submittedApp.AppType == "HP")
             {
                 appToUpdate.CountyPermit = submittedApp.CountyPermit;                
@@ -461,14 +598,7 @@ namespace CCIA.Controllers.Client
             {
                 appToUpdate.ClassProducedAccession = submittedApp.ClassProducedAccession;
             }
-            if((model.PlantingStock1.PsClass >= submittedApp.ClassProducedId && submittedApp.ClassProducedAccession == null) || (model.PlantingStock1.PsAccession >= submittedApp.ClassProducedAccession))
-            {
-                appToUpdate.WarningFlag = true;
-                if(!appToUpdate.ApplicantNotes.Contains("Class produced is less then or equal to class planted"))
-                {
-                   appToUpdate.ApplicantNotes += "Class produced is less then or equal to class planted; ";
-                }                
-            }
+            
             if(submittedApp.AppType == "PV")
             {
                 appToUpdate.PvgSource = submittedApp.PvgSource;
@@ -476,6 +606,7 @@ namespace CCIA.Controllers.Client
                 appToUpdate.EcoregionId = submittedApp.EcoregionId;
                 appToUpdate.FieldElevation = submittedApp.FieldElevation;
             }
+            
 
             ModelState.Clear();    
             if(submittedApp.FarmCounty == 0)       
@@ -588,6 +719,122 @@ namespace CCIA.Controllers.Client
             }
             return RedirectToAction("Details", new { id = app.Id });
 
+        }
+
+        public async Task<IActionResult> NewSite(int id)
+        {
+            var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewSite(int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToCreate = new NativeSeedSites();
+            var app = await _dbContext.Applications.Where(a => a.Id == vm.Site.AppId).FirstOrDefaultAsync();
+            if (app == null || id != vm.Site.AppId)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That site belongs to an app that does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            var submittedSite = vm.Site;
+            siteToCreate.SiteName = submittedSite.SiteName;
+            siteToCreate.AppId = submittedSite.AppId;
+            siteToCreate.CollectionAreaSize = submittedSite.CollectionAreaSize;
+            siteToCreate.FieldElevation = submittedSite.FieldElevation;
+            siteToCreate.Lat = submittedSite.Lat;
+            siteToCreate.Long = submittedSite.Long;
+            siteToCreate.SiteCounty = submittedSite.SiteCounty;
+            siteToCreate.HarvestDate = submittedSite.HarvestDate;
+            siteToCreate.Comments = submittedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(siteToCreate);
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Created";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.CreateModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToCreate.AppId });
+        }
+
+        public async Task<IActionResult> EditSite (int id)
+        {
+            var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+            if(model.Site == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == model.Site.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That site belongs to an app that does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSite (int id, NativeSeedSiteEditModel vm)
+        {
+            var siteToUpdate = await _dbContext.NativeSeedSites.Where(s => s.Id == vm.Site.Id).FirstOrDefaultAsync();
+            if (siteToUpdate == null)
+            {
+                ErrorMessage = "Site not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            var app = await _dbContext.Applications.Where(a => a.Id == siteToUpdate.AppId).FirstOrDefaultAsync();
+            if (app == null)
+            {
+                ErrorMessage = "Site Application not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (app.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That site belongs to an app that does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            var updatedSite = vm.Site;
+            siteToUpdate.SiteName = updatedSite.SiteName;
+            siteToUpdate.CollectionAreaSize = updatedSite.CollectionAreaSize;
+            siteToUpdate.FieldElevation = updatedSite.FieldElevation;
+            siteToUpdate.Lat = updatedSite.Lat;
+            siteToUpdate.Long = updatedSite.Long;
+            siteToUpdate.SiteCounty = updatedSite.SiteCounty;
+            siteToUpdate.HarvestDate = updatedSite.HarvestDate;
+            siteToUpdate.Comments = updatedSite.Comments;
+
+            if (ModelState.IsValid)
+            {
+                await _dbContext.SaveChangesAsync();
+                Message = "Site Updated";
+            }
+            else
+            {
+                ErrorMessage = "Something went wrong.";
+                var model = await NativeSeedSiteEditModel.EditModel(_dbContext, id);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Details), new { id = siteToUpdate.AppId });
+            
         }
 
         public async Task<IActionResult> DeleteHistory (int id)
@@ -729,9 +976,23 @@ namespace CCIA.Controllers.Client
             return View(model);  
         }
 
+
         public async Task<IActionResult> FieldMapG(int id)
         {
             var model = await AdminMapFieldsViewModel.SingleMap(_dbContext, id, _helper);
+            if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
+            return View(model);
+          }
+
+        public async Task<IActionResult> SitesMap(int id)
+        {
+            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+
             if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
             {
                 ErrorMessage = "That app does not belong to your organization.";
@@ -1519,6 +1780,15 @@ namespace CCIA.Controllers.Client
             var state_province = await _dbContext.StateProvince.Where(sp => sp.StateProvinceId == code)
                 .Select(sp => sp.StateProvinceCode).ToListAsync();
             return Json(state_province);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<JsonResult> GetSubspecies(int cropId)
+        {
+            var subspecies  = await _dbContext.Subspecies.Where(s => s.CropId == cropId).ToListAsync();
+            subspecies.Insert(0, new Subspecies { Id = 0, CropId = cropId, Name = "--" });
+            return Json(subspecies);
         }
 
         // GET: Application/FindVariety

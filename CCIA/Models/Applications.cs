@@ -53,6 +53,7 @@ namespace CCIA.Models
            CertTagOrBulkSalesUploaded = false;
            NASPHCUploaded = false;
            ShippingPointInspectionUploadedOrFromNonInspectState = false;
+           NSG0StateProvinceIdCollected = 102;
         }
 
        
@@ -169,7 +170,13 @@ namespace CCIA.Models
 
         [ForeignKey("CropId")]
         public Crops Crop { get; set; }
-      
+
+        public int? SubspeciesId { get; set; }
+
+        [ForeignKey("SubspeciesId")]
+        public Subspecies Subspecies { get; set; }
+
+
         [ForeignKey("ApplicantId")]
         public Organizations ApplicantOrganization { get; set; }
         public int ApplicantId { get; set; }
@@ -182,7 +189,10 @@ namespace CCIA.Models
         public string HempWhereProduced { get; set; }
         public string HempProducingSeedType { get; set; }
 
-        
+        public string G0Ownership { get; set; }
+
+
+
 
         public int? GrowerId { get; set; }
 
@@ -221,13 +231,20 @@ namespace CCIA.Models
         public ICollection<TurfgrassCertificates> TurfgrassCertificates { get; set; }
 
         [ForeignKey("AppId")]
-        public ICollection<FieldInspection> FieldInspection { get; set; }
-
+        public ICollection<FieldInspection> FieldInspection { get; set; }       
         
         
         public FieldInspectionReport FieldInspectionReport { get; set; }
-        
-        
+
+        [ForeignKey("AppId")]
+        public ICollection<NativeSeedSites> Sites { get; set; }
+
+        [Display(Name = "G0 Collection State")]
+        public int? NSG0StateProvinceIdCollected { get; set; }
+        [ForeignKey("NSG0StateProvinceIdCollected")]
+        public StateProvince NSG0StateProvince { get; set; }
+
+
         public CertRad AppCertRad {get; set;}
 
         [ForeignKey("AppId")]
@@ -253,7 +270,11 @@ namespace CCIA.Models
                 {
                     return Crop.Name;
                 }
-                if(Crop != null) 
+                if (AppType == "NS")
+                {
+                    return Crop.Genus + " " + Crop.Species + " (" + Crop.Name + ")";
+                }
+                if (Crop != null) 
                 {
                     return Crop.Name;
 
@@ -274,7 +295,7 @@ namespace CCIA.Models
                 {
                     return Variety.Name;
                 }
-                if(AppType=="PV" || SelectedVarietyId == null)
+                if(AppType=="PV" || SelectedVarietyId == null || AppType == "NS")
                 {
                     return PvgSelectionId;
                 }
@@ -284,6 +305,25 @@ namespace CCIA.Models
                 }                
                 return "";
             } 
+        }
+
+        public string SubspeciesName
+        {
+            get
+            {
+                if(Variety != null && Variety.Subspecies != null)
+                {
+                    return Variety.Subspecies.Name;
+                }
+                if(AppType == "PV" || SelectedVarietyId == null || AppType == "NS")
+                {
+                    if(Subspecies != null)
+                    {
+                        return Subspecies.Name;
+                    }
+                }
+                return "";
+            }
         }
 
         public string PotatoBookVariety 
@@ -299,7 +339,7 @@ namespace CCIA.Models
                     }
                     return Variety.Name;
                 }
-                if(AppType=="PV" || SelectedVarietyId == null)
+                if(AppType == "PV" || SelectedVarietyId == null || AppType == "NS")
                 {
                     return PvgSelectionId;
                 }
@@ -331,7 +371,11 @@ namespace CCIA.Models
                 if(AppType=="LT")
                 {
                     return $"{certYearAbbrev}CA-LT-{Id}";
-                }                
+                }
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id}";
+                }
 
                 return "";
 
@@ -372,8 +416,12 @@ namespace CCIA.Models
                 if(AppType=="LT")
                 {
                     return $"{certYearAbbrev}CA-LT-{Id}";
-                }  
-                if(AppType=="HP")
+                }
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id}";
+                }
+                if (AppType=="HP")
                 {
                     return $"{certYearAbbrev}CA-HP-{rad}-{CertNum}";
                 }  
@@ -415,7 +463,11 @@ namespace CCIA.Models
                 {
                     return $"{certYearAbbrev}CA-PVG-{Id} for {ClassProduced.ClassProducedTrans}";
                 }
-                if(AppType=="GQ")
+                if (AppType == "NS")
+                {
+                    return $"{certYearAbbrev}CA-NS-{Id} for {ClassProduced.ClassProducedTrans}";
+                }
+                if (AppType=="GQ")
                 {
                     return $"{certYearAbbrev}CA-QA-{Id} for {ClassProduced.ClassProducedTrans}";
                 }
@@ -521,7 +573,7 @@ namespace CCIA.Models
              {
                  if(Variety != null)
                  {
-                     if(Variety.Status == "Certified" || AppType == "GQ" || AppType == "PV" || AppType == "RQ")
+                     if(Variety.Status == "Certified" || AppType == "GQ" || AppType == "PV" || AppType == "NS" || AppType == "RQ")
                      {
                          return false;
                      }

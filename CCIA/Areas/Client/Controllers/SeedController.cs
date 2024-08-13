@@ -327,6 +327,14 @@ namespace CCIA.Controllers.Client
             var seedapps = new List<SeedsApplications>();
            
             newSeed.SeedsApplications = seedapps;
+
+            if(newSeed.Class == 80 && (newSeed.CertProgram == "PV" || newSeed.CertProgram == "NS"))
+            {
+                if(seed.G0IncreaseOnly)
+                {
+                    newSeed.NotFinallyCertified = true;
+                }
+            }
             
             if(ModelState.IsValid)
             {
@@ -338,7 +346,7 @@ namespace CCIA.Controllers.Client
                 await _dbContext.SampleLabResults.AddAsync(labresults);
                 await _dbContext.SaveChangesAsync();
 
-                Message = "Certified Seed Lot created";
+                Message = "Seed Lot created";
             } else
             {
                 ErrorMessage = "Error encountered saving seed lot";                

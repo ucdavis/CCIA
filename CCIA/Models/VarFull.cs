@@ -90,11 +90,17 @@ namespace CCIA.Models
         [ForeignKey("VarId")]
         public ICollection<VarCountries> Countries { get; set; }
 
-        
+        public int subspeciesId { get; set; }
 
-       
+        [ForeignKey("SubspeciesId")]
+        public Subspecies Subspecies { get; set; }
 
-        
+
+
+
+
+
+
 
     }
 }
