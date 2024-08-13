@@ -1,5 +1,6 @@
 ﻿let map;
 let service;
+let infoWindow;
 
 
 async function initMap() {
@@ -72,41 +73,71 @@ initMap();
 
 function processRequest() {
     var data = JSON.parse($("#data").val());
-    console.log(data);
+    //console.log(data);
     var bounds = new google.maps.LatLngBounds();
     if (data.length == 0) {
         alert("No pins found");
         return;
     }
-
+    
     for (i = 0; i <= data.length - 1; i++) {
-        var geoField = data[i].GeoField; 
-        geoField = geoField.replace("POLYGON ((", "").replace("))", "").replace(/,/g, "").replace("POINT (", "").replace(")", "");
-        var coords = new Array();
-        coords = geoField.split(" "); 
-        console.log(coords);
+        if (data[i].GeoType === "Polygon") {
+            var geoField = data[i].GeoField;
+            geoField = geoField.replace("POLYGON ((", "").replace("))", "").replace(/,/g, "").replace("POINT (", "").replace(")", "");
+            var coords = new Array();
+            coords = geoField.split(" ");
+            //console.log(coords);
 
-        var thisLocs = new Array();
+            var thisLocs = new Array();
 
-        for (var k = 0; k <= coords.length - 1; k = k + 2) {            
-            var thisLoc = new google.maps.LatLng(coords[k + 1], coords[k]);            
-            bounds.extend(thisLoc);
-            thisLocs.push(thisLoc);
+            for (var k = 0; k <= coords.length - 1; k = k + 2) {
+                var thisLoc = new google.maps.LatLng(coords[k + 1], coords[k]);
+                bounds.extend(thisLoc);
+                thisLocs.push(thisLoc);
+            }
+            thisLocs.pop();
+            //console.log(thisLocs);
+            //alert(getCenterFromLoc(thisLocs));
+
+            const newPin = new google.maps.Polygon({
+                paths: thisLocs,
+                strokeColor: "#ffa600",
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: "#ffa600",
+                fillOpacity: 0.50,
+                title: data[i].Title,
+                description: data[i].Description,
+                center: getCenterFromLoc(thisLocs),
+            });
+            newPin.setMap(map);
+            newPin.addListener("mouseover", showInfo);
+            newPin.addListener("mouseout", removeInfo);
+            infoWindow = new google.maps.InfoWindow();
+            
         }
-        thisLocs.pop();
-        console.log(thisLocs);
-
-        const bermudaTriangle = new google.maps.Polygon({
-            paths: thisLocs,
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
-        });
-        bermudaTriangle.setMap(map);
         map.fitBounds(bounds);
     }
+}
+
+function showInfo(event) {
+    //var shapeBounds = getCenter(this);
+    //alert(shapeBounds.getCenter());
+    //alert(this.center);    
+    var content = "<b>" + this.title + "</b><br>" + this.description   
+    infoWindow.setContent(content);
+    infoWindow.setPosition(this.center);
+    infoWindow.open(map);    
+}
+
+function removeInfo(event) {
+    infoWindow.close();
+}
+
+function getCenterFromLoc(shape) {
+    var thisBounds = new google.maps.LatLngBounds();
+    shape.forEach(function (element, index) { thisBounds.extend(element) })
+    return thisBounds.getCenter();
 }
 
 function Panmap() {
