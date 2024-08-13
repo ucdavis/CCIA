@@ -17,7 +17,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using static Humanizer.On;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
 using CCIA.Models.ApplicationViewModels;
+
 
 namespace CCIA.Controllers.Client
 {
@@ -29,13 +33,15 @@ namespace CCIA.Controllers.Client
         private readonly IFullCallService _helper;
         private readonly IFileIOService _fileService;
         private readonly INotificationService _notificationService;
+        private readonly IConfiguration _config;
 
-        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService,  INotificationService notificationService)
+        public ApplicationController(CCIAContext dbContext, IFullCallService helper,IFileIOService fileIOService,  INotificationService notificationService, IConfiguration config)
         {
             _dbContext = dbContext;
             _helper = helper;
             _fileService = fileIOService;
             _notificationService = notificationService;
+            _config = config;
 
         }
 
@@ -970,14 +976,29 @@ namespace CCIA.Controllers.Client
             return View(model);  
         }
 
-        public async Task<IActionResult> SitesMap(int id)
+
+        public async Task<IActionResult> FieldMapG(int id)
         {
-            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+            var model = await AdminMapFieldsViewModel.SingleMap(_dbContext, id, _helper);
             if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
             {
                 ErrorMessage = "That app does not belong to your organization.";
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
+            return View(model);
+          }
+
+        public async Task<IActionResult> SitesMap(int id)
+        {
+            var model = await AdminMapFieldsViewModel.SitesMap(_dbContext, id, _helper);
+
+            if (model.details.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
             return View(model);
         }
 
@@ -1031,6 +1052,64 @@ namespace CCIA.Controllers.Client
                 return  RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> NewMapG(int id)
+        {
+            var model = await NewMapViewModel.CreateClient(_dbContext, id);
+            if (model.application == null)
+            {
+                ErrorMessage = "App not found!";
+                return RedirectToAction(nameof(Index));
+            }
+            if (model.application.ApplicantId != int.Parse(User.Claims.FirstOrDefault(c => c.Type == "orgId").Value))
+            {
+                ErrorMessage = "That app does not belong to your organization.";
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NewMapG(int id, string newPolygon, string updateBoth)
+        {
+            var points = new SqlParameter("points", newPolygon);
+            var msg = new SqlParameter
+            {
+                ParameterName = "msg",
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Direction = System.Data.ParameterDirection.Output,
+                Size = 100,
+            };
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_map_app_validate_field @points, @msg output", points, msg);
+            if (msg.Value.ToString() != "Ok")
+            {
+                switch (msg.Value.ToString())
+                {
+                    case "Not valid":
+                        ErrorMessage = "Field not valid. This most commonly is because the external boundary of the field crosses itself. Please redraw field.";
+                        break;
+                    case "Ring orientation":
+                        ErrorMessage = "Field area is quite large. This most commonly is because the field was drawn in the wrong direction. Please redraw field; ensure you draw in a clockwise direction (start at north west corner, then move east).";
+                        break;
+                };
+                var model = await NewMapViewModel.CreateClient(_dbContext, id);
+                if (model.application == null)
+                {
+                    ErrorMessage = "App not found!";
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewBag.GoogleAPIKey = _config["GoogleApiKey"];
+                return View(model);
+            }
+
+            var appId = new SqlParameter("app_id", id);
+            var link = new SqlParameter("link", updateBoth == "on" ? true : false);
+
+            await _dbContext.Database.ExecuteSqlRawAsync($"EXEC mvc_insert_app_map @app_Id, @points, @link", appId, points, link);
+            Message = "Field Updated";
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         [HttpPost]
